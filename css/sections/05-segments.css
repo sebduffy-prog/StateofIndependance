@@ -7,21 +7,17 @@
 #\30 5-segments .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 4vh, 48px);
+  gap: clamp(32px, 5vh, 56px);
 }
 
 /* ─── Header ──────────────────────────────────────────────── */
 #\30 5-segments .seg-title {
-  font-size: clamp(2.1rem, 5vw, 3.4rem);
-  font-weight: 500;
-  line-height: 1.04;
-  margin: 0 0 14px 0;
-  max-width: 18ch;
+  margin: 8px 0 14px 0;
+  max-width: 16ch;
 }
 #\30 5-segments .seg-standfirst {
   font-size: var(--t-md, 1.125rem);
   line-height: 1.5;
-  max-width: 60ch;
   margin: 0 0 18px 0;
   color: var(--ink-soft);
 }
@@ -33,7 +29,7 @@
   font-size: var(--t-sm, 0.95rem);
   border-top: 1px solid var(--ink);
   padding-top: 14px;
-  max-width: 60ch;
+  max-width: 62ch;
 }
 #\30 5-segments .seg-hinge-dim {
   text-transform: uppercase;
@@ -47,9 +43,19 @@
 /* ─── Stage: map + profile side by side ───────────────────── */
 #\30 5-segments .seg-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(24px, 3vw, 44px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 48px);
   align-items: start;
+}
+
+#\30 5-segments .seg-stage-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  font-size: var(--t-xs, 0.72rem);
+  color: var(--ink-soft);
+  margin: 0 0 10px 0;
 }
 
 /* ─── The 2×2 map ─────────────────────────────────────────── */
@@ -57,7 +63,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  max-width: 640px;
+  max-width: 600px;
   margin-inline: auto;
   border: 1.5px solid var(--ink);
   background: var(--mustard-pale);
@@ -179,21 +185,48 @@
   text-align: center;
 }
 
-/* ─── Profile rail card ───────────────────────────────────── */
-#\30 5-segments .seg-profile {
-  min-height: 1px;
+/* ─── Profile data-card ───────────────────────────────────── */
+#\30 5-segments .seg-profile { min-height: 1px; }
+#\30 5-segments .seg-profile:not(.is-open) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed rgba(0,0,0,0.25);
+  background: var(--mustard-pale);
+  min-height: 320px;
 }
-#\30 5-segments .seg-profile:not(.is-open) { display: none; }
+#\30 5-segments .seg-profile:not(.is-open)::before {
+  content: 'Select a quadrant to read its full profile.';
+  font-size: var(--t-sm, 0.92rem);
+  color: var(--ink-soft);
+  padding: 24px;
+  text-align: center;
+  max-width: 24ch;
+}
 #\30 5-segments .seg-card { outline: none; }
+#\30 5-segments .seg-card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+#\30 5-segments .seg-card-share {
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
 #\30 5-segments .seg-prof-name {
   font-size: var(--t-lg, 1.5rem);
-  font-weight: 500;
-  line-height: 1.1;
-  margin: 4px 0 4px 0;
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 4px 0;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--ink);
 }
 #\30 5-segments .seg-prof-trio {
   font-weight: 500;
-  margin: 0 0 14px 0;
+  margin: 8px 0 0 0;
   color: var(--ink);
 }
 #\30 5-segments .seg-prof-quote {
@@ -213,7 +246,7 @@
 }
 #\30 5-segments .seg-prof-row {
   display: grid;
-  grid-template-columns: 88px 1fr;
+  grid-template-columns: 84px 1fr;
   gap: 12px;
   font-size: var(--t-sm, 0.92rem);
   line-height: 1.4;
@@ -226,13 +259,119 @@
   color: var(--ink-soft);
   padding-top: 2px;
 }
+
+/* per-segment metric charts (lollipop + dot plot) */
+#\30 5-segments .seg-metric { margin-top: 16px; }
+#\30 5-segments .seg-metric-title {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: var(--t-xs, 0.68rem);
+  color: var(--ink-soft);
+  margin: 0 0 6px 0;
+}
+#\30 5-segments .seg-metric-chart { width: 100%; }
+
 #\30 5-segments .seg-prof-ai {
-  margin: 14px 0 0 0;
+  margin: 16px 0 0 0;
   font-size: var(--t-sm, 0.92rem);
   line-height: 1.45;
   display: grid;
-  grid-template-columns: 88px 1fr;
+  grid-template-columns: 84px 1fr;
   gap: 12px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  padding-top: 14px;
+}
+
+/* ─── GraphRAG explorer ───────────────────────────────────── */
+#\30 5-segments .seg-graphblock {
+  border-top: 1px solid var(--ink);
+  padding-top: clamp(24px, 4vh, 40px);
+}
+#\30 5-segments .seg-graph-head { margin-bottom: 18px; }
+#\30 5-segments .seg-graph-title {
+  font-size: var(--t-lg, 1.6rem);
+  font-weight: 500;
+  margin: 4px 0 8px 0;
+}
+#\30 5-segments .seg-graph-intro {
+  font-size: var(--t-sm, 0.95rem);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* segment-graph component (ported, brand-restyled) */
+#\30 5-segments .sg-stage {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 880px) { #\30 5-segments .sg-stage { grid-template-columns: 1fr; } }
+
+#\30 5-segments .sg-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 420px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+#\30 5-segments .sg-edge { stroke: var(--ink); stroke-opacity: .25; stroke-width: 1.2; }
+#\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: .06; }
+#\30 5-segments .sg-edge.is-on { stroke-opacity: .9; stroke-width: 2; }
+
+#\30 5-segments .sg-hub,
+#\30 5-segments .sg-attr { cursor: pointer; }
+#\30 5-segments .sg-hub:focus-visible rect,
+#\30 5-segments .sg-attr:focus-visible rect { stroke-width: 3; outline: none; }
+#\30 5-segments .sg-svg.is-focus .is-dim { opacity: .18; }
+#\30 5-segments .sg-svg.is-focus .is-on { opacity: 1; }
+
+#\30 5-segments .sg-label {
+  font: 500 13px var(--font-sans); fill: var(--ink);
+  pointer-events: none; font-variant-numeric: tabular-nums;
+}
+#\30 5-segments .sg-hub .sg-label { font-weight: 500; font-size: 15px; }
+/* keep ink-hub labels readable on the dark fill */
+#\30 5-segments .sg-hub[data-id="retreaters"] .sg-label { fill: var(--paper); }
+
+#\30 5-segments .sg-panel {
+  border: 1.5px solid var(--ink); background: var(--mustard-pale);
+  padding: 16px; min-height: 200px;
+}
+#\30 5-segments .sg-panel .sg-hint { color: var(--ink-soft); font-size: var(--t-sm); }
+#\30 5-segments .sg-tag {
+  display: inline-block; font: 600 .66rem var(--font-sans);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+#\30 5-segments .sg-panel h4 { font: 500 var(--t-md) var(--font-sans); margin: 4px 0; }
+#\30 5-segments .sg-panel blockquote {
+  border-left: 3px solid var(--mustard); margin: 8px 0; padding-left: 10px;
+  font-style: italic; color: var(--ink-soft);
+}
+#\30 5-segments .sg-desc { font-weight: 500; margin: 4px 0; }
+#\30 5-segments .sg-shared { font-size: var(--t-sm); color: var(--ink-soft); margin: 4px 0; }
+#\30 5-segments .sg-facts dt {
+  font: 600 .66rem var(--font-sans); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-soft); margin-top: 6px;
+}
+#\30 5-segments .sg-facts dd { margin: 0; font-size: var(--t-sm); }
+#\30 5-segments .sg-owners { margin: 6px 0 0; padding-left: 18px; font-size: var(--t-sm); }
+
+/* keyboard fallback list */
+#\30 5-segments .sg-fallback {
+  display: flex; gap: 8px; flex-wrap: wrap; list-style: none;
+  margin: 12px 0 0; padding: 0;
+}
+#\30 5-segments .sg-fallback button {
+  border: 1.5px solid var(--ink); background: var(--paper);
+  padding: 6px 12px; font: 500 var(--t-xs) var(--font-sans); cursor: pointer;
+}
+#\30 5-segments .sg-fallback button:hover { background: var(--mustard-pale); }
+#\30 5-segments .sg-fallback button:focus-visible {
+  outline: 2px solid var(--ink); outline-offset: 2px;
 }
 
 /* ─── Quiz ────────────────────────────────────────────────── */
@@ -240,16 +379,17 @@
   border-top: 1px solid var(--ink);
   padding-top: clamp(24px, 4vh, 40px);
 }
+#\30 5-segments .seg-quiz-head { margin-bottom: 18px; }
 #\30 5-segments .seg-quiz-title {
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 500;
-  margin: 0 0 8px 0;
+  margin: 4px 0 8px 0;
 }
 #\30 5-segments .seg-quiz-intro {
   font-size: var(--t-md, 1.05rem);
   color: var(--ink-soft);
   max-width: 56ch;
-  margin: 0 0 20px 0;
+  margin: 0;
 }
 #\30 5-segments .seg-quiz-host { max-width: 620px; }
 #\30 5-segments .quiz-progress {
@@ -293,12 +433,13 @@
 #\30 5-segments .seg-retake { margin: 0; }
 
 /* ─── Source ──────────────────────────────────────────────── */
-#\30 5-segments .seg-source { margin-top: 8px; }
+#\30 5-segments .seg-source { margin-top: 4px; }
 
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   #\30 5-segments .seg-stage { grid-template-columns: 1fr; }
   #\30 5-segments .seg-quad-trio { display: none; }
+  #\30 5-segments .seg-profile:not(.is-open) { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

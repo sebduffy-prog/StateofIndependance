@@ -1,77 +1,80 @@
 /* Chapter 02 — research. Teal research surface (the appendix half).
-   Every selector is prefixed with #\30 2-research so styles never leak. */
+   Every selector is prefixed with #\30 2-research so styles never leak.
+   Recomposed 2026-06: dense .si-split that fills the frame. Method told
+   tightly on the left, GB map sized to fill its column on the right. */
 
 #\30 2-research {
   background: var(--teal);
 }
 
-#\30 2-research .research-stage {
+/* ─── Split: fill the frame, both columns stretch ───────── */
+#\30 2-research .research-split {
   width: 100%;
+  align-items: stretch;
 }
 
-/* ─── Intro copy ────────────────────────────────────────── */
-#\30 2-research .research-head {
-  max-width: 64ch;
-  margin-bottom: clamp(28px, 4vh, 48px);
+/* ─── Left: the method, told tightly ────────────────────── */
+#\30 2-research .research-method {
+  align-content: center;
 }
-#\30 2-research .research-headline {
-  font-size: var(--t-xl);
-  font-weight: 500;
-  line-height: 1.04;
-  margin: 0 0 16px 0;
-}
-#\30 2-research .research-standfirst {
-  font-size: var(--t-md);
-  line-height: 1.45;
-  color: var(--ink-soft);
+
+/* Kicker gets gravitas via the display treatment (uppercase). */
+#\30 2-research .research-kicker {
+  color: var(--ink);
   margin: 0;
-  max-width: 58ch;
 }
 
-/* ─── Two-column layout ─────────────────────────────────── */
-#\30 2-research .research-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
+/* Narrative sub-headline stays sentence case; the highlighter lands on one word. */
+#\30 2-research .research-headline {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.06;
+  margin: 0;
+  max-width: 22ch;
 }
 
-/* ─── Left: method counters ─────────────────────────────── */
+/* ─── Method counters — dense grid, no hairline-list feel ─ */
 #\30 2-research .research-stats {
   list-style: none;
-  margin: 0;
+  margin: 6px 0 0 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-top: 1px solid var(--ink);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.4vw, 20px);
+}
+/* First stat (1,504) spans both columns as the anchor figure. */
+#\30 2-research .research-stat:first-child {
+  grid-column: 1 / -1;
 }
 #\30 2-research .research-stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  gap: 4px;
 }
 #\30 2-research .research-stat-value {
-  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
-  font-weight: 500;
-  line-height: 1;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 600;
+  line-height: 0.95;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+#\30 2-research .research-stat:first-child .research-stat-value {
+  font-size: clamp(3.4rem, 6vw, 5rem);
 }
 #\30 2-research .research-stat-fix {
-  font-weight: 500;
+  font-weight: 600;
 }
 #\30 2-research .research-stat-label {
   font-size: var(--t-xs);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--ink-soft);
+  line-height: 1.2;
 }
 
 #\30 2-research .research-credit {
-  margin: 20px 0 0 0;
+  margin: 8px 0 0 0;
   font-size: var(--t-sm);
   color: var(--ink-soft);
 }
@@ -80,17 +83,21 @@
   font-weight: 600;
 }
 #\30 2-research .vccp-source {
-  max-width: 52ch;
+  margin: 0;
+  max-width: 56ch;
 }
 
-/* ─── Right: GB map ─────────────────────────────────────── */
+/* ─── Right: GB map fills its column ────────────────────── */
 #\30 2-research .research-map-wrap {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 #\30 2-research .research-map {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   margin-inline: auto;
   aspect-ratio: 100 / 120;
 }
@@ -171,8 +178,8 @@
 
 /* ─── Hint + rail card ──────────────────────────────────── */
 #\30 2-research .research-map-hint {
-  margin: 18px auto 0 auto;
-  max-width: 440px;
+  margin: 14px auto 0 auto;
+  max-width: 520px;
   font-size: var(--t-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -180,7 +187,7 @@
   color: var(--ink-soft);
 }
 #\30 2-research .research-rail {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 #\30 2-research .research-card {
   border-left-color: var(--teal-deep);
@@ -225,10 +232,15 @@
 
 /* ─── Responsive: stack columns under the grid breakpoint ─ */
 @media (max-width: 860px) {
-  #\30 2-research .research-grid {
+  #\30 2-research .research-split {
     grid-template-columns: 1fr;
   }
   #\30 2-research .research-map {
-    max-width: 360px;
+    max-width: 380px;
+  }
+}
+@media (max-width: 520px) {
+  #\30 2-research .research-stats {
+    grid-template-columns: 1fr;
   }
 }

@@ -109,6 +109,11 @@ const buildNav = (manifest) => {
   }
 };
 
+// How long observer-driven active updates are suppressed after a nav click,
+// so the clicked chapter stays active while the smooth-scroll settles rather
+// than snapping to whatever section the scroll passes through.
+const CLICK_LOCK_MS = 800;
+
 const wireScrollSpy = (manifest) => {
   const setActive = (id) => {
     document.querySelectorAll('[data-target]').forEach((node) => {
@@ -116,8 +121,12 @@ const wireScrollSpy = (manifest) => {
     });
   };
 
+  // Click lock: while > 0, the observer must not overwrite the active state.
+  let lockUntil = 0;
+
   const observer = new IntersectionObserver(
     (entries) => {
+      if (Date.now() < lockUntil) return;
       const visible = entries
         .filter((e) => e.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -129,6 +138,17 @@ const wireScrollSpy = (manifest) => {
   manifest.forEach((entry) => {
     const section = document.getElementById(entry.id);
     if (section) observer.observe(section);
+  });
+
+  // When a nav pill or rail chip is clicked, set its target active at once and
+  // hold the observer off so its highlight does not race the smooth-scroll.
+  document.querySelectorAll('[data-target]').forEach((node) => {
+    node.addEventListener('click', () => {
+      const { target } = node.dataset;
+      if (!target) return;
+      lockUntil = Date.now() + CLICK_LOCK_MS;
+      setActive(target);
+    });
   });
 };
 

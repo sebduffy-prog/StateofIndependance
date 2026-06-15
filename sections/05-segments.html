@@ -1,18 +1,19 @@
 <div class="chapter-inner">
   <header class="seg-head reveal">
     <span class="vccp-eyebrow">The four Britains</span>
-    <h2 class="seg-title">Britain in four <em class="hl">segments</em>.</h2>
-    <p class="seg-standfirst">This time we dug deeper — beyond how people feel, into what they are doing about it. A new dimension of agency to act splits the nation into four very different camps.</p>
+    <h2 class="si-display si-display--sm seg-title">Britain in four <em class="hl">segments</em></h2>
+    <p class="seg-standfirst si-measure">This time we dug deeper: past how people feel, into what they are doing about it. A new dimension, the agency to act, splits the nation into four very different camps.</p>
     <p class="seg-hinge">
-      <span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic ↔ optimistic</span>
-      <span class="seg-hinge-x" aria-hidden="true">×</span>
-      <span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive ↔ proactive</span>
+      <span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic to optimistic</span>
+      <span class="seg-hinge-x" aria-hidden="true">&times;</span>
+      <span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive to proactive</span>
     </p>
   </header>
 
+  <!-- The map (left) + live profile data-card (right). -->
   <div class="seg-stage reveal">
-    <!-- The 2×2 map. Buttons sit over each quadrant; the dot field draws beneath. -->
     <div class="seg-mapwrap">
+      <span class="seg-stage-label">The compass</span>
       <div class="seg-map" data-map>
         <div class="seg-dotfield" data-dotfield></div>
 
@@ -49,16 +50,30 @@
 
         <span class="seg-youtag" data-youtag hidden>you</span>
       </div>
-      <p class="seg-maphint" data-maphint>Select a quadrant to open its profile — or take the quiz below to find your own.</p>
+      <p class="seg-maphint" data-maphint>Select a quadrant to open its profile, or take the quiz below to find your own.</p>
     </div>
 
-    <!-- Profile rail card — filled in by JS when a quadrant is chosen. -->
+    <!-- Profile data-card — filled in by JS when a quadrant is chosen. -->
     <aside class="seg-profile" data-profile aria-live="polite"></aside>
   </div>
 
+  <!-- GraphRAG explorer: a second way in. Segments as hubs, attributes as satellites. -->
+  <section class="seg-graphblock reveal" aria-labelledby="seg-graph-title">
+    <div class="seg-graph-head">
+      <span class="vccp-eyebrow">A second way in</span>
+      <h3 class="seg-graph-title" id="seg-graph-title">What the four <em class="hl">share</em></h3>
+      <p class="seg-graph-intro si-measure">The same four segments as a living network. Select a segment to isolate its world, or select an attribute to see who else holds it. Shared interests, channels, AI stances and demographics bridge the camps.</p>
+    </div>
+    <div data-segment-graph></div>
+  </section>
+
+  <!-- The quiz: live "you" dot drops into the reader's segment. -->
   <section class="seg-quizblock reveal" data-quizblock aria-labelledby="seg-quiz-title">
-    <h3 class="seg-quiz-title" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
-    <p class="seg-quiz-intro" data-quiz-intro></p>
+    <div class="seg-quiz-head">
+      <span class="vccp-eyebrow">Place yourself</span>
+      <h3 class="seg-quiz-title" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
+      <p class="seg-quiz-intro" data-quiz-intro></p>
+    </div>
     <div class="seg-quiz-host" data-quiz></div>
     <div class="seg-result" data-result hidden></div>
   </section>

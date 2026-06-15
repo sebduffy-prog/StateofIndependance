@@ -1,6 +1,10 @@
 /* Chapter 08 — playground. Teal research surface (the appendix half).
    Every selector is prefixed with #\30 8-playground so styles never leak.
-   TGI reference marker geometry: the bar lib draws a 720-wide viewBox with
+
+   The two panels compose in the shared .si-grid (12-col). Panel A spans 7,
+   Panel B spans 5, so the explorer fills the frame instead of floating airy.
+
+   TGI reference-line geometry: the bar lib draws a 720-wide viewBox with
    valueX = labelWidth + 12 and trackWidth = 720 - valueX - 56. For Panel B
    (labelWidth 230, max 250) the index-100 line falls at
    (242 + (100/250)*422) / 720 ≈ 57.06% — hence --pg-tgi-100. */
@@ -16,50 +20,48 @@
 
 /* ─── Intro copy ────────────────────────────────────────── */
 #\30 8-playground .pg-head {
-  max-width: 64ch;
-  margin-bottom: clamp(28px, 4vh, 48px);
+  margin-bottom: clamp(24px, 3.5vh, 40px);
 }
 #\30 8-playground .pg-headline {
-  font-size: var(--t-xl);
-  font-weight: 500;
-  line-height: 1.04;
-  margin: 12px 0 16px 0;
+  margin: 10px 0 14px 0;
+}
+/* The highlighter rides the uppercase display word without collapsing it. */
+#\30 8-playground .pg-headline .hl {
+  font-style: normal;
 }
 #\30 8-playground .pg-standfirst {
   font-size: var(--t-md);
   line-height: 1.45;
   color: var(--ink-soft);
   margin: 0;
-  max-width: 60ch;
 }
 
-/* ─── Two-panel layout ──────────────────────────────────── */
+/* ─── Two-panel grid (fills the frame) ──────────────────── */
 #\30 8-playground .pg-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(24px, 3vw, 40px);
-  align-items: start;
+  align-items: stretch;
 }
 #\30 8-playground .pg-panel {
-  border-left: 3px solid var(--teal-deep);
   display: flex;
   flex-direction: column;
+  /* the data card border is the deliberate frame device here */
+  background: var(--paper-warm);
 }
 #\30 8-playground .pg-panel-head {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+}
+#\30 8-playground .pg-panel .vccp-eyebrow {
+  margin-bottom: 8px;
 }
 #\30 8-playground .pg-panel-title {
   font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.1;
-  margin: 0 0 6px 0;
+  line-height: 1.08;
 }
 #\30 8-playground .pg-panel-sub {
   font-size: var(--t-sm);
   line-height: 1.45;
   color: var(--ink-soft);
   margin: 0;
-  max-width: 50ch;
+  max-width: 46ch;
 }
 
 /* ─── Controls (pill groups) ────────────────────────────── */
@@ -67,7 +69,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 #\30 8-playground .pg-control-label {
   display: block;
@@ -122,9 +124,12 @@
   color: var(--ink);
   margin: 0 0 12px 0;
   min-height: 1.4em;
+  font-variant-numeric: tabular-nums;
 }
 #\30 8-playground .pg-chart {
   width: 100%;
+  /* reserve space so the panel does not jump as charts swap between viz types */
+  min-height: 220px;
 }
 
 /* TGI panel — relative wrapper so the 100 marker can overlay the bars. */
@@ -162,9 +167,11 @@
   border-top: 1.5px dashed var(--ink);
 }
 
+/* Source line sits at the foot of each card. */
 #\30 8-playground .vccp-source {
-  max-width: 62ch;
-  margin-top: 16px;
+  max-width: 64ch;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 /* ─── Reduced motion ────────────────────────────────────── */
@@ -178,5 +185,9 @@
 @media (max-width: 920px) {
   #\30 8-playground .pg-grid {
     grid-template-columns: 1fr;
+  }
+  #\30 8-playground .pg-panel-a,
+  #\30 8-playground .pg-panel-b {
+    grid-column: 1 / -1;
   }
 }

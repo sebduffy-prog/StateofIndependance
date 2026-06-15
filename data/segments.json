@@ -118,8 +118,8 @@
       "threeWordDescriptor": "Organised. Positive. In control.",
       "heroQuote": "I've always been super organised. I like being in control. I hate having my time wasted.",
       "longQuote": "I probably do feel that I'm more self-reliant now than I have been in the past on experts and other people. I do use ChatGPT all the time and find it really quite helpful when I do have problems.",
-      "who": "55+ skew, male — 42% are 55+",
-      "money": "Comfortable — 46% earn £60k+ household income",
+      "who": "55+ skew, male. 42% are 55+",
+      "money": "Comfortable. 46% earn £60k+ household income",
       "spendPriorities": "Essentials: holidays & eating out",
       "interests": [
         "Property",
@@ -137,7 +137,7 @@
         "Broadsheets",
         "Social media"
       ],
-      "aiAttitude": "Embrace AI and online tools for everything from financial advice to health, home management and travel — trusting their own judgement and sources like Martin Lewis over authority.",
+      "aiAttitude": "Embrace AI and online tools for everything from financial advice to health, home management and travel, trusting their own judgement and sources like Martin Lewis over authority.",
       "metrics": {
         "mindsetNetAgree": {
           "Exhausted / stretched": {
@@ -452,7 +452,7 @@
       "threeWordDescriptor": "Self-sufficient. Savvy. Sceptical.",
       "heroQuote": "My trust has worsened over time — but with AI I feel empowered to take control and help myself.",
       "longQuote": "I would say that it is more of an empowering feeling being able to do things yourself, to fix things yourself, to seek out answers yourself. It's more interesting as well... Everything's just your phone, in your hand, ask Alexa... so it's definitely more instant.",
-      "who": "25–54 core — 62% are 25–54",
+      "who": "25 to 54 core. 62% are 25 to 54",
       "money": "Middle-income families",
       "spendPriorities": "Essentials: holidays & eating out",
       "interests": [
@@ -469,7 +469,7 @@
         "Creator partnerships",
         "ChatGPT"
       ],
-      "aiAttitude": "The AI vanguard, using it as a multiplier — deeply sceptical of institutions and authorities, they feel empowered to take control of their own future.",
+      "aiAttitude": "The AI vanguard, using it as a multiplier. Deeply sceptical of institutions and authorities, they feel empowered to take control of their own future.",
       "metrics": {
         "mindsetNetAgree": {
           "Exhausted / stretched": {
@@ -784,7 +784,7 @@
       "threeWordDescriptor": "Easygoing. Careful. Open-minded.",
       "heroQuote": "Life has improved with technology. It saves time — but it really can be overwhelming sometimes.",
       "longQuote": "I'm still kind of old school. But hopefully, um, somehow maybe someone can show me. You know, I ask the kids sometimes to help me, but they're not always here. So, that's kind of a bit difficult to keep up with everything being digital.",
-      "who": "55+ skew — 50% are 55+",
+      "who": "55+ skew. 50% are 55+",
       "money": "Mid-to-low income",
       "spendPriorities": "Cutting back: clothing, subscriptions & groceries",
       "interests": [
@@ -798,7 +798,7 @@
         "In-store",
         "Supermarket magazines"
       ],
-      "aiAttitude": "Embrace technology where it makes life easier — apps, loyalty schemes, online shopping — but they don't trust AI and many don't understand it. They want brands and organisations to do it for them.",
+      "aiAttitude": "Embrace technology where it makes life easier: apps, loyalty schemes, online shopping. But they don't trust AI and many don't understand it. They want brands and organisations to do it for them.",
       "metrics": {
         "mindsetNetAgree": {
           "Exhausted / stretched": {
@@ -1113,7 +1113,7 @@
       "threeWordDescriptor": "Overwhelmed. Stretched. Support-seeking.",
       "heroQuote": "I've lost faith in the council and institutions. People are left to do more for themselves.",
       "longQuote": "If I could get some sort of app that would kind of help me or prompt me to do certain things that I should do... sometimes it becomes, I know it sounds silly, but really overwhelming... [AI/Google] I use it for literally every aspect of my life... it's just something that I can't really see myself without.",
-      "who": "45+ skew, female — 59% are 45+",
+      "who": "45+ skew, female. 59% are 45+",
       "money": "Stretched finances",
       "spendPriorities": "Trading down: groceries, broadband & mobile",
       "interests": [
@@ -1129,7 +1129,7 @@
         "Savings and budgeting content",
         "Facebook and WhatsApp groups"
       ],
-      "aiAttitude": "Self-reliant out of necessity rather than choice — overwhelmed by everyday tasks, increasingly relying on technology to solve problems and reduce the burden of life admin.",
+      "aiAttitude": "Self-reliant out of necessity rather than choice. Overwhelmed by everyday tasks, increasingly relying on technology to solve problems and reduce the burden of life admin.",
       "metrics": {
         "mindsetNetAgree": {
           "Exhausted / stretched": {
@@ -1436,7 +1436,7 @@
   ],
   "quiz": {
     "title": "Which of the four are you?",
-    "intro": "Five quick statements. Agree or disagree — we'll place you on the agency-to-act compass.",
+    "intro": "Eight quick statements. Agree or disagree, and we'll place you on the agency-to-act compass.",
     "axes": {
       "x": {
         "dimension": "outlook",
@@ -1488,7 +1488,7 @@
       },
       {
         "id": "q4",
-        "statement": "I'm self-reliant — I'd rather look after things myself than wait for someone else to sort them.",
+        "statement": "I'm self-reliant, and I'd rather look after things myself than wait for someone else to sort them.",
         "agree": {
           "x": 0,
           "y": 1
@@ -1500,7 +1500,43 @@
       },
       {
         "id": "q5",
-        "statement": "In the last six months I've taken active steps to stay ahead — switching providers, hunting deals or learning something new.",
+        "statement": "In the last six months I've taken active steps to stay ahead, switching providers, hunting deals or learning something new.",
+        "agree": {
+          "x": 0,
+          "y": 1
+        },
+        "disagree": {
+          "x": 0,
+          "y": -1
+        }
+      },
+      {
+        "id": "q6",
+        "statement": "When something goes wrong, I'd rather work it out myself than wait for a brand or institution to sort it.",
+        "agree": {
+          "x": 0,
+          "y": 1
+        },
+        "disagree": {
+          "x": 0,
+          "y": -1
+        }
+      },
+      {
+        "id": "q7",
+        "statement": "I feel comfortable about my finances and the months ahead.",
+        "agree": {
+          "x": 1,
+          "y": 0
+        },
+        "disagree": {
+          "x": -1,
+          "y": 0
+        }
+      },
+      {
+        "id": "q8",
+        "statement": "I reach for new tools, apps and AI to take more control of everyday life.",
         "agree": {
           "x": 0,
           "y": 1
@@ -1512,9 +1548,9 @@
       }
     ],
     "scoring": {
-      "method": "Sum the x and y scores across all five answers.",
+      "method": "Sum the x and y scores across all eight answers.",
       "xRule": "x > 0 places you optimistic; x <= 0 places you pessimistic (ties resolve to the larger national half, 56.6% pessimistic).",
-      "yRule": "y > 0 places you proactive; y < 0 places you passive (three y questions, so no ties).",
+      "yRule": "y > 0 places you proactive; y < 0 places you passive (five y questions, so no ties).",
       "quadrantToSegment": {
         "optimistic+proactive": "architects",
         "pessimistic+proactive": "hustlers",

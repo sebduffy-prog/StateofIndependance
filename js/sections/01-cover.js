@@ -1,11 +1,19 @@
 /**
- * Chapter 01 — cover.
+ * Chapter 01: cover.
  *
- * Full-bleed mustard cover: an ambient field of ~300 ink dots drifts behind
- * an ink frame, the cursor gently repels nearby dots, and one dot is the
- * highlighted "you" (the 1,505th respondent). The highlighter wipe on the word
- * "independence" is triggered on load. All motion is reduced-motion safe — the
- * dotField lib jump-cuts internally and we skip the wipe / repulsion handler.
+ * Full-bleed mustard hero. No page frame, no plate: the Girl & Bear stands
+ * flush on the bottom ground line as a large physical figure, the wordmark
+ * commands the screen in the uppercase display treatment, and a calm,
+ * well-spaced field of ink dots drifts behind the whole composition.
+ *
+ * The dotField lib now carries its own physics (mutual repulsion so dots
+ * never crowd, momentum, cursor force). We keep the count modest, drift
+ * gentle, and wire setPointer from the whole stage so the cursor subtly
+ * pushes nearby dots. One dot is the highlighted "you" (the 1,505th
+ * respondent), parked quietly near its caption.
+ *
+ * Reduced motion: the highlighter lands instantly, the field jump-cuts to
+ * its layout, and no pointer force / drift runs (the lib enforces this too).
  *
  * Contract: docs/CONTRACT.md.
  *
@@ -15,51 +23,50 @@
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
-const DOT_COUNT = 300;
+const DOT_COUNT = 220; // calm and well-spaced, not crowding
 const YOU_INDEX = 0; // the highlighted "you" dot
-const REPEL_RADIUS = 0.16; // normalised distance within which dots are pushed
-const REPEL_STRENGTH = 0.07; // how far (normalised) a dot is nudged at the centre
+const DRIFT_AMP = 0.5; // gentle ambient brownian motion
 
 const mustard = () =>
   getComputedStyle(document.documentElement)
     .getPropertyValue('--mustard')
     .trim() || '#FFC931';
 
-/** Build the ambient base layout: a calm scatter biased to the edges so the
- *  central copy stays readable. Returns normalised {x,y} targets. */
-const buildBaseTargets = (count) =>
+/**
+ * Build the ambient layout: a calm scatter biased toward the edges so the
+ * top-left copy and the grounded bear both stay clear. Returns normalised
+ * {x,y} targets in 0..1 space.
+ */
+const buildTargets = (count) =>
   Array.from({ length: count }, (_, i) => {
     if (i === YOU_INDEX) {
       // Park "you" in the lower-left clearing near its caption.
-      return { x: 0.12, y: 0.74 };
+      return { x: 0.1, y: 0.82 };
     }
     return { x: Math.random(), y: Math.random() };
   });
 
-/** Repel base targets away from the pointer, returning a new target array
- *  (immutable — never mutates the base). */
-const repelFrom = (base, px, py) =>
-  base.map((t, i) => {
-    if (i === YOU_INDEX) return t; // "you" stays put
-    const dx = t.x - px;
-    const dy = t.y - py;
-    const dist = Math.hypot(dx, dy);
-    if (dist >= REPEL_RADIUS || dist === 0) return t;
-    const push = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
-    return {
-      x: Math.min(1, Math.max(0, t.x + (dx / dist) * push)),
-      y: Math.min(1, Math.max(0, t.y + (dy / dist) * push)),
-    };
-  });
-
-export default function init(rootEl, data) {
+export default function init(rootEl) {
   observeReveals(rootEl);
 
+  const stage = rootEl.querySelector('.cover-stage');
   const dotsHost = rootEl.querySelector('[data-cover-dots]');
   const hl = rootEl.querySelector('[data-cover-hl]');
   const reduced = prefersReducedMotion();
 
-  // Trigger the highlighter wipe once the frame has painted.
+  // Scroll cue: a real <button> (keyboard-activatable via Enter/Space) that
+  // smooth-scrolls to the research chapter, honouring reduced motion.
+  const cue = rootEl.querySelector('[data-cover-cue]');
+  if (cue) {
+    cue.addEventListener('click', () => {
+      const research = document.getElementById('02-research');
+      if (research) {
+        research.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  // Trigger the highlighter wipe once the layout has painted.
   if (hl) {
     if (reduced) {
       hl.classList.add('is-wiped');
@@ -74,42 +81,43 @@ export default function init(rootEl, data) {
 
   const field = dotField(dotsHost, {
     count: DOT_COUNT,
-    dotRadius: 2.4,
-    ariaLabel: 'A field of ink dots — one per survey respondent — drifting behind the cover.',
+    dotRadius: 2.2,
+    ariaLabel:
+      'A calm field of ink dots, one per survey respondent, drifting behind the cover.',
   });
 
-  const baseTargets = buildBaseTargets(DOT_COUNT);
-  field.formation(baseTargets);
+  field.formation(buildTargets(DOT_COUNT));
   field.highlight(YOU_INDEX, mustard());
-  field.drift(1); // ambient brownian motion (the must-have)
+  field.drift(DRIFT_AMP);
 
-  if (reduced) return; // no pointer repulsion under reduced motion
+  if (reduced) return; // no pointer force under reduced motion
 
-  // Cursor gently repels nearby dots by re-issuing shifted targets. Throttled
-  // to one update per animation frame; reverts to the base layout on leave.
+  // Wire subtle cursor repulsion across the WHOLE hero, not just the canvas
+  // box: track the pointer on the stage and feed normalised coords to the
+  // field's built-in repulsion via setPointer.
+  if (!stage) return;
+
   let pending = false;
   let lastX = 0;
   let lastY = 0;
 
-  const applyRepel = () => {
+  const flush = () => {
     pending = false;
-    field.formation(repelFrom(baseTargets, lastX, lastY));
+    field.setPointer(lastX, lastY);
   };
 
   const onPointerMove = (event) => {
-    const rect = dotsHost.getBoundingClientRect();
+    const rect = stage.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
     lastX = (event.clientX - rect.left) / rect.width;
     lastY = (event.clientY - rect.top) / rect.height;
     if (pending) return;
     pending = true;
-    requestAnimationFrame(applyRepel);
+    requestAnimationFrame(flush);
   };
 
-  const onPointerLeave = () => {
-    field.formation(baseTargets);
-  };
+  const onPointerLeave = () => field.setPointer(null, null);
 
-  dotsHost.addEventListener('pointermove', onPointerMove);
-  dotsHost.addEventListener('pointerleave', onPointerLeave);
+  stage.addEventListener('pointermove', onPointerMove);
+  stage.addEventListener('pointerleave', onPointerLeave);
 }

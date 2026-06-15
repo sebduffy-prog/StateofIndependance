@@ -1,9 +1,9 @@
 /**
  * Chapter 09 — outro.
  *
- * Ink full-bleed closing surface (paper-on-ink) that resolves into a mustard
- * back-cover band. A field of ~200 paper-coloured dots drifts and slowly
- * disperses upward and off — the "nation released" motif. Motion is the
+ * Dark navy full-bleed closing surface (paper-on-navy) that resolves into a
+ * grounded mustard back-cover. A field of ~200 paper-coloured dots drifts and
+ * slowly disperses upward and off — the "nation released" motif. Motion is the
  * must-have ambient drift; under reduced motion the dotField jump-cuts to its
  * final scatter and nothing else animates. All copy is static in the HTML.
  *
@@ -16,17 +16,17 @@ import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
 const DOT_COUNT = 200;
-const DOT_COLOUR = 'rgba(255,255,255,0.5)'; // paper/white dots on the ink surface
+const DOT_COLOUR = 'rgba(255,255,255,0.42)'; // paper/light dots on the navy ground
 const DRIFT_AMP = 1; // gentle ambient brownian motion
 const RISE_INTERVAL_MS = 2600; // cadence of the upward "release"
 const RISE_BATCH = 14; // dots released upward & off each cadence
 
-/** A calm full-field scatter of light dots, biased away from dead centre so
- *  the copy stays readable. Returns normalised {x,y,colour} targets. */
+/** A calm full-field scatter of light dots, biased to the lower band so the
+ *  quote and recap stay readable. Returns normalised {x,y,colour} targets. */
 const buildScatter = (count) =>
   Array.from({ length: count }, () => ({
     x: Math.random(),
-    y: 0.18 + Math.random() * 0.78, // sit mostly below the headline band
+    y: 0.34 + Math.random() * 0.62, // sit in the lower two-thirds, below the quote
     colour: DOT_COLOUR,
   }));
 
@@ -39,7 +39,7 @@ export default function init(rootEl, data) {
   const field = dotField(dotsHost, {
     count: DOT_COUNT,
     dotRadius: 2.2,
-    ariaLabel: 'A field of paper-coloured dots drifting upward and off — a nation released.',
+    ariaLabel: 'A field of paper-coloured dots drifting upward and off, a nation released.',
   });
 
   let targets = buildScatter(DOT_COUNT);

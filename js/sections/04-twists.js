@@ -1,11 +1,13 @@
 /**
- * Chapter 04 — twists (paper surface, mustard-pale editorial moments).
+ * Chapter 04 — twists.
  *
  * Three exhibits, all commit-then-reveal where it counts:
- *   (a) The trust paradox — dragRank the seven institutions, reveal the
- *       true confidence bars + the 53%->24% / 29-point spread, then a
- *       flip card pairing NHS 6.42/10 with "53% say it has declined".
- *   (b) Protected joy — 40% holiday hero + protected-spend bars.
+ *   (a) The trust paradox — an EARNED DARK (navy) moment. dragRank the
+ *       seven institutions, reveal the true confidence bars + the
+ *       53% to 24% / 29-point spread, then a flip card pairing NHS 6.42/10
+ *       ("most trusted") with "53% say it has declined".
+ *   (b) Protected joy — 40% holiday hero + a ring-fenced proportionStrip,
+ *       protected-spend shown as a lollipopChart (fewer bars).
  *   (c) AI on tap — 58% (any task) vs a separate 37% (high-stakes),
  *       per-task bars (high-stakes framed), and the verbatim AI quote.
  *
@@ -16,13 +18,22 @@
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { horizontalBars, barGauge } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, proportionStrip } from '../lib/charts.js';
 import { dragRank } from '../lib/interactions.js';
+
+const BEAR_SILHOUETTE = 'assets/brand/Bear_Lockup.png';
 
 /** Deterministic shuffle so tiles never start in rank order. */
 const shuffleStable = (items) => {
   const order = [3, 0, 6, 2, 5, 1, 4]; // fixed scramble of 7 indices
   return order.filter((i) => i < items.length).map((i) => items[i]);
+};
+
+/** Faint navy bear watermark behind the twists intro (decorative, never distorted). */
+const placeBearStamp = (rootEl) => {
+  const host = rootEl.querySelector('[data-host="bear-stamp"]');
+  if (!host) return;
+  host.style.backgroundImage = `url("${BEAR_SILHOUETTE}")`;
 };
 
 const buildTrustParadox = (rootEl, institutionTrust) => {
@@ -56,31 +67,21 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
     });
     const spread = Math.round(top.pctConfident - bottom.pctConfident);
     spreadEl.innerHTML =
-      `${top.label} at the top to ${bottom.label} at the bottom — a ` +
-      `<strong>${spread}-point spread</strong> in who Britain trusts to be there ` +
-      `(${Math.round(top.pctConfident)}%&nbsp;&rarr;&nbsp;${Math.round(bottom.pctConfident)}%).`;
+      `From ${Math.round(top.pctConfident)}% to ${Math.round(bottom.pctConfident)}%: ` +
+      `${top.label} at the top, ${bottom.label} at the bottom. A ` +
+      `<strong>${spread}-point spread</strong> in who Britain trusts to be there.`;
   };
 
   dragRank(rankHost, {
     items: tiles,
     trueOrder,
     instructions:
-      'Drag to reorder — or focus a row and use the up and down arrow keys. Most trusted at the top.',
+      'Drag to reorder, or focus a row and use the up and down arrow keys. Most trusted at the top.',
     onReveal: revealTruth,
   });
 
   // The paradox flip card: 6.42/10 "most trusted" <-> "53% say it declined".
   const flip = rootEl.querySelector('[data-host="paradox"]');
-  const gaugeHost = rootEl.querySelector('[data-host="gauge"]');
-  if (gaugeHost) {
-    const nhs = ranking.find((it) => it.id === 'nhs');
-    barGauge(gaugeHost, {
-      value: nhs ? nhs.meanScore : institutionTrust.headline.nhsMeanScore,
-      max: 10,
-      accent: 'mustard',
-      ariaLabel: 'NHS mean trust score, 6.42 out of 10',
-    });
-  }
   if (flip) {
     flip.addEventListener('click', () => {
       const flipped = flip.getAttribute('aria-pressed') !== 'true';
@@ -91,23 +92,36 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
 };
 
 const buildProtectedJoy = (rootEl, protectedSpend) => {
-  const host = rootEl.querySelector('[data-host="joy-bars"]');
+  const lolliHost = rootEl.querySelector('[data-host="joy-lolli"]');
+  const stripHost = rootEl.querySelector('[data-host="ringfence"]');
   const items = protectedSpend?.items;
-  if (!host || !Array.isArray(items)) return;
+  if (!Array.isArray(items)) return;
 
   // The eight named non-essentials, in deck order (drop "none"/"brands").
   const named = items.filter((it) => it.id !== 'noneOfThese' && it.id !== 'specificBrands');
-  const chart = horizontalBars(host, {
-    items: named.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
-    max: 100,
-    accent: 'mustard',
-    decimals: 1,
-    highlightId: 'holidays',
-    labelWidth: 170,
-    ariaLabel: 'Non-essentials Britain is actively protecting, by share protecting each',
-  });
-  // Ring-fence the holiday row with an ink frame; the rest read as flexible.
-  frameRows(chart.el, named, ['holidays'], 170);
+
+  if (lolliHost) {
+    lollipopChart(lolliHost, {
+      items: named.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
+      max: 100,
+      accent: 'mustard',
+      highlightId: 'holidays',
+      ariaLabel: 'Non-essentials Britain is actively protecting, by share protecting each',
+    });
+  }
+
+  // Ring-fenced holiday framed against the flexible rest, as a proportion strip.
+  if (stripHost) {
+    const holidays = named.find((it) => it.id === 'holidays');
+    const protect = holidays ? Math.round(holidays.pct) : 40;
+    proportionStrip(stripHost, {
+      segments: [
+        { label: 'Ring-fenced holiday', pct: protect, accent: 'mustard' },
+        { label: 'Flexible spend', pct: 100 - protect, accent: 'teal' },
+      ],
+      ariaLabel: 'Holiday budget ring-fenced versus flexible spend',
+    });
+  }
 };
 
 const buildAiOnTap = (rootEl, aiTasks) => {
@@ -173,6 +187,7 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
+  placeBearStamp(rootEl);
   buildTrustParadox(rootEl, survey.institutionTrust);
   buildProtectedJoy(rootEl, survey.protectedSpend);
   buildAiOnTap(rootEl, survey.aiTasks);

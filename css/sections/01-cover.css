@@ -1,36 +1,44 @@
-/* Chapter 01 — cover.
-   Full-bleed mustard cover with an ink frame inset ~5%. Drifting ink dots sit
-   behind the frame; copy + frame layer above the canvas. Square corners,
-   no gradients, sentence case, one .hl word.
+/* Chapter 01: cover.
+   Full-bleed mustard hero. No page-edge frame, no plate behind the logo.
+   The Girl & Bear stands flush on the bottom ground line; the wordmark
+   commands the screen in the uppercase display treatment; a calm field of
+   ink dots drifts behind the whole composition. Square corners, no gradients,
+   sentence case standfirst, one .hl word, Inter Tight.
 
    NOTE ON THE PREFIX: an HTML id may start with a digit, but a CSS id selector
-   may NOT — "#\30 1-cover" is invalid and the whole rule is dropped by the parser.
-   The CSS-valid way to target id="01-cover" is the escaped numeric form
-   "#\30 1-cover" (\30 is the codepoint for "0", trailing space ends the escape),
-   which the parser reads as exactly "#\30 1-cover". Every selector below is scoped
-   to this chapter id. See the build report — the contract's literal "#\30 1-cover"
-   prefix needs this escape (or an [id="01-cover"] attribute selector) site-wide. */
+   may NOT begin with one literally. The CSS-valid escape for id="01-cover" is
+   "#\30 1-cover" (\30 = codepoint for "0", trailing space ends the escape),
+   which the parser reads as exactly that id. Every selector below is scoped
+   to this chapter id. */
 
-/* Break out of .chapter padding to go genuinely full-bleed mustard. */
+/* Break the chapter padding/centring to go genuinely full-bleed (the section
+   class is fixed to .chapter by the loader, so we replicate .chapter--bleed
+   here rather than relying on a class we cannot add). */
 #\30 1-cover {
   padding: 0;
+  align-items: stretch;
   background: var(--mustard);
 }
 #\30 1-cover .chapter-inner {
   max-width: none;
   margin: 0;
   width: 100%;
+  display: flex;
 }
 
-/* The stage fills the viewport (minus the fixed nav) and hosts both layers. */
+/* The stage fills the viewport (minus the fixed nav) and hosts every layer. */
 #\30 1-cover .cover-stage {
   position: relative;
+  flex: 1;
   width: 100%;
   min-height: calc(100vh - var(--nav-height));
+  display: grid;
+  /* One column; copy pinned top-left, bear grounded bottom, dots behind all. */
+  grid-template-columns: 1fr;
   overflow: hidden;
 }
 
-/* ─── Dot field layer (behind the frame) ─────────────────── */
+/* ─── Dot field layer (behind everything) ────────────────── */
 #\30 1-cover .cover-dots {
   position: absolute;
   inset: 0;
@@ -44,64 +52,62 @@
   height: 100%;
 }
 
-/* ─── Ink frame, inset ~5% ───────────────────────────────── */
-#\30 1-cover .cover-frame {
-  position: absolute;
-  inset: 5%;
-  z-index: 1;
-  border: 1.5px solid var(--ink);
-  /* Transparent so the drifting dots read through the frame interior. */
-  background: transparent;
-  display: flex;
-  align-items: center;
-  /* Let pointer events fall through to the dot canvas, except where
-     re-enabled on interactive / readable elements below. */
-  pointer-events: none;
-  padding: clamp(28px, 5vw, 72px);
-}
-
-/* ─── Copy block ─────────────────────────────────────────── */
+/* ─── Copy block: top-left, no frame ─────────────────────── */
 #\30 1-cover .cover-copy {
   position: relative;
   z-index: 2;
-  max-width: min(58ch, 72%);
-  pointer-events: auto;
+  align-self: start;
+  justify-self: start;
+  max-width: min(60ch, 78%);
+  padding: clamp(40px, 6vh, 88px) clamp(32px, 6vw, 96px) 0;
+  pointer-events: none; /* let dots receive the cursor; re-enable controls */
 }
 #\30 1-cover .cover-eyebrow {
-  margin-bottom: 20px;
-  color: var(--ink);
-}
-#\30 1-cover .cover-headline {
-  font-size: clamp(2.8rem, 7vw, 6rem);
-  font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.01em;
-  margin: 0 0 24px 0;
+  margin: 0;
   color: var(--ink);
 }
 
-/* Highlighter wipe: override the shared .hl::before to start scaled to 0 on
-   the X axis (matching the -12deg skew) and wipe in when .is-wiped lands. */
-#\30 1-cover .cover-headline .hl::before {
+/* ─── The wordmark: uppercase display gravitas ───────────── */
+#\30 1-cover .cover-wordmark {
+  margin: 0;
+  color: var(--ink);
+  /* Big and grounded. Bump above the shared display scale so it commands. */
+  font-size: clamp(3.4rem, 9.5vw, 9.5rem);
+  line-height: 0.9;
+  max-width: 14ch;
+}
+
+/* Keep the highlighted word in the display treatment (weight 600, upright)
+   rather than .hl's default 500 italic, so "INDEPENDENCE" matches the wordmark.
+   The parallelogram itself is untouched. */
+#\30 1-cover .cover-wordmark .hl {
+  font-style: normal;
+  font-weight: inherit;
+}
+
+/* Highlighter wipe on the uppercase word: start scaled to 0 on X (matching the
+   skew) and wipe in when .is-wiped lands. */
+#\30 1-cover .cover-wordmark .hl::before {
   transform: skewX(-12deg) scaleX(0);
   transform-origin: 0% 50%;
   transition: transform 0.66s cubic-bezier(0.22, 1, 0.36, 1);
 }
-#\30 1-cover .cover-headline .hl.is-wiped::before {
+#\30 1-cover .cover-wordmark .hl.is-wiped::before {
   transform: skewX(-12deg) scaleX(1);
 }
 
 #\30 1-cover .cover-standfirst {
   font-size: var(--t-md);
   line-height: 1.5;
-  max-width: 52ch;
-  margin: 0 0 36px 0;
+  margin: 0;
   color: var(--ink);
 }
 
 /* ─── Square scroll cue ──────────────────────────────────── */
 #\30 1-cover .cover-cue {
   pointer-events: auto;
+  align-self: start;
+  margin-top: 8px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -109,6 +115,9 @@
   color: var(--ink);
   background: var(--paper);
   border: 1.5px solid var(--ink);
+  border-radius: 0;          /* square corners, no default button chrome */
+  appearance: none;
+  cursor: pointer;
   padding: 14px 20px;
   font: 600 var(--t-xs)/1 var(--font-sans);
   letter-spacing: 0.16em;
@@ -135,17 +144,18 @@
   transform: rotate(45deg) translate(2px, 2px);
 }
 
-/* ─── "This one is you" marker ───────────────────────────── */
+/* ─── Quiet "you are the 1,505th respondent" marker ──────── */
 #\30 1-cover .cover-you {
   position: absolute;
-  left: clamp(28px, 5vw, 72px);
-  bottom: clamp(28px, 6vw, 76px);
+  left: clamp(32px, 6vw, 96px);
+  bottom: clamp(24px, 4vw, 48px);
   z-index: 2;
   margin: 0;
   max-width: 24ch;
   font-size: var(--t-xs);
   line-height: 1.4;
   color: var(--ink-soft);
+  opacity: 0.75;
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -161,23 +171,22 @@
   transform: translateY(1px);
 }
 
-/* ─── Girl & Bear on a white paper plate (never on mustard) ─ */
-#\30 1-cover .cover-plate {
+/* ─── Girl & Bear: large, grounded, flush to the bottom edge ─
+   This is the hero illustration (the deck does exactly this), not a logo
+   lockup, so the black silhouette sits directly on the mustard ground with
+   no plate. align-self:end + margin-bottom:0 (from .si-ground) makes it
+   stand on the bottom line. */
+#\30 1-cover .cover-bear {
   position: absolute;
-  right: clamp(20px, 3vw, 48px);
-  bottom: clamp(20px, 3vw, 48px);
-  z-index: 2;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  padding: clamp(14px, 1.6vw, 22px);
-  pointer-events: none;
-}
-#\30 1-cover .cover-plate-img {
-  display: block;
-  width: clamp(120px, 16vw, 220px);
+  right: clamp(16px, 5vw, 96px);
+  bottom: 0;
+  z-index: 1;
+  align-self: end;
+  width: clamp(280px, 38vw, 620px);
   height: auto;
-  /* Render the artwork as a clean black silhouette on the paper plate. */
+  /* Render the artwork as a clean black silhouette on the mustard ground. */
   filter: brightness(0);
+  pointer-events: none;
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
@@ -185,27 +194,27 @@
   #\30 1-cover .cover-copy {
     max-width: 100%;
   }
-  #\30 1-cover .cover-plate {
-    width: 110px;
-  }
-  #\30 1-cover .cover-you {
-    max-width: 18ch;
+  #\30 1-cover .cover-bear {
+    width: clamp(220px, 50vw, 360px);
+    opacity: 0.92;
   }
 }
 
 @media (max-width: 600px) {
-  #\30 1-cover .cover-plate {
-    display: none;
+  #\30 1-cover .cover-bear {
+    width: 200px;
+    right: 8px;
   }
   #\30 1-cover .cover-you {
     position: static;
     margin-top: 24px;
+    padding-left: clamp(32px, 6vw, 96px);
   }
 }
 
-/* ─── Reduced motion: highlighter already wiped, no transition ─ */
+/* ─── Reduced motion: highlighter already wiped, no transitions ─ */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-headline .hl::before {
+  #\30 1-cover .cover-wordmark .hl::before {
     transition: none;
   }
   #\30 1-cover .cover-cue-arrow,

@@ -17,6 +17,12 @@
   --teal-light:    #BDF9F6;   /* teal-variant highlighter fill */
   --teal-pale:     #DEFCFA;
 
+  /* NAVY — serious/dark accent (2026 redesign: the bear, dark grounds, data) */
+  --navy:          #101F5B;
+  --navy-soft:     #1E2E78;   /* hover/secondary navy */
+  --navy-pale:     #E7EAF4;   /* navy tint surface */
+  --azure:         #1E90FF;   /* deck data-series accent (use sparingly) */
+
   /* Neutrals */
   --ink:           #000000;
   --ink-soft:      #1A1A1A;
@@ -26,7 +32,8 @@
   --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Type scale */
-  --t-xl: clamp(2.4rem, 4.4vw, 4.2rem);
+  --t-display: clamp(3.2rem, 7vw, 7.5rem);   /* hero + full-bleed divider titles */
+  --t-xl: clamp(2.6rem, 4.8vw, 4.6rem);
   --t-lg: clamp(1.8rem, 2.6vw, 2.6rem);
   --t-md: clamp(1.15rem, 1.4vw, 1.4rem);
   --t-sm: 0.93rem;
@@ -133,8 +140,20 @@ img { display: block; object-fit: contain; }
   scroll-margin-top: var(--nav-height);
   display: flex;
   align-items: center;
-  padding: clamp(48px, 6vh, 88px) clamp(20px, 4vw, 72px)
-           clamp(48px, 6vh, 88px) clamp(56px, 6vw, 96px);
+  /* Density tuning (2026 redesign): tighter vertical padding, kills airy feel */
+  padding: clamp(40px, 5vh, 72px) clamp(20px, 4vw, 72px)
+           clamp(40px, 5vh, 72px) clamp(56px, 6vw, 96px);
+}
+/* Full-bleed sections (cover, dark moments) host edge-to-edge children */
+.chapter--bleed {
+  padding: 0;
+  align-items: stretch;
+}
+.chapter--bleed > .chapter-inner { max-width: none; }
+/* Even denser packing for crowded data screens */
+.chapter--dense {
+  padding: clamp(24px, 3vh, 48px) clamp(20px, 4vw, 72px)
+           clamp(24px, 3vh, 48px) clamp(56px, 6vw, 96px);
 }
 .chapter-inner {
   width: 100%;
@@ -339,9 +358,126 @@ img { display: block; object-fit: contain; }
   .vccp-card, .vccp-btn, .rail-chip { transition: none; }
 }
 
+/* ============================================================
+   ===== Layout system (2026 redesign) =====
+   Gravitas type + composed editorial grids. Square corners only,
+   no gradients, no red/green. Additive — extends, never replaces.
+   ============================================================ */
+
+/* ─── Gravitas type (§2) ────────────────────────────────── */
+.si-display {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+  font-size: var(--t-display);
+}
+.si-display--lg { font-size: var(--t-display); }
+.si-display--sm { font-size: var(--t-xl); }       /* section / divider titles */
+
+.si-bignum {
+  font-weight: 600;
+  font-size: clamp(4rem, 9vw, 9rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Highlighter coexists with uppercase display: keep italic from .hl but
+   neutralise its tight line-height so it doesn't collapse inside a display
+   headline; the parallelogram still renders behind the word. */
+.si-display .hl { line-height: inherit; }
+
+/* ─── 12-col grid + spans (§3) ──────────────────────────── */
+.si-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(16px, 2vw, 32px);
+}
+.col-3  { grid-column: span 3; }
+.col-4  { grid-column: span 4; }
+.col-5  { grid-column: span 5; }
+.col-6  { grid-column: span 6; }
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+/* ─── Asymmetric two-pane split (§3) ────────────────────── */
+.si-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+}
+.si-split--even { grid-template-columns: 1fr 1fr; }
+
+/* ─── Tight cluster stack (§3) ──────────────────────────── */
+.si-stack-tight {
+  display: grid;
+  gap: clamp(10px, 1.2vw, 16px);
+}
+
+/* ─── Big-number panel (§3) ─────────────────────────────── */
+.si-bignum-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 44px);
+  border: 1.5px solid var(--ink);
+  background: var(--paper-warm);
+  padding: clamp(20px, 2.6vw, 36px);
+}
+.si-bignum-panel--mustard { background: var(--mustard); }
+.si-bignum-panel .si-bignum { margin: 0; }
+.si-bignum-panel .vccp-source { margin-top: auto; }
+
+/* ─── Data card (§3) — the deck "AI & BRAND" card ───────── */
+.si-datacard {
+  background: var(--paper-warm);
+  border: 1.5px solid var(--ink);
+  padding: clamp(18px, 2vw, 28px);
+}
+.si-datacard-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin: 0 0 14px 0;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+/* ─── Dark sections (§3) — earned navy/ink moments ──────── */
+.si-dark {
+  background: var(--navy);
+  color: var(--paper);
+}
+.si-dark--ink { background: var(--ink); }
+.si-dark .vccp-eyebrow { color: var(--paper); }
+.si-dark .vccp-source { color: rgba(255, 255, 255, 0.6); }
+.si-dark h1, .si-dark h2, .si-dark h3,
+.si-dark .vccp-card-title { color: inherit; }
+.si-dark .si-display { color: inherit; }
+
+/* ─── Prose measure (§3) — never full page width ────────── */
+.si-measure { max-width: 62ch; }
+
+/* ─── Grounded imagery (§3) — silhouette stands on edge ─── */
+.si-ground {
+  align-self: end;
+  margin-bottom: 0;
+  display: block;
+}
+
 /* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 900px) {
   .progress-rail { display: none; }
   .site-nav-title { display: none; }
   .chapter { padding-left: clamp(20px, 4vw, 72px); }
+}
+@media (max-width: 760px) {
+  .si-grid,
+  .si-split,
+  .si-split--even,
+  .si-bignum-panel { grid-template-columns: 1fr; }
+  .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-12 { grid-column: 1 / -1; }
 }

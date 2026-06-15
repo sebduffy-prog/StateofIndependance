@@ -174,7 +174,7 @@ const buildRailCard = (city) => {
 
     const cite = document.createElement('p');
     cite.className = 'research-card-cite';
-    cite.textContent = `— ${city.attribution}`;
+    cite.textContent = city.attribution;
 
     card.append(quote, cite);
   } else {
@@ -215,7 +215,7 @@ export default function init(rootEl, data) {
     btn.type = 'button';
     btn.className = 'research-marker';
     btn.setAttribute('aria-pressed', 'false');
-    btn.setAttribute('aria-label', `${city.name} — open video diary`);
+    btn.setAttribute('aria-label', `${city.name}, open video diary`);
     btn.style.left = `${(city.x / VIEW_W) * 100}%`;
     btn.style.top = `${(city.y / VIEW_H) * 100}%`;
 

@@ -7,10 +7,17 @@
  * by jump-cutting to the final state.
  *
  * Exports:
- *   horizontalBars(container, opts) -> { update, el }
- *   waffleGrid(container, opts)     -> { setValue, el }
- *   barGauge(container, opts)       -> { el }
- *   dotField(container, opts)       -> { formation, highlight, destroy, el }
+ *   horizontalBars(container, opts)  -> { update, el }
+ *   waffleGrid(container, opts)      -> { setValue, el }
+ *   barGauge(container, opts)        -> { el }
+ *   slopeChart(container, opts)      -> { el }
+ *   lollipopChart(container, opts)   -> { el }
+ *   dotPlot(container, opts)         -> { el }
+ *   proportionStrip(container, opts) -> { update, el }
+ *   radialGauge(container, opts)     -> { el }
+ *   dotField(container, opts)        -> { formation, highlight, drift,
+ *                                         setPointer, destroy, el }
+ *   clusterPoints(n, rect)           -> [{x,y}]
  *
  * Colour tokens are read from CSS custom properties so the brand sheet
  * stays the single source of truth.
@@ -31,9 +38,17 @@ const palette = () => ({
   mustardPale: cssVar('--mustard-pale', '#FFF9E2'),
   teal: cssVar('--teal', '#80E8E3'),
   tealDeep: cssVar('--teal-deep', '#00BCA5'),
+  navy: cssVar('--navy', '#101F5B'),
   ink: cssVar('--ink', '#000000'),
   paper: cssVar('--paper', '#FFFFFF'),
 });
+
+/** Resolve an accent token name to its flat fill colour. */
+const accentColour = (c, accent) => {
+  if (accent === 'teal') return c.tealDeep;
+  if (accent === 'navy') return c.navy;
+  return c.mustard;
+};
 
 const el = (tag, attrs = {}) => {
   const node = document.createElementNS(SVG_NS, tag);
@@ -373,21 +388,426 @@ export const barGauge = (container, opts) => {
   return { el: svg };
 };
 
+/* ───────────────── shared helpers for new factories ──────────────── */
+
+const SANS = () => cssVar('--font-sans', 'Inter Tight, sans-serif');
+const TAB_NUMS = 'font-variant-numeric: tabular-nums;';
+
+/** Build an SVG <text> node with house defaults; `text` sets content. */
+const textNode = (attrs, text) => {
+  const node = el('text', { 'font-family': SANS(), fill: attrs.fill || '#000', ...attrs });
+  if (text != null) node.textContent = text;
+  return node;
+};
+
+/** Run a draw fn on first view (or immediately under reduced motion). */
+const onFirstView = (node, drawAnimated, drawStatic, threshold = 0.3) => {
+  if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
+    drawStatic();
+    return;
+  }
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      drawAnimated();
+      obs.disconnect();
+    });
+  }, { threshold });
+  io.observe(node);
+};
+
+const svgRoot = (width, height, ariaLabel, maxWidthPx) => {
+  const svg = el('svg', {
+    viewBox: `0 0 ${width} ${height}`,
+    width: '100%',
+    role: 'img',
+    'aria-label': ariaLabel || 'Chart',
+    preserveAspectRatio: 'xMinYMin meet',
+  });
+  svg.style.maxWidth = maxWidthPx ? `${maxWidthPx}px` : '100%';
+  svg.style.height = 'auto';
+  return svg;
+};
+
+/* ───────────────────────── slope chart ─────────────────────────────
+ * Two-column slope / parallel-coordinates lines: each item draws a line
+ * from its `from` value (left axis) to its `to` value (right axis).
+ * Good for "less to more" or before/after movement.
+ * opts: { items:[{label, from, to}], max?, accent?, ariaLabel? }
+ * Returns { el }.
+ */
+export const slopeChart = (container, opts) => {
+  const c = palette();
+  const { items, max = 100, accent = 'mustard' } = opts;
+  const stroke = accentColour(c, accent);
+  const width = 520;
+  const padTop = 28;
+  const padBottom = 12;
+  const plotH = 220;
+  const leftX = 150;
+  const rightX = width - 150;
+  const height = padTop + plotH + padBottom;
+
+  const svg = svgRoot(width, height, opts.ariaLabel || 'Slope chart', width);
+  const yFor = (v) => padTop + plotH - (Math.min(v, max) / max) * plotH;
+
+  // axes
+  [leftX, rightX].forEach((x) => {
+    svg.append(el('line', {
+      x1: x, y1: padTop, x2: x, y2: padTop + plotH,
+      stroke: c.ink, 'stroke-width': 1, opacity: 0.4,
+    }));
+  });
+
+  const lines = [];
+  items.forEach((item) => {
+    const y1 = yFor(item.from);
+    const y2 = yFor(item.to);
+    const line = el('line', {
+      x1: leftX, y1, x2: leftX, y2: y1, // start flat, animate to y2/rightX
+      stroke, 'stroke-width': 2,
+    });
+    svg.append(line);
+    [{ x: leftX, y: y1, dx: -10, v: item.from },
+     { x: rightX, y: y2, dx: 10, v: item.to }].forEach((p, idx) => {
+      svg.append(el('circle', { cx: p.x, cy: p.y, r: 3.5, fill: stroke, stroke: c.ink, 'stroke-width': 1 }));
+      if (idx === 0) {
+        svg.append(textNode({
+          x: p.x + p.dx - 14, y: p.y, 'text-anchor': 'end',
+          'dominant-baseline': 'central', fill: c.ink, 'font-size': 12,
+        }, item.label));
+      }
+      svg.append(textNode({
+        x: p.x + p.dx, y: p.y, 'text-anchor': idx === 0 ? 'end' : 'start',
+        'dominant-baseline': 'central', fill: c.ink, 'font-size': 12,
+        'font-weight': 500, style: TAB_NUMS,
+      }, fmtPct(p.v, 0)));
+    });
+    lines.push({ line, y1, y2 });
+  });
+
+  container.append(svg);
+  const drawStatic = () => lines.forEach((l) => {
+    l.line.setAttribute('x2', rightX);
+    l.line.setAttribute('y2', l.y2);
+  });
+  const drawAnimated = () => lines.forEach((l) => {
+    tween(0, 1, 900, (p) => {
+      l.line.setAttribute('x2', leftX + (rightX - leftX) * p);
+      l.line.setAttribute('y2', l.y1 + (l.y2 - l.y1) * p);
+    });
+  });
+  onFirstView(svg, drawAnimated, drawStatic, 0.25);
+
+  return { el: svg };
+};
+
+/* ───────────────────────── lollipop chart ──────────────────────────
+ * Stem + dot per item (lighter than a full bar).
+ * opts: { items:[{id?, label, pct}], max?, accent?, highlightId?, ariaLabel? }
+ * Returns { el }.
+ */
+export const lollipopChart = (container, opts) => {
+  const c = palette();
+  const { items, max = 100, accent = 'mustard', highlightId = null } = opts;
+  const dotColour = accentColour(c, accent);
+  const width = 720;
+  const rowH = 38;
+  const labelWidth = 200;
+  const valueX = labelWidth + 12;
+  const rightPad = 56;
+  const trackW = width - valueX - rightPad;
+  const height = items.length * rowH;
+
+  const svg = svgRoot(width, height, opts.ariaLabel || 'Lollipop chart');
+  const xFor = (pct) => valueX + (Math.min(pct, max) / max) * trackW;
+  const rows = [];
+
+  items.forEach((item, index) => {
+    const cy = index * rowH + rowH / 2;
+    const isHi = highlightId && item.id === highlightId;
+    const label = textNode({
+      x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
+      fill: c.ink, 'font-size': 13,
+    }, item.label);
+    const baseline = el('line', {
+      x1: valueX, y1: cy, x2: valueX + trackW, y2: cy,
+      stroke: c.ink, 'stroke-width': 1, opacity: 0.12,
+    });
+    const stem = el('line', {
+      x1: valueX, y1: cy, x2: valueX, y2: cy,
+      stroke: c.ink, 'stroke-width': 1.5,
+    });
+    const dot = el('circle', {
+      cx: valueX, cy, r: 6, fill: isHi ? c.ink : dotColour,
+      stroke: c.ink, 'stroke-width': 1.5,
+    });
+    const value = textNode({
+      x: valueX, y: cy, 'dominant-baseline': 'central', fill: c.ink,
+      'font-size': 13, 'font-weight': 500, style: TAB_NUMS,
+    }, fmtPct(0, 0));
+    svg.append(label, baseline, stem, dot, value);
+    rows.push({ stem, dot, value, cy, target: item.pct });
+  });
+
+  container.append(svg);
+  const render = (row, pct) => {
+    const x = xFor(pct);
+    row.stem.setAttribute('x2', x);
+    row.dot.setAttribute('cx', x);
+    row.value.setAttribute('x', x + 12);
+    row.value.textContent = fmtPct(pct, 0);
+  };
+  const drawStatic = () => rows.forEach((r) => render(r, r.target));
+  const drawAnimated = () => rows.forEach((r) => tween(0, r.target, 900, (v) => render(r, v)));
+  onFirstView(svg, drawAnimated, drawStatic, 0.25);
+
+  return { el: svg };
+};
+
+/* ───────────────────────── dot plot ────────────────────────────────
+ * Cleveland-style: a single shared horizontal axis with one labelled dot
+ * per item. Good for compact rankings.
+ * opts: { items:[{label, pct}], max?, accent?, ariaLabel? }
+ * Returns { el }.
+ */
+export const dotPlot = (container, opts) => {
+  const c = palette();
+  const { items, max = 100, accent = 'mustard' } = opts;
+  const dotColour = accentColour(c, accent);
+  const width = 720;
+  const rowH = 30;
+  const labelWidth = 200;
+  const axisX = labelWidth + 12;
+  const rightPad = 56;
+  const trackW = width - axisX - rightPad;
+  const topPad = 8;
+  const height = topPad + items.length * rowH + 20;
+  const axisY = topPad + items.length * rowH;
+
+  const svg = svgRoot(width, height, opts.ariaLabel || 'Dot plot');
+  const xFor = (pct) => axisX + (Math.min(pct, max) / max) * trackW;
+
+  // shared axis + gridline ticks
+  svg.append(el('line', {
+    x1: axisX, y1: axisY, x2: axisX + trackW, y2: axisY,
+    stroke: c.ink, 'stroke-width': 1, opacity: 0.4,
+  }));
+  for (let t = 0; t <= max; t += max / 4) {
+    const x = xFor(t);
+    svg.append(el('line', {
+      x1: x, y1: topPad, x2: x, y2: axisY, stroke: c.ink, 'stroke-width': 1, opacity: 0.08,
+    }));
+    svg.append(textNode({
+      x, y: axisY + 14, 'text-anchor': 'middle', fill: c.ink, 'font-size': 11,
+      opacity: 0.6, style: TAB_NUMS,
+    }, fmtPct(t, 0)));
+  }
+
+  const rows = [];
+  items.forEach((item, index) => {
+    const cy = topPad + index * rowH + rowH / 2;
+    const label = textNode({
+      x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
+      fill: c.ink, 'font-size': 13,
+    }, item.label);
+    const dot = el('circle', {
+      cx: axisX, cy, r: 6, fill: dotColour, stroke: c.ink, 'stroke-width': 1.5,
+    });
+    const value = textNode({
+      x: axisX, y: cy, 'dominant-baseline': 'central', fill: c.ink,
+      'font-size': 12, 'font-weight': 500, style: TAB_NUMS,
+    }, fmtPct(0, 0));
+    svg.append(label, dot, value);
+    rows.push({ dot, value, cy, target: item.pct });
+  });
+
+  container.append(svg);
+  const render = (row, pct) => {
+    const x = xFor(pct);
+    row.dot.setAttribute('cx', x);
+    row.value.setAttribute('x', x + 12);
+    row.value.textContent = fmtPct(pct, 0);
+  };
+  const drawStatic = () => rows.forEach((r) => render(r, r.target));
+  const drawAnimated = () => rows.forEach((r) => tween(0, r.target, 900, (v) => render(r, v)));
+  onFirstView(svg, drawAnimated, drawStatic, 0.25);
+
+  return { el: svg };
+};
+
+/* ──────────────────────── proportion strip ─────────────────────────
+ * One horizontal 100% strip split into proportional ink-separated cells
+ * with inline labels. Good for "54% trading down / 46% holding".
+ * opts: { segments:[{label, pct, accent?}], ariaLabel? }
+ * Returns { el, update(newSegments) }.
+ */
+export const proportionStrip = (container, opts) => {
+  const c = palette();
+  const width = 720;
+  const height = 88;
+  const stripY = 0;
+  const stripH = 48;
+  const svg = svgRoot(width, height, opts.ariaLabel || 'Proportion strip');
+
+  let segments = opts.segments.slice();
+  const cellsLayer = el('g', {});
+  svg.append(cellsLayer);
+  container.append(svg);
+
+  const draw = (animate) => {
+    while (cellsLayer.firstChild) cellsLayer.removeChild(cellsLayer.firstChild);
+    const totalPct = segments.reduce((sum, s) => sum + s.pct, 0) || 100;
+    let cursor = 0;
+    segments.forEach((seg, idx) => {
+      const segW = (seg.pct / totalPct) * width;
+      const x = cursor;
+      const fill = accentColour(c, seg.accent || (idx % 2 === 0 ? 'mustard' : 'teal'));
+      const rect = el('rect', {
+        x, y: stripY, width: animate ? 0 : segW, height: stripH,
+        fill, stroke: c.ink, 'stroke-width': 1.5,
+      });
+      cellsLayer.append(rect);
+      if (animate) tween(0, segW, 800, (w) => rect.setAttribute('width', w));
+
+      const labelText = textNode({
+        x: x + 6, y: stripY + stripH + 18, fill: c.ink, 'font-size': 12,
+        'font-weight': 500,
+      }, seg.label);
+      const pctText = textNode({
+        x: x + 6, y: stripY + stripH + 34, fill: c.ink, 'font-size': 12,
+        opacity: 0.7, style: TAB_NUMS,
+      }, fmtPct(seg.pct, 0));
+      cellsLayer.append(labelText, pctText);
+      cursor += segW;
+    });
+  };
+
+  onFirstView(svg, () => draw(true), () => draw(false), 0.3);
+
+  return {
+    el: svg,
+    update(newSegments) {
+      segments = newSegments.slice();
+      draw(!prefersReducedMotion());
+    },
+  };
+};
+
+/* ───────────────────────── radial gauge ────────────────────────────
+ * Flat semicircle arc gauge (square-capped strokes) for a single score —
+ * an alternative to barGauge.
+ * opts: { value, max?=10, label?, accent?='mustard', ariaLabel? }
+ * Returns { el }.
+ */
+export const radialGauge = (container, opts) => {
+  const c = palette();
+  const { value, max = 10, accent = 'mustard', label = '' } = opts;
+  const arcColour = accentColour(c, accent);
+  const width = 280;
+  const height = 170;
+  const cx = width / 2;
+  const cy = 140;
+  const r = 110;
+  const strokeW = 22;
+
+  const svg = svgRoot(width, height, opts.ariaLabel || `${value} out of ${max}`, width);
+
+  // semicircle goes from 180deg (left) to 0deg (right)
+  const pointOnArc = (frac) => {
+    const ang = Math.PI - frac * Math.PI; // 1..0 of the half-circle
+    return { x: cx + r * Math.cos(ang), y: cy - r * Math.sin(ang) };
+  };
+  const arcPath = (frac) => {
+    const start = pointOnArc(0);
+    const end = pointOnArc(Math.max(0.0001, frac));
+    const large = 0;
+    const sweep = 1;
+    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${large} ${sweep} ${end.x} ${end.y}`;
+  };
+
+  // track (full semicircle)
+  svg.append(el('path', {
+    d: arcPath(1), fill: 'none', stroke: c.ink, 'stroke-width': strokeW,
+    'stroke-linecap': 'butt', opacity: 0.12,
+  }));
+  const fillArc = el('path', {
+    d: arcPath(0.0001), fill: 'none', stroke: arcColour,
+    'stroke-width': strokeW, 'stroke-linecap': 'butt',
+  });
+  svg.append(fillArc);
+
+  const valueText = textNode({
+    x: cx, y: cy - 6, 'text-anchor': 'middle', fill: c.ink,
+    'font-size': 34, 'font-weight': 600, style: TAB_NUMS,
+  });
+  svg.append(valueText);
+  if (label) {
+    svg.append(textNode({
+      x: cx, y: cy + 16, 'text-anchor': 'middle', fill: c.ink,
+      'font-size': 12, opacity: 0.7,
+    }, label));
+  }
+
+  container.append(svg);
+  const render = (v) => {
+    fillArc.setAttribute('d', arcPath(Math.min(v, max) / max));
+    valueText.textContent = `${v.toFixed(1)}`;
+  };
+  onFirstView(
+    svg,
+    () => tween(0, value, 1100, render),
+    () => render(value),
+    0.4,
+  );
+
+  return { el: svg };
+};
+
 /* ───────────────────────── dot field ───────────────────────────────
- * Canvas-2D particle field. One dot per data point. Re-choreographs
- * between named formations by tweening each dot to a target position.
+ * Canvas-2D particle field with a lightweight physics simulation. One
+ * dot per data point. Dots spring toward soft attractor targets while
+ * mutual repulsion + velocity damping keep them well-spaced, so a
+ * formation settles into a calm, faintly-jostling cluster rather than a
+ * rigid grid.
  *
- * opts: { count, width?, height?, dotRadius?=2.2, colour?=ink,
- *         ariaLabel? }
+ * PHYSICS MODEL (per frame, normalised 0..1 space):
+ *   - Spring:    a += (target - pos) * SPRING        (soft attractor)
+ *   - Drift:     a += brownian wander * driftAmp      (ambient life)
+ *   - Cursor:    a += radial push away from pointer within CURSOR_RADIUS,
+ *                with smooth falloff (auto-tracked + setPointer())
+ *   - Repulsion: a += sum of soft push from neighbours closer than
+ *                MIN_SPACING, found via a uniform spatial grid (O(n)),
+ *                so ~300 dots stay near-overlap-free without n^2 cost.
+ *   - Integrate: vel = (vel + a) * DAMPING; pos += vel   (momentum/inertia)
+ * Velocities are clamped so the field never explodes.
+ *
+ * opts: { count, dotRadius?=2.2, ariaLabel? }
  * Returns:
- *   formation(targets)  targets: [{x,y}] in 0..1 normalised space, length<=count
- *   highlight(index, colour)  paint one dot a different colour (e.g. mustard "you")
- *   drift({ amplitude })      ambient brownian motion
+ *   formation(targets, behaviour?)  targets: [{x,y,colour?}] in 0..1,
+ *       length<=count. Dots without a target diffuse in a faint cloud.
+ *       Optional behaviour: { spring?, jostle? } tunes this formation's
+ *       attractor stiffness and ambient liveliness (backward compatible —
+ *       existing callers pass only the targets array).
+ *   highlight(index, colour)  paint one dot a different colour ("you")
+ *   drift(amplitude)          ambient brownian motion strength
+ *   setPointer(xNorm, yNorm | null)  push dots from this point; null clears
  *   destroy()
  *   el (the <canvas>)
  *
- * Reduced motion: jump-cuts to targets, no drift.
+ * Reduced motion: jump-cuts to targets, no sim, no pointer force, no drift.
+ * Performance: dpr capped at 2; rAF pauses when the canvas is off-screen
+ * (IntersectionObserver) and resumes when visible.
  */
+const DF_SPRING = 0.012;        // attractor stiffness (soft)
+const DF_DAMPING = 0.86;        // velocity retention (inertia)
+const DF_MAX_VEL = 0.018;       // per-frame speed clamp (normalised)
+const DF_MIN_SPACING = 0.045;   // desired neighbour gap (normalised)
+const DF_REPEL = 0.0009;        // repulsion strength
+const DF_CURSOR_RADIUS = 0.16;  // pointer influence radius (normalised)
+const DF_CURSOR_FORCE = 0.012;  // pointer push strength
+const DF_JOSTLE = 0.00006;      // ambient brownian magnitude per drift unit
+
 export const dotField = (container, opts) => {
   const c = palette();
   const { count, dotRadius = 2.2 } = opts;
@@ -403,11 +823,13 @@ export const dotField = (container, opts) => {
   let W = 0;
   let H = 0;
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let aspect = 1; // W/H, used so spacing reads evenly in screen space
 
   const dots = Array.from({ length: count }, () => ({
     x: Math.random(), y: Math.random(),
     tx: Math.random(), ty: Math.random(),
     vx: 0, vy: 0,
+    hasTarget: false,
     colour: c.ink,
     phase: Math.random() * Math.PI * 2,
   }));
@@ -415,52 +837,155 @@ export const dotField = (container, opts) => {
   let driftAmp = 0;
   let highlightIndex = -1;
   let highlightColour = c.mustard;
+  let springK = DF_SPRING;
+  let jostleK = DF_JOSTLE;
+  let pointer = null; // { x, y } normalised, or null
   let raf = 0;
-  let running = true;
+  let running = true;   // master switch (destroy)
+  let visible = true;   // IntersectionObserver gate
+
+  const reduced = prefersReducedMotion();
 
   const resize = () => {
     const rect = container.getBoundingClientRect();
     W = Math.max(1, rect.width);
     H = Math.max(1, rect.height);
+    aspect = W / H;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
 
-  const reduced = prefersReducedMotion();
+  // Uniform spatial grid: bucket dots into cells of ~MIN_SPACING so each
+  // dot only tests its 3x3 neighbourhood — keeps repulsion near O(n).
+  const cellSize = DF_MIN_SPACING;
+  const grid = new Map();
+  const cellKey = (cx, cy) => `${cx},${cy}`;
+
+  const applyRepulsion = () => {
+    grid.clear();
+    for (let i = 0; i < dots.length; i += 1) {
+      const d = dots[i];
+      const cx = Math.floor(d.x / cellSize);
+      const cy = Math.floor(d.y / cellSize);
+      const key = cellKey(cx, cy);
+      let bucket = grid.get(key);
+      if (!bucket) { bucket = []; grid.set(key, bucket); }
+      bucket.push(i);
+      d._cx = cx; d._cy = cy;
+    }
+    const minSq = DF_MIN_SPACING * DF_MIN_SPACING;
+    for (let i = 0; i < dots.length; i += 1) {
+      const d = dots[i];
+      for (let gx = d._cx - 1; gx <= d._cx + 1; gx += 1) {
+        for (let gy = d._cy - 1; gy <= d._cy + 1; gy += 1) {
+          const bucket = grid.get(cellKey(gx, gy));
+          if (!bucket) continue;
+          for (let b = 0; b < bucket.length; b += 1) {
+            const j = bucket[b];
+            if (j <= i) continue; // each pair once
+            const o = dots[j];
+            let dx = d.x - o.x;
+            let dy = (d.y - o.y) * aspect; // even spacing in screen space
+            const distSq = dx * dx + dy * dy;
+            if (distSq >= minSq || distSq === 0) continue;
+            const dist = Math.sqrt(distSq) || 0.0001;
+            const push = (DF_REPEL * (1 - dist / DF_MIN_SPACING)) / dist;
+            const fx = dx * push;
+            const fy = (dy / aspect) * push;
+            d.vx += fx; d.vy += fy;
+            o.vx -= fx; o.vy -= fy;
+          }
+        }
+      }
+    }
+  };
+
+  const clampVel = (d) => {
+    const sp = Math.hypot(d.vx, d.vy);
+    if (sp > DF_MAX_VEL) {
+      const s = DF_MAX_VEL / sp;
+      d.vx *= s; d.vy *= s;
+    }
+  };
+
+  const drawDot = (d, i) => {
+    const px = d.x * W;
+    const py = d.y * H;
+    const isHi = i === highlightIndex;
+    ctx.beginPath();
+    ctx.arc(px, py, isHi ? dotRadius * 2.2 : dotRadius, 0, Math.PI * 2);
+    ctx.fillStyle = isHi ? highlightColour : d.colour;
+    ctx.fill();
+    if (isHi) {
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = c.ink;
+      ctx.stroke();
+    }
+  };
 
   const frame = () => {
     if (!running) return;
+    if (!visible) { raf = requestAnimationFrame(frame); return; }
     ctx.clearRect(0, 0, W, H);
+
+    if (reduced) {
+      for (let i = 0; i < dots.length; i += 1) {
+        const d = dots[i];
+        d.x = d.tx; d.y = d.ty;
+        drawDot(d, i);
+      }
+      raf = requestAnimationFrame(frame);
+      return;
+    }
+
+    // 1. spring toward target + ambient jostle (acceleration into velocity)
     for (let i = 0; i < dots.length; i += 1) {
       const d = dots[i];
-      if (reduced) {
-        d.x = d.tx; d.y = d.ty;
-      } else {
-        // critically-damped-ish ease toward target
-        d.vx = (d.vx + (d.tx - d.x) * 0.08) * 0.82;
-        d.vy = (d.vy + (d.ty - d.y) * 0.08) * 0.82;
-        d.x += d.vx;
-        d.y += d.vy;
-        if (driftAmp > 0) {
-          d.phase += 0.01;
-          d.x += Math.sin(d.phase) * driftAmp * 0.0006;
-          d.y += Math.cos(d.phase * 1.3) * driftAmp * 0.0006;
-        }
+      d.vx += (d.tx - d.x) * springK;
+      d.vy += (d.ty - d.y) * springK;
+      if (driftAmp > 0) {
+        d.phase += 0.013;
+        d.vx += Math.sin(d.phase) * jostleK * driftAmp;
+        d.vy += Math.cos(d.phase * 1.3) * jostleK * driftAmp;
       }
-      const px = d.x * W;
-      const py = d.y * H;
-      const isHi = i === highlightIndex;
-      ctx.beginPath();
-      ctx.arc(px, py, isHi ? dotRadius * 2.2 : dotRadius, 0, Math.PI * 2);
-      ctx.fillStyle = isHi ? highlightColour : d.colour;
-      ctx.fill();
-      if (isHi) {
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = c.ink;
-        ctx.stroke();
+    }
+
+    // 2. cursor push (radial, smooth falloff)
+    if (pointer) {
+      const r2 = DF_CURSOR_RADIUS * DF_CURSOR_RADIUS;
+      for (let i = 0; i < dots.length; i += 1) {
+        const d = dots[i];
+        const dx = d.x - pointer.x;
+        const dy = (d.y - pointer.y) * aspect;
+        const distSq = dx * dx + dy * dy;
+        if (distSq >= r2 || distSq === 0) continue;
+        const dist = Math.sqrt(distSq);
+        const falloff = 1 - dist / DF_CURSOR_RADIUS;
+        const push = (DF_CURSOR_FORCE * falloff * falloff) / dist;
+        d.vx += dx * push;
+        d.vy += (dy / aspect) * push;
       }
+    }
+
+    // 3. mutual repulsion (spatial grid)
+    applyRepulsion();
+
+    // 4. integrate with damping/inertia, clamp, draw
+    for (let i = 0; i < dots.length; i += 1) {
+      const d = dots[i];
+      d.vx *= DF_DAMPING;
+      d.vy *= DF_DAMPING;
+      clampVel(d);
+      d.x += d.vx;
+      d.y += d.vy;
+      // soft walls so dots never leave the canvas
+      if (d.x < 0) { d.x = 0; d.vx *= -0.4; }
+      else if (d.x > 1) { d.x = 1; d.vx *= -0.4; }
+      if (d.y < 0) { d.y = 0; d.vy *= -0.4; }
+      else if (d.y > 1) { d.y = 1; d.vy *= -0.4; }
+      drawDot(d, i);
     }
     raf = requestAnimationFrame(frame);
   };
@@ -468,24 +993,58 @@ export const dotField = (container, opts) => {
   resize();
   const onResize = () => resize();
   window.addEventListener('resize', onResize);
+
+  // Pointer tracking on the container (auto cursor force).
+  const setPointer = (xNorm, yNorm) => {
+    if (xNorm == null || yNorm == null) { pointer = null; return; }
+    pointer = {
+      x: Math.min(1, Math.max(0, xNorm)),
+      y: Math.min(1, Math.max(0, yNorm)),
+    };
+  };
+  const onPointerMove = (e) => {
+    const rect = container.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    setPointer((e.clientX - rect.left) / rect.width, (e.clientY - rect.top) / rect.height);
+  };
+  const onPointerLeave = () => { pointer = null; };
+  if (!reduced) {
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerleave', onPointerLeave);
+  }
+
+  // Pause rAF when off-screen to save battery.
+  let io = null;
+  if (typeof IntersectionObserver !== 'undefined') {
+    io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { visible = e.isIntersecting; });
+    }, { threshold: 0 });
+    io.observe(canvas);
+  }
+
   raf = requestAnimationFrame(frame);
 
   return {
     el: canvas,
     /**
      * Assign normalised targets [{x,y,colour?}] (0..1). Dots beyond the
-     * targets list are scattered off to a faint diffuse cloud.
+     * targets list diffuse in a faint cloud. Optional second arg tunes
+     * this formation's feel: { spring?, jostle? }.
      */
-    formation(targets) {
+    formation(targets, behaviour = {}) {
+      springK = behaviour.spring != null ? behaviour.spring : DF_SPRING;
+      jostleK = behaviour.jostle != null ? behaviour.jostle : DF_JOSTLE;
       for (let i = 0; i < dots.length; i += 1) {
         const t = targets[i];
         if (t) {
           dots[i].tx = t.x;
           dots[i].ty = t.y;
+          dots[i].hasTarget = true;
           dots[i].colour = t.colour || c.ink;
         } else {
           dots[i].tx = Math.random();
           dots[i].ty = Math.random();
+          dots[i].hasTarget = false;
           dots[i].colour = 'rgba(0,0,0,0.12)';
         }
       }
@@ -495,10 +1054,14 @@ export const dotField = (container, opts) => {
       highlightColour = colour;
     },
     drift(amplitude = 1) { driftAmp = amplitude; },
+    setPointer,
     destroy() {
       running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
+      container.removeEventListener('pointermove', onPointerMove);
+      container.removeEventListener('pointerleave', onPointerLeave);
+      if (io) io.disconnect();
       canvas.remove();
     },
   };

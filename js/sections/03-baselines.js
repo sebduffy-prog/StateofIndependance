@@ -1,25 +1,45 @@
 /**
- * Chapter 03 — baselines. "The numbers you already know."
- * Four baseline moments, each a hero number + supporting chart. The first
- * moment is gated behind a guess (the house commit-then-reveal grammar):
- * the reader guesses "more careful with money" before 77 fills the waffle.
+ * Chapter 03 - baselines. "The numbers you already know."
  *
- * @param {HTMLElement} rootEl - the <section class="chapter" id="03-baselines"> element
- * @param {{survey: object, segments: object, tgi: object}} data - shared datasets
+ * Recomposed as a 2x2 board of dense .si-bignum-panel cards (not a tall
+ * hairline-divided list). Each panel pairs a huge .si-bignum with one WLV
+ * sentence and a supporting chart that fills the other side. Chart variety
+ * keeps bar reliance to a single horizontalBars (panel 4 categories):
+ *   - mood of the nation     -> lollipopChart (careful highlighted ink)
+ *   - money-saving moves      -> lollipopChart
+ *   - availability concerns   -> dotPlot (mustard-dark, a down/anxious read)
+ *   - 54 / 46 trading split   -> proportionStrip
+ *   - traded-down categories  -> horizontalBars (the one bar chart)
+ * Panel 1 stays gated behind clickToGuess (the loved interaction): the
+ * 77% number and its waffle only reveal after the reader commits a guess.
+ *
+ * @param {HTMLElement} rootEl - <section class="chapter" id="03-baselines">
+ * @param {{survey: object, segments: object, tgi: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
-import { horizontalBars, waffleGrid } from '../lib/charts.js';
+import {
+  horizontalBars,
+  waffleGrid,
+  lollipopChart,
+  dotPlot,
+  proportionStrip,
+} from '../lib/charts.js';
 import { clickToGuess } from '../lib/interactions.js';
 
 const CAREFUL_TRUE_VALUE = 77.3;
 const CAREFUL_WAFFLE_FILL = 77;
 const TRADING_DOWN_PCT = 54;
+const HOLDING_PCT = 46;
+const PANEL_LABEL_WIDTH = 210;
 
 const setSource = (rootEl, selector, text) => {
   const node = rootEl.querySelector(selector);
   if (node && text) node.textContent = `Source: ${text}`;
 };
+
+const mapItems = (items) =>
+  items.map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
 
 export default function init(rootEl, data) {
   const { survey } = data || {};
@@ -34,26 +54,25 @@ export default function init(rootEl, data) {
 
   observeReveals(rootEl);
 
-  // Moment 1 — guess gates both the hero count-up and the 77/100 waffle.
-  const heroOne = rootEl.querySelector('#bl-1-title .bl-stat-value');
+  // Panel 1 - the guess gates both the hero count-up and the 77/100 waffle.
+  const heroOne = rootEl.querySelector('[data-bl-num1]');
   const guessHost = rootEl.querySelector('[data-guess-1]');
   const waffleHost = rootEl.querySelector('[data-waffle-1]');
   let carefulRevealed = false;
 
-  if (heroOne) heroOne.textContent = '—';
+  if (heroOne) heroOne.textContent = '00%';
 
   const revealCareful = () => {
     if (carefulRevealed) return;
     carefulRevealed = true;
-    if (heroOne) {
-      heroOne.removeAttribute('data-count-to');
-      countUp(heroOne, { to: CAREFUL_WAFFLE_FILL, suffix: '%' });
-    }
+    if (heroOne) countUp(heroOne, { to: CAREFUL_WAFFLE_FILL, suffix: '%' });
     if (waffleHost) {
       waffleHost.hidden = false;
       waffleGrid(waffleHost, {
         value: CAREFUL_WAFFLE_FILL,
         accent: 'mustard',
+        square: 18,
+        gap: 4,
         ariaLabel: `${CAREFUL_WAFFLE_FILL} in 100 UK adults are more careful with money`,
       });
     }
@@ -62,66 +81,72 @@ export default function init(rootEl, data) {
   if (guessHost) {
     clickToGuess(guessHost, {
       trueValue: CAREFUL_TRUE_VALUE,
-      label: 'More careful with money than 5 years ago',
-      prompt: 'Before we show you — what share do you think?',
+      label: 'More careful with money than five years ago',
+      prompt: 'Before we show you, what share do you think?',
       onReveal: revealCareful,
     });
   } else {
     revealCareful();
   }
 
-  // The other three hero numbers count up declaratively on scroll-in.
+  // Panels 2 to 4 - hero numbers count up declaratively on scroll-in.
   observeCounters(rootEl);
 
-  // Moment 1 chart — mood of the nation (% agree, 6 items, careful highlighted).
+  // Panel 1 chart - mood of the nation as a lollipop, careful highlighted.
   const moodHost = rootEl.querySelector('[data-bars-mood]');
   if (moodHost && moodOfNation) {
-    horizontalBars(moodHost, {
-      items: moodOfNation.items.map((i) => ({ id: i.id, label: i.label, pct: i.pct })),
-      decimals: 1,
+    lollipopChart(moodHost, {
+      items: mapItems(moodOfNation.items),
       highlightId: 'careful',
-      labelWidth: 280,
+      accent: 'mustard',
       ariaLabel: 'Mood of the nation, percentage who agree with each statement',
     });
     setSource(rootEl, '[data-source-mood]', moodOfNation.source);
   }
 
-  // Moment 2 chart — money-saving moves (4 items).
-  const moneyHost = rootEl.querySelector('[data-bars-money]');
+  // Panel 2 chart - money-saving moves as a lollipop.
+  const moneyHost = rootEl.querySelector('[data-lollipop-money]');
   if (moneyHost && moneySavingMoves) {
-    horizontalBars(moneyHost, {
-      items: moneySavingMoves.items.map((i) => ({ id: i.id, label: i.label, pct: i.pct })),
-      decimals: 1,
-      labelWidth: 280,
+    lollipopChart(moneyHost, {
+      items: mapItems(moneySavingMoves.items),
+      accent: 'mustard',
       ariaLabel: 'Money-saving moves taken in the last three months',
     });
     setSource(rootEl, '[data-source-money]', moneySavingMoves.source);
   }
 
-  // Moment 3 chart — availability concerns (4 items).
-  const availabilityHost = rootEl.querySelector('[data-bars-availability]');
+  // Panel 3 chart - availability concerns as a dot plot (down / anxious read).
+  const availabilityHost = rootEl.querySelector('[data-dotplot-availability]');
   if (availabilityHost && availabilityConcerns) {
-    horizontalBars(availabilityHost, {
-      items: availabilityConcerns.items.map((i) => ({ id: i.id, label: i.label, pct: i.pct })),
-      decimals: 1,
-      labelWidth: 240,
+    dotPlot(availabilityHost, {
+      items: mapItems(availabilityConcerns.items),
+      accent: 'mustard',
       ariaLabel: 'What Britain is anxious about in the coming months',
     });
     setSource(rootEl, '[data-source-availability]', availabilityConcerns.source);
   }
 
-  // Moment 4 chart — trading down by category (8 items) + 54/46 split bar.
+  // Panel 4 - the 54 / 46 split as a proportion strip.
+  const stripHost = rootEl.querySelector('[data-strip-trading]');
+  if (stripHost) {
+    proportionStrip(stripHost, {
+      segments: [
+        { label: 'Trading down', pct: TRADING_DOWN_PCT, accent: 'mustard' },
+        { label: 'Holding their basket', pct: HOLDING_PCT, accent: 'teal' },
+      ],
+      ariaLabel: '54% trading down on groceries, 46% holding their basket',
+    });
+  }
+
+  // Panel 4 chart - the one bar chart: traded-down categories ranked.
   const tradingHost = rootEl.querySelector('[data-bars-trading]');
   if (tradingHost && tradingDownByCategory) {
     horizontalBars(tradingHost, {
-      items: tradingDownByCategory.items.map((i) => ({ id: i.id, label: i.label, pct: i.pct })),
-      decimals: 1,
-      labelWidth: 200,
+      items: mapItems(tradingDownByCategory.items),
+      decimals: 0,
+      labelWidth: PANEL_LABEL_WIDTH,
       ariaLabel: 'Categories where Britain has traded down in the last 12 months',
     });
     setSource(rootEl, '[data-source-trading]', tradingDownByCategory.source);
   }
-
-  const splitFill = rootEl.querySelector('[data-split-fill]');
-  if (splitFill) splitFill.style.width = `${TRADING_DOWN_PCT}%`;
 }

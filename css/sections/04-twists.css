@@ -1,6 +1,8 @@
-/* Chapter 04 — twists (paper surface, mustard-pale editorial moments).
-   Scope EVERY rule with #\30 4-twists. Square corners, no gradients,
-   one highlighter per headline, tabular numbers, reduced-motion safe. */
+/* Chapter 04 — twists. Three exhibits, one EARNED DARK (navy) moment for
+   the trust paradox, a faint bear-silhouette watermark behind the intro,
+   composed on .si-grid for density. Scope EVERY rule with #\30 4-twists.
+   Square corners, no gradients, one highlighter per headline, tabular
+   numbers, up=teal-deep / down=mustard-dark, reduced-motion safe. */
 
 #\30 4-twists {
   display: block;            /* override flex-centre: this chapter flows tall */
@@ -9,30 +11,45 @@
 #\30 4-twists .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(56px, 8vh, 104px);
+  gap: clamp(48px, 7vh, 88px);
 }
 
-/* ─── Chapter header ─────────────────────────────────────── */
-#\30 4-twists .tw-head { max-width: 64ch; }
+/* ─── Chapter header + bear-silhouette stamp watermark ───── */
+#\30 4-twists .tw-head {
+  position: relative;
+  max-width: 68ch;
+  padding-top: clamp(8px, 2vw, 24px);
+}
+#\30 4-twists .tw-bear-stamp {
+  position: absolute;
+  top: 50%;
+  right: clamp(-32px, -2vw, 0px);
+  transform: translateY(-50%);
+  width: clamp(220px, 30vw, 420px);
+  height: clamp(220px, 30vw, 420px);
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: contain;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+#\30 4-twists .tw-head > :not(.tw-bear-stamp) { position: relative; z-index: 1; }
 #\30 4-twists .tw-title {
-  font-size: var(--t-xl);
-  font-weight: 500;
-  line-height: 1.04;
-  margin: 0 0 18px 0;
+  margin: 10px 0 16px 0;
 }
 #\30 4-twists .tw-standfirst {
   font-size: var(--t-md);
   line-height: 1.5;
   color: var(--ink-soft);
   margin: 0;
-  max-width: 58ch;
 }
 
 /* ─── Exhibit shell ──────────────────────────────────────── */
 #\30 4-twists .tw-exhibit {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding-top: clamp(28px, 4vh, 48px);
 }
@@ -44,6 +61,7 @@
   text-transform: uppercase;
   font-weight: 600;
   background: var(--mustard);
+  color: var(--ink);
   border: 1px solid var(--ink);
   padding: 4px 8px;
   margin-bottom: 12px;
@@ -59,7 +77,6 @@
   line-height: 1.55;
   color: var(--ink-soft);
   margin: 0;
-  max-width: 60ch;
 }
 #\30 4-twists .tw-truth-cap {
   font-size: var(--t-xs);
@@ -69,33 +86,31 @@
 }
 #\30 4-twists .tw-bars { width: 100%; }
 
-/* ─── (a) Trust paradox ──────────────────────────────────── */
-#\30 4-twists .tw-trust-grid {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
-  gap: clamp(24px, 4vw, 56px);
-  align-items: start;
+/* ─── (a) Trust paradox — EARNED DARK (navy) ground ──────── */
+#\30 4-twists .tw-exhibit--dark {
+  border-top: none;
+  padding: clamp(28px, 4vw, 56px);
+  margin: 0 calc(-1 * clamp(0px, 2vw, 24px));
 }
-#\30 4-twists .tw-truth[hidden] { display: none; }
-#\30 4-twists .tw-truth {
-  margin: 0;
-  background: var(--mustard-pale);
-  border: 1px solid var(--ink);
-  padding: 20px 22px 22px;
+/* Eyebrow / lede / sources flip to paper-on-navy via .si-dark, but the
+   muted ink-soft body colour must lift for legibility on the dark ground. */
+#\30 4-twists .tw-exhibit--dark .tw-lede,
+#\30 4-twists .tw-exhibit--dark .tw-truth-cap {
+  color: rgba(255, 255, 255, 0.78);
 }
-#\30 4-twists .tw-spread {
-  font-size: var(--t-sm);
-  line-height: 1.5;
-  margin: 16px 0 0 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.18);
-  padding-top: 14px;
+#\30 4-twists .tw-exhibit--dark .tw-num {
+  background: var(--mustard);
+  border-color: var(--mustard);
 }
-#\30 4-twists .tw-spread strong { font-weight: 500; }
+/* The highlighter parallelogram still reads on navy (mustard-light fill). */
 
-/* dragRank library hooks (it ships behaviour, not styling) */
+#\30 4-twists .tw-trust-grid { align-items: start; }
+#\30 4-twists .tw-paradox-grid { align-items: stretch; margin-top: 4px; }
+
+/* dragRank tiles read as paper cards on the navy ground */
 #\30 4-twists .rank-help {
   font-size: var(--t-xs);
-  color: var(--ink-soft);
+  color: rgba(255, 255, 255, 0.7);
   margin: 0 0 14px 0;
 }
 #\30 4-twists .rank-list {
@@ -112,13 +127,14 @@
   align-items: center;
   gap: 10px;
   background: var(--paper);
+  color: var(--ink);
   border: 1px solid var(--ink);
   padding: 12px 14px;
   cursor: grab;
   font-size: var(--t-sm);
 }
 #\30 4-twists .rank-item:focus-visible {
-  outline: 3px solid var(--mustard-dark);
+  outline: 3px solid var(--mustard);
   outline-offset: 2px;
 }
 #\30 4-twists .rank-item.is-dragging { opacity: 0.5; }
@@ -135,13 +151,32 @@
 }
 #\30 4-twists .rank-submit { margin-top: 16px; }
 
-/* The paradox flip card */
-#\30 4-twists .tw-paradox { perspective: 1400px; }
+/* The revealed bars + spread sit on a paper card so the chart's ink
+   labels and tracks stay legible against the navy section. */
+#\30 4-twists .tw-truth[hidden] { display: none; }
+#\30 4-twists .tw-truth {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 20px 22px 22px;
+}
+#\30 4-twists .tw-spread {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 16px 0 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.18);
+  padding-top: 14px;
+}
+#\30 4-twists .tw-spread strong { font-weight: 600; }
+
+/* The paradox flip card (paper-on-navy, square corners) */
+#\30 4-twists .tw-paradox { perspective: 1400px; display: flex; }
 #\30 4-twists .tw-flip {
   position: relative;
   display: block;
   width: 100%;
-  max-width: 520px;
   min-height: 240px;
   background: none;
   border: none;
@@ -157,7 +192,7 @@
   top: -22px;
   left: 0;
   font-size: var(--t-xs);
-  color: var(--ink-soft);
+  color: rgba(255, 255, 255, 0.7);
   letter-spacing: 0.02em;
 }
 #\30 4-twists .tw-flip-face {
@@ -167,14 +202,17 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  justify-content: center;
   border: 1.5px solid var(--ink);
   padding: 22px 24px 24px;
+  color: var(--ink);
 }
-#\30 4-twists .tw-flip-front { background: var(--mustard-pale); }
+#\30 4-twists .tw-flip-front { background: var(--mustard); }
 #\30 4-twists .tw-flip-back {
   background: var(--paper);
   transform: rotateY(180deg);
 }
+#\30 4-twists .tw-flip-face .vccp-stat-label { color: var(--ink-soft); }
 #\30 4-twists .tw-flip-stat {
   display: flex;
   align-items: baseline;
@@ -183,8 +221,8 @@
   font-variant-numeric: tabular-nums;
 }
 #\30 4-twists .tw-flip-big {
-  font-size: 3.2rem;
-  font-weight: 500;
+  font-size: 3.4rem;
+  font-weight: 600;
   line-height: 1;
 }
 #\30 4-twists .tw-flip-unit { font-size: 1.2rem; font-weight: 500; color: var(--ink-soft); }
@@ -193,52 +231,53 @@
   line-height: 1.45;
   color: var(--ink-soft);
   margin-top: 4px;
+  max-width: 40ch;
 }
-#\30 4-twists .tw-gauge-host { display: block; margin-top: auto; padding-top: 10px; }
+
+#\30 4-twists .tw-exhibit--dark .vccp-source { color: rgba(255, 255, 255, 0.6); }
 
 /* ─── (b) Protected joy ──────────────────────────────────── */
-#\30 4-twists .tw-joy-grid {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.7fr) minmax(320px, 1.3fr);
-  gap: clamp(24px, 4vw, 56px);
-  align-items: start;
-}
+#\30 4-twists .tw-joy-grid { align-items: start; }
 #\30 4-twists .tw-joy-hero {
-  background: var(--mustard-pale);
-  border: 1.5px solid var(--ink);
-  padding: 24px 26px 28px;
+  display: flex;
+  flex-direction: column;
 }
 #\30 4-twists .tw-joy-big {
   display: block;
   margin: 10px 0 8px;
   font-size: clamp(3.4rem, 7vw, 5rem);
-  font-weight: 500;
-  line-height: 0.95;
-  font-variant-numeric: tabular-nums;
+  line-height: 0.9;
 }
 #\30 4-twists .tw-joy-sub {
   display: block;
   font-size: var(--t-sm);
   line-height: 1.45;
   color: var(--ink-soft);
-  max-width: 24ch;
+  max-width: 26ch;
+}
+#\30 4-twists .tw-ringfence-strip { margin: 18px 0 6px; }
+#\30 4-twists .tw-ringfence-cap {
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  margin: 0;
 }
 #\30 4-twists .tw-joy-bars { margin: 0; }
-#\30 4-twists .tw-ringfence { /* the ink frame rect injected around holidays */ }
+#\30 4-twists .tw-lolli { width: 100%; }
 
 /* ─── (c) AI on tap ──────────────────────────────────────── */
+#\30 4-twists .tw-ai-grid { align-items: start; }
 #\30 4-twists .tw-ai-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
-#\30 4-twists .tw-ai-stat .vccp-stat-value { font-size: 2.6rem; }
-#\30 4-twists .tw-ai-grid {
-  display: grid;
-  grid-template-columns: minmax(320px, 1.4fr) minmax(260px, 0.8fr);
-  gap: clamp(24px, 4vw, 56px);
-  align-items: start;
+#\30 4-twists .tw-ai-stat {
+  background: var(--mustard-pale);
+  border: 1px solid var(--ink);
+  padding: 16px 18px;
 }
+#\30 4-twists .tw-ai-stat .vccp-stat-value { font-size: 2.6rem; }
 #\30 4-twists .tw-ai-bars { margin: 0; }
 #\30 4-twists .tw-quote {
   margin: 0;
@@ -263,13 +302,8 @@
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 860px) {
-  #\30 4-twists .tw-trust-grid,
-  #\30 4-twists .tw-joy-grid,
-  #\30 4-twists .tw-ai-grid,
-  #\30 4-twists .tw-ai-stats {
-    grid-template-columns: 1fr;
-  }
-  #\30 4-twists .tw-flip { max-width: none; }
+  #\30 4-twists .tw-bear-stamp { opacity: 0.04; }
+  #\30 4-twists .tw-exhibit--dark { margin: 0; }
 }
 
 /* ─── Reduced motion: no card spin, swap faces flat ──────── */

@@ -1,42 +1,37 @@
 <div class="chapter-inner">
   <div class="cover-stage">
-    <!-- Drifting ink dot field sits behind the frame -->
+    <!-- Ambient, well-spaced ink dot field sits behind the whole composition -->
     <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
 
-    <!-- Ink frame inset ~5%, holds all the text + paper plate -->
-    <div class="cover-frame">
-      <div class="cover-copy">
-        <p class="vccp-eyebrow cover-eyebrow reveal">The Challenger Series · VCCP</p>
-        <h1 class="cover-headline reveal">
-          The state of <em class="hl" data-cover-hl>independence</em>.
-        </h1>
-        <p class="cover-standfirst reveal">
-          Britain has stopped waiting to be rescued. A nationwide study of how
-          people are taking back control — and what it demands of every brand
-          that serves them.
-        </p>
-        <a class="cover-cue" href="#02-research" aria-label="Scroll to the research chapter">
-          <span class="cover-cue-arrow" aria-hidden="true"></span>
-          <span class="cover-cue-label">Begin</span>
-        </a>
-      </div>
-
-      <!-- "This one is you" marker, positioned over the dot field -->
-      <p class="cover-you" data-cover-you>
-        <span class="cover-you-dot" aria-hidden="true"></span>
-        This one is you — the 1,505th respondent.
+    <!-- Copy sits top-left, no frame, no plate. -->
+    <div class="cover-copy si-stack-tight">
+      <p class="vccp-eyebrow cover-eyebrow reveal">The Challenger Series · VCCP</p>
+      <h1 class="cover-wordmark si-display reveal">
+        The State of <em class="hl" data-cover-hl>Independence</em>
+      </h1>
+      <p class="cover-standfirst si-measure reveal">
+        Britain has stopped waiting to be rescued. This is a nationwide study of
+        how people are taking back control, and what that demands of every brand
+        that serves them.
       </p>
-
-      <!-- Girl & Bear on a white paper plate, bottom-right inside the frame -->
-      <div class="cover-plate">
-        <img
-          class="cover-plate-img"
-          src="assets/brand/Girl_and_Bear.png"
-          alt="The VCCP girl standing up to a bear"
-          width="320" height="320"
-          loading="eager" decoding="async"
-        />
-      </div>
+      <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Scroll to the research">
+        <span class="cover-cue-arrow" aria-hidden="true"></span>
+        <span class="cover-cue-label">Begin</span>
+      </button>
     </div>
+
+    <!-- Subtle "you are the 1,505th respondent" line, quiet bottom-left. -->
+    <p class="cover-you" data-cover-you>
+      <span class="cover-you-dot" aria-hidden="true"></span>
+      You are the 1,505th respondent.
+    </p>
+
+    <!-- Girl &amp; Bear: large, grounded, standing flush on the bottom edge. -->
+    <img
+      class="cover-bear si-ground"
+      src="assets/brand/Girl_and_Bear.png"
+      alt="The VCCP girl standing up to a bear"
+      loading="eager" decoding="async"
+    />
   </div>
 </div>

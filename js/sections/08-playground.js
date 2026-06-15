@@ -1,15 +1,21 @@
 /**
  * Chapter 08 — playground. Teal research surface, the interactive explorer.
  *
- * Panel A: a metric explorer. A pillGroup of survey questions drives a
- * horizontalBars chart that MORPHS (re-sorts + regrows) on change. Where a
- * metric has per-segment splits in segments.json (segments[].metrics, keyed by
- * row label), a second pillGroup filters by segment and the chart re-renders
- * from that segment's figures. Metrics with no segment split render the
- * national figure and are labelled honestly as national-only.
+ * Panel A: a metric explorer. A pillGroup of survey questions drives a chart
+ * whose TYPE varies by metric (the question shapes the picture):
+ *   - composition splits  -> proportionStrip   (financial position)
+ *   - rankings / scores    -> dotPlot           (mood, protected spend, trust)
+ *   - magnitude rankings   -> lollipopChart      (AI tasks, brand asks, money moves)
+ *   - the one true "how big" ranking -> horizontalBars (trading down by category)
+ * A second pillGroup filters by segment where segments.json carries a per-segment
+ * split (segments[].metrics, keyed by row label); national totals come from
+ * segments.meta.metricsTotals. Survey-only blocks render the national figure and
+ * are labelled honestly. The chart re-renders on every change: horizontalBars and
+ * proportionStrip morph via their update() handle; lollipop/dotPlot have no update,
+ * so the container is cleared and the factory re-runs.
  *
  * Panel B: TGI media index. A pillGroup picks a segment; that segment's
- * tgi.media[] renders as INDEX bars (not %) with a reference marker at 100.
+ * tgi.media[] renders as INDEX bars (not %) with a reference line at 100.
  *
  * Every number traces to data/survey.json, data/segments.json or data/tgi.json.
  * Nothing is typed by hand. Deck segment sizes (17/28/27/28) appear on chips;
@@ -19,7 +25,7 @@
  * @param {{survey: object, segments: object, tgi: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
-import { horizontalBars } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, dotPlot, proportionStrip } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 /* Deck-canonical segment sizes — always displayed, never derived. */
@@ -33,26 +39,28 @@ const SEGMENT_ORDER = [
 const TGI_INDEX_MAX = 250; // TGI bars scale to a sensible ceiling, not 100.
 const ALL_SEGMENTS = 'all';
 
-const NATIONAL_NOTE = 'National — segment split not available';
+const NATIONAL_NOTE = 'National figure. Segment split not available for this question.';
 
-/* Metric registry. Each entry is either:
+/* Metric registry. Each entry declares WHERE the data lives and WHICH chart
+ * draws it. No numbers live here — only the path into the verified data.
  *  - kind 'segment': backed by segments.json metrics[<metricKey>], keyed by
  *    row label; national total read from segments.meta.metricsTotals.
  *  - kind 'survey': a national-only block in survey.json (no segment split).
- * No numbers live here — only the path into the verified data. */
+ *  - viz: 'bars' | 'lollipop' | 'dotplot' | 'strip'. */
 const METRICS = [
-  { id: 'mindset', label: 'Mood of the nation', kind: 'segment', metricKey: 'mindsetNetAgree', decimals: 1, max: 100 },
-  { id: 'tradedDown', label: 'Trading down', kind: 'segment', metricKey: 'tradedDown12Months', decimals: 1, max: 100 },
-  { id: 'aiTasks', label: 'AI tasks', kind: 'segment', metricKey: 'aiUseByTask', decimals: 1, max: 100 },
-  { id: 'brandAsks', label: 'What people want from brands', kind: 'segment', metricKey: 'brandAsks', decimals: 1, max: 100 },
-  { id: 'moneyMoves', label: 'Money-saving moves', kind: 'survey', surveyKey: 'moneySavingMoves', decimals: 1, max: 100 },
-  { id: 'protected', label: 'Protected spend', kind: 'survey', surveyKey: 'protectedSpend', decimals: 1, max: 100 },
-  { id: 'confidence', label: 'Institutional confidence', kind: 'survey', surveyKey: 'institutionTrust', decimals: 1, max: 100 },
+  { id: 'finance', label: 'Financial position', kind: 'segment', metricKey: 'financialPosition', viz: 'strip', decimals: 1, max: 100 },
+  { id: 'mindset', label: 'Mood of the nation', kind: 'segment', metricKey: 'mindsetNetAgree', viz: 'dotplot', decimals: 1, max: 100 },
+  { id: 'tradedDown', label: 'Trading down', kind: 'segment', metricKey: 'tradedDown12Months', viz: 'bars', decimals: 1, max: 100 },
+  { id: 'aiTasks', label: 'AI tasks', kind: 'segment', metricKey: 'aiUseByTask', viz: 'lollipop', decimals: 1, max: 100 },
+  { id: 'brandAsks', label: 'What people want from brands', kind: 'segment', metricKey: 'brandAsks', viz: 'lollipop', decimals: 1, max: 100 },
+  { id: 'moneyMoves', label: 'Money-saving moves', kind: 'survey', surveyKey: 'moneySavingMoves', viz: 'lollipop', decimals: 1, max: 100 },
+  { id: 'protected', label: 'Protected spend', kind: 'survey', surveyKey: 'protectedSpend', viz: 'dotplot', decimals: 1, max: 100 },
+  { id: 'confidence', label: 'Institutional confidence', kind: 'survey', surveyKey: 'institutionTrust', viz: 'dotplot', decimals: 1, max: 100 },
 ];
 
 const NO_DATA = [{ id: 'none', label: 'No data', pct: 0 }];
 
-/* ── helpers: turn verified data into [{id,label,pct}] for the bar lib ── */
+/* ── helpers: turn verified data into [{id,label,pct}] for the chart libs ── */
 
 const toItems = (pairs) => pairs.map(([label, pct], i) => ({ id: `r${i}`, label, pct }));
 
@@ -99,7 +107,7 @@ const segmentMetricSource = (segments) =>
 
 /* ── footnotes (verbatim copy from STORY.md) ──────────────────────────── */
 
-const SURVEY_CI = 'Headline survey %: ±2.5% at 95%. Segment-level: ±4–6% by segment size.';
+const SURVEY_CI = 'Headline survey %: ±2.5% at 95%. Segment-level: ±4 to 6% by segment size.';
 
 const buildSurveySource = (baseSource) => `${baseSource} ${SURVEY_CI}`;
 
@@ -108,6 +116,43 @@ const buildTgiSource = (tgi) => {
   const detail = tgi.sourceDetail ? ` ${tgi.sourceDetail}` : '';
   const note = tgi.indexNote ? ` ${tgi.indexNote}` : '';
   return `${base}.${detail}${note}`;
+};
+
+/* ── chart dispatch ───────────────────────────────────────────────────
+ * Returns a uniform handle { redraw(items) } so the explorer never cares
+ * which factory it is driving. horizontalBars / proportionStrip morph in
+ * place via their own update(); lollipop / dotPlot have no update(), so we
+ * clear the host and re-run the factory (a fresh first-view animation). */
+const makeChart = (host, metric, items) => {
+  const safe = items.length ? items : NO_DATA;
+  const common = { accent: 'teal', decimals: metric.decimals, ariaLabel: metric.label };
+
+  if (metric.viz === 'bars') {
+    const chart = horizontalBars(host, { items: safe, max: metric.max, labelWidth: 200, ...common });
+    return { redraw: (next) => chart.update(next.length ? next : NO_DATA, { resort: true }) };
+  }
+
+  if (metric.viz === 'strip') {
+    const toSegments = (rows) => rows.map((r, i) => ({
+      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'teal' : 'mustard',
+    }));
+    const chart = proportionStrip(host, {
+      segments: toSegments(safe),
+      ariaLabel: `${metric.label}, proportions across the population`,
+    });
+    return { redraw: (next) => chart.update(toSegments(next.length ? next : NO_DATA)) };
+  }
+
+  // lollipop + dotplot: no update() handle, so re-render into the host.
+  const factory = metric.viz === 'lollipop' ? lollipopChart : dotPlot;
+  const draw = (rows) => factory(host, { items: rows.length ? rows : NO_DATA, max: metric.max, ...common });
+  draw(safe);
+  return {
+    redraw: (next) => {
+      host.replaceChildren();
+      draw(next);
+    },
+  };
 };
 
 /* ── Panel A: metric explorer ─────────────────────────────────────────── */
@@ -122,6 +167,8 @@ const initPanelA = (rootEl, survey, segments) => {
 
   let currentMetric = METRICS[0];
   let currentSegment = ALL_SEGMENTS;
+  let chart = null;
+  let chartViz = null; // the viz the live chart was built for
 
   // Resolve items + source + an honest view-note for the current selection.
   const resolveView = () => {
@@ -140,7 +187,7 @@ const initPanelA = (rootEl, survey, segments) => {
     return {
       items: oneSegmentItems(segments, currentMetric, currentSegment),
       source: buildSurveySource(segmentMetricSource(segments)),
-      note: `${seg.label} only — ${seg.sharePct}% of the nation.`,
+      note: `${seg.label} only. ${seg.sharePct}% of the nation.`,
     };
   };
 
@@ -149,20 +196,23 @@ const initPanelA = (rootEl, survey, segments) => {
     if (noteEl) noteEl.textContent = view.note;
   };
 
+  // Build (or rebuild) the chart for the current metric's viz type.
+  const buildChart = (view) => {
+    chartHost.replaceChildren();
+    chart = makeChart(chartHost, currentMetric, view.items);
+    chartViz = currentMetric.viz;
+  };
+
   const first = resolveView();
-  const chart = horizontalBars(chartHost, {
-    items: first.items.length ? first.items : NO_DATA,
-    max: currentMetric.max,
-    accent: 'teal',
-    decimals: currentMetric.decimals,
-    labelWidth: 220,
-    ariaLabel: 'Survey responses by question and segment',
-  });
+  buildChart(first);
   paintMeta(first);
 
+  // Same viz across the change -> morph/redraw. Different viz (new metric of a
+  // different chart type) -> build a fresh chart of the right kind.
   const render = () => {
     const view = resolveView();
-    chart.update(view.items.length ? view.items : NO_DATA, { resort: true });
+    if (chartViz === currentMetric.viz && chart) chart.redraw(view.items);
+    else buildChart(view);
     paintMeta(view);
   };
 
@@ -212,10 +262,13 @@ const initPanelA = (rootEl, survey, segments) => {
 
 const tgiItems = (tgi, segmentId) => {
   const rows = tgi.segments?.[segmentId]?.media || [];
+  // id is the label (stable + unique per title). horizontalBars keys its row
+  // cache by id, so distinct ids across segments rebuild the rows with the
+  // correct label text instead of leaving a stale label in a reused slot.
   return rows
     .slice()
     .sort((a, b) => b.index - a.index)
-    .map((r, i) => ({ id: `m${i}`, label: r.label, pct: r.index }));
+    .map((r) => ({ id: r.label, label: r.label, pct: r.index }));
 };
 
 const initPanelB = (rootEl, tgi) => {

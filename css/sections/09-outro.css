@@ -1,13 +1,16 @@
 /* Chapter 09 — outro.
-   Two intentional surfaces: an ink full-bleed closing body (paper-on-ink)
-   and a mustard back-cover band. Dots drift / rise behind an ink frame.
+   The closing chapter: a dark, weighty navy body that resolves into a
+   grounded mustard back-cover. The Martin Lewis quote gets deck hanging-quote
+   gravitas (display weight, highlighter on "tools"); the five moves are a
+   clickable index in the display treatment; the back-cover stands the
+   girl-and-bear flush on the mustard floor (no frame, no plate).
    Square corners, no gradients, sentence case, one .hl word, tabular nums.
    Every rule scoped to #\30 9-outro. */
 
-/* Break out of .chapter padding so both surfaces go full-bleed. */
+/* Both surfaces go full-bleed — break out of .chapter padding. */
 #\30 9-outro {
   padding: 0;
-  background: var(--ink);
+  background: var(--navy);
 }
 #\30 9-outro .chapter-inner {
   max-width: none;
@@ -15,17 +18,15 @@
   width: 100%;
 }
 
-/* ─── Ink closing surface ────────────────────────────────── */
+/* ─── Dark closing surface (navy) ────────────────────────── */
 #\30 9-outro .outro-dark {
   position: relative;
   width: 100%;
-  background: var(--ink);
-  color: var(--paper);
   overflow: hidden;
-  padding: clamp(48px, 7vh, 96px) 0;
+  padding: clamp(40px, 6vh, 88px) clamp(20px, 5vw, 88px);
 }
 
-/* Dot field layer (behind the frame). */
+/* DotField layer behind the frame; calm, paper-coloured, drifting upward. */
 #\30 9-outro .outro-dots {
   position: absolute;
   inset: 0;
@@ -39,67 +40,68 @@
   height: 100%;
 }
 
-/* Ink frame inset, holding all the copy above the dots. */
+/* The composed frame: dense grid of head / quote / recap / foot. */
 #\30 9-outro .outro-frame {
   position: relative;
   z-index: 1;
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
-  margin: 0 clamp(16px, 5vw, 80px);
-  padding: clamp(28px, 5vw, 72px);
   display: grid;
-  gap: clamp(32px, 5vh, 64px);
-  background: transparent;
+  gap: clamp(28px, 4vh, 56px);
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
-/* ─── Headline + standfirst ──────────────────────────────── */
-#\30 9-outro .outro-head {
-  max-width: 60ch;
-}
+/* ─── Kicker + standfirst ────────────────────────────────── */
 #\30 9-outro .outro-eyebrow {
-  margin: 0 0 18px 0;
-  color: rgba(255, 255, 255, 0.7);
-}
-#\30 9-outro .outro-headline {
-  font-size: clamp(2.4rem, 6vw, 5rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  margin: 0 0 22px 0;
-  color: var(--paper);
-}
-/* On the dark surface the mustard-light highlighter still reads; force the
-   highlighted word's text to ink so it stays legible on the light fill. */
-#\30 9-outro .outro-headline .hl {
-  color: var(--ink);
+  margin: 0;
+  color: var(--mustard);
 }
 #\30 9-outro .outro-standfirst {
-  font-size: var(--t-md);
-  line-height: 1.5;
-  max-width: 54ch;
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.32;
   margin: 0;
-  color: rgba(255, 255, 255, 0.86);
+  color: var(--paper);
 }
 
-/* ─── Hero quote card ────────────────────────────────────── */
+/* ─── Hero quote, deck hanging-quote gravitas ────────────── */
 #\30 9-outro .outro-quote {
+  position: relative;
   margin: 0;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  padding: clamp(24px, 3.4vw, 44px);
-  max-width: 64ch;
+  padding-left: clamp(40px, 6vw, 96px);
+}
+/* The hanging quotation mark — oversized, mustard, set into the left margin. */
+#\30 9-outro .outro-quote-mark {
+  position: absolute;
+  left: -0.04em;
+  top: -0.18em;
+  font-size: clamp(5rem, 13vw, 13rem);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--mustard);
+  opacity: 0.85;
+  pointer-events: none;
 }
 #\30 9-outro .outro-quote-text {
-  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
-  font-weight: 500;
-  line-height: 1.22;
-  letter-spacing: -0.01em;
-  margin: 0 0 18px 0;
+  /* si-display gives uppercase + weight + tight leading; size from --t-xl. */
+  margin: 0 0 clamp(20px, 2.6vw, 36px) 0;
   color: var(--paper);
-  text-wrap: balance;
+  text-transform: none;        /* a spoken quote reads better in sentence case */
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  max-width: 18ch;
+}
+/* The highlighter must read on the dark ground: keep the mustard-light fill
+   (from .hl::before) and force the highlighted word's text to ink. */
+#\30 9-outro .outro-quote-text .hl {
+  color: var(--ink);
+  line-height: inherit;
 }
 #\30 9-outro .outro-quote-cite {
   font-size: var(--t-sm);
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 22px 0;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 clamp(16px, 2vw, 26px) 0;
+  font-variant-numeric: tabular-nums;
 }
 #\30 9-outro .outro-motif {
   display: inline-block;
@@ -114,22 +116,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Five-move recap index ──────────────────────────────── */
+/* ─── Five-move recap index (display treatment) ──────────── */
 #\30 9-outro .outro-recap-label {
   font-size: var(--t-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.6);
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
 }
 #\30 9-outro .outro-recap-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 0;
-  max-width: 70ch;
-  counter-reset: none;
 }
 #\30 9-outro .outro-recap-list > li {
   border-top: 1px solid rgba(255, 255, 255, 0.18);
@@ -140,23 +138,24 @@
 #\30 9-outro .outro-recap-link {
   display: flex;
   align-items: baseline;
-  gap: clamp(14px, 2vw, 28px);
-  padding: 16px 8px;
+  gap: clamp(16px, 2.4vw, 36px);
+  padding: clamp(12px, 1.6vw, 20px) 6px;
   text-decoration: none;
   color: var(--paper);
-  transition: background-color 0.16s ease, padding-left 0.16s ease;
+  transition: background-color 0.16s ease, padding-left 0.16s ease, color 0.16s ease;
 }
 #\30 9-outro .outro-recap-num {
   flex: 0 0 auto;
-  font-size: var(--t-sm);
+  font-size: clamp(1.4rem, 2.4vw, 2.4rem);
   font-weight: 600;
+  line-height: 1;
   color: var(--mustard);
   font-variant-numeric: tabular-nums;
 }
 #\30 9-outro .outro-recap-text {
-  font-size: clamp(1.1rem, 1.9vw, 1.5rem);
-  font-weight: 500;
-  line-height: 1.2;
+  /* si-display: uppercase, weight 600 — the move titles command the line. */
+  font-size: clamp(1.3rem, 2.6vw, 2.6rem);
+  line-height: 0.96;
 }
 #\30 9-outro .outro-recap-link:hover,
 #\30 9-outro .outro-recap-link:focus-visible {
@@ -164,16 +163,20 @@
   padding-left: 16px;
   outline: none;
 }
+#\30 9-outro .outro-recap-link:hover .outro-recap-text,
+#\30 9-outro .outro-recap-link:focus-visible .outro-recap-text {
+  color: var(--mustard);
+}
 #\30 9-outro .outro-recap-link:focus-visible {
   outline: 2px solid var(--mustard);
   outline-offset: -2px;
 }
 
-/* ─── Footer: credits + CTA ──────────────────────────────── */
+/* ─── Foot: credits + CTA, side by side ──────────────────── */
 #\30 9-outro .outro-foot {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: clamp(24px, 4vw, 56px);
+  gap: clamp(28px, 4vw, 64px);
   align-items: start;
 }
 #\30 9-outro .outro-credits-label,
@@ -207,7 +210,7 @@
   color: rgba(255, 255, 255, 0.66);
 }
 
-/* CTA card — light frame, square corners, no invented benefit copy. */
+/* CTA card — mustard frame, square corners, no invented benefit copy. */
 #\30 9-outro .outro-cta {
   border: 1.5px solid var(--mustard);
   padding: clamp(20px, 2.4vw, 32px);
@@ -236,35 +239,32 @@
   background: var(--mustard);
 }
 
-/* ─── Mustard back-cover band ────────────────────────────── */
+/* ─── Grounded mustard back-cover band ───────────────────────
+   Client principle: no page-edge frame, no white plate. The girl-and-bear
+   stands flush on the mustard floor (.si-ground) as a big black silhouette,
+   exactly as the cover does. Copy sits with gravitas to the left. */
 #\30 9-outro .outro-backcover {
+  position: relative;
   background: var(--mustard);
-  padding: clamp(40px, 7vh, 88px) clamp(16px, 5vw, 80px);
-}
-#\30 9-outro .outro-backcover-frame {
-  border: 1.5px solid var(--ink);
-  padding: clamp(28px, 4vw, 56px);
+  padding: clamp(48px, 8vh, 104px) clamp(20px, 5vw, 96px) 0;
   display: grid;
-  gap: 22px;
-  justify-items: start;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: clamp(24px, 4vw, 64px);
+  min-height: clamp(320px, 46vh, 560px);
+  overflow: hidden;
 }
-/* Logo always on a white paper plate — never directly on mustard. */
-#\30 9-outro .outro-plate {
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  padding: clamp(14px, 1.6vw, 22px) clamp(18px, 2vw, 28px);
-}
-#\30 9-outro .outro-plate-img {
-  display: block;
-  width: clamp(140px, 18vw, 220px);
-  height: auto; /* never distorted */
-  filter: brightness(0); /* clean black silhouette */
+#\30 9-outro .outro-backcover-copy {
+  align-self: end;
+  padding-bottom: clamp(40px, 6vh, 80px);
+  display: grid;
+  gap: 14px;
+  max-width: 32ch;
 }
 #\30 9-outro .outro-backcover-series {
   margin: 0;
-  font-size: var(--t-md);
-  font-weight: 500;
   color: var(--ink);
+  line-height: 0.94;
 }
 #\30 9-outro .outro-backcover-copyright {
   margin: 0;
@@ -272,11 +272,35 @@
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
 }
+/* The illustration: large, anchored flush to the bottom edge, clean black
+   silhouette directly on the mustard (no plate, never distorted). */
+#\30 9-outro .outro-backcover-bear {
+  align-self: end;
+  width: clamp(260px, 34vw, 560px);
+  height: auto;
+  filter: brightness(0);
+  pointer-events: none;
+}
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 820px) {
   #\30 9-outro .outro-foot {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  #\30 9-outro .outro-backcover {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: left;
+    min-height: 0;
+  }
+  #\30 9-outro .outro-backcover-copy {
+    padding-bottom: clamp(20px, 4vh, 40px);
+    justify-self: start;
+  }
+  #\30 9-outro .outro-backcover-bear {
+    width: clamp(220px, 64vw, 360px);
   }
 }
 

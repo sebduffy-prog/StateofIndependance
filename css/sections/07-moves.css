@@ -1,17 +1,16 @@
 /* Chapter 07 — moves.
-   Paper surface with mustard stage chips/bands and split-flap flip rows.
+   Five signature moves as bold, deck-style divider bands: a GIANT stage
+   number + UPPERCASE display title, then a composed grid pairing the lesson,
+   quotes and brand/stat evidence with a less -> more flip card.
+   Alternating navy .si-dark bands give the chapter rhythm.
    Every selector is prefixed with #\30 7-moves so styles never leak. */
 
 /* ─── Header ─────────────────────────────────────────────── */
 #\30 7-moves .mv-head {
-  max-width: 760px;
-  margin-bottom: 56px;
+  margin-bottom: clamp(40px, 6vw, 72px);
 }
 #\30 7-moves .mv-headline {
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
-  font-weight: 500;
-  line-height: 1.04;
-  margin: 0 0 20px;
+  margin: 0;
 }
 #\30 7-moves .mv-standfirst {
   font-size: clamp(1.05rem, 1.6vw, 1.3rem);
@@ -22,65 +21,94 @@
 
 /* ─── Bands ──────────────────────────────────────────────── */
 #\30 7-moves .mv-band {
+  padding: clamp(40px, 5.5vw, 72px) 0;
   border-top: 1.5px solid var(--ink);
-  padding: 40px 0;
 }
 #\30 7-moves .mv-band:last-child { border-bottom: 1.5px solid var(--ink); }
 
-#\30 7-moves .mv-band-head {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+/* Dark bands break the band rules out to a full navy ground for rhythm. */
+#\30 7-moves .mv-band--dark {
+  border-top: none;
+  background: var(--navy);
+  color: var(--paper);
+  padding-left: clamp(24px, 4vw, 56px);
+  padding-right: clamp(24px, 4vw, 56px);
+  /* bleed slightly wider than the text column so the navy reads as a band */
+  margin-left: calc(-1 * clamp(24px, 4vw, 56px));
+  margin-right: calc(-1 * clamp(24px, 4vw, 56px));
 }
-#\30 7-moves .mv-band-head .vccp-stage-num { margin-bottom: 0; }
+#\30 7-moves .mv-band--dark + .mv-band { border-top: 1.5px solid var(--ink); }
+
+/* ─── Band head: GIANT stage number + display title ──────── */
+#\30 7-moves .mv-band-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: clamp(20px, 3vw, 44px);
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+#\30 7-moves .mv-stage {
+  font-weight: 600;
+  font-size: clamp(4.5rem, 11vw, 10rem);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--mustard);
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+#\30 7-moves .mv-band--dark .mv-stage {
+  color: var(--mustard);
+  -webkit-text-stroke: 0;
+}
 #\30 7-moves .mv-title {
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  font-weight: 500;
-  line-height: 1.05;
   margin: 0;
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+  color: inherit;
 }
 
+/* ─── Composed band grid ─────────────────────────────────── */
 #\30 7-moves .mv-band-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 4vw, 56px);
   align-items: start;
 }
 
 /* ─── Main column ────────────────────────────────────────── */
 #\30 7-moves .mv-lesson {
-  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
-  line-height: 1.4;
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  line-height: 1.35;
   font-weight: 500;
   margin: 0 0 24px;
 }
 
 #\30 7-moves .mv-stat {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
+  align-items: center;
+  gap: 16px;
   margin: 0 0 24px;
-  padding: 14px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 16px 0;
+  border-top: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
 }
 #\30 7-moves .mv-stat-value {
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-size: clamp(2.4rem, 5.5vw, 3.6rem);
   font-weight: 600;
   line-height: 0.9;
+  font-variant-numeric: tabular-nums;
   background: var(--mustard);
-  border: 1px solid var(--ink);
-  padding: 4px 10px;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 6px 12px;
   flex: 0 0 auto;
 }
 #\30 7-moves .mv-stat-line {
   font-size: 0.98rem;
   line-height: 1.35;
-  color: var(--ink-soft);
+  opacity: 0.85;
 }
 
-/* sandwich-generation mini stats (move 04) */
+/* sandwich-generation mini stats (move 04, on navy) */
 #\30 7-moves .mv-stat-row {
   list-style: none;
   margin: 0 0 8px;
@@ -90,22 +118,24 @@
   gap: 12px;
 }
 #\30 7-moves .mv-stat-row li {
-  border: 1px solid var(--ink);
-  background: var(--mustard-pale);
-  padding: 14px 14px 12px;
+  border: 1.5px solid var(--paper);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 16px 14px 14px;
 }
 #\30 7-moves .mv-mini-value {
   display: block;
-  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
   font-weight: 600;
   line-height: 1;
   margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--mustard);
 }
 #\30 7-moves .mv-mini-label {
   display: block;
   font-size: 0.82rem;
   line-height: 1.3;
-  color: var(--ink-soft);
+  opacity: 0.82;
 }
 
 /* brand examples */
@@ -121,16 +151,18 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  opacity: 0.7;
   margin-right: 4px;
 }
 #\30 7-moves .mv-brand-chip {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.92rem;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  padding: 5px 11px;
+  background: var(--mustard);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 6px 12px;
 }
+#\30 7-moves .mv-band--dark .mv-brand-chip { border-color: var(--mustard); }
 
 /* pull-quotes */
 #\30 7-moves .mv-quote {
@@ -152,19 +184,27 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  opacity: 0.7;
 }
 
-/* ─── Flip column (less -> more) ─────────────────────────── */
-#\30 7-moves .mv-band-flip {
+/* ─── Shift card (less -> more flip table) ───────────────── */
+#\30 7-moves .mv-band-shift {
   position: sticky;
   top: 96px;
 }
+#\30 7-moves .si-datacard-title {
+  color: inherit;
+  border-bottom-color: currentColor;
+}
+#\30 7-moves .mv-band--dark .mv-band-shift {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--paper);
+}
 #\30 7-moves .mv-flip-caption {
   font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
-  margin: 0 0 12px;
+  letter-spacing: 0.02em;
+  opacity: 0.7;
+  margin: 0 0 14px;
 }
 
 /* the helper builds .flip-rows > .flip-head + .flip-row buttons */
@@ -172,9 +212,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border: 1.5px solid var(--ink);
-  background: var(--paper);
-  padding: 14px;
 }
 #\30 7-moves .flip-head {
   display: grid;
@@ -184,9 +221,9 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  opacity: 0.65;
   padding: 0 6px 6px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid currentColor;
 }
 #\30 7-moves .flip-head span:last-child { text-align: right; }
 
@@ -199,15 +236,15 @@
   text-align: left;
   font: inherit;
   cursor: pointer;
-  background: var(--paper-warm);
-  border: 1px solid var(--ink);
-  padding: 12px 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 13px 14px;
   color: var(--ink);
-  transition: background 160ms ease;
+  transition: background 160ms ease, border-color 160ms ease;
 }
 #\30 7-moves .flip-row:hover { background: var(--mustard-pale); }
 #\30 7-moves .flip-row:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--mustard);
   outline-offset: 2px;
 }
 
@@ -245,8 +282,14 @@
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
-  #\30 7-moves .mv-band-grid { grid-template-columns: 1fr; gap: 32px; }
-  #\30 7-moves .mv-band-flip { position: static; }
+  #\30 7-moves .mv-band-grid { grid-template-columns: 1fr; gap: 28px; }
+  #\30 7-moves .mv-band-shift { position: static; }
+}
+@media (max-width: 600px) {
+  #\30 7-moves .mv-band-head {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
   #\30 7-moves .mv-stat-row { grid-template-columns: 1fr; }
 }
 

@@ -1,6 +1,9 @@
-/* Chapter 03 — baselines (paper surface).
-   Every selector scoped to #\30 3-baselines. Square corners, no gradients,
-   tabular numbers, down = mustard-dark (never red/green). */
+/* Chapter 03 - baselines (paper surface).
+   Recomposed as a 2x2 board of dense .si-bignum-panel cards: huge number +
+   WLV sentence on one side, supporting chart filling the other. No more
+   hairline-divided single-column list. Every selector scoped to
+   #\30 3-baselines. Square corners, no gradients, tabular numbers,
+   down = mustard-dark (never red/green). */
 
 #\30 3-baselines {
   background: var(--paper);
@@ -9,18 +12,22 @@
 #\30 3-baselines .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(40px, 6vh, 72px);
+  gap: clamp(32px, 5vh, 56px);
 }
 
-/* ─── Header ─────────────────────────────────────────────── */
+/* ─── Header (one tight cluster, not three loose rows) ───── */
 #\30 3-baselines .bl-head {
-  max-width: 56ch;
+  max-width: 64ch;
+}
+#\30 3-baselines .bl-kicker {
+  margin: 0;
+  color: var(--ink);
 }
 #\30 3-baselines .bl-headline {
   font-size: var(--t-xl);
   font-weight: 500;
   line-height: 1.04;
-  margin: 0 0 18px 0;
+  margin: 0;
 }
 #\30 3-baselines .bl-standfirst {
   font-size: var(--t-md);
@@ -29,63 +36,97 @@
   margin: 0;
 }
 
-/* ─── Baseline bands ─────────────────────────────────────── */
-#\30 3-baselines .bl-band {
-  border-top: 1px solid var(--ink);
-  padding-top: clamp(28px, 4vh, 48px);
+/* ─── The board ──────────────────────────────────────────── */
+#\30 3-baselines .bl-board {
+  align-items: stretch;
 }
-#\30 3-baselines .bl-band-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
+#\30 3-baselines .bl-panel {
+  display: flex;
 }
 
-/* ─── Lede column (hero number + note) ───────────────────── */
+/* Each panel is a si-bignum-panel; stretch it to fill its grid cell so the
+   board reads as composed tiles, not floating cards. */
+#\30 3-baselines .bl-card {
+  width: 100%;
+  align-items: stretch;
+  /* number/sentence side a touch wider so the bignum has room to breathe */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* ─── Lede side (number + label + sentence + extras) ─────── */
+#\30 3-baselines .bl-card-lede {
+  align-content: start;
+}
 #\30 3-baselines .bl-index {
-  display: inline-block;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin-bottom: 14px;
 }
-#\30 3-baselines .bl-stat {
-  margin: 0 0 12px 0;
+#\30 3-baselines .bl-bignum-line {
+  margin: 0;
 }
-#\30 3-baselines .bl-stat-value {
+#\30 3-baselines .bl-num {
   display: block;
-  font-size: clamp(3.4rem, 7vw, 5.6rem);
-  font-weight: 500;
-  line-height: 0.92;
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
   letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
+  line-height: 0.9;
 }
-#\30 3-baselines .bl-stat-line {
+#\30 3-baselines .bl-label {
   display: block;
   margin-top: 10px;
   font-size: var(--t-md);
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.25;
   max-width: 22ch;
 }
-#\30 3-baselines .bl-stat-note {
+#\30 3-baselines .bl-sentence {
   margin: 0;
   font-size: var(--t-sm);
   line-height: 1.5;
   color: var(--ink-soft);
   max-width: 40ch;
 }
+/* On the mustard panel keep ink-soft prose legible. */
+#\30 3-baselines .si-bignum-panel--mustard .bl-sentence {
+  color: var(--ink);
+}
+#\30 3-baselines .si-bignum-panel--mustard .bl-index {
+  color: var(--ink);
+}
 
-/* ─── Guess (clickToGuess hooks) ─────────────────────────── */
+/* ─── Chart side ─────────────────────────────────────────── */
+#\30 3-baselines .bl-card-chart {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  min-width: 0;
+}
+#\30 3-baselines .bl-chart-sub {
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+#\30 3-baselines .si-bignum-panel--mustard .bl-chart-sub {
+  color: var(--ink);
+}
+#\30 3-baselines .vccp-source {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* ─── Guess (clickToGuess hooks, panel 1) ────────────────── */
 #\30 3-baselines .bl-guess {
-  margin-top: 22px;
+  margin-top: 4px;
 }
 #\30 3-baselines .guess {
-  border: 1px solid var(--ink);
-  background: var(--mustard-pale);
-  padding: 18px 18px 20px 18px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 16px;
   max-width: 420px;
 }
 #\30 3-baselines .guess-prompt {
@@ -107,7 +148,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 #\30 3-baselines .guess-range {
   flex: 1;
@@ -139,78 +180,29 @@
 
 /* ─── Waffle (revealed after the guess) ──────────────────── */
 #\30 3-baselines .bl-waffle {
-  margin-top: 22px;
-  max-width: 320px;
+  margin-top: 4px;
+  max-width: 220px;
 }
 #\30 3-baselines .bl-waffle-caption {
-  margin: 12px 0 0 0;
+  margin: 10px 0 0 0;
   font-size: 0.72rem;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
-/* ─── Chart column ───────────────────────────────────────── */
-#\30 3-baselines .bl-chart-title {
-  font-size: var(--t-md);
-  font-weight: 500;
-  line-height: 1.2;
-  margin: 0 0 4px 0;
-}
-#\30 3-baselines .bl-chart-sub {
-  font-size: var(--t-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin: 0 0 18px 0;
-}
-
-/* ─── 54 / 46 split bar (moment 4) ───────────────────────── */
-#\30 3-baselines .bl-split {
-  margin-top: 22px;
+/* ─── 54 / 46 strip (panel 4 lede) ───────────────────────── */
+#\30 3-baselines .bl-strip {
+  margin-top: 4px;
   max-width: 420px;
-}
-#\30 3-baselines .bl-split-bar {
-  display: block;
-  height: 28px;
-  border: 1px solid var(--ink);
-  background: var(--paper);
-}
-#\30 3-baselines .bl-split-fill {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--mustard-dark);
-  transition: width .9s ease;
-}
-#\30 3-baselines .bl-split-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  margin-top: 10px;
-}
-#\30 3-baselines .bl-split-key {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: var(--t-xs);
-  font-variant-numeric: tabular-nums;
-}
-#\30 3-baselines .bl-split-swatch {
-  width: 13px;
-  height: 13px;
-  border: 1px solid var(--ink);
-  background: var(--paper);
-}
-#\30 3-baselines .bl-split-swatch.is-down {
-  background: var(--mustard-dark);
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
-@media (max-width: 900px) {
-  #\30 3-baselines .bl-band-grid {
-    grid-template-columns: 1fr;
-  }
+/* Tablet: drop the board to one panel per row before the panels themselves
+   collapse, so each card keeps its internal split a while longer. */
+@media (max-width: 1100px) {
+  #\30 3-baselines .bl-panel.col-6 { grid-column: 1 / -1; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  #\30 3-baselines .bl-split-fill { transition: none; }
+/* Narrow: si-bignum-panel collapses to a single column (shared sheet rule);
+   stack number above chart. */
+@media (max-width: 760px) {
+  #\30 3-baselines .bl-card { grid-template-columns: 1fr; }
 }
