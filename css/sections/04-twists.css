@@ -1,0 +1,284 @@
+/* Chapter 04 — twists (paper surface, mustard-pale editorial moments).
+   Scope EVERY rule with #\30 4-twists. Square corners, no gradients,
+   one highlighter per headline, tabular numbers, reduced-motion safe. */
+
+#\30 4-twists {
+  display: block;            /* override flex-centre: this chapter flows tall */
+  background: var(--paper);
+}
+#\30 4-twists .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 8vh, 104px);
+}
+
+/* ─── Chapter header ─────────────────────────────────────── */
+#\30 4-twists .tw-head { max-width: 64ch; }
+#\30 4-twists .tw-title {
+  font-size: var(--t-xl);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 0 0 18px 0;
+}
+#\30 4-twists .tw-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 58ch;
+}
+
+/* ─── Exhibit shell ──────────────────────────────────────── */
+#\30 4-twists .tw-exhibit {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: clamp(28px, 4vh, 48px);
+}
+#\30 4-twists .tw-exhibit-head { max-width: 70ch; }
+#\30 4-twists .tw-num {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--mustard);
+  border: 1px solid var(--ink);
+  padding: 4px 8px;
+  margin-bottom: 12px;
+}
+#\30 4-twists .tw-exhibit-title {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0 0 10px 0;
+}
+#\30 4-twists .tw-lede {
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 60ch;
+}
+#\30 4-twists .tw-truth-cap {
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+  margin: 0 0 12px 0;
+  max-width: 56ch;
+}
+#\30 4-twists .tw-bars { width: 100%; }
+
+/* ─── (a) Trust paradox ──────────────────────────────────── */
+#\30 4-twists .tw-trust-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+#\30 4-twists .tw-truth[hidden] { display: none; }
+#\30 4-twists .tw-truth {
+  margin: 0;
+  background: var(--mustard-pale);
+  border: 1px solid var(--ink);
+  padding: 20px 22px 22px;
+}
+#\30 4-twists .tw-spread {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  margin: 16px 0 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.18);
+  padding-top: 14px;
+}
+#\30 4-twists .tw-spread strong { font-weight: 500; }
+
+/* dragRank library hooks (it ships behaviour, not styling) */
+#\30 4-twists .rank-help {
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+  margin: 0 0 14px 0;
+}
+#\30 4-twists .rank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#\30 4-twists .rank-item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 12px 14px;
+  cursor: grab;
+  font-size: var(--t-sm);
+}
+#\30 4-twists .rank-item:focus-visible {
+  outline: 3px solid var(--mustard-dark);
+  outline-offset: 2px;
+}
+#\30 4-twists .rank-item.is-dragging { opacity: 0.5; }
+#\30 4-twists .rank-pos {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+#\30 4-twists .rank-grip { color: rgba(0, 0, 0, 0.4); cursor: grab; }
+#\30 4-twists .rank-delta {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+#\30 4-twists .rank-submit { margin-top: 16px; }
+
+/* The paradox flip card */
+#\30 4-twists .tw-paradox { perspective: 1400px; }
+#\30 4-twists .tw-flip {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  min-height: 240px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+}
+#\30 4-twists .tw-flip.is-flipped { transform: rotateY(180deg); }
+#\30 4-twists .tw-flip-hint {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+#\30 4-twists .tw-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1.5px solid var(--ink);
+  padding: 22px 24px 24px;
+}
+#\30 4-twists .tw-flip-front { background: var(--mustard-pale); }
+#\30 4-twists .tw-flip-back {
+  background: var(--paper);
+  transform: rotateY(180deg);
+}
+#\30 4-twists .tw-flip-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+#\30 4-twists .tw-flip-big {
+  font-size: 3.2rem;
+  font-weight: 500;
+  line-height: 1;
+}
+#\30 4-twists .tw-flip-unit { font-size: 1.2rem; font-weight: 500; color: var(--ink-soft); }
+#\30 4-twists .tw-flip-cap {
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+#\30 4-twists .tw-gauge-host { display: block; margin-top: auto; padding-top: 10px; }
+
+/* ─── (b) Protected joy ──────────────────────────────────── */
+#\30 4-twists .tw-joy-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(320px, 1.3fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+#\30 4-twists .tw-joy-hero {
+  background: var(--mustard-pale);
+  border: 1.5px solid var(--ink);
+  padding: 24px 26px 28px;
+}
+#\30 4-twists .tw-joy-big {
+  display: block;
+  margin: 10px 0 8px;
+  font-size: clamp(3.4rem, 7vw, 5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+#\30 4-twists .tw-joy-sub {
+  display: block;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  max-width: 24ch;
+}
+#\30 4-twists .tw-joy-bars { margin: 0; }
+#\30 4-twists .tw-ringfence { /* the ink frame rect injected around holidays */ }
+
+/* ─── (c) AI on tap ──────────────────────────────────────── */
+#\30 4-twists .tw-ai-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 18px;
+}
+#\30 4-twists .tw-ai-stat .vccp-stat-value { font-size: 2.6rem; }
+#\30 4-twists .tw-ai-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.4fr) minmax(260px, 0.8fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+#\30 4-twists .tw-ai-bars { margin: 0; }
+#\30 4-twists .tw-quote {
+  margin: 0;
+  background: var(--mustard-pale);
+  border-left: 3px solid var(--mustard);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 24px 26px;
+}
+#\30 4-twists .tw-quote-text {
+  font-size: var(--t-md);
+  line-height: 1.45;
+  margin: 0 0 14px 0;
+  font-weight: 500;
+}
+#\30 4-twists .tw-quote-cap {
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 860px) {
+  #\30 4-twists .tw-trust-grid,
+  #\30 4-twists .tw-joy-grid,
+  #\30 4-twists .tw-ai-grid,
+  #\30 4-twists .tw-ai-stats {
+    grid-template-columns: 1fr;
+  }
+  #\30 4-twists .tw-flip { max-width: none; }
+}
+
+/* ─── Reduced motion: no card spin, swap faces flat ──────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 4-twists .tw-flip { transition: none; transform: none; }
+  #\30 4-twists .tw-flip.is-flipped { transform: none; }
+  #\30 4-twists .tw-flip-face { backface-visibility: visible; }
+  #\30 4-twists .tw-flip-back { transform: none; }
+  #\30 4-twists .tw-flip .tw-flip-back { opacity: 0; pointer-events: none; }
+  #\30 4-twists .tw-flip.is-flipped .tw-flip-front { opacity: 0; pointer-events: none; }
+  #\30 4-twists .tw-flip.is-flipped .tw-flip-back { opacity: 1; pointer-events: auto; }
+}

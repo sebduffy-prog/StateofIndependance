@@ -1,0 +1,307 @@
+/* Chapter 05 — segments. THE SHOWPIECE.
+   Paper surface, mustard quadrant accents. Every selector prefixed with
+   #\30 5-segments so styles never leak between chapters. */
+
+#\30 5-segments { background: var(--paper); }
+
+#\30 5-segments .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vh, 48px);
+}
+
+/* ─── Header ──────────────────────────────────────────────── */
+#\30 5-segments .seg-title {
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 0 0 14px 0;
+  max-width: 18ch;
+}
+#\30 5-segments .seg-standfirst {
+  font-size: var(--t-md, 1.125rem);
+  line-height: 1.5;
+  max-width: 60ch;
+  margin: 0 0 18px 0;
+  color: var(--ink-soft);
+}
+#\30 5-segments .seg-hinge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  font-size: var(--t-sm, 0.95rem);
+  border-top: 1px solid var(--ink);
+  padding-top: 14px;
+  max-width: 60ch;
+}
+#\30 5-segments .seg-hinge-dim {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  font-size: var(--t-xs, 0.72rem);
+}
+#\30 5-segments .seg-hinge-axis { color: var(--ink-soft); }
+#\30 5-segments .seg-hinge-x { font-weight: 600; opacity: 0.5; }
+
+/* ─── Stage: map + profile side by side ───────────────────── */
+#\30 5-segments .seg-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(24px, 3vw, 44px);
+  align-items: start;
+}
+
+/* ─── The 2×2 map ─────────────────────────────────────────── */
+#\30 5-segments .seg-map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 640px;
+  margin-inline: auto;
+  border: 1.5px solid var(--ink);
+  background: var(--mustard-pale);
+}
+
+/* dot field canvas host — explicit height via the square map */
+#\30 5-segments .seg-dotfield {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+/* ink hairline axes through the centre */
+#\30 5-segments .seg-axis {
+  position: absolute;
+  background: var(--ink);
+  z-index: 2;
+  pointer-events: none;
+}
+#\30 5-segments .seg-axis-x { left: 0; right: 0; top: 50%; height: 1px; transform: translateY(-0.5px); }
+#\30 5-segments .seg-axis-y { top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-0.5px); }
+
+#\30 5-segments .seg-axis-label {
+  position: absolute;
+  z-index: 3;
+  font-size: var(--t-xs, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--mustard-pale);
+  padding: 2px 5px;
+  pointer-events: none;
+}
+#\30 5-segments .seg-label-left   { left: 8px;  top: 50%; transform: translateY(-50%); }
+#\30 5-segments .seg-label-right  { right: 8px; top: 50%; transform: translateY(-50%); }
+#\30 5-segments .seg-label-top    { top: 8px;    left: 50%; transform: translateX(-50%); }
+#\30 5-segments .seg-label-bottom { bottom: 8px; left: 50%; transform: translateX(-50%); }
+
+/* the four quadrant buttons sit over the field */
+#\30 5-segments .seg-quads {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+#\30 5-segments .seg-quad {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2px;
+  padding: clamp(12px, 2.4vw, 22px);
+  text-align: left;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  transition: opacity .3s ease, background .25s ease;
+}
+#\30 5-segments .seg-quad[data-pos="tr"] { align-items: flex-end; text-align: right; }
+#\30 5-segments .seg-quad[data-pos="br"] { align-items: flex-end; text-align: right; justify-content: flex-end; }
+#\30 5-segments .seg-quad[data-pos="bl"] { justify-content: flex-end; }
+
+#\30 5-segments .seg-quad-name {
+  font-size: var(--t-md, 1.05rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+#\30 5-segments .seg-quad-share {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1;
+}
+#\30 5-segments .seg-quad-trio {
+  font-size: var(--t-xs, 0.72rem);
+  color: var(--ink-soft);
+  max-width: 20ch;
+}
+
+#\30 5-segments .seg-quad:hover { background: rgba(255, 201, 49, 0.22); }
+#\30 5-segments .seg-quad:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -3px;
+  background: rgba(255, 201, 49, 0.22);
+}
+#\30 5-segments .seg-quad.is-active { background: rgba(255, 201, 49, 0.3); }
+#\30 5-segments .seg-map.is-focused .seg-quad.is-dimmed { opacity: 0.32; }
+
+/* the live "you" marker */
+#\30 5-segments .seg-youtag {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  background: var(--mustard);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  pointer-events: none;
+  transition: left .6s cubic-bezier(.22,.61,.36,1), top .6s cubic-bezier(.22,.61,.36,1);
+}
+#\30 5-segments .seg-youtag.is-instant { transition: none; }
+#\30 5-segments .seg-youtag.is-landed { box-shadow: 0 2px 0 var(--ink); }
+
+#\30 5-segments .seg-maphint {
+  font-size: var(--t-sm, 0.9rem);
+  color: var(--ink-soft);
+  margin: 12px 0 0 0;
+  text-align: center;
+}
+
+/* ─── Profile rail card ───────────────────────────────────── */
+#\30 5-segments .seg-profile {
+  min-height: 1px;
+}
+#\30 5-segments .seg-profile:not(.is-open) { display: none; }
+#\30 5-segments .seg-card { outline: none; }
+#\30 5-segments .seg-prof-name {
+  font-size: var(--t-lg, 1.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 4px 0 4px 0;
+}
+#\30 5-segments .seg-prof-trio {
+  font-weight: 500;
+  margin: 0 0 14px 0;
+  color: var(--ink);
+}
+#\30 5-segments .seg-prof-quote {
+  border-left: 3px solid var(--mustard);
+  margin: 0 0 16px 0;
+  padding: 4px 0 4px 14px;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+#\30 5-segments .seg-prof-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  padding-top: 14px;
+}
+#\30 5-segments .seg-prof-row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px;
+  font-size: var(--t-sm, 0.92rem);
+  line-height: 1.4;
+}
+#\30 5-segments .seg-prof-key {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: var(--t-xs, 0.68rem);
+  color: var(--ink-soft);
+  padding-top: 2px;
+}
+#\30 5-segments .seg-prof-ai {
+  margin: 14px 0 0 0;
+  font-size: var(--t-sm, 0.92rem);
+  line-height: 1.45;
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px;
+}
+
+/* ─── Quiz ────────────────────────────────────────────────── */
+#\30 5-segments .seg-quizblock {
+  border-top: 1px solid var(--ink);
+  padding-top: clamp(24px, 4vh, 40px);
+}
+#\30 5-segments .seg-quiz-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+#\30 5-segments .seg-quiz-intro {
+  font-size: var(--t-md, 1.05rem);
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0 0 20px 0;
+}
+#\30 5-segments .seg-quiz-host { max-width: 620px; }
+#\30 5-segments .quiz-progress {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  font-size: var(--t-xs, 0.72rem);
+  color: var(--ink-soft);
+  margin: 0 0 10px 0;
+}
+#\30 5-segments .quiz-card {
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 22px 24px;
+  min-height: 120px;
+}
+#\30 5-segments .quiz-statement {
+  font-size: var(--t-md, 1.2rem);
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0 0 20px 0;
+}
+#\30 5-segments .quiz-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ─── Result ──────────────────────────────────────────────── */
+#\30 5-segments .seg-result { margin-top: 24px; max-width: 620px; }
+#\30 5-segments .seg-result-card { outline: none; }
+#\30 5-segments .seg-result-name {
+  font-size: var(--t-lg, 1.6rem);
+  font-weight: 500;
+  margin: 8px 0 4px 0;
+}
+#\30 5-segments .seg-result-trio { font-weight: 500; margin: 0 0 14px 0; }
+#\30 5-segments .seg-result-vs {
+  font-size: var(--t-sm, 0.95rem);
+  line-height: 1.5;
+  margin: 14px 0 18px 0;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  padding-top: 14px;
+}
+#\30 5-segments .seg-retake { margin: 0; }
+
+/* ─── Source ──────────────────────────────────────────────── */
+#\30 5-segments .seg-source { margin-top: 8px; }
+
+/* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #\30 5-segments .seg-stage { grid-template-columns: 1fr; }
+  #\30 5-segments .seg-quad-trio { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\30 5-segments .seg-quad,
+  #\30 5-segments .seg-youtag { transition: none; }
+}

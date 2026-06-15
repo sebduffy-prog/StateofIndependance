@@ -1,0 +1,216 @@
+/* Chapter 03 — baselines (paper surface).
+   Every selector scoped to #\30 3-baselines. Square corners, no gradients,
+   tabular numbers, down = mustard-dark (never red/green). */
+
+#\30 3-baselines {
+  background: var(--paper);
+}
+
+#\30 3-baselines .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vh, 72px);
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+#\30 3-baselines .bl-head {
+  max-width: 56ch;
+}
+#\30 3-baselines .bl-headline {
+  font-size: var(--t-xl);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 0 0 18px 0;
+}
+#\30 3-baselines .bl-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ─── Baseline bands ─────────────────────────────────────── */
+#\30 3-baselines .bl-band {
+  border-top: 1px solid var(--ink);
+  padding-top: clamp(28px, 4vh, 48px);
+}
+#\30 3-baselines .bl-band-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+/* ─── Lede column (hero number + note) ───────────────────── */
+#\30 3-baselines .bl-index {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+#\30 3-baselines .bl-stat {
+  margin: 0 0 12px 0;
+}
+#\30 3-baselines .bl-stat-value {
+  display: block;
+  font-size: clamp(3.4rem, 7vw, 5.6rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+#\30 3-baselines .bl-stat-line {
+  display: block;
+  margin-top: 10px;
+  font-size: var(--t-md);
+  font-weight: 500;
+  line-height: 1.3;
+  max-width: 22ch;
+}
+#\30 3-baselines .bl-stat-note {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 40ch;
+}
+
+/* ─── Guess (clickToGuess hooks) ─────────────────────────── */
+#\30 3-baselines .bl-guess {
+  margin-top: 22px;
+}
+#\30 3-baselines .guess {
+  border: 1px solid var(--ink);
+  background: var(--mustard-pale);
+  padding: 18px 18px 20px 18px;
+  max-width: 420px;
+}
+#\30 3-baselines .guess-prompt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 8px 0;
+}
+#\30 3-baselines .guess-label {
+  display: block;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+#\30 3-baselines .guess-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+#\30 3-baselines .guess-range {
+  flex: 1;
+  accent-color: var(--mustard-dark);
+  height: 22px;
+}
+#\30 3-baselines .guess-output {
+  min-width: 3.4ch;
+  font-size: var(--t-md);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+#\30 3-baselines .guess-reveal {
+  margin-top: 14px;
+}
+#\30 3-baselines .guess-actual {
+  margin: 0 0 4px 0;
+  font-size: var(--t-sm);
+}
+#\30 3-baselines .guess-actual strong {
+  font-variant-numeric: tabular-nums;
+}
+#\30 3-baselines .guess-delta {
+  margin: 0;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Waffle (revealed after the guess) ──────────────────── */
+#\30 3-baselines .bl-waffle {
+  margin-top: 22px;
+  max-width: 320px;
+}
+#\30 3-baselines .bl-waffle-caption {
+  margin: 12px 0 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+/* ─── Chart column ───────────────────────────────────────── */
+#\30 3-baselines .bl-chart-title {
+  font-size: var(--t-md);
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0 0 4px 0;
+}
+#\30 3-baselines .bl-chart-sub {
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 18px 0;
+}
+
+/* ─── 54 / 46 split bar (moment 4) ───────────────────────── */
+#\30 3-baselines .bl-split {
+  margin-top: 22px;
+  max-width: 420px;
+}
+#\30 3-baselines .bl-split-bar {
+  display: block;
+  height: 28px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+#\30 3-baselines .bl-split-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--mustard-dark);
+  transition: width .9s ease;
+}
+#\30 3-baselines .bl-split-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 10px;
+}
+#\30 3-baselines .bl-split-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+}
+#\30 3-baselines .bl-split-swatch {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+#\30 3-baselines .bl-split-swatch.is-down {
+  background: var(--mustard-dark);
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #\30 3-baselines .bl-band-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\30 3-baselines .bl-split-fill { transition: none; }
+}

@@ -1,0 +1,215 @@
+/* Chapter 01 — cover.
+   Full-bleed mustard cover with an ink frame inset ~5%. Drifting ink dots sit
+   behind the frame; copy + frame layer above the canvas. Square corners,
+   no gradients, sentence case, one .hl word.
+
+   NOTE ON THE PREFIX: an HTML id may start with a digit, but a CSS id selector
+   may NOT — "#\30 1-cover" is invalid and the whole rule is dropped by the parser.
+   The CSS-valid way to target id="01-cover" is the escaped numeric form
+   "#\30 1-cover" (\30 is the codepoint for "0", trailing space ends the escape),
+   which the parser reads as exactly "#\30 1-cover". Every selector below is scoped
+   to this chapter id. See the build report — the contract's literal "#\30 1-cover"
+   prefix needs this escape (or an [id="01-cover"] attribute selector) site-wide. */
+
+/* Break out of .chapter padding to go genuinely full-bleed mustard. */
+#\30 1-cover {
+  padding: 0;
+  background: var(--mustard);
+}
+#\30 1-cover .chapter-inner {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+}
+
+/* The stage fills the viewport (minus the fixed nav) and hosts both layers. */
+#\30 1-cover .cover-stage {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - var(--nav-height));
+  overflow: hidden;
+}
+
+/* ─── Dot field layer (behind the frame) ─────────────────── */
+#\30 1-cover .cover-dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+#\30 1-cover .cover-dots canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Ink frame, inset ~5% ───────────────────────────────── */
+#\30 1-cover .cover-frame {
+  position: absolute;
+  inset: 5%;
+  z-index: 1;
+  border: 1.5px solid var(--ink);
+  /* Transparent so the drifting dots read through the frame interior. */
+  background: transparent;
+  display: flex;
+  align-items: center;
+  /* Let pointer events fall through to the dot canvas, except where
+     re-enabled on interactive / readable elements below. */
+  pointer-events: none;
+  padding: clamp(28px, 5vw, 72px);
+}
+
+/* ─── Copy block ─────────────────────────────────────────── */
+#\30 1-cover .cover-copy {
+  position: relative;
+  z-index: 2;
+  max-width: min(58ch, 72%);
+  pointer-events: auto;
+}
+#\30 1-cover .cover-eyebrow {
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+#\30 1-cover .cover-headline {
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px 0;
+  color: var(--ink);
+}
+
+/* Highlighter wipe: override the shared .hl::before to start scaled to 0 on
+   the X axis (matching the -12deg skew) and wipe in when .is-wiped lands. */
+#\30 1-cover .cover-headline .hl::before {
+  transform: skewX(-12deg) scaleX(0);
+  transform-origin: 0% 50%;
+  transition: transform 0.66s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#\30 1-cover .cover-headline .hl.is-wiped::before {
+  transform: skewX(-12deg) scaleX(1);
+}
+
+#\30 1-cover .cover-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  max-width: 52ch;
+  margin: 0 0 36px 0;
+  color: var(--ink);
+}
+
+/* ─── Square scroll cue ──────────────────────────────────── */
+#\30 1-cover .cover-cue {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 14px 20px;
+  font: 600 var(--t-xs)/1 var(--font-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+#\30 1-cover .cover-cue:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 var(--ink);
+}
+#\30 1-cover .cover-cue:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+#\30 1-cover .cover-cue-arrow {
+  width: 11px;
+  height: 11px;
+  border-right: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  transform: rotate(45deg);
+  transition: transform 0.16s ease;
+}
+#\30 1-cover .cover-cue:hover .cover-cue-arrow {
+  transform: rotate(45deg) translate(2px, 2px);
+}
+
+/* ─── "This one is you" marker ───────────────────────────── */
+#\30 1-cover .cover-you {
+  position: absolute;
+  left: clamp(28px, 5vw, 72px);
+  bottom: clamp(28px, 6vw, 76px);
+  z-index: 2;
+  margin: 0;
+  max-width: 24ch;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  pointer-events: none;
+}
+#\30 1-cover .cover-you-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--mustard);
+  border: 1.2px solid var(--ink);
+  transform: translateY(1px);
+}
+
+/* ─── Girl & Bear on a white paper plate (never on mustard) ─ */
+#\30 1-cover .cover-plate {
+  position: absolute;
+  right: clamp(20px, 3vw, 48px);
+  bottom: clamp(20px, 3vw, 48px);
+  z-index: 2;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: clamp(14px, 1.6vw, 22px);
+  pointer-events: none;
+}
+#\30 1-cover .cover-plate-img {
+  display: block;
+  width: clamp(120px, 16vw, 220px);
+  height: auto;
+  /* Render the artwork as a clean black silhouette on the paper plate. */
+  filter: brightness(0);
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #\30 1-cover .cover-copy {
+    max-width: 100%;
+  }
+  #\30 1-cover .cover-plate {
+    width: 110px;
+  }
+  #\30 1-cover .cover-you {
+    max-width: 18ch;
+  }
+}
+
+@media (max-width: 600px) {
+  #\30 1-cover .cover-plate {
+    display: none;
+  }
+  #\30 1-cover .cover-you {
+    position: static;
+    margin-top: 24px;
+  }
+}
+
+/* ─── Reduced motion: highlighter already wiped, no transition ─ */
+@media (prefers-reduced-motion: reduce) {
+  #\30 1-cover .cover-headline .hl::before {
+    transition: none;
+  }
+  #\30 1-cover .cover-cue-arrow,
+  #\30 1-cover .cover-cue {
+    transition: none;
+  }
+}

@@ -1,0 +1,182 @@
+/* Chapter 08 — playground. Teal research surface (the appendix half).
+   Every selector is prefixed with #\30 8-playground so styles never leak.
+   TGI reference marker geometry: the bar lib draws a 720-wide viewBox with
+   valueX = labelWidth + 12 and trackWidth = 720 - valueX - 56. For Panel B
+   (labelWidth 230, max 250) the index-100 line falls at
+   (242 + (100/250)*422) / 720 ≈ 57.06% — hence --pg-tgi-100. */
+
+#\30 8-playground {
+  background: var(--teal);
+  --pg-tgi-100: 57.06%;
+}
+
+#\30 8-playground .pg-stage {
+  width: 100%;
+}
+
+/* ─── Intro copy ────────────────────────────────────────── */
+#\30 8-playground .pg-head {
+  max-width: 64ch;
+  margin-bottom: clamp(28px, 4vh, 48px);
+}
+#\30 8-playground .pg-headline {
+  font-size: var(--t-xl);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 12px 0 16px 0;
+}
+#\30 8-playground .pg-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* ─── Two-panel layout ──────────────────────────────────── */
+#\30 8-playground .pg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 40px);
+  align-items: start;
+}
+#\30 8-playground .pg-panel {
+  border-left: 3px solid var(--teal-deep);
+  display: flex;
+  flex-direction: column;
+}
+#\30 8-playground .pg-panel-head {
+  margin-bottom: 18px;
+}
+#\30 8-playground .pg-panel-title {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+}
+#\30 8-playground .pg-panel-sub {
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 50ch;
+}
+
+/* ─── Controls (pill groups) ────────────────────────────── */
+#\30 8-playground .pg-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+#\30 8-playground .pg-control-label {
+  display: block;
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+#\30 8-playground .pillgroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#\30 8-playground .pillgroup-chip {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 8px 12px;
+  font: 500 var(--t-xs) / 1 var(--font-sans);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+#\30 8-playground .pillgroup-chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 var(--ink);
+}
+#\30 8-playground .pillgroup-chip.is-active {
+  background: var(--teal-deep);
+  color: var(--paper);
+}
+#\30 8-playground .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+#\30 8-playground .pillgroup-chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+#\30 8-playground .pillgroup.is-disabled .pillgroup-chip {
+  box-shadow: none;
+}
+
+/* ─── View note + chart ─────────────────────────────────── */
+#\30 8-playground .pg-view-note {
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 12px 0;
+  min-height: 1.4em;
+}
+#\30 8-playground .pg-chart {
+  width: 100%;
+}
+
+/* TGI panel — relative wrapper so the 100 marker can overlay the bars. */
+#\30 8-playground .pg-chart-tgi {
+  position: relative;
+}
+#\30 8-playground .pg-chart-tgi::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pg-tgi-100);
+  width: 0;
+  border-left: 1.5px dashed var(--ink);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── TGI legend (the index-100 reference) ──────────────── */
+#\30 8-playground .pg-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 8-playground .pg-legend-marker {
+  display: inline-block;
+  width: 16px;
+  height: 0;
+  border-top: 1.5px dashed var(--ink);
+}
+
+#\30 8-playground .vccp-source {
+  max-width: 62ch;
+  margin-top: 16px;
+}
+
+/* ─── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 8-playground .pillgroup-chip {
+    transition: none;
+  }
+}
+
+/* ─── Responsive: stack the two panels ──────────────────── */
+@media (max-width: 920px) {
+  #\30 8-playground .pg-grid {
+    grid-template-columns: 1fr;
+  }
+}

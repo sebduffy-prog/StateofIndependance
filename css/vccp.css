@@ -1,0 +1,347 @@
+/* ============================================================
+   vccp.css — VCCP Media 2026 brand token sheet + shared components
+   The State of Independence. Shared file — section builders must
+   NOT edit this; scope chapter styles in css/sections/{id}.css.
+   ============================================================ */
+
+:root {
+  /* MUSTARD — primary half */
+  --mustard:       #FFC931;
+  --mustard-dark:  #FF8812;   /* down-deltas, warnings — never red */
+  --mustard-light: #FFEDBB;   /* highlighter fill */
+  --mustard-pale:  #FFF9E2;   /* card surfaces, frame panels */
+
+  /* TEAL — appendix half (research surfaces only) */
+  --teal:          #80E8E3;
+  --teal-deep:     #00BCA5;   /* up-deltas, validated states */
+  --teal-light:    #BDF9F6;   /* teal-variant highlighter fill */
+  --teal-pale:     #DEFCFA;
+
+  /* Neutrals */
+  --ink:           #000000;
+  --ink-soft:      #1A1A1A;
+  --paper:         #FFFFFF;
+  --paper-warm:    #FBF8F0;
+
+  --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Type scale */
+  --t-xl: clamp(2.4rem, 4.4vw, 4.2rem);
+  --t-lg: clamp(1.8rem, 2.6vw, 2.6rem);
+  --t-md: clamp(1.15rem, 1.4vw, 1.4rem);
+  --t-sm: 0.93rem;
+  --t-xs: 0.78rem;
+
+  --nav-height: 57px;
+}
+
+/* ─── Base ──────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--t-sm);
+  color: var(--ink);
+  background: var(--paper);
+  font-feature-settings: 'tnum';
+  -webkit-font-smoothing: antialiased;
+  padding-top: var(--nav-height);
+}
+img { display: block; object-fit: contain; }
+.num, [data-count-to] { font-variant-numeric: tabular-nums; }
+
+/* ─── Top nav (57px, ink hairline bottom) ───────────────── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 clamp(16px, 2.5vw, 40px);
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink);
+}
+.site-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.site-nav-title {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.site-nav-pills {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+/* The pill is the ONLY rounded element in the whole system. */
+.chapter-pill {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chapter-pill:hover { background: var(--mustard-pale); }
+.chapter-pill.is-active { background: var(--mustard); border-color: var(--ink); }
+
+/* ─── Left progress rail (01–09 stage chips) ────────────── */
+.progress-rail {
+  position: fixed;
+  left: clamp(10px, 1.2vw, 22px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rail-chip {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid rgba(0,0,0,0.25);
+  padding: 4px 7px;
+  transition: background .15s ease, border-color .15s ease;
+}
+.rail-chip:hover { border-color: var(--ink); }
+.rail-chip.is-active {
+  background: var(--mustard);
+  border-color: var(--ink);
+}
+
+/* ─── Chapter base (full-viewport scroll stages) ────────── */
+.chapter {
+  min-height: 100vh;
+  scroll-margin-top: var(--nav-height);
+  display: flex;
+  align-items: center;
+  padding: clamp(48px, 6vh, 88px) clamp(20px, 4vw, 72px)
+           clamp(48px, 6vh, 88px) clamp(56px, 6vw, 96px);
+}
+.chapter-inner {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* ─── Highlighter parallelogram (signature motif) ───────── */
+.hl {
+  font-style: italic;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+  line-height: 0.85;
+  padding: 0.08em 0;
+  z-index: 0;
+}
+.hl::before {
+  content: "";
+  position: absolute;
+  inset: 0 -0.06em;
+  background: var(--mustard-light);
+  transform: skewX(-12deg);
+  transform-origin: 50% 50%;
+  z-index: -1;
+  pointer-events: none;
+}
+.hl-teal::before { background: var(--teal-light); }
+
+/* ─── Cards ─────────────────────────────────────────────── */
+.vccp-card {
+  background: var(--paper);
+  padding: 28px 28px 32px 32px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+  transition: box-shadow .25s ease;
+}
+.vccp-card:hover {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.06), 0 18px 40px rgba(0,0,0,0.08);
+}
+.vccp-rail { border-left: 3px solid var(--mustard); }
+.vccp-frame {
+  border: 1.5px solid var(--ink);
+  background: var(--mustard-pale);
+  box-shadow: none;
+}
+
+.vccp-card-head { margin-bottom: 18px; }
+.vccp-card-title {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+}
+.vccp-card-sub {
+  font-size: var(--t-sm);
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* ─── Stage-number chip ─────────────────────────────────── */
+.vccp-stage-num {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  background: var(--mustard);
+  border: 1px solid var(--ink);
+  padding: 4px 8px;
+  margin-bottom: 14px;
+}
+
+/* ─── Eyebrow / source caption ──────────────────────────── */
+.vccp-eyebrow {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.vccp-source {
+  font-size: 0.72rem;
+  color: rgba(0,0,0,0.55);
+  margin-top: 14px;
+}
+
+/* ─── Buttons (square, no radius) ───────────────────────── */
+.vccp-btn {
+  background: var(--mustard);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+  font: 500 var(--t-sm)/1 var(--font-sans);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--ink); }
+.vccp-btn-primary { background: var(--ink); color: var(--paper); }
+.vccp-btn-quiet {
+  background: transparent;
+  border-color: rgba(0,0,0,0.2);
+  color: rgba(0,0,0,0.6);
+}
+
+/* ─── Table ─────────────────────────────────────────────── */
+.vccp-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.vccp-table th, .vccp-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-size: var(--t-sm);
+}
+.vccp-table th {
+  text-align: left;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--ink);
+}
+.vccp-table td.num, .vccp-table th.num {
+  text-align: right;
+  font-feature-settings: 'tnum';
+}
+.vccp-table tbody tr:hover { background: var(--mustard-pale); }
+.vccp-delta-up   { color: var(--teal-deep); font-weight: 500; }
+.vccp-delta-down { color: var(--mustard-dark); font-weight: 500; }
+
+/* ─── Stat callouts ─────────────────────────────────────── */
+.vccp-stat {
+  border: 1px solid var(--ink);
+  padding: 14px 16px 18px 16px;
+  background: var(--paper);
+}
+.vccp-stat-label {
+  display: block;
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.vccp-stat-value {
+  display: block;
+  margin-top: 6px;
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 1;
+  font-feature-settings: 'tnum';
+}
+.vccp-stat-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+}
+
+/* ─── Reveal-on-scroll utilities (js/lib/reveal.js) ─────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ─── Section error card (main.js fallback) ─────────────── */
+.section-error-card {
+  max-width: 720px;
+  margin: 0 auto;
+  border: 1.5px solid var(--ink);
+  border-left: 3px solid var(--mustard-dark);
+  background: var(--paper);
+  padding: 28px 32px;
+}
+.section-error-card h2 {
+  font-size: var(--t-md);
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+.section-error-card p {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--ink-soft);
+}
+
+/* ─── Placeholder "awaiting build" card ─────────────────── */
+.awaiting-card { max-width: 640px; margin: 0 auto; }
+
+/* ─── Accessibility / motion guards ─────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .vccp-card, .vccp-btn, .rail-chip { transition: none; }
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .progress-rail { display: none; }
+  .site-nav-title { display: none; }
+  .chapter { padding-left: clamp(20px, 4vw, 72px); }
+}

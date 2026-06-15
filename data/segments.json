@@ -1,0 +1,1526 @@
+{
+  "meta": {
+    "title": "Britain in four segments",
+    "framework": "A 2x2 'agency to act' compass: outlook (optimistic vs pessimistic) x agency (proactive vs passive), derived from the COCL Q2 mindset battery.",
+    "sources": [
+      "docs/deck-narrative.md — slides 20-24, 87-90, 101-102 (canonical names, shares, profiles, quotes)",
+      "data-src/State_of_Independence_Survey_by_Audience.xlsx — Crosstab sheet (per-segment survey splits; its 'Adapters'/'Strivers' labels map to Architects/Hustlers)",
+      "data-src/Compass_Audience_Settings.md — segmentation recipe and demographic target frame",
+      "data-src/COCL_segments_labelled.csv — respondent-level segment assignments (n=1,504)"
+    ],
+    "sampleNote": "VCCP x Watermelon Research COCL survey. 1,504 UK adults 18+, nat. rep. Fieldwork May 2026. Quotes from the qualitative Taking control video diaries.",
+    "caveats": [
+      "sharePct values are the canonical deck figures (17/28/27/28). The xlsx crosstab uses a reformatted axis definition whose audience sizes differ (23.7/22.9/14.3/39.0); its per-answer splits are included as directional metrics only.",
+      "In metrics, 'pct' = penetration within the segment and 'index' = segment vs sample average (100 = average). Treat index >120 or <80 as meaningful."
+    ],
+    "metricsTotals": {
+      "mindsetNetAgree": {
+        "Exhausted / stretched": 54.8,
+        "Optimistic about next decade": 77.3,
+        "Anxious about the future": 60.2,
+        "In control of my life": 46.7,
+        "Self-reliant, look after myself": 54.3
+      },
+      "financialPosition": {
+        "Cannot afford basics": 8,
+        "Conscious spending": 50.5,
+        "Struggling, cutting back": 16.7,
+        "Comfortable, can afford luxuries": 23.4
+      },
+      "forwardMindset": {
+        "I feel overwhelmed and uncertain": 14,
+        "I feel cautious but adaptable": 41.6,
+        "I feel optimistic and in control": 27.9,
+        "I feel anxious and reactive": 16.6
+      },
+      "essentials": {
+        "Groceries": 81.8,
+        "Holidays": 7.9,
+        "Eating out": 12.6,
+        "Tech": 14.3,
+        "Clothing": 14.6,
+        "Beauty": 25.9,
+        "Energy": 19.1,
+        "Subscriptions": 16.5
+      },
+      "firstToCut": {
+        "Groceries": 1.7,
+        "Holidays": 28.9,
+        "Eating out": 24.5,
+        "Tech": 14.2,
+        "Clothing": 23.6,
+        "Beauty": 20.6,
+        "Energy": 18,
+        "Subscriptions": 21.3
+      },
+      "tradedDown12Months": {
+        "Groceries": 53.6,
+        "Insurance": 16.8,
+        "Mobile/phone": 22.3,
+        "Energy": 17.3,
+        "Fashion": 30.2,
+        "Beauty": 21.9,
+        "Entertainment": 29.3,
+        "Broadband": 19.8
+      },
+      "personalControlBehaviours": {
+        "Used AI for advice/planning": 23.3,
+        "YouTube/online guides": 34.4,
+        "Free online up-skilling": 16.5,
+        "Lifestyle changes": 42.9,
+        "Managed energy proactively": 46.9,
+        "Self-diagnosed health": 23.1,
+        "Vitamins/preventative": 43,
+        "Budgeting/comparison tools": 34
+      },
+      "selfManagement": {
+        "Healthcare": 38.2,
+        "Retirement/financial": 34.3,
+        "Education/upskilling": 16.8,
+        "Energy management": 30.6,
+        "Mental wellbeing": 55.7,
+        "Career progression": 23.1,
+        "Legal/admin": 15.2
+      },
+      "aiUseByTask": {
+        "Financial advice": 19.7,
+        "Health information": 24.7,
+        "Legal/admin": 9.4,
+        "Technical support": 18.8,
+        "Education/learning": 21.2,
+        "Creative work": 20.8
+      },
+      "brandAsks": {
+        "Give me more control": 17.2,
+        "Make smarter decisions": 17.2,
+        "Reduce stress": 27.7,
+        "Help me feel optimistic": 10.8,
+        "Stretch my money further": 38.8,
+        "Save me time": 24,
+        "Offer more human support": 16,
+        "Help me prepare for uncertainty": 10.4,
+        "Reward my loyalty": 28.3,
+        "Be transparent and honest": 26.1,
+        "Get more out of life": 15.7,
+        "Enjoy life more": 22.8
+      }
+    }
+  },
+  "segments": [
+    {
+      "id": "architects",
+      "name": "The Architects",
+      "sharePct": 17,
+      "quadrant": {
+        "x": "optimistic",
+        "y": "proactive"
+      },
+      "threeWordDescriptor": "Organised. Positive. In control.",
+      "heroQuote": "I've always been super organised. I like being in control. I hate having my time wasted.",
+      "longQuote": "I probably do feel that I'm more self-reliant now than I have been in the past on experts and other people. I do use ChatGPT all the time and find it really quite helpful when I do have problems.",
+      "who": "55+ skew, male — 42% are 55+",
+      "money": "Comfortable — 46% earn £60k+ household income",
+      "spendPriorities": "Essentials: holidays & eating out",
+      "interests": [
+        "Property",
+        "Foreign affairs",
+        "Finance",
+        "Gaming and business",
+        "Sports",
+        "Education & careers",
+        "Music"
+      ],
+      "channels": [
+        "Podcasts",
+        "Streaming",
+        "Magazines",
+        "Broadsheets",
+        "Social media"
+      ],
+      "aiAttitude": "Embrace AI and online tools for everything from financial advice to health, home management and travel — trusting their own judgement and sources like Martin Lewis over authority.",
+      "metrics": {
+        "mindsetNetAgree": {
+          "Exhausted / stretched": {
+            "pct": 17.1,
+            "index": 31
+          },
+          "Optimistic about next decade": {
+            "pct": 100,
+            "index": 129
+          },
+          "Anxious about the future": {
+            "pct": 26.3,
+            "index": 44
+          },
+          "In control of my life": {
+            "pct": 100,
+            "index": 214
+          },
+          "Self-reliant, look after myself": {
+            "pct": 70.6,
+            "index": 130
+          }
+        },
+        "financialPosition": {
+          "Cannot afford basics": {
+            "pct": 0,
+            "index": 0
+          },
+          "Conscious spending": {
+            "pct": 59.9,
+            "index": 119
+          },
+          "Struggling, cutting back": {
+            "pct": 2,
+            "index": 12
+          },
+          "Comfortable, can afford luxuries": {
+            "pct": 37.3,
+            "index": 159
+          }
+        },
+        "forwardMindset": {
+          "I feel overwhelmed and uncertain": {
+            "pct": 2.5,
+            "index": 18
+          },
+          "I feel cautious but adaptable": {
+            "pct": 42,
+            "index": 101
+          },
+          "I feel optimistic and in control": {
+            "pct": 50.7,
+            "index": 182
+          },
+          "I feel anxious and reactive": {
+            "pct": 4.8,
+            "index": 29
+          }
+        },
+        "essentials": {
+          "Groceries": {
+            "pct": 86.3,
+            "index": 105
+          },
+          "Holidays": {
+            "pct": 12.3,
+            "index": 156
+          },
+          "Eating out": {
+            "pct": 18.5,
+            "index": 147
+          },
+          "Tech": {
+            "pct": 17.6,
+            "index": 123
+          },
+          "Clothing": {
+            "pct": 18.5,
+            "index": 127
+          },
+          "Beauty": {
+            "pct": 35.6,
+            "index": 138
+          },
+          "Energy": {
+            "pct": 22.7,
+            "index": 118
+          },
+          "Subscriptions": {
+            "pct": 20.4,
+            "index": 124
+          }
+        },
+        "firstToCut": {
+          "Groceries": {
+            "pct": 1.1,
+            "index": 67
+          },
+          "Holidays": {
+            "pct": 21.6,
+            "index": 75
+          },
+          "Eating out": {
+            "pct": 12.6,
+            "index": 51
+          },
+          "Tech": {
+            "pct": 8.1,
+            "index": 57
+          },
+          "Clothing": {
+            "pct": 15.1,
+            "index": 64
+          },
+          "Beauty": {
+            "pct": 13.2,
+            "index": 64
+          },
+          "Energy": {
+            "pct": 10.6,
+            "index": 59
+          },
+          "Subscriptions": {
+            "pct": 11.5,
+            "index": 54
+          }
+        },
+        "tradedDown12Months": {
+          "Groceries": {
+            "pct": 44.5,
+            "index": 83
+          },
+          "Insurance": {
+            "pct": 19,
+            "index": 113
+          },
+          "Mobile/phone": {
+            "pct": 16,
+            "index": 71
+          },
+          "Energy": {
+            "pct": 16.2,
+            "index": 94
+          },
+          "Fashion": {
+            "pct": 25.8,
+            "index": 85
+          },
+          "Beauty": {
+            "pct": 16.2,
+            "index": 74
+          },
+          "Entertainment": {
+            "pct": 26.3,
+            "index": 90
+          },
+          "Broadband": {
+            "pct": 18.8,
+            "index": 95
+          }
+        },
+        "personalControlBehaviours": {
+          "Used AI for advice/planning": {
+            "pct": 25.5,
+            "index": 110
+          },
+          "YouTube/online guides": {
+            "pct": 34.7,
+            "index": 101
+          },
+          "Free online up-skilling": {
+            "pct": 22.7,
+            "index": 138
+          },
+          "Lifestyle changes": {
+            "pct": 48.2,
+            "index": 112
+          },
+          "Managed energy proactively": {
+            "pct": 50.7,
+            "index": 108
+          },
+          "Self-diagnosed health": {
+            "pct": 18.2,
+            "index": 79
+          },
+          "Vitamins/preventative": {
+            "pct": 45.9,
+            "index": 107
+          },
+          "Budgeting/comparison tools": {
+            "pct": 35,
+            "index": 103
+          }
+        },
+        "selfManagement": {
+          "Healthcare": {
+            "pct": 39.5,
+            "index": 103
+          },
+          "Retirement/financial": {
+            "pct": 42.3,
+            "index": 123
+          },
+          "Education/upskilling": {
+            "pct": 18.5,
+            "index": 110
+          },
+          "Energy management": {
+            "pct": 34.7,
+            "index": 114
+          },
+          "Mental wellbeing": {
+            "pct": 51.8,
+            "index": 93
+          },
+          "Career progression": {
+            "pct": 28.6,
+            "index": 123
+          },
+          "Legal/admin": {
+            "pct": 15.7,
+            "index": 103
+          }
+        },
+        "aiUseByTask": {
+          "Financial advice": {
+            "pct": 23,
+            "index": 116
+          },
+          "Health information": {
+            "pct": 23,
+            "index": 93
+          },
+          "Legal/admin": {
+            "pct": 8.7,
+            "index": 92
+          },
+          "Technical support": {
+            "pct": 23.2,
+            "index": 124
+          },
+          "Education/learning": {
+            "pct": 21.8,
+            "index": 103
+          },
+          "Creative work": {
+            "pct": 27.2,
+            "index": 131
+          }
+        },
+        "brandAsks": {
+          "Give me more control": {
+            "pct": 20.2,
+            "index": 117
+          },
+          "Make smarter decisions": {
+            "pct": 22.7,
+            "index": 132
+          },
+          "Reduce stress": {
+            "pct": 23,
+            "index": 83
+          },
+          "Help me feel optimistic": {
+            "pct": 12.9,
+            "index": 119
+          },
+          "Stretch my money further": {
+            "pct": 31.7,
+            "index": 82
+          },
+          "Save me time": {
+            "pct": 26.6,
+            "index": 111
+          },
+          "Offer more human support": {
+            "pct": 19.3,
+            "index": 121
+          },
+          "Help me prepare for uncertainty": {
+            "pct": 10.1,
+            "index": 97
+          },
+          "Reward my loyalty": {
+            "pct": 29.1,
+            "index": 103
+          },
+          "Be transparent and honest": {
+            "pct": 29.4,
+            "index": 113
+          },
+          "Get more out of life": {
+            "pct": 16.5,
+            "index": 105
+          },
+          "Enjoy life more": {
+            "pct": 24.6,
+            "index": 108
+          }
+        }
+      }
+    },
+    {
+      "id": "hustlers",
+      "name": "The Hustlers",
+      "sharePct": 28,
+      "quadrant": {
+        "x": "pessimistic",
+        "y": "proactive"
+      },
+      "threeWordDescriptor": "Self-sufficient. Savvy. Sceptical.",
+      "heroQuote": "My trust has worsened over time — but with AI I feel empowered to take control and help myself.",
+      "longQuote": "I would say that it is more of an empowering feeling being able to do things yourself, to fix things yourself, to seek out answers yourself. It's more interesting as well... Everything's just your phone, in your hand, ask Alexa... so it's definitely more instant.",
+      "who": "25–54 core — 62% are 25–54",
+      "money": "Middle-income families",
+      "spendPriorities": "Essentials: holidays & eating out",
+      "interests": [
+        "Nature",
+        "Environment",
+        "Business",
+        "Video games",
+        "Politics"
+      ],
+      "channels": [
+        "Podcasts",
+        "Streaming",
+        "Social media",
+        "Creator partnerships",
+        "ChatGPT"
+      ],
+      "aiAttitude": "The AI vanguard, using it as a multiplier — deeply sceptical of institutions and authorities, they feel empowered to take control of their own future.",
+      "metrics": {
+        "mindsetNetAgree": {
+          "Exhausted / stretched": {
+            "pct": 58,
+            "index": 106
+          },
+          "Optimistic about next decade": {
+            "pct": 48.7,
+            "index": 63
+          },
+          "Anxious about the future": {
+            "pct": 61.7,
+            "index": 102
+          },
+          "In control of my life": {
+            "pct": 100,
+            "index": 214
+          },
+          "Self-reliant, look after myself": {
+            "pct": 64.6,
+            "index": 119
+          }
+        },
+        "financialPosition": {
+          "Cannot afford basics": {
+            "pct": 2.3,
+            "index": 29
+          },
+          "Conscious spending": {
+            "pct": 43.2,
+            "index": 85
+          },
+          "Struggling, cutting back": {
+            "pct": 7.2,
+            "index": 43
+          },
+          "Comfortable, can afford luxuries": {
+            "pct": 45.8,
+            "index": 196
+          }
+        },
+        "forwardMindset": {
+          "I feel overwhelmed and uncertain": {
+            "pct": 6.7,
+            "index": 48
+          },
+          "I feel cautious but adaptable": {
+            "pct": 41.4,
+            "index": 100
+          },
+          "I feel optimistic and in control": {
+            "pct": 42,
+            "index": 151
+          },
+          "I feel anxious and reactive": {
+            "pct": 9.9,
+            "index": 60
+          }
+        },
+        "essentials": {
+          "Groceries": {
+            "pct": 78.8,
+            "index": 96
+          },
+          "Holidays": {
+            "pct": 13.3,
+            "index": 169
+          },
+          "Eating out": {
+            "pct": 22,
+            "index": 175
+          },
+          "Tech": {
+            "pct": 19.7,
+            "index": 138
+          },
+          "Clothing": {
+            "pct": 17.7,
+            "index": 121
+          },
+          "Beauty": {
+            "pct": 30.7,
+            "index": 119
+          },
+          "Energy": {
+            "pct": 21.7,
+            "index": 114
+          },
+          "Subscriptions": {
+            "pct": 23.5,
+            "index": 142
+          }
+        },
+        "firstToCut": {
+          "Groceries": {
+            "pct": 2.3,
+            "index": 140
+          },
+          "Holidays": {
+            "pct": 22.3,
+            "index": 77
+          },
+          "Eating out": {
+            "pct": 17.1,
+            "index": 70
+          },
+          "Tech": {
+            "pct": 11,
+            "index": 78
+          },
+          "Clothing": {
+            "pct": 24.9,
+            "index": 106
+          },
+          "Beauty": {
+            "pct": 15.9,
+            "index": 77
+          },
+          "Energy": {
+            "pct": 18.3,
+            "index": 101
+          },
+          "Subscriptions": {
+            "pct": 16.5,
+            "index": 78
+          }
+        },
+        "tradedDown12Months": {
+          "Groceries": {
+            "pct": 35.4,
+            "index": 66
+          },
+          "Insurance": {
+            "pct": 15.1,
+            "index": 90
+          },
+          "Mobile/phone": {
+            "pct": 18.3,
+            "index": 82
+          },
+          "Energy": {
+            "pct": 15.1,
+            "index": 87
+          },
+          "Fashion": {
+            "pct": 21.7,
+            "index": 72
+          },
+          "Beauty": {
+            "pct": 18.3,
+            "index": 83
+          },
+          "Entertainment": {
+            "pct": 24.1,
+            "index": 82
+          },
+          "Broadband": {
+            "pct": 15.4,
+            "index": 78
+          }
+        },
+        "personalControlBehaviours": {
+          "Used AI for advice/planning": {
+            "pct": 23.5,
+            "index": 101
+          },
+          "YouTube/online guides": {
+            "pct": 31.9,
+            "index": 93
+          },
+          "Free online up-skilling": {
+            "pct": 18.8,
+            "index": 114
+          },
+          "Lifestyle changes": {
+            "pct": 36.5,
+            "index": 85
+          },
+          "Managed energy proactively": {
+            "pct": 40,
+            "index": 85
+          },
+          "Self-diagnosed health": {
+            "pct": 20,
+            "index": 86
+          },
+          "Vitamins/preventative": {
+            "pct": 40.9,
+            "index": 95
+          },
+          "Budgeting/comparison tools": {
+            "pct": 28.7,
+            "index": 84
+          }
+        },
+        "selfManagement": {
+          "Healthcare": {
+            "pct": 40,
+            "index": 105
+          },
+          "Retirement/financial": {
+            "pct": 34.2,
+            "index": 100
+          },
+          "Education/upskilling": {
+            "pct": 15.4,
+            "index": 91
+          },
+          "Energy management": {
+            "pct": 28.7,
+            "index": 94
+          },
+          "Mental wellbeing": {
+            "pct": 49.6,
+            "index": 89
+          },
+          "Career progression": {
+            "pct": 21.7,
+            "index": 94
+          },
+          "Legal/admin": {
+            "pct": 13.9,
+            "index": 91
+          }
+        },
+        "aiUseByTask": {
+          "Financial advice": {
+            "pct": 19.7,
+            "index": 100
+          },
+          "Health information": {
+            "pct": 24.9,
+            "index": 101
+          },
+          "Legal/admin": {
+            "pct": 10.1,
+            "index": 107
+          },
+          "Technical support": {
+            "pct": 18.3,
+            "index": 97
+          },
+          "Education/learning": {
+            "pct": 24.3,
+            "index": 115
+          },
+          "Creative work": {
+            "pct": 20.9,
+            "index": 100
+          }
+        },
+        "brandAsks": {
+          "Give me more control": {
+            "pct": 16.2,
+            "index": 94
+          },
+          "Make smarter decisions": {
+            "pct": 18,
+            "index": 104
+          },
+          "Reduce stress": {
+            "pct": 23.5,
+            "index": 85
+          },
+          "Help me feel optimistic": {
+            "pct": 11.3,
+            "index": 104
+          },
+          "Stretch my money further": {
+            "pct": 27.2,
+            "index": 70
+          },
+          "Save me time": {
+            "pct": 26.7,
+            "index": 111
+          },
+          "Offer more human support": {
+            "pct": 13.9,
+            "index": 87
+          },
+          "Help me prepare for uncertainty": {
+            "pct": 10.7,
+            "index": 103
+          },
+          "Reward my loyalty": {
+            "pct": 26.7,
+            "index": 94
+          },
+          "Be transparent and honest": {
+            "pct": 25.8,
+            "index": 99
+          },
+          "Get more out of life": {
+            "pct": 18.6,
+            "index": 118
+          },
+          "Enjoy life more": {
+            "pct": 29,
+            "index": 127
+          }
+        }
+      }
+    },
+    {
+      "id": "coasters",
+      "name": "The Coasters",
+      "sharePct": 27,
+      "quadrant": {
+        "x": "optimistic",
+        "y": "passive"
+      },
+      "threeWordDescriptor": "Easygoing. Careful. Open-minded.",
+      "heroQuote": "Life has improved with technology. It saves time — but it really can be overwhelming sometimes.",
+      "longQuote": "I'm still kind of old school. But hopefully, um, somehow maybe someone can show me. You know, I ask the kids sometimes to help me, but they're not always here. So, that's kind of a bit difficult to keep up with everything being digital.",
+      "who": "55+ skew — 50% are 55+",
+      "money": "Mid-to-low income",
+      "spendPriorities": "Cutting back: clothing, subscriptions & groceries",
+      "interests": [
+        "Food & drink",
+        "Home & garden",
+        "Health & wellbeing"
+      ],
+      "channels": [
+        "Linear TV",
+        "Mail",
+        "In-store",
+        "Supermarket magazines"
+      ],
+      "aiAttitude": "Embrace technology where it makes life easier — apps, loyalty schemes, online shopping — but they don't trust AI and many don't understand it. They want brands and organisations to do it for them.",
+      "metrics": {
+        "mindsetNetAgree": {
+          "Exhausted / stretched": {
+            "pct": 24.2,
+            "index": 44
+          },
+          "Optimistic about next decade": {
+            "pct": 100,
+            "index": 129
+          },
+          "Anxious about the future": {
+            "pct": 46.5,
+            "index": 77
+          },
+          "In control of my life": {
+            "pct": 0,
+            "index": 0
+          },
+          "Self-reliant, look after myself": {
+            "pct": 47.9,
+            "index": 88
+          }
+        },
+        "financialPosition": {
+          "Cannot afford basics": {
+            "pct": 6,
+            "index": 76
+          },
+          "Conscious spending": {
+            "pct": 59.5,
+            "index": 118
+          },
+          "Struggling, cutting back": {
+            "pct": 25.1,
+            "index": 150
+          },
+          "Comfortable, can afford luxuries": {
+            "pct": 7.9,
+            "index": 34
+          }
+        },
+        "forwardMindset": {
+          "I feel overwhelmed and uncertain": {
+            "pct": 10.7,
+            "index": 77
+          },
+          "I feel cautious but adaptable": {
+            "pct": 54.9,
+            "index": 132
+          },
+          "I feel optimistic and in control": {
+            "pct": 15.8,
+            "index": 57
+          },
+          "I feel anxious and reactive": {
+            "pct": 18.6,
+            "index": 112
+          }
+        },
+        "essentials": {
+          "Groceries": {
+            "pct": 85.6,
+            "index": 105
+          },
+          "Holidays": {
+            "pct": 5.1,
+            "index": 65
+          },
+          "Eating out": {
+            "pct": 6.5,
+            "index": 52
+          },
+          "Tech": {
+            "pct": 12.1,
+            "index": 85
+          },
+          "Clothing": {
+            "pct": 8.8,
+            "index": 61
+          },
+          "Beauty": {
+            "pct": 22.8,
+            "index": 88
+          },
+          "Energy": {
+            "pct": 20.9,
+            "index": 109
+          },
+          "Subscriptions": {
+            "pct": 12.6,
+            "index": 76
+          }
+        },
+        "firstToCut": {
+          "Groceries": {
+            "pct": 0.9,
+            "index": 56
+          },
+          "Holidays": {
+            "pct": 34.4,
+            "index": 119
+          },
+          "Eating out": {
+            "pct": 26,
+            "index": 106
+          },
+          "Tech": {
+            "pct": 10.7,
+            "index": 76
+          },
+          "Clothing": {
+            "pct": 31.2,
+            "index": 132
+          },
+          "Beauty": {
+            "pct": 21.4,
+            "index": 104
+          },
+          "Energy": {
+            "pct": 19.1,
+            "index": 106
+          },
+          "Subscriptions": {
+            "pct": 25.6,
+            "index": 120
+          }
+        },
+        "tradedDown12Months": {
+          "Groceries": {
+            "pct": 66.5,
+            "index": 124
+          },
+          "Insurance": {
+            "pct": 18.1,
+            "index": 108
+          },
+          "Mobile/phone": {
+            "pct": 26.5,
+            "index": 119
+          },
+          "Energy": {
+            "pct": 14.4,
+            "index": 83
+          },
+          "Fashion": {
+            "pct": 33,
+            "index": 109
+          },
+          "Beauty": {
+            "pct": 25.1,
+            "index": 114
+          },
+          "Entertainment": {
+            "pct": 29.3,
+            "index": 100
+          },
+          "Broadband": {
+            "pct": 17.2,
+            "index": 87
+          }
+        },
+        "personalControlBehaviours": {
+          "Used AI for advice/planning": {
+            "pct": 19.1,
+            "index": 82
+          },
+          "YouTube/online guides": {
+            "pct": 36.7,
+            "index": 107
+          },
+          "Free online up-skilling": {
+            "pct": 14,
+            "index": 85
+          },
+          "Lifestyle changes": {
+            "pct": 42.8,
+            "index": 100
+          },
+          "Managed energy proactively": {
+            "pct": 52.6,
+            "index": 112
+          },
+          "Self-diagnosed health": {
+            "pct": 24.7,
+            "index": 107
+          },
+          "Vitamins/preventative": {
+            "pct": 44.7,
+            "index": 104
+          },
+          "Budgeting/comparison tools": {
+            "pct": 37.2,
+            "index": 110
+          }
+        },
+        "selfManagement": {
+          "Healthcare": {
+            "pct": 34,
+            "index": 89
+          },
+          "Retirement/financial": {
+            "pct": 32.1,
+            "index": 94
+          },
+          "Education/upskilling": {
+            "pct": 12.1,
+            "index": 72
+          },
+          "Energy management": {
+            "pct": 30.2,
+            "index": 99
+          },
+          "Mental wellbeing": {
+            "pct": 54.4,
+            "index": 98
+          },
+          "Career progression": {
+            "pct": 19.5,
+            "index": 84
+          },
+          "Legal/admin": {
+            "pct": 10.7,
+            "index": 70
+          }
+        },
+        "aiUseByTask": {
+          "Financial advice": {
+            "pct": 16.3,
+            "index": 82
+          },
+          "Health information": {
+            "pct": 22.8,
+            "index": 92
+          },
+          "Legal/admin": {
+            "pct": 9.8,
+            "index": 103
+          },
+          "Technical support": {
+            "pct": 17.2,
+            "index": 92
+          },
+          "Education/learning": {
+            "pct": 17.7,
+            "index": 83
+          },
+          "Creative work": {
+            "pct": 15.3,
+            "index": 74
+          }
+        },
+        "brandAsks": {
+          "Give me more control": {
+            "pct": 16.3,
+            "index": 95
+          },
+          "Make smarter decisions": {
+            "pct": 12.1,
+            "index": 70
+          },
+          "Reduce stress": {
+            "pct": 26,
+            "index": 94
+          },
+          "Help me feel optimistic": {
+            "pct": 9.8,
+            "index": 90
+          },
+          "Stretch my money further": {
+            "pct": 46.5,
+            "index": 120
+          },
+          "Save me time": {
+            "pct": 21.9,
+            "index": 91
+          },
+          "Offer more human support": {
+            "pct": 16.3,
+            "index": 102
+          },
+          "Help me prepare for uncertainty": {
+            "pct": 8.8,
+            "index": 85
+          },
+          "Reward my loyalty": {
+            "pct": 29.8,
+            "index": 105
+          },
+          "Be transparent and honest": {
+            "pct": 27.9,
+            "index": 107
+          },
+          "Get more out of life": {
+            "pct": 14.9,
+            "index": 95
+          },
+          "Enjoy life more": {
+            "pct": 20.9,
+            "index": 92
+          }
+        }
+      }
+    },
+    {
+      "id": "retreaters",
+      "name": "The Retreaters",
+      "sharePct": 28,
+      "quadrant": {
+        "x": "pessimistic",
+        "y": "passive"
+      },
+      "threeWordDescriptor": "Overwhelmed. Stretched. Support-seeking.",
+      "heroQuote": "I've lost faith in the council and institutions. People are left to do more for themselves.",
+      "longQuote": "If I could get some sort of app that would kind of help me or prompt me to do certain things that I should do... sometimes it becomes, I know it sounds silly, but really overwhelming... [AI/Google] I use it for literally every aspect of my life... it's just something that I can't really see myself without.",
+      "who": "45+ skew, female — 59% are 45+",
+      "money": "Stretched finances",
+      "spendPriorities": "Trading down: groceries, broadband & mobile",
+      "interests": [
+        "Local news",
+        "Sport",
+        "Cinema & film",
+        "Books",
+        "Nature"
+      ],
+      "channels": [
+        "Daytime TV",
+        "Supermarket value circulars",
+        "Savings and budgeting content",
+        "Facebook and WhatsApp groups"
+      ],
+      "aiAttitude": "Self-reliant out of necessity rather than choice — overwhelmed by everyday tasks, increasingly relying on technology to solve problems and reduce the burden of life admin.",
+      "metrics": {
+        "mindsetNetAgree": {
+          "Exhausted / stretched": {
+            "pct": 87.1,
+            "index": 159
+          },
+          "Optimistic about next decade": {
+            "pct": 71.9,
+            "index": 93
+          },
+          "Anxious about the future": {
+            "pct": 85,
+            "index": 141
+          },
+          "In control of my life": {
+            "pct": 0,
+            "index": 0
+          },
+          "Self-reliant, look after myself": {
+            "pct": 40.5,
+            "index": 75
+          }
+        },
+        "financialPosition": {
+          "Cannot afford basics": {
+            "pct": 16.9,
+            "index": 211
+          },
+          "Conscious spending": {
+            "pct": 45.8,
+            "index": 91
+          },
+          "Struggling, cutting back": {
+            "pct": 28.1,
+            "index": 168
+          },
+          "Comfortable, can afford luxuries": {
+            "pct": 7.5,
+            "index": 32
+          }
+        },
+        "forwardMindset": {
+          "I feel overwhelmed and uncertain": {
+            "pct": 26.4,
+            "index": 189
+          },
+          "I feel cautious but adaptable": {
+            "pct": 36.6,
+            "index": 88
+          },
+          "I feel optimistic and in control": {
+            "pct": 10.1,
+            "index": 36
+          },
+          "I feel anxious and reactive": {
+            "pct": 26.9,
+            "index": 163
+          }
+        },
+        "essentials": {
+          "Groceries": {
+            "pct": 79.4,
+            "index": 97
+          },
+          "Holidays": {
+            "pct": 3.1,
+            "index": 39
+          },
+          "Eating out": {
+            "pct": 5.6,
+            "index": 45
+          },
+          "Tech": {
+            "pct": 9.9,
+            "index": 69
+          },
+          "Clothing": {
+            "pct": 12.4,
+            "index": 85
+          },
+          "Beauty": {
+            "pct": 18.2,
+            "index": 70
+          },
+          "Energy": {
+            "pct": 14.8,
+            "index": 77
+          },
+          "Subscriptions": {
+            "pct": 11.4,
+            "index": 69
+          }
+        },
+        "firstToCut": {
+          "Groceries": {
+            "pct": 1.9,
+            "index": 113
+          },
+          "Holidays": {
+            "pct": 35.3,
+            "index": 122
+          },
+          "Eating out": {
+            "pct": 35.6,
+            "index": 145
+          },
+          "Tech": {
+            "pct": 21,
+            "index": 148
+          },
+          "Clothing": {
+            "pct": 25.2,
+            "index": 107
+          },
+          "Beauty": {
+            "pct": 27.6,
+            "index": 134
+          },
+          "Energy": {
+            "pct": 22,
+            "index": 122
+          },
+          "Subscriptions": {
+            "pct": 28.4,
+            "index": 134
+          }
+        },
+        "tradedDown12Months": {
+          "Groceries": {
+            "pct": 65.1,
+            "index": 121
+          },
+          "Insurance": {
+            "pct": 16,
+            "index": 95
+          },
+          "Mobile/phone": {
+            "pct": 27.1,
+            "index": 121
+          },
+          "Energy": {
+            "pct": 20.3,
+            "index": 117
+          },
+          "Fashion": {
+            "pct": 36.8,
+            "index": 122
+          },
+          "Beauty": {
+            "pct": 26.4,
+            "index": 120
+          },
+          "Entertainment": {
+            "pct": 34.2,
+            "index": 117
+          },
+          "Broadband": {
+            "pct": 24,
+            "index": 121
+          }
+        },
+        "personalControlBehaviours": {
+          "Used AI for advice/planning": {
+            "pct": 23.3,
+            "index": 100
+          },
+          "YouTube/online guides": {
+            "pct": 34.9,
+            "index": 101
+          },
+          "Free online up-skilling": {
+            "pct": 12.3,
+            "index": 74
+          },
+          "Lifestyle changes": {
+            "pct": 43.4,
+            "index": 101
+          },
+          "Managed energy proactively": {
+            "pct": 46.7,
+            "index": 99
+          },
+          "Self-diagnosed health": {
+            "pct": 27.4,
+            "index": 119
+          },
+          "Vitamins/preventative": {
+            "pct": 41.7,
+            "index": 97
+          },
+          "Budgeting/comparison tools": {
+            "pct": 35.3,
+            "index": 104
+          }
+        },
+        "selfManagement": {
+          "Healthcare": {
+            "pct": 38,
+            "index": 99
+          },
+          "Retirement/financial": {
+            "pct": 30.3,
+            "index": 88
+          },
+          "Education/upskilling": {
+            "pct": 18.4,
+            "index": 109
+          },
+          "Energy management": {
+            "pct": 29.3,
+            "index": 96
+          },
+          "Mental wellbeing": {
+            "pct": 62.2,
+            "index": 112
+          },
+          "Career progression": {
+            "pct": 22,
+            "index": 95
+          },
+          "Legal/admin": {
+            "pct": 17.4,
+            "index": 114
+          }
+        },
+        "aiUseByTask": {
+          "Financial advice": {
+            "pct": 19.1,
+            "index": 97
+          },
+          "Health information": {
+            "pct": 26.4,
+            "index": 107
+          },
+          "Legal/admin": {
+            "pct": 9.4,
+            "index": 99
+          },
+          "Technical support": {
+            "pct": 16.9,
+            "index": 90
+          },
+          "Education/learning": {
+            "pct": 20.3,
+            "index": 96
+          },
+          "Creative work": {
+            "pct": 18.9,
+            "index": 91
+          }
+        },
+        "brandAsks": {
+          "Give me more control": {
+            "pct": 16.4,
+            "index": 95
+          },
+          "Make smarter decisions": {
+            "pct": 15.3,
+            "index": 89
+          },
+          "Reduce stress": {
+            "pct": 33.6,
+            "index": 121
+          },
+          "Help me feel optimistic": {
+            "pct": 9.7,
+            "index": 90
+          },
+          "Stretch my money further": {
+            "pct": 47.2,
+            "index": 122
+          },
+          "Save me time": {
+            "pct": 21.6,
+            "index": 90
+          },
+          "Offer more human support": {
+            "pct": 15,
+            "index": 94
+          },
+          "Help me prepare for uncertainty": {
+            "pct": 10.9,
+            "index": 105
+          },
+          "Reward my loyalty": {
+            "pct": 28.3,
+            "index": 100
+          },
+          "Be transparent and honest": {
+            "pct": 23.5,
+            "index": 90
+          },
+          "Get more out of life": {
+            "pct": 13.8,
+            "index": 88
+          },
+          "Enjoy life more": {
+            "pct": 18.7,
+            "index": 82
+          }
+        }
+      }
+    }
+  ],
+  "quiz": {
+    "title": "Which of the four are you?",
+    "intro": "Five quick statements. Agree or disagree — we'll place you on the agency-to-act compass.",
+    "axes": {
+      "x": {
+        "dimension": "outlook",
+        "positive": "optimistic",
+        "negative": "pessimistic"
+      },
+      "y": {
+        "dimension": "agency",
+        "positive": "proactive",
+        "negative": "passive"
+      }
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "statement": "I feel optimistic about the next decade.",
+        "agree": {
+          "x": 1,
+          "y": 0
+        },
+        "disagree": {
+          "x": -1,
+          "y": 0
+        }
+      },
+      {
+        "id": "q2",
+        "statement": "I feel anxious about the months ahead.",
+        "agree": {
+          "x": -1,
+          "y": 0
+        },
+        "disagree": {
+          "x": 1,
+          "y": 0
+        }
+      },
+      {
+        "id": "q3",
+        "statement": "I feel in control of my life.",
+        "agree": {
+          "x": 0,
+          "y": 1
+        },
+        "disagree": {
+          "x": 0,
+          "y": -1
+        }
+      },
+      {
+        "id": "q4",
+        "statement": "I'm self-reliant — I'd rather look after things myself than wait for someone else to sort them.",
+        "agree": {
+          "x": 0,
+          "y": 1
+        },
+        "disagree": {
+          "x": 0,
+          "y": -1
+        }
+      },
+      {
+        "id": "q5",
+        "statement": "In the last six months I've taken active steps to stay ahead — switching providers, hunting deals or learning something new.",
+        "agree": {
+          "x": 0,
+          "y": 1
+        },
+        "disagree": {
+          "x": 0,
+          "y": -1
+        }
+      }
+    ],
+    "scoring": {
+      "method": "Sum the x and y scores across all five answers.",
+      "xRule": "x > 0 places you optimistic; x <= 0 places you pessimistic (ties resolve to the larger national half, 56.6% pessimistic).",
+      "yRule": "y > 0 places you proactive; y < 0 places you passive (three y questions, so no ties).",
+      "quadrantToSegment": {
+        "optimistic+proactive": "architects",
+        "pessimistic+proactive": "hustlers",
+        "optimistic+passive": "coasters",
+        "pessimistic+passive": "retreaters"
+      }
+    }
+  }
+}

@@ -1,0 +1,315 @@
+/* Chapter 06 — empowerment.
+   Mustard-pale surface. Every selector prefixed with #\30 6-empowerment.
+   Square corners, flat fills (no gradients), tabular nums, reduced-motion safe. */
+
+#\30 6-empowerment {
+  background: var(--mustard-pale);
+}
+#\30 6-empowerment .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 5vh, 64px);
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+#\30 6-empowerment .emp-title {
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 0 0 18px 0;
+}
+#\30 6-empowerment .emp-standfirst {
+  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+  line-height: 1.42;
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ─── Reframe: before / after with draggable divider ─────── */
+#\30 6-empowerment .emp-reframe-eyebrow { margin-bottom: 12px; }
+#\30 6-empowerment .emp-rf-stage {
+  position: relative;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  overflow: hidden;
+}
+#\30 6-empowerment .emp-rf-layer {
+  position: relative;
+}
+#\30 6-empowerment .emp-rf-layer-after {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+}
+#\30 6-empowerment .emp-rf-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(22px, 3vw, 40px);
+  min-height: 220px;
+  box-sizing: border-box;
+}
+#\30 6-empowerment .emp-rf-before { background: var(--paper); }
+#\30 6-empowerment .emp-rf-after  { background: var(--mustard-light); }
+
+#\30 6-empowerment .emp-rf-tag {
+  align-self: flex-start;
+  font-size: var(--t-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 5px 11px;
+  transform: skewX(-12deg);
+}
+#\30 6-empowerment .emp-rf-after .emp-rf-tag {
+  background: var(--teal-deep);
+  color: var(--ink);
+}
+#\30 6-empowerment .emp-rf-tag > * { display: inline-block; transform: skewX(12deg); }
+#\30 6-empowerment .emp-rf-lead {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+#\30 6-empowerment .emp-rf-body {
+  margin: 0;
+  font-size: var(--t-md, 1rem);
+  line-height: 1.45;
+  max-width: 52ch;
+  color: var(--ink-soft);
+}
+/* The after layer is revealed by clipping its LEFT edge, so its content
+   must be right-anchored to sit inside the revealed strip. */
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-panel { align-items: flex-end; text-align: right; }
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-tag { align-self: flex-end; }
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-body { margin-left: auto; }
+
+#\30 6-empowerment .emp-rf-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--ink);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+#\30 6-empowerment .emp-rf-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 28px;
+  transform: translate(-50%, -50%) skewX(-12deg);
+  background: var(--mustard);
+  border: 1.5px solid var(--ink);
+}
+
+#\30 6-empowerment .emp-rf-control {
+  display: block;
+  margin-top: 14px;
+}
+#\30 6-empowerment .emp-rf-control-text {
+  display: block;
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+#\30 6-empowerment .emp-rf-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  cursor: ew-resize;
+}
+#\30 6-empowerment .emp-rf-slider:focus-visible {
+  outline: 2px solid var(--teal-deep);
+  outline-offset: 3px;
+}
+#\30 6-empowerment .emp-rf-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 26px;
+  background: var(--mustard);
+  border: 1.5px solid var(--ink);
+  cursor: ew-resize;
+  transform: skewX(-12deg);
+}
+#\30 6-empowerment .emp-rf-slider::-moz-range-thumb {
+  width: 16px;
+  height: 26px;
+  background: var(--mustard);
+  border: 1.5px solid var(--ink);
+  cursor: ew-resize;
+}
+
+/* ─── Pillars: overlapping sheared panels (venn-like) ────── */
+#\30 6-empowerment .emp-venn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 14px;
+  min-height: 240px;
+}
+#\30 6-empowerment .emp-pillar {
+  flex: 1 1 0;
+  max-width: 320px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border: 1.5px solid var(--ink);
+  background: var(--mustard-light);
+  color: var(--ink);
+  font-family: inherit;
+  cursor: pointer;
+  transform: skewX(-12deg);
+  transition: flex-grow .3s ease, background .2s ease, transform .2s ease;
+}
+/* overlap the panels so they read as a venn */
+#\30 6-empowerment .emp-pillar-time   { margin: 0 -34px; z-index: 2; background: rgba(0,188,165,0.16); }
+#\30 6-empowerment .emp-pillar-money  { z-index: 1; }
+#\30 6-empowerment .emp-pillar-stress { z-index: 1; background: rgba(0,188,165,0.16); }
+
+#\30 6-empowerment .emp-pillar > * { transform: skewX(12deg); }
+#\30 6-empowerment .emp-pillar-kicker {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 6-empowerment .emp-pillar-word {
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+#\30 6-empowerment .emp-pillar:hover,
+#\30 6-empowerment .emp-pillar:focus-visible {
+  background: var(--mustard);
+  outline: none;
+}
+#\30 6-empowerment .emp-pillar-time:hover,
+#\30 6-empowerment .emp-pillar-time:focus-visible,
+#\30 6-empowerment .emp-pillar-stress:hover,
+#\30 6-empowerment .emp-pillar-stress:focus-visible {
+  background: var(--teal);
+}
+#\30 6-empowerment .emp-pillar:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+#\30 6-empowerment .emp-pillar[aria-pressed="true"] {
+  flex-grow: 1.6;
+  background: var(--mustard);
+}
+#\30 6-empowerment .emp-pillar-time[aria-pressed="true"],
+#\30 6-empowerment .emp-pillar-stress[aria-pressed="true"] {
+  background: var(--teal);
+}
+
+/* Keystone label: the three needs meet at empowerment. Sits straddling
+   the bottom edge of the venn so it never covers a pillar's word. */
+#\30 6-empowerment .emp-venn-core {
+  position: absolute;
+  top: auto;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  pointer-events: none;
+  font-weight: 500;
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  letter-spacing: 0.04em;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 7px 14px;
+}
+
+/* ─── Active pillar detail panel ─────────────────────────── */
+#\30 6-empowerment .emp-detail {
+  margin-top: 22px;
+  min-height: 96px;
+}
+#\30 6-empowerment .emp-detail-inner {
+  border-left: 3px solid var(--ink);
+  padding: 4px 0 4px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#\30 6-empowerment .emp-detail-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 6-empowerment .emp-detail-label strong { color: var(--ink); }
+#\30 6-empowerment .emp-detail-line {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+  line-height: 1.4;
+  max-width: 60ch;
+}
+#\30 6-empowerment .emp-chip {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 7px 12px;
+}
+#\30 6-empowerment .emp-chip-val {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+#\30 6-empowerment .emp-chip-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* ─── Responsive: stack pillars, stack reframe panels ────── */
+@media (max-width: 760px) {
+  #\30 6-empowerment .emp-venn {
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+  }
+  #\30 6-empowerment .emp-pillar {
+    width: 100%;
+    max-width: 360px;
+    min-height: 120px;
+    transform: none;
+  }
+  #\30 6-empowerment .emp-pillar > * { transform: none; }
+  #\30 6-empowerment .emp-pillar-time { margin: -16px 0; }
+  #\30 6-empowerment .emp-pillar[aria-pressed="true"] { flex-grow: 0; }
+  #\30 6-empowerment .emp-venn-core { position: static; transform: none; margin: 14px auto 0; }
+}
+
+/* ─── Reduced motion: no easing, jump-cut ────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-pillar { transition: none; }
+}

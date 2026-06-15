@@ -1,0 +1,234 @@
+/* Chapter 02 — research. Teal research surface (the appendix half).
+   Every selector is prefixed with #\30 2-research so styles never leak. */
+
+#\30 2-research {
+  background: var(--teal);
+}
+
+#\30 2-research .research-stage {
+  width: 100%;
+}
+
+/* ─── Intro copy ────────────────────────────────────────── */
+#\30 2-research .research-head {
+  max-width: 64ch;
+  margin-bottom: clamp(28px, 4vh, 48px);
+}
+#\30 2-research .research-headline {
+  font-size: var(--t-xl);
+  font-weight: 500;
+  line-height: 1.04;
+  margin: 0 0 16px 0;
+}
+#\30 2-research .research-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 58ch;
+}
+
+/* ─── Two-column layout ─────────────────────────────────── */
+#\30 2-research .research-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+/* ─── Left: method counters ─────────────────────────────── */
+#\30 2-research .research-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--ink);
+}
+#\30 2-research .research-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+#\30 2-research .research-stat-value {
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#\30 2-research .research-stat-fix {
+  font-weight: 500;
+}
+#\30 2-research .research-stat-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+#\30 2-research .research-credit {
+  margin: 20px 0 0 0;
+  font-size: var(--t-sm);
+  color: var(--ink-soft);
+}
+#\30 2-research .research-credit strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+#\30 2-research .vccp-source {
+  max-width: 52ch;
+}
+
+/* ─── Right: GB map ─────────────────────────────────────── */
+#\30 2-research .research-map-wrap {
+  position: relative;
+}
+#\30 2-research .research-map {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+  aspect-ratio: 100 / 120;
+}
+#\30 2-research .research-map-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#\30 2-research .research-map-land {
+  fill: var(--ink);
+  stroke: var(--ink);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+/* ─── City markers (square mustard buttons) ─────────────── */
+#\30 2-research .research-marker {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  background: var(--mustard);
+  border: 1.5px solid var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+#\30 2-research .research-marker:hover {
+  transform: translate(-50%, -50%) scale(1.18);
+}
+#\30 2-research .research-marker:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Marker label — hidden until hover/focus/active to avoid clutter. */
+#\30 2-research .research-marker-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 5px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 2px 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+#\30 2-research .research-marker:hover .research-marker-label,
+#\30 2-research .research-marker:focus-visible .research-marker-label,
+#\30 2-research .research-marker.is-active .research-marker-label {
+  opacity: 1;
+}
+
+/* Active marker — teal-deep pulse + outline. */
+#\30 2-research .research-marker.is-active {
+  background: var(--teal-deep);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--teal-deep);
+}
+#\30 2-research .research-marker.is-active::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1.5px solid var(--teal-deep);
+  animation: research-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes research-pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  70% { transform: scale(2.1); opacity: 0; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+/* ─── Hint + rail card ──────────────────────────────────── */
+#\30 2-research .research-map-hint {
+  margin: 18px auto 0 auto;
+  max-width: 440px;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 2-research .research-rail {
+  margin-top: 16px;
+}
+#\30 2-research .research-card {
+  border-left-color: var(--teal-deep);
+}
+#\30 2-research .research-card-head {
+  margin-bottom: 14px;
+}
+#\30 2-research .research-card-eyebrow {
+  margin-bottom: 6px;
+}
+#\30 2-research .research-card-title {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0;
+}
+#\30 2-research .research-card-quote {
+  margin: 0;
+  font-size: var(--t-md);
+  line-height: 1.4;
+}
+#\30 2-research .research-card-cite {
+  margin: 12px 0 0 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 2-research .research-card-note {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* ─── Reduced motion: kill the pulse ────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 2-research .research-marker { transition: none; }
+  #\30 2-research .research-marker.is-active::after { animation: none; }
+}
+
+/* ─── Responsive: stack columns under the grid breakpoint ─ */
+@media (max-width: 860px) {
+  #\30 2-research .research-grid {
+    grid-template-columns: 1fr;
+  }
+  #\30 2-research .research-map {
+    max-width: 360px;
+  }
+}

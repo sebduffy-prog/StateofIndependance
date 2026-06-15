@@ -1,0 +1,58 @@
+<div class="chapter-inner">
+  <div class="pg-stage" data-stagger="120">
+    <header class="pg-head reveal">
+      <span class="vccp-stage-num">08</span>
+      <h2 class="pg-headline">Explore the <em class="hl hl-teal">data</em> yourself</h2>
+      <p class="pg-standfirst">Every chart on this site renders from the verified survey file. Pick a segment, pick a question, and see how the four Britains diverge — no number typed in by hand.</p>
+    </header>
+
+    <div class="pg-grid">
+      <!-- PANEL A — metric explorer -->
+      <section class="vccp-card pg-panel pg-panel-a reveal" aria-labelledby="pg-a-title">
+        <header class="pg-panel-head">
+          <p class="vccp-eyebrow">Panel A · metric explorer</p>
+          <h3 id="pg-a-title" class="pg-panel-title">Make your own cut</h3>
+          <p class="pg-panel-sub">Choose a question, then a segment. The bars re-sort and morph live.</p>
+        </header>
+
+        <div class="pg-controls">
+          <div class="pg-control">
+            <span class="pg-control-label" id="pg-metric-label">Question</span>
+            <div data-pg-metric-pills aria-describedby="pg-metric-label"></div>
+          </div>
+          <div class="pg-control">
+            <span class="pg-control-label" id="pg-segment-label">Segment</span>
+            <div data-pg-segment-pills aria-describedby="pg-segment-label"></div>
+          </div>
+        </div>
+
+        <p class="pg-view-note" data-pg-view-note role="status" aria-live="polite"></p>
+        <div class="pg-chart" data-pg-metric-chart></div>
+        <p class="vccp-source" data-pg-metric-source></p>
+      </section>
+
+      <!-- PANEL B — TGI media index -->
+      <section class="vccp-card pg-panel pg-panel-b reveal" aria-labelledby="pg-b-title">
+        <header class="pg-panel-head">
+          <p class="vccp-eyebrow">Panel B · media footprint</p>
+          <h3 id="pg-b-title" class="pg-panel-title">What each Britain watches and reads</h3>
+          <p class="pg-panel-sub">TGI index numbers, not percentages. The marker sits at 100 — the UK-adult average. A bar past 120 means the segment over-indexes.</p>
+        </header>
+
+        <div class="pg-controls">
+          <div class="pg-control">
+            <span class="pg-control-label" id="pg-tgi-label">Segment</span>
+            <div data-pg-tgi-pills aria-describedby="pg-tgi-label"></div>
+          </div>
+        </div>
+
+        <div class="pg-legend" aria-hidden="true">
+          <span class="pg-legend-marker"></span>
+          <span class="pg-legend-text">100 = UK-adult average</span>
+        </div>
+        <div class="pg-chart pg-chart-tgi" data-pg-tgi-chart></div>
+        <p class="vccp-source" data-pg-tgi-source></p>
+      </section>
+    </div>
+  </div>
+</div>

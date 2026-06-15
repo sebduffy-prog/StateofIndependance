@@ -1,0 +1,67 @@
+<div class="chapter-inner">
+  <header class="seg-head reveal">
+    <span class="vccp-eyebrow">The four Britains</span>
+    <h2 class="seg-title">Britain in four <em class="hl">segments</em>.</h2>
+    <p class="seg-standfirst">This time we dug deeper — beyond how people feel, into what they are doing about it. A new dimension of agency to act splits the nation into four very different camps.</p>
+    <p class="seg-hinge">
+      <span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic ↔ optimistic</span>
+      <span class="seg-hinge-x" aria-hidden="true">×</span>
+      <span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive ↔ proactive</span>
+    </p>
+  </header>
+
+  <div class="seg-stage reveal">
+    <!-- The 2×2 map. Buttons sit over each quadrant; the dot field draws beneath. -->
+    <div class="seg-mapwrap">
+      <div class="seg-map" data-map>
+        <div class="seg-dotfield" data-dotfield></div>
+
+        <span class="seg-axis seg-axis-x" aria-hidden="true"></span>
+        <span class="seg-axis seg-axis-y" aria-hidden="true"></span>
+
+        <span class="seg-axis-label seg-label-left" aria-hidden="true">pessimistic</span>
+        <span class="seg-axis-label seg-label-right" aria-hidden="true">optimistic</span>
+        <span class="seg-axis-label seg-label-top" aria-hidden="true">proactive</span>
+        <span class="seg-axis-label seg-label-bottom" aria-hidden="true">passive</span>
+
+        <div class="seg-quads" role="group" aria-label="The four segments. Select a quadrant to read its profile.">
+          <button type="button" class="seg-quad" data-quad="hustlers" data-pos="tl">
+            <span class="seg-quad-name">The Hustlers</span>
+            <span class="seg-quad-share num" data-share="hustlers">28%</span>
+            <span class="seg-quad-trio">Self-sufficient. Savvy. Sceptical.</span>
+          </button>
+          <button type="button" class="seg-quad" data-quad="architects" data-pos="tr">
+            <span class="seg-quad-name">The Architects</span>
+            <span class="seg-quad-share num" data-share="architects">17%</span>
+            <span class="seg-quad-trio">Organised. Positive. In control.</span>
+          </button>
+          <button type="button" class="seg-quad" data-quad="retreaters" data-pos="bl">
+            <span class="seg-quad-name">The Retreaters</span>
+            <span class="seg-quad-share num" data-share="retreaters">28%</span>
+            <span class="seg-quad-trio">Overwhelmed. Stretched. Support-seeking.</span>
+          </button>
+          <button type="button" class="seg-quad" data-quad="coasters" data-pos="br">
+            <span class="seg-quad-name">The Coasters</span>
+            <span class="seg-quad-share num" data-share="coasters">27%</span>
+            <span class="seg-quad-trio">Easygoing. Careful. Open-minded.</span>
+          </button>
+        </div>
+
+        <span class="seg-youtag" data-youtag hidden>you</span>
+      </div>
+      <p class="seg-maphint" data-maphint>Select a quadrant to open its profile — or take the quiz below to find your own.</p>
+    </div>
+
+    <!-- Profile rail card — filled in by JS when a quadrant is chosen. -->
+    <aside class="seg-profile" data-profile aria-live="polite"></aside>
+  </div>
+
+  <section class="seg-quizblock reveal" data-quizblock aria-labelledby="seg-quiz-title">
+    <h3 class="seg-quiz-title" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
+    <p class="seg-quiz-intro" data-quiz-intro></p>
+    <div class="seg-quiz-host" data-quiz></div>
+    <div class="seg-result" data-result hidden></div>
+  </section>
+
+  <p class="vccp-source seg-source">Segments: VCCP COCL segmentation. Quotes: qualitative 'Taking control' research. (Segment-level figures are not in the COCL survey file.)</p>
+</div>

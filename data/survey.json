@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "sampleSize": 1504,
+    "fieldwork": "May 2026",
+    "weighting": "Weighted to ONS profile",
+    "marginOfError": "Headline survey %: +/-2.5% at 95% confidence",
+    "provenance": "All values computed from data-src/cocl_segmented.csv or read from data-src/cocl_crosstab.json; verified against docs/deck-narrative.md (canonical)."
+  },
+  "moodOfNation": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q2",
+    "measure": "% net agree (agree + strongly agree)",
+    "items": [
+      { "id": "careful", "code": "Q2r3", "label": "More careful with money than 5 yrs ago", "pct": 77.3 },
+      { "id": "anxious", "code": "Q2r2", "label": "Feel anxious about coming months", "pct": 60.2 },
+      { "id": "exhausted", "code": "Q2r5", "label": "More emotionally exhausted than pre-pandemic", "pct": 54.8 },
+      { "id": "selfReliant", "code": "Q2r6", "label": "More self-reliant than 5 yrs ago", "pct": 54.3 },
+      { "id": "enjoyNow", "code": "Q2r4", "label": "Prioritise enjoying life now", "pct": 51.2 },
+      { "id": "inControl", "code": "Q2r1", "label": "In control of my financial future", "pct": 46.7 }
+    ]
+  },
+  "moneySavingMoves": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q6A",
+    "measure": "% who did this in the last 3 months",
+    "items": [
+      { "id": "shoppedAround", "code": "Q6Ar4", "label": "Shopped around / researched deals", "pct": 54.5 },
+      { "id": "ownLabelSwitch", "code": "Q6Ar1", "label": "Switched to supermarket own-label", "pct": 42.6 },
+      { "id": "downgradedSubscription", "code": "Q6Ar2", "label": "Downgraded / stopped a subscription", "pct": 29.6 },
+      { "id": "protectedTreat", "code": "Q6Ar3", "label": "Protected a treat for wellbeing", "pct": 24.7 }
+    ]
+  },
+  "tradingDownByCategory": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q6B",
+    "measure": "% who traded down in the last 12 months",
+    "items": [
+      { "id": "groceries", "label": "Groceries", "pct": 53.6 },
+      { "id": "fashion", "label": "Fashion", "pct": 30.2 },
+      { "id": "entertainment", "label": "Entertainment", "pct": 29.3 },
+      { "id": "mobile", "label": "Mobile / phone", "pct": 22.3 },
+      { "id": "beauty", "label": "Beauty", "pct": 21.9 },
+      { "id": "broadband", "label": "Broadband", "pct": 19.8 },
+      { "id": "energy", "label": "Energy", "pct": 17.3 },
+      { "id": "insurance", "label": "Insurance", "pct": 16.8 }
+    ]
+  },
+  "protectedSpend": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q5",
+    "measure": "% actively protecting this non-essential because it matters to their happiness or wellbeing",
+    "items": [
+      { "id": "holidays", "code": "Q5r3", "label": "Holidays", "pct": 39.6 },
+      { "id": "familyExperiences", "code": "Q5r7", "label": "Family experiences", "pct": 39.2 },
+      { "id": "streaming", "code": "Q5r4", "label": "Streaming / entertainment", "pct": 33.0 },
+      { "id": "hobbies", "code": "Q5r6", "label": "Hobbies", "pct": 31.8 },
+      { "id": "beauty", "code": "Q5r5", "label": "Beauty / self-care", "pct": 26.7 },
+      { "id": "gym", "code": "Q5r1", "label": "Gym / fitness", "pct": 24.2 },
+      { "id": "pub", "code": "Q5r2", "label": "Pub / socialising", "pct": 21.0 },
+      { "id": "fashion", "code": "Q5r9", "label": "Fashion / clothes", "pct": 16.7 },
+      { "id": "specificBrands", "code": "Q5r8", "label": "Specific brands / products", "pct": 9.2 },
+      { "id": "noneOfThese", "code": "Q5r10", "label": "None of these", "pct": 9.0 }
+    ]
+  },
+  "availabilityConcerns": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q8A",
+    "measure": "% very or extremely concerned about availability (not just price) in the coming months",
+    "items": [
+      { "id": "fuel", "code": "Q8Ar1", "label": "Fuel (petrol / diesel)", "pct": 44.8 },
+      { "id": "freshFood", "code": "Q8Ar2", "label": "Fresh food staples", "pct": 36.8 },
+      { "id": "medicines", "code": "Q8Ar4", "label": "Essential medicines", "pct": 33.4 },
+      { "id": "tech", "code": "Q8Ar3", "label": "Tech / electronics", "pct": 13.9 }
+    ]
+  },
+  "institutionTrust": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCodes": { "confidence": "Q7", "performanceChange": "Q8C" },
+    "headline": {
+      "nhsMeanScore": 6.42,
+      "nhsMeanScoreNote": "NHS trust score out of 10 - the highest of any institution",
+      "nhsDeclinedPct": 52.6,
+      "nhsDeclinedNote": "Yet 53% say NHS performance has declined over the past decade",
+      "trustSpread": "NHS 53% confident at the top to Government 24% at the bottom - a 29-point spread"
+    },
+    "confidenceRanking": {
+      "measure": "% confident (7-10 out of 10) the institution will reliably support them over the next 12 months",
+      "items": [
+        { "id": "nhs", "code": "Q7r1", "label": "NHS", "pctConfident": 52.8, "meanScore": 6.42 },
+        { "id": "banks", "code": "Q7r6", "label": "Banks / financial", "pctConfident": 49.1, "meanScore": 6.25 },
+        { "id": "publicTransport", "code": "Q7r3", "label": "Public transport", "pctConfident": 45.9, "meanScore": 6.08 },
+        { "id": "employers", "code": "Q7r7", "label": "Employers", "pctConfident": 40.4, "meanScore": 5.73 },
+        { "id": "energyProviders", "code": "Q7r2", "label": "Energy providers", "pctConfident": 38.9, "meanScore": 5.67 },
+        { "id": "education", "code": "Q7r4", "label": "Education system", "pctConfident": 37.0, "meanScore": 5.71 },
+        { "id": "government", "code": "Q7r5", "label": "Government", "pctConfident": 23.9, "meanScore": 4.5 }
+      ]
+    },
+    "performanceChange": {
+      "measure": "% saying performance has declined (somewhat or significantly) over the past 10 years",
+      "items": [
+        { "id": "government", "code": "Q8Cr3", "label": "Government", "pctDeclined": 64.0, "pctImproved": 15.5 },
+        { "id": "nhs", "code": "Q8Cr1", "label": "NHS", "pctDeclined": 52.6, "pctImproved": 23.5 },
+        { "id": "localCouncil", "code": "Q8Cr7", "label": "Local council", "pctDeclined": 51.9, "pctImproved": 17.0 },
+        { "id": "police", "code": "Q8Cr5", "label": "Police", "pctDeclined": 48.3, "pctImproved": 17.6 },
+        { "id": "schools", "code": "Q8Cr2", "label": "Schools", "pctDeclined": 37.0, "pctImproved": 21.3 },
+        { "id": "armedForces", "code": "Q8Cr6", "label": "Armed forces", "pctDeclined": 33.6, "pctImproved": 19.9 },
+        { "id": "banks", "code": "Q8Cr4", "label": "Banks", "pctDeclined": 28.7, "pctImproved": 25.7 }
+      ]
+    }
+  },
+  "aiTasks": {
+    "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "questionCode": "Q11",
+    "measure": "% who used AI tools instead of a human professional or traditional service in the last 6 months",
+    "anyTaskPct": 58.4,
+    "anyTaskNote": "Have used AI instead of a human professional for at least one task",
+    "highStakesPct": 37.4,
+    "highStakesNote": "Used AI for at least one high-stakes task (financial advice, health information, or legal/admin)",
+    "notUsedPct": 41.6,
+    "items": [
+      { "id": "health", "code": "Q11r2", "label": "Health information", "pct": 24.7, "isHighStakes": true },
+      { "id": "education", "code": "Q11r5", "label": "Education / learning", "pct": 21.2, "isHighStakes": false },
+      { "id": "creative", "code": "Q11r6", "label": "Creative work", "pct": 20.8, "isHighStakes": false },
+      { "id": "financial", "code": "Q11r1", "label": "Financial advice", "pct": 19.7, "isHighStakes": true },
+      { "id": "technical", "code": "Q11r4", "label": "Technical troubleshooting", "pct": 18.8, "isHighStakes": false },
+      { "id": "career", "code": "Q11r7", "label": "Career support", "pct": 15.2, "isHighStakes": false },
+      { "id": "legal", "code": "Q11r3", "label": "Legal / admin", "pct": 9.4, "isHighStakes": true }
+    ]
+  }
+}

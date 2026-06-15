@@ -1,0 +1,11 @@
+/* sections.css — one @import per chapter, build order. Shared file —
+   section builders edit ONLY their own css/sections/{id}.css. */
+@import "sections/01-cover.css";
+@import "sections/02-research.css";
+@import "sections/03-baselines.css";
+@import "sections/04-twists.css";
+@import "sections/05-segments.css";
+@import "sections/06-empowerment.css";
+@import "sections/07-moves.css";
+@import "sections/08-playground.css";
+@import "sections/09-outro.css";

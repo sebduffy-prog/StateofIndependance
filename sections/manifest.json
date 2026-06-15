@@ -1,0 +1,11 @@
+[
+  { "id": "01-cover", "title": "Cover" },
+  { "id": "02-research", "title": "Research" },
+  { "id": "03-baselines", "title": "Baselines" },
+  { "id": "04-twists", "title": "Twists" },
+  { "id": "05-segments", "title": "Segments" },
+  { "id": "06-empowerment", "title": "Empowerment" },
+  { "id": "07-moves", "title": "Moves" },
+  { "id": "08-playground", "title": "Playground" },
+  { "id": "09-outro", "title": "Outro" }
+]
