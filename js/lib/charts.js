@@ -1,10 +1,18 @@
 /**
  * charts.js — pure-SVG + canvas chart factories for The State of Independence.
  *
- * House style: flat colour, square corners, ink stroke, mustard fill,
- * value labels inline at the bar end (never a boxed legend), tabular
- * numbers. No pie/donut. All factories respect prefers-reduced-motion
- * by jump-cutting to the final state.
+ * House style: flat colour, square corners, TRANSPARENT chart background
+ * (charts sit directly on the page ground — no white/paper card behind
+ * them), high-contrast NAVY components + navy text by default so marks
+ * read on warm amber/mustard grounds. Tracks are a faint ink tint, never
+ * a white box. Bold, large value labels inline at the bar end (never a
+ * boxed legend), tabular numbers. No pie/donut.
+ *
+ * Ground awareness: every factory accepts `onNavy: true` (or
+ * `accent: 'cream'`) to flip components + text to cream/white for dark
+ * navy grounds. The accent param still works ('navy'|'teal'|'mustard'|
+ * 'cream') but defaults to navy. All factories respect
+ * prefers-reduced-motion by jump-cutting to the final state.
  *
  * Exports:
  *   horizontalBars(container, opts)  -> { update, el }
@@ -15,6 +23,8 @@
  *   dotPlot(container, opts)         -> { el }
  *   proportionStrip(container, opts) -> { update, el }
  *   radialGauge(container, opts)     -> { el }
+ *   orbitRingChart(container, opts)  -> { el }
+ *   tugOfWar(container, opts)        -> { update, el }
  *   dotField(container, opts)        -> { formation, highlight, drift,
  *                                         setPointer, destroy, el }
  *   clusterPoints(n, rect)           -> [{x,y}]
@@ -38,16 +48,52 @@ const palette = () => ({
   mustardPale: cssVar('--mustard-pale', '#FFF9E2'),
   teal: cssVar('--teal', '#80E8E3'),
   tealDeep: cssVar('--teal-deep', '#00BCA5'),
-  navy: cssVar('--navy', '#101F5B'),
+  // Signature navy is the high-contrast default on warm grounds.
+  navy: cssVar('--soi-navy', '#0A1A5C'),
   ink: cssVar('--ink', '#000000'),
+  cream: cssVar('--soi-cream', '#EEE9DD'),
   paper: cssVar('--paper', '#FFFFFF'),
 });
 
-/** Resolve an accent token name to its flat fill colour. */
+// Faint ink/navy tint used for chart tracks/baselines — NEVER a white box.
+const TRACK_TINT = 'rgba(0,0,0,0.08)';
+// Faint cream tint for tracks on dark navy grounds.
+const TRACK_TINT_ON_NAVY = 'rgba(255,255,255,0.14)';
+
+/**
+ * Resolve an accent token name to its flat fill colour.
+ * Navy is the high-contrast default so components never vanish on warm
+ * amber/mustard grounds. `'cream'` switches to cream for use on dark navy.
+ */
 const accentColour = (c, accent) => {
   if (accent === 'teal') return c.tealDeep;
-  if (accent === 'navy') return c.navy;
-  return c.mustard;
+  if (accent === 'mustard') return c.mustard;
+  if (accent === 'cream') return c.cream;
+  return c.navy;
+};
+
+/**
+ * Per-chart ground awareness. `onNavy` (or accent === 'cream') flips
+ * component + text colours to cream/white for dark navy grounds; the
+ * default is navy components + navy text for warm amber grounds.
+ * Returns { component, text, track, baselineOpacity }.
+ */
+const groundScheme = (c, { accent, onNavy } = {}) => {
+  const isDark = onNavy === true || accent === 'cream';
+  if (isDark) {
+    return {
+      component: accentColour(c, accent === 'cream' ? 'cream' : (accent || 'cream')),
+      text: c.cream,
+      track: TRACK_TINT_ON_NAVY,
+      stroke: c.cream,
+    };
+  }
+  return {
+    component: accentColour(c, accent),
+    text: c.navy,
+    track: TRACK_TINT,
+    stroke: c.navy,
+  };
 };
 
 const el = (tag, attrs = {}) => {
@@ -102,7 +148,8 @@ export const horizontalBars = (container, opts) => {
   const c = palette();
   const {
     max = 100,
-    accent = 'mustard',
+    accent = 'navy',
+    onNavy = false,
     decimals = 0,
     highlightId = null,
     animate = true,
@@ -111,11 +158,17 @@ export const horizontalBars = (container, opts) => {
     labelWidth = 200,
   } = opts;
 
+  const scheme = groundScheme(c, { accent, onNavy });
   const valueX = labelWidth + 12;
   const rightPad = 56;
   const width = 720;
   const trackWidth = width - valueX - rightPad;
-  const fillColour = accent === 'teal' ? c.tealDeep : c.mustard;
+  const fillColour = scheme.component;
+  const textColour = scheme.text;
+  // Highlight must be distinct from the default bar: pure ink on warm
+  // grounds (darker than navy), bright teal on dark navy grounds.
+  const isDark = onNavy === true || accent === 'cream';
+  const highlightColour = isDark ? c.tealDeep : c.ink;
 
   let items = opts.items.slice();
   const rowFor = new Map();
@@ -139,28 +192,29 @@ export const horizontalBars = (container, opts) => {
       y: barHeight / 2,
       'text-anchor': 'end',
       'dominant-baseline': 'central',
-      fill: c.ink,
-      'font-size': 13,
+      fill: textColour,
+      'font-size': 15,
+      'font-weight': 600,
       'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
     });
     label.textContent = item.label;
 
+    // Track is a faint ink/cream tint, never a white box, no border.
     const track = el('rect', {
       x: valueX, y: 0, width: trackWidth, height: barHeight,
-      fill: c.paper, stroke: 'rgba(0,0,0,0.12)', 'stroke-width': 1,
+      fill: scheme.track,
     });
 
     const isHi = highlightId && item.id === highlightId;
     const bar = el('rect', {
       x: valueX, y: 0, width: 0, height: barHeight,
-      fill: isHi ? c.ink : fillColour,
-      stroke: c.ink, 'stroke-width': 1,
+      fill: isHi ? highlightColour : fillColour,
     });
 
     const value = el('text', {
       x: valueX, y: barHeight / 2,
       'dominant-baseline': 'central',
-      fill: c.ink, 'font-size': 13, 'font-weight': 500,
+      fill: textColour, 'font-size': 16, 'font-weight': 700,
       'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
       style: 'font-variant-numeric: tabular-nums;',
     });
@@ -238,10 +292,12 @@ export const horizontalBars = (container, opts) => {
  */
 export const waffleGrid = (container, opts) => {
   const c = palette();
-  const { total = 100, accent = 'mustard', square = 26, gap = 6 } = opts;
+  const { total = 100, accent = 'navy', onNavy = false, square = 26, gap = 6 } = opts;
   const cols = 10;
   const rows = Math.ceil(total / cols);
-  const fillColour = accent === 'teal' ? c.tealDeep : c.mustard;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const fillColour = scheme.component;
+  const emptyFill = scheme.track; // faint tint, never a white box
   const size = cols * square + (cols - 1) * gap;
 
   const svg = el('svg', {
@@ -262,7 +318,7 @@ export const waffleGrid = (container, opts) => {
       x: col * (square + gap),
       y: row * (square + gap),
       width: square, height: square,
-      fill: c.paper, stroke: c.ink, 'stroke-width': 1,
+      fill: emptyFill,
     });
     svg.append(rect);
     cells.push(rect);
@@ -273,7 +329,7 @@ export const waffleGrid = (container, opts) => {
   const paint = (filled) => {
     const n = Math.round(filled);
     cells.forEach((rect, i) => {
-      rect.setAttribute('fill', i < n ? fillColour : c.paper);
+      rect.setAttribute('fill', i < n ? fillColour : emptyFill);
     });
   };
 
@@ -325,13 +381,15 @@ export const waffleGrid = (container, opts) => {
  */
 export const barGauge = (container, opts) => {
   const c = palette();
-  const { value, max = 10, accent = 'mustard' } = opts;
+  const { value, max = 10, accent = 'navy', onNavy = false } = opts;
   const width = 420;
   const height = 44;
-  const fillColour = accent === 'teal' ? c.tealDeep : c.mustard;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const fillColour = scheme.component;
+  const textColour = scheme.text;
 
   const svg = el('svg', {
-    viewBox: `0 0 ${width} ${height + 22}`,
+    viewBox: `0 0 ${width} ${height + 24}`,
     width: '100%',
     role: 'img',
     'aria-label': opts.ariaLabel || `${value} out of ${max}`,
@@ -340,28 +398,22 @@ export const barGauge = (container, opts) => {
   svg.style.maxWidth = `${width}px`;
   svg.style.height = 'auto';
 
-  svg.append(el('rect', {
-    x: 0, y: 0, width, height, fill: c.paper,
-    stroke: c.ink, 'stroke-width': 1.5,
-  }));
+  // Track: faint tint, never a white box, no border.
+  svg.append(el('rect', { x: 0, y: 0, width, height, fill: scheme.track }));
   const fill = el('rect', { x: 0, y: 0, width: 0, height, fill: fillColour });
   svg.append(fill);
-  svg.append(el('rect', {
-    x: 0, y: 0, width, height, fill: 'none',
-    stroke: c.ink, 'stroke-width': 1.5,
-  }));
 
-  // tick marks per unit
+  // tick marks per unit (faint component-coloured ticks)
   for (let i = 1; i < max; i += 1) {
     const x = (i / max) * width;
     svg.append(el('line', {
       x1: x, y1: height - 10, x2: x, y2: height,
-      stroke: c.ink, 'stroke-width': 1, opacity: 0.4,
+      stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.35,
     }));
   }
   const label = el('text', {
-    x: 0, y: height + 16, fill: c.ink,
-    'font-size': 13, 'font-weight': 500,
+    x: 0, y: height + 18, fill: textColour,
+    'font-size': 16, 'font-weight': 700,
     'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
     style: 'font-variant-numeric: tabular-nums;',
   });
@@ -438,8 +490,10 @@ const svgRoot = (width, height, ariaLabel, maxWidthPx) => {
  */
 export const slopeChart = (container, opts) => {
   const c = palette();
-  const { items, max = 100, accent = 'mustard' } = opts;
-  const stroke = accentColour(c, accent);
+  const { items, max = 100, accent = 'navy', onNavy = false } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const stroke = scheme.component;
+  const textColour = scheme.text;
   const width = 520;
   const padTop = 28;
   const padBottom = 12;
@@ -451,11 +505,11 @@ export const slopeChart = (container, opts) => {
   const svg = svgRoot(width, height, opts.ariaLabel || 'Slope chart', width);
   const yFor = (v) => padTop + plotH - (Math.min(v, max) / max) * plotH;
 
-  // axes
+  // axes (faint component-coloured tint)
   [leftX, rightX].forEach((x) => {
     svg.append(el('line', {
       x1: x, y1: padTop, x2: x, y2: padTop + plotH,
-      stroke: c.ink, 'stroke-width': 1, opacity: 0.4,
+      stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.3,
     }));
   });
 
@@ -465,22 +519,23 @@ export const slopeChart = (container, opts) => {
     const y2 = yFor(item.to);
     const line = el('line', {
       x1: leftX, y1, x2: leftX, y2: y1, // start flat, animate to y2/rightX
-      stroke, 'stroke-width': 2,
+      stroke, 'stroke-width': 2.5,
     });
     svg.append(line);
     [{ x: leftX, y: y1, dx: -10, v: item.from },
      { x: rightX, y: y2, dx: 10, v: item.to }].forEach((p, idx) => {
-      svg.append(el('circle', { cx: p.x, cy: p.y, r: 3.5, fill: stroke, stroke: c.ink, 'stroke-width': 1 }));
+      svg.append(el('circle', { cx: p.x, cy: p.y, r: 4.5, fill: stroke }));
       if (idx === 0) {
         svg.append(textNode({
           x: p.x + p.dx - 14, y: p.y, 'text-anchor': 'end',
-          'dominant-baseline': 'central', fill: c.ink, 'font-size': 12,
+          'dominant-baseline': 'central', fill: textColour, 'font-size': 14,
+          'font-weight': 600,
         }, item.label));
       }
       svg.append(textNode({
         x: p.x + p.dx, y: p.y, 'text-anchor': idx === 0 ? 'end' : 'start',
-        'dominant-baseline': 'central', fill: c.ink, 'font-size': 12,
-        'font-weight': 500, style: TAB_NUMS,
+        'dominant-baseline': 'central', fill: textColour, 'font-size': 15,
+        'font-weight': 700, style: TAB_NUMS,
       }, fmtPct(p.v, 0)));
     });
     lines.push({ line, y1, y2 });
@@ -509,8 +564,12 @@ export const slopeChart = (container, opts) => {
  */
 export const lollipopChart = (container, opts) => {
   const c = palette();
-  const { items, max = 100, accent = 'mustard', highlightId = null } = opts;
-  const dotColour = accentColour(c, accent);
+  const { items, max = 100, accent = 'navy', onNavy = false, highlightId = null } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const dotColour = scheme.component;
+  const textColour = scheme.text;
+  const isDark = onNavy === true || accent === 'cream';
+  const highlightColour = isDark ? c.tealDeep : c.ink;
   const width = 720;
   const rowH = 38;
   const labelWidth = 200;
@@ -528,23 +587,22 @@ export const lollipopChart = (container, opts) => {
     const isHi = highlightId && item.id === highlightId;
     const label = textNode({
       x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
-      fill: c.ink, 'font-size': 13,
+      fill: textColour, 'font-size': 15, 'font-weight': 600,
     }, item.label);
     const baseline = el('line', {
       x1: valueX, y1: cy, x2: valueX + trackW, y2: cy,
-      stroke: c.ink, 'stroke-width': 1, opacity: 0.12,
+      stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.18,
     });
     const stem = el('line', {
       x1: valueX, y1: cy, x2: valueX, y2: cy,
-      stroke: c.ink, 'stroke-width': 1.5,
+      stroke: isHi ? highlightColour : dotColour, 'stroke-width': 2.5,
     });
     const dot = el('circle', {
-      cx: valueX, cy, r: 6, fill: isHi ? c.ink : dotColour,
-      stroke: c.ink, 'stroke-width': 1.5,
+      cx: valueX, cy, r: 7, fill: isHi ? highlightColour : dotColour,
     });
     const value = textNode({
-      x: valueX, y: cy, 'dominant-baseline': 'central', fill: c.ink,
-      'font-size': 13, 'font-weight': 500, style: TAB_NUMS,
+      x: valueX, y: cy, 'dominant-baseline': 'central', fill: textColour,
+      'font-size': 16, 'font-weight': 700, style: TAB_NUMS,
     }, fmtPct(0, 0));
     svg.append(label, baseline, stem, dot, value);
     rows.push({ stem, dot, value, cy, target: item.pct });
@@ -573,8 +631,10 @@ export const lollipopChart = (container, opts) => {
  */
 export const dotPlot = (container, opts) => {
   const c = palette();
-  const { items, max = 100, accent = 'mustard' } = opts;
-  const dotColour = accentColour(c, accent);
+  const { items, max = 100, accent = 'navy', onNavy = false } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const dotColour = scheme.component;
+  const textColour = scheme.text;
   const width = 720;
   const rowH = 30;
   const labelWidth = 200;
@@ -588,19 +648,19 @@ export const dotPlot = (container, opts) => {
   const svg = svgRoot(width, height, opts.ariaLabel || 'Dot plot');
   const xFor = (pct) => axisX + (Math.min(pct, max) / max) * trackW;
 
-  // shared axis + gridline ticks
+  // shared axis + gridline ticks (faint component-coloured tint)
   svg.append(el('line', {
     x1: axisX, y1: axisY, x2: axisX + trackW, y2: axisY,
-    stroke: c.ink, 'stroke-width': 1, opacity: 0.4,
+    stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.35,
   }));
   for (let t = 0; t <= max; t += max / 4) {
     const x = xFor(t);
     svg.append(el('line', {
-      x1: x, y1: topPad, x2: x, y2: axisY, stroke: c.ink, 'stroke-width': 1, opacity: 0.08,
+      x1: x, y1: topPad, x2: x, y2: axisY, stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.1,
     }));
     svg.append(textNode({
-      x, y: axisY + 14, 'text-anchor': 'middle', fill: c.ink, 'font-size': 11,
-      opacity: 0.6, style: TAB_NUMS,
+      x, y: axisY + 16, 'text-anchor': 'middle', fill: textColour, 'font-size': 13,
+      'font-weight': 600, opacity: 0.7, style: TAB_NUMS,
     }, fmtPct(t, 0)));
   }
 
@@ -609,14 +669,14 @@ export const dotPlot = (container, opts) => {
     const cy = topPad + index * rowH + rowH / 2;
     const label = textNode({
       x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
-      fill: c.ink, 'font-size': 13,
+      fill: textColour, 'font-size': 15, 'font-weight': 600,
     }, item.label);
     const dot = el('circle', {
-      cx: axisX, cy, r: 6, fill: dotColour, stroke: c.ink, 'stroke-width': 1.5,
+      cx: axisX, cy, r: 7, fill: dotColour,
     });
     const value = textNode({
-      x: axisX, y: cy, 'dominant-baseline': 'central', fill: c.ink,
-      'font-size': 12, 'font-weight': 500, style: TAB_NUMS,
+      x: axisX, y: cy, 'dominant-baseline': 'central', fill: textColour,
+      'font-size': 15, 'font-weight': 700, style: TAB_NUMS,
     }, fmtPct(0, 0));
     svg.append(label, dot, value);
     rows.push({ dot, value, cy, target: item.pct });
@@ -644,8 +704,14 @@ export const dotPlot = (container, opts) => {
  */
 export const proportionStrip = (container, opts) => {
   const c = palette();
+  const { onNavy = false } = opts;
+  const scheme = groundScheme(c, { onNavy });
+  const textColour = scheme.text;
+  // Default alternation avoids mustard-on-mustard: navy ↔ teal (or
+  // cream ↔ teal on dark navy). Per-segment `accent` still overrides.
+  const altAccents = onNavy ? ['cream', 'teal'] : ['navy', 'teal'];
   const width = 720;
-  const height = 88;
+  const height = 92;
   const stripY = 0;
   const stripH = 48;
   const svg = svgRoot(width, height, opts.ariaLabel || 'Proportion strip');
@@ -662,21 +728,22 @@ export const proportionStrip = (container, opts) => {
     segments.forEach((seg, idx) => {
       const segW = (seg.pct / totalPct) * width;
       const x = cursor;
-      const fill = accentColour(c, seg.accent || (idx % 2 === 0 ? 'mustard' : 'teal'));
+      const fill = accentColour(c, seg.accent || altAccents[idx % 2]);
+      // Thin separator between cells, not a heavy box outline.
       const rect = el('rect', {
         x, y: stripY, width: animate ? 0 : segW, height: stripH,
-        fill, stroke: c.ink, 'stroke-width': 1.5,
+        fill, stroke: scheme.track, 'stroke-width': 1,
       });
       cellsLayer.append(rect);
       if (animate) tween(0, segW, 800, (w) => rect.setAttribute('width', w));
 
       const labelText = textNode({
-        x: x + 6, y: stripY + stripH + 18, fill: c.ink, 'font-size': 12,
-        'font-weight': 500,
+        x: x + 6, y: stripY + stripH + 20, fill: textColour, 'font-size': 15,
+        'font-weight': 600,
       }, seg.label);
       const pctText = textNode({
-        x: x + 6, y: stripY + stripH + 34, fill: c.ink, 'font-size': 12,
-        opacity: 0.7, style: TAB_NUMS,
+        x: x + 6, y: stripY + stripH + 38, fill: textColour, 'font-size': 15,
+        'font-weight': 700, opacity: 0.85, style: TAB_NUMS,
       }, fmtPct(seg.pct, 0));
       cellsLayer.append(labelText, pctText);
       cursor += segW;
@@ -702,8 +769,10 @@ export const proportionStrip = (container, opts) => {
  */
 export const radialGauge = (container, opts) => {
   const c = palette();
-  const { value, max = 10, accent = 'mustard', label = '' } = opts;
-  const arcColour = accentColour(c, accent);
+  const { value, max = 10, accent = 'navy', onNavy = false, label = '' } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const arcColour = scheme.component;
+  const textColour = scheme.text;
   const width = 280;
   const height = 170;
   const cx = width / 2;
@@ -726,10 +795,10 @@ export const radialGauge = (container, opts) => {
     return `M ${start.x} ${start.y} A ${r} ${r} 0 ${large} ${sweep} ${end.x} ${end.y}`;
   };
 
-  // track (full semicircle)
+  // track (full semicircle) — faint component tint, never white
   svg.append(el('path', {
-    d: arcPath(1), fill: 'none', stroke: c.ink, 'stroke-width': strokeW,
-    'stroke-linecap': 'butt', opacity: 0.12,
+    d: arcPath(1), fill: 'none', stroke: scheme.stroke, 'stroke-width': strokeW,
+    'stroke-linecap': 'butt', opacity: 0.15,
   }));
   const fillArc = el('path', {
     d: arcPath(0.0001), fill: 'none', stroke: arcColour,
@@ -738,14 +807,14 @@ export const radialGauge = (container, opts) => {
   svg.append(fillArc);
 
   const valueText = textNode({
-    x: cx, y: cy - 6, 'text-anchor': 'middle', fill: c.ink,
-    'font-size': 34, 'font-weight': 600, style: TAB_NUMS,
+    x: cx, y: cy - 6, 'text-anchor': 'middle', fill: textColour,
+    'font-size': 38, 'font-weight': 800, style: TAB_NUMS,
   });
   svg.append(valueText);
   if (label) {
     svg.append(textNode({
-      x: cx, y: cy + 16, 'text-anchor': 'middle', fill: c.ink,
-      'font-size': 12, opacity: 0.7,
+      x: cx, y: cy + 18, 'text-anchor': 'middle', fill: textColour,
+      'font-size': 14, 'font-weight': 600, opacity: 0.8,
     }, label));
   }
 
@@ -810,7 +879,10 @@ const DF_JOSTLE = 0.00006;      // ambient brownian magnitude per drift unit
 
 export const dotField = (container, opts) => {
   const c = palette();
-  const { count, dotRadius = 2.2 } = opts;
+  const { count, dotRadius = 2.6, onNavy = false } = opts;
+  // Default dot is high-contrast navy on warm grounds, cream on dark navy.
+  const baseDotColour = onNavy ? c.cream : c.navy;
+  const diffuseColour = onNavy ? 'rgba(238,233,221,0.30)' : 'rgba(10,26,92,0.30)';
   const canvas = document.createElement('canvas');
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('aria-label', opts.ariaLabel || 'Population of survey respondents');
@@ -830,13 +902,13 @@ export const dotField = (container, opts) => {
     tx: Math.random(), ty: Math.random(),
     vx: 0, vy: 0,
     hasTarget: false,
-    colour: c.ink,
+    colour: baseDotColour,
     phase: Math.random() * Math.PI * 2,
   }));
 
   let driftAmp = 0;
   let highlightIndex = -1;
-  let highlightColour = c.mustard;
+  let highlightColour = c.tealDeep;
   let springK = DF_SPRING;
   let jostleK = DF_JOSTLE;
   let pointer = null; // { x, y } normalised, or null
@@ -1040,16 +1112,16 @@ export const dotField = (container, opts) => {
           dots[i].tx = t.x;
           dots[i].ty = t.y;
           dots[i].hasTarget = true;
-          dots[i].colour = t.colour || c.ink;
+          dots[i].colour = t.colour || baseDotColour;
         } else {
           dots[i].tx = Math.random();
           dots[i].ty = Math.random();
           dots[i].hasTarget = false;
-          dots[i].colour = 'rgba(0,0,0,0.12)';
+          dots[i].colour = diffuseColour;
         }
       }
     },
-    highlight(index, colour = c.mustard) {
+    highlight(index, colour = c.tealDeep) {
       highlightIndex = index;
       highlightColour = colour;
     },
@@ -1083,4 +1155,321 @@ export const clusterPoints = (n, rect) => {
     });
   }
   return pts;
+};
+
+/* ─────────────────────── orbit ring chart ──────────────────────────
+ * The deck's signature motif as a chart: items become points sitting on
+ * thin CONCENTRIC ORBIT RINGS around a shared centre. Magnitude is
+ * encoded by ring index (largest value → outermost ring) AND by the
+ * angular sweep of a faint arc drawn from 12-o'clock, so a glance reads
+ * the ranking and each value's share of `max`. One thin orbit circle per
+ * item in the faint track scheme; one solid point (navy on warm grounds,
+ * cream on dark navy) with a bold inline value label — never a boxed
+ * legend. Backgroundless (transparent svg). Points animate outward from
+ * the centre on first view; hover/focus enlarges a point and brightens
+ * its ring. Keyboard-focusable. Meant to replace a bar chart with
+ * something ownable.
+ *
+ * opts: {
+ *   items: [{ label, pct? | value? }],   // pct preferred; value scaled by max
+ *   max?: number (default 100),
+ *   accent?: 'navy'|'teal'|'mustard'|'cream',
+ *   onNavy?: boolean,
+ *   centreLabel?: string,                 // optional text in the hub
+ *   ariaLabel?: string,
+ *   decimals?: number,
+ * }
+ * Returns { el }.
+ */
+export const orbitRingChart = (container, opts) => {
+  const c = palette();
+  const {
+    items,
+    max = 100,
+    accent = 'navy',
+    onNavy = false,
+    centreLabel = '',
+    decimals = 0,
+  } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const pointColour = scheme.component;
+  const textColour = scheme.text;
+
+  const size = 460;
+  const cx = size / 2;
+  const cy = size / 2;
+  const hubR = 34;
+  // Largest ring sits inside the box leaving room for outer labels.
+  const maxR = size / 2 - 70;
+  const n = Math.max(1, items.length);
+  const ringStep = n > 1 ? (maxR - hubR - 12) / (n - 1) : 0;
+
+  const svg = svgRoot(size, size, opts.ariaLabel || 'Orbit ring chart', size);
+
+  // Read magnitude for an item (pct preferred, else value/max scaled).
+  const magOf = (item) => {
+    const v = item.pct != null ? item.pct : (item.value != null ? item.value : 0);
+    return Math.max(0, Math.min(v, max));
+  };
+  // Sort a copy descending so the biggest value gets the outermost ring,
+  // but keep original objects (no mutation of caller's array).
+  const ranked = items
+    .map((item, i) => ({ item, mag: magOf(item), srcIndex: i }))
+    .sort((a, b) => b.mag - a.mag);
+
+  // Stagger points around the dial so labels never stack: golden-angle
+  // spread keeps adjacent rings angularly far apart.
+  const GOLDEN = 137.508 * (Math.PI / 180);
+  const startAng = -Math.PI / 2; // 12 o'clock
+
+  // Faint hub ring + optional centre label (backgroundless — stroke only).
+  svg.append(el('circle', {
+    cx, cy, r: hubR, fill: 'none', stroke: scheme.track, 'stroke-width': 1.5,
+  }));
+  if (centreLabel) {
+    svg.append(textNode({
+      x: cx, y: cy, 'text-anchor': 'middle', 'dominant-baseline': 'central',
+      fill: textColour, 'font-size': 14, 'font-weight': 800,
+    }, centreLabel));
+  }
+
+  const rows = [];
+  ranked.forEach((entry, rankIndex) => {
+    // Outermost ring = rank 0 (largest). Inner rings step inward.
+    const r = maxR - rankIndex * ringStep;
+    const ang = startAng + rankIndex * GOLDEN;
+    const frac = entry.mag / max;
+
+    const g = el('g', {});
+    g.setAttribute('tabindex', '0');
+    g.setAttribute('role', 'listitem');
+    g.setAttribute('aria-label', `${entry.item.label}: ${fmtPct(entry.mag, decimals)}`);
+    g.style.cursor = 'default';
+    g.style.outline = 'none';
+
+    // Thin orbit circle (faint track scheme) — never a filled disc.
+    const ring = el('circle', {
+      cx, cy, r, fill: 'none', stroke: scheme.track, 'stroke-width': 1.5,
+    });
+
+    // Faint magnitude arc from 12 o'clock sweeping clockwise by `frac`,
+    // a second read on each item's share of max.
+    const arc = el('path', {
+      fill: 'none', stroke: pointColour, 'stroke-width': 2.5,
+      'stroke-linecap': 'butt', opacity: 0.28,
+      d: '',
+    });
+    const arcPathFor = (f) => {
+      const a0 = startAng;
+      const a1 = startAng + Math.max(0.0001, f) * Math.PI * 2;
+      const x0 = cx + r * Math.cos(a0);
+      const y0 = cy + r * Math.sin(a0);
+      const x1 = cx + r * Math.cos(a1);
+      const y1 = cy + r * Math.sin(a1);
+      const large = f > 0.5 ? 1 : 0;
+      return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
+    };
+
+    // The point sits where the magnitude arc ends.
+    const ptAng = startAng + frac * Math.PI * 2;
+    const targetX = cx + r * Math.cos(ptAng);
+    const targetY = cy + r * Math.sin(ptAng);
+
+    const dot = el('circle', {
+      cx, cy, r: 7, fill: pointColour, // start at hub, animate outward
+    });
+
+    // Label + inline value placed radially outward from the point so it
+    // sits clear of the rings; anchored by which half it falls in.
+    const onRight = Math.cos(ptAng) >= 0;
+    const labelOut = 16;
+    const lx = targetX + Math.cos(ptAng) * labelOut;
+    const ly = targetY + Math.sin(ptAng) * labelOut;
+    const label = textNode({
+      x: lx, y: ly - 8, 'text-anchor': onRight ? 'start' : 'end',
+      'dominant-baseline': 'central', fill: textColour, 'font-size': 13,
+      'font-weight': 600,
+    }, entry.item.label);
+    const value = textNode({
+      x: lx, y: ly + 9, 'text-anchor': onRight ? 'start' : 'end',
+      'dominant-baseline': 'central', fill: textColour, 'font-size': 18,
+      'font-weight': 800, style: TAB_NUMS,
+    }, fmtPct(0, decimals));
+
+    g.append(ring, arc, dot, label, value);
+    svg.append(g);
+
+    const render = (f) => {
+      arc.setAttribute('d', arcPathFor(f));
+      const a = startAng + f * Math.PI * 2;
+      dot.setAttribute('cx', cx + r * Math.cos(a));
+      dot.setAttribute('cy', cy + r * Math.sin(a));
+      value.textContent = fmtPct(f * max, decimals);
+    };
+
+    // Hover / focus highlight: enlarge point, strengthen arc + ring.
+    const setActive = (active) => {
+      dot.setAttribute('r', active ? 11 : 7);
+      arc.setAttribute('opacity', active ? 0.9 : 0.28);
+      ring.setAttribute('stroke', active ? pointColour : scheme.track);
+      ring.setAttribute('opacity', active ? 0.5 : 1);
+    };
+    g.addEventListener('pointerenter', () => setActive(true));
+    g.addEventListener('pointerleave', () => setActive(false));
+    g.addEventListener('focus', () => setActive(true));
+    g.addEventListener('blur', () => setActive(false));
+
+    rows.push({ render, frac, label, value });
+  });
+
+  // Mark the svg as a list of points for assistive tech.
+  svg.setAttribute('role', 'list');
+  svg.setAttribute('aria-label', opts.ariaLabel || 'Orbit ring chart');
+
+  container.append(svg);
+
+  const drawStatic = () => rows.forEach((r) => r.render(r.frac));
+  const drawAnimated = () =>
+    rows.forEach((r, i) =>
+      tween(0, r.frac, 1000 + i * 60, (f) => r.render(f)));
+  onFirstView(svg, drawAnimated, drawStatic, 0.25);
+
+  return { el: svg };
+};
+
+/* ───────────────────────────  tug of war  ──────────────────────────
+ * A single horizontal tension bar for a binary split (e.g. 54 vs 46).
+ * The two sides are distinct flat colours meeting at a central divider
+ * that SPRINGS to the true position on reveal. Labels + percent sit on
+ * their OWN side, stacked above (left) / below (right) so they can never
+ * overlap — the fix for proportionStrip's colliding labels. Backgroundless
+ * (transparent svg), faint outline track only, square ends, bold tabular
+ * value labels. Reduced motion jump-cuts to the resting position.
+ *
+ * opts: {
+ *   left:  { label, pct },
+ *   right: { label, pct },
+ *   accent?: 'navy'|'teal'|'mustard'|'cream',  // left side fill
+ *   onNavy?: boolean,
+ *   ariaLabel?: string,
+ * }
+ * Returns { el, update({left, right}) }.
+ */
+export const tugOfWar = (container, opts) => {
+  const c = palette();
+  const { accent = 'navy', onNavy = false } = opts;
+  const scheme = groundScheme(c, { accent, onNavy });
+  const textColour = scheme.text;
+
+  // Two distinct sides. On warm grounds: navy vs mustard. On dark navy:
+  // cream vs teal. `accent` overrides the left fill if given.
+  const isDark = onNavy === true || accent === 'cream';
+  const leftColour = isDark
+    ? accentColour(c, accent === 'cream' ? 'cream' : (accent || 'cream'))
+    : accentColour(c, accent);
+  const rightColour = isDark ? c.tealDeep : c.mustard;
+
+  const width = 720;
+  const barY = 40;
+  const barH = 56;
+  const height = barY + barH + 44; // room for labels above + below
+  const svg = svgRoot(width, height, opts.ariaLabel || 'Tug of war split');
+
+  // Faint outline track (no fill) — backgroundless, square corners.
+  svg.append(el('rect', {
+    x: 0, y: barY, width, height: barH,
+    fill: 'none', stroke: scheme.track, 'stroke-width': 1.5,
+  }));
+
+  const leftRect = el('rect', { x: 0, y: barY, width: 0, height: barH, fill: leftColour });
+  const rightRect = el('rect', { x: width, y: barY, width: 0, height: barH, fill: rightColour });
+  // Central divider line that springs to the split point.
+  const divider = el('line', {
+    x1: width / 2, y1: barY - 6, x2: width / 2, y2: barY + barH + 6,
+    stroke: scheme.stroke, 'stroke-width': 2,
+  });
+  svg.append(leftRect, rightRect, divider);
+
+  // Left labels ABOVE its side; right labels BELOW its side. Each anchored
+  // to its own edge so the two sets never share horizontal space.
+  const leftName = textNode({
+    x: 8, y: barY - 22, 'text-anchor': 'start', fill: textColour,
+    'font-size': 15, 'font-weight': 600,
+  }, opts.left.label);
+  const leftPct = textNode({
+    x: 8, y: barY - 4, 'text-anchor': 'start', fill: textColour,
+    'font-size': 20, 'font-weight': 800, style: TAB_NUMS,
+  }, fmtPct(0, 0));
+  const rightName = textNode({
+    x: width - 8, y: barY + barH + 20, 'text-anchor': 'end', fill: textColour,
+    'font-size': 15, 'font-weight': 600,
+  }, opts.right.label);
+  const rightPct = textNode({
+    x: width - 8, y: barY + barH + 40, 'text-anchor': 'end', fill: textColour,
+    'font-size': 20, 'font-weight': 800, style: TAB_NUMS,
+  }, fmtPct(0, 0));
+  svg.append(leftName, leftPct, rightName, rightPct);
+
+  let state = { left: opts.left, right: opts.right };
+
+  // Critically-damped spring solve for a satisfying settle on the divider.
+  const splitFor = (s) => {
+    const total = (s.left.pct + s.right.pct) || 100;
+    return s.left.pct / total; // 0..1 fraction held by the left side
+  };
+
+  const render = (frac, s) => {
+    const x = frac * width;
+    leftRect.setAttribute('width', Math.max(0, x));
+    rightRect.setAttribute('x', x);
+    rightRect.setAttribute('width', Math.max(0, width - x));
+    divider.setAttribute('x1', x);
+    divider.setAttribute('x2', x);
+    leftPct.textContent = fmtPct(frac * (s.left.pct + s.right.pct), 0);
+    rightPct.textContent = fmtPct((1 - frac) * (s.left.pct + s.right.pct), 0);
+  };
+
+  // Spring animation: divider overshoots slightly then settles.
+  const SPRING_STIFF = 0.18;
+  const SPRING_DAMP = 0.72;
+  let springRaf = 0;
+  const animateTo = (targetFrac, s) => {
+    cancelAnimationFrame(springRaf);
+    if (prefersReducedMotion()) { render(targetFrac, s); return; }
+    let pos = 0.5;       // start from centre (even tension)
+    let vel = 0;
+    const step = () => {
+      const a = (targetFrac - pos) * SPRING_STIFF;
+      vel = (vel + a) * SPRING_DAMP;
+      pos += vel;
+      render(pos, s);
+      if (Math.abs(targetFrac - pos) > 0.0008 || Math.abs(vel) > 0.0008) {
+        springRaf = requestAnimationFrame(step);
+      } else {
+        render(targetFrac, s);
+      }
+    };
+    springRaf = requestAnimationFrame(step);
+  };
+
+  // Seed at centre so the spring has somewhere to spring from.
+  render(0.5, state);
+  container.append(svg);
+
+  onFirstView(
+    svg,
+    () => animateTo(splitFor(state), state),
+    () => render(splitFor(state), state),
+    0.35,
+  );
+
+  return {
+    el: svg,
+    update(next) {
+      state = { left: next.left, right: next.right };
+      leftName.textContent = state.left.label;
+      rightName.textContent = state.right.label;
+      animateTo(splitFor(state), state);
+    },
+  };
 };

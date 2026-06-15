@@ -1,12 +1,14 @@
 /* Chapter 03 - baselines — Design World V2.
    The four baseline stats FLOW on a warm mustard->orange gradient ground (the
    "operational floor"), not a grid of bordered boxes. Number + label + sentence
-   read as navy-on-warm (contrast-safe); each supporting chart sits on a clean
-   square paper MAT so chart ink never sits colour-on-colour. Alternating
-   left/right rhythm, generous space, decorative orbit + cream bear + seed dots
-   sit BEHIND content (z-index:0, pointer-events:none) and never occlude UI.
-   Every selector scoped to #\30 3-baselines. Square corners, tabular numbers,
-   down = mustard-dark (never red/green), reduced-motion safe. */
+   read as navy-on-warm (contrast-safe); each supporting chart sits DIRECTLY on
+   the warm ground via .chart-holder — NO white/paper card, NO border, NO shadow.
+   The chart marks carry the contrast themselves (navy components + bigger/bolder
+   navy labels, faint ink-tint tracks; charts.js defaults on warm grounds).
+   Alternating left/right rhythm, generous space, decorative orbit + cream bear +
+   seed dots sit BEHIND content (z-index:0, pointer-events:none) and never
+   occlude UI. Every selector scoped to #\30 3-baselines. Square corners on the
+   guess data card, tabular numbers, reduced-motion safe. */
 
 /* ─── The warm ground (full-bleed world, own stacking context) ──── */
 #\30 3-baselines {
@@ -57,11 +59,12 @@
   margin: 0;
   color: var(--on-warm);         /* navy eyebrow on amber */
 }
+/* Heavier, tighter deck-display headline (matches the deck's punchy titles). */
 #\30 3-baselines .bl-headline {
   font-size: var(--t-xl);
   font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -0.015em;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
   margin: 0;
   color: var(--on-warm);
 }
@@ -89,7 +92,7 @@
   gap: clamp(28px, 5vw, 72px);
 }
 #\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 2; }
-#\30 3-baselines .bl-stat--rev .bl-mat { order: 1; }
+#\30 3-baselines .bl-stat--rev .bl-chart { order: 1; }
 
 /* ─── Lede side (lives directly on the warm ground) ─────────────── */
 #\30 3-baselines .bl-stat-lede {
@@ -117,8 +120,9 @@
   display: block;
   margin-top: 12px;
   font-size: var(--t-md);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   max-width: 20ch;
   color: var(--on-warm);
 }
@@ -131,37 +135,33 @@
   max-width: 42ch;
 }
 
-/* ─── Chart MAT (clean paper — keeps chart ink legible, never on warm) ─ */
-#\30 3-baselines .bl-mat {
-  display: flex;
-  flex-direction: column;
+/* ─── Box-less chart (sits DIRECTLY on the warm ground via .chart-holder) ─
+   No paper background, no border, no shadow — the chart marks carry the
+   contrast themselves (navy components + faint ink-tint tracks). */
+#\30 3-baselines .bl-chart {
   min-width: 0;
-  margin: 0;
-  /* warm paper (not stark white) blends the chart surface into the world; ONE
-     soft diffuse lift, no hard border — de-blocked so it reads as a panel of
-     the same world rather than a bordered card floating on mustard. */
-  background: var(--paper-warm);
-  padding: clamp(20px, 2.4vw, 32px);
-  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 20px 50px rgba(10, 26, 92, 0.10);
 }
+/* Bigger, bolder caption — reads as designed type on the warm ground, navy
+   for high contrast, not a tiny grey caption on paper. */
 #\30 3-baselines .bl-chart-sub {
-  font-size: var(--t-xs);
-  letter-spacing: 0.04em;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--ink-soft);        /* ink on paper mat */
-  margin: 0 0 14px 0;
-  line-height: 1.3;
+  color: var(--on-warm);         /* navy on amber */
+  margin: 0 0 6px 0;
+  line-height: 1.25;
 }
-/* The one chart-sub that sits on the warm ground (strip caption) flips navy. */
+/* Strip caption already on the warm ground — same navy treatment. */
 #\30 3-baselines .bl-chart-sub--onwarm {
   color: var(--on-warm);
-  opacity: 0.78;
+  opacity: 1;
 }
+/* Source line sits on the warm ground now — navy tint, not paper-grey. */
 #\30 3-baselines .vccp-source {
-  margin-top: auto;
-  padding-top: 14px;
-  color: var(--ink-soft);
-  opacity: 0.7;
+  margin-top: 6px;
+  color: var(--on-warm);
+  opacity: 0.62;
 }
 
 /* ─── Guess (clickToGuess hooks, stat 1) — soft card on the ground ─ */
@@ -242,18 +242,16 @@
   opacity: 0.82;
 }
 
-/* ─── 54 / 46 strip (stat 4 lede) — on a slim paper mat for clarity ─ */
+/* ─── 54 / 46 strip (stat 4 lede) — box-less, on the warm ground ─── */
 #\30 3-baselines .bl-strip {
-  margin-top: 10px;
-  max-width: 440px;
-  background: var(--paper-warm);
-  padding: 16px 18px;
-  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 14px 32px rgba(10, 26, 92, 0.10);
+  margin-top: 14px;
+  max-width: 460px;
+  gap: 6px;                      /* via .chart-holder flow */
 }
 #\30 3-baselines .bl-strip .bl-chart-sub--onwarm {
-  color: var(--ink-soft);        /* now on paper, so ink not navy */
+  color: var(--on-warm);         /* navy on the warm ground */
   opacity: 1;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
@@ -266,7 +264,7 @@
     gap: clamp(20px, 4vw, 32px);
   }
   #\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 0; }
-  #\30 3-baselines .bl-stat--rev .bl-mat { order: 0; }
+  #\30 3-baselines .bl-stat--rev .bl-chart { order: 0; }
   #\30 3-baselines .bl-bear {
     width: clamp(220px, 52vw, 360px);
     opacity: 0.12;

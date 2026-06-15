@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Unplug them from the grid">
+  <!-- plug body -->
+  <path d="M21 31 L21 22 a11 11 0 0 1 22 0 L43 31 Z"/>
+  <!-- prongs -->
+  <line x1="27" y1="16" x2="27" y2="9"/>
+  <line x1="37" y1="16" x2="37" y2="9"/>
+  <!-- cable trailing down (unplugged, loose) -->
+  <path d="M32 31 L32 38 q0 7 7 7 q7 0 7 7 L46 55"/>
+  <!-- lightning bolt (the grid power) -->
+  <path d="M18 40 L11 49 L17 49 L13 58"/>
+</svg>

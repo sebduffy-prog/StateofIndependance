@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Ride the social self-help wave">
+  <!-- wave crest curling -->
+  <path d="M6 50 C16 50 18 30 30 30 C42 30 40 44 50 44 C56 44 58 38 58 34 C58 27 51 24 46 28"/>
+  <!-- spray -->
+  <path d="M56 30 q5 -3 4 -8"/>
+  <!-- surfer body -->
+  <circle cx="30" cy="13" r="3"/>
+  <path d="M30 16 L28 25 L34 24"/>
+  <!-- arms out for balance -->
+  <path d="M29 19 L23 17"/>
+  <path d="M31 19 L37 21"/>
+  <!-- legs in stance -->
+  <path d="M28 25 L24 31"/>
+  <path d="M33 24 L36 30"/>
+  <!-- surfboard -->
+  <path d="M20 33 C28 36 38 36 44 31"/>
+</svg>

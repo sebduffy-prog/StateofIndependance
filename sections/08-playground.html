@@ -1,29 +1,29 @@
-<!-- Chapter 08 — playground. Design World V2: the interactive data explorer
-     set in the warm State-of-Independence world. A warm mustard→orange
-     gradient ground (the chapter frame) carries a slow decorative orbit
-     overlay + sparse seed dots + a cream bear/figure silhouette, ALL behind
-     content (z-index:0, pointer-events:none). The explorer itself is ONE
-     seamless light "instrument" surface (de-blocked: the two panels share a
-     calm page-tone plate divided by negative space + a soft tint, not two
-     ink-bordered datacards). Charts keep flat fills on the light surface so
-     ink-on-page stays AA legible — charts never sit on the gradient. Header
-     copy is navy-on-warm (contrast-safe). All loved interactions kept. -->
-<div class="si-ground-warm pg-world">
-  <div class="si-orbit si-orbit--spin pg-orbit" aria-hidden="true"></div>
+<!-- Chapter 08 — playground. Design World V2: the interactive data explorer,
+     the research/appendix surface. Client feedback (this pass):
+       • charts are OUT of white boxes — they sit directly on the ground with a
+         transparent background via .chart-holder (no instrument plate / card).
+       • chart components are high-contrast NAVY on the calm light research
+         ground (mustard would vanish; navy reads AA on the pale teal tint).
+       • chart text is bigger + bolder (charts.js house style: 15–16px, 600/700,
+         tabular nums). Teal is the chapter's ACCENT identity (kickers, legend,
+         index-100 line, active pills) — never a teal component on teal ground.
+       • display type pushed heavier/tighter to match the deck (si-display--black).
+     The two panels flow on the ground divided by negative space + a faint tint
+     rule — NOT two bordered datacards. All loved interactions kept; every number
+     still traces to the verified survey file. -->
+<div class="pg-world">
   <span class="si-seed pg-seed pg-seed--a" aria-hidden="true"></span>
   <span class="si-seed pg-seed pg-seed--b" aria-hidden="true"></span>
-  <img class="si-silhouette pg-silhouette" src="assets/deck/bear-figure-orbit.jpg"
-       alt="" aria-hidden="true" loading="lazy" />
 
   <div class="chapter-inner pg-stage" data-stagger="120">
     <header class="pg-head reveal">
       <p class="vccp-eyebrow pg-eyebrow">Chapter 08 · the appendix, opened up</p>
-      <h2 class="pg-headline si-display si-display--sm">Explore the <em class="hl">data</em> yourself</h2>
+      <h2 class="pg-headline si-display si-display--black">Explore the <em class="hl hl-teal">data</em> yourself</h2>
       <p class="pg-standfirst si-measure">Every chart on this site renders from the verified survey file. Pick a question, pick a segment, and watch the four Britains diverge. No number is typed in by hand.</p>
     </header>
 
-    <!-- ONE seamless instrument surface. Two panels flow inside it, divided by
-         space + a hairline tint — not two separate bordered cards. -->
+    <!-- Two flowing panels on the research ground — divided by space + a faint
+         tint rule, not two bordered cards. Charts sit box-less inside. -->
     <div class="pg-instrument reveal">
       <!-- PANEL A — metric explorer -->
       <section class="pg-panel pg-panel-a" aria-labelledby="pg-a-title">
@@ -45,8 +45,11 @@
         </div>
 
         <p class="pg-view-note" data-pg-view-note role="status" aria-live="polite"></p>
-        <div class="pg-chart" data-pg-metric-chart></div>
-        <p class="vccp-source" data-pg-metric-source></p>
+        <!-- box-less chart: transparent, sits on the ground (client feedback §1) -->
+        <div class="chart-holder pg-chart-holder">
+          <div class="pg-chart" data-pg-metric-chart></div>
+          <p class="chart-holder-cap vccp-source" data-pg-metric-source></p>
+        </div>
       </section>
 
       <!-- soft inner divide — a tint, not a hard rule -->
@@ -71,8 +74,11 @@
           <span class="pg-legend-marker"></span>
           <span class="pg-legend-text">100 = UK-adult average</span>
         </div>
-        <div class="pg-chart pg-chart-tgi" data-pg-tgi-chart></div>
-        <p class="vccp-source" data-pg-tgi-source></p>
+        <!-- box-less chart: transparent, sits on the ground (client feedback §1) -->
+        <div class="chart-holder pg-chart-holder">
+          <div class="pg-chart pg-chart-tgi" data-pg-tgi-chart></div>
+          <p class="chart-holder-cap vccp-source" data-pg-tgi-source></p>
+        </div>
       </section>
     </div>
   </div>

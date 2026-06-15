@@ -42,7 +42,11 @@
 #\30 7-moves .mv-seed-a { top: 22%; right: 24%; }
 #\30 7-moves .mv-seed-b { bottom: 26%; right: 40%; }
 
-/* ─── Move head: GIANT stage number + display title ──────── */
+/* ─── Move head: GIANT stage number + ICON LOCKUP + display title ─
+   Deck "five moves" lockup: a thin-line move icon sits above the heavy
+   uppercase title, with the giant stage numeral to the left. The icon is
+   currentColor-tinted (navy on warm, cream on navy) per the §6 contrast
+   rules — never mustard-on-mustard, no white box behind it. */
 #\30 7-moves .mv-move-head {
   position: relative;
   z-index: 1;
@@ -53,6 +57,7 @@
   margin-bottom: clamp(32px, 4vw, 56px);
 }
 #\30 7-moves .mv-stage {
+  grid-row: 1 / span 2;
   font-weight: 700;
   font-size: clamp(5rem, 13vw, 12rem);
   line-height: 0.8;
@@ -70,12 +75,28 @@
 #\30 7-moves .mv-move--navy .mv-stage {
   color: var(--soi-amber);
 }
+
+/* ─── Icon: deck thin-line glyph, currentColor-tinted, no box ─── */
+#\30 7-moves .mv-icon {
+  display: block;
+  width: clamp(48px, 5vw, 72px);
+  height: clamp(48px, 5vw, 72px);
+  margin: 0 0 clamp(10px, 1.4vw, 18px);
+  /* the deck icons stroke=currentColor; tint per ground for contrast */
+}
+#\30 7-moves .mv-move--warm .mv-icon { color: var(--soi-navy); }
+#\30 7-moves .mv-move--navy .mv-icon { color: var(--soi-cream); }
+
 #\30 7-moves .mv-title {
   margin: 0;
-  font-size: clamp(1.9rem, 4vw, 3.2rem);
-  line-height: 1.02;
+  font-size: clamp(2.1rem, 4.6vw, 3.8rem);
+  line-height: 0.94;
   color: inherit;
 }
+/* The deck drops the emphasis phrase to its own heavier line. */
+#\30 7-moves .mv-title-key { display: block; }
+#\30 7-moves .mv-move--warm .mv-title-key { color: var(--soi-navy); }
+#\30 7-moves .mv-move--navy .mv-title-key { color: var(--soi-amber); }
 
 /* ─── Flowing two-column grid (copy ◂▸ flip card) ────────── */
 #\30 7-moves .mv-grid {
@@ -213,18 +234,18 @@
   top: calc(var(--nav-height) + 32px);
 }
 #\30 7-moves .mv-shift-title {
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  font-size: 0.95rem;
   margin: 0 0 6px;
   color: inherit;
 }
 #\30 7-moves .mv-flip-caption {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   letter-spacing: 0.01em;
   line-height: 1.4;
-  opacity: 0.72;
+  opacity: 0.78;
   margin: 0 0 16px;
   color: inherit;
 }
@@ -239,11 +260,11 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 12px;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 700;
-  opacity: 0.7;
+  font-weight: 800;
+  opacity: 0.8;
   padding: 0 4px 8px;
   color: inherit;
 }
@@ -257,8 +278,9 @@
   width: 100%;
   text-align: left;
   font: inherit;
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 16px 18px;
   transition: background 160ms ease, transform 160ms ease;
 }
 /* warm ground: cream card, navy ink */
@@ -283,18 +305,18 @@
 
 /* "less" state — de-emphasised, struck through (legible on both grounds) */
 #\30 7-moves .flip-less {
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
 }
-#\30 7-moves .mv-move--warm .flip-less { color: rgba(10, 26, 92, 0.5); }
-#\30 7-moves .mv-move--navy .flip-less { color: rgba(238, 233, 221, 0.5); }
-#\30 7-moves .flip-arrow { font-weight: 500; opacity: 0.55; }
+#\30 7-moves .mv-move--warm .flip-less { color: rgba(10, 26, 92, 0.55); }
+#\30 7-moves .mv-move--navy .flip-less { color: rgba(238, 233, 221, 0.55); }
+#\30 7-moves .flip-arrow { font-weight: 700; opacity: 0.6; }
 
 /* "more" state — hidden until flipped */
 #\30 7-moves .flip-more {
   text-align: right;
-  font-weight: 700;
+  font-weight: 800;
   opacity: 0;
   transition: opacity 200ms ease;
 }
@@ -320,6 +342,8 @@
     grid-template-columns: 1fr;
     row-gap: 10px;
   }
+  #\30 7-moves .mv-stage { grid-row: auto; }
+  #\30 7-moves .mv-icon { margin-bottom: 4px; }
   #\30 7-moves .mv-stat-row { grid-template-columns: 1fr; }
   #\30 7-moves .mv-stat { flex-direction: column; gap: 8px; }
 }

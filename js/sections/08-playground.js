@@ -125,8 +125,9 @@ const buildTgiSource = (tgi) => {
  * clear the host and re-run the factory (a fresh first-view animation). */
 const makeChart = (host, metric, items) => {
   const safe = items.length ? items : NO_DATA;
-  // Data marks stay FLAT and on-world: navy on the light instrument surface
-  // gives a strong AA contrast (ink-on-page), never the ground gradient.
+  // Data marks stay FLAT and box-less: navy components on the pale-teal research
+  // ground give a strong AA contrast (mustard/teal would vanish), so navy is the
+  // default. Charts sit transparently on the ground via .chart-holder.
   const common = { accent: 'navy', decimals: metric.decimals, ariaLabel: metric.label };
 
   if (metric.viz === 'bars') {
@@ -135,10 +136,10 @@ const makeChart = (host, metric, items) => {
   }
 
   if (metric.viz === 'strip') {
-    // Distinct flat fills the strip alternates between — navy / warm mustard,
-    // both legible on the light surface, neither same-on-same.
+    // Distinct flat fills the strip alternates between — navy / teal-deep, both
+    // high-contrast on the pale-teal research ground, neither same-on-same.
     const toSegments = (rows) => rows.map((r, i) => ({
-      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'navy' : 'mustard',
+      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'navy' : 'teal',
     }));
     const chart = proportionStrip(host, {
       segments: toSegments(safe),

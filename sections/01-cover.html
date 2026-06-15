@@ -17,15 +17,14 @@
     <!-- Ambient respondent dot-field, navy on warm, well behind everything. -->
     <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
 
-    <!-- Cream bear + small figure facing each other, grounded flush on the
-         bottom edge. Reads by MASS as a cream silhouette; layered behind the
-         copy so it never overlaps or occludes the wordmark/standfirst. -->
-    <img
-      class="cover-bear si-silhouette"
-      src="assets/brand/Girl_and_Bear.png"
-      alt="A bear and a small figure standing face to face"
-      loading="eager" decoding="async"
-    />
+    <!-- Cream bear + small figure facing each other, grounded FLUSH on the
+         bottom edge, large. A background-image (content-cropped asset, set to
+         background-position:bottom + background-size:contain) guarantees the
+         feet sit on the bottom edge with NO letterbox gap, regardless of box
+         aspect. Reads by MASS as a cream silhouette; layered behind the copy
+         so it never overlaps or occludes the wordmark/standfirst. Decorative,
+         so aria-hidden. -->
+    <div class="cover-bear si-silhouette" aria-hidden="true"></div>
 
     <!-- Copy: top-left, no frame, no plate. Navy text on the warm ground. -->
     <div class="cover-copy on-warm si-stack-tight">

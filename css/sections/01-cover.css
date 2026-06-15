@@ -86,18 +86,33 @@
   height: 100%;
 }
 
-/* ─── Cream bear + figure silhouette, grounded on the bottom edge ─
-   The brand artwork ships as a black silhouette on transparency. To read as
-   warm CREAM (per the deck world) we recolour it: drop to white, then a soft
-   sepia/brightness tint lands it on the cream tone. Opacity keeps it as a
-   mass behind the copy, never competing with the wordmark. */
+/* ─── Cream bear + figure silhouette, grounded FLUSH on the bottom edge ─
+   The brand artwork ships as a BLACK silhouette on transparency. To read as
+   warm CREAM (per the deck world) we recolour it with a filter: drop to white
+   (brightness(0) invert(1)) then a soft sepia/brightness tint lands it on the
+   cream tone — `filter` applies to the element's background-image too.
+
+   Grounding: a background-image with `background-position: bottom` and
+   `background-size: contain` keeps the art's aspect AND parks it flush on the
+   bottom edge with NO letterbox gap below the feet, whatever the box aspect.
+   The content-cropped asset (girl-bear-crop.png) has the feet on its very
+   bottom pixel row, so contain+bottom seats them on the ground.
+
+   Box: large, anchored to the lower-RIGHT half of the stage so the bear+figure
+   pair sits clear of the top-left copy. Opacity keeps it a mass behind the
+   wordmark, never competing with it. z-index:0 + pointer-events:none. */
 #\30 1-cover .cover-bear {
   position: absolute;
-  right: clamp(16px, 5vw, 110px);   /* keep the small figure fully on-screen */
+  right: 0;
   bottom: 0;
   z-index: 0;                 /* behind the copy (which is z-index 1) */
-  width: clamp(300px, 44vw, 720px);
-  height: auto;
+  /* a generous lower-right region; height drives the silhouette scale */
+  width: min(60vw, 980px);
+  height: min(58vh, 560px);
+  background-image: url('../../assets/brand/girl-bear-crop.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;   /* seat feet on the bottom edge, flush */
+  background-size: contain;            /* preserve aspect, no crop/stretch */
   /* black art → warm cream silhouette */
   filter: brightness(0) invert(1) sepia(0.32) saturate(1.1) brightness(1.02);
   opacity: 0.94;
@@ -121,14 +136,20 @@
   color: var(--on-warm);      /* navy on amber → high contrast */
 }
 
-/* ─── Wordmark: huge Inter Tight display gravitas ────────────── */
+/* ─── Wordmark: huge Inter Tight display gravitas ──────────────
+   Deck-matching HEAVY punch: weight 700 is the heaviest self-hosted face
+   (never request 800/900 → silent fallback), so the punch comes from the
+   heaviest real weight + the tightest tracking (-0.04em, past .si-display
+   --black's -0.035em) + tight leading (0.88) + a bigger hero scale. Reads as
+   designed display type, not a caption. */
 #\30 1-cover .cover-wordmark {
   margin: 0;
   color: var(--on-warm);
+  font-weight: 700;
   /* bigger than the shared display scale so the title leads the screen */
-  font-size: clamp(3.2rem, 9.4vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  font-size: clamp(3.4rem, 9.8vw, 9.4rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   max-width: 13ch;
 }
 
@@ -235,18 +256,19 @@
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
   #\30 1-cover .cover-copy { max-width: 100%; }
-  /* shrink + push the silhouette into the lower-right corner so it never
-     creeps under the wordmark on narrow screens */
+  /* shrink the silhouette so it never creeps under the wordmark on narrow
+     screens; still bottom-flush via background-position:bottom */
   #\30 1-cover .cover-bear {
-    width: clamp(220px, 52vw, 380px);
+    width: 72vw;
+    height: 42vh;
     opacity: 0.86;
   }
 }
 
 @media (max-width: 600px) {
   #\30 1-cover .cover-bear {
-    width: 220px;
-    right: 0;
+    width: 92vw;
+    height: 34vh;
     opacity: 0.8;
   }
   #\30 1-cover .cover-you {

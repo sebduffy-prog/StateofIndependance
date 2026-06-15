@@ -82,8 +82,11 @@
 }
 #\30 4-twists .tw-exhibit-title {
   font-size: var(--t-lg);
+  /* Heavier, tighter, deck-like display type (700 = heaviest self-hosted). */
   font-weight: 700;
-  line-height: 1.08;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
   margin: 0 0 12px 0;
   color: var(--soi-navy);
 }
@@ -94,7 +97,8 @@
   margin: 0;
 }
 #\30 4-twists .tw-truth-cap {
-  font-size: var(--t-xs);
+  font-size: var(--t-sm);          /* bigger, bolder — reads as type, not a tiny caption */
+  font-weight: 600;
   color: var(--ink-soft);
   margin: 0 0 14px 0;
   max-width: 56ch;
@@ -125,7 +129,7 @@
 #\30 4-twists .tw-exhibit--dark .tw-lede {
   color: rgba(238, 233, 221, 0.86);   /* cream @ ~86% — strong on velvet */
 }
-#\30 4-twists .tw-exhibit--dark .tw-truth-cap { color: var(--ink-soft); }
+#\30 4-twists .tw-exhibit--dark .tw-truth-cap { color: rgba(238, 233, 221, 0.86); }
 #\30 4-twists .tw-exhibit--dark .vccp-source { color: rgba(238, 233, 221, 0.66); }
 
 #\30 4-twists .tw-trust-grid { align-items: start; }
@@ -177,25 +181,27 @@
 }
 #\30 4-twists .rank-submit { margin-top: 16px; }
 
-/* Revealed bars + spread on a warm paper card — chart ink stays legible. */
+/* Revealed bars + spread sit DIRECTLY on the velvet ground — no white box.
+   The chart carries cream-on-navy components/text (onNavy path); the holder
+   is transparent (.chart-holder), so there is no paper panel or shadow. */
 #\30 4-twists .tw-truth[hidden] { display: none; }
 #\30 4-twists .tw-truth {
   margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  border: 0;                              /* de-block: shadow lifts it, no border */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 20px 48px rgba(0, 0, 0, 0.24);
-  padding: 22px 24px 24px;
+  background: transparent;
+  color: var(--soi-cream);
+  border: 0;
+  box-shadow: none;
+  padding: 0;
 }
 #\30 4-twists .tw-spread {
-  font-size: var(--t-sm);
+  font-size: var(--t-md);                 /* bigger — reads as designed type */
   line-height: 1.5;
-  color: var(--ink);
+  color: rgba(238, 233, 221, 0.92);       /* cream on velvet — high contrast */
   margin: 18px 0 0 0;
   padding-top: 16px;
-  border-top: 1px solid rgba(10, 26, 92, 0.14);
+  border-top: 1px solid rgba(238, 233, 221, 0.22);
 }
-#\30 4-twists .tw-spread strong { font-weight: 700; color: var(--soi-navy); }
+#\30 4-twists .tw-spread strong { font-weight: 700; color: var(--soi-cream); }
 
 /* The paradox flip card (paper-on-velvet, square corners) */
 #\30 4-twists .tw-paradox { perspective: 1400px; display: flex; }

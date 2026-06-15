@@ -25,13 +25,12 @@ const DOT_COUNT = 200;
 const FORMATION_DELAY_MS = 480; // drift, then resolve into clusters
 const COUNT_DURATION_MS = 1100;
 
-/** Per-segment accent token used to colour the metric charts. */
-const SEG_ACCENT = {
-  architects: 'mustard',
-  hustlers: 'teal',
-  coasters: 'mustard',
-  retreaters: 'navy',
-};
+/**
+ * Metric charts default to high-contrast NAVY components (client feedback):
+ * the old per-segment mustard/teal accents vanished against the warm card.
+ * Navy reads on every ground, and the value labels carry the segment story.
+ */
+const METRIC_ACCENT = 'navy';
 
 /**
  * Quadrant rects in dotField's 0..1 normalised space.
@@ -86,7 +85,6 @@ const metricItems = (metric, n) =>
 
 /** Render a segment's full profile as a .si-datacard with metric charts. */
 const renderProfile = (host, seg) => {
-  const accent = SEG_ACCENT[seg.id] || 'mustard';
   host.innerHTML = `
     <article class="si-datacard seg-card" data-seg="${escapeHtml(seg.id)}" tabindex="-1">
       <div class="seg-card-top">
@@ -105,11 +103,11 @@ const renderProfile = (host, seg) => {
 
       <div class="seg-metric">
         <h4 class="seg-metric-title">Mindset, net agree</h4>
-        <div class="seg-metric-chart" data-chart="mindset"></div>
+        <div class="chart-holder seg-metric-chart" data-chart="mindset"></div>
       </div>
       <div class="seg-metric">
         <h4 class="seg-metric-title">AI use by task</h4>
-        <div class="seg-metric-chart" data-chart="ai"></div>
+        <div class="chart-holder seg-metric-chart" data-chart="ai"></div>
       </div>
 
       <p class="seg-prof-ai"><span class="seg-prof-key">On AI</span><span>${escapeHtml(seg.aiAttitude)}</span></p>
@@ -122,7 +120,7 @@ const renderProfile = (host, seg) => {
   if (mindsetHost) {
     lollipopChart(mindsetHost, {
       items: metricItems(seg.metrics.mindsetNetAgree, 5),
-      accent,
+      accent: METRIC_ACCENT,
       ariaLabel: `${seg.name} mindset, net agree by statement`,
     });
   }
@@ -130,7 +128,7 @@ const renderProfile = (host, seg) => {
     dotPlot(aiHost, {
       items: metricItems(seg.metrics.aiUseByTask, 6),
       max: 30,
-      accent,
+      accent: METRIC_ACCENT,
       ariaLabel: `${seg.name} AI use by task`,
     });
   }

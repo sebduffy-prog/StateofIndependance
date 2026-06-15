@@ -1,136 +1,129 @@
-/* Chapter 08 — playground. Design World V2: the data explorer in the warm
-   State-of-Independence world. Every selector is prefixed with
+/* Chapter 08 — playground. Design World V2: the interactive data explorer on
+   the research/appendix surface. Every selector is prefixed with
    #\30 8-playground so styles never leak.
 
-   The world: a warm mustard→orange gradient ground (from .si-ground-warm in
-   vccp.css) carries a slow orbit overlay, sparse seed dots, and a cream
-   bear/figure silhouette — ALL decorative, behind content, pointer-events:none.
+   THE SURFACE (this pass): a calm PALE-TEAL research ground — the brand's
+   appendix/research register — NOT the warm gradient and NOT a white card.
+   Charts sit DIRECTLY on this ground with a transparent background (the
+   .chart-holder utility in vccp.css), out of any paper box (client feedback §1).
 
-   The instrument: the two panels are de-blocked into ONE seamless light
-   page-tone surface. No two ink-bordered datacards; separation is negative
-   space + a soft tint divide. Charts keep flat fills on this light surface so
-   ink-on-page text stays AA legible — charts never sit on the gradient.
+   THE COMPONENTS: charts default to high-contrast NAVY (accent:'navy' in the JS).
+   On the pale-teal ground navy reads AA — mustard/teal marks would vanish, so
+   teal is the chapter's ACCENT identity only (kickers, the index-100 reference
+   line, the legend marker, the active pill), never a teal component on teal.
+
+   CHART TEXT: charts.js carries the bigger/bolder house labels (15–16px, 600/700,
+   tabular nums). Nothing here shrinks it.
 
    Layering contract (no overlap / no double-layer / contrast-safe):
-     z 0  — .pg-orbit rings, .pg-seed dots, .pg-silhouette (pointer-events:none)
-     z 1  — .pg-stage flowing content (set by .si-ground-warm > * in vccp.css)
-   Header copy is navy-on-warm; all instrument copy is ink/navy on the light
-   surface. No element sits on a same/similar background colour.
+     z 0  — .pg-seed dots (decorative, pointer-events:none)
+     z 1  — .pg-stage flowing content
+   All copy is navy/ink on the light teal ground; no element sits on a
+   same/similar background colour.
 
    TGI reference-line geometry: the bar lib draws a 720-wide viewBox with
    valueX = labelWidth + 12 and trackWidth = 720 - valueX - 56. For Panel B
    (labelWidth 230, max 250) the index-100 line falls at
    (242 + (100/250)*422) / 720 ≈ 57.06% — hence --pg-tgi-100. */
 
-/* Background gradient comes from .si-ground-warm; chapter ground transparent
-   so the warm world runs edge-to-edge. */
+/* Pale-teal research ground — light enough that navy chart marks + ink copy
+   stay AA-legible, and distinct from the warm world of the narrative chapters.
+   A faint top-light gives depth without a hard box. */
 #\30 8-playground {
-  background: transparent;
+  background:
+    radial-gradient(120% 90% at 18% 0%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
+    linear-gradient(165deg, var(--teal-pale) 0%, #CFF3F0 60%, #BDEDE9 100%);
+  color: var(--soi-navy);
   --pg-tgi-100: 57.06%;
+  /* faint navy tint used for divides + tracks — never a white box */
+  --pg-rule: rgba(10, 26, 92, 0.14);
 }
 
-/* The warm world fills the chapter and centres the explorer. */
+/* The research surface fills the chapter and centres the explorer. */
 #\30 8-playground .pg-world {
+  position: relative;
+  isolation: isolate;            /* own stacking context — no stale layer bleed */
   min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+#\30 8-playground .pg-world > * { position: relative; z-index: 1; }
 
-/* ─── Decorative world layers (all behind content, never occluding) ─── */
-/* Orbit rings — soft, anchored toward the silhouette, slow drift. */
-#\30 8-playground .pg-orbit {
-  opacity: 0.42;
-  background-position: 80% 60%;
-}
+/* ─── Decorative seed dots (behind content, never occluding) ─── */
+/* Teal-deep seeds with a faint white core — the only ornament; sparse. */
 #\30 8-playground .pg-seed {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  z-index: 0;
+  background: var(--teal-deep);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
 }
-#\30 8-playground .pg-seed--a { top: 24%; right: 22%; }
-#\30 8-playground .pg-seed--b { bottom: 30%; right: 12%; width: 8px; height: 8px; }
-
-/* Cream bear/figure silhouette — reads by MASS, sits bottom-right behind the
-   instrument, softly faded into the warm ground so its edges never form a hard
-   box and never collide with data. pointer-events:none + z-index:0 inherited
-   from .si-silhouette. */
-#\30 8-playground .pg-silhouette {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: clamp(320px, 42vw, 660px);
-  max-height: 80%;
-  opacity: 0.5;
-  mix-blend-mode: luminosity;
-  -webkit-mask-image: linear-gradient(290deg, #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 72%);
-          mask-image: linear-gradient(290deg, #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 72%);
-}
+#\30 8-playground .pg-seed--a { top: 16%; right: 9%; }
+#\30 8-playground .pg-seed--b { bottom: 22%; right: 5%; width: 8px; height: 8px; }
 
 #\30 8-playground .pg-stage {
   width: 100%;
 }
 
-/* ─── Header — flowing, de-blocked, navy on warm (contrast-safe) ───── */
+/* ─── Header — flowing, de-blocked, heavy deck type, navy on teal ───── */
 #\30 8-playground .pg-head {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-width: 40ch;
+  max-width: 42ch;
   margin-bottom: clamp(var(--space-3), 4vh, var(--space-5));
 }
 #\30 8-playground .pg-eyebrow {
   margin: 0;
-  color: var(--on-warm);
-  opacity: 0.8;
+  color: var(--teal-deep);
+  font-weight: 700;
 }
+/* Heavier, tighter, deck-like display headline (si-display--black). */
 #\30 8-playground .pg-headline {
   margin: 0;
-  color: var(--on-warm);
-  font-size: clamp(2.4rem, 5vw, 4.2rem);
-  line-height: 0.98;
-  letter-spacing: -0.01em;
+  color: var(--soi-navy);
+  font-size: clamp(2.7rem, 5.6vw, 4.8rem);
+  line-height: 0.92;
 }
-/* Highlighter rides the uppercase display word; on a warm ground the default
-   mustard swatch would be mustard-on-mustard, so force a cream swatch with a
-   navy word for deliberate contrast. */
+/* The highlighter rides the display word "data". On the teal ground a teal
+   swatch would be teal-on-teal, so use the navy ground colour behind a navy
+   word? No — keep the swatch a brighter teal-light and the word navy for a
+   deliberate, legible pop. */
 #\30 8-playground .pg-headline .hl {
   font-style: normal;
+  color: var(--soi-navy);
 }
 #\30 8-playground .pg-headline .hl::before {
-  background: var(--soi-cream);
+  background: var(--teal-light);
 }
 #\30 8-playground .pg-standfirst {
   margin: 0;
-  color: var(--on-warm);
+  color: var(--soi-navy);
   font-size: clamp(1.05rem, 1.6vw, 1.32rem);
   line-height: 1.5;
-  font-weight: 400;
-  opacity: 0.92;
+  font-weight: 500;
+  opacity: 0.88;
   max-width: 52ch;
 }
 
-/* ─── The seamless instrument surface (de-blocked two panels) ──────── */
-/* ONE calm light plate. Not two bordered cards: panels flow inside, divided by
-   space + a soft tint. A single soft shadow lifts it off the warm world (one
-   device, no border). Light surface guarantees ink-on-page chart contrast. */
+/* ─── The two flowing panels (de-blocked — no plate, no cards) ──────── */
+/* They flow on the research ground, divided by space + a faint tint rule.
+   No background, no border, no shadow — the ground shows through. */
 #\30 8-playground .pg-instrument {
   display: grid;
   grid-template-columns: minmax(0, 7fr) auto minmax(0, 5fr);
   align-items: stretch;
-  gap: clamp(var(--space-3), 3vw, var(--space-5));
-  background: var(--soi-page);
-  padding: clamp(var(--space-3), 3vw, var(--space-5));
-  box-shadow: 0 2px 8px rgba(10, 26, 92, 0.08), 0 26px 64px rgba(10, 26, 92, 0.16);
+  gap: clamp(var(--space-4), 4vw, var(--space-6));
 }
 
-/* Soft inner divide — a hairline tint, never a hard ink rule. */
+/* Soft inner divide — a hairline navy tint, never a hard ink rule. */
 #\30 8-playground .pg-divide {
   width: 1px;
   align-self: stretch;
   background: linear-gradient(
     to bottom,
     transparent 0,
-    rgba(10, 26, 92, 0.12) 12%,
-    rgba(10, 26, 92, 0.12) 88%,
+    var(--pg-rule) 12%,
+    var(--pg-rule) 88%,
     transparent 100%
   );
 }
@@ -150,15 +143,15 @@
   font-size: var(--t-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--soi-navy);
-  opacity: 0.62;
+  font-weight: 700;
+  color: var(--teal-deep);
 }
+/* Heavier, deck-like panel titles. */
 #\30 8-playground .pg-panel-title {
   margin: 0 0 var(--space-1) 0;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  line-height: 1.04;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   font-weight: 700;
   color: var(--soi-navy);
 }
@@ -166,11 +159,12 @@
   margin: 0;
   font-size: var(--t-sm);
   line-height: 1.5;
-  color: var(--ink-soft);
+  color: var(--soi-navy);
+  opacity: 0.78;
   max-width: 46ch;
 }
 
-/* ─── Controls (pill groups) — square, navy/cream, on the light surface ─ */
+/* ─── Controls (pill groups) — square, navy on the teal ground ─────── */
 #\30 8-playground .pg-controls {
   display: flex;
   flex-direction: column;
@@ -182,8 +176,9 @@
   font-size: var(--t-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-weight: 700;
+  color: var(--soi-navy);
+  opacity: 0.7;
   margin-bottom: var(--space-1);
 }
 
@@ -192,13 +187,13 @@
   flex-wrap: wrap;
   gap: 8px;
 }
-/* Rest state: navy outline on the light plate (no fill box → de-blocked feel). */
+/* Rest state: navy outline on the teal ground (no fill box → de-blocked feel). */
 #\30 8-playground .pillgroup-chip {
   background: transparent;
   color: var(--soi-navy);
-  border: 1.5px solid rgba(10, 26, 92, 0.4);
+  border: 1.5px solid rgba(10, 26, 92, 0.42);
   padding: 8px 13px;
-  font: 500 var(--t-xs) / 1 var(--font-sans);
+  font: 600 var(--t-xs) / 1 var(--font-sans);
   letter-spacing: 0.02em;
   cursor: pointer;
   font-variant-numeric: tabular-nums;
@@ -208,7 +203,7 @@
 #\30 8-playground .pillgroup-chip:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: var(--soi-navy);
-  background: rgba(10, 26, 92, 0.05);
+  background: rgba(10, 26, 92, 0.06);
 }
 /* Active: solid navy with cream text — strong, deliberate contrast. */
 #\30 8-playground .pillgroup-chip.is-active {
@@ -225,14 +220,19 @@
   opacity: 0.36;
 }
 
-/* ─── View note + chart ─────────────────────────────────────────────── */
+/* ─── View note + box-less chart ────────────────────────────────────── */
 #\30 8-playground .pg-view-note {
   font-size: var(--t-sm);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--soi-navy);
   margin: 0 0 var(--space-2) 0;
   min-height: 1.4em;
   font-variant-numeric: tabular-nums;
+}
+/* .chart-holder (vccp.css) already forces transparent / no border / no shadow.
+   The holder just stretches to fill the panel column. */
+#\30 8-playground .pg-chart-holder {
+  margin-top: auto;
 }
 #\30 8-playground .pg-chart {
   width: 100%;
@@ -241,8 +241,8 @@
 }
 
 /* TGI panel — relative wrapper so the 100 marker overlays its own bars only.
-   The marker is decorative (pointer-events:none) and sits ABOVE the bars but
-   carries no text, so it never occludes data labels. */
+   The marker is decorative (pointer-events:none) and carries no text, so it
+   never occludes data labels. Teal-deep dashed = the research accent. */
 #\30 8-playground .pg-chart-tgi {
   position: relative;
 }
@@ -253,7 +253,7 @@
   bottom: 0;
   left: var(--pg-tgi-100);
   width: 0;
-  border-left: 1.5px dashed rgba(10, 26, 92, 0.55);
+  border-left: 1.5px dashed var(--teal-deep);
   pointer-events: none;
   z-index: 1;
 }
@@ -265,25 +265,25 @@
   gap: 8px;
   margin-bottom: var(--space-2);
   font-size: var(--t-xs);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-weight: 700;
+  color: var(--soi-navy);
+  opacity: 0.8;
 }
 #\30 8-playground .pg-legend-marker {
   display: inline-block;
   width: 16px;
   height: 0;
-  border-top: 1.5px dashed rgba(10, 26, 92, 0.55);
+  border-top: 1.5px dashed var(--teal-deep);
 }
 
-/* Source line sits at the foot of each panel, low-emphasis ink on page. */
-#\30 8-playground .vccp-source {
+/* Source / caption sits at the foot of each box-less chart, low-emphasis
+   navy on the teal ground. */
+#\30 8-playground .pg-chart-holder .chart-holder-cap {
   max-width: 64ch;
-  margin-top: auto;
-  padding-top: var(--space-2);
-  color: var(--ink-soft);
-  opacity: 0.78;
+  color: var(--soi-navy);
+  opacity: 0.62;
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
@@ -293,7 +293,7 @@
   }
 }
 
-/* ─── Responsive: stack the two panels; drop the inner divide ───────── */
+/* ─── Responsive: stack the two panels; flip the inner divide ───────── */
 @media (max-width: 920px) {
   #\30 8-playground .pg-instrument {
     grid-template-columns: 1fr;
@@ -305,15 +305,9 @@
     background: linear-gradient(
       to right,
       transparent 0,
-      rgba(10, 26, 92, 0.12) 12%,
-      rgba(10, 26, 92, 0.12) 88%,
+      var(--pg-rule) 12%,
+      var(--pg-rule) 88%,
       transparent 100%
     );
-  }
-}
-@media (max-width: 760px) {
-  #\30 8-playground .pg-silhouette {
-    opacity: 0.34;
-    width: clamp(240px, 60vw, 360px);
   }
 }

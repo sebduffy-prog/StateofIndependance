@@ -66,10 +66,12 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
 
   const revealTruth = () => {
     truthFig.hidden = false;
+    // EARNED-DARK navy ground: cream-on-navy components + text (onNavy path),
+    // never mustard (vanishes) and never a white box behind the chart.
     horizontalBars(barsHost, {
       items: byConfidence.map((it) => ({ id: it.id, label: it.label, pct: it.pctConfident })),
       max: 100,
-      accent: 'mustard',
+      onNavy: true,
       decimals: 1,
       highlightId: top.id,
       labelWidth: 150,
@@ -111,10 +113,11 @@ const buildProtectedJoy = (rootEl, protectedSpend) => {
   const named = items.filter((it) => it.id !== 'noneOfThese' && it.id !== 'specificBrands');
 
   if (lolliHost) {
+    // Warm off-white page ground: navy components (charts default) read
+    // high-contrast; mustard would vanish. Holiday highlighted in ink.
     lollipopChart(lolliHost, {
       items: named.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
       max: 100,
-      accent: 'mustard',
       highlightId: 'holidays',
       ariaLabel: 'Non-essentials Britain is actively protecting, by share protecting each',
     });
@@ -124,9 +127,11 @@ const buildProtectedJoy = (rootEl, protectedSpend) => {
   if (stripHost) {
     const holidays = named.find((it) => it.id === 'holidays');
     const protect = holidays ? Math.round(holidays.pct) : 40;
+    // On the warm gradient hero, ring-fenced share is high-contrast NAVY
+    // (mustard-on-mustard would vanish); flexible spend stays teal.
     proportionStrip(stripHost, {
       segments: [
-        { label: 'Ring-fenced holiday', pct: protect, accent: 'mustard' },
+        { label: 'Ring-fenced holiday', pct: protect, accent: 'navy' },
         { label: 'Flexible spend', pct: 100 - protect, accent: 'teal' },
       ],
       ariaLabel: 'Holiday budget ring-fenced versus flexible spend',
@@ -139,10 +144,10 @@ const buildAiOnTap = (rootEl, aiTasks) => {
   const items = aiTasks?.items;
   if (!host || !Array.isArray(items)) return;
 
+  // Warm off-white page ground: navy bars (charts default) read high-contrast.
   const chart = horizontalBars(host, {
     items: items.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
     max: 100,
-    accent: 'mustard',
     decimals: 1,
     labelWidth: 190,
     ariaLabel: 'Tasks done with AI instead of a professional, by share for each task',

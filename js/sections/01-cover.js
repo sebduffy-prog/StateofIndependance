@@ -28,9 +28,9 @@
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
-const DOT_COUNT = 180; // calm and well-spaced, not crowding
+const DOT_COUNT = 240; // dense enough to read as a lively field on the warm ground
 const YOU_INDEX = 0; // the highlighted "you" dot
-const DRIFT_AMP = 0.5; // gentle ambient brownian motion
+const DRIFT_AMP = 0.85; // livelier ambient brownian motion (still calm, reduced-motion safe)
 
 /** Resolve a brand token to its hex, with a safe fallback. */
 const token = (name, fallback) =>
@@ -89,9 +89,9 @@ export default function init(rootEl) {
 
   const field = dotField(dotsHost, {
     count: DOT_COUNT,
-    dotRadius: 2.2,
+    dotRadius: 3.1, // bigger marks → clearly visible navy dots on the warm ground
     ariaLabel:
-      'A calm field of dots, one per survey respondent, drifting behind the cover.',
+      'A lively field of dots, one per survey respondent, drifting behind the cover.',
   });
 
   field.formation(buildTargets(DOT_COUNT, dotColour));

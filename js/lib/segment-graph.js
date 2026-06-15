@@ -1,34 +1,49 @@
 /**
  * segment-graph.js — dependency-free SVG "GraphRAG" segment explorer.
- * 4 segment hub nodes + attribute satellites; shared attributes bridge segments.
- * Wide radial seed + a small spring relaxation (no d3) that solves a spread,
- * non-overlapping layout. Click/keyboard to isolate a sub-graph and open a
- * detail panel. Brand: flat, ink strokes, square nodes.
  *
- * Factory contract (matches js/lib/* pattern):
+ * Client spec (FEEDBACK-V3 §3, verbatim): "graphrag circular cells and
+ * backgroundless with UI physics no text overlap".
+ *
+ *  - CIRCULAR cells: segment hubs are large filled circles (navy / per-segment
+ *    accent), attribute satellites are small circles. No rectangular label
+ *    boxes anywhere.
+ *  - BACKGROUNDLESS: the <svg> is transparent — no panel, plate, or bg rect.
+ *    The network floats on the section ground.
+ *  - LIVE FORCE PHYSICS: a continuous, gently-damped force-directed simulation
+ *    runs on requestAnimationFrame (charge repulsion + link springs + light
+ *    centering + a collision radius that accounts for label width). The network
+ *    breathes and settles; nodes never overlap. Dragging a node nudges it.
+ *    Under prefers-reduced-motion the sim runs a fixed number of ticks up front
+ *    then freezes — still spread and legible, no animation.
+ *  - NO TEXT OVERLAP: hub labels are always shown and the collision radius keeps
+ *    the four hubs far apart. Attribute labels are shown only for the hovered /
+ *    focused / selected node(s) — at most a small handful at a time — so labels
+ *    can never pile onto one another.
+ *
+ * Factory contract (unchanged — ch05 depends on it):
  *   segmentGraph(container, opts)
  *     -> { el, selectSegment(id), selectAttribute(key), clear(), destroy() }
- * Reads colour tokens from CSS custom properties. The layout solve is a one-off
- * static computation (positions set directly, never tweened), so it is legible
- * under prefers-reduced-motion without any animation.
+ *
+ * Colour tokens are read from CSS custom properties. CSS keys off the same
+ * classes as before (.sg-hub, .sg-attr, .sg-edge, .sg-label, .sg-panel,
+ * .sg-fallback, .sg-svg.is-focus, .is-on, .is-dim).
  */
 
 const NS = 'http://www.w3.org/2000/svg';
-const SEG_ACCENT = {                 // stable per-segment brand colours
+
+// Stable per-segment brand colours for the hub circles.
+const SEG_ACCENT = {
   architects: '--mustard',
   hustlers: '--teal-deep',
   coasters: '--mustard-dark',
-  retreaters: '--ink',
+  retreaters: '--soi-navy',
 };
 
 const cssVar = (n, f) =>
   getComputedStyle(document.documentElement).getPropertyValue(n).trim() || f;
 
-// Relative luminance of a hex/rgb colour, so a node label is always set to a
-// deliberate, legible foreground against its OWN fill (contrast-safety §6) —
-// dark fills (retreaters ink, hustlers teal-deep) get a light label, light
-// fills get an ink label. Fixes the "Retreaters ink-on-dark" offender at the
-// source without changing the API.
+// ── Contrast-safe label colour (pick ink/cream for higher WCAG ratio on the
+//    node's own fill) so a hub label never sits same-on-same. ──
 const toRgb = (c) => {
   const s = String(c).trim();
   if (s.startsWith('#')) {
@@ -53,17 +68,14 @@ const contrast = (a, b) => {
   const hi = Math.max(a, b), lo = Math.min(a, b);
   return (hi + 0.05) / (lo + 0.05);
 };
-// Legible label colour for a given node fill: pick whichever of ink/cream
-// yields the HIGHER WCAG contrast ratio. A flat luminance threshold fails on
-// mid-tone fills (teal-deep, mustard-dark) where cream and ink both sit near
-// the middle — comparing the two ratios always lands on the readable choice.
 const labelOn = (fill) => {
   const lf = luminance(fill);
   const ink = cssVar('--ink', '#000');
   const cream = cssVar('--soi-cream', '#EEE9DD');
   return contrast(lf, luminance(cream)) > contrast(lf, luminance(ink)) ? cream : ink;
 };
-const el = (tag, a = {}) => {
+
+const elNS = (tag, a = {}) => {
   const node = document.createElementNS(NS, tag);
   for (const [k, v] of Object.entries(a)) node.setAttribute(k, String(v));
   return node;
@@ -105,46 +117,51 @@ const buildAttributes = (seg, facets) => {
 };
 
 export function segmentGraph(container, opts = {}) {
-  if (!container) return { el: null, selectSegment() {}, selectAttribute() {}, clear() {}, destroy() {} };
+  const noop = { el: null, selectSegment() {}, selectAttribute() {}, clear() {}, destroy() {} };
+  if (!container) return noop;
   const segments = opts.segments || [];
-  if (!segments.length) return { el: null, selectSegment() {}, selectAttribute() {}, clear() {}, destroy() {} };
+  if (!segments.length) return noop;
 
   const facets = opts.facets || ['interests', 'channels', 'aiAttitude', 'demographics'];
   const W = opts.width ?? 920;
-  const H = opts.height ?? 640;
+  const H = opts.height ?? 600;
   const cx = W / 2, cy = H / 2;
+  const reduced = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Layout tuning. Label boxes are wide (≈116px), so the sim has to keep node
-  // centres far enough apart that the boxes (and their text) never overlap.
-  const SAT_W = 116, SAT_H = 26;          // attribute (satellite) box size
-  const HUB_W = 150, HUB_H = 40;          // segment (hub) box size
-  const MIN_GAP_X = SAT_W + 30;           // min centre-to-centre x to avoid box overlap
-  const MIN_GAP_Y = SAT_H + 26;           // min centre-to-centre y
-  // Keep-out around hub boxes too, so satellites never crowd the hubs.
-  const HUB_GAP_X = (SAT_W + HUB_W) / 2 + 18;
-  const HUB_GAP_Y = (SAT_H + HUB_H) / 2 + 14;
-  const PAD_X = 74, PAD_Y = 46;           // keep node centres (and their boxes) inside the frame
-  const ITERATIONS = 420;
-  const REPULSION = 8600;                 // inverse-square spread (kept strong)
-  const SPRING = 0.012;                   // gentle pull toward owning hubs
-  const IDEAL_EDGE = 152;                 // rest length of a hub→attr edge
-  const SEPARATE = 0.55;                  // share of box overlap resolved per pair per pass
-  const SETTLE_PASSES = 60;               // final box-only separation passes (full resolve)
+  // ── Geometry (all circular) ──────────────────────────────────────────────
+  const HUB_R = 40;            // hub circle radius
+  const SAT_R = 11;            // attribute circle radius
+  const HUB_COLLIDE = 132;     // hub keep-out (its always-on label is wide)
+  const SAT_COLLIDE = 26;      // satellite keep-out (label is hidden at rest)
+  const HUB_SAT_COLLIDE = HUB_R + SAT_R + 22;
+  const PAD = 56;              // keep node centres inside the frame
 
-  // ── Build the node + edge model ────────────────────
-  // Hub nodes on a generous ring around centre, so the four camps stay anchored
-  // in the corners and the satellites have the full canvas to spread into.
+  // Force constants — gentle, damped.
+  const CHARGE = 2600;         // inverse-square repulsion strength
+  const SPRING = 0.018;        // link spring stiffness
+  const REST_HUB = 150;        // rest length, hub → its attributes
+  const CENTER = 0.0016;       // light pull toward canvas centre
+  const HUB_CENTER = 0.004;    // hubs sit on a ring, pulled to their anchor
+  const DAMPING = 0.86;        // velocity damping per tick
+  const MAX_V = 14;            // velocity clamp for stability
+  const REDUCED_TICKS = 320;   // up-front ticks when motion is reduced
+
+  // ── Build the node + edge model ───────────────────────────────────────────
   const hubR = Math.min(W, H) * 0.30;
   const hubs = segments.map((s, i) => {
     const ang = (-90 + (360 / segments.length) * i) * (Math.PI / 180);
+    const ax = cx + Math.cos(ang) * hubR;
+    const ay = cy + Math.sin(ang) * hubR;
     return {
       kind: 'seg', id: s.id, label: s.name, seg: s,
       accent: cssVar(SEG_ACCENT[s.id] || '--mustard', '#FFC931'),
-      x: cx + Math.cos(ang) * hubR, y: cy + Math.sin(ang) * hubR, ang, pinned: true,
+      r: HUB_R, collide: HUB_COLLIDE,
+      x: ax, y: ay, vx: 0, vy: 0, anchorX: ax, anchorY: ay,
     };
   });
 
-  // Attribute nodes keyed by normalised label; remember which segments hold them.
+  // Attribute nodes keyed by normalised label; remember owning segments.
   const attrMap = new Map();
   segments.forEach((s) => buildAttributes(s, facets).forEach((a) => {
     const key = a.facet + ':' + norm(a.label);
@@ -153,193 +170,159 @@ export function segmentGraph(container, opts = {}) {
     attrMap.set(key, rec);
   }));
   const attrs = [...attrMap.values()];
-  attrs.forEach((a) => { a.shared = a.segs.length > 1; });
-
   const hubById = new Map(hubs.map((h) => [h.id, h]));
 
-  // ── Seed positions WIDE so the relaxation starts un-piled and converges fast.
-  //    Unique attrs fan out in an arc on the OUTWARD side of their hub; shared
-  //    attrs start at the centroid of the hubs they bridge. ──
-  const SEED_ARC = (150 * Math.PI) / 180;
-  const SEED_RINGS = [128, 196, 264];
-  const perHub = new Map(hubs.map((h) => [h.id, []]));
-  attrs.forEach((a) => { if (!a.shared) perHub.get(a.segs[0]).push(a); });
-  perHub.forEach((list, hid) => {
-    const h = hubById.get(hid);
-    const n = list.length;
-    const perRing = Math.max(1, Math.ceil(n / SEED_RINGS.length));
-    list.forEach((a, k) => {
-      const ring = Math.min(Math.floor(k / perRing), SEED_RINGS.length - 1);
-      const slot = k - ring * perRing;
-      const count = Math.min(perRing, n - ring * perRing);
-      const t = count > 1 ? slot / (count - 1) - 0.5 : 0;  // -0.5..0.5 across the arc
-      const ang = h.ang + t * SEED_ARC;                     // arc centred on hub's outward bearing
-      const r = SEED_RINGS[ring];
-      a.x = h.x + Math.cos(ang) * r;
-      a.y = h.y + Math.sin(ang) * r;
-    });
-  });
+  // Seed attribute positions near their owning hub (shared attrs at centroid),
+  // with a small deterministic jitter so the sim has a non-degenerate start.
+  let seed = 1;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
   attrs.forEach((a) => {
-    if (!a.shared) return;
+    a.shared = a.segs.length > 1;
+    a.r = SAT_R; a.collide = SAT_COLLIDE;
     const owners = a.segs.map((sid) => hubById.get(sid));
     const mx = owners.reduce((s, h) => s + h.x, 0) / owners.length;
     const my = owners.reduce((s, h) => s + h.y, 0) / owners.length;
-    a.x = mx; a.y = my;
+    const jx = (rnd() - 0.5) * 120, jy = (rnd() - 0.5) * 120;
+    a.x = mx + jx; a.y = my + jy; a.vx = 0; a.vy = 0;
   });
 
   // Edges: every attr connects to each owning hub.
   const edges = [];
   attrs.forEach((a) => a.segs.forEach((sid) => edges.push({ a: a.id, h: sid })));
 
-  // ── Spring relaxation (no d3): inverse-square repulsion + an axis-aligned box
-  //    collision separation (the part that actually stops labels overlapping),
-  //    a gentle spring toward owning hubs, then clamp inside padded bounds.
-  //    This is a one-off static solve (positions are set directly, never tweened),
-  //    so it runs even under prefers-reduced-motion — reduced motion suppresses
-  //    ANIMATION, not the legible spread. The wide seed just gives it a head start. ──
-  const byId = new Map([...hubs, ...attrs].map((n) => [n.id, n]));
-  const clampNode = (a) => {
-    a.x = Math.max(PAD_X, Math.min(W - PAD_X, a.x));
-    a.y = Math.max(PAD_Y, Math.min(H - PAD_Y, a.y));
+  const nodes = [...hubs, ...attrs];
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+
+  // ── Force simulation tick (damped) ─────────────────────────────────────────
+  const clamp = (n) => {
+    const m = n.r + 6;
+    n.x = Math.max(PAD + m, Math.min(W - PAD - m, n.x));
+    n.y = Math.max(PAD + m, Math.min(H - PAD - m, n.y));
   };
-  const iterations = ITERATIONS;
-  for (let it = 0; it < iterations; it++) {
-    for (let i = 0; i < attrs.length; i++) for (let j = i + 1; j < attrs.length; j++) {
-      const p = attrs[i], q = attrs[j];
-      let dx = p.x - q.x, dy = p.y - q.y;
 
-      // 1) hard box separation: if the label boxes overlap, push apart along the
-      //    shallower axis just enough to clear them (split between the two nodes).
-      const overlapX = MIN_GAP_X - Math.abs(dx);
-      const overlapY = MIN_GAP_Y - Math.abs(dy);
-      if (overlapX > 0 && overlapY > 0) {
-        if (overlapX < overlapY) {
-          const push = (dx >= 0 ? 1 : -1) * overlapX * SEPARATE;
-          p.x += push; q.x -= push;
-        } else {
-          const push = (dy >= 0 ? 1 : -1) * overlapY * SEPARATE;
-          p.y += push; q.y -= push;
+  const tick = () => {
+    // charge repulsion (all pairs)
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const p = nodes[i], q = nodes[j];
+        let dx = p.x - q.x, dy = p.y - q.y;
+        let d2 = dx * dx + dy * dy || 0.01;
+        let d = Math.sqrt(d2);
+        const f = CHARGE / d2;
+        const ux = dx / d, uy = dy / d;
+        p.vx += ux * f; p.vy += uy * f;
+        q.vx -= ux * f; q.vy -= uy * f;
+
+        // collision: never let two circles' keep-out radii overlap
+        const minD = p.collide + q.collide;
+        if (d < minD) {
+          const push = (minD - d) * 0.5;
+          p.vx += ux * push; p.vy += uy * push;
+          q.vx -= ux * push; q.vy -= uy * push;
         }
-      }
-
-      // 2) soft inverse-square repulsion keeps the field evenly spread.
-      const d2 = dx * dx + dy * dy || 0.01;
-      const d = Math.sqrt(d2);
-      const f = REPULSION / d2;
-      dx /= d; dy /= d;
-      p.x += dx * f; p.y += dy * f; q.x -= dx * f; q.y -= dy * f;
-    }
-    // hub keep-out: push any satellite out of a hub's box footprint (hubs are
-    // pinned, so the whole correction lands on the satellite).
-    for (let i = 0; i < attrs.length; i++) {
-      const a = attrs[i];
-      for (let k = 0; k < hubs.length; k++) {
-        const h = hubs[k];
-        const dx = a.x - h.x, dy = a.y - h.y;
-        const ox = HUB_GAP_X - Math.abs(dx);
-        const oy = HUB_GAP_Y - Math.abs(dy);
-        if (ox > 0 && oy > 0) {
-          if (ox < oy) a.x += (dx >= 0 ? 1 : -1) * ox;
-          else a.y += (dy >= 0 ? 1 : -1) * oy;
+        // hub ↔ satellite hard separation (keep satellites off the hub disc)
+        if ((p.kind === 'seg') !== (q.kind === 'seg')) {
+          if (d < HUB_SAT_COLLIDE) {
+            const push = (HUB_SAT_COLLIDE - d) * 0.5;
+            p.vx += ux * push; p.vy += uy * push;
+            q.vx -= ux * push; q.vy -= uy * push;
+          }
         }
       }
     }
-    // spring attrs toward owning hubs (toward rest length, not collapsed onto hub)
+
+    // link springs (attr → owning hub, toward rest length)
     edges.forEach((e) => {
       const a = byId.get(e.a), h = byId.get(e.h);
       let dx = h.x - a.x, dy = h.y - a.y;
       const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
-      const f = (d - IDEAL_EDGE) * SPRING;
-      a.x += (dx / d) * f; a.y += (dy / d) * f;
+      const f = (d - REST_HUB) * SPRING;
+      const ux = dx / d, uy = dy / d;
+      a.vx += ux * f; a.vy += uy * f;
+      h.vx -= ux * f * 0.25; h.vy -= uy * f * 0.25;
     });
-    attrs.forEach(clampNode);
-  }
 
-  // ── Final settling: box-only separation with NO repulsion or springs, so the
-  //    last word on layout is "boxes do not overlap". Each pass fully resolves
-  //    every overlapping pair (split 50/50) and re-applies hub keep-out, then
-  //    clamps. Converges to a guaranteed non-overlapping arrangement. ──
-  for (let pass = 0; pass < SETTLE_PASSES; pass++) {
-    let moved = false;
-    for (let i = 0; i < attrs.length; i++) for (let j = i + 1; j < attrs.length; j++) {
-      const p = attrs[i], q = attrs[j];
-      const dx = p.x - q.x, dy = p.y - q.y;
-      const overlapX = MIN_GAP_X - Math.abs(dx);
-      const overlapY = MIN_GAP_Y - Math.abs(dy);
-      if (overlapX > 0 && overlapY > 0) {
-        moved = true;
-        if (overlapX < overlapY) {
-          const push = (dx >= 0 ? 1 : -1) * overlapX * 0.5;
-          p.x += push; q.x -= push;
-        } else {
-          const push = (dy >= 0 ? 1 : -1) * overlapY * 0.5;
-          p.y += push; q.y -= push;
-        }
+    // centering + hub anchor (hubs hold the ring; attrs drift to centre softly)
+    nodes.forEach((n) => {
+      if (n.kind === 'seg') {
+        n.vx += (n.anchorX - n.x) * HUB_CENTER;
+        n.vy += (n.anchorY - n.y) * HUB_CENTER;
+      } else {
+        n.vx += (cx - n.x) * CENTER;
+        n.vy += (cy - n.y) * CENTER;
       }
-    }
-    for (let i = 0; i < attrs.length; i++) {
-      const a = attrs[i];
-      for (let k = 0; k < hubs.length; k++) {
-        const h = hubs[k];
-        const dx = a.x - h.x, dy = a.y - h.y;
-        const ox = HUB_GAP_X - Math.abs(dx);
-        const oy = HUB_GAP_Y - Math.abs(dy);
-        if (ox > 0 && oy > 0) {
-          moved = true;
-          if (ox < oy) a.x += (dx >= 0 ? 1 : -1) * ox;
-          else a.y += (dy >= 0 ? 1 : -1) * oy;
-        }
-      }
-    }
-    attrs.forEach(clampNode);
-    if (!moved) break;
-  }
+    });
 
-  // ── Render ─────────────────────────────────────────
+    // integrate with damping + velocity clamp; skip the actively dragged node
+    nodes.forEach((n) => {
+      if (n === dragNode) { n.vx = 0; n.vy = 0; return; }
+      n.vx *= DAMPING; n.vy *= DAMPING;
+      const v = Math.hypot(n.vx, n.vy);
+      if (v > MAX_V) { n.vx = n.vx / v * MAX_V; n.vy = n.vy / v * MAX_V; }
+      n.x += n.vx; n.y += n.vy;
+      clamp(n);
+    });
+  };
+
+  let dragNode = null;
+
+  // ── Render ─────────────────────────────────────────────────────────────────
   const wrap = document.createElement('div');
   wrap.className = 'sg-wrap';
 
   const stage = document.createElement('div');
   stage.className = 'sg-stage';
-  const svg = el('svg', {
+  const svg = elNS('svg', {
     class: 'sg-svg', viewBox: `0 0 ${W} ${H}`,
     preserveAspectRatio: 'xMidYMid meet',
     role: 'group', 'aria-label': opts.ariaLabel || 'Segment attribute graph',
   });
 
   // edges first (under nodes)
-  const edgeLayer = el('g', { class: 'sg-edges' });
-  edges.forEach((e) => {
+  const edgeLayer = elNS('g', { class: 'sg-edges' });
+  const edgeEls = edges.map((e) => {
     const a = byId.get(e.a), h = byId.get(e.h);
-    const line = el('line', { class: 'sg-edge', x1: h.x, y1: h.y, x2: a.x, y2: a.y, 'data-h': e.h, 'data-a': e.a });
+    const line = elNS('line', { class: 'sg-edge', x1: h.x, y1: h.y, x2: a.x, y2: a.y, 'data-h': e.h, 'data-a': e.a });
     edgeLayer.appendChild(line);
+    return { e, line };
   });
   svg.appendChild(edgeLayer);
 
-  // attribute nodes (square — brand) as focusable groups
-  const mkNode = (n, cls, w, h, accent) => {
-    const fill = accent || cssVar('--paper', '#fff');
-    const g = el('g', { class: cls, tabindex: '0', role: 'button',
-      'data-id': n.id, 'aria-label': n.label, transform: `translate(${n.x},${n.y})` });
-    g.appendChild(el('rect', { x: -w / 2, y: -h / 2, width: w, height: h,
-      fill, stroke: cssVar('--ink', '#000'), 'stroke-width': 1.5 }));
-    // Explicit, luminance-derived label colour so no label sits same-on-same.
-    const text = el('text', { class: 'sg-label', x: 0, y: 4, 'text-anchor': 'middle',
-      fill: labelOn(fill) });
-    text.textContent = n.label.length > 22 ? n.label.slice(0, 21) + '…' : n.label;
+  const ink = cssVar('--ink', '#000');
+  const creamFill = cssVar('--soi-cream-warm', '#FAE9C5');
+  const tealFill = cssVar('--teal', '#80E8E3');
+
+  // Build a circular node group: <circle> + (optional) <text> label.
+  const mkNode = (n, cls, fill, showLabel) => {
+    const g = elNS('g', {
+      class: cls, tabindex: '0', role: 'button',
+      'data-id': n.id, 'aria-label': n.label, transform: `translate(${n.x},${n.y})`,
+    });
+    g.appendChild(elNS('circle', {
+      class: 'sg-dot', r: n.r, cx: 0, cy: 0,
+      fill, stroke: cssVar('--soi-navy', '#0A1A5C'),
+      'stroke-width': n.kind === 'seg' ? 0 : 1.25,
+    }));
+    const text = elNS('text', {
+      class: 'sg-label', 'text-anchor': 'middle',
+      x: 0, y: n.kind === 'seg' ? 4 : n.r + 14,
+      fill: n.kind === 'seg' ? labelOn(fill) : cssVar('--soi-navy', '#0A1A5C'),
+    });
+    const raw = n.label;
+    text.textContent = raw.length > 26 ? raw.slice(0, 25) + '…' : raw;
+    if (!showLabel) text.style.opacity = '0';
     g.appendChild(text);
+    n.el = g; n.labelEl = text;
     return g;
   };
 
+  // satellites under hubs in z-order
   attrs.forEach((a) => {
-    const node = mkNode(a, 'sg-attr' + (a.shared ? ' is-shared' : ''), SAT_W, SAT_H,
-      a.shared ? cssVar('--mustard-pale', '#FFF9E2') : cssVar('--paper', '#fff'));
-    a.el = node; svg.appendChild(node);
+    const fill = a.shared ? tealFill : creamFill;
+    svg.appendChild(mkNode(a, 'sg-attr' + (a.shared ? ' is-shared' : ''), fill, false));
   });
   hubs.forEach((hb) => {
-    const node = mkNode(hb, 'sg-hub', HUB_W, HUB_H, hb.accent);
-    node.setAttribute('data-id', hb.id);
-    hb.el = node; svg.appendChild(node);
+    svg.appendChild(mkNode(hb, 'sg-hub', hb.accent, true)); // hub labels always on
   });
   stage.appendChild(svg);
 
@@ -362,11 +345,32 @@ export function segmentGraph(container, opts = {}) {
   wrap.appendChild(fallback);
   container.appendChild(wrap);
 
-  // ── Selection logic ────────────────────────────────
+  // ── Paint positions from the model to the DOM each frame ───────────────────
+  const paint = () => {
+    nodes.forEach((n) => n.el.setAttribute('transform', `translate(${n.x.toFixed(2)},${n.y.toFixed(2)})`));
+    edgeEls.forEach(({ e, line }) => {
+      const a = byId.get(e.a), h = byId.get(e.h);
+      line.setAttribute('x1', h.x.toFixed(2)); line.setAttribute('y1', h.y.toFixed(2));
+      line.setAttribute('x2', a.x.toFixed(2)); line.setAttribute('y2', a.y.toFixed(2));
+    });
+  };
+
+  // ── Selection logic ────────────────────────────────────────────────────────
+  let selectedId = null;
+
+  const setLabelVisible = (n, on) => {
+    if (n.kind === 'seg') return;            // hub labels always visible
+    n.labelEl.style.opacity = on ? '1' : '0';
+  };
+
   const clear = () => {
+    selectedId = null;
     svg.classList.remove('is-focus');
-    [...hubs, ...attrs].forEach((n) => n.el.classList.remove('is-on', 'is-dim'));
-    edgeLayer.querySelectorAll('.sg-edge').forEach((l) => l.classList.remove('is-on', 'is-dim'));
+    nodes.forEach((n) => {
+      n.el.classList.remove('is-on', 'is-dim');
+      setLabelVisible(n, false);
+    });
+    edgeEls.forEach(({ line }) => line.classList.remove('is-on', 'is-dim'));
     panel.innerHTML = '<p class="sg-hint">Select a segment or attribute to explore the network.</p>';
   };
 
@@ -386,15 +390,18 @@ export function segmentGraph(container, opts = {}) {
   const selectSegment = (id) => {
     const hub = hubs.find((h) => h.id === id);
     if (!hub) return;
+    selectedId = id;
     svg.classList.add('is-focus');
-    [...hubs, ...attrs].forEach((n) => {
+    nodes.forEach((n) => {
       const on = n.id === id || (n.kind === 'attr' && n.segs.includes(id));
       n.el.classList.toggle('is-on', on);
       n.el.classList.toggle('is-dim', !on);
+      // show labels only for this hub's attributes (its own sub-graph)
+      setLabelVisible(n, on && n.kind === 'attr');
     });
-    edgeLayer.querySelectorAll('.sg-edge').forEach((l) => {
-      const on = l.dataset.h === id;
-      l.classList.toggle('is-on', on); l.classList.toggle('is-dim', !on);
+    edgeEls.forEach(({ e, line }) => {
+      const on = e.h === id;
+      line.classList.toggle('is-on', on); line.classList.toggle('is-dim', !on);
     });
     renderSegmentDetail(hub.seg);
     opts.onSelectSegment && opts.onSelectSegment(hub.seg);
@@ -403,15 +410,18 @@ export function segmentGraph(container, opts = {}) {
   const selectAttribute = (key) => {
     const a = attrs.find((x) => x.id === key);
     if (!a) return;
+    selectedId = key;
     svg.classList.add('is-focus');
-    [...hubs, ...attrs].forEach((n) => {
+    nodes.forEach((n) => {
       const on = n.id === key || (n.kind === 'seg' && a.segs.includes(n.id));
       n.el.classList.toggle('is-on', on);
       n.el.classList.toggle('is-dim', !on);
+      // only the selected attribute keeps its label up
+      setLabelVisible(n, n.id === key);
     });
-    edgeLayer.querySelectorAll('.sg-edge').forEach((l) => {
-      const on = l.dataset.a === key;
-      l.classList.toggle('is-on', on); l.classList.toggle('is-dim', !on);
+    edgeEls.forEach(({ e, line }) => {
+      const on = e.a === key;
+      line.classList.toggle('is-on', on); line.classList.toggle('is-dim', !on);
     });
     const owners = a.segs.map((sid) => segments.find((s) => s.id === sid)?.name).filter(Boolean);
     panel.innerHTML =
@@ -422,22 +432,88 @@ export function segmentGraph(container, opts = {}) {
     opts.onSelectAttribute && opts.onSelectAttribute(a);
   };
 
-  // wire interaction (click + Enter/Space, Escape clears) on every node
+  // ── Interaction: click / keyboard / hover-label / drag ─────────────────────
   const activate = (n) => (n.kind === 'seg' ? selectSegment(n.id) : selectAttribute(n.id));
-  [...hubs, ...attrs].forEach((n) => {
+
+  nodes.forEach((n) => {
     n.el.addEventListener('click', () => activate(n));
     n.el.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(n); }
       if (e.key === 'Escape') clear();
     });
+    // transient label on hover / focus (only when not in a selection)
+    const showTransient = () => { if (!selectedId) setLabelVisible(n, true); };
+    const hideTransient = () => { if (!selectedId) setLabelVisible(n, false); };
+    n.el.addEventListener('mouseenter', showTransient);
+    n.el.addEventListener('mouseleave', hideTransient);
+    n.el.addEventListener('focus', showTransient);
+    n.el.addEventListener('blur', hideTransient);
   });
+
+  // Pointer-drag nudges a node; the sim re-settles around it.
+  const clientToSvg = (clientX, clientY) => {
+    const rect = svg.getBoundingClientRect();
+    return {
+      x: ((clientX - rect.left) / rect.width) * W,
+      y: ((clientY - rect.top) / rect.height) * H,
+    };
+  };
+  let pointerMoved = false;
+  const onPointerDown = (n) => (ev) => {
+    dragNode = n; pointerMoved = false;
+    n.el.setPointerCapture && n.el.setPointerCapture(ev.pointerId);
+  };
+  const onPointerMove = (ev) => {
+    if (!dragNode) return;
+    pointerMoved = true;
+    const p = clientToSvg(ev.clientX, ev.clientY);
+    dragNode.x = p.x; dragNode.y = p.y; dragNode.vx = 0; dragNode.vy = 0;
+    clamp(dragNode);
+    if (reduced) { for (let i = 0; i < 8; i++) tick(); paint(); }
+  };
+  const onPointerUp = () => { dragNode = null; };
+  nodes.forEach((n) => n.el.addEventListener('pointerdown', onPointerDown(n)));
+  svg.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+  // suppress the click that follows a real drag
+  nodes.forEach((n) => n.el.addEventListener('click', (ev) => {
+    if (pointerMoved) { ev.stopImmediatePropagation(); pointerMoved = false; }
+  }, true));
+
+  // ── Run the simulation ──────────────────────────────────────────────────────
+  let rafId = null;
+  if (reduced) {
+    for (let i = 0; i < REDUCED_TICKS; i++) tick();
+    paint();
+  } else {
+    let frames = 0;
+    const loop = () => {
+      tick();
+      paint();
+      frames++;
+      // keep a continuous gentle breathe, but if it has clearly settled and
+      // nothing is being dragged for a long while, idle out to save cycles.
+      const energy = nodes.reduce((s, n) => s + Math.hypot(n.vx, n.vy), 0);
+      if (frames > 600 && energy < 0.4 && !dragNode) { rafId = null; return; }
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    // wake the sim back up on interaction so dragging always animates
+    const wake = () => { if (rafId == null) { rafId = requestAnimationFrame(loop); } };
+    svg.addEventListener('pointerdown', wake);
+    svg.addEventListener('pointermove', () => { if (dragNode) wake(); });
+  }
 
   return {
     el: wrap,
     selectSegment,
     selectAttribute,
     clear,
-    destroy() { wrap.remove(); },
+    destroy() {
+      if (rafId != null) cancelAnimationFrame(rafId);
+      window.removeEventListener('pointerup', onPointerUp);
+      wrap.remove();
+    },
   };
 }
 

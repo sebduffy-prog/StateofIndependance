@@ -127,14 +127,15 @@
 
     <!-- The girl-and-bear stands flush on the gradient floor: big, grounded,
          in its own column so it cannot overlap the wordmark/copyright. -->
-    <!-- Cream silhouette (deck world §1): a transparent 1×1 src keeps this an
-         <img> with alt text for a11y, while the cream fill + the real PNG used
-         as a CSS mask paint a warm cream silhouette (not the old black cut-out). -->
+    <!-- Cream silhouette (deck world §1): the artwork is pre-cropped to its
+         content bbox and baked to warm cream (assets/brand/Girl_and_Bear_cream.png),
+         so the figures fill the frame edge-to-edge with feet flush to the floor —
+         no letterbox gap, no plate, no mask/aspect mismatch. Aspect 2817×1620. -->
     <img
       class="outro-backcover-bear si-ground"
-      src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-      alt="The VCCP girl and bear"
-      width="620" height="640"
+      src="assets/brand/Girl_and_Bear_cream.png"
+      alt="The VCCP girl and bear silhouette, the small figure regarding the bear"
+      width="2817" height="1620"
       loading="lazy" decoding="async"
     />
   </div>

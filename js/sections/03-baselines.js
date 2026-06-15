@@ -4,16 +4,18 @@
  * Design World V2: the four baseline stats FLOW on a warm mustard->orange
  * gradient ground (the "operational floor"), not a grid of bordered boxes.
  * Each stat pairs a huge .si-bignum + label + sentence (navy on warm, via
- * .on-warm) with one supporting chart sitting on a clean square paper mat
- * so the chart's ink marks never sit colour-on-colour against the gradient.
- * Alternating left/right rhythm; generous negative space; orbit + cream bear
- * silhouette + seed dots are decoration only (behind, pointer-events:none).
+ * .on-warm) with one supporting chart that sits DIRECTLY on the warm ground
+ * (box-less, via .chart-holder — no white/paper card). The chart marks carry
+ * the contrast themselves: navy components + bigger/bolder navy labels (the
+ * charts.js default on warm grounds), faint ink-tint tracks, never a white
+ * box. Alternating left/right rhythm; generous negative space; orbit + cream
+ * bear silhouette + seed dots are decoration only (behind, pointer-events:none).
  * Chart variety keeps bar reliance to a single horizontalBars (stat 4):
- *   - mood of the nation     -> lollipopChart (careful highlighted ink)
- *   - money-saving moves      -> lollipopChart
- *   - availability concerns   -> dotPlot (mustard-dark, a down/anxious read)
- *   - 54 / 46 trading split   -> proportionStrip
- *   - traded-down categories  -> horizontalBars (the one bar chart)
+ *   - mood of the nation     -> lollipopChart (navy, careful highlighted ink)
+ *   - money-saving moves      -> lollipopChart (navy)
+ *   - availability concerns   -> dotPlot (navy, a down/anxious read)
+ *   - 54 / 46 trading split   -> proportionStrip (navy ↔ teal)
+ *   - traded-down categories  -> horizontalBars (navy, the one bar chart)
  * Stat 1 stays gated behind clickToGuess (the loved interaction): the
  * 77% number and its waffle only reveal after the reader commits a guess.
  *
@@ -76,7 +78,9 @@ export default function init(rootEl, data) {
       waffleHost.hidden = false;
       waffleGrid(waffleHost, {
         value: CAREFUL_WAFFLE_FILL,
-        accent: 'mustard',
+        // Navy filled squares read high-contrast on the warm amber ground;
+        // mustard squares would vanish colour-on-colour.
+        accent: 'navy',
         square: 18,
         gap: 4,
         ariaLabel: `${CAREFUL_WAFFLE_FILL} in 100 UK adults are more careful with money`,
@@ -102,9 +106,11 @@ export default function init(rootEl, data) {
   const moodHost = rootEl.querySelector('[data-bars-mood]');
   if (moodHost && moodOfNation) {
     lollipopChart(moodHost, {
+      // Navy dots/stems on the warm ground; the "careful" item draws in ink
+      // as the highlight (charts.js uses ink for the highlight on warm).
       items: mapItems(moodOfNation.items),
       highlightId: 'careful',
-      accent: 'mustard',
+      accent: 'navy',
       ariaLabel: 'Mood of the nation, percentage who agree with each statement',
     });
     setSource(rootEl, '[data-source-mood]', moodOfNation.source);
@@ -115,7 +121,7 @@ export default function init(rootEl, data) {
   if (moneyHost && moneySavingMoves) {
     lollipopChart(moneyHost, {
       items: mapItems(moneySavingMoves.items),
-      accent: 'mustard',
+      accent: 'navy',
       ariaLabel: 'Money-saving moves taken in the last three months',
     });
     setSource(rootEl, '[data-source-money]', moneySavingMoves.source);
@@ -126,7 +132,7 @@ export default function init(rootEl, data) {
   if (availabilityHost && availabilityConcerns) {
     dotPlot(availabilityHost, {
       items: mapItems(availabilityConcerns.items),
-      accent: 'mustard',
+      accent: 'navy',
       ariaLabel: 'What Britain is anxious about in the coming months',
     });
     setSource(rootEl, '[data-source-availability]', availabilityConcerns.source);
@@ -136,8 +142,10 @@ export default function init(rootEl, data) {
   const stripHost = rootEl.querySelector('[data-strip-trading]');
   if (stripHost) {
     proportionStrip(stripHost, {
+      // Navy (the dominant move) ↔ teal split: both high-contrast on warm,
+      // never mustard-on-mustard.
       segments: [
-        { label: 'Trading down', pct: TRADING_DOWN_PCT, accent: 'mustard' },
+        { label: 'Trading down', pct: TRADING_DOWN_PCT, accent: 'navy' },
         { label: 'Holding their basket', pct: HOLDING_PCT, accent: 'teal' },
       ],
       ariaLabel: '54% trading down on groceries, 46% holding their basket',

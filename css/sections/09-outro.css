@@ -108,9 +108,9 @@
   margin: 0 0 clamp(22px, 2.8vw, 38px) 0;
   color: var(--soi-cream);
   text-transform: none;          /* a spoken quote reads better in sentence case */
-  font-weight: 600;
-  letter-spacing: -0.018em;
-  line-height: 1.04;
+  font-weight: 700;              /* deck gravitas (§4) — heavier than before */
+  letter-spacing: -0.026em;      /* tighter tracking to match the deck headlines */
+  line-height: 1.02;
 }
 /* The highlighter must read on the dark ground: keep the mustard-light fill
    (from .hl::before) and force the highlighted word's text to dark ink so it
@@ -186,9 +186,11 @@
   font-variant-numeric: tabular-nums;
 }
 #\30 9-outro .outro-recap-text {
-  /* si-display: uppercase, weight 600 — the move titles command the line. */
-  font-size: clamp(1.3rem, 2.6vw, 2.6rem);
-  line-height: 0.98;
+  /* si-display: uppercase weight 700 — pushed to deck gravitas (§4) with
+     tighter tracking and leading so the move titles command the line. */
+  font-size: clamp(1.45rem, 2.9vw, 2.9rem);
+  letter-spacing: -0.035em;
+  line-height: 0.94;
   color: var(--soi-cream);
 }
 #\30 9-outro .outro-recap-link:hover,
@@ -312,11 +314,15 @@
   gap: 8px;
   max-width: 30ch;
 }
-/* Wordmark in display gravitas — navy on the warm ground (high contrast §6). */
+/* Wordmark in display gravitas — navy on the warm ground (high contrast §6).
+   Pushed heavier/tighter to match the deck's punchy headline type (feedback
+   §4): largest weight/scale, negative tracking, tight leading. */
 #\30 9-outro .outro-backcover-series {
   margin: 0;
   color: var(--soi-navy);
-  line-height: 0.96;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
 }
 #\30 9-outro .outro-backcover-org {
   margin: 0;
@@ -331,24 +337,22 @@
   color: rgba(10, 26, 92, 0.8);    /* navy @ 80% — lifted so it's never the faintest text */
   font-variant-numeric: tabular-nums;
 }
-/* The illustration: large, anchored flush to the bottom edge, in its own
-   column so it never overlaps the copy. Clean black silhouette on the warm
-   ground (never distorted). Decorative — ignores pointer events. */
-/* Cream silhouette (deck world §1): the PNG's alpha is used as a mask painted
-   with the cream fill, so the bear+figure reads as a warm cream silhouette on
-   the amber ground — not the old flat-black cut-out. The raster itself is
-   masked out (content suppressed) and the cream comes from the background. */
+/* The illustration: large, anchored flush to the bottom edge of the ground, in
+   its own grid column so it never overlaps the copy. The PNG is pre-cropped to
+   content and pre-coloured warm cream (deck world §1), so it ships as a plain
+   <img> with feet flush to the floor — no mask, no aspect mismatch, no
+   letterbox gap, no plate/box. Large and grounded. Decorative — ignores
+   pointer events. The intrinsic aspect (2817×1620) is honoured by height:auto
+   so the silhouette never distorts. */
 #\30 9-outro .outro-backcover-bear {
   position: relative;
   z-index: 1;
-  align-self: end;
-  width: clamp(240px, 32vw, 540px);
+  align-self: end;            /* feet sit on the grid baseline (ground floor) */
+  display: block;
+  width: clamp(320px, 46vw, 760px);   /* large, matching the cover's presence */
   height: auto;
-  aspect-ratio: 620 / 640;
+  margin-bottom: 0;           /* flush — no gap below the feet */
   pointer-events: none;
-  background: var(--soi-cream);
-  -webkit-mask: url("../../assets/brand/Girl_and_Bear.png") center / contain no-repeat;
-  mask: url("../../assets/brand/Girl_and_Bear.png") center / contain no-repeat;
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */

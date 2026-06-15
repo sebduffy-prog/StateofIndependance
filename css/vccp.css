@@ -59,6 +59,37 @@
   font-display: swap;
   src: url('../assets/fonts/inter-tight-500-italic.woff2') format('woff2');
 }
+/* Heavy display weights (800/900 + italics) — added for the V3 "make type
+   sing" pass. Real woff2 faces in assets/fonts/, so .si-display can request
+   900 without silent synthesis or fallback. */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-800.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-800-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-900-italic.woff2') format('woff2');
+}
 
 :root {
   /* MUSTARD — primary half */
@@ -149,9 +180,9 @@
 
   --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Type scale */
-  --t-display: clamp(3.2rem, 7vw, 7.5rem);   /* hero + full-bleed divider titles */
-  --t-xl: clamp(2.6rem, 4.8vw, 4.6rem);
+  /* Type scale (V3 §8: hero/section titles bumped a touch for deck punch) */
+  --t-display: clamp(3.5rem, 7.6vw, 8.2rem);   /* hero + full-bleed divider titles */
+  --t-xl: clamp(2.8rem, 5.2vw, 5rem);
   --t-lg: clamp(1.8rem, 2.6vw, 2.6rem);
   --t-md: clamp(1.15rem, 1.4vw, 1.4rem);
   --t-sm: 0.93rem;
@@ -182,6 +213,14 @@ button, input, select, textarea, optgroup {
 }
 img { display: block; object-fit: contain; }
 .num, [data-count-to] { font-variant-numeric: tabular-nums; }
+/* Headings unmistakably ride the brand face (Inter Tight, self-hosted)
+   and carry the deck's punchier weight + tighter leading by default. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
 
 /* ─── Top nav (57px, ink hairline bottom) ───────────────── */
 .site-nav {
@@ -288,6 +327,45 @@ img { display: block; object-fit: contain; }
   margin: 0 auto;
 }
 
+/* ─── FILL SCREEN / KILL DEAD SPACE (V3 §6) ─────────────────
+   Opt-in helpers — additive, they never force a layout on chapters that
+   don't ask for them. Hunt the half-empty screen and the empty band
+   beside content. */
+
+/* .chapter--fill: vertically centre a SINGLE composition in the viewport
+   so a lone chart/headline doesn't sit in a tall section with a dead band
+   at the bottom. The chapter already centres (display:flex/align-items
+   :center); this guarantees the inner block claims the available height
+   and stays centred. */
+.chapter--fill {
+  min-height: 100vh;
+}
+.chapter--fill > .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 2 * clamp(5rem, 8vh, 9rem));
+}
+
+/* .chapter-inner--distribute: spread top-and-tail content (eyebrow, body,
+   footer) across the available height instead of clustering at the top
+   with empty space below. */
+.chapter-inner--distribute {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 2 * clamp(5rem, 8vh, 9rem));
+}
+
+/* .si-fill-h: a child claims the remaining column height (e.g. a chart
+   that should grow to fill, not hug the top). Pair with a flex-column
+   .chapter-inner. */
+.si-fill-h { flex: 1 1 auto; min-height: 0; }
+
+/* .si-stretch-grid: make grid rows equal-height so a chart pane never
+   leaves a tall empty band beside a short copy pane. */
+.si-stretch-grid { align-items: stretch; }
+
 /* ─── Highlighter parallelogram (signature motif) ───────── */
 .hl {
   font-style: italic;
@@ -333,8 +411,9 @@ img { display: block; object-fit: contain; }
 .vccp-card-head { margin-bottom: 18px; }
 .vccp-card-title {
   font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.1;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
   margin: 0 0 6px 0;
 }
 .vccp-card-sub {
@@ -368,6 +447,22 @@ img { display: block; object-fit: contain; }
   font-size: 0.72rem;
   color: rgba(0,0,0,0.55);
   margin-top: 14px;
+}
+
+/* ─── CUT SOURCES SITE-WIDE (V3 §7) ─────────────────────────
+   Client: "we don't need sources, cut them for now but remember them."
+   Hide every rendered source/credit caption. The STRINGS stay in the
+   markup + data/STORY.md (remembered, re-addable by deleting this block).
+   Covers: .vccp-source (incl. .emp-source / .seg-source, always paired),
+   .chart-holder-cap (the chart-holder source slot), the research-partner
+   credit line, and any future [data-source]-flagged caption. NOTE: this
+   does NOT touch chart DATA hooks (data-source-money/-mood/-trading/
+   -availability) — those carry no bare [data-source] attribute. */
+.vccp-source,
+.chart-holder-cap,
+.research-credit,
+[data-source] {
+  display: none !important;
 }
 
 /* ─── Buttons (square, no radius) ───────────────────────── */
@@ -494,24 +589,38 @@ img { display: block; object-fit: contain; }
    no red/green. Gradients ALLOWED on grounds/heroes (V2). Additive.
    ============================================================ */
 
-/* ─── Gravitas type (§2) ────────────────────────────────── */
+/* ─── Gravitas type (§2 / V3 §8) ────────────────────────── */
+/* Deck-matching display type: BLACK, tight, punchy uppercase. We now
+   self-host Inter Tight 300–900 (800/900 + italics added above), so the
+   display face rides the real 900 weight — no synthesis, no fallback.
+   Punch comes from weight 900 + hard negative tracking + tight leading
+   + a bumped scale, for a designed, NOT default-grotesque headline. */
 .si-display {
-  font-weight: 600;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 0.92;
+  letter-spacing: -0.03em;
+  line-height: 0.86;
   font-size: var(--t-display);
 }
 .si-display--lg { font-size: var(--t-display); }
-.si-display--sm { font-size: var(--t-xl); }       /* section / divider titles */
+.si-display--sm {                                  /* section / divider titles */
+  font-size: var(--t-xl);
+  font-weight: 800;                                /* heavy but one notch under hero */
+}
+/* "Black" variant — heaviest face, even tighter tracking for the
+   deck's most emphatic headlines. */
+.si-display--black {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
 
 .si-bignum {
-  /* 700 is the heaviest self-hosted weight (no silent fallback to a
-     missing 800/900 face); tight tracking gives the deck's hero-stat feel. */
-  font-weight: 700;
+  /* 900 is now the heaviest self-hosted face — real Black weight for the
+     deck's hero-stat feel; tight tracking keeps the numerals dense. */
+  font-weight: 900;
   letter-spacing: -0.03em;
-  font-size: clamp(4rem, 9vw, 9rem);
-  line-height: 0.9;
+  font-size: clamp(4.4rem, 9.6vw, 9.6rem);
+  line-height: 0.86;
   font-variant-numeric: tabular-nums;
 }
 
@@ -777,6 +886,42 @@ canvas.dot-field,
    nav (top) and the progress rail (left). scroll-margin already on
    .chapter; this guards anchored children too. */
 [id] { scroll-margin-top: calc(var(--nav-height) + 8px); }
+
+/* ─── .chart-holder — box-less chart container (client feedback) ──
+   CONTRACT: charts must NOT sit in white paper/card boxes. Wrap a chart
+   (and an optional caption) in .chart-holder instead of .si-datacard /
+   .vccp-card. It adds layout ONLY — never a background, border, shadow
+   or radius — so the chart sits directly on its (often warm-gradient)
+   ground with a transparent background.
+   - Provides a vertical flow + small gap between chart and caption.
+   - Inherits the ground's contrast-safe foreground (navy on warm,
+     cream on navy) via the surrounding .si-ground-* / .on-* utility.
+   - Use the .chart-holder-cap slot for the source/caption line.
+   - Pair with .on-warm / .on-navy on the section to guarantee contrast.
+   Square corners are moot here (no box); the chart components carry the
+   high-contrast fills themselves. */
+.chart-holder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: transparent;   /* never a white box */
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  width: 100%;
+}
+.chart-holder > figure { margin: 0; }
+.chart-holder-cap {
+  margin: 0;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+.si-ground-warm .chart-holder-cap,
+.on-warm .chart-holder-cap { color: rgba(10,26,92,0.62); }
+.si-ground-blue .chart-holder-cap,
+.si-dark .chart-holder-cap,
+.on-navy .chart-holder-cap { color: rgba(238,233,221,0.7); }
 
 /* ─── De-block legacy frames: prefer ground over bordered box ─ */
 /* Narrative bignum panels lose the hard ink border when placed on a

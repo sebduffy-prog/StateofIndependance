@@ -30,9 +30,13 @@
   max-width: 64ch;
 }
 
+/* Deck-matching display: heaviest self-hosted weight (700), tight tracking
+   + tight leading for the punchy uppercase headline (client feedback §4). */
 #\30 5-segments .seg-title {
   margin: 8px 0 18px 0;
   max-width: 16ch;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
 }
 #\30 5-segments .seg-standfirst {
   font-size: var(--t-md, 1.125rem);
@@ -311,17 +315,29 @@
   padding-top: 2px;
 }
 
-/* per-segment metric charts (lollipop + dot plot) */
-#\30 5-segments .seg-metric { margin-top: 18px; }
+/* per-segment metric charts (lollipop + dot plot).
+   De-boxed (client feedback §1): the chart is a .chart-holder — transparent,
+   no paper/white card, no border, no shadow — sitting directly on the
+   data-card surface. Components are high-contrast NAVY (set in JS), value
+   labels are big + bold (set in charts.js). The metric title reads as
+   designed type, not a tiny caption (§3). */
+#\30 5-segments .seg-metric { margin-top: 20px; }
 #\30 5-segments .seg-metric-title {
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   font-weight: 700;
-  font-size: var(--t-xs, 0.68rem);
+  font-size: var(--t-sm, 0.9rem);
   color: var(--soi-navy);
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
 }
-#\30 5-segments .seg-metric-chart { width: 100%; }
+/* The .chart-holder utility already forces a transparent background with no
+   box; this only sets width + neutralises any inherited box on the host. */
+#\30 5-segments .seg-metric-chart {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  box-shadow: 0 0 0 0 transparent;
+}
 
 #\30 5-segments .seg-prof-ai {
   margin: 18px 0 0 0;
@@ -341,10 +357,12 @@
   padding-top: 0;
 }
 #\30 5-segments .seg-graph-head { margin-bottom: 22px; }
+/* Deck-like section heading: heavy + tighter tracking (client feedback §4). */
 #\30 5-segments .seg-graph-title {
   font-size: var(--t-lg, 1.6rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
+  line-height: 0.96;
   margin: 6px 0 10px 0;
   color: var(--soi-navy);
 }
@@ -363,14 +381,15 @@
 }
 @media (max-width: 880px) { #\30 5-segments .sg-stage { grid-template-columns: 1fr; } }
 
-/* canvas frame keeps a thin frame (data clarity), but softened to navy tint. */
+/* Box-less per feedback #1: the graph sits directly on the world ground,
+   transparent with no border or paper plate. */
 #\30 5-segments .sg-svg {
   display: block;
   width: 100%;
   height: auto;
   min-height: 420px;
-  border: 1px solid rgba(10,26,92,0.14);
-  background: var(--paper-warm);
+  border: 0;
+  background: transparent;
 }
 #\30 5-segments .sg-edge { stroke: var(--soi-navy); stroke-opacity: .22; stroke-width: 1.2; }
 #\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: .06; }
@@ -440,10 +459,12 @@
   padding-top: 0;
 }
 #\30 5-segments .seg-quiz-head { margin-bottom: 22px; }
+/* Deck-like section heading: heavy + tighter tracking (client feedback §4). */
 #\30 5-segments .seg-quiz-title {
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
+  line-height: 0.96;
   margin: 6px 0 10px 0;
   color: var(--soi-navy);
 }
