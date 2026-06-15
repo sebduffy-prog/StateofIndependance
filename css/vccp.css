@@ -4,6 +4,62 @@
    NOT edit this; scope chapter styles in css/sections/{id}.css.
    ============================================================ */
 
+/* ============================================================
+   SELF-HOSTED FONTS — Inter Tight (woff2 in assets/fonts/)
+   Primary source so rendering never depends on the Google Fonts
+   CDN. font-display:swap avoids FOIT. Weights: 300/400/500/600/700
+   normal + 400/500 italic. Family name 'Inter Tight'.
+   ============================================================ */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-500-italic.woff2') format('woff2');
+}
+
 :root {
   /* MUSTARD — primary half */
   --mustard:       #FFC931;
@@ -28,6 +84,68 @@
   --ink-soft:      #1A1A1A;
   --paper:         #FFFFFF;
   --paper-warm:    #FBF8F0;
+
+  /* ────────────────────────────────────────────────────────
+     STATE OF INDEPENDENCE — Design World V2 tokens
+     Sampled from the deck assets (docs/DESIGN-WORLD-V2.md §1).
+     Gradients ALLOWED on grounds/heroes this pass. Flat fills
+     stay on data/charts. Square corners hold elsewhere.
+     ──────────────────────────────────────────────────────── */
+  /* Warm grounds */
+  --soi-amber:       #FBC100;   /* core mustard, base of warm ground */
+  --soi-gold:        #FCD407;   /* lightest warm tint, top of gradient */
+  --soi-orange:      #FD8D20;   /* the orange the mustard warms into */
+  --soi-coral:       #FF8F79;   /* hottest corner glow — final ~12% only */
+
+  /* Cream / silhouette tones */
+  --soi-cream:       #EEE9DD;   /* bear + figure silhouette fill; NEVER pure white on warm */
+  --soi-cream-warm:  #FAE9C5;   /* warmer cream variant for figures */
+  --soi-page:        #F4F1EA;   /* warm off-white page ground (default light section) */
+
+  /* Navy / dark */
+  --soi-navy:        #0A1A5C;   /* signature dark; ink for headlines on light */
+  --soi-blue:        #0B3DB4;   /* bright royal-blue ground centre */
+  --soi-blue-deep:   #073AAC;   /* darker blue stop */
+  --soi-navy-velvet: #16194A;   /* deep-navy ground for quote / twist punctuation */
+
+  /* Orbit lines, seeds, accents */
+  --soi-orbit:       rgba(255,255,255,0.26);  /* thin concentric orbit lines (18–35% white) */
+  --soi-orbit-strong:rgba(255,255,255,0.34);
+  --soi-seed:        #FCC107;   /* pale mustard seed dots on the orbit lines */
+  --soi-teal:        #2BB7E8;   /* cover-maze orbit ring + ch.09 accent (sparingly) */
+  --soi-teal-pale:   #A6E1F8;   /* lightest teal */
+  --soi-spark:       #F22DCB;   /* magenta spark — hero only, optional/retired */
+
+  /* Signature warm ground gradient (heroes, world panels, pivots) */
+  --ground-warm: linear-gradient(135deg,
+                   var(--soi-gold)   0%,
+                   var(--soi-amber)  42%,
+                   var(--soi-orange) 88%,
+                   var(--soi-coral)  100%);
+  /* Blue gradient ground (dark slides) */
+  --ground-blue: linear-gradient(135deg,
+                   var(--soi-blue-deep) 0%,
+                   var(--soi-blue)      55%,
+                   #194DC8              100%);
+  /* Subtle warm-page → gradient bleed, for de-blocked section transitions */
+  --ground-warm-soft: linear-gradient(180deg,
+                   var(--soi-page) 0%,
+                   #FBEAC4         60%,
+                   var(--soi-amber) 100%);
+
+  /* Foreground colours guaranteed legible on each ground (contrast safety) */
+  --on-warm: var(--soi-navy);   /* navy on amber → high contrast */
+  --on-navy: var(--soi-cream);  /* cream on navy/blue → high contrast */
+  --on-paper: var(--ink-soft);  /* ink on warm off-white */
+
+  /* Seamless spacing scale (8px base) — one rhythm everywhere */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+  --space-7: 128px;
 
   --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
@@ -75,8 +193,10 @@ img { display: block; object-fit: contain; }
   align-items: center;
   gap: 24px;
   padding: 0 clamp(16px, 2.5vw, 40px);
-  background: var(--paper);
-  border-bottom: 1px solid var(--ink);
+  /* Solid warm-page band: opaque so navy chapters (ch04, ch09) never show a
+     muddy low-contrast translucent strip as content scrolls under it (§6). */
+  background: var(--soi-page);
+  border-bottom: 1px solid rgba(10,26,92,0.10);
 }
 .site-nav-brand {
   display: flex;
@@ -109,7 +229,7 @@ img { display: block; object-fit: contain; }
   white-space: nowrap;
 }
 .chapter-pill:hover { background: var(--mustard-pale); }
-.chapter-pill.is-active { background: var(--mustard); border-color: var(--ink); }
+.chapter-pill.is-active { background: var(--soi-amber); border-color: transparent; color: var(--soi-navy); }
 
 /* ─── Left progress rail (01–09 stage chips) ────────────── */
 .progress-rail {
@@ -128,16 +248,16 @@ img { display: block; object-fit: contain; }
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-decoration: none;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid rgba(0,0,0,0.25);
+  color: var(--soi-navy);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid transparent;
   padding: 4px 7px;
-  transition: background .15s ease, border-color .15s ease;
+  transition: background .2s ease, color .2s ease;
 }
-.rail-chip:hover { border-color: var(--ink); }
+.rail-chip:hover { background: var(--mustard-pale); }
 .rail-chip.is-active {
-  background: var(--mustard);
-  border-color: var(--ink);
+  background: var(--soi-amber);
+  color: var(--soi-navy);
 }
 
 /* ─── Chapter base (full-viewport scroll stages) ────────── */
@@ -146,9 +266,10 @@ img { display: block; object-fit: contain; }
   scroll-margin-top: var(--nav-height);
   display: flex;
   align-items: center;
-  /* Density tuning (2026 redesign): tighter vertical padding, kills airy feel */
-  padding: clamp(40px, 5vh, 72px) clamp(20px, 4vw, 72px)
-           clamp(40px, 5vh, 72px) clamp(56px, 6vw, 96px);
+  /* Seamless rhythm (V2): generous, uniform vertical padding so sections
+     breathe; left gutter clears the fixed progress rail without overlap. */
+  padding: clamp(5rem, 8vh, 9rem) clamp(20px, 4vw, 72px)
+           clamp(5rem, 8vh, 9rem) clamp(56px, 6vw, 96px);
 }
 /* Full-bleed sections (cover, dark moments) host edge-to-edge children */
 .chapter--bleed {
@@ -193,12 +314,14 @@ img { display: block; object-fit: contain; }
 .vccp-card {
   background: var(--paper);
   padding: 28px 28px 32px 32px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
-  transition: box-shadow .25s ease;
+  /* De-blocked (V2): no hard border — a single soft shadow lifts the card. */
+  border: 0;
+  box-shadow: 0 1px 2px rgba(10,26,92,0.04), 0 14px 36px rgba(10,26,92,0.07);
+  transition: box-shadow .3s ease, transform .3s ease;
 }
 .vccp-card:hover {
-  box-shadow: 0 2px 0 rgba(0,0,0,0.06), 0 18px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 4px rgba(10,26,92,0.06), 0 22px 52px rgba(10,26,92,0.10);
+  transform: translateY(-2px);
 }
 .vccp-rail { border-left: 3px solid var(--mustard); }
 .vccp-frame {
@@ -362,12 +485,13 @@ img { display: block; object-fit: contain; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .vccp-card, .vccp-btn, .rail-chip { transition: none; }
+  .si-orbit--spin { animation: none; }   /* static composed state */
 }
 
 /* ============================================================
    ===== Layout system (2026 redesign) =====
    Gravitas type + composed editorial grids. Square corners only,
-   no gradients, no red/green. Additive — extends, never replaces.
+   no red/green. Gradients ALLOWED on grounds/heroes (V2). Additive.
    ============================================================ */
 
 /* ─── Gravitas type (§2) ────────────────────────────────── */
@@ -382,7 +506,10 @@ img { display: block; object-fit: contain; }
 .si-display--sm { font-size: var(--t-xl); }       /* section / divider titles */
 
 .si-bignum {
-  font-weight: 600;
+  /* 700 is the heaviest self-hosted weight (no silent fallback to a
+     missing 800/900 face); tight tracking gives the deck's hero-stat feel. */
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: clamp(4rem, 9vw, 9rem);
   line-height: 0.9;
   font-variant-numeric: tabular-nums;
@@ -454,15 +581,18 @@ img { display: block; object-fit: contain; }
 
 /* ─── Dark sections (§3) — earned navy/ink moments ──────── */
 .si-dark {
-  background: var(--navy);
-  color: var(--paper);
+  position: relative;
+  isolation: isolate;
+  background: var(--soi-navy);
+  color: var(--on-navy);          /* cream, guaranteed contrast (§6) */
 }
 .si-dark--ink { background: var(--ink); }
-.si-dark .vccp-eyebrow { color: var(--paper); }
-.si-dark .vccp-source { color: rgba(255, 255, 255, 0.6); }
+.si-dark--velvet { background: var(--soi-navy-velvet); }
+.si-dark .vccp-eyebrow { color: var(--on-navy); }
+.si-dark .vccp-source { color: rgba(238,233,221,0.7); }
 .si-dark h1, .si-dark h2, .si-dark h3,
 .si-dark .vccp-card-title { color: inherit; }
-.si-dark .si-display { color: inherit; }
+.si-dark .si-display, .si-dark .si-bignum { color: inherit; }
 
 /* ─── Prose measure (§3) — never full page width ────────── */
 .si-measure { max-width: 62ch; }
@@ -472,6 +602,190 @@ img { display: block; object-fit: contain; }
   align-self: end;
   margin-bottom: 0;
   display: block;
+}
+
+/* ============================================================
+   ===== State of Independence — Design World V2 =====
+   Warm gradient grounds, orbit motifs, cream silhouettes, and
+   global contrast/overlap safety. Additive — adds new classes,
+   refines existing dark/ground helpers. See docs/DESIGN-WORLD-V2.md.
+   ============================================================ */
+
+/* ─── Warm gradient ground (heroes, world panels, pivots) ─── */
+/* The signature mustard→orange→coral wash. Establishes a stacking
+   context and a GUARANTEED legible foreground (navy on amber). */
+.si-ground-warm {
+  position: relative;
+  isolation: isolate;            /* own stacking context — no stale layer bleed */
+  background: var(--ground-warm);
+  color: var(--on-warm);
+}
+.si-ground-warm--soft { background: var(--ground-warm-soft); }
+.si-ground-blue {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-blue);
+  color: var(--on-navy);
+}
+/* On a warm ground, eyebrows/sources/headlines resolve to navy for contrast. */
+.si-ground-warm .vccp-eyebrow,
+.si-ground-warm .vccp-source,
+.si-ground-warm h1, .si-ground-warm h2, .si-ground-warm h3,
+.si-ground-warm .si-display,
+.si-ground-warm .si-bignum,
+.si-ground-warm .vccp-card-title { color: var(--on-warm); }
+.si-ground-warm .vccp-source { color: rgba(10,26,92,0.62); }
+/* On a blue ground, everything flips to cream. */
+.si-ground-blue .vccp-eyebrow,
+.si-ground-blue h1, .si-ground-blue h2, .si-ground-blue h3,
+.si-ground-blue .si-display,
+.si-ground-blue .si-bignum,
+.si-ground-blue .vccp-card-title { color: var(--on-navy); }
+.si-ground-blue .vccp-source { color: rgba(238,233,221,0.7); }
+
+/* Content inside any ground sits above decorative overlays. */
+.si-ground-warm > *,
+.si-ground-blue > *,
+.si-dark > * { position: relative; z-index: 1; }
+
+/* ─── Orbit-motif overlay (thin concentric circles) ───────── */
+/* Decorative ONLY: low-opacity white rings behind content, never
+   carries meaning, never occludes. pointer-events:none + z-index:0. */
+.si-orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 50%,
+      transparent 0,            transparent calc(14% - 1px),
+      var(--soi-orbit) 14%,     transparent calc(14% + 1px),
+      transparent calc(24% - 1px),
+      var(--soi-orbit) 24%,     transparent calc(24% + 1px),
+      transparent calc(34% - 1px),
+      var(--soi-orbit-strong) 34%, transparent calc(34% + 1px),
+      transparent calc(46% - 1px),
+      var(--soi-orbit) 46%,     transparent calc(46% + 1px),
+      transparent 100%);
+}
+.si-orbit--center { background-position: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .si-orbit--spin {
+    animation: si-orbit-spin 120s linear infinite;
+    transform-origin: 70% 50%;
+  }
+}
+@keyframes si-orbit-spin { to { transform: rotate(360deg); } }
+
+/* Seed dots sitting on the orbit lines (sparse, decorative). */
+.si-seed {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--soi-seed);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.35);
+}
+
+/* ─── Cream silhouette image treatment ────────────────────── */
+/* The bear / figure silhouettes read by MASS, not as text. They sit
+   behind content as decoration and never occlude interactive UI. */
+.si-silhouette {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+  /* tint any near-monochrome silhouette art toward the warm cream */
+  filter: brightness(1.02) saturate(0.9);
+  object-fit: contain;
+}
+.si-silhouette--behind {
+  position: absolute;
+  inset: auto 0 0 auto;
+  z-index: 0;
+  opacity: 0.96;
+}
+
+/* ─── Contrast-safety foreground utilities (§6) ───────────── */
+/* Force a deliberate, legible foreground on any ground. Use these
+   whenever text sits on a coloured/gradient background. */
+.on-warm  { color: var(--on-warm); }
+.on-navy  { color: var(--on-navy); }
+.on-paper { color: var(--on-paper); }
+.on-warm .vccp-source  { color: rgba(10,26,92,0.62); }
+.on-navy .vccp-source  { color: rgba(238,233,221,0.7); }
+
+/* ─── Photographic evidence card (§4) ─────────────────────── */
+/* Square mat, ONE lift device (soft shadow), caption beneath. The
+   photo never bleeds onto a gradient ground — the mat separates it. */
+.si-evidence {
+  background: var(--paper);
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(10,26,92,0.08), 0 18px 44px rgba(10,26,92,0.12);
+}
+.si-evidence img { width: 100%; height: auto; object-fit: cover; }
+.si-evidence-cap {
+  margin: 12px 2px 2px;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* ─── Hanging-quote block (§2) ────────────────────────────── */
+.si-quote { position: relative; padding-left: clamp(28px, 4vw, 64px); }
+.si-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.06em; top: -0.18em;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--soi-amber);
+  pointer-events: none;
+  z-index: 0;
+}
+.si-quote-body { position: relative; z-index: 1; font-weight: 400; line-height: 1.35; }
+.si-quote-cite {
+  margin-top: var(--space-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.si-ground-warm .si-quote::before,
+.on-warm .si-quote::before { color: rgba(10,26,92,0.18); }
+.si-ground-blue .si-quote-cite,
+.si-dark .si-quote-cite,
+.on-navy .si-quote-cite { color: rgba(238,233,221,0.72); }
+
+/* ─── ANTI-OVERLAP / ANTI-DOUBLE-LAYER SAFETY (global, §6) ── */
+/* Any decorative overlay (orbit rings, silhouettes, canvas dotField)
+   MUST sit behind content and ignore pointer events so it can never
+   occlude or double-layer interactive UI. dotField is the physics
+   canvas in js/lib/charts.js. */
+canvas.dot-field,
+[data-dotfield],
+.dotfield-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* Fixed chrome never overlaps content: keep section content clear of the
+   nav (top) and the progress rail (left). scroll-margin already on
+   .chapter; this guards anchored children too. */
+[id] { scroll-margin-top: calc(var(--nav-height) + 8px); }
+
+/* ─── De-block legacy frames: prefer ground over bordered box ─ */
+/* Narrative bignum panels lose the hard ink border when placed on a
+   gradient ground; keep a real border only for standalone data panels. */
+.si-ground-warm .si-bignum-panel,
+.si-ground-blue .si-bignum-panel {
+  border: 0;
+  background: transparent;
+  padding: 0;
 }
 
 /* ─── Responsive ────────────────────────────────────────── */

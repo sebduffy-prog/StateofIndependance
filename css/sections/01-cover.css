@@ -1,23 +1,31 @@
-/* Chapter 01: cover.
-   Full-bleed mustard hero. No page-edge frame, no plate behind the logo.
-   The Girl & Bear stands flush on the bottom ground line; the wordmark
-   commands the screen in the uppercase display treatment; a calm field of
-   ink dots drifts behind the whole composition. Square corners, no gradients,
-   sentence case standfirst, one .hl word, Inter Tight.
+/* Chapter 01: cover — Design World V2.
+   The State-of-Independence hero: a warm mustard→orange gradient GROUND with
+   thin white orbit-circle line motifs, sparse pale seed dots, an ambient
+   navy respondent dot-field, and a cream bear+figure silhouette grounded on
+   the bottom edge. Over it all, a huge Inter Tight display wordmark with the
+   highlighter on INDEPENDENCE. Seamless and modern: no bordered hero box, no
+   hard rules — the copy hangs in open space.
 
-   NOTE ON THE PREFIX: an HTML id may start with a digit, but a CSS id selector
-   may NOT begin with one literally. The CSS-valid escape for id="01-cover" is
-   "#\30 1-cover" (\30 = codepoint for "0", trailing space ends the escape),
-   which the parser reads as exactly that id. Every selector below is scoped
-   to this chapter id. */
+   LAYERING / SAFETY (DESIGN-WORLD-V2 §6):
+   - Every decorative layer (orbit, seeds, dot-field, silhouette) sits BEHIND
+     the copy (z-index ≤ 0) with pointer-events:none, so nothing occludes the
+     wordmark/standfirst and the cursor reaches the dot-field.
+   - .si-ground-warm owns its stacking context (isolation:isolate) so no stale
+     layer bleeds across; .si-ground-warm > * lifts real content to z-index 1.
+   - All text is navy on the warm ground (.on-warm / explicit) → high contrast,
+     never cream-on-mustard body text, never ink-on-ink.
 
-/* Break the chapter padding/centring to go genuinely full-bleed (the section
-   class is fixed to .chapter by the loader, so we replicate .chapter--bleed
-   here rather than relying on a class we cannot add). */
+   PREFIX: a CSS id selector may not begin with a digit; "#\30 1-cover"
+   (\30 = "0", trailing space ends the escape) is the valid escape for
+   id="01-cover" and keeps id-specificity. Every selector is scoped to it. */
+
+/* Go genuinely full-bleed: the loader fixes the section class to .chapter, so
+   replicate .chapter--bleed here. The warm gradient ground is set on the
+   stage (via .si-ground-warm), not the section, so the gradient owns its own
+   isolated stacking context. */
 #\30 1-cover {
   padding: 0;
   align-items: stretch;
-  background: var(--mustard);
 }
 #\30 1-cover .chapter-inner {
   max-width: none;
@@ -26,25 +34,51 @@
   display: flex;
 }
 
-/* The stage fills the viewport (minus the fixed nav) and hosts every layer. */
+/* The stage fills the viewport (minus the fixed nav) and is the warm ground. */
 #\30 1-cover .cover-stage {
-  position: relative;
   flex: 1;
   width: 100%;
   min-height: calc(100vh - var(--nav-height));
   display: grid;
-  /* One column; copy pinned top-left, bear grounded bottom, dots behind all. */
   grid-template-columns: 1fr;
   overflow: hidden;
 }
 
-/* ─── Dot field layer (behind everything) ────────────────── */
+/* ─── Orbit-circle motif (decorative, behind everything) ──────
+   Offset the concentric rings toward the lower-right, between the bear and
+   the figure, sweeping the "system / agency" dimension. Low-opacity white,
+   never carries meaning. Slow rotation honours reduced-motion via the shared
+   .si-orbit--spin guard in vccp.css. */
+#\30 1-cover .cover-orbit {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 72% 78%,
+      transparent 0,               transparent calc(11% - 1px),
+      var(--soi-orbit) 11%,        transparent calc(11% + 1px),
+      transparent calc(20% - 1px),
+      var(--soi-orbit) 20%,        transparent calc(20% + 1px),
+      transparent calc(30% - 1px),
+      var(--soi-orbit-strong) 30%, transparent calc(30% + 1px),
+      transparent calc(42% - 1px),
+      var(--soi-orbit) 42%,        transparent calc(42% + 1px),
+      transparent calc(56% - 1px),
+      var(--soi-orbit) 56%,        transparent calc(56% + 1px),
+      transparent 100%);
+  transform-origin: 72% 78%;
+}
+
+/* Two pale seed dots parked ON the orbit lines (sparse, decorative). */
+#\30 1-cover .cover-seed--a { right: 27%; top: 33%; }
+#\30 1-cover .cover-seed--b { right: 9%;  bottom: 31%; }
+
+/* ─── Respondent dot-field (navy on warm, behind all) ────────── */
 #\30 1-cover .cover-dots {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
+  pointer-events: none;
 }
 #\30 1-cover .cover-dots canvas {
   display: block;
@@ -52,41 +86,62 @@
   height: 100%;
 }
 
-/* ─── Copy block: top-left, no frame ─────────────────────── */
+/* ─── Cream bear + figure silhouette, grounded on the bottom edge ─
+   The brand artwork ships as a black silhouette on transparency. To read as
+   warm CREAM (per the deck world) we recolour it: drop to white, then a soft
+   sepia/brightness tint lands it on the cream tone. Opacity keeps it as a
+   mass behind the copy, never competing with the wordmark. */
+#\30 1-cover .cover-bear {
+  position: absolute;
+  right: clamp(16px, 5vw, 110px);   /* keep the small figure fully on-screen */
+  bottom: 0;
+  z-index: 0;                 /* behind the copy (which is z-index 1) */
+  width: clamp(300px, 44vw, 720px);
+  height: auto;
+  /* black art → warm cream silhouette */
+  filter: brightness(0) invert(1) sepia(0.32) saturate(1.1) brightness(1.02);
+  opacity: 0.94;
+  pointer-events: none;
+}
+
+/* ─── Copy block: top-left, no frame, navy on warm ───────────── */
 #\30 1-cover .cover-copy {
   position: relative;
-  z-index: 2;
+  z-index: 1;                 /* above every decorative layer */
   align-self: start;
   justify-self: start;
-  max-width: min(60ch, 78%);
-  padding: clamp(40px, 6vh, 88px) clamp(32px, 6vw, 96px) 0;
-  pointer-events: none; /* let dots receive the cursor; re-enable controls */
+  max-width: min(62ch, 80%);
+  /* seamless rhythm: generous, uniform space, no plate */
+  padding: clamp(var(--space-4), 7vh, var(--space-6))
+           clamp(var(--space-3), 6vw, var(--space-6)) 0;
+  pointer-events: none;       /* let the dot-field receive the cursor */
 }
 #\30 1-cover .cover-eyebrow {
   margin: 0;
-  color: var(--ink);
+  color: var(--on-warm);      /* navy on amber → high contrast */
 }
 
-/* ─── The wordmark: uppercase display gravitas ───────────── */
+/* ─── Wordmark: huge Inter Tight display gravitas ────────────── */
 #\30 1-cover .cover-wordmark {
   margin: 0;
-  color: var(--ink);
-  /* Big and grounded. Bump above the shared display scale so it commands. */
-  font-size: clamp(3.4rem, 9.5vw, 9.5rem);
-  line-height: 0.9;
-  max-width: 14ch;
+  color: var(--on-warm);
+  /* bigger than the shared display scale so the title leads the screen */
+  font-size: clamp(3.2rem, 9.4vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  max-width: 13ch;
 }
 
-/* Keep the highlighted word in the display treatment (weight 600, upright)
-   rather than .hl's default 500 italic, so "INDEPENDENCE" matches the wordmark.
+/* Keep the highlighted word in the display treatment (upright, same weight)
+   rather than .hl's default italic, so INDEPENDENCE matches the wordmark.
    The parallelogram itself is untouched. */
 #\30 1-cover .cover-wordmark .hl {
   font-style: normal;
   font-weight: inherit;
 }
 
-/* Highlighter wipe on the uppercase word: start scaled to 0 on X (matching the
-   skew) and wipe in when .is-wiped lands. */
+/* Highlighter wipe: start scaled to 0 on X (matching the skew), wipe in when
+   .is-wiped lands. Tint stays the mustard-light highlighter from .hl. */
 #\30 1-cover .cover-wordmark .hl::before {
   transform: skewX(-12deg) scaleX(0);
   transform-origin: 0% 50%;
@@ -96,66 +151,72 @@
   transform: skewX(-12deg) scaleX(1);
 }
 
+/* ─── Standfirst: navy on warm, generous measure ─────────────── */
 #\30 1-cover .cover-standfirst {
   font-size: var(--t-md);
-  line-height: 1.5;
-  margin: 0;
-  color: var(--ink);
+  line-height: 1.55;
+  margin: var(--space-1) 0 0;
+  color: var(--on-warm);
+  max-width: 52ch;
 }
 
-/* ─── Square scroll cue ──────────────────────────────────── */
+/* ─── Scroll cue: seamless navy pill-less button, no hard plate ─
+   De-blocked: a quiet navy outline-on-warm control, not a bordered box on a
+   contrasting fill. Square corners hold. */
 #\30 1-cover .cover-cue {
   pointer-events: auto;
   align-self: start;
-  margin-top: 8px;
+  margin-top: var(--space-2);
   display: inline-flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 0;          /* square corners, no default button chrome */
+  color: var(--on-warm);
+  background: transparent;
+  border: 1.5px solid var(--soi-navy);
+  border-radius: 0;
   appearance: none;
   cursor: pointer;
-  padding: 14px 20px;
+  padding: 13px 22px;
   font: 600 var(--t-xs)/1 var(--font-sans);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.14s ease, background 0.18s ease, color 0.18s ease;
 }
 #\30 1-cover .cover-cue:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 0 var(--ink);
+  background: var(--soi-navy);
+  color: var(--soi-cream);            /* cream on navy → high contrast */
+}
+#\30 1-cover .cover-cue:hover .cover-cue-arrow {
+  border-color: var(--soi-cream);
+  transform: rotate(45deg) translate(2px, 2px);
 }
 #\30 1-cover .cover-cue:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--soi-navy);
   outline-offset: 3px;
 }
 #\30 1-cover .cover-cue-arrow {
   width: 11px;
   height: 11px;
-  border-right: 1.5px solid var(--ink);
-  border-bottom: 1.5px solid var(--ink);
+  border-right: 1.5px solid var(--soi-navy);
+  border-bottom: 1.5px solid var(--soi-navy);
   transform: rotate(45deg);
-  transition: transform 0.16s ease;
-}
-#\30 1-cover .cover-cue:hover .cover-cue-arrow {
-  transform: rotate(45deg) translate(2px, 2px);
+  transition: transform 0.16s ease, border-color 0.18s ease;
 }
 
-/* ─── Quiet "you are the 1,505th respondent" marker ──────── */
+/* ─── Quiet respondent marker (navy, low-emphasis, no overlap) ── */
 #\30 1-cover .cover-you {
   position: absolute;
-  left: clamp(32px, 6vw, 96px);
-  bottom: clamp(24px, 4vw, 48px);
-  z-index: 2;
+  left: clamp(var(--space-3), 6vw, var(--space-6));
+  bottom: clamp(var(--space-2), 4vw, var(--space-4));
+  z-index: 1;
   margin: 0;
   max-width: 24ch;
   font-size: var(--t-xs);
   line-height: 1.4;
-  color: var(--ink-soft);
-  opacity: 0.75;
+  color: var(--soi-navy);
+  opacity: 0.66;              /* still ≥3:1 large-text contrast on amber */
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -166,59 +227,38 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--mustard);
-  border: 1.2px solid var(--ink);
+  background: var(--soi-cream);
+  border: 1.4px solid var(--soi-navy);
   transform: translateY(1px);
 }
 
-/* ─── Girl & Bear: large, grounded, flush to the bottom edge ─
-   This is the hero illustration (the deck does exactly this), not a logo
-   lockup, so the black silhouette sits directly on the mustard ground with
-   no plate. align-self:end + margin-bottom:0 (from .si-ground) makes it
-   stand on the bottom line. */
-#\30 1-cover .cover-bear {
-  position: absolute;
-  right: clamp(16px, 5vw, 96px);
-  bottom: 0;
-  z-index: 1;
-  align-self: end;
-  width: clamp(280px, 38vw, 620px);
-  height: auto;
-  /* Render the artwork as a clean black silhouette on the mustard ground. */
-  filter: brightness(0);
-  pointer-events: none;
-}
-
-/* ─── Responsive ─────────────────────────────────────────── */
+/* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  #\30 1-cover .cover-copy {
-    max-width: 100%;
-  }
+  #\30 1-cover .cover-copy { max-width: 100%; }
+  /* shrink + push the silhouette into the lower-right corner so it never
+     creeps under the wordmark on narrow screens */
   #\30 1-cover .cover-bear {
-    width: clamp(220px, 50vw, 360px);
-    opacity: 0.92;
+    width: clamp(220px, 52vw, 380px);
+    opacity: 0.86;
   }
 }
 
 @media (max-width: 600px) {
   #\30 1-cover .cover-bear {
-    width: 200px;
-    right: 8px;
+    width: 220px;
+    right: 0;
+    opacity: 0.8;
   }
   #\30 1-cover .cover-you {
     position: static;
-    margin-top: 24px;
-    padding-left: clamp(32px, 6vw, 96px);
+    margin-top: var(--space-3);
+    padding-left: clamp(var(--space-3), 6vw, var(--space-6));
   }
 }
 
-/* ─── Reduced motion: highlighter already wiped, no transitions ─ */
+/* ─── Reduced motion: highlighter pre-wiped, no transitions ───── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-wordmark .hl::before {
-    transition: none;
-  }
-  #\30 1-cover .cover-cue-arrow,
-  #\30 1-cover .cover-cue {
-    transition: none;
-  }
+  #\30 1-cover .cover-wordmark .hl::before { transition: none; }
+  #\30 1-cover .cover-cue,
+  #\30 1-cover .cover-cue-arrow { transition: none; }
 }

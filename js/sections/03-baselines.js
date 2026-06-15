@@ -1,16 +1,20 @@
 /**
  * Chapter 03 - baselines. "The numbers you already know."
  *
- * Recomposed as a 2x2 board of dense .si-bignum-panel cards (not a tall
- * hairline-divided list). Each panel pairs a huge .si-bignum with one WLV
- * sentence and a supporting chart that fills the other side. Chart variety
- * keeps bar reliance to a single horizontalBars (panel 4 categories):
+ * Design World V2: the four baseline stats FLOW on a warm mustard->orange
+ * gradient ground (the "operational floor"), not a grid of bordered boxes.
+ * Each stat pairs a huge .si-bignum + label + sentence (navy on warm, via
+ * .on-warm) with one supporting chart sitting on a clean square paper mat
+ * so the chart's ink marks never sit colour-on-colour against the gradient.
+ * Alternating left/right rhythm; generous negative space; orbit + cream bear
+ * silhouette + seed dots are decoration only (behind, pointer-events:none).
+ * Chart variety keeps bar reliance to a single horizontalBars (stat 4):
  *   - mood of the nation     -> lollipopChart (careful highlighted ink)
  *   - money-saving moves      -> lollipopChart
  *   - availability concerns   -> dotPlot (mustard-dark, a down/anxious read)
  *   - 54 / 46 trading split   -> proportionStrip
  *   - traded-down categories  -> horizontalBars (the one bar chart)
- * Panel 1 stays gated behind clickToGuess (the loved interaction): the
+ * Stat 1 stays gated behind clickToGuess (the loved interaction): the
  * 77% number and its waffle only reveal after the reader commits a guess.
  *
  * @param {HTMLElement} rootEl - <section class="chapter" id="03-baselines">
@@ -60,7 +64,9 @@ export default function init(rootEl, data) {
   const waffleHost = rootEl.querySelector('[data-waffle-1]');
   let carefulRevealed = false;
 
-  if (heroOne) heroOne.textContent = '00%';
+  // Placeholder before the guess gates the reveal — a neutral dash, never a
+  // literal "00%" that reads as a real zero in a static / pre-scroll capture.
+  if (heroOne) heroOne.textContent = '–';
 
   const revealCareful = () => {
     if (carefulRevealed) return;

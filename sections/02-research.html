@@ -1,24 +1,34 @@
-<div class="chapter-inner">
+<div class="chapter-inner research-shell">
+
+  <!-- Decorative orbit motif + seed dots — sit BEHIND content, never occlude
+       (z-index:0 + pointer-events:none via .si-orbit / .si-seed). -->
+  <div class="si-orbit si-orbit--spin research-orbit" aria-hidden="true"></div>
+  <span class="si-seed research-seed research-seed--a" aria-hidden="true"></span>
+  <span class="si-seed research-seed research-seed--b" aria-hidden="true"></span>
+
   <div class="research-split si-split">
 
-    <!-- LEFT: the method, told tightly -->
+    <!-- LEFT: the method, told as a flowing rhythm (no hairline boxes) -->
     <div class="research-method si-stack-tight reveal" data-stagger="90">
-      <p class="vccp-eyebrow si-display si-display--sm research-kicker reveal">The method</p>
+      <p class="vccp-eyebrow research-kicker reveal">The method</p>
       <h2 class="research-headline reveal">
-        How we <em class="hl hl-teal">listened</em> to Britain.
+        How we <em class="hl hl-teal">listened</em> to&nbsp;Britain.
       </h2>
+      <p class="research-standfirst reveal">
+        A nationally representative survey, paired with week-long video
+        diaries. Numbers for the <strong>what</strong>, real lives for the
+        <strong>why</strong>.
+      </p>
+
+      <!-- Hero figure leads; supporting stats flow beneath on space, not in boxes -->
+      <div class="research-hero-stat reveal">
+        <span class="research-hero-value si-bignum"><span data-count-to="1504"></span></span>
+        <span class="research-hero-label">respondents · nationally representative · UK adults&nbsp;18+</span>
+      </div>
 
       <ul class="research-stats reveal">
         <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="1504"></span></span>
-          <span class="research-stat-label">respondents, nationally representative</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="18"></span><span class="research-stat-fix">+</span></span>
-          <span class="research-stat-label">UK adults aged 18 and over</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value">mid-May 2026</span>
+          <span class="research-stat-value num">mid-May 2026</span>
           <span class="research-stat-label">quantitative fieldwork</span>
         </li>
         <li class="research-stat">
@@ -27,7 +37,7 @@
         </li>
         <li class="research-stat">
           <span class="research-stat-value num"><span data-count-to="1"></span><span class="research-stat-fix">-week</span></span>
-          <span class="research-stat-label">video diaries per home, filmed in early June</span>
+          <span class="research-stat-label">video diaries per home, filmed early June</span>
         </li>
       </ul>
 
@@ -41,8 +51,9 @@
       </p>
     </div>
 
-    <!-- RIGHT: GB map + 8 city markers (built in JS), rail card -->
+    <!-- RIGHT: GB map + 8 city markers (built in JS), flowing diary panel -->
     <div class="research-map-wrap reveal">
+      <p class="research-map-eyebrow">Eight cities, in their own words</p>
       <div class="research-map" data-research-map aria-label="Map of Great Britain showing eight qualitative research cities"></div>
       <p class="research-map-hint" data-research-hint>
         Select a city to read from its video diary.

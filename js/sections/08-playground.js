@@ -125,7 +125,9 @@ const buildTgiSource = (tgi) => {
  * clear the host and re-run the factory (a fresh first-view animation). */
 const makeChart = (host, metric, items) => {
   const safe = items.length ? items : NO_DATA;
-  const common = { accent: 'teal', decimals: metric.decimals, ariaLabel: metric.label };
+  // Data marks stay FLAT and on-world: navy on the light instrument surface
+  // gives a strong AA contrast (ink-on-page), never the ground gradient.
+  const common = { accent: 'navy', decimals: metric.decimals, ariaLabel: metric.label };
 
   if (metric.viz === 'bars') {
     const chart = horizontalBars(host, { items: safe, max: metric.max, labelWidth: 200, ...common });
@@ -133,8 +135,10 @@ const makeChart = (host, metric, items) => {
   }
 
   if (metric.viz === 'strip') {
+    // Distinct flat fills the strip alternates between — navy / warm mustard,
+    // both legible on the light surface, neither same-on-same.
     const toSegments = (rows) => rows.map((r, i) => ({
-      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'teal' : 'mustard',
+      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'navy' : 'mustard',
     }));
     const chart = proportionStrip(host, {
       segments: toSegments(safe),
@@ -283,7 +287,7 @@ const initPanelB = (rootEl, tgi) => {
   const chart = horizontalBars(chartHost, {
     items: firstItems.length ? firstItems : NO_DATA,
     max: TGI_INDEX_MAX,
-    accent: 'teal',
+    accent: 'navy',
     decimals: 0,
     labelWidth: 230,
     ariaLabel: 'TGI media index by segment, where 100 is the UK-adult average',

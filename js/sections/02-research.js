@@ -1,10 +1,11 @@
 /**
- * Chapter 02 — research. Teal research surface.
+ * Chapter 02 — research. Teal research surface, warmed into the State of
+ * Independence world (V2): teal ground resolving toward amber, orbit accents.
  *
  * Left column: declarative method counters (animated by observeCounters)
  * plus the research-partner credit and source caption.
- * Right column: a hand-authored flat ink SVG silhouette of Great Britain
- * with eight square mustard markers (real <button>s) for the qualitative
+ * Right column: a hand-authored navy SVG silhouette of Great Britain
+ * with eight square cream-warm markers (real <button>s) for the qualitative
  * cities. Selecting a marker (click or keyboard) opens a rail card with the
  * city name and a verbatim diary quote where one exists, or an honest
  * sample note where it does not.
@@ -150,8 +151,10 @@ const buildMapSvg = () => {
 };
 
 const buildRailCard = (city) => {
+  // De-blocked (V2): a flowing diary block, not a bordered card. Separation
+  // comes from a single soft accent rule + space, not a hard box.
   const card = document.createElement('article');
-  card.className = 'vccp-card vccp-rail research-card';
+  card.className = 'research-card';
 
   const head = document.createElement('header');
   head.className = 'research-card-head';

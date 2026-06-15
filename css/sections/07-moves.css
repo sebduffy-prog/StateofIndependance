@@ -1,229 +1,251 @@
-/* Chapter 07 — moves.
-   Five signature moves as bold, deck-style divider bands: a GIANT stage
-   number + UPPERCASE display title, then a composed grid pairing the lesson,
-   quotes and brand/stat evidence with a less -> more flip card.
-   Alternating navy .si-dark bands give the chapter rhythm.
-   Every selector is prefixed with #\30 7-moves so styles never leak. */
+/* Chapter 07 — moves (Design World V2).
+   Five signature moves as a FLOWING rhythm of full-bleed grounds that
+   alternate warm mustard→orange gradient and deep navy. A giant stage
+   number breathes beside an Inter Tight display title; the lesson, quotes
+   and ad-mockup evidence flow on the ground with a sticky less→more flip
+   card alongside. De-blocked: no hard hairline bands, separation comes from
+   the ground colour and generous space. Every selector is scoped to
+   #\30 7-moves so styles never leak.
+   Contrast (§6): warm grounds carry navy text (.si-ground-warm sets it),
+   navy grounds carry cream (.si-dark sets it). Decorative orbit/seed layers
+   sit behind via z-index:0 + pointer-events:none and never occlude UI. */
 
-/* ─── Header ─────────────────────────────────────────────── */
-#\30 7-moves .mv-head {
-  margin-bottom: clamp(40px, 6vw, 72px);
+/* ─── Full-bleed flow: grounds run edge-to-edge, no bordered boxes ─── */
+#\30 7-moves .mv-hero,
+#\30 7-moves .mv-move {
+  position: relative;
+  isolation: isolate;
+  /* bleed past the text column so each ground reads as a band of the page */
+  margin-left: calc(-1 * clamp(24px, 6vw, 96px));
+  margin-right: calc(-1 * clamp(24px, 6vw, 96px));
+  padding: clamp(56px, 8vw, 120px) clamp(24px, 6vw, 96px);
 }
-#\30 7-moves .mv-headline {
-  margin: 0;
+
+/* ─── Hero ───────────────────────────────────────────────── */
+#\30 7-moves .mv-hero {
+  padding-top: clamp(48px, 6vw, 84px);
+  padding-bottom: clamp(64px, 9vw, 132px);
+  overflow: hidden;
 }
+#\30 7-moves .mv-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 62ch;
+}
+#\30 7-moves .mv-headline { margin: 0; }
 #\30 7-moves .mv-standfirst {
   font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-  line-height: 1.45;
-  color: var(--ink-soft);
+  line-height: 1.55;
   margin: 0;
+  color: var(--on-warm);
 }
+#\30 7-moves .mv-seed-a { top: 22%; right: 24%; }
+#\30 7-moves .mv-seed-b { bottom: 26%; right: 40%; }
 
-/* ─── Bands ──────────────────────────────────────────────── */
-#\30 7-moves .mv-band {
-  padding: clamp(40px, 5.5vw, 72px) 0;
-  border-top: 1.5px solid var(--ink);
-}
-#\30 7-moves .mv-band:last-child { border-bottom: 1.5px solid var(--ink); }
-
-/* Dark bands break the band rules out to a full navy ground for rhythm. */
-#\30 7-moves .mv-band--dark {
-  border-top: none;
-  background: var(--navy);
-  color: var(--paper);
-  padding-left: clamp(24px, 4vw, 56px);
-  padding-right: clamp(24px, 4vw, 56px);
-  /* bleed slightly wider than the text column so the navy reads as a band */
-  margin-left: calc(-1 * clamp(24px, 4vw, 56px));
-  margin-right: calc(-1 * clamp(24px, 4vw, 56px));
-}
-#\30 7-moves .mv-band--dark + .mv-band { border-top: 1.5px solid var(--ink); }
-
-/* ─── Band head: GIANT stage number + display title ──────── */
-#\30 7-moves .mv-band-head {
+/* ─── Move head: GIANT stage number + display title ──────── */
+#\30 7-moves .mv-move-head {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  column-gap: clamp(20px, 3vw, 44px);
-  margin-bottom: clamp(28px, 3.5vw, 44px);
+  column-gap: clamp(20px, 3vw, 48px);
+  margin-bottom: clamp(32px, 4vw, 56px);
 }
 #\30 7-moves .mv-stage {
-  font-weight: 600;
-  font-size: clamp(4.5rem, 11vw, 10rem);
-  line-height: 0.82;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  font-size: clamp(5rem, 13vw, 12rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
-  color: var(--mustard);
-  -webkit-text-stroke: 1.5px var(--ink);
 }
-#\30 7-moves .mv-band--dark .mv-stage {
-  color: var(--mustard);
-  -webkit-text-stroke: 0;
+/* On warm: hollow cream-cut numeral that reads as part of the world. */
+#\30 7-moves .mv-move--warm .mv-stage {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--soi-navy);
+  text-stroke: 2px var(--soi-navy);
+  opacity: 0.85;
+}
+/* On navy: solid amber numeral against the cream copy. */
+#\30 7-moves .mv-move--navy .mv-stage {
+  color: var(--soi-amber);
 }
 #\30 7-moves .mv-title {
   margin: 0;
-  font-size: clamp(1.8rem, 3.8vw, 3rem);
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 1.02;
   color: inherit;
 }
 
-/* ─── Composed band grid ─────────────────────────────────── */
-#\30 7-moves .mv-band-grid {
+/* ─── Flowing two-column grid (copy ◂▸ flip card) ────────── */
+#\30 7-moves .mv-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
-
-/* ─── Main column ────────────────────────────────────────── */
-#\30 7-moves .mv-lesson {
-  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
-  line-height: 1.35;
-  font-weight: 500;
-  margin: 0 0 24px;
+#\30 7-moves .mv-main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 32px);
 }
 
+/* ─── Lesson (lead line) ─────────────────────────────────── */
+#\30 7-moves .mv-lesson {
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.35;
+  font-weight: 600;
+  margin: 0;
+  color: inherit;
+  max-width: 46ch;
+}
+
+/* ─── Hero stat (move 01) — borderless, space does the work ── */
 #\30 7-moves .mv-stat {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0 0 24px;
-  padding: 16px 0;
-  border-top: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
+  align-items: baseline;
+  gap: clamp(16px, 2vw, 28px);
+  margin: 0;
 }
 #\30 7-moves .mv-stat-value {
-  font-size: clamp(2.4rem, 5.5vw, 3.6rem);
-  font-weight: 600;
-  line-height: 0.9;
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  background: var(--mustard);
-  color: var(--ink);
-  border: 1.5px solid var(--ink);
-  padding: 6px 12px;
+  color: var(--soi-navy);
   flex: 0 0 auto;
 }
 #\30 7-moves .mv-stat-line {
-  font-size: 0.98rem;
-  line-height: 1.35;
-  opacity: 0.85;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.45;
+  max-width: 28ch;
+  color: var(--on-warm);
 }
 
-/* sandwich-generation mini stats (move 04, on navy) */
+/* ─── Sandwich-generation mini stats (move 04, on navy) ──── */
 #\30 7-moves .mv-stat-row {
   list-style: none;
-  margin: 0 0 8px;
+  margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: clamp(20px, 2.6vw, 36px) clamp(24px, 3vw, 44px);
 }
-#\30 7-moves .mv-stat-row li {
-  border: 1.5px solid var(--paper);
-  background: rgba(255, 255, 255, 0.06);
-  padding: 16px 14px 14px;
-}
+#\30 7-moves .mv-stat-row li { margin: 0; }
 #\30 7-moves .mv-mini-value {
   display: block;
-  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
-  font-weight: 600;
+  font-size: clamp(2.2rem, 4.4vw, 3rem);
+  font-weight: 700;
   line-height: 1;
-  margin-bottom: 6px;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
   font-variant-numeric: tabular-nums;
-  color: var(--mustard);
+  color: var(--soi-amber);
 }
 #\30 7-moves .mv-mini-label {
   display: block;
-  font-size: 0.82rem;
-  line-height: 1.3;
-  opacity: 0.82;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--on-navy);
+  opacity: 0.92;
+  max-width: 24ch;
 }
 
-/* brand examples */
+/* ─── Brand examples — chips legible on either ground ────── */
 #\30 7-moves .mv-brands {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 24px;
+  gap: 12px;
+  margin: 0;
 }
 #\30 7-moves .mv-brands-label {
   font-size: 0.72rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.7;
+  font-weight: 700;
+  opacity: 0.8;
   margin-right: 4px;
 }
 #\30 7-moves .mv-brand-chip {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.92rem;
-  background: var(--mustard);
-  color: var(--ink);
-  border: 1.5px solid var(--ink);
-  padding: 6px 12px;
 }
-#\30 7-moves .mv-band--dark .mv-brand-chip { border-color: var(--mustard); }
+/* warm ground: navy chip on cream pill */
+#\30 7-moves .mv-move--warm .mv-brand-chip {
+  background: var(--soi-cream);
+  color: var(--soi-navy);
+  padding: 7px 14px;
+}
+/* navy ground: amber text chip on a subtle cream-cut pill */
+#\30 7-moves .mv-move--navy .mv-brand-chip {
+  background: var(--soi-amber);
+  color: var(--soi-navy);
+  padding: 7px 14px;
+}
 
-/* pull-quotes */
-#\30 7-moves .mv-quote {
-  margin: 0 0 20px;
-  padding: 4px 0 4px 18px;
-  border-left: 3px solid var(--mustard);
-}
-#\30 7-moves .mv-quote:last-child { margin-bottom: 0; }
-#\30 7-moves .mv-quote p {
-  font-size: 0.98rem;
+/* ─── Quotes (hanging-quote register from vccp.css) ──────── */
+#\30 7-moves .mv-quote { margin: 0; max-width: 52ch; }
+#\30 7-moves .mv-quote .si-quote-body {
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
   line-height: 1.5;
   font-style: italic;
-  margin: 0 0 8px;
-}
-#\30 7-moves .mv-quote cite {
-  display: block;
-  font-style: normal;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.7;
-}
-
-/* ─── Shift card (less -> more flip table) ───────────────── */
-#\30 7-moves .mv-band-shift {
-  position: sticky;
-  top: 96px;
-}
-#\30 7-moves .si-datacard-title {
   color: inherit;
-  border-bottom-color: currentColor;
 }
-#\30 7-moves .mv-band--dark .mv-band-shift {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: var(--paper);
+/* The vccp .si-quote::before hanging mark already resolves per-ground:
+   navy tint on warm, cream tint on dark. Nudge cite colour on warm. */
+#\30 7-moves .mv-move--warm .si-quote-cite { color: rgba(10,26,92,0.6); }
+
+/* ─── Evidence ad-mockup cards (§4) — one frame device ───── */
+#\30 7-moves .mv-evidence {
+  margin: 0;
+  max-width: 420px;
+  width: 100%;
+}
+#\30 7-moves .mv-evidence img { display: block; }
+
+/* ─── Shift card (less→more flip table) ──────────────────── */
+#\30 7-moves .mv-shift {
+  position: sticky;
+  top: calc(var(--nav-height) + 32px);
+}
+#\30 7-moves .mv-shift-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  margin: 0 0 6px;
+  color: inherit;
 }
 #\30 7-moves .mv-flip-caption {
   font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  opacity: 0.7;
-  margin: 0 0 14px;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  opacity: 0.72;
+  margin: 0 0 16px;
+  color: inherit;
 }
 
 /* the helper builds .flip-rows > .flip-head + .flip-row buttons */
 #\30 7-moves .flip-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 #\30 7-moves .flip-head {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 12px;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.65;
-  padding: 0 6px 6px;
-  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+  opacity: 0.7;
+  padding: 0 4px 8px;
+  color: inherit;
 }
 #\30 7-moves .flip-head span:last-child { text-align: right; }
 
@@ -236,64 +258,73 @@
   text-align: left;
   font: inherit;
   cursor: pointer;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  padding: 13px 14px;
-  color: var(--ink);
-  transition: background 160ms ease, border-color 160ms ease;
+  padding: 14px 16px;
+  transition: background 160ms ease, transform 160ms ease;
 }
-#\30 7-moves .flip-row:hover { background: var(--mustard-pale); }
+/* warm ground: cream card, navy ink */
+#\30 7-moves .mv-move--warm .flip-row {
+  background: var(--soi-cream);
+  color: var(--soi-navy);
+  border: none;
+}
+#\30 7-moves .mv-move--warm .flip-row:hover { background: var(--soi-cream-warm); }
+/* navy ground: subtle cream-cut card, cream ink */
+#\30 7-moves .mv-move--navy .flip-row {
+  background: rgba(238, 233, 221, 0.08);
+  color: var(--on-navy);
+  border: none;
+}
+#\30 7-moves .mv-move--navy .flip-row:hover { background: rgba(238, 233, 221, 0.15); }
+
 #\30 7-moves .flip-row:focus-visible {
-  outline: 2px solid var(--mustard);
+  outline: 2px solid var(--soi-amber);
   outline-offset: 2px;
 }
 
-/* "less" state — grey, struck through */
+/* "less" state — de-emphasised, struck through (legible on both grounds) */
 #\30 7-moves .flip-less {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.5);
   text-decoration: line-through;
   text-decoration-thickness: 1px;
 }
-#\30 7-moves .flip-arrow {
-  color: rgba(0, 0, 0, 0.45);
-  font-weight: 500;
-}
+#\30 7-moves .mv-move--warm .flip-less { color: rgba(10, 26, 92, 0.5); }
+#\30 7-moves .mv-move--navy .flip-less { color: rgba(238, 233, 221, 0.5); }
+#\30 7-moves .flip-arrow { font-weight: 500; opacity: 0.55; }
+
 /* "more" state — hidden until flipped */
 #\30 7-moves .flip-more {
   text-align: right;
-  font-weight: 600;
-  color: var(--ink);
+  font-weight: 700;
   opacity: 0;
   transition: opacity 200ms ease;
 }
+#\30 7-moves .mv-move--warm .flip-more { color: var(--soi-navy); }
+#\30 7-moves .mv-move--navy .flip-more { color: var(--soi-amber); }
 
-/* flipped: the row commits to the mustard "more" answer */
-#\30 7-moves .flip-row.is-flipped {
-  background: var(--mustard);
-  border-color: var(--ink);
-}
+/* flipped: the row commits to the amber "more" answer */
+#\30 7-moves .flip-row.is-flipped { background: var(--soi-amber); }
 #\30 7-moves .flip-row.is-flipped .flip-less {
-  color: rgba(0, 0, 0, 0.4);
-  text-decoration: line-through;
+  color: rgba(10, 26, 92, 0.45);
 }
-#\30 7-moves .flip-row.is-flipped .flip-arrow { color: var(--ink); }
-#\30 7-moves .flip-row.is-flipped .flip-more { opacity: 1; }
+#\30 7-moves .flip-row.is-flipped .flip-arrow,
+#\30 7-moves .flip-row.is-flipped .flip-more { color: var(--soi-navy); opacity: 1; }
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
-  #\30 7-moves .mv-band-grid { grid-template-columns: 1fr; gap: 28px; }
-  #\30 7-moves .mv-band-shift { position: static; }
+  #\30 7-moves .mv-grid { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
+  #\30 7-moves .mv-shift { position: static; }
+  #\30 7-moves .mv-evidence { max-width: 100%; }
 }
 @media (max-width: 600px) {
-  #\30 7-moves .mv-band-head {
+  #\30 7-moves .mv-move-head {
     grid-template-columns: 1fr;
-    row-gap: 8px;
+    row-gap: 10px;
   }
   #\30 7-moves .mv-stat-row { grid-template-columns: 1fr; }
+  #\30 7-moves .mv-stat { flex-direction: column; gap: 8px; }
 }
 
-/* Reduced motion: the libs already short-circuit; drop our transitions too. */
+/* Reduced motion: libs short-circuit; drop our transitions + orbit spin. */
 @media (prefers-reduced-motion: reduce) {
   #\30 7-moves .flip-row,
   #\30 7-moves .flip-more { transition: none; }

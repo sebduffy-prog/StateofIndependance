@@ -1,19 +1,24 @@
 /**
- * Chapter 01: cover.
+ * Chapter 01: cover — Design World V2.
  *
- * Full-bleed mustard hero. No page frame, no plate: the Girl & Bear stands
- * flush on the bottom ground line as a large physical figure, the wordmark
- * commands the screen in the uppercase display treatment, and a calm,
- * well-spaced field of ink dots drifts behind the whole composition.
+ * The State-of-Independence hero: a warm mustard→orange gradient ground (set
+ * in CSS) carrying thin orbit-circle line motifs, two pale seed dots, a cream
+ * bear+figure silhouette grounded on the bottom edge, and — behind it all —
+ * an ambient field of respondent dots. Over the top, a huge Inter Tight
+ * display wordmark with the highlighter wiping in on INDEPENDENCE.
  *
- * The dotField lib now carries its own physics (mutual repulsion so dots
- * never crowd, momentum, cursor force). We keep the count modest, drift
- * gentle, and wire setPointer from the whole stage so the cursor subtly
- * pushes nearby dots. One dot is the highlighted "you" (the 1,505th
- * respondent), parked quietly near its caption.
+ * The dotField carries its own physics (mutual repulsion, momentum, cursor
+ * force). On the warm ground the dots are tinted NAVY so they keep deliberate
+ * contrast against the amber (never the old ink-on-anything default); one dot
+ * is the highlighted "you" (the 1,505th respondent), parked near its caption.
  *
- * Reduced motion: the highlighter lands instantly, the field jump-cuts to
- * its layout, and no pointer force / drift runs (the lib enforces this too).
+ * Layering: every decorative layer sits behind the copy via CSS z-index +
+ * pointer-events:none, so nothing occludes the wordmark and the cursor still
+ * reaches the dot-field. (See css/sections/01-cover.css §LAYERING.)
+ *
+ * Reduced motion: the highlighter lands instantly, the field jump-cuts to its
+ * layout, the orbit stops spinning (shared guard), and no pointer force / drift
+ * runs (the lib enforces this too).
  *
  * Contract: docs/CONTRACT.md.
  *
@@ -23,27 +28,26 @@
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
-const DOT_COUNT = 220; // calm and well-spaced, not crowding
+const DOT_COUNT = 180; // calm and well-spaced, not crowding
 const YOU_INDEX = 0; // the highlighted "you" dot
 const DRIFT_AMP = 0.5; // gentle ambient brownian motion
 
-const mustard = () =>
-  getComputedStyle(document.documentElement)
-    .getPropertyValue('--mustard')
-    .trim() || '#FFC931';
+/** Resolve a brand token to its hex, with a safe fallback. */
+const token = (name, fallback) =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 /**
- * Build the ambient layout: a calm scatter biased toward the edges so the
- * top-left copy and the grounded bear both stay clear. Returns normalised
- * {x,y} targets in 0..1 space.
+ * Build the ambient layout: a calm scatter biased away from the top-left copy
+ * and the grounded silhouette, every dot tinted navy so it reads on the warm
+ * ground. Returns normalised {x,y,colour} targets in 0..1 space.
  */
-const buildTargets = (count) =>
+const buildTargets = (count, dotColour) =>
   Array.from({ length: count }, (_, i) => {
     if (i === YOU_INDEX) {
       // Park "you" in the lower-left clearing near its caption.
-      return { x: 0.1, y: 0.82 };
+      return { x: 0.1, y: 0.82, colour: dotColour };
     }
-    return { x: Math.random(), y: Math.random() };
+    return { x: Math.random(), y: Math.random(), colour: dotColour };
   });
 
 export default function init(rootEl) {
@@ -53,6 +57,10 @@ export default function init(rootEl) {
   const dotsHost = rootEl.querySelector('[data-cover-dots]');
   const hl = rootEl.querySelector('[data-cover-hl]');
   const reduced = prefersReducedMotion();
+
+  // Navy on the warm ground keeps the dots legible (contrast safety §6).
+  const dotColour = token('--soi-navy', '#0A1A5C');
+  const youColour = token('--soi-teal', '#2BB7E8'); // single bright accent
 
   // Scroll cue: a real <button> (keyboard-activatable via Enter/Space) that
   // smooth-scrolls to the research chapter, honouring reduced motion.
@@ -83,20 +91,19 @@ export default function init(rootEl) {
     count: DOT_COUNT,
     dotRadius: 2.2,
     ariaLabel:
-      'A calm field of ink dots, one per survey respondent, drifting behind the cover.',
+      'A calm field of dots, one per survey respondent, drifting behind the cover.',
   });
 
-  field.formation(buildTargets(DOT_COUNT));
-  field.highlight(YOU_INDEX, mustard());
+  field.formation(buildTargets(DOT_COUNT, dotColour));
+  field.highlight(YOU_INDEX, youColour);
   field.drift(DRIFT_AMP);
 
   if (reduced) return; // no pointer force under reduced motion
-
-  // Wire subtle cursor repulsion across the WHOLE hero, not just the canvas
-  // box: track the pointer on the stage and feed normalised coords to the
-  // field's built-in repulsion via setPointer.
   if (!stage) return;
 
+  // Wire subtle cursor repulsion across the WHOLE hero (not just the canvas
+  // box): track the pointer on the stage and feed normalised coords to the
+  // field's built-in repulsion via setPointer.
   let pending = false;
   let lastX = 0;
   let lastY = 0;

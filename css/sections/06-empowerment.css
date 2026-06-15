@@ -1,80 +1,180 @@
-/* Chapter 06: empowerment.
-   Mustard-pale surface. Every selector prefixed with #\30 6-empowerment.
-   Square corners, flat fills (no gradients), tabular nums, reduced-motion safe. */
+/* Chapter 06 — empowerment. Design World V2.
+   Warm mustard→orange gradient ground (the deck's "bear vs figure" world),
+   seamless de-blocked flow, contrast-safe navy-on-warm copy. Every selector
+   is prefixed with #\30 6-empowerment so styles never leak.
+   Square corners, tabular nums, reduced-motion safe, no console.log.
 
+   Layering contract (no overlap / no double-layer / contrast-safe):
+     z 0  — .emp-orbit decorative rings + reframe imagery (pointer-events:none)
+     z 1  — all flowing content (set by .si-ground-warm > * in vccp.css)
+   Reframe copy plates carry their own scrim so text never sits on a same /
+   similar background colour. */
+
+/* The ground gradient comes from .si-ground-warm (vccp.css); the chapter
+   background itself is transparent so the world shows through edge-to-edge. */
 #\30 6-empowerment {
-  background: var(--mustard-pale);
+  background: transparent;
 }
-#\30 6-empowerment .chapter-inner {
+/* The warm-ground world fills the whole chapter frame (the parent .chapter
+   centres its child, so claim full width + a tall min-height to host the
+   edge-to-edge gradient world). */
+#\30 6-empowerment .emp-shell {
+  width: 100%;
+  align-self: stretch;
+  min-height: 78vh;
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 4vh, 52px);
+  justify-content: center;
+}
+#\30 6-empowerment .emp-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-4), 6vh, var(--space-6));
 }
 
-/* ─── Header ─────────────────────────────────────────────── */
-#\30 6-empowerment .emp-label {
+/* Decorative orbit rings — soft, centred behind everything, never occluding. */
+#\30 6-empowerment .emp-orbit {
+  opacity: 0.5;
+  background-position: 78% 38%;
+}
+
+/* ─── Header — flowing, de-blocked, navy on warm ───────────── */
+#\30 6-empowerment .emp-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 36rem;
+}
+#\30 6-empowerment .emp-eyebrow {
   margin: 0;
-  font-size: var(--t-xl);
+  color: var(--on-warm);
+  opacity: 0.78;
+}
+#\30 6-empowerment .emp-title {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: var(--on-warm);
 }
 #\30 6-empowerment .emp-standfirst {
-  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
-  line-height: 1.42;
   margin: 0;
-  color: var(--ink-soft);
+  font-size: clamp(1.1rem, 1.8vw, 1.42rem);
+  line-height: 1.42;
+  font-weight: 400;
+  color: var(--on-warm);
+  max-width: 46ch;
 }
 
-/* ─── Body split: reframe left, venn right ───────────────── */
-#\30 6-empowerment .emp-body {
-  align-items: stretch;
+/* The highlighter swatch is mustard by default — on a warm ground that would
+   be mustard-on-mustard (a contrast offender). Force a cream swatch so the
+   navy italic word stays legible against the warm world. */
+#\30 6-empowerment .hl::before {
+  background: var(--soi-cream);
 }
-#\30 6-empowerment .emp-reframe,
-#\30 6-empowerment .emp-venn {
+
+/* Section ledes share one rhythm, all navy on warm. */
+#\30 6-empowerment .emp-reframe-lede,
+#\30 6-empowerment .emp-venn-lede {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-1);
+  max-width: 34ch;
 }
 #\30 6-empowerment .emp-reframe-title,
 #\30 6-empowerment .emp-venn-title {
   margin: 0;
-  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.02;
+  color: var(--on-warm);
 }
 #\30 6-empowerment .emp-reframe-intro,
 #\30 6-empowerment .emp-venn-intro {
   margin: 0;
-  font-size: var(--t-sm, 0.95rem);
+  font-size: var(--t-md);
   line-height: 1.45;
-  color: var(--ink-soft);
+  color: var(--on-warm);
+  opacity: 0.86;
 }
 
-/* ─── Reframe: bear-vs-figure world wipe ─────────────────── */
+/* ─── The reframe section: room to breathe (this is the pivot) ─ */
+#\30 6-empowerment .emp-reframe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ─── Reframe stage — the deck bear-vs-figure world wipe ─────── */
+/* Two full-bleed world images, the "after" world clipped over the "before"
+   from the right edge. NO divider bar is drawn inside the stage. The imagery
+   is decoration (pointer-events:none) and sits below the copy plate. */
 #\30 6-empowerment .emp-rf-stage {
   position: relative;
-  border: 1.5px solid var(--ink);
-  background: var(--mustard);     /* survival-mode ground (the deck world field) */
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 16 / 8.2;
+  min-height: clamp(280px, 40vh, 460px);
+  max-height: 520px;
   overflow: hidden;
-  margin-top: 4px;
+  /* Calm warm base behind the photographs (matches the deck ground) so any
+     letterboxing reads as world, never as a flat box. */
+  background: var(--soi-amber);
+  box-shadow: 0 24px 60px rgba(10, 26, 92, 0.16);
 }
-#\30 6-empowerment .emp-rf-layer { position: relative; }
-#\30 6-empowerment .emp-rf-layer-after {
+#\30 6-empowerment .emp-rf-layer {
   position: absolute;
   inset: 0;
-  background: var(--navy);        /* active-agency ground */
-  /* clipped from the left edge in JS; no divider element is drawn inside */
 }
-#\30 6-empowerment .emp-rf-panel {
-  position: relative;
-  padding: clamp(20px, 2.8vw, 36px);
-  min-height: clamp(260px, 34vh, 360px);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 12px;
+#\30 6-empowerment .emp-rf-layer-after {
+  /* clip-path set in JS from the right edge; no handle element is rendered */
+  z-index: 1;
+}
+#\30 6-empowerment .emp-rf-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Copy plate sits ABOVE the imagery (z-index:2). A directional scrim guarantees
+   the navy text never sits on a same/similar warm value — deliberate contrast. */
+#\30 6-empowerment .emp-rf-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(250, 233, 197, 0.94) 0%,
+    rgba(250, 233, 197, 0.78) 30%,
+    rgba(250, 233, 197, 0.10) 56%,
+    transparent 72%
+  );
+}
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-scrim {
+  /* Active-agency plate scrims from navy so its cream text reads on the warm
+     world — opposite polarity to the survival plate. */
+  background: linear-gradient(
+    100deg,
+    rgba(10, 26, 92, 0.88) 0%,
+    rgba(10, 26, 92, 0.66) 32%,
+    rgba(10, 26, 92, 0.08) 58%,
+    transparent 74%
+  );
 }
 #\30 6-empowerment .emp-rf-copy {
+  position: absolute;
+  z-index: 2;
+  top: clamp(20px, 3vw, 40px);
+  left: clamp(20px, 3vw, 40px);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-1);
   max-width: 30ch;
 }
 #\30 6-empowerment .emp-rf-tag {
@@ -83,57 +183,38 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  background: var(--ink);
-  color: var(--paper);
   padding: 5px 11px;
 }
-#\30 6-empowerment .emp-rf-after .emp-rf-tag {
-  background: var(--teal-deep);
-  color: var(--ink);
+#\30 6-empowerment .emp-rf-tag-before {
+  background: var(--soi-navy);
+  color: var(--soi-cream);
 }
+#\30 6-empowerment .emp-rf-tag-after {
+  background: var(--soi-amber);
+  color: var(--soi-navy);
+}
+#\30 6-empowerment .emp-rf-layer-before .emp-rf-lead { color: var(--soi-navy); }
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-lead { color: var(--soi-cream); }
 #\30 6-empowerment .emp-rf-lead {
-  font-size: clamp(1.2rem, 2vw, 1.55rem);
-  font-weight: 500;
-  line-height: 1.1;
-  color: var(--ink);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
 }
-#\30 6-empowerment .emp-rf-after .emp-rf-lead { color: var(--paper); }
 #\30 6-empowerment .emp-rf-body {
   margin: 0;
-  font-size: var(--t-md, 1rem);
-  line-height: 1.45;
-  color: var(--ink-soft);
+  font-size: var(--t-md);
+  line-height: 1.4;
+  max-width: 26ch;
 }
-#\30 6-empowerment .emp-rf-after .emp-rf-body { color: rgba(255, 255, 255, 0.82); }
+#\30 6-empowerment .emp-rf-layer-before .emp-rf-body { color: rgba(10, 26, 92, 0.86); }
+#\30 6-empowerment .emp-rf-layer-after .emp-rf-body { color: rgba(238, 233, 221, 0.9); }
 
-/* cream silhouettes anchored to the bottom edge: the figures "stand" */
-#\30 6-empowerment .emp-rf-art {
-  position: absolute;
-  right: clamp(16px, 3vw, 40px);
-  bottom: 0;
-  pointer-events: none;
-}
-#\30 6-empowerment .emp-rf-bear {
-  width: clamp(86px, 14vw, 150px);
-  height: auto;
-  fill: var(--paper-warm);
-  opacity: 0.92;
-  display: block;
-}
-#\30 6-empowerment .emp-rf-figure {
-  width: clamp(52px, 8vw, 92px);
-  height: auto;
-  fill: var(--paper-warm);
-  opacity: 0.95;
-  display: block;
-}
-
-/* The slider: short plain label, keyboard operable, on-brand focus ring */
+/* The slider — keyboard operable, square, contrast-safe on the warm ground. */
 #\30 6-empowerment .emp-rf-control {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 14px;
+  gap: var(--space-2);
 }
 #\30 6-empowerment .emp-rf-control-text {
   flex: none;
@@ -141,7 +222,8 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  color: var(--on-warm);
+  opacity: 0.8;
 }
 #\30 6-empowerment .emp-rf-slider {
   -webkit-appearance: none;
@@ -149,47 +231,59 @@
   flex: 1 1 auto;
   width: 100%;
   height: 6px;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
+  background: rgba(10, 26, 92, 0.22);
+  border: 1.5px solid var(--soi-navy);
   cursor: ew-resize;
   margin: 0;
 }
 #\30 6-empowerment .emp-rf-slider:focus-visible {
-  outline: 2px solid var(--teal-deep);
-  outline-offset: 3px;
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 4px;
 }
 #\30 6-empowerment .emp-rf-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
   height: 26px;
-  background: var(--mustard);
-  border: 1.5px solid var(--ink);
+  background: var(--soi-navy);
+  border: 1.5px solid var(--soi-navy);
   cursor: ew-resize;
 }
 #\30 6-empowerment .emp-rf-slider::-moz-range-thumb {
   width: 18px;
   height: 26px;
-  background: var(--mustard);
-  border: 1.5px solid var(--ink);
+  background: var(--soi-navy);
+  border: 1.5px solid var(--soi-navy);
   cursor: ew-resize;
   border-radius: 0;
 }
 
-/* ─── Venn (ported from PORTED-COMPONENTS.md, scoped) ─────── */
+/* ─── Venn section ─────────────────────────────────────────── */
+#\30 6-empowerment .emp-venn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Stage — flat translucent paper plate so the three colour circles read with
+   maximum clarity (charts stay flat per brief), sitting calmly on the world. */
 #\30 6-empowerment .venn-stage {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
-  max-height: 520px; min-height: 360px;
-  border: 1.5px solid var(--ink);
-  background: var(--mustard-pale);     /* flat, no gradient */
+  max-height: 520px;
+  min-height: 360px;
+  background: rgba(244, 241, 234, 0.92);
   overflow: hidden;
+  box-shadow: 0 20px 52px rgba(10, 26, 92, 0.14);
 }
 #\30 6-empowerment .venn-svg { display: block; width: 100%; height: 100%; }
 
+/* Distinct flat fills (amber / blue / orange set in JS). Flat alpha so the
+   three overlaps stay legible — no screen blend, no mud. */
 #\30 6-empowerment .venn-petal {
-  fill-opacity: 0.32;                  /* flat alpha so overlaps read; no screen blend */
+  fill-opacity: 0.42;
+  stroke: var(--soi-navy);
   stroke-width: 1.5;
   cursor: pointer;
   transform-box: fill-box;
@@ -198,78 +292,89 @@
 }
 #\30 6-empowerment .venn-svg.reduced .venn-petal { transition: none; }
 #\30 6-empowerment .venn-petal:hover,
-#\30 6-empowerment .venn-petal.is-on { fill-opacity: 0.55; transform: scale(1.02); }
-#\30 6-empowerment .venn-svg.is-focus .venn-petal:not(.is-on) { fill-opacity: 0.10; }
+#\30 6-empowerment .venn-petal.is-on { fill-opacity: 0.66; transform: scale(1.02); }
+#\30 6-empowerment .venn-svg.is-focus .venn-petal:not(.is-on) { fill-opacity: 0.12; }
 
-#\30 6-empowerment .venn-leader { stroke: var(--ink); stroke-width: 1.2; }
+#\30 6-empowerment .venn-leader { stroke: var(--soi-navy); stroke-width: 1.2; }
 #\30 6-empowerment .venn-ltext {
-  font: 500 18px var(--font-sans); fill: var(--ink);
+  font: 600 18px var(--font-sans); fill: var(--soi-navy);
 }
 #\30 6-empowerment .venn-lmeta {
   font: 600 11px var(--font-sans); letter-spacing: .06em;
-  fill: var(--ink-soft); font-variant-numeric: tabular-nums;
+  fill: rgba(10, 26, 92, 0.66); font-variant-numeric: tabular-nums;
 }
 
+/* Centre plate — solid navy so the cream "empowerment" word is unmistakably
+   legible above the three translucent colour circles (deliberate contrast). */
 #\30 6-empowerment .venn-centre {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  padding: 12px 16px; min-width: 180px; text-align: center;
-  background: var(--paper); border: 1.5px solid var(--ink);
+  padding: 14px 20px; min-width: 190px; text-align: center;
+  background: var(--soi-navy);
   pointer-events: none; z-index: 3;
 }
 #\30 6-empowerment .venn-centre .lbl {
-  display: block; font: 600 .68rem var(--font-sans);
-  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft);
+  display: block; font: 600 .66rem var(--font-sans);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(238, 233, 221, 0.72);
 }
 #\30 6-empowerment .venn-centre .val {
-  display: block; font: 500 1.8rem/1 var(--font-sans); color: var(--ink);
+  display: block; font: 600 1.7rem/1 var(--font-sans); color: var(--soi-cream);
 }
 #\30 6-empowerment .venn-centre .sub {
-  display: block; font: 400 .9rem var(--font-sans); color: var(--ink-soft); margin-top: 2px;
+  display: block; font: 400 .86rem var(--font-sans);
+  color: rgba(238, 233, 221, 0.78); margin-top: 4px;
 }
 
+/* Legend — square focusable cards, one device (border), navy on cream. */
 #\30 6-empowerment .venn-legend {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 8px; margin-top: 16px;
+  gap: var(--space-2); margin-top: var(--space-3);
 }
 @media (max-width: 720px) { #\30 6-empowerment .venn-legend { grid-template-columns: 1fr; } }
 #\30 6-empowerment .venn-leg {
-  text-align: left; padding: 12px 14px;
-  border: 1.5px solid var(--ink); background: var(--paper);
-  display: flex; flex-direction: column; gap: 4px; cursor: pointer;
+  text-align: left; padding: 14px 16px;
+  border: 1.5px solid var(--soi-navy);
+  background: var(--soi-cream);
+  display: flex; flex-direction: column; gap: 6px; cursor: pointer;
   font-family: inherit;
-  transition: background .15s ease;
+  transition: background .15s ease, box-shadow .15s ease;
 }
 #\30 6-empowerment .venn-leg:hover,
-#\30 6-empowerment .venn-leg.is-on { background: var(--mustard-pale); }
-#\30 6-empowerment .venn-leg:focus-visible { outline: 2px solid var(--teal-deep); outline-offset: 2px; }
-#\30 6-empowerment .venn-leg.is-on { box-shadow: inset 4px 0 0 var(--accent); }
+#\30 6-empowerment .venn-leg.is-on { background: var(--soi-page); }
+#\30 6-empowerment .venn-leg:focus-visible { outline: 2px solid var(--soi-navy); outline-offset: 2px; }
+#\30 6-empowerment .venn-leg.is-on { box-shadow: inset 5px 0 0 var(--accent); }
 #\30 6-empowerment .venn-leg .name {
   display: flex; align-items: center; gap: 8px;
-  font: 500 1rem var(--font-sans); color: var(--ink);
+  font: 600 1rem var(--font-sans); color: var(--soi-navy);
 }
 #\30 6-empowerment .venn-leg .name::before {
-  content: ''; width: 12px; height: 12px; background: var(--accent); /* square swatch */
+  content: ''; width: 13px; height: 13px; flex: none;
+  background: var(--accent); /* square swatch — the circle's flat colour */
 }
 #\30 6-empowerment .venn-leg .n {
-  font: 500 1.6rem/1 var(--font-sans); color: var(--ink);
+  font: 600 1.7rem/1 var(--font-sans); color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
 }
 #\30 6-empowerment .venn-leg .pct {
-  font: 600 .68rem var(--font-sans); letter-spacing: .1em;
-  text-transform: uppercase; color: var(--ink-soft);
+  font: 600 .66rem var(--font-sans); letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(10, 26, 92, 0.62);
 }
 #\30 6-empowerment .emp-venn-empty {
-  border: 1.5px solid var(--ink); background: var(--paper);
-  padding: 24px; color: var(--ink-soft); margin: 4px 0 0;
+  border: 1.5px solid var(--soi-navy); background: var(--soi-cream);
+  padding: 24px; color: var(--soi-navy); margin: 0;
 }
 
-/* ─── Responsive: collapse split, stack panels ───────────── */
+/* ─── Source line — contrast-safe on warm (handled by .si-ground-warm) ── */
+#\30 6-empowerment .emp-source { margin: 0; }
+
+/* ─── Responsive: stack the venn lede above its stage cleanly ─ */
 @media (max-width: 760px) {
-  #\30 6-empowerment .emp-body { grid-template-columns: 1fr; }
+  #\30 6-empowerment .emp-rf-copy { max-width: 24ch; }
 }
 
-/* ─── Reduced motion: no easing ──────────────────────────── */
+/* ─── Reduced motion: no easing ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 6-empowerment .venn-leg { transition: none; }
+  #\30 6-empowerment .venn-leg,
+  #\30 6-empowerment .venn-petal { transition: none; }
 }

@@ -1,104 +1,180 @@
-/* Chapter 02 — research. Teal research surface (the appendix half).
-   Every selector is prefixed with #\30 2-research so styles never leak.
-   Recomposed 2026-06: dense .si-split that fills the frame. Method told
-   tightly on the left, GB map sized to fill its column on the right. */
+/* Chapter 02 — research. Teal research surface, WARMED into the State of
+   Independence world (V2): a teal ground that warms toward amber at the foot,
+   thin white orbit-circle accents + seed dots, a flowing split (no hairline
+   rows / bordered boxes). Every selector is prefixed with #\30 2-research so
+   styles never leak. Contrast: navy ink on the teal ground (high contrast);
+   decorative orbit/seed sit behind via z-index:0 + pointer-events:none. */
 
+/* ─── Ground: the warm State-of-Independence world ──────────
+   Moved OFF the old cool teal-only look (brief §1/§2): a warm off-white page
+   that bleeds gently into the amber world at the foot — seamless with the warm
+   ch01 → ch03 sequence. Teal survives only as a sparse accent (the diary rail).
+   Own stacking context (isolation) so no stale layer bleeds through. */
 #\30 2-research {
-  background: var(--teal);
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-warm-soft);
+  color: var(--soi-navy);          /* navy on warm off-white/amber → high contrast (§6) */
+  overflow: hidden;                /* clip the orbit motif to the section */
 }
 
-/* ─── Split: fill the frame, both columns stretch ───────── */
+/* ─── Decorative orbit motif + seed dots (behind everything) ─ */
+#\30 2-research .research-orbit {
+  /* thin concentric white rings drawn toward the map side; decoration only */
+  background:
+    radial-gradient(circle at 76% 46%,
+      transparent 0,             transparent calc(11% - 1px),
+      var(--soi-orbit) 11%,      transparent calc(11% + 1px),
+      transparent calc(19% - 1px),
+      var(--soi-orbit) 19%,      transparent calc(19% + 1px),
+      transparent calc(28% - 1px),
+      var(--soi-orbit-strong) 28%, transparent calc(28% + 1px),
+      transparent calc(39% - 1px),
+      var(--soi-orbit) 39%,      transparent calc(39% + 1px),
+      transparent 100%);
+  transform-origin: 76% 46%;
+}
+#\30 2-research .research-seed { z-index: 0; }
+#\30 2-research .research-seed--a { top: 22%; left: 64%; }
+#\30 2-research .research-seed--b { top: 70%; left: 88%; }
+
+/* Content sits above the decorative layer. */
+#\30 2-research .research-split,
+#\30 2-research .research-method > *,
+#\30 2-research .research-map-wrap > * { position: relative; z-index: 1; }
+
+/* ─── Split: flowing, both columns breathe ──────────────────── */
 #\30 2-research .research-split {
   width: 100%;
-  align-items: stretch;
+  align-items: center;
 }
 
-/* ─── Left: the method, told tightly ────────────────────── */
+/* ─── Left: the method as a flowing rhythm ──────────────────── */
 #\30 2-research .research-method {
   align-content: center;
+  gap: clamp(12px, 1.6vw, 22px);
 }
 
-/* Kicker gets gravitas via the display treatment (uppercase). */
+/* Kicker — navy on teal, high contrast. */
 #\30 2-research .research-kicker {
-  color: var(--ink);
+  color: var(--soi-navy);
   margin: 0;
 }
 
-/* Narrative sub-headline stays sentence case; the highlighter lands on one word. */
+/* Headline gains Inter Tight gravitas; the highlighter lands on one word. */
 #\30 2-research .research-headline {
-  font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.06;
+  font-size: var(--t-xl);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
   margin: 0;
-  max-width: 22ch;
+  max-width: 16ch;
+  color: var(--soi-navy);
 }
 
-/* ─── Method counters — dense grid, no hairline-list feel ─ */
+#\30 2-research .research-standfirst {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  color: var(--soi-navy);
+}
+#\30 2-research .research-standfirst strong { font-weight: 700; }
+
+/* ─── Hero stat — the big number IS the headline ────────────── */
+#\30 2-research .research-hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: clamp(6px, 1vw, 14px);
+}
+#\30 2-research .research-hero-value {
+  font-size: clamp(3.6rem, 7vw, 6.2rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--soi-navy);
+  font-variant-numeric: tabular-nums;
+}
+#\30 2-research .research-hero-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--soi-navy);
+  max-width: 32ch;
+  line-height: 1.3;
+}
+
+/* ─── Supporting stats — flow on space, no hairline rows ────── */
 #\30 2-research .research-stats {
   list-style: none;
-  margin: 6px 0 0 0;
+  margin: clamp(4px, 1vw, 10px) 0 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 1.4vw, 20px);
-}
-/* First stat (1,504) spans both columns as the anchor figure. */
-#\30 2-research .research-stat:first-child {
-  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 30px);
 }
 #\30 2-research .research-stat {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 #\30 2-research .research-stat-value {
-  font-size: clamp(2rem, 3.6vw, 3rem);
-  font-weight: 600;
-  line-height: 0.95;
-  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  line-height: 0.98;
   letter-spacing: -0.01em;
+  color: var(--soi-navy);
+  font-variant-numeric: tabular-nums;
 }
-#\30 2-research .research-stat:first-child .research-stat-value {
-  font-size: clamp(3.4rem, 6vw, 5rem);
-}
-#\30 2-research .research-stat-fix {
-  font-weight: 600;
-}
+#\30 2-research .research-stat-fix { font-weight: 700; }
 #\30 2-research .research-stat-label {
   font-size: var(--t-xs);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
-  line-height: 1.2;
+  color: rgba(10,26,92,0.82);    /* softened navy — clears AA on teal/amber */
+  line-height: 1.25;
 }
 
 #\30 2-research .research-credit {
-  margin: 8px 0 0 0;
+  margin: clamp(4px, 1vw, 10px) 0 0 0;
   font-size: var(--t-sm);
-  color: var(--ink-soft);
+  color: rgba(10,26,92,0.72);
 }
 #\30 2-research .research-credit strong {
-  color: var(--ink);
-  font-weight: 600;
+  color: var(--soi-navy);
+  font-weight: 700;
 }
 #\30 2-research .vccp-source {
   margin: 0;
   max-width: 56ch;
+  color: rgba(10,26,92,0.6);
 }
 
-/* ─── Right: GB map fills its column ────────────────────── */
+/* ─── Right: map column flows, no bordered frame ────────────── */
 #\30 2-research .research-map-wrap {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+#\30 2-research .research-map-eyebrow {
+  margin: 0 auto;
+  max-width: 520px;
+  width: 100%;
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--soi-navy);
+}
 #\30 2-research .research-map {
   position: relative;
   width: 100%;
   max-width: 520px;
-  margin-inline: auto;
+  margin: clamp(8px, 1.4vw, 16px) auto 0;
   aspect-ratio: 100 / 120;
 }
 #\30 2-research .research-map-svg {
@@ -107,48 +183,52 @@
   width: 100%;
   height: 100%;
 }
+/* GB land — navy mass reads cleanly on the teal ground (deliberate
+   navy-on-teal contrast, not ink-on-ink). */
 #\30 2-research .research-map-land {
-  fill: var(--ink);
-  stroke: var(--ink);
+  fill: var(--soi-navy);
+  stroke: var(--soi-navy);
   stroke-width: 0.6;
   stroke-linejoin: round;
 }
 
-/* ─── City markers (square mustard buttons) ─────────────── */
+/* ─── City markers (square cream-warm buttons on navy land) ─── */
 #\30 2-research .research-marker {
   position: absolute;
   width: 16px;
   height: 16px;
   padding: 0;
   transform: translate(-50%, -50%);
-  background: var(--mustard);
-  border: 1.5px solid var(--ink);
+  background: var(--soi-cream-warm);  /* warm cream on navy land → high contrast */
+  border: 1.5px solid var(--soi-navy);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
 #\30 2-research .research-marker:hover {
   transform: translate(-50%, -50%) scale(1.18);
+  background: var(--soi-gold);
 }
 #\30 2-research .research-marker:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--soi-navy);
   outline-offset: 2px;
 }
 
-/* Marker label — hidden until hover/focus/active to avoid clutter. */
+/* Marker label — hidden until hover/focus/active; cream chip, navy ink. */
 #\30 2-research .research-marker-label {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 5px);
+  bottom: calc(100% + 6px);
   transform: translateX(-50%);
   white-space: nowrap;
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  padding: 2px 5px;
+  color: var(--soi-navy);
+  background: var(--soi-page);
+  padding: 3px 7px;
   opacity: 0;
   pointer-events: none;
+  box-shadow: 0 4px 12px rgba(10,26,92,0.22);
   transition: opacity 0.12s ease;
 }
 #\30 2-research .research-marker:hover .research-marker-label,
@@ -157,16 +237,16 @@
   opacity: 1;
 }
 
-/* Active marker — teal-deep pulse + outline. */
+/* Active marker — amber fill + cream halo pulse (no ink-on-ink). */
 #\30 2-research .research-marker.is-active {
-  background: var(--teal-deep);
-  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--teal-deep);
+  background: var(--soi-amber);
+  box-shadow: 0 0 0 3px var(--soi-page), 0 0 0 4.5px var(--soi-amber);
 }
 #\30 2-research .research-marker.is-active::after {
   content: "";
   position: absolute;
   inset: -4px;
-  border: 1.5px solid var(--teal-deep);
+  border: 1.5px solid var(--soi-amber);
   animation: research-pulse 1.6s ease-out infinite;
   pointer-events: none;
 }
@@ -176,38 +256,46 @@
   100% { transform: scale(2.1); opacity: 0; }
 }
 
-/* ─── Hint + rail card ──────────────────────────────────── */
+/* ─── Hint + flowing diary block (de-blocked: accent rule, not a card) ─ */
 #\30 2-research .research-map-hint {
-  margin: 14px auto 0 auto;
+  margin: clamp(10px, 1.4vw, 16px) auto 0;
   max-width: 520px;
+  width: 100%;
   font-size: var(--t-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  color: rgba(10,26,92,0.6);
 }
 #\30 2-research .research-rail {
-  margin-top: 14px;
+  margin: clamp(10px, 1.4vw, 16px) auto 0;
+  max-width: 520px;
+  width: 100%;
 }
 #\30 2-research .research-card {
-  border-left-color: var(--teal-deep);
+  border-left: 3px solid var(--teal-deep);
+  padding-left: clamp(16px, 1.6vw, 22px);
 }
 #\30 2-research .research-card-head {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 #\30 2-research .research-card-eyebrow {
   margin-bottom: 6px;
+  color: var(--teal-deep);
 }
 #\30 2-research .research-card-title {
   font-size: var(--t-lg);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.1;
+  letter-spacing: -0.01em;
   margin: 0;
+  color: var(--soi-navy);
 }
 #\30 2-research .research-card-quote {
   margin: 0;
   font-size: var(--t-md);
-  line-height: 1.4;
+  line-height: 1.45;
+  color: var(--soi-navy);
 }
 #\30 2-research .research-card-cite {
   margin: 12px 0 0 0;
@@ -215,32 +303,30 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-soft);
+  color: rgba(10,26,92,0.66);
 }
 #\30 2-research .research-card-note {
   margin: 0;
   font-size: var(--t-sm);
-  line-height: 1.45;
-  color: var(--ink-soft);
+  line-height: 1.5;
+  color: rgba(10,26,92,0.78);
 }
 
-/* ─── Reduced motion: kill the pulse ────────────────────── */
+/* ─── Reduced motion: kill the pulse + orbit spin ───────────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 2-research .research-marker { transition: none; }
   #\30 2-research .research-marker.is-active::after { animation: none; }
+  #\30 2-research .research-orbit { animation: none; }
 }
 
-/* ─── Responsive: stack columns under the grid breakpoint ─ */
+/* ─── Responsive: stack columns under the grid breakpoint ───── */
 @media (max-width: 860px) {
-  #\30 2-research .research-split {
-    grid-template-columns: 1fr;
-  }
-  #\30 2-research .research-map {
-    max-width: 380px;
-  }
+  #\30 2-research .research-split { grid-template-columns: 1fr; }
+  #\30 2-research .research-map { max-width: 380px; }
+  #\30 2-research .research-map-eyebrow,
+  #\30 2-research .research-map-hint,
+  #\30 2-research .research-rail { max-width: 380px; }
 }
 @media (max-width: 520px) {
-  #\30 2-research .research-stats {
-    grid-template-columns: 1fr;
-  }
+  #\30 2-research .research-stats { grid-template-columns: 1fr; }
 }

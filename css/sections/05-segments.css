@@ -1,50 +1,72 @@
 /* Chapter 05 — segments. THE SHOWPIECE.
-   Paper surface, mustard quadrant accents. Every selector prefixed with
+   Design World V2: warm gradient hero ground + orbit motif, then a calm warm
+   off-white page for the data. De-blocked: borders reduced to one device per
+   surface, spacing carries the rhythm. Every selector prefixed with
    #\30 5-segments so styles never leak between chapters. */
 
-#\30 5-segments { background: var(--paper); }
+#\30 5-segments { background: var(--soi-page); }
 
 #\30 5-segments .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(32px, 5vh, 56px);
+  gap: clamp(40px, 6vh, 96px);
 }
 
-/* ─── Header ──────────────────────────────────────────────── */
+/* ─── Hero band: the warm gradient world ──────────────────── */
+#\30 5-segments .seg-hero-ground {
+  /* full warm ground with generous breathing room (seamless, not a tight box) */
+  padding: clamp(36px, 6vw, 80px) clamp(28px, 5vw, 72px);
+  overflow: hidden;
+}
+/* orbit motif: low-opacity white rings, behind content, never interactive */
+#\30 5-segments .seg-hero-orbit { z-index: 0; }
+/* two sparse seed dots sitting on the orbit lines */
+#\30 5-segments .seg-hero-seed--a { right: 16%; top: 30%; }
+#\30 5-segments .seg-hero-seed--b { right: 30%; bottom: 22%; }
+/* all hero copy sits above the decorative layers */
+#\30 5-segments .seg-hero-body {
+  position: relative;
+  z-index: 1;
+  max-width: 64ch;
+}
+
 #\30 5-segments .seg-title {
-  margin: 8px 0 14px 0;
+  margin: 8px 0 18px 0;
   max-width: 16ch;
 }
 #\30 5-segments .seg-standfirst {
   font-size: var(--t-md, 1.125rem);
-  line-height: 1.5;
-  margin: 0 0 18px 0;
-  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: 0 0 24px 0;
+  /* navy on the warm ground = high contrast (§6) */
+  color: var(--on-warm);
 }
+/* axis hinge: no hard rule — the warm ground separates it; navy text for contrast */
 #\30 5-segments .seg-hinge {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 6px 14px;
+  gap: 8px 18px;
   font-size: var(--t-sm, 0.95rem);
-  border-top: 1px solid var(--ink);
-  padding-top: 14px;
+  color: var(--on-warm);
   max-width: 62ch;
+  margin: 0;
 }
+#\30 5-segments .seg-hinge-pair { display: inline-flex; align-items: baseline; gap: 8px; }
 #\30 5-segments .seg-hinge-dim {
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-xs, 0.72rem);
 }
-#\30 5-segments .seg-hinge-axis { color: var(--ink-soft); }
-#\30 5-segments .seg-hinge-x { font-weight: 600; opacity: 0.5; }
+#\30 5-segments .seg-hinge-axis { color: rgba(10,26,92,0.7); }
+#\30 5-segments .seg-hinge-x { font-weight: 700; opacity: 0.5; }
 
 /* ─── Stage: map + profile side by side ───────────────────── */
 #\30 5-segments .seg-stage {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(24px, 3vw, 48px);
+  gap: clamp(28px, 3.5vw, 56px);
   align-items: start;
 }
 
@@ -52,36 +74,39 @@
   display: block;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-xs, 0.72rem);
-  color: var(--ink-soft);
-  margin: 0 0 10px 0;
+  color: var(--soi-navy);
+  margin: 0 0 14px 0;
 }
 
 /* ─── The 2×2 map ─────────────────────────────────────────── */
+/* One device only: a soft shadow lifts the map off the page (no hard ink frame). */
 #\30 5-segments .seg-map {
   position: relative;
+  isolation: isolate;
   width: 100%;
   aspect-ratio: 1 / 1;
   max-width: 600px;
   margin-inline: auto;
-  border: 1.5px solid var(--ink);
   background: var(--mustard-pale);
+  box-shadow: 0 1px 2px rgba(10,26,92,0.06), 0 18px 44px rgba(10,26,92,0.10);
 }
 
-/* dot field canvas host — explicit height via the square map */
+/* dot field canvas host — sits behind the quadrant UI (anti-overlap §6) */
 #\30 5-segments .seg-dotfield {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
-  z-index: 1;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* ink hairline axes through the centre */
+/* ink hairline axes through the centre (the one structural line the 2×2 needs) */
 #\30 5-segments .seg-axis {
   position: absolute;
-  background: var(--ink);
+  background: rgba(10,26,92,0.55);
   z-index: 2;
   pointer-events: none;
 }
@@ -94,10 +119,11 @@
   font-size: var(--t-xs, 0.7rem);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-weight: 700;
+  /* navy on a pale-mustard chip = deliberate contrast (§6) */
+  color: var(--soi-navy);
   background: var(--mustard-pale);
-  padding: 2px 5px;
+  padding: 2px 6px;
   pointer-events: none;
 }
 #\30 5-segments .seg-label-left   { left: 8px;  top: 50%; transform: translateY(-50%); }
@@ -123,176 +149,204 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 2px;
-  padding: clamp(12px, 2.4vw, 22px);
+  gap: 3px;
+  padding: clamp(14px, 2.6vw, 24px);
   text-align: left;
   font-family: var(--font-sans);
-  color: var(--ink);
+  /* navy ink keeps quadrant copy legible over the pale-mustard field (§6) */
+  color: var(--soi-navy);
   transition: opacity .3s ease, background .25s ease;
 }
 #\30 5-segments .seg-quad[data-pos="tr"] { align-items: flex-end; text-align: right; }
 #\30 5-segments .seg-quad[data-pos="br"] { align-items: flex-end; text-align: right; justify-content: flex-end; }
 #\30 5-segments .seg-quad[data-pos="bl"] { justify-content: flex-end; }
 
+/* Quadrant label text gets a soft pale-mustard backing chip so the physics
+   dots (drawn behind, on the field) never visually collide with the glyphs
+   — deliberate keep-out, no occlusion (§6). */
 #\30 5-segments .seg-quad-name {
   font-size: var(--t-md, 1.05rem);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
+  background: var(--mustard-pale);
+  box-shadow: 0 0 0 4px var(--mustard-pale);
 }
 #\30 5-segments .seg-quad-share {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 500;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1;
+  background: var(--mustard-pale);
+  box-shadow: 0 0 0 4px var(--mustard-pale);
 }
 #\30 5-segments .seg-quad-trio {
   font-size: var(--t-xs, 0.72rem);
-  color: var(--ink-soft);
+  color: rgba(10,26,92,0.66);
   max-width: 20ch;
+  background: var(--mustard-pale);
+  box-shadow: 0 0 0 3px var(--mustard-pale);
 }
 
-#\30 5-segments .seg-quad:hover { background: rgba(255, 201, 49, 0.22); }
+#\30 5-segments .seg-quad:hover { background: rgba(253,141,32,0.16); }
 #\30 5-segments .seg-quad:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--soi-navy);
   outline-offset: -3px;
-  background: rgba(255, 201, 49, 0.22);
+  background: rgba(253,141,32,0.16);
 }
-#\30 5-segments .seg-quad.is-active { background: rgba(255, 201, 49, 0.3); }
-#\30 5-segments .seg-map.is-focused .seg-quad.is-dimmed { opacity: 0.32; }
+#\30 5-segments .seg-quad.is-active { background: rgba(253,141,32,0.24); }
+#\30 5-segments .seg-map.is-focused .seg-quad.is-dimmed { opacity: 0.3; }
 
-/* the live "you" marker */
+/* the live "you" marker — amber chip, navy text (§6), above everything */
 #\30 5-segments .seg-youtag {
   position: absolute;
   z-index: 5;
   transform: translate(-50%, -50%);
-  background: var(--mustard);
-  color: var(--ink);
-  border: 1.5px solid var(--ink);
+  background: var(--soi-amber);
+  color: var(--soi-navy);
+  border: 1.5px solid var(--soi-navy);
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 6px;
+  padding: 2px 7px;
   pointer-events: none;
   transition: left .6s cubic-bezier(.22,.61,.36,1), top .6s cubic-bezier(.22,.61,.36,1);
 }
 #\30 5-segments .seg-youtag.is-instant { transition: none; }
-#\30 5-segments .seg-youtag.is-landed { box-shadow: 0 2px 0 var(--ink); }
+#\30 5-segments .seg-youtag.is-landed { box-shadow: 0 2px 0 var(--soi-navy); }
 
 #\30 5-segments .seg-maphint {
   font-size: var(--t-sm, 0.9rem);
-  color: var(--ink-soft);
-  margin: 12px 0 0 0;
+  color: rgba(10,26,92,0.66);
+  margin: 16px 0 0 0;
   text-align: center;
 }
 
 /* ─── Profile data-card ───────────────────────────────────── */
+/* De-blocked: empty state is a calm tint, not a dashed box. */
 #\30 5-segments .seg-profile { min-height: 1px; }
 #\30 5-segments .seg-profile:not(.is-open) {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px dashed rgba(0,0,0,0.25);
-  background: var(--mustard-pale);
+  /* Slightly stronger warm tint than the page so the empty state reads as a
+     deliberate waiting surface, not a ghost card (§4 seamless / §6 contrast). */
+  background: var(--mustard-light);
   min-height: 320px;
 }
 #\30 5-segments .seg-profile:not(.is-open)::before {
   content: 'Select a quadrant to read its full profile.';
   font-size: var(--t-sm, 0.92rem);
-  color: var(--ink-soft);
+  color: rgba(10,26,92,0.78);
+  font-weight: 600;
   padding: 24px;
   text-align: center;
   max-width: 24ch;
+}
+/* The open profile card: one device (soft shadow), warm paper, no ink frame. */
+#\30 5-segments .seg-profile.is-open .si-datacard {
+  border: 0;
+  background: var(--paper-warm);
+  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 16px 40px rgba(10,26,92,0.10);
 }
 #\30 5-segments .seg-card { outline: none; }
 #\30 5-segments .seg-card-top {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 #\30 5-segments .seg-card-share {
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
-  font-weight: 600;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   line-height: 0.9;
+  color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
 }
+/* Title: de-blocked — drop the heavy underline rule for a calm tint divider. */
 #\30 5-segments .seg-prof-name {
   font-size: var(--t-lg, 1.5rem);
   font-weight: 700;
   line-height: 1.05;
   margin: 0 0 4px 0;
-  padding-bottom: 8px;
-  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 0;
+  border-bottom: 0;
+  color: var(--soi-navy);
 }
 #\30 5-segments .seg-prof-trio {
-  font-weight: 500;
-  margin: 8px 0 0 0;
-  color: var(--ink);
-}
-#\30 5-segments .seg-prof-quote {
-  border-left: 3px solid var(--mustard);
-  margin: 0 0 16px 0;
-  padding: 4px 0 4px 14px;
-  font-style: italic;
-  line-height: 1.45;
+  font-weight: 600;
+  margin: 6px 0 0 0;
   color: var(--ink-soft);
 }
+#\30 5-segments .seg-prof-quote {
+  border-left: 3px solid var(--soi-orange);
+  margin: 18px 0 18px 0;
+  padding: 4px 0 4px 16px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+/* Facts: separated by a soft tint rule (not a hard hairline) and rhythm. */
 #\30 5-segments .seg-prof-facts {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  padding-top: 14px;
+  gap: 10px;
+  border-top: 1px solid rgba(10,26,92,0.1);
+  padding-top: 16px;
 }
 #\30 5-segments .seg-prof-row {
   display: grid;
   grid-template-columns: 84px 1fr;
-  gap: 12px;
+  gap: 14px;
   font-size: var(--t-sm, 0.92rem);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 #\30 5-segments .seg-prof-key {
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-xs, 0.68rem);
-  color: var(--ink-soft);
+  color: var(--soi-navy);
   padding-top: 2px;
 }
 
 /* per-segment metric charts (lollipop + dot plot) */
-#\30 5-segments .seg-metric { margin-top: 16px; }
+#\30 5-segments .seg-metric { margin-top: 18px; }
 #\30 5-segments .seg-metric-title {
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-xs, 0.68rem);
-  color: var(--ink-soft);
-  margin: 0 0 6px 0;
+  color: var(--soi-navy);
+  margin: 0 0 8px 0;
 }
 #\30 5-segments .seg-metric-chart { width: 100%; }
 
 #\30 5-segments .seg-prof-ai {
-  margin: 16px 0 0 0;
+  margin: 18px 0 0 0;
   font-size: var(--t-sm, 0.92rem);
-  line-height: 1.45;
+  line-height: 1.5;
   display: grid;
   grid-template-columns: 84px 1fr;
-  gap: 12px;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  padding-top: 14px;
+  gap: 14px;
+  border-top: 1px solid rgba(10,26,92,0.1);
+  padding-top: 16px;
 }
 
 /* ─── GraphRAG explorer ───────────────────────────────────── */
+/* De-blocked: no top hairline — spacing rhythm separates the section. */
 #\30 5-segments .seg-graphblock {
-  border-top: 1px solid var(--ink);
-  padding-top: clamp(24px, 4vh, 40px);
+  border-top: 0;
+  padding-top: 0;
 }
-#\30 5-segments .seg-graph-head { margin-bottom: 18px; }
+#\30 5-segments .seg-graph-head { margin-bottom: 22px; }
 #\30 5-segments .seg-graph-title {
   font-size: var(--t-lg, 1.6rem);
-  font-weight: 500;
-  margin: 4px 0 8px 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 6px 0 10px 0;
+  color: var(--soi-navy);
 }
 #\30 5-segments .seg-graph-intro {
   font-size: var(--t-sm, 0.95rem);
@@ -304,22 +358,23 @@
 #\30 5-segments .sg-stage {
   display: grid;
   grid-template-columns: 1fr 300px;
-  gap: 16px;
+  gap: 20px;
   align-items: start;
 }
 @media (max-width: 880px) { #\30 5-segments .sg-stage { grid-template-columns: 1fr; } }
 
+/* canvas frame keeps a thin frame (data clarity), but softened to navy tint. */
 #\30 5-segments .sg-svg {
   display: block;
   width: 100%;
   height: auto;
   min-height: 420px;
-  border: 1.5px solid var(--ink);
-  background: var(--paper);
+  border: 1px solid rgba(10,26,92,0.14);
+  background: var(--paper-warm);
 }
-#\30 5-segments .sg-edge { stroke: var(--ink); stroke-opacity: .25; stroke-width: 1.2; }
+#\30 5-segments .sg-edge { stroke: var(--soi-navy); stroke-opacity: .22; stroke-width: 1.2; }
 #\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: .06; }
-#\30 5-segments .sg-edge.is-on { stroke-opacity: .9; stroke-width: 2; }
+#\30 5-segments .sg-edge.is-on { stroke-opacity: .85; stroke-width: 2; }
 
 #\30 5-segments .sg-hub,
 #\30 5-segments .sg-attr { cursor: pointer; }
@@ -328,62 +383,69 @@
 #\30 5-segments .sg-svg.is-focus .is-dim { opacity: .18; }
 #\30 5-segments .sg-svg.is-focus .is-on { opacity: 1; }
 
+/* Label colour is set inline per-node by segment-graph.js (luminance-derived),
+   so every hub/attr label is legible against its OWN fill — no same-on-same.
+   This base rule only styles weight/size; it never overrides the inline fill. */
 #\30 5-segments .sg-label {
-  font: 500 13px var(--font-sans); fill: var(--ink);
+  font: 600 13px var(--font-sans);
   pointer-events: none; font-variant-numeric: tabular-nums;
 }
-#\30 5-segments .sg-hub .sg-label { font-weight: 500; font-size: 15px; }
-/* keep ink-hub labels readable on the dark fill */
-#\30 5-segments .sg-hub[data-id="retreaters"] .sg-label { fill: var(--paper); }
+#\30 5-segments .sg-hub .sg-label { font-weight: 700; font-size: 15px; }
 
+/* Detail panel: de-blocked — soft shadow on warm paper, no ink frame. */
 #\30 5-segments .sg-panel {
-  border: 1.5px solid var(--ink); background: var(--mustard-pale);
-  padding: 16px; min-height: 200px;
+  border: 0; background: var(--paper-warm);
+  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 12px 32px rgba(10,26,92,0.09);
+  padding: 18px; min-height: 200px;
 }
 #\30 5-segments .sg-panel .sg-hint { color: var(--ink-soft); font-size: var(--t-sm); }
 #\30 5-segments .sg-tag {
-  display: inline-block; font: 600 .66rem var(--font-sans);
-  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
+  display: inline-block; font: 700 .66rem var(--font-sans);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
 }
-#\30 5-segments .sg-panel h4 { font: 500 var(--t-md) var(--font-sans); margin: 4px 0; }
+#\30 5-segments .sg-panel h4 { font: 700 var(--t-md) var(--font-sans); margin: 6px 0; color: var(--soi-navy); }
 #\30 5-segments .sg-panel blockquote {
-  border-left: 3px solid var(--mustard); margin: 8px 0; padding-left: 10px;
+  border-left: 3px solid var(--soi-orange); margin: 10px 0; padding-left: 12px;
   font-style: italic; color: var(--ink-soft);
 }
-#\30 5-segments .sg-desc { font-weight: 500; margin: 4px 0; }
+#\30 5-segments .sg-desc { font-weight: 600; margin: 4px 0; color: var(--soi-navy); }
 #\30 5-segments .sg-shared { font-size: var(--t-sm); color: var(--ink-soft); margin: 4px 0; }
 #\30 5-segments .sg-facts dt {
-  font: 600 .66rem var(--font-sans); letter-spacing: .1em;
-  text-transform: uppercase; color: var(--ink-soft); margin-top: 6px;
+  font: 700 .66rem var(--font-sans); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--soi-navy); margin-top: 8px;
 }
 #\30 5-segments .sg-facts dd { margin: 0; font-size: var(--t-sm); }
 #\30 5-segments .sg-owners { margin: 6px 0 0; padding-left: 18px; font-size: var(--t-sm); }
 
-/* keyboard fallback list */
+/* keyboard fallback list — quiet pills, one device (tint), no hard frame */
 #\30 5-segments .sg-fallback {
-  display: flex; gap: 8px; flex-wrap: wrap; list-style: none;
-  margin: 12px 0 0; padding: 0;
+  display: flex; gap: 10px; flex-wrap: wrap; list-style: none;
+  margin: 16px 0 0; padding: 0;
 }
 #\30 5-segments .sg-fallback button {
-  border: 1.5px solid var(--ink); background: var(--paper);
-  padding: 6px 12px; font: 500 var(--t-xs) var(--font-sans); cursor: pointer;
+  border: 1px solid rgba(10,26,92,0.18); background: var(--paper-warm);
+  color: var(--soi-navy);
+  padding: 7px 13px; font: 600 var(--t-xs) var(--font-sans); cursor: pointer;
 }
 #\30 5-segments .sg-fallback button:hover { background: var(--mustard-pale); }
 #\30 5-segments .sg-fallback button:focus-visible {
-  outline: 2px solid var(--ink); outline-offset: 2px;
+  outline: 2px solid var(--soi-navy); outline-offset: 2px;
 }
 
 /* ─── Quiz ────────────────────────────────────────────────── */
+/* De-blocked: no top hairline; rhythm separates it. */
 #\30 5-segments .seg-quizblock {
-  border-top: 1px solid var(--ink);
-  padding-top: clamp(24px, 4vh, 40px);
+  border-top: 0;
+  padding-top: 0;
 }
-#\30 5-segments .seg-quiz-head { margin-bottom: 18px; }
+#\30 5-segments .seg-quiz-head { margin-bottom: 22px; }
 #\30 5-segments .seg-quiz-title {
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 500;
-  margin: 4px 0 8px 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 6px 0 10px 0;
+  color: var(--soi-navy);
 }
 #\30 5-segments .seg-quiz-intro {
   font-size: var(--t-md, 1.05rem);
@@ -395,45 +457,56 @@
 #\30 5-segments .quiz-progress {
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-xs, 0.72rem);
-  color: var(--ink-soft);
-  margin: 0 0 10px 0;
+  color: var(--soi-navy);
+  margin: 0 0 12px 0;
 }
+/* Quiz card: one device — soft shadow on warm paper, no ink frame. */
 #\30 5-segments .quiz-card {
-  border: 1.5px solid var(--ink);
-  background: var(--paper);
-  padding: 22px 24px;
+  border: 0;
+  background: var(--paper-warm);
+  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 14px 36px rgba(10,26,92,0.09);
+  padding: 26px 28px;
   min-height: 120px;
 }
 #\30 5-segments .quiz-statement {
   font-size: var(--t-md, 1.2rem);
-  font-weight: 500;
-  line-height: 1.35;
-  margin: 0 0 20px 0;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 22px 0;
+  color: var(--soi-navy);
 }
 #\30 5-segments .quiz-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ─── Result ──────────────────────────────────────────────── */
-#\30 5-segments .seg-result { margin-top: 24px; max-width: 620px; }
+#\30 5-segments .seg-result { margin-top: 28px; max-width: 620px; }
+#\30 5-segments .seg-result.is-open .si-datacard,
+#\30 5-segments .seg-result .si-datacard {
+  border: 0;
+  background: var(--paper-warm);
+  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 16px 40px rgba(10,26,92,0.10);
+}
 #\30 5-segments .seg-result-card { outline: none; }
 #\30 5-segments .seg-result-name {
   font-size: var(--t-lg, 1.6rem);
-  font-weight: 500;
-  margin: 8px 0 4px 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 10px 0 4px 0;
+  color: var(--soi-navy);
 }
-#\30 5-segments .seg-result-trio { font-weight: 500; margin: 0 0 14px 0; }
+#\30 5-segments .seg-result-trio { font-weight: 600; margin: 0 0 16px 0; }
 #\30 5-segments .seg-result-vs {
   font-size: var(--t-sm, 0.95rem);
-  line-height: 1.5;
-  margin: 14px 0 18px 0;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  padding-top: 14px;
+  line-height: 1.55;
+  margin: 16px 0 20px 0;
+  border-top: 1px solid rgba(10,26,92,0.1);
+  padding-top: 16px;
 }
 #\30 5-segments .seg-retake { margin: 0; }
 
 /* ─── Source ──────────────────────────────────────────────── */
-#\30 5-segments .seg-source { margin-top: 4px; }
+#\30 5-segments .seg-source { margin-top: 0; color: rgba(10,26,92,0.55); }
 
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {

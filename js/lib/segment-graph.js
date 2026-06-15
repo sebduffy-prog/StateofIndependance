@@ -23,6 +23,46 @@ const SEG_ACCENT = {                 // stable per-segment brand colours
 
 const cssVar = (n, f) =>
   getComputedStyle(document.documentElement).getPropertyValue(n).trim() || f;
+
+// Relative luminance of a hex/rgb colour, so a node label is always set to a
+// deliberate, legible foreground against its OWN fill (contrast-safety §6) —
+// dark fills (retreaters ink, hustlers teal-deep) get a light label, light
+// fills get an ink label. Fixes the "Retreaters ink-on-dark" offender at the
+// source without changing the API.
+const toRgb = (c) => {
+  const s = String(c).trim();
+  if (s.startsWith('#')) {
+    const h = s.length === 4
+      ? s.slice(1).split('').map((x) => x + x).join('')
+      : s.slice(1, 7);
+    const n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  const m = s.match(/rgba?\(([^)]+)\)/);
+  if (m) { const p = m[1].split(',').map((v) => parseFloat(v)); return [p[0], p[1], p[2]]; }
+  return [255, 255, 255];
+};
+const luminance = (c) => {
+  const [r, g, b] = toRgb(c).map((v) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+  const hi = Math.max(a, b), lo = Math.min(a, b);
+  return (hi + 0.05) / (lo + 0.05);
+};
+// Legible label colour for a given node fill: pick whichever of ink/cream
+// yields the HIGHER WCAG contrast ratio. A flat luminance threshold fails on
+// mid-tone fills (teal-deep, mustard-dark) where cream and ink both sit near
+// the middle — comparing the two ratios always lands on the readable choice.
+const labelOn = (fill) => {
+  const lf = luminance(fill);
+  const ink = cssVar('--ink', '#000');
+  const cream = cssVar('--soi-cream', '#EEE9DD');
+  return contrast(lf, luminance(cream)) > contrast(lf, luminance(ink)) ? cream : ink;
+};
 const el = (tag, a = {}) => {
   const node = document.createElementNS(NS, tag);
   for (const [k, v] of Object.entries(a)) node.setAttribute(k, String(v));
@@ -78,14 +118,18 @@ export function segmentGraph(container, opts = {}) {
   // centres far enough apart that the boxes (and their text) never overlap.
   const SAT_W = 116, SAT_H = 26;          // attribute (satellite) box size
   const HUB_W = 150, HUB_H = 40;          // segment (hub) box size
-  const MIN_GAP_X = SAT_W + 24;           // min centre-to-centre x to avoid box overlap
-  const MIN_GAP_Y = SAT_H + 20;           // min centre-to-centre y
+  const MIN_GAP_X = SAT_W + 30;           // min centre-to-centre x to avoid box overlap
+  const MIN_GAP_Y = SAT_H + 26;           // min centre-to-centre y
+  // Keep-out around hub boxes too, so satellites never crowd the hubs.
+  const HUB_GAP_X = (SAT_W + HUB_W) / 2 + 18;
+  const HUB_GAP_Y = (SAT_H + HUB_H) / 2 + 14;
   const PAD_X = 74, PAD_Y = 46;           // keep node centres (and their boxes) inside the frame
-  const ITERATIONS = 300;
+  const ITERATIONS = 420;
   const REPULSION = 8600;                 // inverse-square spread (kept strong)
   const SPRING = 0.012;                   // gentle pull toward owning hubs
   const IDEAL_EDGE = 152;                 // rest length of a hub→attr edge
   const SEPARATE = 0.55;                  // share of box overlap resolved per pair per pass
+  const SETTLE_PASSES = 60;               // final box-only separation passes (full resolve)
 
   // ── Build the node + edge model ────────────────────
   // Hub nodes on a generous ring around centre, so the four camps stay anchored
@@ -185,6 +229,21 @@ export function segmentGraph(container, opts = {}) {
       dx /= d; dy /= d;
       p.x += dx * f; p.y += dy * f; q.x -= dx * f; q.y -= dy * f;
     }
+    // hub keep-out: push any satellite out of a hub's box footprint (hubs are
+    // pinned, so the whole correction lands on the satellite).
+    for (let i = 0; i < attrs.length; i++) {
+      const a = attrs[i];
+      for (let k = 0; k < hubs.length; k++) {
+        const h = hubs[k];
+        const dx = a.x - h.x, dy = a.y - h.y;
+        const ox = HUB_GAP_X - Math.abs(dx);
+        const oy = HUB_GAP_Y - Math.abs(dy);
+        if (ox > 0 && oy > 0) {
+          if (ox < oy) a.x += (dx >= 0 ? 1 : -1) * ox;
+          else a.y += (dy >= 0 ? 1 : -1) * oy;
+        }
+      }
+    }
     // spring attrs toward owning hubs (toward rest length, not collapsed onto hub)
     edges.forEach((e) => {
       const a = byId.get(e.a), h = byId.get(e.h);
@@ -194,6 +253,46 @@ export function segmentGraph(container, opts = {}) {
       a.x += (dx / d) * f; a.y += (dy / d) * f;
     });
     attrs.forEach(clampNode);
+  }
+
+  // ── Final settling: box-only separation with NO repulsion or springs, so the
+  //    last word on layout is "boxes do not overlap". Each pass fully resolves
+  //    every overlapping pair (split 50/50) and re-applies hub keep-out, then
+  //    clamps. Converges to a guaranteed non-overlapping arrangement. ──
+  for (let pass = 0; pass < SETTLE_PASSES; pass++) {
+    let moved = false;
+    for (let i = 0; i < attrs.length; i++) for (let j = i + 1; j < attrs.length; j++) {
+      const p = attrs[i], q = attrs[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const overlapX = MIN_GAP_X - Math.abs(dx);
+      const overlapY = MIN_GAP_Y - Math.abs(dy);
+      if (overlapX > 0 && overlapY > 0) {
+        moved = true;
+        if (overlapX < overlapY) {
+          const push = (dx >= 0 ? 1 : -1) * overlapX * 0.5;
+          p.x += push; q.x -= push;
+        } else {
+          const push = (dy >= 0 ? 1 : -1) * overlapY * 0.5;
+          p.y += push; q.y -= push;
+        }
+      }
+    }
+    for (let i = 0; i < attrs.length; i++) {
+      const a = attrs[i];
+      for (let k = 0; k < hubs.length; k++) {
+        const h = hubs[k];
+        const dx = a.x - h.x, dy = a.y - h.y;
+        const ox = HUB_GAP_X - Math.abs(dx);
+        const oy = HUB_GAP_Y - Math.abs(dy);
+        if (ox > 0 && oy > 0) {
+          moved = true;
+          if (ox < oy) a.x += (dx >= 0 ? 1 : -1) * ox;
+          else a.y += (dy >= 0 ? 1 : -1) * oy;
+        }
+      }
+    }
+    attrs.forEach(clampNode);
+    if (!moved) break;
   }
 
   // ── Render ─────────────────────────────────────────
@@ -219,11 +318,14 @@ export function segmentGraph(container, opts = {}) {
 
   // attribute nodes (square — brand) as focusable groups
   const mkNode = (n, cls, w, h, accent) => {
+    const fill = accent || cssVar('--paper', '#fff');
     const g = el('g', { class: cls, tabindex: '0', role: 'button',
       'data-id': n.id, 'aria-label': n.label, transform: `translate(${n.x},${n.y})` });
     g.appendChild(el('rect', { x: -w / 2, y: -h / 2, width: w, height: h,
-      fill: accent || cssVar('--paper', '#fff'), stroke: cssVar('--ink', '#000'), 'stroke-width': 1.5 }));
-    const text = el('text', { class: 'sg-label', x: 0, y: 4, 'text-anchor': 'middle' });
+      fill, stroke: cssVar('--ink', '#000'), 'stroke-width': 1.5 }));
+    // Explicit, luminance-derived label colour so no label sits same-on-same.
+    const text = el('text', { class: 'sg-label', x: 0, y: 4, 'text-anchor': 'middle',
+      fill: labelOn(fill) });
     text.textContent = n.label.length > 22 ? n.label.slice(0, 21) + '…' : n.label;
     g.appendChild(text);
     return g;

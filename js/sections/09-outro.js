@@ -16,7 +16,7 @@ import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
 const DOT_COUNT = 200;
-const DOT_COLOUR = 'rgba(255,255,255,0.42)'; // paper/light dots on the navy ground
+const DOT_COLOUR = 'rgba(238,233,221,0.4)'; // warm cream dots (--soi-cream) on the navy ground
 const DRIFT_AMP = 1; // gentle ambient brownian motion
 const RISE_INTERVAL_MS = 2600; // cadence of the upward "release"
 const RISE_BATCH = 14; // dots released upward & off each cadence

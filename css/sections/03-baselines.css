@@ -1,133 +1,179 @@
-/* Chapter 03 - baselines (paper surface).
-   Recomposed as a 2x2 board of dense .si-bignum-panel cards: huge number +
-   WLV sentence on one side, supporting chart filling the other. No more
-   hairline-divided single-column list. Every selector scoped to
-   #\30 3-baselines. Square corners, no gradients, tabular numbers,
-   down = mustard-dark (never red/green). */
+/* Chapter 03 - baselines — Design World V2.
+   The four baseline stats FLOW on a warm mustard->orange gradient ground (the
+   "operational floor"), not a grid of bordered boxes. Number + label + sentence
+   read as navy-on-warm (contrast-safe); each supporting chart sits on a clean
+   square paper MAT so chart ink never sits colour-on-colour. Alternating
+   left/right rhythm, generous space, decorative orbit + cream bear + seed dots
+   sit BEHIND content (z-index:0, pointer-events:none) and never occlude UI.
+   Every selector scoped to #\30 3-baselines. Square corners, tabular numbers,
+   down = mustard-dark (never red/green), reduced-motion safe. */
 
+/* ─── The warm ground (full-bleed world, own stacking context) ──── */
 #\30 3-baselines {
-  background: var(--paper);
+  position: relative;
+  isolation: isolate;            /* contain decorative layers; no stale bleed */
+  overflow: hidden;              /* clip orbit + silhouette to the chapter */
+  background: var(--ground-warm);
+  color: var(--on-warm);         /* navy on amber — guaranteed contrast */
 }
 
 #\30 3-baselines .chapter-inner {
+  position: relative;
+  z-index: 1;                    /* all content above decorative layers */
   display: flex;
   flex-direction: column;
-  gap: clamp(32px, 5vh, 56px);
+  gap: clamp(56px, 9vh, 120px);
 }
 
-/* ─── Header (one tight cluster, not three loose rows) ───── */
+/* ─── Decorative world layers (behind, never carry meaning) ─────── */
+#\30 3-baselines .bl-orbit {
+  /* thin concentric white rings, low opacity; sweeps from the right */
+  background-position: 88% 32%;
+  opacity: 0.7;
+}
+#\30 3-baselines .bl-seed--a { top: 26%; right: 16%; }
+#\30 3-baselines .bl-seed--b { top: 38%; right: 30%; width: 7px; height: 7px; }
+
+/* Cream bear+figure world panel as a soft watermark anchor, bottom-right,
+   behind content, decorative only. Tinted toward cream, low opacity so the
+   navy stats stay high-contrast over it. */
+#\30 3-baselines .bl-bear {
+  position: absolute;
+  z-index: 0;
+  right: -4%;
+  bottom: -6%;
+  width: clamp(280px, 38vw, 620px);
+  height: auto;
+  opacity: 0.16;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+}
+
+/* ─── Header (one tight cluster on the warm ground) ─────────────── */
 #\30 3-baselines .bl-head {
-  max-width: 64ch;
+  max-width: 60ch;
 }
 #\30 3-baselines .bl-kicker {
   margin: 0;
-  color: var(--ink);
+  color: var(--on-warm);         /* navy eyebrow on amber */
 }
 #\30 3-baselines .bl-headline {
   font-size: var(--t-xl);
-  font-weight: 500;
-  line-height: 1.04;
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
   margin: 0;
+  color: var(--on-warm);
 }
 #\30 3-baselines .bl-standfirst {
   font-size: var(--t-md);
-  line-height: 1.5;
-  color: var(--ink-soft);
+  line-height: 1.6;
+  color: var(--on-warm);
+  opacity: 0.86;                 /* softened, still AA on amber */
   margin: 0;
 }
 
-/* ─── The board ──────────────────────────────────────────── */
-#\30 3-baselines .bl-board {
-  align-items: stretch;
-}
-#\30 3-baselines .bl-panel {
+/* ─── The flow: alternating stat rows, seamless (no bordered cards) ─ */
+#\30 3-baselines .bl-flow {
   display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 9vh, 112px);
 }
 
-/* Each panel is a si-bignum-panel; stretch it to fill its grid cell so the
-   board reads as composed tiles, not floating cards. */
-#\30 3-baselines .bl-card {
-  width: 100%;
-  align-items: stretch;
-  /* number/sentence side a touch wider so the bignum has room to breathe */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+/* Each stat: lede (number + words) beside its chart MAT. Alternate which
+   side leads for an editorial rhythm — not a rigid grid of tiles. */
+#\30 3-baselines .bl-stat {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
 }
+#\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 2; }
+#\30 3-baselines .bl-stat--rev .bl-mat { order: 1; }
 
-/* ─── Lede side (number + label + sentence + extras) ─────── */
-#\30 3-baselines .bl-card-lede {
+/* ─── Lede side (lives directly on the warm ground) ─────────────── */
+#\30 3-baselines .bl-stat-lede {
   align-content: start;
 }
 #\30 3-baselines .bl-index {
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--on-warm);
+  opacity: 0.72;
 }
 #\30 3-baselines .bl-bignum-line {
   margin: 0;
 }
 #\30 3-baselines .bl-num {
   display: block;
-  font-size: clamp(3.2rem, 6vw, 5.4rem);
-  letter-spacing: -0.02em;
-  line-height: 0.9;
+  font-size: clamp(3.6rem, 8vw, 7rem);
+  letter-spacing: -0.03em;
+  line-height: 0.88;
+  color: var(--on-warm);         /* navy hero number on amber */
 }
 #\30 3-baselines .bl-label {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: var(--t-md);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.25;
-  max-width: 22ch;
+  max-width: 20ch;
+  color: var(--on-warm);
 }
 #\30 3-baselines .bl-sentence {
   margin: 0;
   font-size: var(--t-sm);
-  line-height: 1.5;
-  color: var(--ink-soft);
-  max-width: 40ch;
-}
-/* On the mustard panel keep ink-soft prose legible. */
-#\30 3-baselines .si-bignum-panel--mustard .bl-sentence {
-  color: var(--ink);
-}
-#\30 3-baselines .si-bignum-panel--mustard .bl-index {
-  color: var(--ink);
+  line-height: 1.55;
+  color: var(--on-warm);
+  opacity: 0.82;
+  max-width: 42ch;
 }
 
-/* ─── Chart side ─────────────────────────────────────────── */
-#\30 3-baselines .bl-card-chart {
+/* ─── Chart MAT (clean paper — keeps chart ink legible, never on warm) ─ */
+#\30 3-baselines .bl-mat {
   display: flex;
   flex-direction: column;
-  align-self: stretch;
   min-width: 0;
+  margin: 0;
+  /* warm paper (not stark white) blends the chart surface into the world; ONE
+     soft diffuse lift, no hard border — de-blocked so it reads as a panel of
+     the same world rather than a bordered card floating on mustard. */
+  background: var(--paper-warm);
+  padding: clamp(20px, 2.4vw, 32px);
+  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 20px 50px rgba(10, 26, 92, 0.10);
 }
 #\30 3-baselines .bl-chart-sub {
   font-size: var(--t-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  margin: 0 0 12px 0;
+  color: var(--ink-soft);        /* ink on paper mat */
+  margin: 0 0 14px 0;
   line-height: 1.3;
 }
-#\30 3-baselines .si-bignum-panel--mustard .bl-chart-sub {
-  color: var(--ink);
+/* The one chart-sub that sits on the warm ground (strip caption) flips navy. */
+#\30 3-baselines .bl-chart-sub--onwarm {
+  color: var(--on-warm);
+  opacity: 0.78;
 }
 #\30 3-baselines .vccp-source {
   margin-top: auto;
-  padding-top: 12px;
+  padding-top: 14px;
+  color: var(--ink-soft);
+  opacity: 0.7;
 }
 
-/* ─── Guess (clickToGuess hooks, panel 1) ────────────────── */
+/* ─── Guess (clickToGuess hooks, stat 1) — soft card on the ground ─ */
 #\30 3-baselines .bl-guess {
-  margin-top: 4px;
+  margin-top: 8px;
 }
 #\30 3-baselines .guess {
-  border: 1.5px solid var(--ink);
-  background: var(--paper);
-  padding: 16px;
+  border: 0;                     /* de-blocked: paper card lifts by shadow */
+  background: var(--paper-warm);
+  padding: 18px 20px;
   max-width: 420px;
+  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 16px 36px rgba(10, 26, 92, 0.10);
 }
 #\30 3-baselines .guess-prompt {
   font-size: 0.72rem;
@@ -135,14 +181,16 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
+  opacity: 0.72;
   margin: 0 0 8px 0;
 }
 #\30 3-baselines .guess-label {
   display: block;
   font-size: var(--t-sm);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.3;
-  margin-bottom: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
 }
 #\30 3-baselines .guess-control {
   display: flex;
@@ -152,15 +200,16 @@
 }
 #\30 3-baselines .guess-range {
   flex: 1;
-  accent-color: var(--mustard-dark);
+  accent-color: var(--soi-orange);
   height: 22px;
 }
 #\30 3-baselines .guess-output {
   min-width: 3.4ch;
   font-size: var(--t-md);
-  font-weight: 500;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: right;
+  color: var(--ink-soft);
 }
 #\30 3-baselines .guess-reveal {
   margin-top: 14px;
@@ -168,6 +217,7 @@
 #\30 3-baselines .guess-actual {
   margin: 0 0 4px 0;
   font-size: var(--t-sm);
+  color: var(--ink-soft);
 }
 #\30 3-baselines .guess-actual strong {
   font-variant-numeric: tabular-nums;
@@ -175,34 +225,50 @@
 #\30 3-baselines .guess-delta {
   margin: 0;
   font-size: var(--t-xs);
+  color: var(--ink-soft);
+  opacity: 0.8;
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Waffle (revealed after the guess) ──────────────────── */
+/* ─── Waffle (revealed after the guess) — sits on the warm ground ── */
 #\30 3-baselines .bl-waffle {
-  margin-top: 4px;
+  margin-top: 8px;
   max-width: 220px;
 }
 #\30 3-baselines .bl-waffle-caption {
-  margin: 10px 0 0 0;
+  margin: 12px 0 0 0;
   font-size: 0.72rem;
-  color: var(--ink);
+  color: var(--on-warm);         /* navy caption on amber */
+  opacity: 0.82;
 }
 
-/* ─── 54 / 46 strip (panel 4 lede) ───────────────────────── */
+/* ─── 54 / 46 strip (stat 4 lede) — on a slim paper mat for clarity ─ */
 #\30 3-baselines .bl-strip {
-  margin-top: 4px;
-  max-width: 420px;
+  margin-top: 10px;
+  max-width: 440px;
+  background: var(--paper-warm);
+  padding: 16px 18px;
+  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 14px 32px rgba(10, 26, 92, 0.10);
+}
+#\30 3-baselines .bl-strip .bl-chart-sub--onwarm {
+  color: var(--ink-soft);        /* now on paper, so ink not navy */
+  opacity: 1;
+  margin-bottom: 10px;
 }
 
-/* ─── Responsive ─────────────────────────────────────────── */
-/* Tablet: drop the board to one panel per row before the panels themselves
-   collapse, so each card keeps its internal split a while longer. */
-@media (max-width: 1100px) {
-  #\30 3-baselines .bl-panel.col-6 { grid-column: 1 / -1; }
-}
-/* Narrow: si-bignum-panel collapses to a single column (shared sheet rule);
-   stack number above chart. */
-@media (max-width: 760px) {
-  #\30 3-baselines .bl-card { grid-template-columns: 1fr; }
+/* ─── Responsive ─────────────────────────────────────────────────── */
+/* Tablet/narrow: stack number above its chart; keep reading order
+   number-then-chart regardless of the alternating desktop rhythm. */
+@media (max-width: 900px) {
+  #\30 3-baselines .bl-stat,
+  #\30 3-baselines .bl-stat--rev {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 4vw, 32px);
+  }
+  #\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 0; }
+  #\30 3-baselines .bl-stat--rev .bl-mat { order: 0; }
+  #\30 3-baselines .bl-bear {
+    width: clamp(220px, 52vw, 360px);
+    opacity: 0.12;
+  }
 }

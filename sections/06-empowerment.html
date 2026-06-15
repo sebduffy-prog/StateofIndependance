@@ -1,24 +1,52 @@
-<div class="chapter-inner">
-  <header class="emp-head reveal si-stack-tight">
-    <p class="vccp-eyebrow si-display si-display--sm emp-label">The empowerment <em class="hl">architecture</em></p>
-    <p class="emp-standfirst si-measure">One need unifies all four segments: personal control. Money is the obvious ask. But saving people time and stress holds far more premium value than brands realise.</p>
-  </header>
+<!-- Chapter 06 — empowerment. Design World V2: warm gradient ground world
+     moment (bear-vs-figure silhouettes + orbit motifs), seamless de-blocked
+     flow. Decorative orbit overlay sits behind everything (z-index:0 +
+     pointer-events:none via .si-orbit). Content flows above on z-index:1
+     (set by .si-ground-warm > * in vccp.css). All copy is contrast-safe
+     navy-on-warm. -->
+<div class="si-ground-warm emp-shell">
+  <div class="si-orbit si-orbit--center emp-orbit" aria-hidden="true"></div>
 
-  <div class="si-split emp-body">
-    <!-- LEFT: survival-mode -> active-agency reframe -->
+  <div class="chapter-inner emp-inner">
+    <header class="emp-head reveal">
+      <p class="vccp-eyebrow emp-eyebrow">The empowerment architecture</p>
+      <h2 class="si-display si-display--lg emp-title">
+        One need unifies <em class="hl">everyone</em>: control
+      </h2>
+      <p class="emp-standfirst si-measure">
+        Money is the obvious ask. But saving people time and stress holds far more
+        premium value than brands realise.
+      </p>
+    </header>
+
+    <!-- THE TURN: survival-mode → active-agency reframe, told on the deck's
+         bear-vs-figure world. Given room to breathe — this is the pivot. -->
     <section class="emp-reframe reveal" aria-labelledby="emp-reframe-title">
-      <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">Survival mode to active <em class="hl">agency</em></h3>
-      <p class="emp-reframe-intro si-measure">Britain is not a passive, bruised victim waiting to be saved. The true data forces a more optimistic reading. Drag to make the turn.</p>
+      <div class="emp-reframe-lede">
+        <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">
+          Survival mode to active <em class="hl">agency</em>
+        </h3>
+        <p class="emp-reframe-intro si-measure">
+          Britain is not a passive, bruised victim waiting to be saved. The true
+          data forces a more optimistic reading. Drag to make the turn.
+        </p>
+      </div>
       <div class="emp-reframe-mount" data-emp-reframe></div>
     </section>
 
-    <!-- RIGHT: three overlapping needs venn -->
+    <!-- The three pillars: one overlap at empowerment. Flat distinct fills. -->
     <section class="emp-venn reveal" aria-labelledby="emp-venn-title">
-      <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title">What every segment is really <em class="hl">asking</em></h3>
-      <p class="emp-venn-intro si-measure">Three needs, one overlap. Hover or focus a circle to read the brand ask behind it.</p>
+      <div class="emp-venn-lede">
+        <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title">
+          What every segment is really <em class="hl">asking</em>
+        </h3>
+        <p class="emp-venn-intro si-measure">
+          Three needs, one overlap. Hover or focus a circle to read the brand ask behind it.
+        </p>
+      </div>
       <div class="emp-venn-mount" data-emp-venn aria-live="polite"></div>
     </section>
-  </div>
 
-  <p class="vccp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. Brand asks: Q14.</p>
+    <p class="vccp-source emp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. Brand asks: Q14.</p>
+  </div>
 </div>

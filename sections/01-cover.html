@@ -1,17 +1,41 @@
 <div class="chapter-inner">
-  <div class="cover-stage">
-    <!-- Ambient, well-spaced ink dot field sits behind the whole composition -->
+  <!-- Hero stage: a warm mustard→orange gradient GROUND (the State-of-
+       Independence world). Every decorative layer (orbit lines, seed dots,
+       respondent dot-field, cream bear+figure silhouette) sits BEHIND the
+       copy via z-index + pointer-events:none, so nothing occludes the
+       wordmark and every text element keeps deliberate navy-on-warm
+       contrast. No bordered hero box — the copy hangs in open space. -->
+  <div class="cover-stage si-ground-warm">
+
+    <!-- Thin concentric orbit-circle motif, low-opacity white, decorative. -->
+    <div class="cover-orbit si-orbit si-orbit--spin" aria-hidden="true"></div>
+
+    <!-- Two sparse pale seed dots sitting on the orbit lines. -->
+    <span class="cover-seed cover-seed--a si-seed" aria-hidden="true"></span>
+    <span class="cover-seed cover-seed--b si-seed" aria-hidden="true"></span>
+
+    <!-- Ambient respondent dot-field, navy on warm, well behind everything. -->
     <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
 
-    <!-- Copy sits top-left, no frame, no plate. -->
-    <div class="cover-copy si-stack-tight">
+    <!-- Cream bear + small figure facing each other, grounded flush on the
+         bottom edge. Reads by MASS as a cream silhouette; layered behind the
+         copy so it never overlaps or occludes the wordmark/standfirst. -->
+    <img
+      class="cover-bear si-silhouette"
+      src="assets/brand/Girl_and_Bear.png"
+      alt="A bear and a small figure standing face to face"
+      loading="eager" decoding="async"
+    />
+
+    <!-- Copy: top-left, no frame, no plate. Navy text on the warm ground. -->
+    <div class="cover-copy on-warm si-stack-tight">
       <p class="vccp-eyebrow cover-eyebrow reveal">The Challenger Series · VCCP</p>
       <h1 class="cover-wordmark si-display reveal">
         The State of <em class="hl" data-cover-hl>Independence</em>
       </h1>
       <p class="cover-standfirst si-measure reveal">
-        Britain has stopped waiting to be rescued. This is a nationwide study of
-        how people are taking back control, and what that demands of every brand
+        Britain has stopped waiting to be rescued. A nationwide study of how
+        people are taking back control, and what it demands of every brand
         that serves them.
       </p>
       <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Scroll to the research">
@@ -20,18 +44,10 @@
       </button>
     </div>
 
-    <!-- Subtle "you are the 1,505th respondent" line, quiet bottom-left. -->
-    <p class="cover-you" data-cover-you>
+    <!-- Quiet "you are the 1,505th respondent" marker, low-emphasis navy. -->
+    <p class="cover-you on-warm" data-cover-you>
       <span class="cover-you-dot" aria-hidden="true"></span>
       You are the 1,505th respondent.
     </p>
-
-    <!-- Girl &amp; Bear: large, grounded, standing flush on the bottom edge. -->
-    <img
-      class="cover-bear si-ground"
-      src="assets/brand/Girl_and_Bear.png"
-      alt="The VCCP girl standing up to a bear"
-      loading="eager" decoding="async"
-    />
   </div>
 </div>
