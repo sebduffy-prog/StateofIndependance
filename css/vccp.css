@@ -56,6 +56,12 @@ body {
   -webkit-font-smoothing: antialiased;
   padding-top: var(--nav-height);
 }
+/* Form controls do not inherit font-family by default — force the brand
+   font (Inter Tight) on every control so buttons, pills, sliders, quiz and
+   drag-rank elements never fall back to the system font. */
+button, input, select, textarea, optgroup {
+  font-family: var(--font-sans);
+}
 img { display: block; object-fit: contain; }
 .num, [data-count-to] { font-variant-numeric: tabular-nums; }
 
