@@ -30,8 +30,18 @@ const buildScatter = (count) =>
     colour: DOT_COLOUR,
   }));
 
+/** Swap the animated maze GIF for its static first-frame PNG when the user
+ *  prefers reduced motion, so the closing brand motif never animates. */
+const MAZE_GIF = 'assets/deck/maze-hero.gif';
+const MAZE_STATIC = 'assets/deck/maze-hero.png';
+
 export default function init(rootEl, data) {
   observeReveals(rootEl);
+
+  const maze = rootEl.querySelector('.outro-maze-img');
+  if (maze && prefersReducedMotion()) {
+    maze.src = MAZE_STATIC;
+  }
 
   const dotsHost = rootEl.querySelector('[data-outro-dots]');
   if (!dotsHost) return;

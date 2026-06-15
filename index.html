@@ -6,11 +6,11 @@
   <title>The state of independence — VCCP Challenger Series</title>
   <meta name="description" content="A nationwide study of how Britain is taking back control — and what it demands of every brand that serves them. VCCP x Watermelon Research, 1,504 UK adults, May 2026."/>
   <link rel="icon" type="image/png" href="assets/brand/Logo.png"/>
-  <!-- Inter Tight is self-hosted via @font-face in css/vccp.css (assets/fonts/).
-       The Google Fonts CDN link was removed so rendering no longer depends on it.
-       Preload the two most-used weights to avoid FOUT on the hero. -->
-  <link rel="preload" href="assets/fonts/inter-tight-400.woff2" as="font" type="font/woff2" crossorigin/>
-  <link rel="preload" href="assets/fonts/inter-tight-700.woff2" as="font" type="font/woff2" crossorigin/>
+  <!-- Poppins is self-hosted via @font-face in css/vccp.css (assets/fonts/).
+       V4 brand switch — no CDN dependency. Preload the two most-used weights
+       (700 body/heading, 900 display) to avoid FOUT on the hero. -->
+  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href="assets/fonts/poppins-900.woff2" as="font" type="font/woff2" crossorigin/>
   <link rel="stylesheet" href="css/vccp.css"/>
   <link rel="stylesheet" href="css/sections.css"/>
 </head>
@@ -18,7 +18,7 @@
 
   <nav class="site-nav" aria-label="Site">
     <a class="site-nav-brand" href="#01-cover">
-      <img src="assets/brand/Logo.png" alt="VCCP" width="36" height="36"/>
+      <img class="site-nav-logo" src="assets/brand/Logo-crop.png" alt="VCCP" width="32" height="36"/>
       <span class="site-nav-title">The state of independence</span>
     </a>
     <div class="site-nav-pills" id="chapterNav" role="navigation" aria-label="Chapters"></div>

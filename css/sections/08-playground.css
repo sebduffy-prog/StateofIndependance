@@ -39,14 +39,17 @@
   --pg-rule: rgba(10, 26, 92, 0.14);
 }
 
-/* The research surface fills the chapter and centres the explorer. */
+/* The research surface fills the chapter. Three stacked surfaces (title
+   lockup, explorer panels, segment portrait) give the chapter depth and a
+   longer scroll — top-aligned so the content fills rather than floats. */
 #\30 8-playground .pg-world {
   position: relative;
   isolation: isolate;            /* own stacking context — no stale layer bleed */
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-block: clamp(var(--space-4), 6vh, var(--space-7)) 0;
 }
 #\30 8-playground .pg-world > * { position: relative; z-index: 1; }
 
@@ -64,30 +67,39 @@
   width: 100%;
 }
 
-/* ─── Header — flowing, de-blocked, heavy deck type, navy on teal ───── */
+/* ─── Deck title lockup — heavy Poppins Black + brand figure motif ───── */
+/* Copy on the left, the brand "person" mark on the right (as the deck pairs a
+   title with a motif). On a narrow column the motif drops away. */
 #\30 8-playground .pg-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(var(--space-3), 4vw, var(--space-6));
+  margin-bottom: clamp(var(--space-4), 5vh, var(--space-6));
+}
+#\30 8-playground .pg-head-copy {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  max-width: 42ch;
-  margin-bottom: clamp(var(--space-3), 4vh, var(--space-5));
+  gap: var(--space-2);
+  max-width: 46ch;
 }
 #\30 8-playground .pg-eyebrow {
   margin: 0;
   color: var(--teal-deep);
   font-weight: 700;
 }
-/* Heavier, tighter, deck-like display headline (si-display--black). */
+/* Heavier, tighter, deck-like display headline (si-display--black). Bigger
+   and bolder per brief — the title lockup is the first thing on the screen. */
 #\30 8-playground .pg-headline {
   margin: 0;
   color: var(--soi-navy);
-  font-size: clamp(2.7rem, 5.6vw, 4.8rem);
-  line-height: 0.92;
+  font-size: clamp(3rem, 6.4vw, 5.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
 }
-/* The highlighter rides the display word "data". On the teal ground a teal
-   swatch would be teal-on-teal, so use the navy ground colour behind a navy
-   word? No — keep the swatch a brighter teal-light and the word navy for a
-   deliberate, legible pop. */
+/* The straight (no skew) teal highlight rides "four Britains". Word stays navy
+   on a brighter teal-light block for a deliberate, legible pop. */
 #\30 8-playground .pg-headline .hl {
   font-style: normal;
   color: var(--soi-navy);
@@ -98,11 +110,23 @@
 #\30 8-playground .pg-standfirst {
   margin: 0;
   color: var(--soi-navy);
-  font-size: clamp(1.05rem, 1.6vw, 1.32rem);
+  font-size: clamp(1.08rem, 1.6vw, 1.35rem);
   line-height: 1.5;
   font-weight: 500;
-  opacity: 0.88;
+  opacity: 0.9;
   max-width: 52ch;
+}
+/* Brand figure-silhouette motif — sits beside the title, scales with viewport. */
+#\30 8-playground .pg-head-motif {
+  margin: 0;
+  align-self: center;
+  justify-self: end;
+}
+#\30 8-playground .pg-head-motif img {
+  display: block;
+  height: clamp(140px, 18vw, 240px);
+  width: auto;
+  object-fit: contain;
 }
 
 /* ─── The two flowing panels (de-blocked — no plate, no cards) ──────── */
@@ -237,8 +261,9 @@
 #\30 8-playground .pg-chart {
   width: 100%;
   /* reserve space so the panel does not jump as charts swap between viz types */
-  min-height: 220px;
+  min-height: 280px;
 }
+#\30 8-playground .pg-chart > svg { max-width: 100%; height: auto; }
 
 /* TGI panel — relative wrapper so the 100 marker overlays its own bars only.
    The marker is decorative (pointer-events:none) and carries no text, so it
@@ -278,12 +303,107 @@
   border-top: 1.5px dashed var(--teal-deep);
 }
 
-/* Source / caption sits at the foot of each box-less chart, low-emphasis
-   navy on the teal ground. */
-#\30 8-playground .pg-chart-holder .chart-holder-cap {
-  max-width: 64ch;
+/* ─── Panel C: live segment portrait — fills the lower screen, deck world ──
+   A full-width band: a brand-world motif image + the qualitative portrait.
+   Backgroundless (no card box) — the motif image carries the colour, copy
+   sits navy on the research ground. */
+#\30 8-playground .pg-portrait {
+  margin-top: clamp(var(--space-5), 7vh, var(--space-7));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+#\30 8-playground .pg-portrait-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* The selector sits inline under the band title. */
+#\30 8-playground .pg-portrait-head .pg-controls {
+  margin-bottom: 0;
+}
+
+#\30 8-playground .pg-portrait-card {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  align-items: center;
+  gap: clamp(var(--space-3), 4vw, var(--space-6));
+}
+#\30 8-playground .pg-portrait-motif {
+  margin: 0;
+}
+#\30 8-playground .pg-portrait-motif img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+#\30 8-playground .pg-portrait-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+#\30 8-playground .pg-portrait-share {
+  margin: 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--teal-deep);
+  font-variant-numeric: tabular-nums;
+}
+/* Big bold deck-style name. */
+#\30 8-playground .pg-portrait-name {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  font-weight: 900;
   color: var(--soi-navy);
-  opacity: 0.62;
+}
+#\30 8-playground .pg-portrait-trio {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
+  font-weight: 700;
+  color: var(--soi-navy);
+  opacity: 0.92;
+}
+/* Who / Money / Channels — a clean two-column definition grid, no boxes. */
+#\30 8-playground .pg-portrait-facts {
+  margin: var(--space-1) 0 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px var(--space-3);
+}
+#\30 8-playground .pg-portrait-facts dt {
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--soi-navy);
+  opacity: 0.6;
+  align-self: baseline;
+}
+#\30 8-playground .pg-portrait-facts dd {
+  margin: 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--soi-navy);
+}
+/* Qualitative quote — a left teal rule, navy ink, no box. */
+#\30 8-playground .pg-portrait-quote {
+  margin: var(--space-2) 0 0 0;
+  padding-left: var(--space-2);
+  border-left: 3px solid var(--teal-deep);
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
+  line-height: 1.45;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--soi-navy);
+  opacity: 0.9;
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
@@ -295,6 +415,18 @@
 
 /* ─── Responsive: stack the two panels; flip the inner divide ───────── */
 @media (max-width: 920px) {
+  #\30 8-playground .pg-head {
+    grid-template-columns: 1fr;
+  }
+  #\30 8-playground .pg-head-motif { display: none; }
+  #\30 8-playground .pg-portrait-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  #\30 8-playground .pg-portrait-motif img {
+    max-width: 320px;
+    margin-inline: auto;
+  }
   #\30 8-playground .pg-instrument {
     grid-template-columns: 1fr;
     gap: var(--space-4);

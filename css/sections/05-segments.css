@@ -1,47 +1,75 @@
 /* Chapter 05 — segments. THE SHOWPIECE.
-   Design World V2: warm gradient hero ground + orbit motif, then a calm warm
-   off-white page for the data. De-blocked: borders reduced to one device per
-   surface, spacing carries the rhythm. Every selector prefixed with
-   #\30 5-segments so styles never leak between chapters. */
+   Design World V3 (FEEDBACK-V4): deck-faithful, backgroundless, bigger/bolder
+   Poppins. Warm gradient hero with a deck bear-world motif, a four-tile roster
+   band, then a BACKGROUNDLESS 2×2 compass (no white box/track), a force-physics
+   graph, and the quiz. Every selector prefixed with #\30 5-segments so styles
+   never leak between chapters. */
 
 #\30 5-segments { background: var(--soi-page); }
 
 #\30 5-segments .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(40px, 6vh, 96px);
+  gap: clamp(48px, 7vh, 110px);
+  /* fill the laptop/monitor screen — the chapter earns its vertical space */
+  min-height: 100vh;
+  padding-block: clamp(8px, 2vh, 32px);
 }
 
-/* ─── Hero band: the warm gradient world ──────────────────── */
+/* ─── Hero band: the warm gradient world + deck motif ─────── */
 #\30 5-segments .seg-hero-ground {
   /* full warm ground with generous breathing room (seamless, not a tight box) */
-  padding: clamp(36px, 6vw, 80px) clamp(28px, 5vw, 72px);
+  padding: clamp(40px, 6vw, 88px) clamp(28px, 5vw, 72px);
   overflow: hidden;
 }
 /* orbit motif: low-opacity white rings, behind content, never interactive */
 #\30 5-segments .seg-hero-orbit { z-index: 0; }
-/* two sparse seed dots sitting on the orbit lines */
-#\30 5-segments .seg-hero-seed--a { right: 16%; top: 30%; }
-#\30 5-segments .seg-hero-seed--b { right: 30%; bottom: 22%; }
+
+/* Two-column hero: copy left, deck bear-world motif right. */
+#\30 5-segments .seg-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
 /* all hero copy sits above the decorative layers */
 #\30 5-segments .seg-hero-body {
   position: relative;
   z-index: 1;
-  max-width: 64ch;
+  max-width: 30ch;
+}
+/* The deck motif (overlapping circles = "what the four share"): backgroundless,
+   blends into the warm ground via multiply so no white plate appears. */
+#\30 5-segments .seg-hero-art {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#\30 5-segments .seg-hero-img {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  mix-blend-mode: multiply;
 }
 
-/* Deck-matching display: heaviest self-hosted weight (700), tight tracking
-   + tight leading for the punchy uppercase headline (client feedback §4). */
+/* Deck-matching display: real Poppins Black (900 via .si-display--black),
+   tight tracking + tight leading for the punchy headline (FEEDBACK-V4 §1/§4).
+   Sized up to fill the hero (no dead band). */
 #\30 5-segments .seg-title {
-  margin: 8px 0 18px 0;
-  max-width: 16ch;
-  letter-spacing: -0.04em;
-  line-height: 0.86;
+  margin: 10px 0 22px 0;
+  max-width: 12ch;
+  font-size: clamp(3rem, 6vw, 6rem);
+  letter-spacing: -0.045em;
+  line-height: 0.84;
 }
 #\30 5-segments .seg-standfirst {
-  font-size: var(--t-md, 1.125rem);
-  line-height: 1.55;
-  margin: 0 0 24px 0;
+  font-size: clamp(1.05rem, 1.45vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0 0 26px 0;
   /* navy on the warm ground = high contrast (§6) */
   color: var(--on-warm);
 }
@@ -66,6 +94,80 @@
 #\30 5-segments .seg-hinge-axis { color: rgba(10,26,92,0.7); }
 #\30 5-segments .seg-hinge-x { font-weight: 700; opacity: 0.5; }
 
+/* ─── Roster band: four backgroundless segment tiles ──────── */
+/* No cards/boxes — each tile is a deck bear-world motif over a hairline-tinted
+   ground, the share number set BIG in Poppins Black. Selecting one opens its
+   profile on the compass (JS). High contrast: navy ink on the warm page (§4/§6). */
+#\30 5-segments .seg-roster {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 28px);
+}
+#\30 5-segments .seg-tile {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: clamp(14px, 1.6vw, 22px) clamp(12px, 1.4vw, 20px);
+  text-align: left;
+  font-family: var(--font-sans);
+  color: var(--soi-navy);
+  /* single device: a quiet warm tint that lifts on hover — no hard frame */
+  border-top: 3px solid transparent;
+  transition: background .22s ease, border-color .22s ease, transform .22s ease;
+}
+#\30 5-segments .seg-tile-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 8px;
+}
+#\30 5-segments .seg-tile-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* blend the deck render into the warm page — no white plate */
+  mix-blend-mode: multiply;
+}
+#\30 5-segments .seg-tile-share {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: var(--soi-navy);
+  font-variant-numeric: tabular-nums;
+}
+#\30 5-segments .seg-tile-name {
+  font-size: var(--t-md, 1.1rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+#\30 5-segments .seg-tile-trio {
+  font-size: var(--t-sm, 0.86rem);
+  font-weight: 500;
+  color: rgba(10,26,92,0.7);
+  line-height: 1.35;
+}
+#\30 5-segments .seg-tile:hover {
+  background: var(--mustard-pale);
+  border-top-color: var(--soi-orange);
+  transform: translateY(-2px);
+}
+#\30 5-segments .seg-tile:focus-visible {
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 2px;
+}
+#\30 5-segments .seg-tile.is-active {
+  background: var(--mustard-light);
+  border-top-color: var(--soi-navy);
+}
+
 /* ─── Stage: map + profile side by side ───────────────────── */
 #\30 5-segments .seg-stage {
   display: grid;
@@ -78,23 +180,24 @@
   display: block;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-weight: 700;
-  font-size: var(--t-xs, 0.72rem);
+  font-weight: 800;
+  font-size: var(--t-xs, 0.74rem);
   color: var(--soi-navy);
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
 }
 
 /* ─── The 2×2 map ─────────────────────────────────────────── */
-/* One device only: a soft shadow lifts the map off the page (no hard ink frame). */
+/* BACKGROUNDLESS (FEEDBACK-V4 §4): no white/mustard plate, no drop shadow. The
+   compass floats on the warm page; only the faintest tint hints at the surface
+   so the ink dots and axes read against it. */
 #\30 5-segments .seg-map {
   position: relative;
   isolation: isolate;
   width: 100%;
   aspect-ratio: 1 / 1;
-  max-width: 600px;
+  max-width: 620px;
   margin-inline: auto;
-  background: var(--mustard-pale);
-  box-shadow: 0 1px 2px rgba(10,26,92,0.06), 0 18px 44px rgba(10,26,92,0.10);
+  background: rgba(255,237,187,0.28);
 }
 
 /* dot field canvas host — sits behind the quadrant UI (anti-overlap §6) */
@@ -120,14 +223,17 @@
 #\30 5-segments .seg-axis-label {
   position: absolute;
   z-index: 3;
-  font-size: var(--t-xs, 0.7rem);
+  font-size: var(--t-xs, 0.72rem);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-weight: 700;
-  /* navy on a pale-mustard chip = deliberate contrast (§6) */
+  font-weight: 800;
+  /* navy ink with a page-tinted halo (no box) keeps it legible over the dots
+     without a mustard chip — backgroundless per §4. */
   color: var(--soi-navy);
-  background: var(--mustard-pale);
-  padding: 2px 6px;
+  padding: 1px 4px;
+  text-shadow:
+    0 0 4px var(--soi-page), 0 0 4px var(--soi-page),
+    0 0 8px var(--soi-page), 0 0 8px var(--soi-page);
   pointer-events: none;
 }
 #\30 5-segments .seg-label-left   { left: 8px;  top: 50%; transform: translateY(-50%); }
@@ -165,30 +271,32 @@
 #\30 5-segments .seg-quad[data-pos="br"] { align-items: flex-end; text-align: right; justify-content: flex-end; }
 #\30 5-segments .seg-quad[data-pos="bl"] { justify-content: flex-end; }
 
-/* Quadrant label text gets a soft pale-mustard backing chip so the physics
-   dots (drawn behind, on the field) never visually collide with the glyphs
-   — deliberate keep-out, no occlusion (§6). */
+/* Quadrant label text: a page-tinted text-shadow halo (NOT a mustard chip)
+   keeps every glyph legible over the physics dots drawn behind — backgroundless
+   keep-out, no white/mustard boxes (FEEDBACK-V4 §4/§6). */
 #\30 5-segments .seg-quad-name {
-  font-size: var(--t-md, 1.05rem);
-  font-weight: 600;
+  font-size: var(--t-md, 1.15rem);
+  font-weight: 800;
   line-height: 1.1;
-  background: var(--mustard-pale);
-  box-shadow: 0 0 0 4px var(--mustard-pale);
 }
 #\30 5-segments .seg-quad-share {
-  font-size: clamp(1.7rem, 3vw, 2.3rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
   line-height: 1;
-  background: var(--mustard-pale);
-  box-shadow: 0 0 0 4px var(--mustard-pale);
 }
 #\30 5-segments .seg-quad-trio {
-  font-size: var(--t-xs, 0.72rem);
-  color: rgba(10,26,92,0.66);
+  font-size: var(--t-xs, 0.76rem);
+  font-weight: 500;
+  color: rgba(10,26,92,0.74);
   max-width: 20ch;
-  background: var(--mustard-pale);
-  box-shadow: 0 0 0 3px var(--mustard-pale);
+}
+#\30 5-segments .seg-quad-name,
+#\30 5-segments .seg-quad-share,
+#\30 5-segments .seg-quad-trio {
+  text-shadow:
+    0 0 5px var(--soi-page), 0 0 5px var(--soi-page),
+    0 0 10px var(--soi-page), 0 0 10px var(--soi-page);
 }
 
 #\30 5-segments .seg-quad:hover { background: rgba(253,141,32,0.16); }
@@ -227,31 +335,34 @@
 }
 
 /* ─── Profile data-card ───────────────────────────────────── */
-/* De-blocked: empty state is a calm tint, not a dashed box. */
+/* BACKGROUNDLESS empty state (§4): no box, no tint plate — just a quiet hint
+   line with a hairline top rule so the column reads as "waiting", not a ghost. */
 #\30 5-segments .seg-profile { min-height: 1px; }
 #\30 5-segments .seg-profile:not(.is-open) {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Slightly stronger warm tint than the page so the empty state reads as a
-     deliberate waiting surface, not a ghost card (§4 seamless / §6 contrast). */
-  background: var(--mustard-light);
-  min-height: 320px;
+  background: transparent;
+  border-top: 2px solid rgba(10,26,92,0.14);
+  min-height: 360px;
 }
 #\30 5-segments .seg-profile:not(.is-open)::before {
-  content: 'Select a quadrant to read its full profile.';
-  font-size: var(--t-sm, 0.92rem);
-  color: rgba(10,26,92,0.78);
+  content: 'Select a segment above to read its full profile.';
+  font-size: var(--t-md, 1.05rem);
+  color: rgba(10,26,92,0.6);
   font-weight: 600;
   padding: 24px;
   text-align: center;
-  max-width: 24ch;
+  max-width: 22ch;
 }
-/* The open profile card: one device (soft shadow), warm paper, no ink frame. */
+/* The open profile card: one device (soft shadow), warm paper, no ink frame.
+   This is dense data (two charts + facts + quote) so a faint grounded plate
+   aids separation; it is the only grounded surface in the stage. */
 #\30 5-segments .seg-profile.is-open .si-datacard {
   border: 0;
   background: var(--paper-warm);
   box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 16px 40px rgba(10,26,92,0.10);
+  padding: clamp(22px, 2.4vw, 34px);
 }
 #\30 5-segments .seg-card { outline: none; }
 #\30 5-segments .seg-card-top {
@@ -356,18 +467,19 @@
   border-top: 0;
   padding-top: 0;
 }
-#\30 5-segments .seg-graph-head { margin-bottom: 22px; }
-/* Deck-like section heading: heavy + tighter tracking (client feedback §4). */
+#\30 5-segments .seg-graph-head { margin-bottom: 26px; }
+/* Deck-like section heading: real Poppins 800 (.si-display--sm), tighter
+   tracking, bigger (FEEDBACK-V4 §1/§4). .si-display drives weight/case. */
 #\30 5-segments .seg-graph-title {
-  font-size: var(--t-lg, 1.6rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-  margin: 6px 0 10px 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.035em;
+  line-height: 0.94;
+  margin: 8px 0 12px 0;
   color: var(--soi-navy);
 }
 #\30 5-segments .seg-graph-intro {
-  font-size: var(--t-sm, 0.95rem);
+  font-size: var(--t-md, 1.05rem);
+  font-weight: 500;
   color: var(--ink-soft);
   margin: 0;
 }
@@ -397,8 +509,8 @@
 
 #\30 5-segments .sg-hub,
 #\30 5-segments .sg-attr { cursor: pointer; }
-#\30 5-segments .sg-hub:focus-visible rect,
-#\30 5-segments .sg-attr:focus-visible rect { stroke-width: 3; outline: none; }
+#\30 5-segments .sg-hub:focus-visible .sg-dot,
+#\30 5-segments .sg-attr:focus-visible .sg-dot { stroke: var(--soi-navy); stroke-width: 3; outline: none; }
 #\30 5-segments .sg-svg.is-focus .is-dim { opacity: .18; }
 #\30 5-segments .sg-svg.is-focus .is-on { opacity: 1; }
 
@@ -458,18 +570,18 @@
   border-top: 0;
   padding-top: 0;
 }
-#\30 5-segments .seg-quiz-head { margin-bottom: 22px; }
-/* Deck-like section heading: heavy + tighter tracking (client feedback §4). */
+#\30 5-segments .seg-quiz-head { margin-bottom: 26px; }
+/* Deck-like section heading: real Poppins 800 (.si-display--sm), bigger. */
 #\30 5-segments .seg-quiz-title {
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-  margin: 6px 0 10px 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.035em;
+  line-height: 0.94;
+  margin: 8px 0 12px 0;
   color: var(--soi-navy);
 }
 #\30 5-segments .seg-quiz-intro {
   font-size: var(--t-md, 1.05rem);
+  font-weight: 500;
   color: var(--ink-soft);
   max-width: 56ch;
   margin: 0;
@@ -530,13 +642,24 @@
 #\30 5-segments .seg-source { margin-top: 0; color: rgba(10,26,92,0.55); }
 
 /* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 960px) {
+  #\30 5-segments .seg-hero-grid { grid-template-columns: 1fr; }
+  #\30 5-segments .seg-hero-art { order: -1; max-width: 320px; margin-inline: auto; }
+  #\30 5-segments .seg-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 900px) {
   #\30 5-segments .seg-stage { grid-template-columns: 1fr; }
   #\30 5-segments .seg-quad-trio { display: none; }
   #\30 5-segments .seg-profile:not(.is-open) { display: none; }
 }
+@media (max-width: 560px) {
+  #\30 5-segments .seg-roster { grid-template-columns: 1fr; }
+  #\30 5-segments .seg-tile { flex-direction: row; align-items: center; gap: 14px; }
+  #\30 5-segments .seg-tile-art { width: 64px; aspect-ratio: 1 / 1; margin-bottom: 0; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   #\30 5-segments .seg-quad,
+  #\30 5-segments .seg-tile,
   #\30 5-segments .seg-youtag { transition: none; }
 }

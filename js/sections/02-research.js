@@ -1,17 +1,18 @@
 /**
- * Chapter 02 — research. Teal research surface, warmed into the State of
- * Independence world (V2): teal ground resolving toward amber, orbit accents.
+ * Chapter 02 — research. Warm State-of-Independence ground (navy ink), built
+ * deck-faithful (FEEDBACK-V4): bigger/bolder Poppins, backgroundless, a longer
+ * richer scroll, and a REAL recognisable Great Britain silhouette (replacing
+ * the old blob) carrying eight qualitative-research cities.
  *
- * Left column: declarative method counters (animated by observeCounters)
- * plus the research-partner credit and source caption.
- * Right column: a hand-authored navy SVG silhouette of Great Britain
- * with eight square cream-warm markers (real <button>s) for the qualitative
- * cities. Selecting a marker (click or keyboard) opens a rail card with the
- * city name and a verbatim diary quote where one exists, or an honest
- * sample note where it does not.
+ * Left column: the method, told as a flowing rhythm with a big hero number and
+ * three supporting counters (animated by observeCounters).
+ * Right column: a navy GB silhouette with eight cream city markers (real
+ * <button>s). Markers auto-pin in sequence on first reveal; selecting one
+ * (click, focus, or arrow-key) opens a diary rail card. London is selected by
+ * default so the rail never starts empty.
  *
  * Quotes are verbatim from docs/STORY.md. Cities without a city-attributed
- * quote in the source show a sample note instead of a fabricated quote.
+ * quote in the source show an honest sample note instead of a fabricated quote.
  *
  * @param {HTMLElement} rootEl - <section class="chapter" id="02-research">
  * @param {{survey: object, segments: object, tgi: object}} data
@@ -21,53 +22,64 @@ import { observeCounters } from '../lib/counter.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/* viewBox is 0..100 wide, 0..120 tall — a tall island. Marker x/y are in
-   the same space, placed at roughly correct relative GB positions. */
-const VIEW_W = 100;
-const VIEW_H = 120;
+/* viewBox: 0..360 wide, 0..560 tall — GB is a tall island. Marker x/y live in
+   the same space, placed at roughly correct relative GB positions (relative
+   placements for storytelling, not survey coordinates). */
+const VIEW_W = 360;
+const VIEW_H = 560;
 
-/* A simplified-but-recognisable Great Britain outline. Hand-authored and
-   eyeballed against a rendered preview: tapered Scotland at the north, a
-   narrowing toward the border, a wider England below with a small East
-   Anglia nub on the east and a Wales/Bristol-Channel bulge on the west,
-   tapering toward the south coast. Stylised, not survey-accurate, but reads
-   as a tall narrow GB island. */
+/* A recognisable, simplified Great Britain silhouette — crisp angular coastline
+   (reads as a map, not a blob). Tracks the real landmarks clockwise from the
+   north: tapered north Scotland, the Galloway west extreme, the narrow WAIST at
+   the border, the Welsh (Pembrokeshire) and Cornish (Land's End) south-west
+   juts, the Kent/Dover south-east corner, the East-Anglia bulge and the Wash
+   notch on the east, then the Aberdeen/Buchan east extreme back up to Caithness.
+   Stylised, not survey-grade, but unmistakably the island. */
 const GB_PATH =
-  'M 60,7 C 56,6 53,8 50,11 C 47,14 46,18 45,22 C 44,26 42,29 40,32 ' +
-  'C 38,35 36,38 35,42 C 34,46 35,49 34,52 C 33,55 31,57 30,60 ' +
-  'C 29,63 29,66 28,69 C 27,72 24,73 23,76 C 22,79 25,80 27,80 ' +
-  'C 29,80 30,83 30,86 C 30,89 29,92 30,95 C 31,98 33,100 35,102 ' +
-  'C 37,104 39,105 41,106 C 43,107 45,107 47,108 C 49,109 51,110 53,109 ' +
-  'C 55,108 57,106 59,104 C 61,102 63,100 64,97 C 65,94 68,93 70,91 ' +
-  'C 72,89 70,87 68,86 C 66,85 67,82 67,79 C 66,76 64,75 63,72 ' +
-  'C 62,69 62,66 61,63 C 60,60 59,57 59,54 C 59,51 59,48 58,45 ' +
-  'C 57,42 56,39 56,36 C 56,33 57,30 58,27 C 59,24 60,21 60,18 ' +
-  'C 60,15 60,12 60,10 C 60,8 60,7 60,7 Z';
+  'M172,12 L138,52 L110,118 L100,170 ' +          // Scotland west → Galloway
+  'L150,214 ' +                                   // the WAIST (England/Scotland border)
+  'L160,280 L182,318 L150,338 L132,352 ' +        // NW England + North Wales
+  'L102,378 ' +                                   // Pembrokeshire (Wales SW extreme)
+  'L142,398 L164,408 ' +                          // Gower / Bristol Channel north shore
+  'L140,428 L116,452 ' +                          // Cornwall north coast
+  'L152,474 ' +                                   // Land’s End (SW extreme)
+  'L205,478 L270,474 L326,476 ' +                 // south coast (Devon → Sussex)
+  'L344,486 ' +                                   // Kent / Dover (SE corner)
+  'L306,456 L326,438 ' +                          // Thames estuary / Essex
+  'L346,416 ' +                                   // East Anglia / Norfolk (E extreme)
+  'L308,398 ' +                                   // the Wash (notch in)
+  'L304,344 L290,300 ' +                          // Lincolnshire / Humber
+  'L262,262 ' +                                   // Yorkshire / Flamborough (out)
+  'L266,212 L238,176 L246,146 ' +                 // NE England / Northumberland / SE Scotland
+  'L260,114 ' +                                   // Aberdeen / Buchan (E Scotland extreme)
+  'L226,72 L200,34 L172,12 Z';                    // Moray Firth / Caithness
 
-/* City markers — x/y in viewBox units (0..100 x, 0..120 y). Positions are
-   approximate relative placements, not survey coordinates.
-   Each entry carries either a verbatim diary quote (with its source-stated
+/* City markers — x/y in viewBox units. Approximate relative placements.
+   Each carries either a verbatim diary quote (with its source-stated
    attribution) or an honest note. order = pin-in sequence. */
 const CITIES = [
   {
     id: 'glasgow',
     name: 'Glasgow',
-    x: 47,
-    y: 30,
-    note: 'Scotland · families and individuals · week-long video diary.',
+    region: 'Scotland',
+    x: 142,
+    y: 188,
+    note: 'Scotland · families and individuals · week-long video diary, filmed early June.',
   },
   {
     id: 'wigan',
     name: 'Wigan',
-    x: 42,
-    y: 68,
-    note: 'North-west England · families and individuals · week-long video diary.',
+    region: 'North-west England',
+    x: 168,
+    y: 322,
+    note: 'North-west England · families and individuals · week-long video diary, filmed early June.',
   },
   {
     id: 'bury',
     name: 'Bury',
-    x: 46,
-    y: 65,
+    region: 'Greater Manchester',
+    x: 184,
+    y: 314,
     quote:
       'I would say that it is more of an empowering feeling being able to ' +
       'do things yourself, to fix things yourself, to seek out answers ' +
@@ -77,8 +89,9 @@ const CITIES = [
   {
     id: 'cardiff',
     name: 'Cardiff',
-    x: 33,
-    y: 82,
+    region: 'Wales',
+    x: 150,
+    y: 404,
     quote:
       'I do use ChatGPT all the time and find it really quite helpful when ' +
       'I do have problems… I do feel more empowered now with everything at ' +
@@ -88,8 +101,9 @@ const CITIES = [
   {
     id: 'bristol',
     name: 'Bristol',
-    x: 43,
-    y: 90,
+    region: 'South-west England',
+    x: 180,
+    y: 412,
     quote:
       'I particularly like all the apps, the shopping apps and anything new ' +
       'that comes into the shops, the loyalty apps. And, if we do want to ' +
@@ -100,8 +114,9 @@ const CITIES = [
   {
     id: 'watford',
     name: 'Watford',
-    x: 55,
-    y: 96,
+    region: 'Hertfordshire',
+    x: 264,
+    y: 448,
     quote:
       'I don’t go out specifically to look for certain brand items. I go by, ' +
       'comfort and price.',
@@ -110,8 +125,9 @@ const CITIES = [
   {
     id: 'london',
     name: 'London',
-    x: 60,
-    y: 101,
+    region: 'Greater London',
+    x: 280,
+    y: 458,
     quote:
       'I do know that calling the police would probably be a complete waste ' +
       'of time. However I do have faith in the sense that maybe if I did my ' +
@@ -123,8 +139,9 @@ const CITIES = [
   {
     id: 'southampton',
     name: 'Southampton',
-    x: 50,
-    y: 105,
+    region: 'South coast',
+    x: 234,
+    y: 470,
     quote:
       'I now have a lot less trust in institutions such as the government ' +
       'and politicians, local councils, than I did a few years ago… there’s ' +
@@ -140,19 +157,37 @@ const buildMapSvg = () => {
   svg.setAttribute('viewBox', `0 0 ${VIEW_W} ${VIEW_H}`);
   svg.setAttribute('class', 'research-map-svg');
   svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', 'Stylised silhouette of Great Britain');
+  svg.setAttribute('aria-label', 'Silhouette of Great Britain');
   svg.setAttribute('focusable', 'false');
+
+  // Soft halo behind the landmass so it floats (backgroundless — no box/track).
+  const halo = document.createElementNS(SVG_NS, 'path');
+  halo.setAttribute('d', GB_PATH);
+  halo.setAttribute('class', 'research-map-halo');
+  halo.setAttribute('aria-hidden', 'true');
 
   const land = document.createElementNS(SVG_NS, 'path');
   land.setAttribute('d', GB_PATH);
   land.setAttribute('class', 'research-map-land');
-  svg.append(land);
+
+  // Hairline connective lines from each city to its neighbour (a faint
+  // "we listened across the island" graticule). Drawn cream-on-navy, behind
+  // markers. Decorative only.
+  const thread = document.createElementNS(SVG_NS, 'polyline');
+  thread.setAttribute(
+    'points',
+    CITIES.map((c) => `${c.x},${c.y}`).join(' ')
+  );
+  thread.setAttribute('class', 'research-map-thread');
+  thread.setAttribute('aria-hidden', 'true');
+
+  svg.append(halo, land, thread);
   return svg;
 };
 
 const buildRailCard = (city) => {
-  // De-blocked (V2): a flowing diary block, not a bordered card. Separation
-  // comes from a single soft accent rule + space, not a hard box.
+  // De-blocked: a flowing diary block, not a bordered card. Separation comes
+  // from a single accent rule + space, not a hard box (backgroundless).
   const card = document.createElement('article');
   card.className = 'research-card';
 
@@ -167,7 +202,11 @@ const buildRailCard = (city) => {
   title.className = 'research-card-title';
   title.textContent = city.name;
 
-  head.append(eyebrow, title);
+  const region = document.createElement('p');
+  region.className = 'research-card-region';
+  region.textContent = city.region;
+
+  head.append(eyebrow, title, region);
   card.append(head);
 
   if (city.quote) {
@@ -189,6 +228,10 @@ const buildRailCard = (city) => {
   return card;
 };
 
+const prefersReducedMotion = () =>
+  window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
@@ -196,14 +239,26 @@ export default function init(rootEl, data) {
   const mapHost = rootEl.querySelector('[data-research-map]');
   const railHost = rootEl.querySelector('[data-research-rail]');
   const hint = rootEl.querySelector('[data-research-hint]');
+  const counter = rootEl.querySelector('[data-research-counter]');
   if (!mapHost || !railHost) return; // fail soft if markup missing
 
   const svg = buildMapSvg();
   mapHost.append(svg);
 
   const buttons = new Map();
+  const order = CITIES.map((c) => c.id);
+  let currentIndex = -1;
+
+  const updateCounter = (city) => {
+    if (!counter) return;
+    const i = order.indexOf(city.id) + 1;
+    counter.textContent = `${String(i).padStart(2, '0')} / ${String(
+      CITIES.length
+    ).padStart(2, '0')} — ${city.name}`;
+  };
 
   const select = (city) => {
+    currentIndex = order.indexOf(city.id);
     buttons.forEach((btn, id) => {
       const isActive = id === city.id;
       btn.classList.toggle('is-active', isActive);
@@ -211,27 +266,87 @@ export default function init(rootEl, data) {
     });
     if (hint) hint.hidden = true;
     railHost.replaceChildren(buildRailCard(city));
+    updateCounter(city);
   };
 
-  CITIES.forEach((city) => {
+  // Arrow-key navigation between adjacent cities (the markers form a roving
+  // group; selection follows focus).
+  const focusByIndex = (index) => {
+    const wrapped = (index + CITIES.length) % CITIES.length;
+    const id = order[wrapped];
+    const btn = buttons.get(id);
+    if (btn) btn.focus();
+  };
+
+  CITIES.forEach((city, index) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'research-marker';
     btn.setAttribute('aria-pressed', 'false');
-    btn.setAttribute('aria-label', `${city.name}, open video diary`);
+    btn.setAttribute('aria-label', `${city.name}, ${city.region}, open video diary`);
     btn.style.left = `${(city.x / VIEW_W) * 100}%`;
     btn.style.top = `${(city.y / VIEW_H) * 100}%`;
+    btn.style.setProperty('--pin-delay', `${index * 110}ms`);
 
     const label = document.createElement('span');
     label.className = 'research-marker-label';
     label.textContent = city.name;
     btn.append(label);
 
-    // Keyboard focus opens the card too (focus is a selection path).
     btn.addEventListener('click', () => select(city));
     btn.addEventListener('focus', () => select(city));
+    btn.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        focusByIndex(index + 1);
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        focusByIndex(index - 1);
+      }
+    });
 
     mapHost.append(btn);
     buttons.set(city.id, btn);
   });
+
+  // Pin-in reveal: only animate the markers once the map scrolls into view.
+  const pinIn = () => {
+    if (prefersReducedMotion()) {
+      mapHost.classList.add('is-pinned');
+      return;
+    }
+    mapHost.classList.add('is-pinning');
+    requestAnimationFrame(() => mapHost.classList.add('is-pinned'));
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            pinIn();
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(mapHost);
+  } else {
+    pinIn();
+  }
+
+  // London selected by default so the rail never starts empty (but the hint
+  // stays until the user interacts — show the card, keep the hint visible).
+  const londonCity = CITIES.find((c) => c.id === 'london');
+  if (londonCity) {
+    railHost.replaceChildren(buildRailCard(londonCity));
+    updateCounter(londonCity);
+    const londonBtn = buttons.get('london');
+    if (londonBtn) {
+      londonBtn.classList.add('is-active');
+      londonBtn.setAttribute('aria-pressed', 'true');
+    }
+    currentIndex = order.indexOf('london');
+  }
 }

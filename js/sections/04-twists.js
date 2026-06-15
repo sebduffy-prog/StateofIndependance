@@ -3,13 +3,18 @@
  *
  * Three exhibits, all commit-then-reveal where it counts:
  *   (a) The trust paradox — an EARNED DARK (navy) moment. dragRank the
- *       seven institutions, reveal the true confidence bars + the
- *       53% to 24% / 29-point spread, then a flip card pairing NHS 6.42/10
- *       ("most trusted") with "53% say it has declined".
- *   (b) Protected joy — 40% holiday hero + a ring-fenced proportionStrip,
+ *       seven institutions, reveal the true confidence on an orbitRingChart
+ *       (the deck's signature orbit motif) + the 53% to 24% / 29-point
+ *       spread, a flip card pairing NHS 6.42/10 ("most trusted") with
+ *       "53% say it has declined", then the wider decline picture as bars.
+ *   (b) Protected joy — 40% holiday hero + a ring-fenced tugOfWar split,
  *       protected-spend shown as a lollipopChart (fewer bars).
  *   (c) AI on tap — 58% (any task) vs a separate 37% (high-stakes),
- *       per-task bars (high-stakes framed), and the verbatim AI quote.
+ *       an adoption tugOfWar, per-task bars (high-stakes framed), and the
+ *       verbatim AI quote.
+ *
+ * All components are backgroundless and use NAVY on the warm page / cream
+ * + teal on the navy trust ground (onNavy). No mustard accent anywhere.
  *
  * Contract: docs/CONTRACT.md. Every number traces to data/survey.json.
  *
@@ -18,11 +23,11 @@
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { horizontalBars, lollipopChart, proportionStrip } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, orbitRingChart, tugOfWar } from '../lib/charts.js';
 import { dragRank } from '../lib/interactions.js';
 
 const BEAR_SILHOUETTE = 'assets/deck/bear-child-stamp.png';
-const VELVET_GROUND = 'assets/deck/ground-navy-velvet.jpg';
+const VELVET_GROUND = 'assets/deck/ground-navy-velvet.png';
 
 /** Deterministic shuffle so tiles never start in rank order. */
 const shuffleStable = (items) => {
@@ -58,29 +63,30 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
 
   const rankHost = rootEl.querySelector('[data-host="rank"]');
   const truthFig = rootEl.querySelector('[data-host="trust-truth"]');
-  const barsHost = rootEl.querySelector('[data-host="trust-bars"]');
+  const orbitHost = rootEl.querySelector('[data-host="trust-orbit"]');
   const spreadEl = rootEl.querySelector('[data-host="spread"]');
-  if (!rankHost || !truthFig || !barsHost || !spreadEl) return;
+  if (!rankHost || !truthFig || !orbitHost || !spreadEl) return;
 
   const tiles = shuffleStable(ranking).map((it) => ({ id: it.id, label: it.label }));
 
   const revealTruth = () => {
+    if (!truthFig.hidden) return;
     truthFig.hidden = false;
-    // EARNED-DARK navy ground: cream-on-navy components + text (onNavy path),
-    // never mustard (vanishes) and never a white box behind the chart.
-    horizontalBars(barsHost, {
-      items: byConfidence.map((it) => ({ id: it.id, label: it.label, pct: it.pctConfident })),
+    // EARNED-DARK navy ground: the orbit motif renders cream + teal on the
+    // velvet (onNavy path) — never mustard (vanishes), never a white box.
+    orbitRingChart(orbitHost, {
+      items: byConfidence.map((it) => ({ label: it.label, pct: it.pctConfident })),
       max: 100,
       onNavy: true,
-      decimals: 1,
-      highlightId: top.id,
-      labelWidth: 150,
-      ariaLabel: 'Confidence each institution will reliably support them, by share rating 7 to 10 out of 10',
+      decimals: 0,
+      centreLabel: 'TRUST',
+      ariaLabel:
+        'Confidence each institution will reliably support them, by share rating 7 to 10 out of 10, on concentric orbits',
     });
     const spread = Math.round(top.pctConfident - bottom.pctConfident);
     spreadEl.innerHTML =
       `From ${Math.round(top.pctConfident)}% to ${Math.round(bottom.pctConfident)}%: ` +
-      `${top.label} at the top, ${bottom.label} at the bottom. A ` +
+      `${top.label} on the outer orbit, ${bottom.label} on the inner. A ` +
       `<strong>${spread}-point spread</strong> in who Britain trusts to be there.`;
   };
 
@@ -101,11 +107,26 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
       flip.classList.toggle('is-flipped', flipped);
     });
   }
+
+  // The wider decline picture — bars on the navy ground (cream/teal onNavy).
+  const declineHost = rootEl.querySelector('[data-host="decline-bars"]');
+  const declineItems = institutionTrust?.performanceChange?.items;
+  if (declineHost && Array.isArray(declineItems)) {
+    horizontalBars(declineHost, {
+      items: declineItems.map((it) => ({ id: it.id, label: it.label, pct: it.pctDeclined })),
+      max: 100,
+      onNavy: true,
+      decimals: 0,
+      highlightId: 'government',
+      labelWidth: 150,
+      ariaLabel: 'Share saying each institution has declined over the past decade',
+    });
+  }
 };
 
 const buildProtectedJoy = (rootEl, protectedSpend) => {
   const lolliHost = rootEl.querySelector('[data-host="joy-lolli"]');
-  const stripHost = rootEl.querySelector('[data-host="ringfence"]');
+  const tugHost = rootEl.querySelector('[data-host="ringfence"]');
   const items = protectedSpend?.items;
   if (!Array.isArray(items)) return;
 
@@ -114,7 +135,7 @@ const buildProtectedJoy = (rootEl, protectedSpend) => {
 
   if (lolliHost) {
     // Warm off-white page ground: navy components (charts default) read
-    // high-contrast; mustard would vanish. Holiday highlighted in ink.
+    // high-contrast. Holiday highlighted in ink.
     lollipopChart(lolliHost, {
       items: named.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
       max: 100,
@@ -123,17 +144,16 @@ const buildProtectedJoy = (rootEl, protectedSpend) => {
     });
   }
 
-  // Ring-fenced holiday framed against the flexible rest, as a proportion strip.
-  if (stripHost) {
+  // Ring-fenced holiday framed against the flexible rest, as a tugOfWar split
+  // (its labels stack on their own side — no collision). On the warm hero,
+  // the left fill is navy (high contrast); flexible is mustard by default.
+  if (tugHost) {
     const holidays = named.find((it) => it.id === 'holidays');
     const protect = holidays ? Math.round(holidays.pct) : 40;
-    // On the warm gradient hero, ring-fenced share is high-contrast NAVY
-    // (mustard-on-mustard would vanish); flexible spend stays teal.
-    proportionStrip(stripHost, {
-      segments: [
-        { label: 'Ring-fenced holiday', pct: protect, accent: 'navy' },
-        { label: 'Flexible spend', pct: 100 - protect, accent: 'teal' },
-      ],
+    tugOfWar(tugHost, {
+      left: { label: 'Ring-fenced holiday', pct: protect },
+      right: { label: 'Flexible spend', pct: 100 - protect },
+      accent: 'navy',
       ariaLabel: 'Holiday budget ring-fenced versus flexible spend',
     });
   }
@@ -154,6 +174,17 @@ const buildAiOnTap = (rootEl, aiTasks) => {
   });
   const highStakesIds = items.filter((it) => it.isHighStakes).map((it) => it.id);
   frameRows(chart.el, items, highStakesIds, 190);
+
+  // Adoption split: have used AI vs have not (tugOfWar — own-side labels).
+  const tugHost = rootEl.querySelector('[data-host="ai-tug"]');
+  if (tugHost && aiTasks.anyTaskPct != null && aiTasks.notUsedPct != null) {
+    tugOfWar(tugHost, {
+      left: { label: 'Have used AI', pct: aiTasks.anyTaskPct },
+      right: { label: 'Have not', pct: aiTasks.notUsedPct },
+      accent: 'navy',
+      ariaLabel: 'Share who have used AI instead of a professional versus those who have not',
+    });
+  }
 };
 
 // Geometry mirrored from charts.js horizontalBars (the only knobs that move).
@@ -188,7 +219,7 @@ const frameRows = (svg, rowItems, ids, labelWidth) => {
     frame.setAttribute('width', String(trackWidth + inset * 2));
     frame.setAttribute('height', String(BAR_HEIGHT + inset * 2));
     frame.setAttribute('fill', 'none');
-    frame.setAttribute('stroke', '#000');
+    frame.setAttribute('stroke', '#0A1A5C');
     frame.setAttribute('stroke-width', '1.5');
     frame.setAttribute('class', 'tw-ringfence');
     svg.append(frame);

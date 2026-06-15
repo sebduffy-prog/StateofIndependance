@@ -1,24 +1,58 @@
 <div class="chapter-inner">
   <!-- Hero band sits on the signature warm gradient ground with a low-opacity
        orbit motif behind it. Decorative layers are pointer-events:none + z-index:0;
-       all content sits at z-index:1 via .seg-hero-body. -->
+       all content sits at z-index:1 via .seg-hero-body. A deck bear-world motif
+       (overlapping circles = "what the four share") anchors the right. -->
   <header class="seg-head reveal">
     <div class="seg-hero-ground si-ground-warm">
       <span class="si-orbit seg-hero-orbit" aria-hidden="true"></span>
-      <span class="si-seed seg-hero-seed seg-hero-seed--a" aria-hidden="true"></span>
-      <span class="si-seed seg-hero-seed seg-hero-seed--b" aria-hidden="true"></span>
-      <div class="seg-hero-body">
-        <span class="vccp-eyebrow">The four Britains</span>
-        <h2 class="si-display si-display--sm si-display--black seg-title">Britain in four <em class="hl">segments</em></h2>
-        <p class="seg-standfirst si-measure">This time we dug deeper: past how people feel, into what they are doing about it. A new dimension, the agency to act, splits the nation into four very different camps.</p>
-        <p class="seg-hinge">
-          <span class="seg-hinge-pair"><span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic to optimistic</span></span>
-          <span class="seg-hinge-x" aria-hidden="true">&times;</span>
-          <span class="seg-hinge-pair"><span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive to proactive</span></span>
-        </p>
+      <div class="seg-hero-grid">
+        <div class="seg-hero-body">
+          <span class="vccp-eyebrow">The four Britains</span>
+          <h2 class="si-display si-display--black seg-title">Britain in four <em class="hl">segments</em></h2>
+          <p class="seg-standfirst si-measure">This time we dug deeper: past how people feel, into what they are doing about it. A new dimension, the agency to act, splits the nation into four very different camps.</p>
+          <p class="seg-hinge">
+            <span class="seg-hinge-pair"><span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic to optimistic</span></span>
+            <span class="seg-hinge-x" aria-hidden="true">&times;</span>
+            <span class="seg-hinge-pair"><span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive to proactive</span></span>
+          </p>
+        </div>
+        <div class="seg-hero-art" aria-hidden="true">
+          <img class="seg-hero-img" src="assets/deck/bear-world-circles.png" alt="" loading="lazy" decoding="async">
+        </div>
       </div>
     </div>
   </header>
+
+  <!-- Roster band: four backgroundless segment tiles, each a deck bear-world
+       motif + share + trio. A fast at-a-glance way in; selecting one opens its
+       profile on the compass below (wired in JS). More depth, no dead space. -->
+  <div class="seg-roster reveal" role="group" aria-label="The four segments at a glance. Select one to open its profile.">
+    <button type="button" class="seg-tile" data-tile="hustlers">
+      <span class="seg-tile-art"><img src="assets/deck/bear-world-coil.png" alt="" loading="lazy" decoding="async"></span>
+      <span class="seg-tile-share num" data-share="hustlers">28%</span>
+      <span class="seg-tile-name">The Hustlers</span>
+      <span class="seg-tile-trio">Self-sufficient. Savvy. Sceptical.</span>
+    </button>
+    <button type="button" class="seg-tile" data-tile="architects">
+      <span class="seg-tile-art"><img src="assets/deck/bear-world-cube.png" alt="" loading="lazy" decoding="async"></span>
+      <span class="seg-tile-share num" data-share="architects">17%</span>
+      <span class="seg-tile-name">The Architects</span>
+      <span class="seg-tile-trio">Organised. Positive. In control.</span>
+    </button>
+    <button type="button" class="seg-tile" data-tile="coasters">
+      <span class="seg-tile-art"><img src="assets/deck/bear-world-arches.png" alt="" loading="lazy" decoding="async"></span>
+      <span class="seg-tile-share num" data-share="coasters">27%</span>
+      <span class="seg-tile-name">The Coasters</span>
+      <span class="seg-tile-trio">Easygoing. Careful. Open-minded.</span>
+    </button>
+    <button type="button" class="seg-tile" data-tile="retreaters">
+      <span class="seg-tile-art"><img src="assets/deck/bear-world-doors.png" alt="" loading="lazy" decoding="async"></span>
+      <span class="seg-tile-share num" data-share="retreaters">28%</span>
+      <span class="seg-tile-name">The Retreaters</span>
+      <span class="seg-tile-trio">Overwhelmed. Stretched. Support-seeking.</span>
+    </button>
+  </div>
 
   <!-- The map (left) + live profile data-card (right). -->
   <div class="seg-stage reveal">
@@ -71,7 +105,7 @@
   <section class="seg-graphblock reveal" aria-labelledby="seg-graph-title">
     <div class="seg-graph-head">
       <span class="vccp-eyebrow">A second way in</span>
-      <h3 class="seg-graph-title" id="seg-graph-title">What the four <em class="hl">share</em></h3>
+      <h3 class="seg-graph-title si-display si-display--sm" id="seg-graph-title">What the four <em class="hl hl-teal">share</em></h3>
       <p class="seg-graph-intro si-measure">The same four segments as a living network. Select a segment to isolate its world, or select an attribute to see who else holds it. Shared interests, channels, AI stances and demographics bridge the camps.</p>
     </div>
     <div data-segment-graph></div>
@@ -81,7 +115,7 @@
   <section class="seg-quizblock reveal" data-quizblock aria-labelledby="seg-quiz-title">
     <div class="seg-quiz-head">
       <span class="vccp-eyebrow">Place yourself</span>
-      <h3 class="seg-quiz-title" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
+      <h3 class="seg-quiz-title si-display si-display--sm" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
       <p class="seg-quiz-intro" data-quiz-intro></p>
     </div>
     <div class="seg-quiz-host" data-quiz></div>

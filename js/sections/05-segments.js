@@ -174,6 +174,30 @@ export default function init(rootEl, data) {
     });
   };
 
+  /* roster tiles count their share independently the moment they scroll in,
+     so the band reads as live data even before the compass forms below it. */
+  const rosterTiles = Array.from(rootEl.querySelectorAll('.seg-tile'));
+  let rosterCounted = false;
+  const runRosterCounters = () => {
+    if (rosterCounted) return;
+    rosterCounted = true;
+    rosterTiles.forEach((tile) => {
+      const el = tile.querySelector('[data-share]');
+      const seg = el && byId.get(el.dataset.share);
+      if (!el || !seg) return;
+      countUp(el, { to: seg.sharePct, durationMs: COUNT_DURATION_MS, suffix: '%' });
+    });
+  };
+  // Defined here so selectQuad / clearQuad (declared below) can mirror the
+  // roster's active state without a temporal-dead-zone hazard at call time.
+  const syncRoster = () => {
+    rosterTiles.forEach((tile) => {
+      const on = tile.dataset.tile === activeId;
+      tile.classList.toggle('is-active', on);
+      tile.setAttribute('aria-pressed', String(on));
+    });
+  };
+
   let formed = false;
   const startFormation = () => {
     if (formed) return;
@@ -187,8 +211,10 @@ export default function init(rootEl, data) {
     window.setTimeout(() => { resolve(); runCounters(); }, FORMATION_DELAY_MS);
   };
 
+  const rosterBand = rootEl.querySelector('.seg-roster');
   if (reduced) {
     startFormation();
+    runRosterCounters();
   } else {
     const io = new IntersectionObserver((entries, obs) => {
       entries.forEach((e) => {
@@ -198,6 +224,19 @@ export default function init(rootEl, data) {
       });
     }, { threshold: 0.3 });
     io.observe(mapEl);
+
+    if (rosterBand) {
+      const rio = new IntersectionObserver((entries, obs) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          runRosterCounters();
+          obs.disconnect();
+        });
+      }, { threshold: 0.4 });
+      rio.observe(rosterBand);
+    } else {
+      runRosterCounters();
+    }
   }
 
   /* ── quadrant selection: dim the rest, open the profile ───────────── */
@@ -219,6 +258,7 @@ export default function init(rootEl, data) {
     profileHost.classList.add('is-open');
     if (card && !reduced) card.focus({ preventScroll: true });
     if (syncGraph && graph) graph.selectSegment(id);
+    syncRoster();
   };
 
   const clearQuad = ({ syncGraph = true } = {}) => {
@@ -232,6 +272,7 @@ export default function init(rootEl, data) {
     profileHost.innerHTML = '';
     if (hintEl) hintEl.hidden = false;
     if (syncGraph && graph) graph.clear();
+    syncRoster();
   };
 
   quads.forEach((q) => {
@@ -243,6 +284,20 @@ export default function init(rootEl, data) {
   });
   mapEl.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && activeId) { clearQuad(); }
+  });
+
+  /* ── roster tiles: a fast way in. A tile mirrors the compass selection and
+     scrolls the stage into view so the profile is never opened off-screen. ── */
+  rosterTiles.forEach((tile) => {
+    tile.setAttribute('aria-pressed', 'false');
+    tile.addEventListener('click', () => {
+      const id = tile.dataset.tile;
+      if (activeId === id) { clearQuad(); return; }
+      selectQuad(id);
+      if (mapEl && typeof mapEl.scrollIntoView === 'function') {
+        mapEl.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      }
+    });
   });
 
   /* ── GraphRAG explorer: a second way in, wired to the map ─────────── */

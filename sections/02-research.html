@@ -12,7 +12,7 @@
     <div class="research-method si-stack-tight reveal" data-stagger="90">
       <p class="vccp-eyebrow research-kicker reveal">The method</p>
       <h2 class="research-headline reveal">
-        How we <em class="hl hl-teal">listened</em> to&nbsp;Britain.
+        How we <span class="hl hl-teal">listened</span><br>to Britain.
       </h2>
       <p class="research-standfirst reveal">
         A nationally representative survey, paired with week-long video
@@ -41,6 +41,24 @@
         </li>
       </ul>
 
+      <!-- Method rhythm — the two halves of the study, told without boxes -->
+      <div class="research-method-rhythm reveal">
+        <div class="research-method-step">
+          <span class="research-method-step-num">Quant</span>
+          <p class="research-method-step-copy">
+            <strong>1,504 UK adults,</strong> nationally representative, surveyed
+            in mid-May. The scale of the shift, in hard numbers.
+          </p>
+        </div>
+        <div class="research-method-step">
+          <span class="research-method-step-num">Qual</span>
+          <p class="research-method-step-copy">
+            <strong>Eight cities,</strong> week-long video diaries with families
+            and individuals, filmed early June. The reasons, in their own words.
+          </p>
+        </div>
+      </div>
+
       <p class="research-credit reveal">
         Research partner <strong>VCCP&nbsp;x&nbsp;Watermelon&nbsp;Research</strong>
       </p>
@@ -53,10 +71,13 @@
 
     <!-- RIGHT: GB map + 8 city markers (built in JS), flowing diary panel -->
     <div class="research-map-wrap reveal">
-      <p class="research-map-eyebrow">Eight cities, in their own words</p>
+      <div class="research-map-head">
+        <p class="research-map-eyebrow">Eight cities, in their own words</p>
+        <p class="research-map-counter" data-research-counter aria-live="polite"></p>
+      </div>
       <div class="research-map" data-research-map aria-label="Map of Great Britain showing eight qualitative research cities"></div>
       <p class="research-map-hint" data-research-hint>
-        Select a city to read from its video diary.
+        Select a city — or use the arrow keys — to read from its video diary.
       </p>
       <div class="research-rail" data-research-rail aria-live="polite"></div>
     </div>

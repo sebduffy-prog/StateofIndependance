@@ -1,9 +1,10 @@
-<!-- Chapter 06 — empowerment. Design World V2: warm gradient ground world
-     moment (bear-vs-figure silhouettes + orbit motifs), seamless de-blocked
-     flow. Decorative orbit overlay sits behind everything (z-index:0 +
-     pointer-events:none via .si-orbit). Content flows above on z-index:1
-     (set by .si-ground-warm > * in vccp.css). All copy is contrast-safe
-     navy-on-warm. -->
+<!-- Chapter 06 — empowerment. Design World V2 (V4 pro pass): warm gradient
+     ground world, deck bear-vs-figure imagery, deck-faithful Poppins-Black
+     titles. Backgroundless venn (circles float on the warm world, single
+     navy centre plate). Reframe wipe clips BOTH layers so only one copy
+     plate ever shows. A navy data band gives the chapter depth + contrast.
+     Decorative orbit overlay sits behind everything (.si-orbit, z-0,
+     pointer-events:none); content flows above on z-1. All copy contrast-safe. -->
 <div class="si-ground-warm emp-shell">
   <div class="si-orbit si-orbit--center emp-orbit" aria-hidden="true"></div>
 
@@ -11,7 +12,7 @@
     <header class="emp-head reveal">
       <p class="vccp-eyebrow emp-eyebrow">The empowerment architecture</p>
       <h2 class="si-display si-display--lg emp-title">
-        One need unifies <em class="hl">everyone</em>: control
+        One need unifies<br>everyone: <em class="hl">control</em>
       </h2>
       <p class="emp-standfirst si-measure">
         Money is the obvious ask. But saving people time and stress holds far more
@@ -20,7 +21,9 @@
     </header>
 
     <!-- THE TURN: survival-mode → active-agency reframe, told on the deck's
-         bear-vs-figure world. Given room to breathe — this is the pivot. -->
+         bear-vs-figure world. The warm imagery sits on a deep navy bed so it
+         pops (real contrast, not cream-on-cream). Both layers clip at the
+         divide so exactly one copy plate shows. This is the pivot. -->
     <section class="emp-reframe reveal" aria-labelledby="emp-reframe-title">
       <div class="emp-reframe-lede">
         <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">
@@ -32,21 +35,42 @@
         </p>
       </div>
       <div class="emp-reframe-mount" data-emp-reframe></div>
+      <figure class="emp-reframe-quote">
+        <blockquote>
+          The British consumer has pivoted to an active agency model — resourceful,
+          fiercely independent, stepping up to fix the systems themselves.
+        </blockquote>
+      </figure>
     </section>
 
-    <!-- The three pillars: one overlap at empowerment. Flat distinct fills. -->
+    <!-- Brand-ask evidence: what people actually want brands to help with
+         (Q14). On a navy band for depth + contrast; animated lollipop. -->
+    <section class="emp-asks reveal" aria-labelledby="emp-asks-title">
+      <div class="emp-asks-lede">
+        <h3 class="si-display si-display--sm emp-asks-title" id="emp-asks-title">
+          What Britain asks of <em class="hl hl-teal">brands</em>
+        </h3>
+        <p class="emp-asks-intro si-measure">
+          Money leads, as expected. But time and stress sit right behind it — the
+          premium territory most brands leave on the table.
+        </p>
+      </div>
+      <div class="emp-asks-mount" data-emp-asks aria-label="Brand asks ranking"></div>
+    </section>
+
+    <!-- The three pillars: one overlap at empowerment. Backgroundless venn —
+         flat distinct circles float on the warm world; single navy centre plate. -->
     <section class="emp-venn reveal" aria-labelledby="emp-venn-title">
       <div class="emp-venn-lede">
         <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title">
-          What every segment is really <em class="hl">asking</em>
+          Three needs, one <em class="hl">overlap</em>
         </h3>
         <p class="emp-venn-intro si-measure">
-          Three needs, one overlap. Hover or focus a circle to read the brand ask behind it.
+          Save me money, save me time, save me stress. Hover or focus a circle to
+          read the brand ask behind it — they all resolve to one thing.
         </p>
       </div>
       <div class="emp-venn-mount" data-emp-venn aria-live="polite"></div>
     </section>
-
-    <p class="vccp-source emp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. Brand asks: Q14.</p>
   </div>
 </div>

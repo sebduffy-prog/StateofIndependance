@@ -91,6 +91,71 @@
   src: url('../assets/fonts/inter-tight-900-italic.woff2') format('woff2');
 }
 
+/* ============================================================
+   SELF-HOSTED FONTS — Poppins (woff2 in assets/fonts/)
+   V4 brand switch: deck-faithful display + body face. Weights
+   400/500/600/700/800/900 normal + 400/600 italic. font-display
+   :swap avoids FOIT. Family name 'Poppins'. This is now the
+   primary --font-sans; the Inter Tight faces above are kept
+   harmless (no longer referenced by --font-sans).
+   ============================================================ */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-800.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/poppins-600-italic.woff2') format('woff2');
+}
+
 :root {
   /* MUSTARD — primary half */
   --mustard:       #FFC931;
@@ -178,7 +243,7 @@
   --space-6: 96px;
   --space-7: 128px;
 
-  --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Type scale (V3 §8: hero/section titles bumped a touch for deck punch) */
   --t-display: clamp(3.5rem, 7.6vw, 8.2rem);   /* hero + full-bleed divider titles */
@@ -217,10 +282,13 @@ img { display: block; object-fit: contain; }
    and carry the deck's punchier weight + tighter leading by default. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.08;
 }
+h1, h2 { font-weight: 700; }
+h3, h4 { font-weight: 600; }
+h5, h6 { font-weight: 600; }
 
 /* ─── Top nav (57px, ink hairline bottom) ───────────────── */
 .site-nav {
@@ -244,9 +312,16 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
   color: var(--ink);
 }
+/* Cropped VCCP logo (assets/brand/Logo-crop.png, no padding). Fixed
+   height, auto width keeps the tight crop's true ratio without squash. */
+.site-nav-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
 .site-nav-title {
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 .site-nav-pills {
@@ -366,23 +441,25 @@ h1, h2, h3, h4, h5, h6 {
    leaves a tall empty band beside a short copy pane. */
 .si-stretch-grid { align-items: stretch; }
 
-/* ─── Highlighter parallelogram (signature motif) ───────── */
+/* ─── Highlight emphasis (V4: clean SQUARED block, NO skew) ──
+   The old skewX(-12deg) parallelogram is killed. .hl now draws a
+   straight, square-cornered mustard-light block behind the word —
+   transform:none, no shear anywhere. Reads as a confident marker
+   highlight, not a slanted shape. Stays usable inside .si-display. */
 .hl {
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 600;
   position: relative;
   display: inline-block;
-  line-height: 0.85;
-  padding: 0.08em 0;
+  line-height: inherit;
+  padding: 0.04em 0.12em;
   z-index: 0;
 }
 .hl::before {
   content: "";
   position: absolute;
-  inset: 0 -0.06em;
+  inset: 0;
   background: var(--mustard-light);
-  transform: skewX(-12deg);
-  transform-origin: 50% 50%;
+  transform: none;            /* squared block — no parallelogram */
   z-index: -1;
   pointer-events: none;
 }
@@ -461,6 +538,8 @@ h1, h2, h3, h4, h5, h6 {
 .vccp-source,
 .chart-holder-cap,
 .research-credit,
+.seg-source,
+.emp-source,
 [data-source] {
   display: none !important;
 }
@@ -596,10 +675,11 @@ h1, h2, h3, h4, h5, h6 {
    Punch comes from weight 900 + hard negative tracking + tight leading
    + a bumped scale, for a designed, NOT default-grotesque headline. */
 .si-display {
+  font-family: var(--font-sans);                   /* Poppins Black */
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.03em;
-  line-height: 0.86;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
   font-size: var(--t-display);
 }
 .si-display--lg { font-size: var(--t-display); }

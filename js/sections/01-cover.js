@@ -1,51 +1,47 @@
 /**
- * Chapter 01: cover — Design World V2.
+ * Chapter 01: cover — Design World V4 (deck-faithful).
  *
- * The State-of-Independence hero: a warm mustard→orange gradient ground (set
- * in CSS) carrying thin orbit-circle line motifs, two pale seed dots, a cream
- * bear+figure silhouette grounded on the bottom edge, and — behind it all —
- * an ambient field of respondent dots. Over the top, a huge Inter Tight
- * display wordmark with the highlighter wiping in on INDEPENDENCE.
+ * The State-of-Independence hero: a warm yellow→orange gradient ground (CSS)
+ * carrying the signature MAZE motion logo (deck (2) — isometric maze, navy
+ * bear, small figure with a map, sweeping orbit ring) in the right column, a
+ * huge Poppins Black wordmark in the left column with a CLEAN STRAIGHT (no
+ * parallelogram) highlight wiping in on "independence", and — behind it all —
+ * an ambient field of respondent dots tinted navy for contrast on the amber.
  *
  * The dotField carries its own physics (mutual repulsion, momentum, cursor
- * force). On the warm ground the dots are tinted NAVY so they keep deliberate
- * contrast against the amber (never the old ink-on-anything default); one dot
- * is the highlighted "you" (the 1,505th respondent), parked near its caption.
+ * force). One dot is the highlighted "you" (the 1,505th respondent), parked
+ * near its caption in the lower-left clearing.
  *
- * Layering: every decorative layer sits behind the copy via CSS z-index +
- * pointer-events:none, so nothing occludes the wordmark and the cursor still
- * reaches the dot-field. (See css/sections/01-cover.css §LAYERING.)
+ * Layering: decorative layers sit behind the copy via CSS z-index +
+ * pointer-events:none, so nothing occludes the wordmark and the cursor reaches
+ * the dot-field. (See css/sections/01-cover.css.)
  *
- * Reduced motion: the highlighter lands instantly, the field jump-cuts to its
- * layout, the orbit stops spinning (shared guard), and no pointer force / drift
- * runs (the lib enforces this too).
- *
- * Contract: docs/CONTRACT.md.
+ * Reduced motion: the highlight lands instantly, the maze swaps to its static
+ * first-frame PNG, the field jump-cuts to its layout, and no pointer force /
+ * drift runs (the lib enforces this too).
  *
  * @param {HTMLElement} rootEl - the <section class="chapter" id="01-cover"> element
- * @param {{survey: object, segments: object, tgi: object}} data - shared datasets
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
 
 const DOT_COUNT = 240; // dense enough to read as a lively field on the warm ground
 const YOU_INDEX = 0; // the highlighted "you" dot
-const DRIFT_AMP = 0.85; // livelier ambient brownian motion (still calm, reduced-motion safe)
+const DRIFT_AMP = 0.85; // livelier ambient brownian motion (reduced-motion safe)
 
 /** Resolve a brand token to its hex, with a safe fallback. */
 const token = (name, fallback) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 /**
- * Build the ambient layout: a calm scatter biased away from the top-left copy
- * and the grounded silhouette, every dot tinted navy so it reads on the warm
- * ground. Returns normalised {x,y,colour} targets in 0..1 space.
+ * Build the ambient layout: a calm scatter, with "you" parked in the
+ * lower-left clearing near its caption. Returns normalised {x,y,colour}
+ * targets in 0..1 space.
  */
 const buildTargets = (count, dotColour) =>
   Array.from({ length: count }, (_, i) => {
     if (i === YOU_INDEX) {
-      // Park "you" in the lower-left clearing near its caption.
-      return { x: 0.1, y: 0.82, colour: dotColour };
+      return { x: 0.08, y: 0.84, colour: dotColour };
     }
     return { x: Math.random(), y: Math.random(), colour: dotColour };
   });
@@ -53,17 +49,24 @@ const buildTargets = (count, dotColour) =>
 export default function init(rootEl) {
   observeReveals(rootEl);
 
-  const stage = rootEl.querySelector('.cover-stage');
+  const hero = rootEl.querySelector('.cover-hero');
   const dotsHost = rootEl.querySelector('[data-cover-dots]');
   const hl = rootEl.querySelector('[data-cover-hl]');
+  const maze = rootEl.querySelector('[data-cover-maze]');
   const reduced = prefersReducedMotion();
 
-  // Navy on the warm ground keeps the dots legible (contrast safety §6).
+  // Navy on the warm ground keeps the dots legible (contrast safety).
   const dotColour = token('--soi-navy', '#0A1A5C');
   const youColour = token('--soi-teal', '#2BB7E8'); // single bright accent
 
-  // Scroll cue: a real <button> (keyboard-activatable via Enter/Space) that
-  // smooth-scrolls to the research chapter, honouring reduced motion.
+  // Under reduced motion, swap the animated maze GIF for its static frame.
+  if (reduced && maze) {
+    const still = maze.getAttribute('data-still');
+    if (still) maze.setAttribute('src', still);
+  }
+
+  // Scroll cue: a real <button> (keyboard-activatable) that smooth-scrolls to
+  // the research chapter, honouring reduced motion.
   const cue = rootEl.querySelector('[data-cover-cue]');
   if (cue) {
     cue.addEventListener('click', () => {
@@ -74,7 +77,7 @@ export default function init(rootEl) {
     });
   }
 
-  // Trigger the highlighter wipe once the layout has painted.
+  // Trigger the highlight wipe once the layout has painted.
   if (hl) {
     if (reduced) {
       hl.classList.add('is-wiped');
@@ -99,11 +102,10 @@ export default function init(rootEl) {
   field.drift(DRIFT_AMP);
 
   if (reduced) return; // no pointer force under reduced motion
-  if (!stage) return;
+  if (!hero) return;
 
-  // Wire subtle cursor repulsion across the WHOLE hero (not just the canvas
-  // box): track the pointer on the stage and feed normalised coords to the
-  // field's built-in repulsion via setPointer.
+  // Subtle cursor repulsion across the WHOLE hero: track the pointer on the
+  // hero and feed normalised coords to the field's built-in repulsion.
   let pending = false;
   let lastX = 0;
   let lastY = 0;
@@ -114,7 +116,7 @@ export default function init(rootEl) {
   };
 
   const onPointerMove = (event) => {
-    const rect = stage.getBoundingClientRect();
+    const rect = hero.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
     lastX = (event.clientX - rect.left) / rect.width;
     lastY = (event.clientY - rect.top) / rect.height;
@@ -125,6 +127,6 @@ export default function init(rootEl) {
 
   const onPointerLeave = () => field.setPointer(null, null);
 
-  stage.addEventListener('pointermove', onPointerMove);
-  stage.addEventListener('pointerleave', onPointerLeave);
+  hero.addEventListener('pointermove', onPointerMove);
+  hero.addEventListener('pointerleave', onPointerLeave);
 }

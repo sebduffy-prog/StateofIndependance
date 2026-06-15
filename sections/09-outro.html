@@ -1,9 +1,11 @@
 <div class="chapter-inner">
-  <!-- ── Dark, weighty close (cream-on-navy, full-bleed) ──────────────
-       New world: navy ground, thin white orbit-circle motif + a calm
-       field of paper dots behind the content (both decorative, behind
-       via z-index + pointer-events:none — never occlude the copy). All
-       text resolves to cream/light for deliberate contrast (§6). -->
+  <!-- ── Dark, weighty close (cream-on-navy, full-bleed, fills the screen) ──
+       New world: navy ground, thin white orbit-circle motif + a calm field of
+       paper dots behind the content (both decorative, behind via z-index +
+       pointer-events:none — never occlude the copy). The State of Independence
+       MOTION MAZE LOGO returns here as the closing brand motif (deck §3), set
+       in its own column to the right of the hero quote so it never overlaps
+       the copy. All text resolves to cream/light for deliberate contrast (§6). -->
   <div class="outro-dark si-dark">
     <!-- Decorative orbit rings sweeping in from the right (behind copy). -->
     <div class="outro-orbit si-orbit si-orbit--spin" aria-hidden="true"></div>
@@ -20,17 +22,34 @@
         </p>
       </header>
 
-      <!-- The hero quote, given deck hanging-quote gravitas. -->
-      <figure class="outro-quote reveal">
-        <blockquote class="outro-quote-text si-display si-display--sm">
-          They do not want brands to hold their hands. They want brands to hand
-          them the <em class="hl">tools</em>.
-        </blockquote>
-        <figcaption class="outro-quote-cite">Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
-        <p class="outro-motif" aria-label="Institutions far outweigh individuals">
-          Institutions <span aria-hidden="true">&gt;&gt;&gt;&gt;</span> individuals
-        </p>
-      </figure>
+      <!-- Hero band: the quote (left) + the motion maze logo (right) read as
+           one composed lockup, deck-style. Two columns => zero overlap (§6). -->
+      <div class="outro-hero">
+        <!-- The hero quote, given deck hanging-quote gravitas (Poppins Black). -->
+        <figure class="outro-quote reveal">
+          <blockquote class="outro-quote-text si-display si-display--black">
+            They do not want brands to hold their hands. They want brands to hand
+            them the <em class="hl">tools</em>.
+          </blockquote>
+          <figcaption class="outro-quote-cite">Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
+          <p class="outro-motif" aria-label="Institutions far outweigh individuals">
+            Institutions <span aria-hidden="true">&gt;&gt;&gt;&gt;</span> individuals
+          </p>
+        </figure>
+
+        <!-- The signature motion maze logo — the State of Independence brand
+             world animation (deck §3). Decorative closing motif; PNG static
+             fallback ships in <picture> for reduced-motion / no-gif. -->
+        <figure class="outro-maze reveal" aria-hidden="true">
+          <img
+            class="outro-maze-img"
+            src="assets/deck/maze-hero.gif"
+            alt=""
+            width="800" height="800"
+            loading="lazy" decoding="async"
+          />
+        </figure>
+      </div>
 
       <!-- The five moves as a clickable index, gravitas display treatment. -->
       <nav class="outro-recap reveal" aria-label="The five moves, jump to the moves chapter">
@@ -45,13 +64,13 @@
           <li class="reveal">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">02</span>
-              <span class="outro-recap-text si-display si-display--sm">Be the trusted alternative</span>
+              <span class="outro-recap-text si-display si-display--sm">Be the trusted antidote</span>
             </a>
           </li>
           <li class="reveal">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">03</span>
-              <span class="outro-recap-text si-display si-display--sm">Help people help themselves</span>
+              <span class="outro-recap-text si-display si-display--sm">Ride the social self-help wave</span>
             </a>
           </li>
           <li class="reveal">
@@ -120,7 +139,7 @@
     <span class="si-seed outro-seed-b" aria-hidden="true"></span>
 
     <div class="outro-backcover-copy">
-      <p class="outro-backcover-series si-display si-display--sm">The Challenger Series</p>
+      <p class="outro-backcover-series si-display si-display--black">The Challenger Series</p>
       <p class="outro-backcover-org">VCCP</p>
       <p class="outro-backcover-copyright num">&copy; VCCP Media 2026</p>
     </div>

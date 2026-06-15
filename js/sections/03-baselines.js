@@ -1,23 +1,28 @@
 /**
  * Chapter 03 - baselines. "The numbers you already know."
  *
- * Design World V2: the four baseline stats FLOW on a warm mustard->orange
- * gradient ground (the "operational floor"), not a grid of bordered boxes.
- * Each stat pairs a huge .si-bignum + label + sentence (navy on warm, via
- * .on-warm) with one supporting chart that sits DIRECTLY on the warm ground
- * (box-less, via .chart-holder — no white/paper card). The chart marks carry
- * the contrast themselves: navy components + bigger/bolder navy labels (the
- * charts.js default on warm grounds), faint ink-tint tracks, never a white
- * box. Alternating left/right rhythm; generous negative space; orbit + cream
- * bear silhouette + seed dots are decoration only (behind, pointer-events:none).
- * Chart variety keeps bar reliance to a single horizontalBars (stat 4):
+ * The four baseline stats FLOW on a warm yellow->orange brand ground (the
+ * "operational floor"), not a grid of bordered boxes. Each stat pairs a huge
+ * Poppins-Black .si-bignum + label + sentence (navy on warm, via .on-warm)
+ * with one supporting chart that sits DIRECTLY on the warm ground
+ * (backgroundless, via .chart-holder — no white/paper card, no track box).
+ * Components are NAVY (the charts.js default on warm grounds) so nothing is
+ * mustard-on-mustard; faint ink-tint tracks, never a white box.
+ *
+ * Chart variety (no accent mustard anywhere):
  *   - mood of the nation     -> lollipopChart (navy, careful highlighted ink)
  *   - money-saving moves      -> lollipopChart (navy)
  *   - availability concerns   -> dotPlot (navy, a down/anxious read)
- *   - 54 / 46 trading split   -> proportionStrip (navy ↔ teal)
- *   - traded-down categories  -> horizontalBars (navy, the one bar chart)
- * Stat 1 stays gated behind clickToGuess (the loved interaction): the
- * 77% number and its waffle only reveal after the reader commits a guess.
+ *   - 54 / 46 trading split   -> tugOfWar (navy vs mustard fill — the binary
+ *                                split where the two-colour read is meaningful)
+ *   - traded-down categories  -> horizontalBars (navy) with a pillGroup toggle
+ *                                that re-sorts/filters the ranking live.
+ *
+ * Stat 1 stays gated behind clickToGuess (the loved interaction): the 77%
+ * number and its waffle only reveal after the reader commits a guess.
+ *
+ * Source captions are CUT site-wide (FEEDBACK-V4 §6); the strings remain in
+ * data/survey.json, they are simply not rendered here.
  *
  * @param {HTMLElement} rootEl - <section class="chapter" id="03-baselines">
  * @param {{survey: object, segments: object, tgi: object}} data
@@ -29,20 +34,16 @@ import {
   waffleGrid,
   lollipopChart,
   dotPlot,
-  proportionStrip,
+  tugOfWar,
 } from '../lib/charts.js';
-import { clickToGuess } from '../lib/interactions.js';
+import { clickToGuess, pillGroup } from '../lib/interactions.js';
 
 const CAREFUL_TRUE_VALUE = 77.3;
 const CAREFUL_WAFFLE_FILL = 77;
 const TRADING_DOWN_PCT = 54;
 const HOLDING_PCT = 46;
 const PANEL_LABEL_WIDTH = 210;
-
-const setSource = (rootEl, selector, text) => {
-  const node = rootEl.querySelector(selector);
-  if (node && text) node.textContent = `Source: ${text}`;
-};
+const TOP_N = 4;
 
 const mapItems = (items) =>
   items.map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
@@ -113,7 +114,6 @@ export default function init(rootEl, data) {
       accent: 'navy',
       ariaLabel: 'Mood of the nation, percentage who agree with each statement',
     });
-    setSource(rootEl, '[data-source-mood]', moodOfNation.source);
   }
 
   // Panel 2 chart - money-saving moves as a lollipop.
@@ -124,7 +124,6 @@ export default function init(rootEl, data) {
       accent: 'navy',
       ariaLabel: 'Money-saving moves taken in the last three months',
     });
-    setSource(rootEl, '[data-source-money]', moneySavingMoves.source);
   }
 
   // Panel 3 chart - availability concerns as a dot plot (down / anxious read).
@@ -135,32 +134,49 @@ export default function init(rootEl, data) {
       accent: 'navy',
       ariaLabel: 'What Britain is anxious about in the coming months',
     });
-    setSource(rootEl, '[data-source-availability]', availabilityConcerns.source);
   }
 
-  // Panel 4 - the 54 / 46 split as a proportion strip.
-  const stripHost = rootEl.querySelector('[data-strip-trading]');
-  if (stripHost) {
-    proportionStrip(stripHost, {
-      // Navy (the dominant move) ↔ teal split: both high-contrast on warm,
-      // never mustard-on-mustard.
-      segments: [
-        { label: 'Trading down', pct: TRADING_DOWN_PCT, accent: 'navy' },
-        { label: 'Holding their basket', pct: HOLDING_PCT, accent: 'teal' },
-      ],
+  // Panel 4 - the 54 / 46 split as a tugOfWar (navy ↔ mustard binary tension
+  // bar; labels sit on their own side so they can never overlap).
+  const tugHost = rootEl.querySelector('[data-tug-trading]');
+  if (tugHost) {
+    tugOfWar(tugHost, {
+      left: { label: 'Trading down', pct: TRADING_DOWN_PCT },
+      right: { label: 'Holding their basket', pct: HOLDING_PCT },
+      accent: 'navy',
       ariaLabel: '54% trading down on groceries, 46% holding their basket',
     });
   }
 
-  // Panel 4 chart - the one bar chart: traded-down categories ranked.
+  // Panel 4 chart - traded-down categories ranked, with a live pillGroup
+  // toggle: see every category, or just the top four where the squeeze bites.
   const tradingHost = rootEl.querySelector('[data-bars-trading]');
+  const tradingControls = rootEl.querySelector('[data-trading-controls]');
   if (tradingHost && tradingDownByCategory) {
-    horizontalBars(tradingHost, {
-      items: mapItems(tradingDownByCategory.items),
+    const allItems = mapItems(tradingDownByCategory.items)
+      .slice()
+      .sort((a, b) => b.pct - a.pct);
+    const topItems = allItems.slice(0, TOP_N);
+
+    const chart = horizontalBars(tradingHost, {
+      items: allItems,
       decimals: 0,
       labelWidth: PANEL_LABEL_WIDTH,
       ariaLabel: 'Categories where Britain has traded down in the last 12 months',
     });
-    setSource(rootEl, '[data-source-trading]', tradingDownByCategory.source);
+
+    if (tradingControls) {
+      pillGroup(tradingControls, {
+        ariaLabel: 'Show all categories or just the top four',
+        value: 'all',
+        options: [
+          { value: 'all', label: 'All categories' },
+          { value: 'top', label: 'Top 4' },
+        ],
+        onChange: (value) => {
+          chart.update(value === 'top' ? topItems : allItems, { resort: true });
+        },
+      });
+    }
   }
 }

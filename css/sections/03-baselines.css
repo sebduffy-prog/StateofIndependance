@@ -1,14 +1,17 @@
-/* Chapter 03 - baselines — Design World V2.
-   The four baseline stats FLOW on a warm mustard->orange gradient ground (the
-   "operational floor"), not a grid of bordered boxes. Number + label + sentence
-   read as navy-on-warm (contrast-safe); each supporting chart sits DIRECTLY on
-   the warm ground via .chart-holder — NO white/paper card, NO border, NO shadow.
-   The chart marks carry the contrast themselves (navy components + bigger/bolder
-   navy labels, faint ink-tint tracks; charts.js defaults on warm grounds).
-   Alternating left/right rhythm, generous space, decorative orbit + cream bear +
+/* Chapter 03 - baselines — professional, deck-faithful.
+   The four baseline stats FLOW on a warm yellow->orange brand ground (the
+   "operational floor"), not a grid of bordered boxes. Number + label +
+   sentence read as NAVY-on-warm (high contrast); each supporting chart sits
+   DIRECTLY on the warm ground via .chart-holder — NO white/paper card, NO
+   border, NO shadow, NO track box. The chart marks carry the contrast
+   themselves (navy components + bold navy labels; charts.js defaults on warm).
+   No accent mustard on type/components — emphasis is navy weight + an orange
+   underline rule, never a skewed parallelogram, never mustard-on-mustard.
+   Bigger, bolder Poppins throughout. A closing "operational floor" band gives
+   the chapter depth and fills the screen. Decorative orbit + bear-world coil +
    seed dots sit BEHIND content (z-index:0, pointer-events:none) and never
-   occlude UI. Every selector scoped to #\30 3-baselines. Square corners on the
-   guess data card, tabular numbers, reduced-motion safe. */
+   occlude UI. Every selector scoped to #\30 3-baselines. Square corners,
+   tabular numbers, reduced-motion safe. */
 
 /* ─── The warm ground (full-bleed world, own stacking context) ──── */
 #\30 3-baselines {
@@ -24,70 +27,101 @@
   z-index: 1;                    /* all content above decorative layers */
   display: flex;
   flex-direction: column;
-  gap: clamp(56px, 9vh, 120px);
+  gap: clamp(48px, 7vh, 96px);
+  /* Claim the full viewport height so the chapter never leaves a dead band:
+     the header, stat flow, and closing band spread down the screen. */
+  min-height: calc(100vh - 2 * clamp(5rem, 8vh, 9rem));
+  justify-content: space-between;
 }
 
 /* ─── Decorative world layers (behind, never carry meaning) ─────── */
 #\30 3-baselines .bl-orbit {
   /* thin concentric white rings, low opacity; sweeps from the right */
-  background-position: 88% 32%;
-  opacity: 0.7;
+  background-position: 88% 30%;
+  opacity: 0.6;
 }
-#\30 3-baselines .bl-seed--a { top: 26%; right: 16%; }
-#\30 3-baselines .bl-seed--b { top: 38%; right: 30%; width: 7px; height: 7px; }
+#\30 3-baselines .bl-seed--a { top: 22%; right: 14%; }
+#\30 3-baselines .bl-seed--b { top: 34%; right: 28%; width: 7px; height: 7px; }
 
-/* Cream bear+figure world panel as a soft watermark anchor, bottom-right,
-   behind content, decorative only. Tinted toward cream, low opacity so the
-   navy stats stay high-contrast over it. */
+/* Bear-world coil panel as a soft watermark anchor, bottom-right, behind
+   content. Low opacity + luminosity blend so the navy stats stay high-
+   contrast over it. */
 #\30 3-baselines .bl-bear {
   position: absolute;
   z-index: 0;
-  right: -4%;
-  bottom: -6%;
-  width: clamp(280px, 38vw, 620px);
+  right: -6%;
+  bottom: -8%;
+  width: clamp(280px, 36vw, 600px);
   height: auto;
-  opacity: 0.16;
+  opacity: 0.14;
   mix-blend-mode: luminosity;
   pointer-events: none;
 }
 
-/* ─── Header (one tight cluster on the warm ground) ─────────────── */
+/* ─── Header — big, bold deck-display title ─────────────────────── */
 #\30 3-baselines .bl-head {
   max-width: 60ch;
 }
 #\30 3-baselines .bl-kicker {
-  margin: 0;
-  color: var(--on-warm);         /* navy eyebrow on amber */
-}
-/* Heavier, tighter deck-display headline (matches the deck's punchy titles). */
-#\30 3-baselines .bl-headline {
-  font-size: var(--t-xl);
+  margin: 0 0 18px 0;
+  font-size: var(--t-xs);
   font-weight: 700;
-  line-height: 1.0;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--on-warm);
+  opacity: 0.78;
+}
+/* Heavy Poppins-Black headline, tight tracking, big — matches the deck's
+   punchy title lockups (recreated in Poppins per FEEDBACK-V4 §1). */
+#\30 3-baselines .bl-headline {
+  font-size: clamp(3rem, 6.4vw, 6.4rem);
+  font-weight: 900;
+  line-height: 0.92;
   letter-spacing: -0.035em;
   margin: 0;
+  max-width: 16ch;
   color: var(--on-warm);
+}
+/* Emphasis = navy weight + a clean STRAIGHT orange underline rule. No skew,
+   no mustard-on-mustard block; the orange reads as a confident accent on the
+   warm ground while the word itself stays navy for contrast. */
+#\30 3-baselines .bl-emph {
+  position: relative;
+  white-space: nowrap;
+  color: var(--on-warm);
+}
+#\30 3-baselines .bl-emph::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.04em;
+  height: 0.12em;
+  background: var(--soi-orange);
+  z-index: -1;
 }
 #\30 3-baselines .bl-standfirst {
   font-size: var(--t-md);
-  line-height: 1.6;
+  line-height: 1.55;
+  font-weight: 500;
   color: var(--on-warm);
-  opacity: 0.86;                 /* softened, still AA on amber */
-  margin: 0;
+  opacity: 0.88;
+  margin: 24px 0 0 0;
+  max-width: 52ch;
 }
 
 /* ─── The flow: alternating stat rows, seamless (no bordered cards) ─ */
 #\30 3-baselines .bl-flow {
   display: flex;
   flex-direction: column;
-  gap: clamp(56px, 9vh, 112px);
+  gap: clamp(56px, 8vh, 104px);
 }
 
-/* Each stat: lede (number + words) beside its chart MAT. Alternate which
-   side leads for an editorial rhythm — not a rigid grid of tiles. */
+/* Each stat: lede (number + words) beside its chart. Alternate which side
+   leads for an editorial rhythm — not a rigid grid of tiles. */
 #\30 3-baselines .bl-stat {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
   gap: clamp(28px, 5vw, 72px);
 }
@@ -97,87 +131,121 @@
 /* ─── Lede side (lives directly on the warm ground) ─────────────── */
 #\30 3-baselines .bl-stat-lede {
   align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 #\30 3-baselines .bl-index {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--on-warm);
-  opacity: 0.72;
+  opacity: 0.7;
 }
 #\30 3-baselines .bl-bignum-line {
   margin: 0;
 }
+/* Hero number — Poppins Black via .si-bignum; bigger + tighter here. */
 #\30 3-baselines .bl-num {
   display: block;
-  font-size: clamp(3.6rem, 8vw, 7rem);
-  letter-spacing: -0.03em;
-  line-height: 0.88;
+  font-size: clamp(4rem, 9vw, 8.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.84;
   color: var(--on-warm);         /* navy hero number on amber */
 }
 #\30 3-baselines .bl-label {
   display: block;
-  margin-top: 12px;
-  font-size: var(--t-md);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  max-width: 20ch;
+  margin-top: 14px;
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  max-width: 22ch;
   color: var(--on-warm);
 }
 #\30 3-baselines .bl-sentence {
   margin: 0;
   font-size: var(--t-sm);
   line-height: 1.55;
+  font-weight: 500;
   color: var(--on-warm);
   opacity: 0.82;
   max-width: 42ch;
 }
 
-/* ─── Box-less chart (sits DIRECTLY on the warm ground via .chart-holder) ─
-   No paper background, no border, no shadow — the chart marks carry the
-   contrast themselves (navy components + faint ink-tint tracks). */
+/* ─── Backgroundless chart (sits DIRECTLY on the warm ground) ─────
+   No paper background, no border, no shadow — chart-holder is transparent
+   and the marks carry the contrast (navy components + faint ink tracks). */
 #\30 3-baselines .bl-chart {
   min-width: 0;
+  margin: 0;
 }
-/* Bigger, bolder caption — reads as designed type on the warm ground, navy
-   for high contrast, not a tiny grey caption on paper. */
+/* Bigger, bolder caption — designed type on the warm ground, navy for high
+   contrast, not a tiny grey caption on paper. */
 #\30 3-baselines .bl-chart-sub {
   font-size: var(--t-sm);
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--on-warm);         /* navy on amber */
-  margin: 0 0 6px 0;
-  line-height: 1.25;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
 }
-/* Strip caption already on the warm ground — same navy treatment. */
 #\30 3-baselines .bl-chart-sub--onwarm {
   color: var(--on-warm);
   opacity: 1;
 }
-/* Source line sits on the warm ground now — navy tint, not paper-grey. */
-#\30 3-baselines .vccp-source {
-  margin-top: 6px;
+
+/* ─── Live toggle (pillGroup) on the trading-down chart ─────────── */
+#\30 3-baselines .bl-chart-controls {
+  margin: 0 0 14px 0;
+}
+#\30 3-baselines .pillgroup {
+  display: inline-flex;
+  gap: 6px;
+  /* Backgroundless: a faint navy-tint track, no white box. */
+  background: rgba(10, 26, 92, 0.06);
+  padding: 4px;
+}
+#\30 3-baselines .pillgroup-chip {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: 700 var(--t-xs)/1 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--on-warm);
-  opacity: 0.62;
+  opacity: 0.66;
+  padding: 8px 14px;
+  transition: opacity 0.18s ease, background 0.18s ease;
+}
+#\30 3-baselines .pillgroup-chip:hover { opacity: 0.9; }
+#\30 3-baselines .pillgroup-chip.is-active {
+  background: var(--on-warm);     /* navy fill */
+  color: var(--soi-cream);        /* cream label on navy — high contrast */
+  opacity: 1;
+}
+#\30 3-baselines .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--soi-orange);
+  outline-offset: 2px;
 }
 
 /* ─── Guess (clickToGuess hooks, stat 1) — soft card on the ground ─ */
 #\30 3-baselines .bl-guess {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 #\30 3-baselines .guess {
-  border: 0;                     /* de-blocked: paper card lifts by shadow */
+  border: 0;
   background: var(--paper-warm);
   padding: 18px 20px;
   max-width: 420px;
   box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 16px 36px rgba(10, 26, 92, 0.10);
 }
 #\30 3-baselines .guess-prompt {
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: var(--t-xs);
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -206,7 +274,7 @@
 #\30 3-baselines .guess-output {
   min-width: 3.4ch;
   font-size: var(--t-md);
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   text-align: right;
   color: var(--ink-soft);
@@ -232,32 +300,70 @@
 
 /* ─── Waffle (revealed after the guess) — sits on the warm ground ── */
 #\30 3-baselines .bl-waffle {
-  margin-top: 8px;
+  margin-top: 4px;
   max-width: 220px;
 }
 #\30 3-baselines .bl-waffle-caption {
   margin: 12px 0 0 0;
-  font-size: 0.72rem;
-  color: var(--on-warm);         /* navy caption on amber */
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--on-warm);
   opacity: 0.82;
 }
 
-/* ─── 54 / 46 strip (stat 4 lede) — box-less, on the warm ground ─── */
+/* ─── 54 / 46 tug-of-war (stat 4 lede) — box-less, on the warm ground ─ */
 #\30 3-baselines .bl-strip {
-  margin-top: 14px;
-  max-width: 460px;
-  gap: 6px;                      /* via .chart-holder flow */
+  margin-top: 8px;
+  max-width: 480px;
 }
 #\30 3-baselines .bl-strip .bl-chart-sub--onwarm {
-  color: var(--on-warm);         /* navy on the warm ground */
+  color: var(--on-warm);
   opacity: 1;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+/* ─── Closing band: "operational floor" framing + credibility mark ─ */
+#\30 3-baselines .bl-floor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  /* A hairline navy rule separates the takeaway from the stat flow. */
+  border-top: 2px solid rgba(10, 26, 92, 0.22);
+  padding-top: clamp(28px, 4vh, 56px);
+}
+#\30 3-baselines .bl-floor-kicker {
+  margin: 0 0 14px 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--on-warm);
+  opacity: 0.7;
+}
+#\30 3-baselines .bl-floor-line {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--on-warm);
+  max-width: 26ch;
+}
+#\30 3-baselines .bl-floor-mark {
+  width: 100%;
+  height: auto;
+  max-width: 520px;
+  justify-self: end;
+  /* Lift the report-cover photo off the warm ground without a white box. */
+  filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.22));
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
-/* Tablet/narrow: stack number above its chart; keep reading order
-   number-then-chart regardless of the alternating desktop rhythm. */
 @media (max-width: 900px) {
+  #\30 3-baselines .chapter-inner {
+    min-height: 0;                /* let the stacked flow size naturally */
+  }
   #\30 3-baselines .bl-stat,
   #\30 3-baselines .bl-stat--rev {
     grid-template-columns: 1fr;
@@ -265,8 +371,16 @@
   }
   #\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 0; }
   #\30 3-baselines .bl-stat--rev .bl-chart { order: 0; }
+  #\30 3-baselines .bl-floor {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  #\30 3-baselines .bl-floor-mark {
+    justify-self: start;
+    max-width: 380px;
+  }
   #\30 3-baselines .bl-bear {
     width: clamp(220px, 52vw, 360px);
-    opacity: 0.12;
+    opacity: 0.1;
   }
 }

@@ -24,10 +24,16 @@
 }
 
 /* ─── Dark closing surface (navy) ────────────────────────── */
+/* Fills at least the full viewport so the close never leaves a dead band; the
+   frame inside distributes its rows to use the height (§4 FILL THE SCREEN). */
 #\30 9-outro .outro-dark {
   position: relative;
   isolation: isolate;            /* own stacking context — no stale layer bleed */
   width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
   padding: clamp(56px, 9vh, 128px) clamp(20px, 5vw, 96px);
 }
@@ -59,9 +65,33 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(40px, 6vh, 96px);   /* generous, uniform rhythm — de-blocked */
-  max-width: 1180px;
+  gap: clamp(40px, 6vh, 88px);   /* generous, uniform rhythm — de-blocked */
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
+}
+
+/* ─── Hero band: quote (left) + motion maze logo (right) ──── */
+/* Two columns so the maze never overlaps the copy (§6). Bottom-aligned so the
+   quote baseline and the maze sit on a shared visual floor. */
+#\30 9-outro .outro-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: end;
+  gap: clamp(28px, 4vw, 72px);
+}
+#\30 9-outro .outro-maze {
+  margin: 0;
+  justify-self: end;
+  align-self: center;
+  width: 100%;
+  max-width: clamp(240px, 30vw, 440px);
+}
+#\30 9-outro .outro-maze-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
 }
 
 /* ─── Kicker + standfirst ────────────────────────────────── */
@@ -84,7 +114,6 @@
   position: relative;
   margin: 0;
   padding-left: clamp(44px, 7vw, 120px);
-  max-width: 22ch;
 }
 /* The hanging quotation mark — oversized, mustard, set into the left margin,
    behind the text so it can never occlude it. */
@@ -104,13 +133,16 @@
 #\30 9-outro .outro-quote-text {
   position: relative;
   z-index: 1;
-  /* si-display gives uppercase + weight + tight leading; size from --t-xl. */
+  /* si-display--black gives Poppins 900; we keep sentence case for a spoken
+     quote but ride the real Black weight for deck gravitas (§4). */
   margin: 0 0 clamp(22px, 2.8vw, 38px) 0;
   color: var(--soi-cream);
   text-transform: none;          /* a spoken quote reads better in sentence case */
-  font-weight: 700;              /* deck gravitas (§4) — heavier than before */
-  letter-spacing: -0.026em;      /* tighter tracking to match the deck headlines */
-  line-height: 1.02;
+  font-weight: 900;              /* Poppins Black — full deck gravitas (§4) */
+  letter-spacing: -0.03em;       /* tighter tracking to match the deck headlines */
+  line-height: 0.98;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  max-width: 18ch;
 }
 /* The highlighter must read on the dark ground: keep the mustard-light fill
    (from .hl::before) and force the highlighted word's text to dark ink so it
@@ -320,9 +352,9 @@
 #\30 9-outro .outro-backcover-series {
   margin: 0;
   color: var(--soi-navy);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.9;
+  font-weight: 900;              /* Poppins Black — matches the deck wordmark */
+  letter-spacing: -0.04em;
+  line-height: 0.88;
 }
 #\30 9-outro .outro-backcover-org {
   margin: 0;
@@ -356,6 +388,19 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 920px) {
+  /* Stack the quote above the maze; the maze shrinks and centres so it stays
+     a closing flourish, never a competing block. */
+  #\30 9-outro .outro-hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: clamp(24px, 5vh, 44px);
+  }
+  #\30 9-outro .outro-maze {
+    justify-self: start;
+    max-width: clamp(180px, 44vw, 300px);
+  }
+}
 @media (max-width: 820px) {
   #\30 9-outro .outro-foot {
     grid-template-columns: 1fr;

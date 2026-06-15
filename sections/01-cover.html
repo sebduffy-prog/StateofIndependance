@@ -1,40 +1,27 @@
 <div class="chapter-inner">
-  <!-- Hero stage: a warm mustard→orange gradient GROUND (the State-of-
-       Independence world). Every decorative layer (orbit lines, seed dots,
-       respondent dot-field, cream bear+figure silhouette) sits BEHIND the
-       copy via z-index + pointer-events:none, so nothing occludes the
-       wordmark and every text element keeps deliberate navy-on-warm
-       contrast. No bordered hero box — the copy hangs in open space. -->
-  <div class="cover-stage si-ground-warm">
-
-    <!-- Thin concentric orbit-circle motif, low-opacity white, decorative. -->
-    <div class="cover-orbit si-orbit si-orbit--spin" aria-hidden="true"></div>
-
-    <!-- Two sparse pale seed dots sitting on the orbit lines. -->
-    <span class="cover-seed cover-seed--a si-seed" aria-hidden="true"></span>
-    <span class="cover-seed cover-seed--b si-seed" aria-hidden="true"></span>
+  <!-- HERO: the State-of-Independence brand world. A warm yellow→orange
+       gradient GROUND carries the signature MAZE motion logo (isometric maze,
+       navy bear cresting it, a small figure reading a map at the entrance, a
+       light-blue orbit ring sweeping the whole scene) lifted straight from
+       deck (2). Copy sits top-left, the maze fills the right; behind it all an
+       ambient navy respondent dot-field drifts. Every decorative layer sits
+       BEHIND the copy via z-index + pointer-events:none, so nothing occludes
+       the wordmark and all text keeps deliberate navy-on-warm contrast. No
+       bordered hero box — the copy hangs in open space. -->
+  <section class="cover-hero si-ground-warm" aria-label="The State of Independence — cover">
 
     <!-- Ambient respondent dot-field, navy on warm, well behind everything. -->
     <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
-
-    <!-- Cream bear + small figure facing each other, grounded FLUSH on the
-         bottom edge, large. A background-image (content-cropped asset, set to
-         background-position:bottom + background-size:contain) guarantees the
-         feet sit on the bottom edge with NO letterbox gap, regardless of box
-         aspect. Reads by MASS as a cream silhouette; layered behind the copy
-         so it never overlaps or occludes the wordmark/standfirst. Decorative,
-         so aria-hidden. -->
-    <div class="cover-bear si-silhouette" aria-hidden="true"></div>
 
     <!-- Copy: top-left, no frame, no plate. Navy text on the warm ground. -->
     <div class="cover-copy on-warm si-stack-tight">
       <p class="vccp-eyebrow cover-eyebrow reveal">The Challenger Series · VCCP</p>
       <h1 class="cover-wordmark si-display reveal">
-        The State of <em class="hl" data-cover-hl>Independence</em>
+        The state of <em class="hl" data-cover-hl>independence</em>
       </h1>
       <p class="cover-standfirst si-measure reveal">
         Britain has stopped waiting to be rescued. A nationwide study of how
-        people are taking back control, and what it demands of every brand
+        people are taking back control — and what it demands of every brand
         that serves them.
       </p>
       <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Scroll to the research">
@@ -43,10 +30,47 @@
       </button>
     </div>
 
+    <!-- The motion MAZE logo — the signature deck (2) brand-world animation.
+         Animated GIF by default; under reduced motion the JS swaps to the
+         static first-frame PNG. Decorative composition, so aria-hidden. -->
+    <div class="cover-maze" aria-hidden="true">
+      <img
+        class="cover-maze-img"
+        src="assets/deck/maze-hero.gif"
+        data-cover-maze
+        data-still="assets/deck/maze-hero.png"
+        alt=""
+        width="800"
+        height="800"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
     <!-- Quiet "you are the 1,505th respondent" marker, low-emphasis navy. -->
     <p class="cover-you on-warm" data-cover-you>
       <span class="cover-you-dot" aria-hidden="true"></span>
       You are the 1,505th respondent.
     </p>
-  </div>
+  </section>
+
+  <!-- DEPTH BAND: a short Challenger-Series intro on the same warm ground,
+       so the cover earns a longer scroll instead of a dead viewport. Five
+       move-labels tease the playbook ahead. Navy on warm throughout. -->
+  <section class="cover-intro si-ground-warm--soft" aria-label="About the Challenger Series">
+    <div class="cover-intro-inner">
+      <p class="cover-intro-lede reveal">
+        The State of Independence is part of VCCP's Challenger Series. Our logo
+        is a young girl standing up to a bear — a commitment to face life's
+        biggest challenges, take them on, and win.
+      </p>
+      <ul class="cover-moves reveal" aria-label="The five signature moves explored ahead">
+        <li><span class="cover-move-no">01</span> Unplug them from the grid</li>
+        <li><span class="cover-move-no">02</span> Be a trusted alternative</li>
+        <li><span class="cover-move-no">03</span> Help people help themselves</li>
+        <li><span class="cover-move-no">04</span> Kill the mental load</li>
+        <li><span class="cover-move-no">05</span> Boost good behaviours</li>
+      </ul>
+    </div>
+  </section>
 </div>

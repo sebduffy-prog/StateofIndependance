@@ -1,28 +1,27 @@
-/* Chapter 01: cover — Design World V2.
-   The State-of-Independence hero: a warm mustard→orange gradient GROUND with
-   thin white orbit-circle line motifs, sparse pale seed dots, an ambient
-   navy respondent dot-field, and a cream bear+figure silhouette grounded on
-   the bottom edge. Over it all, a huge Inter Tight display wordmark with the
-   highlighter on INDEPENDENCE. Seamless and modern: no bordered hero box, no
-   hard rules — the copy hangs in open space.
+/* Chapter 01: cover — Design World V4 (deck-faithful).
+   The State-of-Independence hero: a warm yellow→orange gradient GROUND
+   carrying the signature MAZE motion logo (isometric maze, navy bear, small
+   figure with a map, sweeping orbit ring — lifted from deck (2)), an ambient
+   navy respondent dot-field, and a huge Poppins Black wordmark with a CLEAN
+   STRAIGHT (no parallelogram) highlight on "independence". Below the hero a
+   short Challenger-Series intro band gives the cover a longer, richer scroll
+   instead of a dead viewport. No bordered hero box, no hard rules.
 
-   LAYERING / SAFETY (DESIGN-WORLD-V2 §6):
-   - Every decorative layer (orbit, seeds, dot-field, silhouette) sits BEHIND
-     the copy (z-index ≤ 0) with pointer-events:none, so nothing occludes the
-     wordmark/standfirst and the cursor reaches the dot-field.
-   - .si-ground-warm owns its stacking context (isolation:isolate) so no stale
-     layer bleeds across; .si-ground-warm > * lifts real content to z-index 1.
-   - All text is navy on the warm ground (.on-warm / explicit) → high contrast,
-     never cream-on-mustard body text, never ink-on-ink.
+   LAYERING / SAFETY (FEEDBACK-V4 §4):
+   - Decorative layers (dot-field, maze) sit BEHIND the copy (z-index ≤ 0) with
+     pointer-events:none, so nothing occludes the wordmark and the cursor
+     reaches the dot-field.
+   - .si-ground-warm owns its stacking context; .si-ground-warm > * lifts real
+     content to z-index 1.
+   - All text is navy on the warm ground (high contrast, never mustard-on-mustard).
 
    PREFIX: a CSS id selector may not begin with a digit; "#\30 1-cover"
    (\30 = "0", trailing space ends the escape) is the valid escape for
-   id="01-cover" and keeps id-specificity. Every selector is scoped to it. */
+   id="01-cover". Every selector is scoped to it. */
 
-/* Go genuinely full-bleed: the loader fixes the section class to .chapter, so
-   replicate .chapter--bleed here. The warm gradient ground is set on the
-   stage (via .si-ground-warm), not the section, so the gradient owns its own
-   isolated stacking context. */
+/* Full-bleed: the loader fixes the section class to .chapter. The warm
+   gradient grounds are set on the inner panels, each owning its own isolated
+   stacking context. */
 #\30 1-cover {
   padding: 0;
   align-items: stretch;
@@ -32,44 +31,23 @@
   margin: 0;
   width: 100%;
   display: flex;
+  flex-direction: column;
 }
 
-/* The stage fills the viewport (minus the fixed nav) and is the warm ground. */
-#\30 1-cover .cover-stage {
-  flex: 1;
-  width: 100%;
+/* ─── HERO: fills the viewport (minus the fixed nav). Two columns: copy left,
+   maze right; the dot-field spans the whole ground behind. ───────────────── */
+#\30 1-cover .cover-hero {
+  position: relative;
+  isolation: isolate;
   min-height: calc(100vh - var(--nav-height));
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  align-items: center;
+  column-gap: clamp(var(--space-2), 3vw, var(--space-5));
+  padding: clamp(var(--space-3), 6vh, var(--space-5))
+           clamp(var(--space-3), 5vw, var(--space-6));
   overflow: hidden;
 }
-
-/* ─── Orbit-circle motif (decorative, behind everything) ──────
-   Offset the concentric rings toward the lower-right, between the bear and
-   the figure, sweeping the "system / agency" dimension. Low-opacity white,
-   never carries meaning. Slow rotation honours reduced-motion via the shared
-   .si-orbit--spin guard in vccp.css. */
-#\30 1-cover .cover-orbit {
-  z-index: 0;
-  background:
-    radial-gradient(circle at 72% 78%,
-      transparent 0,               transparent calc(11% - 1px),
-      var(--soi-orbit) 11%,        transparent calc(11% + 1px),
-      transparent calc(20% - 1px),
-      var(--soi-orbit) 20%,        transparent calc(20% + 1px),
-      transparent calc(30% - 1px),
-      var(--soi-orbit-strong) 30%, transparent calc(30% + 1px),
-      transparent calc(42% - 1px),
-      var(--soi-orbit) 42%,        transparent calc(42% + 1px),
-      transparent calc(56% - 1px),
-      var(--soi-orbit) 56%,        transparent calc(56% + 1px),
-      transparent 100%);
-  transform-origin: 72% 78%;
-}
-
-/* Two pale seed dots parked ON the orbit lines (sparse, decorative). */
-#\30 1-cover .cover-seed--a { right: 27%; top: 33%; }
-#\30 1-cover .cover-seed--b { right: 9%;  bottom: 31%; }
 
 /* ─── Respondent dot-field (navy on warm, behind all) ────────── */
 #\30 1-cover .cover-dots {
@@ -86,108 +64,70 @@
   height: 100%;
 }
 
-/* ─── Cream bear + figure silhouette, grounded FLUSH on the bottom edge ─
-   The brand artwork ships as a BLACK silhouette on transparency. To read as
-   warm CREAM (per the deck world) we recolour it with a filter: drop to white
-   (brightness(0) invert(1)) then a soft sepia/brightness tint lands it on the
-   cream tone — `filter` applies to the element's background-image too.
-
-   Grounding: a background-image with `background-position: bottom` and
-   `background-size: contain` keeps the art's aspect AND parks it flush on the
-   bottom edge with NO letterbox gap below the feet, whatever the box aspect.
-   The content-cropped asset (girl-bear-crop.png) has the feet on its very
-   bottom pixel row, so contain+bottom seats them on the ground.
-
-   Box: large, anchored to the lower-RIGHT half of the stage so the bear+figure
-   pair sits clear of the top-left copy. Opacity keeps it a mass behind the
-   wordmark, never competing with it. z-index:0 + pointer-events:none. */
-#\30 1-cover .cover-bear {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: 0;                 /* behind the copy (which is z-index 1) */
-  /* a generous lower-right region; height drives the silhouette scale */
-  width: min(60vw, 980px);
-  height: min(58vh, 560px);
-  background-image: url('../../assets/brand/girl-bear-crop.png');
-  background-repeat: no-repeat;
-  background-position: bottom right;   /* seat feet on the bottom edge, flush */
-  background-size: contain;            /* preserve aspect, no crop/stretch */
-  /* black art → warm cream silhouette */
-  filter: brightness(0) invert(1) sepia(0.32) saturate(1.1) brightness(1.02);
-  opacity: 0.94;
-  pointer-events: none;
-}
-
-/* ─── Copy block: top-left, no frame, navy on warm ───────────── */
+/* ─── Copy block: top-left column, no frame, navy on warm ────── */
 #\30 1-cover .cover-copy {
   position: relative;
   z-index: 1;                 /* above every decorative layer */
-  align-self: start;
+  align-self: center;
   justify-self: start;
-  max-width: min(62ch, 80%);
-  /* seamless rhythm: generous, uniform space, no plate */
-  padding: clamp(var(--space-4), 7vh, var(--space-6))
-           clamp(var(--space-3), 6vw, var(--space-6)) 0;
+  max-width: 18ch;            /* wraps the wordmark into bold stacked lines */
   pointer-events: none;       /* let the dot-field receive the cursor */
 }
 #\30 1-cover .cover-eyebrow {
-  margin: 0;
-  color: var(--on-warm);      /* navy on amber → high contrast */
+  margin: 0 0 var(--space-2);
+  color: var(--on-warm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
 }
 
-/* ─── Wordmark: huge Inter Tight display gravitas ──────────────
-   Deck-matching HEAVY punch: weight 700 is the heaviest self-hosted face
-   (never request 800/900 → silent fallback), so the punch comes from the
-   heaviest real weight + the tightest tracking (-0.04em, past .si-display
-   --black's -0.035em) + tight leading (0.88) + a bigger hero scale. Reads as
-   designed display type, not a caption. */
+/* ─── Wordmark: huge Poppins Black (900) display gravitas ───────
+   Poppins 900 is self-hosted, so .si-display rides the real Black weight.
+   Bigger + tighter than the shared scale so the title leads the screen. */
 #\30 1-cover .cover-wordmark {
   margin: 0;
   color: var(--on-warm);
-  font-weight: 700;
-  /* bigger than the shared display scale so the title leads the screen */
-  font-size: clamp(3.4rem, 9.8vw, 9.4rem);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-  max-width: 13ch;
+  font-weight: 900;
+  text-transform: none;       /* sentence case per STORY.md headline convention */
+  font-size: clamp(3.2rem, 6vw, 6.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  max-width: 9ch;             /* "independence" wraps onto its own line, clear of the maze */
 }
 
-/* Keep the highlighted word in the display treatment (upright, same weight)
-   rather than .hl's default italic, so INDEPENDENCE matches the wordmark.
-   The parallelogram itself is untouched. */
+/* Keep the highlighted word in the display treatment (upright, same weight).
+   The shared .hl draws a CLEAN STRAIGHT squared block — no parallelogram, no
+   skew override here. */
 #\30 1-cover .cover-wordmark .hl {
   font-style: normal;
   font-weight: inherit;
+  padding: 0.02em 0.14em;
 }
-
-/* Highlighter wipe: start scaled to 0 on X (matching the skew), wipe in when
-   .is-wiped lands. Tint stays the mustard-light highlighter from .hl. */
+/* Highlight wipe: a straight (no-skew) reveal from the left, landing the
+   clean squared mustard block. */
 #\30 1-cover .cover-wordmark .hl::before {
-  transform: skewX(-12deg) scaleX(0);
+  transform: scaleX(0);
   transform-origin: 0% 50%;
-  transition: transform 0.66s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
 }
 #\30 1-cover .cover-wordmark .hl.is-wiped::before {
-  transform: skewX(-12deg) scaleX(1);
+  transform: scaleX(1);
 }
 
 /* ─── Standfirst: navy on warm, generous measure ─────────────── */
 #\30 1-cover .cover-standfirst {
   font-size: var(--t-md);
-  line-height: 1.55;
-  margin: var(--space-1) 0 0;
+  line-height: 1.5;
+  font-weight: 500;
+  margin: var(--space-3) 0 0;
   color: var(--on-warm);
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
-/* ─── Scroll cue: seamless navy pill-less button, no hard plate ─
-   De-blocked: a quiet navy outline-on-warm control, not a bordered box on a
-   contrasting fill. Square corners hold. */
+/* ─── Scroll cue: quiet navy outline-on-warm button, square corners ─ */
 #\30 1-cover .cover-cue {
   pointer-events: auto;
   align-self: start;
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -199,7 +139,7 @@
   appearance: none;
   cursor: pointer;
   padding: 13px 22px;
-  font: 600 var(--t-xs)/1 var(--font-sans);
+  font: 700 var(--t-xs)/1 var(--font-sans);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   transition: transform 0.14s ease, background 0.18s ease, color 0.18s ease;
@@ -207,7 +147,7 @@
 #\30 1-cover .cover-cue:hover {
   transform: translateY(-1px);
   background: var(--soi-navy);
-  color: var(--soi-cream);            /* cream on navy → high contrast */
+  color: var(--soi-cream);
 }
 #\30 1-cover .cover-cue:hover .cover-cue-arrow {
   border-color: var(--soi-cream);
@@ -226,18 +166,41 @@
   transition: transform 0.16s ease, border-color 0.18s ease;
 }
 
+/* ─── The maze motion logo (right column, large, fills its half) ─
+   Sits behind the copy in stacking order (copy is z-index 1) but in its own
+   grid column so they never overlap. Drop shadow lifts it off the warm
+   ground; pointer-events:none so the cursor still drives the dot-field. */
+#\30 1-cover .cover-maze {
+  position: relative;
+  z-index: 0;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  max-width: min(46vw, 620px);
+  pointer-events: none;
+}
+#\30 1-cover .cover-maze-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* mix the white GIF backdrop into the warm ground — multiply drops the
+     near-white frame so the maze reads backgroundless on the gradient */
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.18));
+}
+
 /* ─── Quiet respondent marker (navy, low-emphasis, no overlap) ── */
 #\30 1-cover .cover-you {
   position: absolute;
-  left: clamp(var(--space-3), 6vw, var(--space-6));
-  bottom: clamp(var(--space-2), 4vw, var(--space-4));
+  left: clamp(var(--space-3), 5vw, var(--space-6));
+  bottom: clamp(var(--space-2), 3vw, var(--space-4));
   z-index: 1;
   margin: 0;
   max-width: 24ch;
   font-size: var(--t-xs);
   line-height: 1.4;
   color: var(--soi-navy);
-  opacity: 0.66;              /* still ≥3:1 large-text contrast on amber */
+  opacity: 0.66;
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -253,28 +216,80 @@
   transform: translateY(1px);
 }
 
+/* ─── DEPTH BAND: Challenger-Series intro on the soft warm ground ─
+   Gives the cover a longer, richer scroll. Navy on warm, generous type. */
+#\30 1-cover .cover-intro {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(var(--space-5), 9vh, var(--space-7))
+           clamp(var(--space-3), 5vw, var(--space-6));
+}
+#\30 1-cover .cover-intro-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(var(--space-3), 4vh, var(--space-5));
+}
+#\30 1-cover .cover-intro-lede {
+  margin: 0;
+  color: var(--on-warm);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  max-width: 30ch;
+}
+#\30 1-cover .cover-moves {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(var(--space-2), 2vw, var(--space-3));
+}
+#\30 1-cover .cover-moves li {
+  color: var(--on-warm);
+  font-weight: 700;
+  font-size: var(--t-md);
+  line-height: 1.2;
+  padding-top: 14px;
+  border-top: 2px solid var(--soi-navy);
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+#\30 1-cover .cover-move-no {
+  font-weight: 900;
+  font-size: 0.86em;
+  color: var(--soi-navy);
+  opacity: 0.5;
+  flex: 0 0 auto;
+}
+
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  #\30 1-cover .cover-copy { max-width: 100%; }
-  /* shrink the silhouette so it never creeps under the wordmark on narrow
-     screens; still bottom-flush via background-position:bottom */
-  #\30 1-cover .cover-bear {
-    width: 72vw;
-    height: 42vh;
-    opacity: 0.86;
+  #\30 1-cover .cover-hero {
+    grid-template-columns: 1fr;
+    row-gap: clamp(var(--space-3), 5vh, var(--space-5));
+    align-content: center;
+    text-align: left;
+  }
+  #\30 1-cover .cover-copy { max-width: 100%; justify-self: stretch; }
+  #\30 1-cover .cover-wordmark { max-width: 14ch; }
+  #\30 1-cover .cover-maze {
+    grid-row: 1;                 /* maze above the copy on narrow screens */
+    justify-self: center;
+    max-width: min(74vw, 460px);
   }
 }
 
 @media (max-width: 600px) {
-  #\30 1-cover .cover-bear {
-    width: 92vw;
-    height: 34vh;
-    opacity: 0.8;
-  }
+  #\30 1-cover .cover-maze { max-width: 84vw; }
   #\30 1-cover .cover-you {
     position: static;
     margin-top: var(--space-3);
-    padding-left: clamp(var(--space-3), 6vw, var(--space-6));
   }
 }
 

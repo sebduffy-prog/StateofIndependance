@@ -20,30 +20,32 @@
     <div class="tw-trust-grid si-grid">
       <div class="tw-rank-host reveal col-5" data-host="rank"></div>
       <figure class="tw-truth chart-holder reveal col-7" data-host="trust-truth" hidden>
-        <figcaption class="tw-truth-cap">Share confident (7 to 10 out of 10) each institution will reliably support them, next 12 months.</figcaption>
-        <div class="tw-bars" data-host="trust-bars"></div>
+        <figcaption class="tw-truth-cap">Share confident (7 to 10 out of 10) each institution will reliably support them over the next twelve months. Each value sits on its own orbit, biggest outermost.</figcaption>
+        <div class="tw-orbit" data-host="trust-orbit"></div>
         <p class="tw-spread" data-host="spread"></p>
       </figure>
     </div>
 
-    <div class="tw-paradox-grid si-grid">
-      <div class="tw-paradox reveal col-12">
-        <button type="button" class="tw-flip" data-host="paradox" aria-pressed="false">
-          <span class="tw-flip-hint">Click to flip the card</span>
-          <span class="tw-flip-face tw-flip-front">
-            <span class="vccp-stat-label">Most trusted institution</span>
-            <span class="tw-flip-stat"><span class="tw-flip-big">6.42</span><span class="tw-flip-unit"> / 10</span></span>
-            <span class="tw-flip-cap">NHS: the single highest mean trust score of any UK institution.</span>
-          </span>
-          <span class="tw-flip-face tw-flip-back" aria-hidden="true">
-            <span class="vccp-stat-label">And yet</span>
-            <span class="tw-flip-stat"><span class="tw-flip-big">53</span><span class="tw-flip-unit">%</span></span>
-            <span class="tw-flip-cap">say the NHS&rsquo;s performance has declined over the past decade. High regard and falling confidence, side by side.</span>
-          </span>
-        </button>
-      </div>
+    <div class="tw-paradox reveal">
+      <button type="button" class="tw-flip" data-host="paradox" aria-pressed="false">
+        <span class="tw-flip-hint">Click to flip the card</span>
+        <span class="tw-flip-face tw-flip-front">
+          <span class="vccp-stat-label">Most trusted institution</span>
+          <span class="tw-flip-stat"><span class="tw-flip-big">6.42</span><span class="tw-flip-unit"> / 10</span></span>
+          <span class="tw-flip-cap">NHS: the single highest mean trust score of any UK institution.</span>
+        </span>
+        <span class="tw-flip-face tw-flip-back" aria-hidden="true">
+          <span class="vccp-stat-label">And yet</span>
+          <span class="tw-flip-stat"><span class="tw-flip-big">53</span><span class="tw-flip-unit">%</span></span>
+          <span class="tw-flip-cap">say the NHS&rsquo;s performance has declined over the past decade. High regard and falling confidence, side by side.</span>
+        </span>
+      </button>
     </div>
-    <p class="vccp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. (Q7 % rating 7 to 10; Q7 mean; Q8C % declined, exact 52.6.)</p>
+
+    <div class="tw-decline reveal">
+      <p class="tw-decline-cap">And it is not just the NHS. Across the board, more Britons say each institution has got worse over the past decade than say it has improved &mdash; government most of all.</p>
+      <div class="tw-decline-bars" data-host="decline-bars"></div>
+    </div>
   </section>
 
   <!-- (b) Twist two — protected joy -->
@@ -55,22 +57,21 @@
     </div>
 
     <div class="tw-joy-grid si-grid">
-      <div class="tw-joy-hero reveal col-4">
+      <div class="tw-joy-hero reveal col-5">
         <span class="si-orbit si-orbit--center" aria-hidden="true"></span>
         <div class="tw-joy-hero-copy">
           <span class="vccp-stat-label on-warm">Protecting the holiday budget</span>
           <span class="tw-joy-big si-bignum on-warm"><span data-count-to="39.6" data-count-decimals="0" data-count-suffix="%"></span></span>
           <span class="tw-joy-sub on-warm">are protecting their holiday budget at all costs.</span>
-          <div class="tw-ringfence-strip" data-host="ringfence"></div>
-          <p class="tw-ringfence-cap on-warm">Holidays are ring-fenced. Most other treats stay flexible.</p>
+          <div class="tw-tug" data-host="ringfence"></div>
+          <p class="tw-ringfence-cap on-warm">The holiday is ring-fenced. Most other treats stay flexible.</p>
         </div>
       </div>
-      <figure class="tw-joy-bars chart-holder reveal col-8">
+      <figure class="tw-joy-bars chart-holder reveal col-7">
         <figcaption class="tw-truth-cap">Non-essentials Britain is actively protecting (% protecting because it matters to their wellbeing).</figcaption>
         <div class="tw-lolli" data-host="joy-lolli"></div>
       </figure>
     </div>
-    <p class="vccp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. (Q5 % protecting.)</p>
   </section>
 
   <!-- (c) Twist three — AI on tap -->
@@ -82,7 +83,7 @@
     </div>
 
     <div class="tw-ai-grid si-grid">
-      <div class="tw-ai-stats reveal col-4" data-stagger>
+      <div class="tw-ai-stats reveal col-5" data-stagger>
         <div class="tw-ai-stat reveal">
           <span class="vccp-stat-label">Used AI instead of a professional, any task</span>
           <span class="tw-ai-value si-bignum"><span data-count-to="58.4" data-count-decimals="0" data-count-suffix="%"></span></span>
@@ -93,9 +94,13 @@
           <span class="tw-ai-value si-bignum"><span data-count-to="37.4" data-count-decimals="0" data-count-suffix="%"></span></span>
           <span class="tw-ai-stat-sub">used AI for at least one high-stakes call.</span>
         </div>
+        <div class="tw-ai-tug-wrap reveal">
+          <span class="vccp-stat-label">Have used AI vs have not</span>
+          <div class="tw-tug" data-host="ai-tug"></div>
+        </div>
       </div>
 
-      <figure class="tw-ai-bars chart-holder reveal col-8">
+      <figure class="tw-ai-bars chart-holder reveal col-7">
         <figcaption class="tw-truth-cap">Tasks done with AI instead of a professional (%). High-stakes tasks are framed.</figcaption>
         <div class="tw-bars" data-host="ai-bars"></div>
       </figure>
@@ -105,6 +110,5 @@
       <blockquote class="tw-quote-text si-quote-body">I&rsquo;ve used ChatGPT to look at pensions and tax rules and tax savings and tax codes and self-assessment tax regulations and investment opportunities and some things for my son when he was buying a house and by and large, it was pretty good</blockquote>
       <figcaption class="tw-quote-cap si-quote-cite">qualitative video diaries (AI Video 01.26&ndash;01.46)</figcaption>
     </figure>
-    <p class="vccp-source">Source: VCCP x Watermelon Research COCL survey · 1,504 UK adults 18+, nat. rep. · May 2026. (Q11; any task exact 58.4, high-stakes exact 37.4.)</p>
   </section>
 </div>

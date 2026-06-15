@@ -3,16 +3,19 @@
  *
  * Panel A: a metric explorer. A pillGroup of survey questions drives a chart
  * whose TYPE varies by metric (the question shapes the picture):
- *   - composition splits  -> proportionStrip   (financial position)
+ *   - composition splits  -> horizontalBars     (financial position, trading
+ *     down — clean per-row labels, no collision; replaces the old colliding strip)
  *   - rankings / scores    -> dotPlot           (mood, protected spend, trust)
  *   - magnitude rankings   -> lollipopChart      (AI tasks, brand asks, money moves)
- *   - the one true "how big" ranking -> horizontalBars (trading down by category)
  * A second pillGroup filters by segment where segments.json carries a per-segment
  * split (segments[].metrics, keyed by row label); national totals come from
  * segments.meta.metricsTotals. Survey-only blocks render the national figure and
- * are labelled honestly. The chart re-renders on every change: horizontalBars and
- * proportionStrip morph via their update() handle; lollipop/dotPlot have no update,
- * so the container is cleared and the factory re-runs.
+ * are labelled honestly. The chart re-renders on every change: horizontalBars
+ * morphs via its update() handle; lollipop/dotPlot have no update, so the
+ * container is cleared and the factory re-runs.
+ *
+ * Panel C: a live segment portrait — a shared selector swaps the brand-world
+ * motif image and the verbatim deck/qualitative descriptor copy.
  *
  * Panel B: TGI media index. A pillGroup picks a segment; that segment's
  * tgi.media[] renders as INDEX bars (not %) with a reference line at 100.
@@ -25,15 +28,42 @@
  * @param {{survey: object, segments: object, tgi: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
-import { horizontalBars, lollipopChart, dotPlot, proportionStrip } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, dotPlot } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
-/* Deck-canonical segment sizes — always displayed, never derived. */
+/* Deck-canonical segment sizes — always displayed, never derived. Each carries
+ * the verbatim deck/qualitative portrait (trio + who/money/channels + the
+ * 'Taking control' qual quote) and a brand-world motif. These are descriptors,
+ * not survey figures — no per-segment number beyond the deck share is invented. */
 const SEGMENT_ORDER = [
-  { id: 'architects', label: 'Architects', sharePct: 17 },
-  { id: 'hustlers', label: 'Hustlers', sharePct: 28 },
-  { id: 'coasters', label: 'Coasters', sharePct: 27 },
-  { id: 'retreaters', label: 'Retreaters', sharePct: 28 },
+  {
+    id: 'architects', label: 'Architects', sharePct: 17,
+    motif: 'assets/deck/bear-world-circles.png',
+    trio: 'Organised. Positive. In control.',
+    who: '55+ skew, male', money: 'Comfortable', channels: 'Podcasts, streaming, broadsheets',
+    quote: '“I’ve always been super organised. I like being in control. I hate having my time wasted.”',
+  },
+  {
+    id: 'hustlers', label: 'Hustlers', sharePct: 28,
+    motif: 'assets/deck/bear-world-coil.png',
+    trio: 'Self-sufficient. Savvy. Sceptical.',
+    who: '25–54 core', money: 'Middle-income families', channels: 'Podcasts, social, creators, ChatGPT',
+    quote: '“My trust has worsened over time — but with AI I feel empowered to take control and help myself.”',
+  },
+  {
+    id: 'coasters', label: 'Coasters', sharePct: 27,
+    motif: 'assets/deck/bear-world-sphere.png',
+    trio: 'Easygoing. Careful. Open-minded.',
+    who: '55+ skew', money: 'Mid-to-low income', channels: 'Linear TV, mail, in-store',
+    quote: '“Life has improved with technology. It saves time — but it really can be overwhelming sometimes.”',
+  },
+  {
+    id: 'retreaters', label: 'Retreaters', sharePct: 28,
+    motif: 'assets/deck/bear-world-doors.png',
+    trio: 'Overwhelmed. Stretched. Support-seeking.',
+    who: '45+ skew, female', money: 'Stretched finances', channels: 'Daytime TV, value circulars, Facebook',
+    quote: '“I’ve lost faith in the council and institutions. People are left to do more for themselves.”',
+  },
 ];
 
 const TGI_INDEX_MAX = 250; // TGI bars scale to a sensible ceiling, not 100.
@@ -46,9 +76,9 @@ const NATIONAL_NOTE = 'National figure. Segment split not available for this que
  *  - kind 'segment': backed by segments.json metrics[<metricKey>], keyed by
  *    row label; national total read from segments.meta.metricsTotals.
  *  - kind 'survey': a national-only block in survey.json (no segment split).
- *  - viz: 'bars' | 'lollipop' | 'dotplot' | 'strip'. */
+ *  - viz: 'bars' | 'lollipop' | 'dotplot'. */
 const METRICS = [
-  { id: 'finance', label: 'Financial position', kind: 'segment', metricKey: 'financialPosition', viz: 'strip', decimals: 1, max: 100 },
+  { id: 'finance', label: 'Financial position', kind: 'segment', metricKey: 'financialPosition', viz: 'bars', decimals: 1, max: 100 },
   { id: 'mindset', label: 'Mood of the nation', kind: 'segment', metricKey: 'mindsetNetAgree', viz: 'dotplot', decimals: 1, max: 100 },
   { id: 'tradedDown', label: 'Trading down', kind: 'segment', metricKey: 'tradedDown12Months', viz: 'bars', decimals: 1, max: 100 },
   { id: 'aiTasks', label: 'AI tasks', kind: 'segment', metricKey: 'aiUseByTask', viz: 'lollipop', decimals: 1, max: 100 },
@@ -100,29 +130,11 @@ const surveyMetricItems = (survey, metric) => {
   };
 };
 
-/** Survey source line for a segment-backed metric. */
-const segmentMetricSource = (segments) =>
-  segments.meta?.sampleNote ||
-  'VCCP x Watermelon Research COCL survey. 1,504 UK adults 18+, nat. rep. May 2026.';
-
-/* ── footnotes (verbatim copy from STORY.md) ──────────────────────────── */
-
-const SURVEY_CI = 'Headline survey %: ±2.5% at 95%. Segment-level: ±4 to 6% by segment size.';
-
-const buildSurveySource = (baseSource) => `${baseSource} ${SURVEY_CI}`;
-
-const buildTgiSource = (tgi) => {
-  const base = tgi.source || 'TGI / Compass';
-  const detail = tgi.sourceDetail ? ` ${tgi.sourceDetail}` : '';
-  const note = tgi.indexNote ? ` ${tgi.indexNote}` : '';
-  return `${base}.${detail}${note}`;
-};
-
 /* ── chart dispatch ───────────────────────────────────────────────────
  * Returns a uniform handle { redraw(items) } so the explorer never cares
- * which factory it is driving. horizontalBars / proportionStrip morph in
- * place via their own update(); lollipop / dotPlot have no update(), so we
- * clear the host and re-run the factory (a fresh first-view animation). */
+ * which factory it is driving. horizontalBars morphs in place via its own
+ * update(); lollipop / dotPlot have no update(), so we clear
+ * the host and re-run the factory (a fresh first-view animation). */
 const makeChart = (host, metric, items) => {
   const safe = items.length ? items : NO_DATA;
   // Data marks stay FLAT and box-less: navy components on the pale-teal research
@@ -133,19 +145,6 @@ const makeChart = (host, metric, items) => {
   if (metric.viz === 'bars') {
     const chart = horizontalBars(host, { items: safe, max: metric.max, labelWidth: 200, ...common });
     return { redraw: (next) => chart.update(next.length ? next : NO_DATA, { resort: true }) };
-  }
-
-  if (metric.viz === 'strip') {
-    // Distinct flat fills the strip alternates between — navy / teal-deep, both
-    // high-contrast on the pale-teal research ground, neither same-on-same.
-    const toSegments = (rows) => rows.map((r, i) => ({
-      label: r.label, pct: r.pct, accent: i % 2 === 0 ? 'navy' : 'teal',
-    }));
-    const chart = proportionStrip(host, {
-      segments: toSegments(safe),
-      ariaLabel: `${metric.label}, proportions across the population`,
-    });
-    return { redraw: (next) => chart.update(toSegments(next.length ? next : NO_DATA)) };
   }
 
   // lollipop + dotplot: no update() handle, so re-render into the host.
@@ -166,7 +165,6 @@ const initPanelA = (rootEl, survey, segments) => {
   const chartHost = rootEl.querySelector('[data-pg-metric-chart]');
   const metricHost = rootEl.querySelector('[data-pg-metric-pills]');
   const segmentHost = rootEl.querySelector('[data-pg-segment-pills]');
-  const sourceEl = rootEl.querySelector('[data-pg-metric-source]');
   const noteEl = rootEl.querySelector('[data-pg-view-note]');
   if (!chartHost || !metricHost || !segmentHost) return;
 
@@ -175,29 +173,27 @@ const initPanelA = (rootEl, survey, segments) => {
   let chart = null;
   let chartViz = null; // the viz the live chart was built for
 
-  // Resolve items + source + an honest view-note for the current selection.
+  // Resolve items + an honest view-note for the current selection. Source
+  // strings stay in the data (brief §6) but are not painted — captions cut.
   const resolveView = () => {
     if (currentMetric.kind === 'survey') {
-      const { items, source } = surveyMetricItems(survey, currentMetric);
-      return { items, source: buildSurveySource(source), note: NATIONAL_NOTE };
+      const { items } = surveyMetricItems(survey, currentMetric);
+      return { items, note: NATIONAL_NOTE };
     }
     if (currentSegment === ALL_SEGMENTS) {
       return {
         items: nationalSegmentItems(segments, currentMetric),
-        source: buildSurveySource(segmentMetricSource(segments)),
         note: 'National figure across all 1,504 respondents.',
       };
     }
     const seg = SEGMENT_ORDER.find((s) => s.id === currentSegment);
     return {
       items: oneSegmentItems(segments, currentMetric, currentSegment),
-      source: buildSurveySource(segmentMetricSource(segments)),
       note: `${seg.label} only. ${seg.sharePct}% of the nation.`,
     };
   };
 
   const paintMeta = (view) => {
-    if (sourceEl) sourceEl.textContent = view.source;
     if (noteEl) noteEl.textContent = view.note;
   };
 
@@ -279,7 +275,6 @@ const tgiItems = (tgi, segmentId) => {
 const initPanelB = (rootEl, tgi) => {
   const chartHost = rootEl.querySelector('[data-pg-tgi-chart]');
   const pillHost = rootEl.querySelector('[data-pg-tgi-pills]');
-  const sourceEl = rootEl.querySelector('[data-pg-tgi-source]');
   if (!chartHost || !pillHost) return;
 
   let currentSegment = SEGMENT_ORDER[0].id;
@@ -293,8 +288,6 @@ const initPanelB = (rootEl, tgi) => {
     labelWidth: 230,
     ariaLabel: 'TGI media index by segment, where 100 is the UK-adult average',
   });
-
-  if (sourceEl) sourceEl.textContent = buildTgiSource(tgi);
 
   // The shared bar lib labels every value with a trailing '%'. These are TGI
   // index numbers, not percentages, so we strip the '%' from this chart's
@@ -326,6 +319,55 @@ const initPanelB = (rootEl, tgi) => {
   });
 };
 
+/* ── Panel C: live segment portrait (deck-faithful, fills the lower screen) ──
+ * A shared segment selector swaps the brand-world motif image and the verbatim
+ * deck/qualitative portrait. All copy is descriptor text; the only number is the
+ * deck-canonical share (never derived). */
+const initPanelC = (rootEl) => {
+  const pillHost = rootEl.querySelector('[data-pg-portrait-pills]');
+  const img = rootEl.querySelector('[data-pg-portrait-img]');
+  const shareEl = rootEl.querySelector('[data-pg-portrait-share]');
+  const nameEl = rootEl.querySelector('[data-pg-portrait-name]');
+  const trioEl = rootEl.querySelector('[data-pg-portrait-trio]');
+  const factsEl = rootEl.querySelector('[data-pg-portrait-facts]');
+  const quoteEl = rootEl.querySelector('[data-pg-portrait-quote]');
+  if (!pillHost || !nameEl) return;
+
+  const paint = (seg) => {
+    if (img) {
+      img.src = seg.motif;
+      img.alt = `${seg.label} — brand-world motif`;
+    }
+    if (shareEl) shareEl.textContent = `${seg.sharePct}% of the nation`;
+    nameEl.textContent = `The ${seg.label}`;
+    if (trioEl) trioEl.textContent = seg.trio;
+    if (factsEl) {
+      factsEl.replaceChildren();
+      [['Who', seg.who], ['Money', seg.money], ['Channels', seg.channels]]
+        .forEach(([term, def]) => {
+          const dt = document.createElement('dt');
+          dt.textContent = term;
+          const dd = document.createElement('dd');
+          dd.textContent = def;
+          factsEl.append(dt, dd);
+        });
+    }
+    if (quoteEl) quoteEl.textContent = seg.quote;
+  };
+
+  paint(SEGMENT_ORDER[0]);
+
+  pillGroup(pillHost, {
+    options: SEGMENT_ORDER.map((s) => ({ value: s.id, label: `${s.label} ${s.sharePct}%` })),
+    value: SEGMENT_ORDER[0].id,
+    ariaLabel: 'Choose a segment to meet it',
+    onChange: (value) => {
+      const seg = SEGMENT_ORDER.find((s) => s.id === value);
+      if (seg) paint(seg);
+    },
+  });
+};
+
 export default function init(rootEl, data) {
   const { survey, segments, tgi } = data || {};
   if (!survey || !segments) return; // fail soft — Panel A needs both.
@@ -333,4 +375,5 @@ export default function init(rootEl, data) {
 
   initPanelA(rootEl, survey, segments);
   if (tgi) initPanelB(rootEl, tgi);
+  initPanelC(rootEl);
 }
