@@ -1,8 +1,9 @@
 /* Chapter 02 — research. The State-of-Independence world (FEEDBACK-V4):
    a warm off-white ground that bleeds into the amber world at the foot, navy
    ink (high contrast), thin white orbit accents + seed dots. Backgroundless —
-   no boxes, no chart tracks; the map and diary float on the ground. A REAL
-   Great Britain silhouette carries the eight qualitative cities. Bigger/bolder
+   no boxes, no chart tracks; the map and diary float on the ground. The REAL
+   client-supplied UK map (assets/deck/uk-map.svg) carries the eight
+   qualitative cities, markers absolutely positioned by left%/top%. Bigger/bolder
    Poppins throughout. Every selector is prefixed with #\30 2-research so styles
    never leak. */
 
@@ -290,45 +291,27 @@
   color: var(--teal-deep);
   font-variant-numeric: tabular-nums;
 }
+/* Map container — sized to the real UK map's portrait aspect ratio
+   (823 / 1280 ≈ 0.643). Markers are absolutely positioned over it by
+   left%/top%. Backgroundless: no box, no track behind the silhouette. */
 #\30 2-research .research-map {
   position: relative;
   width: 100%;
-  max-width: 460px;
+  max-width: 320px;
   margin: clamp(8px, 1.4vw, 16px) auto 0;
-  aspect-ratio: 360 / 560;
+  aspect-ratio: 823 / 1280;
 }
-#\30 2-research .research-map-svg {
+/* Real UK map silhouette — navy on the warm ground, no white/box behind it. */
+#\30 2-research .research-map-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
-}
-
-/* Soft halo so the island floats (backgroundless — no box/track). */
-#\30 2-research .research-map-halo {
-  fill: var(--soi-navy);
-  opacity: 0.1;
-  transform: translate(6px, 10px);
-}
-/* GB land — navy mass on the warm ground (deliberate navy-on-warm contrast). */
-#\30 2-research .research-map-land {
-  fill: var(--soi-navy);
-  stroke: var(--soi-navy);
-  stroke-width: 1.4;
-  stroke-linejoin: round;
-}
-/* Connective "we listened across the island" thread. It DRAWS itself as the
-   chapter scrolls (--thread 0→1, set in JS via scrollScene). pathLength=1 on
-   the element normalises the geometry so a single dashoffset works. */
-#\30 2-research .research-map-thread {
-  fill: none;
-  stroke: var(--soi-cream-warm);
-  stroke-width: 1.4;
-  opacity: 0.55;
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--thread, 1));
-  transition: stroke-dashoffset 0.18s linear;
+  object-fit: contain;
+  background: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;          /* markers sit above and own all interaction */
 }
 
 /* ─── City markers (cream squares on the navy land) ─────────── */
@@ -370,21 +353,21 @@
 #\30 2-research .research-marker-label {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 9px);
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 900;
   letter-spacing: 0.01em;
-  color: var(--soi-navy);
+  color: var(--soi-cream-warm);      /* cream label — legible over the navy map */
   background: none;                  /* NO block behind text */
   padding: 0;
   opacity: 0;
   pointer-events: none;
   text-shadow:
-    0 0 4px var(--soi-page),
-    0 0 8px var(--soi-page),
-    0 1px 2px rgba(244,241,234,0.9);
+    0 0 4px var(--soi-navy),
+    0 0 8px var(--soi-navy),
+    0 1px 3px rgba(10,26,92,0.95);
   transition: opacity 0.12s ease;
 }
 #\30 2-research .research-marker:hover .research-marker-label,
@@ -495,17 +478,13 @@
   #\30 2-research .research-world-motif {
     transform: translate(-50%, -50%);
   }
-  #\30 2-research .research-map-thread {
-    stroke-dashoffset: 0;
-    transition: none;
-  }
 }
 
 /* ─── Responsive: stack columns under the grid breakpoint ───── */
 @media (max-width: 860px) {
   #\30 2-research .research-shell { min-height: 0; }
   #\30 2-research .research-split { grid-template-columns: 1fr; }
-  #\30 2-research .research-map { max-width: 420px; }
+  #\30 2-research .research-map { max-width: 300px; }
   #\30 2-research .research-map-head,
   #\30 2-research .research-map-hint,
   #\30 2-research .research-rail { max-width: 420px; }

@@ -1,13 +1,14 @@
 /**
  * Chapter 02 — research. Warm State-of-Independence ground (navy ink), built
  * deck-faithful (FEEDBACK-V4): bigger/bolder Poppins, backgroundless, a longer
- * richer scroll, and a REAL recognisable Great Britain silhouette (replacing
- * the old blob) carrying eight qualitative-research cities.
+ * richer scroll, and the REAL client-supplied UK map (assets/deck/uk-map.svg)
+ * carrying eight qualitative-research cities.
  *
  * Left column: the method, told as a flowing rhythm with a big hero number and
  * three supporting counters (animated by observeCounters).
- * Right column: a navy GB silhouette with eight cream city markers (real
- * <button>s). Markers auto-pin in sequence on first reveal; selecting one
+ * Right column: the navy UK map (backgroundless <img>) with eight cream city
+ * markers (real <button>s) absolutely positioned over it by left%/top%.
+ * Markers auto-pin in sequence on first reveal; selecting one
  * (click, focus, or arrow-key) opens a diary rail card. London is selected by
  * default so the rail never starts empty.
  *
@@ -26,66 +27,40 @@ import {
   prefersReducedMotion as reducedMotion,
 } from '../lib/experiential.js';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
+/* Real UK map: client-supplied silhouette staged (navy, recoloured) at
+   assets/deck/uk-map.svg — a tall portrait GB outline (viewBox 0 0 823 1280,
+   aspect ≈ 0.643). Rendered backgroundless via <img>. Markers are placed by
+   left%/top% over the map container (NOT SVG coords): the map is GB portrait —
+   Scotland at the top, the south coast at the bottom, London bottom-right. */
+const MAP_SRC = 'assets/deck/uk-map.svg';
 
-/* viewBox: 0..360 wide, 0..560 tall — GB is a tall island. Marker x/y live in
-   the same space, placed at roughly correct relative GB positions (relative
-   placements for storytelling, not survey coordinates). */
-const VIEW_W = 360;
-const VIEW_H = 560;
-
-/* A recognisable, simplified Great Britain silhouette — crisp angular coastline
-   (reads as a map, not a blob). Tracks the real landmarks clockwise from the
-   north: tapered north Scotland, the Galloway west extreme, the narrow WAIST at
-   the border, the Welsh (Pembrokeshire) and Cornish (Land's End) south-west
-   juts, the Kent/Dover south-east corner, the East-Anglia bulge and the Wash
-   notch on the east, then the Aberdeen/Buchan east extreme back up to Caithness.
-   Stylised, not survey-grade, but unmistakably the island. */
-const GB_PATH =
-  'M172,12 L138,52 L110,118 L100,170 ' +          // Scotland west → Galloway
-  'L150,214 ' +                                   // the WAIST (England/Scotland border)
-  'L160,280 L182,318 L150,338 L132,352 ' +        // NW England + North Wales
-  'L102,378 ' +                                   // Pembrokeshire (Wales SW extreme)
-  'L142,398 L164,408 ' +                          // Gower / Bristol Channel north shore
-  'L140,428 L116,452 ' +                          // Cornwall north coast
-  'L152,474 ' +                                   // Land’s End (SW extreme)
-  'L205,478 L270,474 L326,476 ' +                 // south coast (Devon → Sussex)
-  'L344,486 ' +                                   // Kent / Dover (SE corner)
-  'L306,456 L326,438 ' +                          // Thames estuary / Essex
-  'L346,416 ' +                                   // East Anglia / Norfolk (E extreme)
-  'L308,398 ' +                                   // the Wash (notch in)
-  'L304,344 L290,300 ' +                          // Lincolnshire / Humber
-  'L262,262 ' +                                   // Yorkshire / Flamborough (out)
-  'L266,212 L238,176 L246,146 ' +                 // NE England / Northumberland / SE Scotland
-  'L260,114 ' +                                   // Aberdeen / Buchan (E Scotland extreme)
-  'L226,72 L200,34 L172,12 Z';                    // Moray Firth / Caithness
-
-/* City markers — x/y in viewBox units. Approximate relative placements.
-   Each carries either a verbatim diary quote (with its source-stated
-   attribution) or an honest note. order = pin-in sequence. */
+/* City markers — left%/top% over the map container. Approximate placements,
+   nudged so each sits on its real landmass. Each carries either a verbatim
+   diary quote (with its source-stated attribution) or an honest note.
+   order = pin-in sequence. */
 const CITIES = [
   {
     id: 'glasgow',
     name: 'Glasgow',
     region: 'Scotland',
-    x: 142,
-    y: 188,
+    left: 40,
+    top: 30,
     note: 'Scotland · families and individuals · week-long video diary, filmed early June.',
   },
   {
     id: 'wigan',
     name: 'Wigan',
     region: 'North-west England',
-    x: 168,
-    y: 322,
+    left: 44,
+    top: 51,
     note: 'North-west England · families and individuals · week-long video diary, filmed early June.',
   },
   {
     id: 'bury',
     name: 'Bury',
     region: 'Greater Manchester',
-    x: 184,
-    y: 314,
+    left: 48,
+    top: 50,
     quote:
       'I would say that it is more of an empowering feeling being able to ' +
       'do things yourself, to fix things yourself, to seek out answers ' +
@@ -96,8 +71,8 @@ const CITIES = [
     id: 'cardiff',
     name: 'Cardiff',
     region: 'Wales',
-    x: 150,
-    y: 404,
+    left: 36,
+    top: 69,
     quote:
       'I do use ChatGPT all the time and find it really quite helpful when ' +
       'I do have problems… I do feel more empowered now with everything at ' +
@@ -108,8 +83,8 @@ const CITIES = [
     id: 'bristol',
     name: 'Bristol',
     region: 'South-west England',
-    x: 180,
-    y: 412,
+    left: 44,
+    top: 68,
     quote:
       'I particularly like all the apps, the shopping apps and anything new ' +
       'that comes into the shops, the loyalty apps. And, if we do want to ' +
@@ -121,8 +96,8 @@ const CITIES = [
     id: 'watford',
     name: 'Watford',
     region: 'Hertfordshire',
-    x: 264,
-    y: 448,
+    left: 57,
+    top: 74,
     quote:
       'I don’t go out specifically to look for certain brand items. I go by, ' +
       'comfort and price.',
@@ -132,8 +107,8 @@ const CITIES = [
     id: 'london',
     name: 'London',
     region: 'Greater London',
-    x: 280,
-    y: 458,
+    left: 61,
+    top: 75,
     quote:
       'I do know that calling the police would probably be a complete waste ' +
       'of time. However I do have faith in the sense that maybe if I did my ' +
@@ -146,8 +121,8 @@ const CITIES = [
     id: 'southampton',
     name: 'Southampton',
     region: 'South coast',
-    x: 234,
-    y: 470,
+    left: 52,
+    top: 80,
     quote:
       'I now have a lot less trust in institutions such as the government ' +
       'and politicians, local councils, than I did a few years ago… there’s ' +
@@ -158,40 +133,16 @@ const CITIES = [
   },
 ];
 
-const buildMapSvg = () => {
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  svg.setAttribute('viewBox', `0 0 ${VIEW_W} ${VIEW_H}`);
-  svg.setAttribute('class', 'research-map-svg');
-  svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', 'Silhouette of Great Britain');
-  svg.setAttribute('focusable', 'false');
-
-  // Soft halo behind the landmass so it floats (backgroundless — no box/track).
-  const halo = document.createElementNS(SVG_NS, 'path');
-  halo.setAttribute('d', GB_PATH);
-  halo.setAttribute('class', 'research-map-halo');
-  halo.setAttribute('aria-hidden', 'true');
-
-  const land = document.createElementNS(SVG_NS, 'path');
-  land.setAttribute('d', GB_PATH);
-  land.setAttribute('class', 'research-map-land');
-
-  // Hairline connective lines from each city to its neighbour (a faint
-  // "we listened across the island" graticule). Drawn cream-on-navy, behind
-  // markers. Decorative only.
-  const thread = document.createElementNS(SVG_NS, 'polyline');
-  thread.setAttribute(
-    'points',
-    CITIES.map((c) => `${c.x},${c.y}`).join(' ')
-  );
-  thread.setAttribute('class', 'research-map-thread');
-  thread.setAttribute('aria-hidden', 'true');
-  // Normalise the geometry length to 1 so CSS can "draw" the thread from a
-  // single dashoffset driven by scroll progress (--thread, set in JS).
-  thread.setAttribute('pathLength', '1');
-
-  svg.append(halo, land, thread);
-  return svg;
+/* Real UK map as a backgroundless <img> — navy silhouette on the research
+   ground (no white/box behind it). The container preserves the map's portrait
+   aspect ratio so marker left%/top% land consistently. */
+const buildMapImage = () => {
+  const img = document.createElement('img');
+  img.className = 'research-map-img';
+  img.src = MAP_SRC;
+  img.alt = 'Map of the United Kingdom';
+  img.setAttribute('draggable', 'false');
+  return img;
 };
 
 const buildRailCard = (city) => {
@@ -251,8 +202,7 @@ export default function init(rootEl, data) {
   const counter = rootEl.querySelector('[data-research-counter]');
   if (!mapHost || !railHost) return; // fail soft if markup missing
 
-  const svg = buildMapSvg();
-  mapHost.append(svg);
+  mapHost.append(buildMapImage());
 
   const buttons = new Map();
   const order = CITIES.map((c) => c.id);
@@ -293,8 +243,8 @@ export default function init(rootEl, data) {
     btn.className = 'research-marker';
     btn.setAttribute('aria-pressed', 'false');
     btn.setAttribute('aria-label', `${city.name}, ${city.region}, open video diary`);
-    btn.style.left = `${(city.x / VIEW_W) * 100}%`;
-    btn.style.top = `${(city.y / VIEW_H) * 100}%`;
+    btn.style.left = `${city.left}%`;
+    btn.style.top = `${city.top}%`;
     btn.style.setProperty('--pin-delay', `${index * 110}ms`);
 
     const label = document.createElement('span');
@@ -364,16 +314,13 @@ export default function init(rootEl, data) {
   //    fade/rise the two columns and ease the world-motif in as you arrive.
   // 2. Parallax: the orbit ring, seed dots and brand-world marks drift at
   //    different depths (clamped, transform-only — never covers copy).
-  // 3. Scroll scene: as the map travels through the viewport its progress
-  //    drives a faint "sweep" highlight across the cities (the connective
-  //    thread fills in), and on first deep-scroll the diary auto-advances
-  //    once through the cities so the rail feels alive — pointer/keyboard
-  //    interaction always wins (autoplay stops the moment the user acts).
+  // 3. Scroll scene: on first deep-scroll the diary auto-advances once through
+  //    the cities so the rail feels alive — pointer/keyboard interaction always
+  //    wins (autoplay stops the moment the user acts).
   chapterTransition(rootEl);
   observeParallax(rootEl, { maxShiftPx: 46 });
 
   if (!reducedMotion()) {
-    const thread = svg.querySelector('.research-map-thread');
     let userEngaged = false;
     let autoStep = 0;
     const stopAutoplay = () => {
@@ -398,13 +345,7 @@ export default function init(rootEl, data) {
           const city = CITIES.find((c) => c.id === id);
           if (city) select(city);
         },
-      })),
-      {
-        onProgress: (p) => {
-          // The connective thread "draws" itself as you scroll the chapter.
-          if (thread) thread.style.setProperty('--thread', p.toFixed(3));
-        },
-      }
+      }))
     );
   }
 }
