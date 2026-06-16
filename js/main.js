@@ -29,7 +29,7 @@ const DATA_FILES = {
 
 // Tuning constants — no magic numbers inline.
 const DEFAULT_UNLOCK_MS = 1200; // ungated/narrative steps unlock after this dwell
-const AVG_SECONDS_PER_STEP = 50; // drives the average-time label
+const AVG_SECONDS_PER_STEP = 100; // drives the average-time label (~15 min over 9 steps)
 
 const fetchJson = async (url) => {
   const res = await fetch(url);
