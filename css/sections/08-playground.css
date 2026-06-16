@@ -401,14 +401,41 @@
   gap: clamp(var(--space-3), 4vw, var(--space-6));
 }
 #\30 8-playground .pg-portrait-motif {
+  position: relative;
   margin: 0;
+  will-change: transform;
+}
+/* Orbit ring riding behind the bear-world motif — deck motion motif, no fill. */
+#\30 8-playground .pg-portrait-orbit {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 188, 165, 0.35);
+  pointer-events: none;
+  animation: pg-orbit-spin 48s linear infinite;
 }
 #\30 8-playground .pg-portrait-motif img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 1 / 1;
   object-fit: contain;
+  transition: opacity 0.32s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Crossfade while the motif image swaps (JS toggles .is-swapping). */
+#\30 8-playground .pg-portrait-motif img.is-swapping {
+  opacity: 0;
+  transform: scale(0.96);
+}
+/* When a new segment is picked the card eases up a touch (JS toggles). */
+#\30 8-playground .pg-portrait-card.is-stepped .pg-portrait-body {
+  animation: pg-step-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes pg-step-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
 }
 #\30 8-playground .pg-portrait-body {
   display: flex;
@@ -429,11 +456,12 @@
 #\30 8-playground .pg-portrait-name {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 0.95;
+  line-height: 1;               /* >0.95 so heavy 900 caps never clip */
   letter-spacing: -0.025em;
   text-transform: uppercase;
   font-weight: 900;
   color: var(--soi-navy);
+  overflow: visible;
 }
 #\30 8-playground .pg-portrait-trio {
   margin: 0;
@@ -479,8 +507,20 @@
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 8-playground .pillgroup-chip {
+  #\30 8-playground .pillgroup-chip,
+  #\30 8-playground .pg-portrait-motif img,
+  #\30 8-playground .pg-head-motif {
     transition: none;
+  }
+  #\30 8-playground .pg-orbit--ring,
+  #\30 8-playground .pg-portrait-orbit,
+  #\30 8-playground .pg-portrait-card.is-stepped .pg-portrait-body {
+    animation: none;
+  }
+  /* pin the entrance to its at-rest state */
+  #\30 8-playground .pg-stage {
+    opacity: 1;
+    transform: none;
   }
 }
 

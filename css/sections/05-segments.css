@@ -400,24 +400,44 @@
 #\30 5-segments .seg-quad.is-active { background: rgba(253,141,32,0.24); }
 #\30 5-segments .seg-map.is-focused .seg-quad.is-dimmed { opacity: 0.3; }
 
-/* the live "you" marker — amber chip, navy text (§6), above everything */
+/* the live "you" marker — box-less pin (V5: NO fill behind text). A small
+   navy dot anchors the position; the "YOU" label rides above it in navy
+   weight with a cream text-halo for legibility over the coloured quadrants.
+   No background, no border, no chip. */
 #\30 5-segments .seg-youtag {
   position: absolute;
   z-index: 5;
   transform: translate(-50%, -50%);
-  background: var(--soi-amber);
+  background: none;
+  border: 0;
   color: var(--soi-navy);
-  border: 1.5px solid var(--soi-navy);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 2px 7px;
+  padding: 0;
   pointer-events: none;
+  /* cream halo so the navy label reads on amber/orange/navy quadrants alike */
+  text-shadow:
+    0 0 3px var(--soi-cream), 0 0 3px var(--soi-cream),
+    0 1px 2px var(--soi-cream), 0 -1px 2px var(--soi-cream);
   transition: left .6s cubic-bezier(.22,.61,.36,1), top .6s cubic-bezier(.22,.61,.36,1);
 }
+/* the dot anchor that pins the exact position */
+#\30 5-segments .seg-youtag::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--soi-navy);
+  box-shadow: 0 0 0 3px var(--soi-cream);
+}
 #\30 5-segments .seg-youtag.is-instant { transition: none; }
-#\30 5-segments .seg-youtag.is-landed { box-shadow: 0 2px 0 var(--soi-navy); }
+#\30 5-segments .seg-youtag.is-landed { color: var(--soi-navy); }
 
 #\30 5-segments .seg-maphint {
   font-size: var(--t-sm, 0.9rem);
