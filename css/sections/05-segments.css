@@ -1,957 +1,532 @@
-/* Chapter 05 — segments. THE SHOWPIECE.
-   Design World V3 (FEEDBACK-V4): deck-faithful, backgroundless, bigger/bolder
-   Poppins. Warm gradient hero with a deck bear-world motif, a four-tile roster
-   band, then a BACKGROUNDLESS 2×2 compass (no white box/track), a force-physics
-   graph, and the quiz. Every selector prefixed with #\30 5-segments so styles
-   never leak between chapters. */
+/* ============================================================
+   Chapter 05 — segments. THE SHOWPIECE.
+   A warm-ground journey through the four Britains: an assembling
+   opener, a backgroundless 2×2 agency compass (dotField behind four
+   quadrant buttons → a profile card), the living force-physics
+   segment network, and the which-Britain quiz. Every selector is
+   scoped to #\30 5-segments. Backgroundless, square corners, navy on
+   warm, no underline, no skew, tabular nums. (FEEDBACK-V4 / DW-V2.)
+   ============================================================ */
 
-#\30 5-segments { background: var(--soi-page); }
-
-/* JOURNEY: full-screen immersive. With no top nav bar, the step must fill the
-   viewport from the very top — kill the chapter base's large top/bottom padding
-   (it was reserved for the old top nav) so the warm hero ground starts at the
-   page edge with no dead band. The journey-step already reserves room for the
-   fixed bottom controls and provides internal scroll for this content-rich
-   chapter, so we only set a comfortable left/right gutter here. */
-#\30 5-segments.chapter {
-  display: block;
-  align-items: stretch;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-inline: clamp(20px, 4vw, 72px);
-}
-
-#\30 5-segments .chapter-inner {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(40px, 6vh, 96px);
-  /* Fill the screen (minus the fixed controls bar) so the gradient grounds and
-     dense interactives occupy the page — no dead band top or bottom. */
-  min-height: calc(100svh - var(--journey-controls-h));
-  padding-block: clamp(24px, 4vh, 56px);
-}
-
-/* ─── Hero band: the warm gradient world + deck motif ─────── */
-#\30 5-segments .seg-hero-ground {
-  /* full warm ground with generous breathing room (seamless, not a tight box) */
-  padding: clamp(40px, 6vw, 88px) clamp(28px, 5vw, 72px);
-  overflow: hidden;
-}
-/* orbit motif: low-opacity white rings, behind content, never interactive */
-#\30 5-segments .seg-hero-orbit { z-index: 0; }
-
-/* Two-column hero: copy left, deck bear-world motif right. */
-#\30 5-segments .seg-hero-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(24px, 4vw, 64px);
-  align-items: center;
-}
-/* all hero copy sits above the decorative layers */
-#\30 5-segments .seg-hero-body {
-  position: relative;
-  z-index: 1;
-  max-width: 30ch;
-}
-/* The deck motif (overlapping circles = "what the four share"): backgroundless,
-   blends into the warm ground via multiply so no white plate appears. */
-#\30 5-segments .seg-hero-art {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* The shell mounts this as <section class="journey-step" id="05-segments">,
+   so the chapter owns its own warm ground + padding here. */
+#\30 5-segments {
+  background: var(--ground-warm);
+  color: var(--on-warm);
   isolation: isolate;
 }
-/* orbit motif behind the deck render — drifts opposite to the image (parallax) */
-#\30 5-segments .seg-art-orbit {
+
+#\30 5-segments .sg-world {
+  position: relative;
+  padding: clamp(3.5rem, 7vh, 7rem) clamp(20px, 5vw, 88px)
+           calc(var(--journey-controls-h) + clamp(2rem, 5vh, 4rem)) clamp(20px, 5vw, 88px);
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vh, 6rem);
+}
+
+/* Real content sits above the decorative orbit layers. */
+#\30 5-segments .sg-world > * { position: relative; z-index: 1; }
+
+/* ── Decorative orbit world (behind everything) ─────────────────── */
+#\30 5-segments .sg-orbit {
   position: absolute;
-  inset: -8%;
+  inset: -10% -10% auto -10%;
+  height: 130%;
   z-index: 0;
   opacity: 0.5;
+  background-position: 78% 26%;
 }
-#\30 5-segments .seg-hero-img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  max-width: 460px;
-  height: auto;
-  mix-blend-mode: multiply;
-  will-change: transform;
-}
-
-/* Deck-matching display: real Poppins Black (900 via .si-display--black),
-   tight tracking + tight leading for the punchy headline (FEEDBACK-V4 §1/§4).
-   Sized up to fill the hero (no dead band). */
-#\30 5-segments .seg-title {
-  margin: 10px 0 22px 0;
-  max-width: 14ch;
-  font-size: clamp(3rem, 6vw, 6rem);
-  letter-spacing: -0.045em;
-  line-height: 0.86;
-  /* image-title lockup: stacked lines, no clipping of the descenders/accent */
-  overflow: visible;
-}
-/* Each stacked title line reveals in sequence (deck lockup entrance). Pure
-   transform/opacity, overflow visible so nothing clips. */
-#\30 5-segments .seg-title-line {
-  display: block;
-  overflow: visible;
-  opacity: 0;
-  transform: translateY(0.32em);
-  transition: opacity .6s cubic-bezier(.22,.61,.36,1),
-              transform .6s cubic-bezier(.22,.61,.36,1);
-}
-#\30 5-segments .seg-title-line.is-in { opacity: 1; transform: none; }
-/* Client V6: NO block/bar behind ANY text. On the big display titles the
-   baseline underline rule reads as a block — so emphasis here is COLOUR +
-   WEIGHT ONLY (no underline image, no padding plate). Scoped to this chapter. */
-#\30 5-segments .si-display .hl,
-#\30 5-segments .seg-title-line .hl {
-  background-image: none;
-  background-size: 0 0;
-  padding-bottom: 0;
-  font-weight: 900;
-}
-@media (prefers-reduced-motion: reduce) {
-  #\30 5-segments .seg-title-line { opacity: 1; transform: none; transition: none; }
-}
-#\30 5-segments .seg-standfirst {
-  font-size: clamp(1.05rem, 1.45vw, 1.4rem);
-  font-weight: 500;
-  line-height: 1.5;
-  margin: 0 0 26px 0;
-  /* navy on the warm ground = high contrast (§6) */
-  color: var(--on-warm);
-}
-/* axis hinge: no hard rule — the warm ground separates it; navy text for contrast */
-#\30 5-segments .seg-hinge {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 18px;
-  font-size: var(--t-sm, 0.95rem);
-  color: var(--on-warm);
-  max-width: 62ch;
-  margin: 0;
-}
-#\30 5-segments .seg-hinge-pair { display: inline-flex; align-items: baseline; gap: 8px; }
-#\30 5-segments .seg-hinge-dim {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-weight: 700;
-  font-size: var(--t-xs, 0.72rem);
-}
-#\30 5-segments .seg-hinge-axis { color: rgba(10,26,92,0.7); }
-#\30 5-segments .seg-hinge-x { font-weight: 700; opacity: 0.5; }
-
-/* ─── Maze / bear-world transition break (deck "journey through" motif) ─── */
-/* Full-bleed warm band that hinges the compass into the network. The deck maze
-   render sits centred with a spinning orbit ring behind it; the line of copy is
-   BACKGROUNDLESS (navy weight/colour on the warm ground, no box). Fills what
-   would otherwise be a dead gap between two dense interactives. */
-#\30 5-segments .seg-maze-break {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(14px, 2vh, 26px);
-  min-height: clamp(280px, 42vh, 460px);
-  padding: clamp(28px, 5vh, 64px) clamp(20px, 4vw, 56px);
-  background: var(--ground-warm);
-  overflow: hidden;
-}
-#\30 5-segments .seg-maze-orbit {
+#\30 5-segments .sg-seed {
   position: absolute;
-  inset: -20% -10%;
   z-index: 0;
-  opacity: 0.45;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--soi-seed);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.32);
+  pointer-events: none;
 }
-#\30 5-segments .seg-maze-img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: clamp(180px, 26vw, 320px);
-  height: auto;
-  mix-blend-mode: multiply;
-  will-change: transform;
-}
-/* backgroundless copy: navy, big, bold Poppins — colour/weight only, no box */
-#\30 5-segments .seg-maze-line {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-sans);
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  line-height: 1.0;
-  font-size: clamp(1.8rem, 4.4vw, 3.4rem);
-  color: var(--soi-navy);
-  max-width: 18ch;
-}
-#\30 5-segments .seg-maze-line span:last-child { color: var(--soi-orange); }
+#\30 5-segments .sg-seed--a { top: 9%;  right: 16%; }
+#\30 5-segments .sg-seed--b { top: 30%; right: 8%; }
+#\30 5-segments .sg-seed--c { top: 18%; right: 30%; width: 7px; height: 7px; }
 
-/* ─── Roster band: four backgroundless segment tiles ──────── */
-/* No cards/boxes — each tile is a deck bear-world motif over a hairline-tinted
-   ground, the share number set BIG in Poppins Black. Selecting one opens its
-   profile on the compass (JS). High contrast: navy ink on the warm page (§4/§6). */
-#\30 5-segments .seg-roster {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(14px, 1.8vw, 28px);
-}
-#\30 5-segments .seg-tile {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: clamp(14px, 1.6vw, 22px) clamp(12px, 1.4vw, 20px);
-  text-align: left;
-  font-family: var(--font-sans);
+/* ── Opener ─────────────────────────────────────────────────────── */
+#\30 5-segments .sg-head { max-width: 60ch; }
+#\30 5-segments .sg-kicker {
+  font-size: var(--t-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
   color: var(--soi-navy);
-  /* single device: a quiet warm tint that lifts on hover — no hard frame */
-  border-top: 3px solid transparent;
-  transition: background .22s ease, border-color .22s ease, transform .22s ease;
+  margin: 0 0 var(--space-2);
 }
-#\30 5-segments .seg-tile-art {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  margin-bottom: 8px;
-}
-#\30 5-segments .seg-tile-art img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* blend the deck render into the warm page — no white plate */
-  mix-blend-mode: multiply;
-}
-#\30 5-segments .seg-tile-share {
-  font-family: var(--font-sans);
+#\30 5-segments .sg-headline {
   font-weight: 900;
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 0.92;
+  font-size: clamp(3rem, 8vw, 7rem);
   color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
+  margin: 0 0 var(--space-3);
 }
-#\30 5-segments .seg-tile-name {
-  font-size: var(--t-md, 1.1rem);
-  font-weight: 800;
-  line-height: 1.1;
+#\30 5-segments .sg-headline span { display: block; }
+#\30 5-segments .sg-emph { color: var(--soi-navy); font-weight: 900; }
+#\30 5-segments .sg-standfirst {
+  max-width: 56ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--soi-navy);
 }
-#\30 5-segments .seg-tile-trio {
-  font-size: var(--t-sm, 0.86rem);
-  font-weight: 500;
-  color: rgba(10,26,92,0.7);
-  line-height: 1.35;
-}
-/* Selection affordance is the top accent rule + lift — NO fill plate behind the
-   tile copy (client V5: no block behind text). Hover only lifts + thickens the
-   accent; active latches a navy accent and orange share number. */
-#\30 5-segments .seg-tile:hover {
-  border-top-color: var(--soi-orange);
-  transform: translateY(-2px);
-}
-#\30 5-segments .seg-tile:focus-visible {
-  outline: 2px solid var(--soi-navy);
-  outline-offset: 2px;
-}
-#\30 5-segments .seg-tile.is-active {
-  border-top-color: var(--soi-navy);
-  border-top-width: 4px;
-}
-#\30 5-segments .seg-tile.is-active .seg-tile-share { color: var(--soi-orange); }
+#\30 5-segments .sg-standfirst strong { font-weight: 700; }
 
-/* ─── Stage: map + profile side by side ───────────────────── */
-#\30 5-segments .seg-stage {
+/* Shared eyebrow + copy for each block. */
+#\30 5-segments .sg-compass-eyebrow,
+#\30 5-segments .sg-network-eyebrow,
+#\30 5-segments .sg-quiz-eyebrow {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  color: var(--soi-navy);
+  margin: 0 0 var(--space-2);
+}
+#\30 5-segments .sg-compass-copy,
+#\30 5-segments .sg-network-copy,
+#\30 5-segments .sg-quiz-copy {
+  max-width: 60ch;
+  line-height: 1.55;
+  color: var(--soi-navy);
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   1. THE AGENCY COMPASS
+   ════════════════════════════════════════════════════════════════ */
+#\30 5-segments .sg-compass-block {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(28px, 3.5vw, 56px);
+  grid-template-columns: minmax(300px, 0.9fr) minmax(360px, 1.2fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
   align-items: start;
 }
-
-#\30 5-segments .seg-stage-label {
-  display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-weight: 800;
-  font-size: var(--t-xs, 0.74rem);
-  color: var(--soi-navy);
-  margin: 0 0 16px 0;
+@media (max-width: 900px) {
+  #\30 5-segments .sg-compass-block { grid-template-columns: 1fr; }
 }
 
-/* ─── The 2×2 map ─────────────────────────────────────────── */
-/* BACKGROUNDLESS (FEEDBACK-V4 §4): no white/mustard plate, no drop shadow. The
-   compass floats on the warm page; only the faintest tint hints at the surface
-   so the ink dots and axes read against it. */
-#\30 5-segments .seg-map {
+#\30 5-segments .sg-compass-lede { align-self: center; }
+#\30 5-segments .sg-compass-cue {
+  margin-top: var(--space-3);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  color: var(--soi-orange);
+  letter-spacing: 0.01em;
+}
+
+/* The compass stage — backgroundless. The dot-field fills it; the four
+   quadrant buttons sit over it; thin axis labels float at the edges. */
+#\30 5-segments .sg-compass {
   position: relative;
-  isolation: isolate;
-  width: 100%;
   aspect-ratio: 1 / 1;
-  max-width: 620px;
-  margin-inline: auto;
-  /* Backgroundless (§4): the compass floats on the page ground — no cream/
-     mustard plate. Axes + dots carry the structure. */
-  background: transparent;
-}
-
-/* dot field canvas host — sits behind the quadrant UI (anti-overlap §6) */
-#\30 5-segments .seg-dotfield {
-  position: absolute;
-  inset: 0;
-  height: 100%;
   width: 100%;
-  z-index: 0;
-  pointer-events: none;
+  margin: 0;
+  /* faint cross-hair axes only — no box, no white track */
+  background-image:
+    linear-gradient(to right, transparent calc(50% - 1px), rgba(10, 26, 92, 0.16) 50%, transparent calc(50% + 1px)),
+    linear-gradient(to bottom, transparent calc(50% - 1px), rgba(10, 26, 92, 0.16) 50%, transparent calc(50% + 1px));
 }
 
-/* ink hairline axes through the centre (the one structural line the 2×2 needs) */
-#\30 5-segments .seg-axis {
-  position: absolute;
-  background: rgba(10,26,92,0.55);
-  z-index: 2;
-  pointer-events: none;
-}
-#\30 5-segments .seg-axis-x { left: 0; right: 0; top: 50%; height: 1px; transform: translateY(-0.5px); }
-#\30 5-segments .seg-axis-y { top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-0.5px); }
-
-#\30 5-segments .seg-axis-label {
-  position: absolute;
-  z-index: 3;
-  font-size: var(--t-xs, 0.72rem);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-weight: 800;
-  /* navy ink with a page-tinted halo (no box) keeps it legible over the dots
-     without a mustard chip — backgroundless per §4. */
-  color: var(--soi-navy);
-  padding: 1px 4px;
-  text-shadow:
-    0 0 4px var(--soi-page), 0 0 4px var(--soi-page),
-    0 0 8px var(--soi-page), 0 0 8px var(--soi-page);
-  pointer-events: none;
-}
-#\30 5-segments .seg-label-left   { left: 8px;  top: 50%; transform: translateY(-50%); }
-#\30 5-segments .seg-label-right  { right: 8px; top: 50%; transform: translateY(-50%); }
-#\30 5-segments .seg-label-top    { top: 8px;    left: 50%; transform: translateX(-50%); }
-#\30 5-segments .seg-label-bottom { bottom: 8px; left: 50%; transform: translateX(-50%); }
-
-/* the four quadrant buttons sit over the field */
-#\30 5-segments .seg-quads {
+#\30 5-segments .sg-field {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 0;
+}
+
+/* Axis labels — thin, navy, anchored to the edges; never overlap the dots. */
+#\30 5-segments .sg-axis {
+  position: absolute;
+  z-index: 2;
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(10, 26, 92, 0.62);
+  pointer-events: none;
+}
+#\30 5-segments .sg-axis--top    { top: -1.6em; left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg-axis--bottom { bottom: -1.6em; left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg-axis--left   { left: -0.4em; top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; }
+#\30 5-segments .sg-axis--right  { right: -0.4em; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; }
+
+/* Quadrant grid sits over the field. */
+#\30 5-segments .sg-quadrants {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  gap: clamp(8px, 1.4vw, 16px);
+  padding: clamp(8px, 1.4vw, 16px);
 }
-#\30 5-segments .seg-quad {
-  appearance: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+/* Place each quadrant in its true compass cell. */
+#\30 5-segments .sg-quad--hustlers   { grid-area: 1 / 1; } /* pessimistic + proactive */
+#\30 5-segments .sg-quad--architects { grid-area: 1 / 2; } /* optimistic + proactive */
+#\30 5-segments .sg-quad--retreaters { grid-area: 2 / 1; } /* pessimistic + passive */
+#\30 5-segments .sg-quad--coasters   { grid-area: 2 / 2; } /* optimistic + passive */
+
+#\30 5-segments .sg-quad {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 3px;
-  padding: clamp(14px, 2.6vw, 24px);
+  justify-content: flex-end;
+  gap: 2px;
+  padding: clamp(10px, 1.6vw, 18px);
   text-align: left;
-  font-family: var(--font-sans);
-  /* navy ink keeps quadrant copy legible over the pale-mustard field (§6) */
+  cursor: pointer;
+  background: transparent;
+  border: 1.5px solid rgba(10, 26, 92, 0.18);
   color: var(--soi-navy);
-  transition: opacity .3s ease, background .25s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
 }
-#\30 5-segments .seg-quad[data-pos="tr"] { align-items: flex-end; text-align: right; }
-#\30 5-segments .seg-quad[data-pos="br"] { align-items: flex-end; text-align: right; justify-content: flex-end; }
-#\30 5-segments .seg-quad[data-pos="bl"] { justify-content: flex-end; }
-
-/* ANTICIPATORY STAGING (DNA): the crowd forms FIRST, then it is named. The
-   quadrant labels + axis labels hold back until the dots have begun to land
-   (JS adds .is-resolved ~0.5s after formation), then assemble in. The axes
-   draw outward from the centre on resolve. Reduced-motion = shown at once. */
-#\30 5-segments .seg-quad {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .55s cubic-bezier(.22,.61,.36,1),
-              transform .55s cubic-bezier(.22,.61,.36,1),
-              background .25s ease;
+#\30 5-segments .sg-quad:hover,
+#\30 5-segments .sg-quad:focus-visible {
+  border-color: var(--soi-navy);
+  outline: none;
+  transform: translateY(-1px);
 }
-#\30 5-segments .seg-map.is-resolved .seg-quad { opacity: 1; transform: none; }
-#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="architects"],
-#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="tr"] { transition-delay: .06s; }
-#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="bl"] { transition-delay: .12s; }
-#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="br"] { transition-delay: .18s; }
+/* The active quadrant gets a faint tint of its own accent + a solid edge. */
+#\30 5-segments .sg-quad.is-active { border-color: var(--soi-navy); border-width: 2px; }
 
-#\30 5-segments .seg-axis-label { opacity: 0; transition: opacity .55s ease .24s; }
-#\30 5-segments .seg-map.is-resolved .seg-axis-label { opacity: 1; }
-
-#\30 5-segments .seg-axis-x { transform: translateY(-0.5px) scaleX(0); transform-origin: 50% 50%;
-  transition: transform .7s cubic-bezier(.22,.61,.36,1); }
-#\30 5-segments .seg-axis-y { transform: translateX(-0.5px) scaleY(0); transform-origin: 50% 50%;
-  transition: transform .7s cubic-bezier(.22,.61,.36,1) .08s; }
-#\30 5-segments .seg-map.is-resolved .seg-axis-x { transform: translateY(-0.5px) scaleX(1); }
-#\30 5-segments .seg-map.is-resolved .seg-axis-y { transform: translateX(-0.5px) scaleY(1); }
-
-@media (prefers-reduced-motion: reduce) {
-  #\30 5-segments .seg-quad,
-  #\30 5-segments .seg-axis-label { opacity: 1; transform: none; transition: none; }
-  #\30 5-segments .seg-axis-x { transform: translateY(-0.5px); transition: none; }
-  #\30 5-segments .seg-axis-y { transform: translateX(-0.5px); transition: none; }
+#\30 5-segments .sg-quad-share {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  line-height: 0.9;
 }
-
-/* Quadrant label text: a page-tinted text-shadow halo (NOT a mustard chip)
-   keeps every glyph legible over the physics dots drawn behind — backgroundless
-   keep-out, no white/mustard boxes (FEEDBACK-V4 §4/§6). */
-#\30 5-segments .seg-quad-name {
-  font-size: var(--t-md, 1.15rem);
-  font-weight: 800;
+#\30 5-segments .sg-quad-name {
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
   line-height: 1.1;
 }
-#\30 5-segments .seg-quad-share {
-  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-#\30 5-segments .seg-quad-trio {
-  font-size: var(--t-xs, 0.76rem);
+#\30 5-segments .sg-quad-trio {
+  font-size: var(--t-xs);
   font-weight: 500;
-  color: rgba(10,26,92,0.74);
-  max-width: 20ch;
-}
-#\30 5-segments .seg-quad-name,
-#\30 5-segments .seg-quad-share,
-#\30 5-segments .seg-quad-trio {
-  text-shadow:
-    0 0 5px var(--soi-page), 0 0 5px var(--soi-page),
-    0 0 10px var(--soi-page), 0 0 10px var(--soi-page);
+  color: rgba(10, 26, 92, 0.7);
+  line-height: 1.2;
 }
 
-#\30 5-segments .seg-quad:hover { background: rgba(253,141,32,0.16); }
-#\30 5-segments .seg-quad:focus-visible {
-  outline: 2px solid var(--soi-navy);
-  outline-offset: -3px;
-  background: rgba(253,141,32,0.16);
-}
-#\30 5-segments .seg-quad.is-active { background: rgba(253,141,32,0.24); }
-#\30 5-segments .seg-map.is-focused .seg-quad.is-dimmed { opacity: 0.3; }
+/* Per-segment accent — the share number carries the camp's brand colour;
+   navy stays the default text so contrast holds on the warm ground. */
+/* All big share numbers stay NAVY — the high-contrast safe foreground on the
+   warm ground (no mustard-on-mustard). The camp's brand accent is carried only
+   by a thin left-edge bar on the active quadrant + result/profile cards, where
+   it reads as a deliberate device, never as low-contrast text. Tokens are the
+   defined --soi-* set (the legacy --mustard* names are JS-only). */
+#\30 5-segments .sg-quad-share,
+#\30 5-segments .sg-result-share,
+#\30 5-segments .sg-profile-share { color: var(--soi-navy); }
 
-/* the live "you" marker — box-less pin (V5: NO fill behind text). A small
-   navy dot anchors the position; the "YOU" label rides above it in navy
-   weight with a cream text-halo for legibility over the coloured quadrants.
-   No background, no border, no chip. */
-#\30 5-segments .seg-youtag {
-  position: absolute;
-  z-index: 5;
-  transform: translate(-50%, -50%);
-  background: none;
-  border: 0;
-  color: var(--soi-navy);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0;
-  pointer-events: none;
-  /* cream halo so the navy label reads on amber/orange/navy quadrants alike */
-  text-shadow:
-    0 0 3px var(--soi-cream), 0 0 3px var(--soi-cream),
-    0 1px 2px var(--soi-cream), 0 -1px 2px var(--soi-cream);
-  /* Position (left/top) is driven per-frame by a JS spring (tactile.spring) so
-     the dot travels with embodied weight as the reader answers — no CSS tween
-     on left/top here (it would fight the spring). Only the entrance fades. */
-  opacity: 0;
-  transition: opacity .4s ease;
-}
-#\30 5-segments .seg-youtag:not([hidden]) { opacity: 1; }
-/* the dot anchor that pins the exact position */
-#\30 5-segments .seg-youtag::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -10px;
-  transform: translateX(-50%);
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--soi-navy);
-  box-shadow: 0 0 0 3px var(--soi-cream);
-}
-#\30 5-segments .seg-youtag.is-instant { transition: none; }
-/* Landed: the dot has come to rest in the reader's camp. A one-shot tactile
-   "settle" pulse on the anchor (scale overshoot + a brief contact ring) marks
-   the payoff. Reduced motion holds the final state (animation disabled below). */
-#\30 5-segments .seg-youtag.is-landed { color: var(--soi-navy); }
-#\30 5-segments .seg-youtag.is-landed::before {
-  animation: seg-you-settle .62s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes seg-you-settle {
-  0%   { transform: translateX(-50%) scale(0.6); box-shadow: 0 0 0 3px var(--soi-cream); }
-  55%  { transform: translateX(-50%) scale(1.34); box-shadow: 0 0 0 7px rgba(253,141,32,0.28); }
-  100% { transform: translateX(-50%) scale(1);    box-shadow: 0 0 0 3px var(--soi-cream); }
-}
+/* A coloured left-edge bar marks the active / chosen camp without a box.
+   teal-deep is --soi-up; orange is the orange the mustard warms into. */
+#\30 5-segments .sg-quad.is-active.sg-accent-architects,
+#\30 5-segments .sg-accent-architects.sg-result-card,
+#\30 5-segments .sg-accent-architects.sg-profile-card { box-shadow: inset 5px 0 0 var(--soi-orange); }
+#\30 5-segments .sg-quad.is-active.sg-accent-hustlers,
+#\30 5-segments .sg-accent-hustlers.sg-result-card,
+#\30 5-segments .sg-accent-hustlers.sg-profile-card { box-shadow: inset 5px 0 0 var(--soi-up); }
+#\30 5-segments .sg-quad.is-active.sg-accent-coasters,
+#\30 5-segments .sg-accent-coasters.sg-result-card,
+#\30 5-segments .sg-accent-coasters.sg-profile-card { box-shadow: inset 5px 0 0 var(--soi-orange); }
+#\30 5-segments .sg-quad.is-active.sg-accent-retreaters,
+#\30 5-segments .sg-accent-retreaters.sg-result-card,
+#\30 5-segments .sg-accent-retreaters.sg-profile-card { box-shadow: inset 5px 0 0 var(--soi-navy); }
 
-#\30 5-segments .seg-maphint {
-  font-size: var(--t-sm, 0.9rem);
-  color: rgba(10,26,92,0.66);
-  margin: 16px 0 0 0;
-  text-align: center;
-}
+/* Result + profile cards get a little left padding so their accent bar clears
+   the text. */
+#\30 5-segments .sg-result-card,
+#\30 5-segments .sg-profile-card { padding-left: clamp(14px, 2vw, 22px); }
 
-/* ─── Profile column ──────────────────────────────────────── */
-/* The right stage cell. Before any selection it carries a deck bear-world
-   motif + a "how to read it" line (backgroundless — no box, no plate); once a
-   quadrant is chosen the live data-card replaces it. This kills the dead band
-   that used to sit beside the compass (FEEDBACK-V4 §4 NO DEAD SPACE). */
-#\30 5-segments .seg-profile-col { position: relative; min-height: 1px; }
-#\30 5-segments .seg-profile { min-height: 1px; }
-#\30 5-segments .seg-profile:not(.is-open) { display: none; }
+/* ── The profile card (backgroundless) ──────────────────────────── */
+#\30 5-segments .sg-profile { grid-column: 1 / -1; min-height: 1px; }
+#\30 5-segments .sg-profile:empty { display: none; }
 
-/* Resting motif (shown when nothing is selected): a backgroundless deck
-   bear-world render with a spinning orbit ring behind it, then two lines of
-   navy copy. No box, no fill — colour/weight only. */
-#\30 5-segments .seg-profile-rest {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 6px;
-  min-height: clamp(380px, 52vh, 560px);
-  padding-left: clamp(4px, 1vw, 16px);
-  overflow: visible;
+#\30 5-segments .sg-profile-card {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: clamp(1.5rem, 3vh, 2.5rem);
+  border-top: 1.5px solid rgba(10, 26, 92, 0.18);
 }
-#\30 5-segments .seg-profile-rest[hidden] { display: none; }
-#\30 5-segments .seg-rest-orbit {
-  position: absolute;
-  inset: -8% auto auto -6%;
-  width: clamp(220px, 24vw, 360px);
-  height: clamp(220px, 24vw, 360px);
-  z-index: 0;
-  opacity: 0.4;
-}
-#\30 5-segments .seg-rest-art {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: clamp(180px, 22vw, 300px);
-  height: auto;
-  margin-bottom: 14px;
-  mix-blend-mode: multiply;
-  will-change: transform;
-}
-#\30 5-segments .seg-rest-lead {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  font-family: var(--font-sans);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1.0;
-  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-  color: var(--soi-navy);
-  max-width: 16ch;
-}
-#\30 5-segments .seg-rest-sub {
-  position: relative;
-  z-index: 1;
-  margin: 8px 0 0 0;
-  font-size: var(--t-md, 1.02rem);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--ink-soft);
-  max-width: 34ch;
-}
-/* The open profile card: BACKGROUNDLESS (client V5 — no plate behind copy).
-   The dense data (charts + facts + quote) is separated by a left ink rail and
-   spacing rhythm, not a paper box. Sits directly on the warm page. */
-#\30 5-segments .seg-profile.is-open .si-datacard {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  border-left: 3px solid var(--soi-orange);
-  padding: 4px 0 4px clamp(18px, 2vw, 28px);
-  overflow: visible;
-}
-#\30 5-segments .seg-card { outline: none; }
-#\30 5-segments .seg-card-top {
+#\30 5-segments .sg-profile-head {
   display: flex;
   align-items: baseline;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: clamp(12px, 2vw, 24px);
+  flex-wrap: wrap;
 }
-#\30 5-segments .seg-card-share {
-  font-size: clamp(2.6rem, 5vw, 3.6rem);
-  font-weight: 700;
+#\30 5-segments .sg-profile-share {
+  font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.9;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.85;
+}
+#\30 5-segments .sg-profile-name {
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
   color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-}
-/* Title: de-blocked — drop the heavy underline rule for a calm tint divider. */
-#\30 5-segments .seg-prof-name {
-  font-size: var(--t-lg, 1.5rem);
-  font-weight: 700;
-  line-height: 1.05;
-  margin: 0 0 4px 0;
-  padding-bottom: 0;
-  border-bottom: 0;
-  color: var(--soi-navy);
-}
-#\30 5-segments .seg-prof-trio {
-  font-weight: 600;
-  margin: 6px 0 0 0;
-  color: var(--ink-soft);
-}
-#\30 5-segments .seg-prof-quote {
-  border-left: 3px solid var(--soi-orange);
-  margin: 18px 0 18px 0;
-  padding: 4px 0 4px 16px;
-  font-style: italic;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-/* Facts: separated by a soft tint rule (not a hard hairline) and rhythm. */
-#\30 5-segments .seg-prof-facts {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-top: 1px solid rgba(10,26,92,0.1);
-  padding-top: 16px;
-}
-#\30 5-segments .seg-prof-row {
-  display: grid;
-  grid-template-columns: 84px 1fr;
-  gap: 14px;
-  font-size: var(--t-sm, 0.92rem);
-  line-height: 1.45;
-}
-#\30 5-segments .seg-prof-key {
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  font-size: var(--t-xs, 0.68rem);
-  color: var(--soi-navy);
-  padding-top: 2px;
-}
-
-/* per-segment metric charts (lollipop + dot plot).
-   De-boxed (client feedback §1): the chart is a .chart-holder — transparent,
-   no paper/white card, no border, no shadow — sitting directly on the
-   data-card surface. Components are high-contrast NAVY (set in JS), value
-   labels are big + bold (set in charts.js). The metric title reads as
-   designed type, not a tiny caption (§3). */
-#\30 5-segments .seg-metric { margin-top: 20px; }
-#\30 5-segments .seg-metric-title {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  font-size: var(--t-sm, 0.9rem);
-  color: var(--soi-navy);
-  margin: 0 0 10px 0;
-}
-/* The .chart-holder utility already forces a transparent background with no
-   box; this only sets width + neutralises any inherited box on the host. */
-#\30 5-segments .seg-metric-chart {
-  width: 100%;
-  background: transparent;
-  border: 0;
-  box-shadow: 0 0 0 0 transparent;
-}
-/* The lollipop/dot-plot row labels are right-anchored at a fixed 200-unit slot;
-   on a narrow column a long label can run past the SVG's left edge. Let the SVG
-   paint outside its box so no label is clipped (FEEDBACK-V4 — no cut-off text),
-   and pad the holder so the overflow has room to land. */
-#\30 5-segments .seg-metric-chart svg { overflow: visible; }
-#\30 5-segments .seg-metric-chart { padding-left: 2px; }
-
-#\30 5-segments .seg-prof-ai {
-  margin: 18px 0 0 0;
-  font-size: var(--t-sm, 0.92rem);
-  line-height: 1.5;
-  display: grid;
-  grid-template-columns: 84px 1fr;
-  gap: 14px;
-  border-top: 1px solid rgba(10,26,92,0.1);
-  padding-top: 16px;
-}
-
-/* ─── GraphRAG explorer ───────────────────────────────────── */
-/* De-blocked: no top hairline — spacing rhythm separates the section. */
-#\30 5-segments .seg-graphblock {
-  border-top: 0;
-  padding-top: 0;
-}
-#\30 5-segments .seg-graph-head { margin-bottom: 26px; }
-/* Deck-like section heading: real Poppins 800 (.si-display--sm), tighter
-   tracking, bigger (FEEDBACK-V4 §1/§4). .si-display drives weight/case. */
-#\30 5-segments .seg-graph-title {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  letter-spacing: -0.035em;
-  line-height: 0.94;
-  margin: 8px 0 12px 0;
-  color: var(--soi-navy);
-}
-#\30 5-segments .seg-graph-intro {
-  font-size: var(--t-md, 1.05rem);
-  font-weight: 500;
-  color: var(--ink-soft);
   margin: 0;
 }
+#\30 5-segments .sg-profile-trio {
+  font-weight: 600;
+  color: rgba(10, 26, 92, 0.72);
+  margin: 2px 0 0;
+}
+#\30 5-segments .sg-profile-quote {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--soi-navy);
+  max-width: 50ch;
+}
+#\30 5-segments .sg-profile-quote::before { content: "\201C"; }
+#\30 5-segments .sg-profile-quote::after  { content: "\201D"; }
 
-/* segment-graph component (ported, brand-restyled) */
-#\30 5-segments .sg-stage {
+#\30 5-segments .sg-profile-facts {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+}
+#\30 5-segments .sg-profile-facts dt {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--soi-orange);
+  margin-bottom: 2px;
+}
+#\30 5-segments .sg-profile-facts dd {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--soi-navy);
+}
+
+#\30 5-segments .sg-profile-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+#\30 5-segments .sg-profile-cap {
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: rgba(10, 26, 92, 0.72);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   2. THE LIVING NETWORK (segment-graph hooks)
+   ════════════════════════════════════════════════════════════════ */
+#\30 5-segments .sg-network-lede { max-width: 60ch; margin-bottom: var(--space-3); }
+
+#\30 5-segments .sg-graph { width: 100%; }
+
+#\30 5-segments .sg-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+#\30 5-segments .sg-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.8fr);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
   align-items: start;
 }
-@media (max-width: 880px) { #\30 5-segments .sg-stage { grid-template-columns: 1fr; } }
+@media (max-width: 880px) {
+  #\30 5-segments .sg-stage { grid-template-columns: 1fr; }
+}
 
-/* Box-less per feedback #1: the graph sits directly on the world ground,
-   transparent with no border or paper plate. */
 #\30 5-segments .sg-svg {
-  display: block;
   width: 100%;
   height: auto;
-  min-height: 420px;
-  border: 0;
-  background: transparent;
+  display: block;
+  overflow: visible;
+  touch-action: none;
 }
-#\30 5-segments .sg-edge { stroke: var(--soi-navy); stroke-opacity: .22; stroke-width: 1.2; }
-#\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: .06; }
-#\30 5-segments .sg-edge.is-on { stroke-opacity: .85; stroke-width: 2; }
+#\30 5-segments .sg-edge {
+  stroke: var(--soi-navy);
+  stroke-opacity: 0.22;
+  stroke-width: 1.2;
+  transition: stroke-opacity 0.2s ease, stroke-width 0.2s ease;
+}
+#\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: 0.06; }
+#\30 5-segments .sg-edge.is-on { stroke-opacity: 0.85; stroke-width: 2; }
 
 #\30 5-segments .sg-hub,
 #\30 5-segments .sg-attr { cursor: pointer; }
+#\30 5-segments .sg-hub .sg-dot,
+#\30 5-segments .sg-attr .sg-dot { transition: opacity 0.2s ease; }
 #\30 5-segments .sg-hub:focus-visible .sg-dot,
-#\30 5-segments .sg-attr:focus-visible .sg-dot { stroke: var(--soi-navy); stroke-width: 3; outline: none; }
-#\30 5-segments .sg-svg.is-focus .is-dim { opacity: .18; }
+#\30 5-segments .sg-attr:focus-visible .sg-dot {
+  stroke: var(--soi-navy);
+  stroke-width: 3;
+  outline: none;
+}
+#\30 5-segments .sg-svg.is-focus .is-dim { opacity: 0.18; }
 #\30 5-segments .sg-svg.is-focus .is-on { opacity: 1; }
 
-/* Label colour is set inline per-node by segment-graph.js (luminance-derived),
-   so every hub/attr label is legible against its OWN fill — no same-on-same.
-   This base rule only styles weight/size; it never overrides the inline fill. */
 #\30 5-segments .sg-label {
-  font: 600 13px var(--font-sans);
-  pointer-events: none; font-variant-numeric: tabular-nums;
-}
-#\30 5-segments .sg-hub .sg-label { font-weight: 700; font-size: 15px; }
-
-/* Detail panel: BACKGROUNDLESS (client V5). No paper plate — a left ink rail
-   carries the structure; the panel copy reads directly on the warm page. */
-#\30 5-segments .sg-panel {
-  border: 0; background: transparent; box-shadow: none;
-  border-left: 3px solid rgba(10,26,92,0.16);
-  padding: 4px 0 4px 16px; min-height: 200px;
-  overflow: visible;
-}
-#\30 5-segments .sg-panel .sg-hint { color: var(--ink-soft); font-size: var(--t-sm); }
-#\30 5-segments .sg-tag {
-  display: inline-block; font: 700 .66rem var(--font-sans);
-  letter-spacing: .12em; text-transform: uppercase; color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-}
-#\30 5-segments .sg-panel h4 { font: 700 var(--t-md) var(--font-sans); margin: 6px 0; color: var(--soi-navy); }
-#\30 5-segments .sg-panel blockquote {
-  border-left: 3px solid var(--soi-orange); margin: 10px 0; padding-left: 12px;
-  font-style: italic; color: var(--ink-soft);
-}
-#\30 5-segments .sg-desc { font-weight: 600; margin: 4px 0; color: var(--soi-navy); }
-#\30 5-segments .sg-shared { font-size: var(--t-sm); color: var(--ink-soft); margin: 4px 0; }
-#\30 5-segments .sg-facts dt {
-  font: 700 .66rem var(--font-sans); letter-spacing: .1em;
-  text-transform: uppercase; color: var(--soi-navy); margin-top: 8px;
-}
-#\30 5-segments .sg-facts dd { margin: 0; font-size: var(--t-sm); }
-#\30 5-segments .sg-owners { margin: 6px 0 0; padding-left: 18px; font-size: var(--t-sm); }
-
-/* keyboard fallback list — quiet pills, one device (tint), no hard frame */
-#\30 5-segments .sg-fallback {
-  display: flex; gap: 10px; flex-wrap: wrap; list-style: none;
-  margin: 16px 0 0; padding: 0;
-}
-#\30 5-segments .sg-fallback button {
-  border: 1px solid rgba(10,26,92,0.18); background: var(--paper-warm);
-  color: var(--soi-navy);
-  padding: 7px 13px; font: 600 var(--t-xs) var(--font-sans); cursor: pointer;
-}
-#\30 5-segments .sg-fallback button:hover { background: var(--mustard-pale); }
-#\30 5-segments .sg-fallback button:focus-visible {
-  outline: 2px solid var(--soi-navy); outline-offset: 2px;
-}
-
-/* ─── Quiz ────────────────────────────────────────────────── */
-/* De-blocked: no top hairline; rhythm separates it. */
-#\30 5-segments .seg-quizblock {
-  border-top: 0;
-  padding-top: 0;
-}
-/* Two-column quiz lockup: question column + deck bear-world motif. The motif
-   fills what was an empty right half (NO DEAD SPACE). */
-#\30 5-segments .seg-quizblock {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: center;
-}
-#\30 5-segments .seg-quiz-main { min-width: 0; }
-#\30 5-segments .seg-quiz-art {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: clamp(280px, 40vh, 460px);
-  overflow: visible;
-}
-#\30 5-segments .seg-quiz-orbit {
-  position: absolute;
-  inset: -14%;
-  z-index: 0;
-  opacity: 0.42;
-}
-#\30 5-segments .seg-quiz-img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: clamp(220px, 30vw, 380px);
-  height: auto;
-  mix-blend-mode: multiply;
-  will-change: transform;
-}
-/* backgroundless tag line — navy weight/colour only, no box */
-#\30 5-segments .seg-quiz-arttag {
-  position: relative;
-  z-index: 1;
-  margin: 16px 0 0 0;
-  text-align: center;
   font-family: var(--font-sans);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1.0;
-  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
-  color: var(--soi-navy);
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--soi-navy);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
-#\30 5-segments .seg-quiz-arttag span { display: block; color: var(--soi-orange); }
+#\30 5-segments .sg-hub .sg-label { font-weight: 800; font-size: 15px; }
 
-#\30 5-segments .seg-quiz-head { margin-bottom: 26px; }
-/* Deck-like section heading: real Poppins 800 (.si-display--sm), bigger. */
-#\30 5-segments .seg-quiz-title {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  letter-spacing: -0.035em;
-  line-height: 0.94;
-  margin: 8px 0 12px 0;
-  color: var(--soi-navy);
+/* Detail panel — backgroundless, navy on warm, square. */
+#\30 5-segments .sg-panel {
+  align-self: start;
+  border-left: 2px solid rgba(10, 26, 92, 0.2);
+  padding-left: clamp(14px, 1.8vw, 22px);
+  min-height: 120px;
 }
-#\30 5-segments .seg-quiz-intro {
-  font-size: var(--t-md, 1.05rem);
-  font-weight: 500;
-  color: var(--ink-soft);
-  max-width: 56ch;
+#\30 5-segments .sg-panel .sg-hint {
+  color: rgba(10, 26, 92, 0.62);
+  font-size: var(--t-sm);
   margin: 0;
 }
-#\30 5-segments .seg-quiz-host { max-width: 620px; }
-#\30 5-segments .quiz-progress {
-  text-transform: uppercase;
+#\30 5-segments .sg-tag {
+  display: inline-block;
+  font-size: var(--t-xs);
   letter-spacing: 0.14em;
+  text-transform: uppercase;
   font-weight: 700;
-  font-size: var(--t-xs, 0.72rem);
+  color: var(--soi-orange);
+  margin-bottom: 4px;
+}
+#\30 5-segments .sg-panel h4 {
+  font: 800 var(--t-lg) / 1.1 var(--font-sans);
+  margin: 4px 0 6px;
   color: var(--soi-navy);
-  margin: 0 0 12px 0;
 }
-/* Quiz card: BACKGROUNDLESS (client V5). No paper plate behind the statement —
-   a left ink rail + spacing carry the structure; the statement reads as big
-   bold copy on the warm page. */
-#\30 5-segments .quiz-card {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  border-left: 3px solid var(--soi-orange);
-  padding: 6px 0 6px clamp(18px, 2vw, 28px);
-  min-height: 120px;
-  overflow: visible;
-}
-#\30 5-segments .quiz-statement {
-  font-size: var(--t-md, 1.2rem);
-  font-weight: 600;
+#\30 5-segments .sg-panel blockquote {
+  margin: 8px 0;
+  font-style: normal;
+  font-size: var(--t-sm);
   line-height: 1.4;
-  margin: 0 0 22px 0;
   color: var(--soi-navy);
 }
-#\30 5-segments .quiz-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-
-/* ─── Result ──────────────────────────────────────────────── */
-#\30 5-segments .seg-result { margin-top: 28px; max-width: 620px; }
-#\30 5-segments .seg-result.is-open .si-datacard,
-#\30 5-segments .seg-result .si-datacard {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  border-left: 3px solid var(--soi-orange);
-  padding: 4px 0 4px clamp(18px, 2vw, 28px);
-  overflow: visible;
-}
-#\30 5-segments .seg-result-card { outline: none; }
-#\30 5-segments .seg-result-name {
-  font-size: var(--t-lg, 1.6rem);
+#\30 5-segments .sg-desc { font-weight: 700; margin: 4px 0; color: var(--soi-navy); }
+#\30 5-segments .sg-shared { font-size: var(--t-sm); color: rgba(10, 26, 92, 0.62); margin: 4px 0; }
+#\30 5-segments .sg-facts { margin: 8px 0 0; }
+#\30 5-segments .sg-facts dt {
+  font-size: var(--t-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   font-weight: 700;
+  color: var(--soi-orange);
+  margin-top: 8px;
+}
+#\30 5-segments .sg-facts dd { margin: 0; font-size: var(--t-sm); line-height: 1.4; color: var(--soi-navy); }
+#\30 5-segments .sg-owners { margin: 6px 0 0; padding-left: 18px; font-size: var(--t-sm); color: var(--soi-navy); }
+
+/* Keyboard fallback list — square chips, no underline. */
+#\30 5-segments .sg-fallback {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+#\30 5-segments .sg-fallback button {
+  background: transparent;
+  border: 1.5px solid rgba(10, 26, 92, 0.3);
+  color: var(--soi-navy);
+  font: 600 var(--t-sm) / 1 var(--font-sans);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+#\30 5-segments .sg-fallback button:hover,
+#\30 5-segments .sg-fallback button:focus-visible {
+  border-color: var(--soi-navy);
+  outline: none;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   3. WHICH BRITAIN ARE YOU? (the quiz)
+   ════════════════════════════════════════════════════════════════ */
+#\30 5-segments .sg-quiz-lede { max-width: 60ch; margin-bottom: var(--space-3); }
+#\30 5-segments .sg-quiz-stage { min-height: 200px; }
+
+#\30 5-segments .quiz { max-width: 56ch; }
+#\30 5-segments .quiz-progress {
+  font-size: var(--t-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--soi-orange);
+  margin: 0 0 var(--space-2);
+}
+#\30 5-segments .quiz-card { min-height: 140px; }
+#\30 5-segments .quiz-statement {
+  font-weight: 700;
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  line-height: 1.2;
   letter-spacing: -0.01em;
-  margin: 10px 0 4px 0;
+  color: var(--soi-navy);
+  margin: 0 0 var(--space-3);
+}
+#\30 5-segments .quiz-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+#\30 5-segments .quiz-actions .vccp-btn { min-width: 140px; text-align: center; }
+
+/* The result card — backgroundless, accent-coloured share number. */
+#\30 5-segments .sg-result-card {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 56ch;
+}
+#\30 5-segments .sg-result-eyebrow {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--soi-orange);
+  margin: 0;
+}
+#\30 5-segments .sg-result-name {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: 0.9;
+  color: var(--soi-navy);
+  margin: 0;
+}
+#\30 5-segments .sg-result-trio { font-weight: 600; color: rgba(10, 26, 92, 0.72); margin: 0; }
+#\30 5-segments .sg-result-share { font-weight: 800; margin: var(--space-1) 0 0; }
+#\30 5-segments .sg-result-quote {
+  margin: var(--space-2) 0 0;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.35;
   color: var(--soi-navy);
 }
-#\30 5-segments .seg-result-trio { font-weight: 600; margin: 0 0 16px 0; }
-#\30 5-segments .seg-result-vs {
-  font-size: var(--t-sm, 0.95rem);
-  line-height: 1.55;
-  margin: 16px 0 20px 0;
-  border-top: 1px solid rgba(10,26,92,0.1);
-  padding-top: 16px;
-}
-#\30 5-segments .seg-retake { margin: 0; }
+#\30 5-segments .sg-result-quote::before { content: "\201C"; }
+#\30 5-segments .sg-result-quote::after  { content: "\201D"; }
+#\30 5-segments .sg-result-again { justify-self: start; margin-top: var(--space-2); }
 
-/* ─── Source ──────────────────────────────────────────────── */
-#\30 5-segments .seg-source { margin-top: 0; color: rgba(10,26,92,0.55); }
-
-/* ─── Responsive ──────────────────────────────────────────── */
-@media (max-width: 960px) {
-  #\30 5-segments .seg-hero-grid { grid-template-columns: 1fr; }
-  #\30 5-segments .seg-hero-art { order: -1; max-width: 320px; margin-inline: auto; }
-  #\30 5-segments .seg-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 900px) {
-  #\30 5-segments .seg-stage { grid-template-columns: 1fr; }
-  #\30 5-segments .seg-quad-trio { display: none; }
-  /* On a single column the resting motif would just add height before the
-     compass is even read — drop it; the maphint already explains the controls. */
-  #\30 5-segments .seg-profile-rest { display: none; }
-  #\30 5-segments .seg-quizblock { grid-template-columns: 1fr; }
-  #\30 5-segments .seg-quiz-art { order: -1; min-height: clamp(220px, 32vh, 320px); }
-}
-@media (max-width: 560px) {
-  #\30 5-segments .seg-roster { grid-template-columns: 1fr; }
-  #\30 5-segments .seg-tile { flex-direction: row; align-items: center; gap: 14px; }
-  #\30 5-segments .seg-tile-art { width: 64px; aspect-ratio: 1 / 1; margin-bottom: 0; }
+/* ── Footnote (methodology note — kept visible) ─────────────────── */
+#\30 5-segments .sg-footnote {
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  color: rgba(10, 26, 92, 0.6);
+  max-width: 70ch;
+  margin: 0;
 }
 
+/* ── Reduced motion: no spin on the orbit, instant reveals. ─────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 5-segments .seg-quad,
-  #\30 5-segments .seg-tile,
-  #\30 5-segments .seg-youtag { transition: none; }
-  #\30 5-segments .seg-youtag.is-landed::before { animation: none; }
+  #\30 5-segments .sg-quad { transition: none; }
 }

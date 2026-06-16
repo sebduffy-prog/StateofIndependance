@@ -1,195 +1,132 @@
-<div class="chapter-inner bl-world on-warm">
+<div class="chapter-inner bl on-warm">
 
-  <!-- Decorative world layers: behind everything, pointer-events:none, never carry meaning.
-       Parallax + slow orbit spin give the warm ground depth without occluding type. -->
-  <div class="si-orbit si-orbit--spin bl-orbit" aria-hidden="true" data-parallax="0.06"></div>
-  <span class="si-seed bl-seed bl-seed--a" aria-hidden="true" data-parallax="0.18"></span>
-  <span class="si-seed bl-seed bl-seed--b" aria-hidden="true" data-parallax="0.26"></span>
-  <span class="si-seed bl-seed bl-seed--c" aria-hidden="true" data-parallax="0.32"></span>
-  <img
-    class="bl-bear"
-    src="assets/deck/bear-world-coil.png"
-    alt=""
-    aria-hidden="true"
-    loading="lazy"
-    data-parallax="0.1"
-  />
+  <!-- Decorative world: thin orbit rings + seed dots, behind everything,
+       pointer-events:none, never carry meaning. -->
+  <div class="si-orbit si-orbit--spin bl-orbit" aria-hidden="true" data-parallax="0.05"></div>
+  <span class="si-seed bl-seed bl-seed--a" aria-hidden="true" data-parallax="0.2"></span>
+  <span class="si-seed bl-seed bl-seed--b" aria-hidden="true" data-parallax="0.28"></span>
 
-  <!-- Image-title lockup opener — lifts the deck's huge-title-over-motif treatment.
-       The maze + figure motif sits to the right of a Poppins-Black stacked title. -->
-  <header class="bl-head reveal" data-enter-head>
-    <div class="bl-head-copy">
-      <p class="bl-kicker" data-arrival>The numbers you already know</p>
-      <h2 class="bl-headline">
-        <span data-arrival>Carefulness</span><br />
-        <span data-arrival>is the new</span><br />
-        <span class="bl-emph" data-arrival data-arrival-scramble data-youdot-anchor>baseline</span>.
+  <!-- ── Opener — balanced title lockup (no right-hand dead amber) ─── -->
+  <header class="bl-head">
+    <div class="bl-head-title">
+      <p class="vccp-stage-num" data-arrival>The numbers you already know</p>
+      <h2 class="bl-headline si-display si-display--caseless">
+        <span data-arrival>Carefulness</span>
+        <span data-arrival>is the new</span>
+        <span class="bl-emph hl" data-arrival data-arrival-scramble data-youdot-anchor>baseline</span>
       </h2>
-      <p class="bl-standfirst">
-        Yes, the country is cost-conscious. Yes, budgets are tight. But these
-        hallmarks of the squeeze are the operational floor: table stakes, not
-        the strategy.
+    </div>
+    <div class="bl-head-aside">
+      <p class="bl-standfirst si-measure" data-arrival>
+        Yes, the country is cost-conscious. Yes, budgets are constricted. But
+        these hallmarks of the squeeze are the operational floor &mdash; table
+        stakes, not the strategy.
       </p>
-      <!-- Deck "person" mark + a quiet scroll cue fill the lower-left of the
-           opener so the column never reads as dead amber. -->
-      <p class="bl-scroll-cue" aria-hidden="true">
-        <span class="bl-scroll-word">Four numbers you can already feel</span>
-        <span class="bl-scroll-arrow"></span>
+      <p class="bl-head-cue" data-arrival aria-hidden="true">
+        <span class="bl-head-cue-rule"></span>
+        Four numbers you can already feel
       </p>
     </div>
-    <!-- Deck maze/orbit brand-world lockup beside the title (the deck's signature
-         image-title composition). The maze swaps to its animated motion-logo when
-         it scrolls into view (the signature State of Independence brand-world
-         animation). Decorative, never carries meaning. -->
-    <figure class="bl-head-lockup" aria-hidden="true">
-      <img
-        class="bl-head-maze"
-        src="assets/deck/maze-hero.png"
-        data-motion-src="assets/deck/maze-hero.gif"
-        alt=""
-        loading="lazy"
-        data-parallax="-0.08"
-      />
-      <!-- The deck's brand "person" mark, set on the maze's orbit line. -->
-      <img
-        class="bl-head-figure"
-        src="assets/deck/figure-silhouette.png"
-        alt=""
-        loading="lazy"
-        data-parallax="0.14"
-      />
-    </figure>
   </header>
 
-  <div class="bl-flow" data-stagger="140">
+  <div class="bl-flow">
 
-    <!-- Stat 01: 77% more careful — the MARQUEE beat. Guess first (commit),
-         then the number assembles as a 100-in-100 crowd where YOUR square is
-         one of the hundred. Gated: Next unlocks on the guess reveal. -->
-    <section class="bl-stat bl-stat--marquee reveal" aria-labelledby="bl-1-title" data-enter-stat>
-      <div class="bl-stat-lede">
+    <!-- ── Stat 01 · 77% careful — the MARQUEE ─────────────────
+         Guess first, then the number assembles as a 100-in-100 crowd
+         with the visitor's own square highlighted. -->
+    <section class="bl-beat bl-beat--marquee reveal" aria-labelledby="bl-t1">
+      <div class="bl-lede">
         <span class="bl-index" aria-hidden="true">01 / 04</span>
-        <p class="bl-bignum-line" id="bl-1-title">
-          <span class="si-bignum bl-num" data-bl-num1>77%</span>
-          <span class="bl-label">are more careful with money than five years ago.</span>
+        <p class="bl-numline" id="bl-t1">
+          <span class="si-bignum bl-num" data-careful-num>77%</span>
         </p>
-        <p class="bl-sentence">
-          Carefulness is now the default lens on every spend decision, not a
-          passing mood.
+        <p class="bl-label">are more careful with money than they were five years ago.</p>
+        <p class="bl-sentence si-measure">
+          Carefulness is now the default lens on every spend decision &mdash; not
+          a passing mood, but the baseline.
         </p>
-        <div class="bl-guess" data-guess-1></div>
       </div>
 
-      <!-- The 100-in-100 marquee — a hundred people you pass today; the squares
-           fill to the stat and one is highlighted as YOU. Built in JS so the
-           you-square can be singled out (the shared waffleGrid cannot). -->
-      <figure class="bl-crowd chart-holder" data-crowd-1 hidden>
-        <figcaption class="bl-crowd-cap">
-          <span class="bl-crowd-count" data-crowd-count aria-hidden="true">0</span>
-          <span class="bl-crowd-of">of every 100 people you pass today are more careful than they were.</span>
-        </figcaption>
-        <div class="bl-crowd-grid" data-crowd-grid role="img"
-             aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."></div>
-        <p class="bl-crowd-key" aria-hidden="true">
-          <span class="bl-crowd-key-you"></span> This square is you.
-        </p>
-      </figure>
-
-      <figure class="chart-holder bl-chart" data-mood-fig>
-        <figcaption class="bl-chart-sub">Mood of the nation, % who agree</figcaption>
-        <div data-bars-mood></div>
-      </figure>
+      <div class="bl-marquee">
+        <div class="bl-guess" data-guess hidden></div>
+        <!-- The 100-in-100 crowd: a hundred people you pass today; the
+             squares fill to the stat and one is highlighted as YOU. -->
+        <figure class="bl-crowd chart-holder" data-crowd hidden>
+          <figcaption class="bl-crowd-cap">
+            <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
+            <span class="bl-crowd-of">of every 100 people you pass today are more careful than they were.</span>
+          </figcaption>
+          <div class="bl-crowd-grid" data-crowd-grid role="img"
+               aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."></div>
+          <p class="bl-crowd-key" aria-hidden="true">
+            <span class="bl-crowd-key-dot"></span>This square is you.
+          </p>
+        </figure>
+      </div>
     </section>
 
-    <!-- Stat 02: 55% deal-hunting -->
-    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-2-title" data-enter-stat>
-      <div class="bl-stat-lede">
+    <!-- ── Stat 02 · 55% deal-seeking — lollipop ───────────────── -->
+    <section class="bl-beat reveal" aria-labelledby="bl-t2">
+      <div class="bl-lede">
         <span class="bl-index" aria-hidden="true">02 / 04</span>
-        <p class="bl-bignum-line" id="bl-2-title">
+        <p class="bl-numline" id="bl-t2">
           <span class="si-bignum bl-num num" data-count-to="55" data-count-suffix="%">55%</span>
-          <span class="bl-label">actively hunt out deals and shop around.</span>
         </p>
-        <p class="bl-sentence">
+        <p class="bl-label">actively hunt out deals and shop around.</p>
+        <p class="bl-sentence si-measure">
           Deal-seeking is a habit now, not a chore. More than half the country
           treats it as routine.
         </p>
       </div>
       <figure class="chart-holder bl-chart">
-        <figcaption class="bl-chart-sub">Money-saving moves in the last 3 months, % who did this</figcaption>
+        <figcaption class="bl-chart-sub">Money-saving moves in the last three months</figcaption>
         <div data-lollipop-money></div>
       </figure>
     </section>
 
-    <!-- Stat 03: 60% anxious — paired with an interactive orbit-ring read of the
-         availability concerns (deck orbit motif made into live data). -->
-    <section class="bl-stat reveal" aria-labelledby="bl-3-title" data-enter-stat>
-      <div class="bl-stat-lede">
+    <!-- ── Stat 03 · 60% anxious — dot plot ────────────────────── -->
+    <section class="bl-beat bl-beat--rev reveal" aria-labelledby="bl-t3">
+      <div class="bl-lede">
         <span class="bl-index" aria-hidden="true">03 / 04</span>
-        <p class="bl-bignum-line" id="bl-3-title">
+        <p class="bl-numline" id="bl-t3">
           <span class="si-bignum bl-num num" data-count-to="60" data-count-suffix="%">60%</span>
-          <span class="bl-label">feel anxious about what the next few months bring.</span>
         </p>
-        <p class="bl-sentence">
-          The mood is forward-looking and unsettled, even where finances are
-          stable.
+        <p class="bl-label">feel anxious about what the next few months bring.</p>
+        <p class="bl-sentence si-measure">
+          The mood is forward-looking and unsettled &mdash; even where the
+          finances are stable.
         </p>
-        <div class="bl-toggle-row">
-          <span class="bl-toggle-cue">See it as</span>
-          <div class="bl-chart-controls" data-availability-controls></div>
-        </div>
       </div>
       <figure class="chart-holder bl-chart">
-        <figcaption class="bl-chart-sub">% very or extremely concerned about availability</figcaption>
-        <div class="bl-availability-stack">
-          <div data-dotplot-availability></div>
-          <div data-orbit-availability hidden></div>
-        </div>
+        <figcaption class="bl-chart-sub">Very or extremely concerned about availability</figcaption>
+        <div data-dotplot-avail></div>
       </figure>
     </section>
 
-    <!-- Stat 04: 54% trading down groceries -->
-    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-4-title" data-enter-stat>
-      <div class="bl-stat-lede">
+    <!-- ── Stat 04 · 54% trading down — tug-of-war + dot plot ──── -->
+    <section class="bl-beat bl-beat--split reveal" aria-labelledby="bl-t4">
+      <div class="bl-lede">
         <span class="bl-index" aria-hidden="true">04 / 04</span>
-        <p class="bl-bignum-line" id="bl-4-title">
+        <p class="bl-numline" id="bl-t4">
           <span class="si-bignum bl-num num" data-count-to="54" data-count-suffix="%">54%</span>
-          <span class="bl-label">are trading down to cheaper grocery alternatives.</span>
         </p>
-        <p class="bl-sentence">
-          The single clearest behavioural signal in the data. This is where
-          intent becomes action.
+        <p class="bl-label">are trading down to cheaper grocery alternatives.</p>
+        <p class="bl-sentence si-measure">
+          The single clearest behavioural signal in the data: over half are
+          swapping to own-label, value ranges and smaller baskets.
         </p>
-        <div class="bl-strip chart-holder">
-          <p class="bl-chart-sub bl-chart-sub--onwarm">Groceries: trading down vs holding the basket</p>
-          <div data-tug-trading></div>
-        </div>
       </div>
-      <figure class="chart-holder bl-chart">
-        <figcaption class="bl-chart-sub" id="bl-trading-cap">Where Britain has traded down, % in the last 12 months</figcaption>
-        <div class="bl-chart-controls" data-trading-controls></div>
-        <div data-bars-trading></div>
-      </figure>
+      <div class="bl-split">
+        <figure class="chart-holder bl-tug">
+          <figcaption class="bl-chart-sub">Their weekly grocery basket, right now</figcaption>
+          <div data-tug-grocery></div>
+        </figure>
+        <figure class="chart-holder bl-chart">
+          <figcaption class="bl-chart-sub">Where Britain has traded down</figcaption>
+          <div data-dotplot-traded></div>
+        </figure>
+      </div>
     </section>
 
   </div>
-
-  <!-- Closing band: the deck's "operational floor" framing — fills the screen,
-       gives the chapter depth, lifts the deck's challenger-books credibility mark. -->
-  <aside class="bl-floor reveal" aria-label="The operational floor" data-enter-floor>
-    <div class="bl-floor-copy">
-      <p class="bl-floor-kicker">The takeaway</p>
-      <p class="bl-floor-line">
-        Five classic hallmarks of a squeeze. Together they are the
-        <span class="bl-emph">operational floor</span> for modern British
-        commerce &mdash; table stakes, not the strategy.
-      </p>
-    </div>
-    <img
-      class="bl-floor-mark"
-      src="assets/deck/challenger-books.png"
-      alt="The four VCCP Challenger Series report covers"
-      loading="lazy"
-      data-parallax="0.05"
-    />
-  </aside>
 </div>

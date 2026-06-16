@@ -1,388 +1,313 @@
 /**
- * Chapter 04 — twists.
+ * Chapter 04 — twists. "There are twists in the story."
  *
- * Three exhibits, all commit-then-reveal where it counts:
- *   (a) The trust paradox — an EARNED DARK (navy) moment. dragRank the
- *       seven institutions, reveal the true confidence on an orbitRingChart
- *       (the deck's signature orbit motif) + the 53% to 24% / 29-point
- *       spread, a flip card pairing NHS 6.42/10 ("most trusted") with
- *       "53% say it has declined", then the wider decline picture as bars.
- *   (b) Protected joy — 40% holiday hero + the marquee tactile beat: a
- *       ring-fence board (tactile.draggable) where flexible treats can be cut
- *       but the HOLIDAY chip resists and springs back; protected-spend shown
- *       as a lollipopChart beneath.
- *   (c) AI on tap — 58% (any task) vs a separate 37% (high-stakes),
- *       an adoption tugOfWar, per-task bars (high-stakes framed), and the
- *       verbatim AI quote.
+ * Three anomalies, each its own beat, composed from the shared lib
+ * primitives (never reinvented):
  *
- * All components are backgroundless and use NAVY on the warm page / cream
- * + teal on the navy trust ground (onNavy). No mustard accent anywhere.
+ *   Twist 01 — the institutional-trust paradox. The EARNED DARK moment
+ *     (navy velvet, cream text). The MARQUEE interaction: dragRank the seven
+ *     institutions into the order the visitor THINKS Britain trusts them, then
+ *     snap to truth (Q7 confidence, NHS 52.8 -> Government 23.9). On reveal an
+ *     aside lifts in: the 53% -> 24% spread (29-point), and the NHS paradox —
+ *     a radialGauge of the 6.42/10 trust score beside a flipReveal that flips
+ *     "most trusted institution" -> "yet 53% say it has declined". This is the
+ *     gated beat: journey.gate() shows the hint, journey.ready() clears it on
+ *     the rank reveal (Next is never blocked — soft gating only).
  *
- * Contract: docs/CONTRACT.md. Every number traces to data/survey.json.
+ *   Twist 02 — protected joy. A TACTILE reward on the warm ground: the holiday
+ *     tile is ring-fenced — dragging it RESISTS (clamped to the fence) and it
+ *     springs back, while the flexible-spend tiles wobble loose. Reveals 40%
+ *     (exact 39.6) protect the holiday at all costs, with a proportionStrip of
+ *     what Britain defends (tactile.draggable + charts.proportionStrip).
  *
- * @param {HTMLElement} rootEl  the <section class="chapter" id="04-twists">
- * @param {{survey: object, segments: object, tgi: object}} data
+ *   Twist 03 — AI on tap. tugOfWar Human professional vs AI; a pillGroup
+ *     toggles between ANY task (58%, exact 58.4) and HIGH-STAKES finance/health/
+ *     legal (37%, exact 37.4) — the two are kept strictly distinct. A
+ *     horizontalBars of tasks and the verbatim qual quote close it.
+ *
+ * House rules: backgroundless (charts float on grounds, faint tint tracks),
+ * navy marks on warm / cream on dark, square corners, no underline, tabular
+ * nums, reduced-motion safe (libs jump to rest), keyboard path on every
+ * interaction (dragRank arrows, draggable arrows, pillGroup arrows). Sources
+ * stay in data/survey.json, never rendered. No console.log.
+ *
+ * @param {HTMLElement} rootEl  <section class="journey-step" id="04-twists">
+ * @param {{ survey:object|null, segments:object|null, tgi:object|null,
+ *           journey:{ gate():void, ready():void } }} data
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { horizontalBars, lollipopChart, orbitRingChart, tugOfWar } from '../lib/charts.js';
-import { dragRank } from '../lib/interactions.js';
-import { observeParallax, chapterTransition } from '../lib/experiential.js';
+import { arrival, prefersReducedMotion } from '../lib/experiential.js';
+import { radialGauge, tugOfWar, horizontalBars, proportionStrip } from '../lib/charts.js';
+import { dragRank, flipReveal, pillGroup } from '../lib/interactions.js';
 import { draggable } from '../lib/tactile.js';
 
-// Deck (2) brand-world assets lifted per DECK2-ASSETS.md.
-const HEAD_MOTIF = 'assets/deck/bear-world-doors.png';   // doors = choices / opting out
-const JOY_MOTIF = 'assets/deck/bear-world-coil.png';     // coil = momentum toward joy
-const EVIDENCE_NATIONWIDE = 'assets/deck/evidence-nationwide.png';
-const VELVET_GROUND = 'assets/deck/ground-navy-velvet.png';
+const NHS_TRUST_SCORE = 6.42; // Q7r1 mean
+const HOLIDAY_PROTECT_PCT = 39.6; // Q5r3 exact (displayed as 40%)
+const AI_ANY_PCT = 58.4; // Q11 any task (exact)
+const AI_HIGH_STAKES_PCT = 37.4; // Q11 finance/health/legal (exact)
+const FENCE_GIVE_PX = 18; // how far the ring-fenced holiday yields before resisting
 
-/** Deterministic shuffle so tiles never start in rank order. */
-const shuffleStable = (items) => {
-  const order = [3, 0, 6, 2, 5, 1, 4]; // fixed scramble of 7 indices
-  return order.filter((i) => i < items.length).map((i) => items[i]);
+/** Fisher–Yates shuffle into a NEW array (no mutation of the source). */
+const shuffled = (arr) => {
+  const next = arr.slice();
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  return next;
 };
 
-/** Set a background-image on a [data-host] decorative layer (no-op if absent). */
-const paintHost = (rootEl, host, url) => {
-  const el = rootEl.querySelector(`[data-host="${host}"]`);
-  if (el) el.style.backgroundImage = `url("${url}")`;
-};
+/* ───────────────────────── Twist 01 · trust ───────────────────────── */
 
-/** Place all deck imagery: the bear-world chapter motif, the joy motif, the
- *  Nationwide evidence photo, and the velvet ground for the dark exhibit. All
- *  decorative — CSS keeps them behind/beside content, never occluding UI. */
-const placeDeckArt = (rootEl) => {
-  paintHost(rootEl, 'head-art', HEAD_MOTIF);
-  paintHost(rootEl, 'joy-motif', JOY_MOTIF);
-  paintHost(rootEl, 'evidence', EVIDENCE_NATIONWIDE);
-  const dark = rootEl.querySelector('.tw-exhibit--dark');
-  if (dark) dark.style.backgroundImage = `url("${VELVET_GROUND}")`;
-};
+const buildTrustParadox = (rootEl, survey, journey) => {
+  const trust = survey.institutionTrust;
+  if (!trust) return;
 
-const buildTrustParadox = (rootEl, institutionTrust, onRevealed) => {
-  const ranking = institutionTrust?.confidenceRanking?.items;
-  if (!Array.isArray(ranking) || ranking.length === 0) return;
+  const rankHost = rootEl.querySelector('[data-rank-trust]');
+  const aside = rootEl.querySelector('[data-trust-aside]');
+  const gaugeHost = rootEl.querySelector('[data-gauge-nhs]');
+  const flipHost = rootEl.querySelector('[data-flip-nhs]');
+  if (!rankHost) return;
 
-  // True order: ids sorted by pctConfident descending (NHS -> Government).
-  const byConfidence = ranking.slice().sort((a, b) => b.pctConfident - a.pctConfident);
-  const trueOrder = byConfidence.map((it) => it.id);
-  const top = byConfidence[0];
-  const bottom = byConfidence[byConfidence.length - 1];
+  // True order = most -> least confident (Q7 pctConfident, descending).
+  const ranked = trust.confidenceRanking.items
+    .slice()
+    .sort((a, b) => b.pctConfident - a.pctConfident);
+  const trueOrder = ranked.map((i) => i.id);
+  const items = shuffled(ranked.map((i) => ({ id: i.id, label: i.label })));
 
-  const rankHost = rootEl.querySelector('[data-host="rank"]');
-  const truthFig = rootEl.querySelector('[data-host="trust-truth"]');
-  const orbitHost = rootEl.querySelector('[data-host="trust-orbit"]');
-  const spreadEl = rootEl.querySelector('[data-host="spread"]');
-  if (!rankHost || !truthFig || !orbitHost || !spreadEl) return;
+  if (journey) journey.gate();
 
-  const tiles = shuffleStable(ranking).map((it) => ({ id: it.id, label: it.label }));
+  let revealed = false;
+  const revealAside = () => {
+    if (revealed || !aside) return;
+    revealed = true;
+    aside.hidden = false;
+    aside.setAttribute('aria-hidden', 'false');
+    aside.classList.add('is-live');
+    observeCounters(aside); // count the 53% -> 24% spread numbers
 
-  const revealTruth = () => {
-    if (!truthFig.hidden) return;
-    truthFig.hidden = false;
-    // Drag-rank reveal completed — this is the gating interaction; unlock Next.
-    if (typeof onRevealed === 'function') onRevealed();
-    // EARNED-DARK navy ground: the orbit motif renders cream + teal on the
-    // velvet (onNavy path) — never mustard (vanishes), never a white box.
-    orbitRingChart(orbitHost, {
-      items: byConfidence.map((it) => ({ label: it.label, pct: it.pctConfident })),
-      max: 100,
-      onNavy: true,
-      decimals: 0,
-      centreLabel: 'TRUST',
-      ariaLabel:
-        'Confidence each institution will reliably support them, by share rating 7 to 10 out of 10, on concentric orbits',
-    });
-    const spread = Math.round(top.pctConfident - bottom.pctConfident);
-    spreadEl.innerHTML =
-      `From ${Math.round(top.pctConfident)}% to ${Math.round(bottom.pctConfident)}%: ` +
-      `${top.label} on the outer orbit, ${bottom.label} on the inner. A ` +
-      `<strong>${spread}-point spread</strong> in who Britain trusts to be there.`;
+    // NHS trust gauge (6.42 / 10) — cream arc on the dark ground.
+    if (gaugeHost) {
+      radialGauge(gaugeHost, {
+        value: NHS_TRUST_SCORE,
+        max: 10,
+        label: 'NHS trust, out of 10',
+        onNavy: true,
+        ariaLabel: 'NHS trust score 6.42 out of 10 — the highest of any institution',
+      });
+    }
+    // The paradox flip: most trusted <-> yet 53% say it has declined.
+    if (flipHost) {
+      flipReveal(flipHost, {
+        fromToLabels: ['The regard', 'The reality'],
+        rows: [{
+          less: 'The single most trusted institution in Britain',
+          more: 'Yet 53% say its performance has declined over the past decade',
+        }],
+      });
+    }
   };
 
   dragRank(rankHost, {
-    items: tiles,
+    items,
     trueOrder,
     instructions:
-      'Drag to reorder, or focus a row and use the up and down arrow keys. Most trusted at the top.',
-    onReveal: revealTruth,
+      'Drag institutions into the order you think Britain trusts them — or focus a row and use the up and down arrow keys.',
+    onReveal: () => {
+      revealAside();
+      if (journey) journey.ready();
+    },
   });
-
-  // The paradox flip card: 6.42/10 "most trusted" <-> "53% say it declined".
-  const flip = rootEl.querySelector('[data-host="paradox"]');
-  if (flip) {
-    flip.addEventListener('click', () => {
-      const flipped = flip.getAttribute('aria-pressed') !== 'true';
-      flip.setAttribute('aria-pressed', String(flipped));
-      flip.classList.toggle('is-flipped', flipped);
-    });
-  }
-
-  // The wider decline picture — bars on the navy ground (cream/teal onNavy).
-  const declineHost = rootEl.querySelector('[data-host="decline-bars"]');
-  const declineItems = institutionTrust?.performanceChange?.items;
-  if (declineHost && Array.isArray(declineItems)) {
-    horizontalBars(declineHost, {
-      items: declineItems.map((it) => ({ id: it.id, label: it.label, pct: it.pctDeclined })),
-      max: 100,
-      onNavy: true,
-      decimals: 0,
-      highlightId: 'government',
-      labelWidth: 150,
-      ariaLabel: 'Share saying each institution has declined over the past decade',
-    });
-  }
 };
 
-const buildProtectedJoy = (rootEl, protectedSpend) => {
-  const lolliHost = rootEl.querySelector('[data-host="joy-lolli"]');
-  const items = protectedSpend?.items;
-  if (!Array.isArray(items)) return;
-
-  // The eight named non-essentials, in deck order (drop "none"/"brands").
-  const named = items.filter((it) => it.id !== 'noneOfThese' && it.id !== 'specificBrands');
-
-  if (lolliHost) {
-    // Warm off-white page ground: navy components (charts default) read
-    // high-contrast. Holiday highlighted in ink.
-    lollipopChart(lolliHost, {
-      items: named.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
-      max: 100,
-      highlightId: 'holidays',
-      ariaLabel: 'Non-essentials Britain is actively protecting, by share protecting each',
-    });
-  }
-
-  buildRingFence(rootEl, named);
-};
-
-// Ring-fence board geometry / thresholds (named, no magic numbers inline).
-const CUT_THRESHOLD_PX = 132;     // drag distance right that "cuts" a flexible chip
-const RESIST_DAMP = 0.34;         // how much the holiday chip yields before it fights back
-const RESIST_CAP_PX = 56;         // max the holiday chip can be pulled before hard resist
-const FLEX_TO_CUT = 3;            // flexible chips cut before the beat reads "complete"
+/* ───────────────────── Twist 02 · ring-fence the holiday ───────────── */
 
 /**
- * THE MARQUEE TACTILE BEAT — ring-fence the holiday.
- *
- * A small board of draggable spend chips. Flexible treats can be dragged right
- * past CUT_THRESHOLD_PX to be cut (they spring into the bin margin and lock,
- * struck through). The HOLIDAY chip is RING-FENCED: it yields only a little
- * (RESIST_DAMP, capped at RESIST_CAP_PX), shows a fence outline that flexes,
- * then springs back every time — "protected at all costs", felt by hand.
- *
- * Built on tactile.draggable(): pointer + keyboard, contact shadow, spring
- * return, reduced-motion safe (drags still work, snap to final state).
+ * Build the tactile spend field. The "holiday" tile is ring-fenced: dragging
+ * it only yields a few pixels before it resists and springs straight back
+ * (spring:'return', tight bounds). The flexible-spend tiles wobble and CAN be
+ * flung loose (spring:'settle'), making the contrast physical. Once the
+ * visitor has wrestled the holiday and it sprang back, the 40% reveals.
+ * @param {HTMLElement} fieldEl
+ * @param {() => void} onResisted  fired the first time the holiday springs back
  */
-const buildRingFence = (rootEl, named) => {
-  const board = rootEl.querySelector('[data-host="cut-board"]');
-  const list = rootEl.querySelector('[data-host="cut-list"]');
-  const readout = rootEl.querySelector('[data-host="cut-readout"]');
-  if (!board || !list || !named.length) return;
+const buildJoyField = (fieldEl, onResisted) => {
+  const reduced = prefersReducedMotion();
+  const flexible = [
+    { label: 'Fashion', cls: 'a' },
+    { label: 'Pub', cls: 'b' },
+    { label: 'Beauty', cls: 'c' },
+    { label: 'Gym', cls: 'd' },
+  ];
+  const handles = [];
 
-  // Five chips: the ring-fenced holiday + four highest flexible treats, so the
-  // board stays a single readable beat (one idea), not a wall of items.
-  const holiday = named.find((it) => it.id === 'holidays');
-  const flexible = named.filter((it) => it.id !== 'holidays').slice(0, 4);
-  const chips = holiday ? [holiday, ...flexible] : flexible;
+  // Flexible spend — these flex away. Light tiles, settle where flung.
+  flexible.forEach((item, i) => {
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = `tw-joy-tile tw-joy-tile--flex tw-joy-tile--${item.cls}`;
+    tile.textContent = item.label;
+    tile.setAttribute('aria-label', `${item.label} — flexible spend, drag it loose`);
+    if (!reduced) tile.style.setProperty('--wobble-delay', `${i * 0.4}s`);
+    fieldEl.append(tile);
+    handles.push(draggable(tile, { spring: 'settle', momentum: 0.18 }));
+  });
 
-  const handles = [];          // tracked draggable controllers for cleanup parity
-  let cutCount = 0;
-  let resistedHoliday = false;
+  // The holiday — ring-fenced. A bordered "fence" wraps it; the tile resists.
+  const fence = document.createElement('div');
+  fence.className = 'tw-joy-fence';
+  const tile = document.createElement('button');
+  tile.type = 'button';
+  tile.className = 'tw-joy-tile tw-joy-tile--holiday';
+  tile.innerHTML = '<span class="tw-joy-tile-lock" aria-hidden="true">&#9679;</span>Holiday';
+  tile.setAttribute(
+    'aria-label',
+    'Holiday — ring-fenced and defended at all costs. It resists being moved.',
+  );
+  fence.append(tile);
+  fieldEl.append(fence);
 
-  const announce = () => {
-    if (!readout) return;
-    const cutLine = cutCount === 0
-      ? 'Drag a treat right to cut it.'
-      : `${cutCount} treat${cutCount === 1 ? '' : 's'} cut.`;
-    const fenceLine = resistedHoliday
-      ? ' The holiday will not budge — ring-fenced.'
-      : '';
-    readout.textContent = cutLine + fenceLine;
+  let resistedOnce = false;
+  const markResisted = () => {
+    if (resistedOnce) return;
+    resistedOnce = true;
+    onResisted();
   };
-  announce();
 
-  chips.forEach((item) => {
-    const li = document.createElement('li');
-    li.className = 'tw-chip';
-    const ringFenced = item.id === 'holidays';
-    if (ringFenced) li.classList.add('is-fenced');
-    li.innerHTML =
-      `<span class="tw-chip-fence" aria-hidden="true"></span>` +
-      `<span class="tw-chip-grip" aria-hidden="true"></span>` +
-      `<span class="tw-chip-name">${item.label}</span>` +
-      `<span class="tw-chip-pct">${Math.round(item.pct)}%</span>`;
-    li.setAttribute(
-      'aria-label',
-      ringFenced
-        ? `${item.label}, ring-fenced. ${Math.round(item.pct)} percent protect it at all costs. Cannot be cut.`
-        : `${item.label}, ${Math.round(item.pct)} percent protect it. Drag right or press the right arrow to cut.`,
-    );
-    list.append(li);
-
-    if (ringFenced) {
-      handles.push(makeFencedChip(li, () => {
-        if (!resistedHoliday) {
-          resistedHoliday = true;
-          announce();
-        }
-      }));
-    } else {
-      handles.push(makeFlexibleChip(li, () => {
-        cutCount += 1;
-        announce();
-      }));
-    }
-  });
-
-  return () => handles.forEach((h) => h && h.destroy && h.destroy());
-};
-
-/** A flexible treat: drag right past the threshold to cut it; otherwise it
- *  springs back. Once cut it locks struck-through in the bin margin. */
-const makeFlexibleChip = (li, onCut) => {
-  let cut = false;
-  const drag = draggable(li, {
-    axis: 'x',
-    spring: 'return',
-    bounds: { minX: 0 },                 // only pulls toward the cut (right)
-    springOpts: { stiffness: 220 },
-    onMove: ({ x }) => {
-      // Light up the chip as it nears the cut line (transform/opacity only).
-      const near = Math.min(x / CUT_THRESHOLD_PX, 1);
-      li.style.setProperty('--cut-near', near.toFixed(3));
-      li.classList.toggle('is-arming', near >= 1 && !cut);
-    },
-    onRelease: ({ x }) => {
-      if (cut || x < CUT_THRESHOLD_PX) return;
-      cut = true;
-      li.classList.remove('is-arming');
-      li.classList.add('is-cut');
-      drag.destroy();                    // freeze it where it landed (struck through)
-      onCut();
-    },
-  });
-  return drag;
-};
-
-/** The ring-fenced holiday: yields only RESIST_DAMP of the drag, capped at
- *  RESIST_CAP_PX, flexes its fence, and springs back every release. */
-const makeFencedChip = (li, onResist) => {
-  const fence = li.querySelector('.tw-chip-fence');
-  const drag = draggable(li, {
-    axis: 'x',
-    spring: 'return',
-    springOpts: { stiffness: 320, bounce: 0.12 },  // a firm, slightly elastic snap-back
-    momentum: 0,
-    // The fence fights back: damp the pull and clamp how far it can travel.
-    bounds: ({ x }) => ({
-      x: Math.max(0, Math.min(x * RESIST_DAMP, RESIST_CAP_PX)),
-      y: 0,
+  handles.push(
+    draggable(tile, {
+      spring: 'return', // always springs back to the fence
+      momentum: 0,
+      // It yields only a little before the fence holds it.
+      bounds: { minX: -FENCE_GIVE_PX, maxX: FENCE_GIVE_PX, minY: -FENCE_GIVE_PX, maxY: FENCE_GIVE_PX },
+      onMove: (state) => {
+        const strained = Math.abs(state.x) + Math.abs(state.y) > 6;
+        tile.classList.toggle('is-strained', strained && state.grabbed);
+      },
+      onSettle: () => {
+        tile.classList.remove('is-strained');
+        markResisted();
+      },
     }),
-    onMove: ({ x }) => {
-      const strain = Math.min(x / RESIST_CAP_PX, 1);
-      li.style.setProperty('--fence-strain', strain.toFixed(3));
-      li.classList.add('is-straining');
-      if (strain > 0.5 && typeof onResist === 'function') onResist();
-    },
-    onRelease: () => {
-      li.classList.remove('is-straining');
-      li.style.setProperty('--fence-strain', '0');
-    },
-  });
-  // A faint, continuous "held" pulse on the fence so it reads as alive/guarded
-  // even at rest — purely cosmetic, reduced-motion safe (CSS owns the pulse).
-  if (fence) fence.dataset.ready = '1';
-  return drag;
+  );
+
+  return () => handles.forEach((h) => h.destroy());
 };
 
-const buildAiOnTap = (rootEl, aiTasks) => {
-  const host = rootEl.querySelector('[data-host="ai-bars"]');
-  const items = aiTasks?.items;
-  if (!host || !Array.isArray(items)) return;
+const buildProtectedJoy = (rootEl, survey) => {
+  const protectedSpend = survey.protectedSpend;
+  const fieldEl = rootEl.querySelector('[data-joy-field]');
+  const stripHost = rootEl.querySelector('[data-strip-protected]');
+  let destroyField = () => {};
 
-  // Warm off-white page ground: navy bars (charts default) read high-contrast.
-  const chart = horizontalBars(host, {
-    items: items.map((it) => ({ id: it.id, label: it.label, pct: it.pct })),
-    max: 100,
-    decimals: 1,
-    labelWidth: 190,
-    ariaLabel: 'Tasks done with AI instead of a professional, by share for each task',
-  });
-  const highStakesIds = items.filter((it) => it.isHighStakes).map((it) => it.id);
-  frameRows(chart.el, items, highStakesIds, 190);
+  if (fieldEl) {
+    destroyField = buildJoyField(fieldEl, () => {
+      fieldEl.classList.add('is-defended');
+    });
+  }
 
-  // Adoption split: have used AI vs have not (tugOfWar — own-side labels).
-  const tugHost = rootEl.querySelector('[data-host="ai-tug"]');
-  if (tugHost && aiTasks.anyTaskPct != null && aiTasks.notUsedPct != null) {
-    tugOfWar(tugHost, {
-      left: { label: 'Have used AI', pct: aiTasks.anyTaskPct },
-      right: { label: 'Have not', pct: aiTasks.notUsedPct },
+  // The defended share, as a single proportion strip: holidays vs the rest.
+  if (stripHost && protectedSpend) {
+    const holiday = protectedSpend.items.find((i) => i.id === 'holidays');
+    const family = protectedSpend.items.find((i) => i.id === 'familyExperiences');
+    const streaming = protectedSpend.items.find((i) => i.id === 'streaming');
+    const hobbies = protectedSpend.items.find((i) => i.id === 'hobbies');
+    const segs = [holiday, family, streaming, hobbies]
+      .filter(Boolean)
+      .map((i, idx) => ({
+        label: i.label,
+        pct: i.pct,
+        accent: idx === 0 ? 'navy' : 'teal',
+      }));
+    proportionStrip(stripHost, {
+      segments: segs,
+      ariaLabel:
+        'Non-essentials Britain protects: holidays 40%, family experiences 39%, streaming 33%, hobbies 32%',
+    });
+  }
+
+  return destroyField;
+};
+
+/* ───────────────────────── Twist 03 · AI on tap ───────────────────── */
+
+const buildAiOnTap = (rootEl, survey) => {
+  const ai = survey.aiTasks;
+  if (!ai) return;
+
+  const tugHost = rootEl.querySelector('[data-tug-ai]');
+  const barsHost = rootEl.querySelector('[data-bars-ai]');
+  const controlsHost = rootEl.querySelector('[data-ai-controls]');
+  const capEl = rootEl.querySelector('[data-ai-tug-cap]');
+
+  let tug;
+  if (tugHost) {
+    tug = tugOfWar(tugHost, {
+      left: { label: 'Used AI', pct: AI_ANY_PCT },
+      right: { label: 'A human professional', pct: 100 - AI_ANY_PCT },
       accent: 'navy',
-      ariaLabel: 'Share who have used AI instead of a professional versus those who have not',
+      ariaLabel: '58% have used AI instead of a human professional for at least one task',
+    });
+  }
+
+  // ANY task (58.4) vs HIGH-STAKES finance/health/legal (37.4) — distinct.
+  const CAP_ANY = 'Used AI instead of a human professional for at least one task';
+  const CAP_HIGH = 'Used AI for a high-stakes call — finance, health or legal advice';
+  if (controlsHost && tug) {
+    pillGroup(controlsHost, {
+      ariaLabel: 'Show AI substitution for any task or only high-stakes calls',
+      value: 'any',
+      options: [
+        { value: 'any', label: 'Any task' },
+        { value: 'high', label: 'High-stakes' },
+      ],
+      onChange: (value) => {
+        const left = value === 'high' ? AI_HIGH_STAKES_PCT : AI_ANY_PCT;
+        tug.update({
+          left: { label: 'Used AI', pct: left },
+          right: { label: 'A human professional', pct: 100 - left },
+        });
+        if (capEl) capEl.textContent = value === 'high' ? CAP_HIGH : CAP_ANY;
+      },
+    });
+  }
+
+  // Task breakdown, ranked. High-stakes tasks highlighted in ink.
+  if (barsHost) {
+    const items = ai.items
+      .slice()
+      .sort((a, b) => b.pct - a.pct)
+      .map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
+    horizontalBars(barsHost, {
+      items,
+      decimals: 0,
+      labelWidth: 190,
+      ariaLabel: 'Tasks done with AI instead of a professional, by share',
     });
   }
 };
 
-// Geometry mirrored from charts.js horizontalBars (the only knobs that move).
-const BAR_HEIGHT = 30;
-const BAR_GAP = 12;
-const CHART_WIDTH = 720;
-const CHART_RIGHT_PAD = 56;
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-/**
- * Draw a 1.5px ink frame around the full track of named rows so a subset
- * reads as ring-fenced against flexible neighbours. Pure SVG, square corners,
- * positioned from the lib's known row geometry (no mutation of lib rows).
- *
- * @param {SVGElement} svg     the chart's <svg> (chart.el)
- * @param {Array<{id:string}>} rowItems  items in render order
- * @param {string[]} ids       ids of rows to frame
- * @param {number} labelWidth  must match the labelWidth passed to the chart
- */
-const frameRows = (svg, rowItems, ids, labelWidth) => {
-  if (!svg || !Array.isArray(rowItems) || !Array.isArray(ids) || ids.length === 0) return;
-  const valueX = labelWidth + 12;
-  const trackWidth = CHART_WIDTH - valueX - CHART_RIGHT_PAD;
-  const wanted = new Set(ids);
-  rowItems.forEach((item, index) => {
-    if (!wanted.has(item.id)) return;
-    const y = index * (BAR_HEIGHT + BAR_GAP);
-    const frame = document.createElementNS(SVG_NS, 'rect');
-    const inset = 2;
-    frame.setAttribute('x', String(valueX - inset));
-    frame.setAttribute('y', String(y - inset));
-    frame.setAttribute('width', String(trackWidth + inset * 2));
-    frame.setAttribute('height', String(BAR_HEIGHT + inset * 2));
-    frame.setAttribute('fill', 'none');
-    frame.setAttribute('stroke', '#0A1A5C');
-    frame.setAttribute('stroke-width', '1.5');
-    frame.setAttribute('class', 'tw-ringfence');
-    svg.append(frame);
-  });
-};
+/* ─────────────────────────────── init ─────────────────────────────── */
 
 export default function init(rootEl, data) {
   const { survey, journey } = data || {};
-  if (!survey) return;
-
-  // Journey gating: this step REQUIRES the trust drag-rank reveal. Next starts
-  // locked and unlocks when revealTruth fires (the "reveal the real ranking"
-  // action). gate() is a no-op when running outside the journey engine.
-  journey?.gate?.();
+  if (!survey) return; // fail soft — never throw on missing data
 
   observeReveals(rootEl);
-  observeCounters(rootEl);
+  observeCounters(rootEl); // hero count-ups (the 40% etc.) on scroll-in
 
-  placeDeckArt(rootEl);
-  buildTrustParadox(rootEl, survey.institutionTrust, () => journey?.ready?.());
-  buildProtectedJoy(rootEl, survey.protectedSpend);
-  buildAiOnTap(rootEl, survey.aiTasks);
+  // Re-assemble the heading on every arrival (idempotent). Not step 01, so no
+  // ritual; the emphasis word ("twists") decrypts via data-arrival-scramble.
+  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail || {}));
 
-  // Experiential motion: subtle parallax on the decorative deck art and a
-  // scroll-progress entrance on each exhibit (CSS owns the visual treatment
-  // via --enter). Both are reduced-motion safe inside the lib.
-  observeParallax(rootEl, { maxShiftPx: 48 });
-  rootEl.querySelectorAll('[data-exhibit]').forEach((ex) => chapterTransition(ex));
+  buildTrustParadox(rootEl, survey, journey);
+  const destroyJoyField = buildProtectedJoy(rootEl, survey);
+  buildAiOnTap(rootEl, survey);
+
+  // Tear down the tactile sim's listeners if the step is ever destroyed.
+  rootEl.addEventListener('chapter:teardown', () => {
+    if (typeof destroyJoyField === 'function') destroyJoyField();
+  });
 }

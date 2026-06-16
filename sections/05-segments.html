@@ -1,166 +1,85 @@
-<div class="chapter-inner">
-  <!-- Hero band sits on the signature warm gradient ground with a low-opacity
-       orbit motif behind it. Decorative layers are pointer-events:none + z-index:0;
-       all content sits at z-index:1 via .seg-hero-body. A deck bear-world motif
-       (overlapping circles = "what the four share") anchors the right. -->
-  <header class="seg-head reveal">
-    <div class="seg-hero-ground si-ground-warm" data-seg-hero>
-      <span class="si-orbit si-orbit--spin seg-hero-orbit" aria-hidden="true" data-parallax="0.08"></span>
-      <div class="seg-hero-grid">
-        <div class="seg-hero-body">
-          <span class="vccp-eyebrow" data-arrival>The four Britains</span>
-          <!-- Deck image-TITLE lockup feel: huge all-caps Poppins Black, stacked,
-               tight tracking + leading, navy on the warm ground (DECK2 §image-title).
-               ARRIVAL: each line assembles in cascade; the emphasis word decrypts
-               into place last (connective-tissue helper, reduced-motion instant). -->
-          <h2 class="si-display si-display--black seg-title" data-seg-stagger>
-            <span class="seg-title-line">Britain</span>
-            <span class="seg-title-line">in four</span>
-            <span class="seg-title-line"><em class="hl" data-arrival-scramble>segments</em></span>
-          </h2>
-          <p class="seg-standfirst si-measure" data-arrival>This time we dug deeper: past how people feel, into what they are doing about it. A new dimension, the agency to act, splits the nation into four very different camps.</p>
-          <p class="seg-hinge">
-            <span class="seg-hinge-pair"><span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic to optimistic</span></span>
-            <span class="seg-hinge-x" aria-hidden="true">&times;</span>
-            <span class="seg-hinge-pair"><span class="seg-hinge-dim">agency to act</span> <span class="seg-hinge-axis">passive to proactive</span></span>
-          </p>
-        </div>
-        <div class="seg-hero-art" aria-hidden="true">
-          <span class="si-orbit seg-art-orbit" aria-hidden="true" data-parallax="-0.06"></span>
-          <img class="seg-hero-img" src="assets/deck/bear-world-circles.png" alt="" loading="lazy" decoding="async" data-parallax="0.12">
-        </div>
-      </div>
-    </div>
+<div class="chapter-inner sg-world on-warm" data-stagger="120">
+
+  <!-- Decorative orbit world: behind everything, never carries meaning. -->
+  <div class="sg-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.05"></div>
+  <span class="sg-seed sg-seed--a" aria-hidden="true" data-parallax="0.2"></span>
+  <span class="sg-seed sg-seed--b" aria-hidden="true" data-parallax="0.28"></span>
+  <span class="sg-seed sg-seed--c" aria-hidden="true" data-parallax="0.34"></span>
+
+  <!-- ── Opener ──────────────────────────────────────────────────── -->
+  <header class="sg-head reveal">
+    <p class="sg-kicker" data-arrival>Dig deeper</p>
+    <h2 class="sg-headline">
+      <span data-arrival>Britain in four</span>
+      <span class="sg-emph hl" data-arrival data-arrival-scramble data-youdot-anchor>segments</span>
+    </h2>
+    <p class="sg-standfirst">
+      This time we dug deeper &mdash; beyond how people feel, into what they
+      are doing about it. A new dimension of <strong>agency to act</strong>
+      splits the nation into four very different camps.
+    </p>
   </header>
 
-  <!-- Roster band: four backgroundless segment tiles, each a deck bear-world
-       motif + share + trio. A fast at-a-glance way in; selecting one opens its
-       profile on the compass below (wired in JS). More depth, no dead space. -->
-  <div class="seg-roster reveal" data-stagger="90" role="group" aria-label="The four segments at a glance. Select one to open its profile.">
-    <button type="button" class="seg-tile reveal" data-tile="hustlers">
-      <span class="seg-tile-art"><img src="assets/deck/bear-world-coil.png" alt="" loading="lazy" decoding="async"></span>
-      <span class="seg-tile-share num" data-share="hustlers">28%</span>
-      <span class="seg-tile-name">The Hustlers</span>
-      <span class="seg-tile-trio">Self-sufficient. Savvy. Sceptical.</span>
-    </button>
-    <button type="button" class="seg-tile reveal" data-tile="architects">
-      <span class="seg-tile-art"><img src="assets/deck/bear-world-cube.png" alt="" loading="lazy" decoding="async"></span>
-      <span class="seg-tile-share num" data-share="architects">17%</span>
-      <span class="seg-tile-name">The Architects</span>
-      <span class="seg-tile-trio">Organised. Positive. In control.</span>
-    </button>
-    <button type="button" class="seg-tile reveal" data-tile="coasters">
-      <span class="seg-tile-art"><img src="assets/deck/bear-world-arches.png" alt="" loading="lazy" decoding="async"></span>
-      <span class="seg-tile-share num" data-share="coasters">27%</span>
-      <span class="seg-tile-name">The Coasters</span>
-      <span class="seg-tile-trio">Easygoing. Careful. Open-minded.</span>
-    </button>
-    <button type="button" class="seg-tile reveal" data-tile="retreaters">
-      <span class="seg-tile-art"><img src="assets/deck/bear-world-doors.png" alt="" loading="lazy" decoding="async"></span>
-      <span class="seg-tile-share num" data-share="retreaters">28%</span>
-      <span class="seg-tile-name">The Retreaters</span>
-      <span class="seg-tile-trio">Overwhelmed. Stretched. Support-seeking.</span>
-    </button>
-  </div>
-
-  <!-- The map (left) + live profile data-card (right). -->
-  <div class="seg-stage reveal">
-    <div class="seg-mapwrap">
-      <span class="seg-stage-label">The compass</span>
-      <!-- The persistent journey "you" dot anchors to the compass centre here,
-           so the reader's marker lands in the very field they place themselves in. -->
-      <div class="seg-map" data-map data-youdot-anchor>
-        <div class="seg-dotfield" data-dotfield></div>
-
-        <span class="seg-axis seg-axis-x" aria-hidden="true"></span>
-        <span class="seg-axis seg-axis-y" aria-hidden="true"></span>
-
-        <span class="seg-axis-label seg-label-left" aria-hidden="true">pessimistic</span>
-        <span class="seg-axis-label seg-label-right" aria-hidden="true">optimistic</span>
-        <span class="seg-axis-label seg-label-top" aria-hidden="true">proactive</span>
-        <span class="seg-axis-label seg-label-bottom" aria-hidden="true">passive</span>
-
-        <div class="seg-quads" role="group" aria-label="The four segments. Select a quadrant to read its profile.">
-          <button type="button" class="seg-quad" data-quad="hustlers" data-pos="tl">
-            <span class="seg-quad-name">The Hustlers</span>
-            <span class="seg-quad-share num" data-share="hustlers">28%</span>
-            <span class="seg-quad-trio">Self-sufficient. Savvy. Sceptical.</span>
-          </button>
-          <button type="button" class="seg-quad" data-quad="architects" data-pos="tr">
-            <span class="seg-quad-name">The Architects</span>
-            <span class="seg-quad-share num" data-share="architects">17%</span>
-            <span class="seg-quad-trio">Organised. Positive. In control.</span>
-          </button>
-          <button type="button" class="seg-quad" data-quad="retreaters" data-pos="bl">
-            <span class="seg-quad-name">The Retreaters</span>
-            <span class="seg-quad-share num" data-share="retreaters">28%</span>
-            <span class="seg-quad-trio">Overwhelmed. Stretched. Support-seeking.</span>
-          </button>
-          <button type="button" class="seg-quad" data-quad="coasters" data-pos="br">
-            <span class="seg-quad-name">The Coasters</span>
-            <span class="seg-quad-share num" data-share="coasters">27%</span>
-            <span class="seg-quad-trio">Easygoing. Careful. Open-minded.</span>
-          </button>
-        </div>
-
-        <span class="seg-youtag" data-youtag hidden>you</span>
-      </div>
-      <p class="seg-maphint" data-maphint>Select a quadrant to open its profile, or take the quiz below to find your own.</p>
+  <!-- ── The agency compass (2×2) ───────────────────────────────── -->
+  <section class="sg-compass-block reveal" aria-labelledby="sg-compass-title">
+    <div class="sg-compass-lede">
+      <p class="sg-compass-eyebrow" id="sg-compass-title">The agency-to-act compass</p>
+      <p class="sg-compass-copy">
+        Outlook runs left to right, agency runs bottom to top. Every
+        respondent is a dot &mdash; watch them settle into four camps, then
+        choose one to meet it.
+      </p>
+      <p class="sg-compass-cue" data-compass-cue>Tap a quadrant to meet its segment.</p>
     </div>
 
-    <!-- Profile column. When nothing is selected this carries a deck bear-world
-         "how to read it" motif (no dead band, no box behind copy); JS swaps in
-         the live profile data-card the moment a quadrant is chosen. -->
-    <div class="seg-profile-col">
-      <aside class="seg-profile" data-profile aria-live="polite"></aside>
-      <div class="seg-profile-rest" data-profile-rest aria-hidden="true">
-        <span class="si-orbit si-orbit--spin seg-rest-orbit" data-parallax="0.07"></span>
-        <img class="seg-rest-art" src="assets/deck/bear-world-sphere.png" alt="" loading="lazy" decoding="async" data-parallax="0.13">
-        <p class="seg-rest-lead">Two questions split Britain in four.</p>
-        <p class="seg-rest-sub">How you see the decade ahead, and whether you act on it. Pick a camp on the compass, or take the quiz, to read its full profile.</p>
-      </div>
-    </div>
-  </div>
+    <!-- The compass stage: canvas dot-field behind four quadrant buttons. -->
+    <figure class="sg-compass chart-holder" data-compass aria-label="The agency-to-act compass: four segments of Britain plotted by outlook and agency.">
+      <span class="sg-axis sg-axis--top" aria-hidden="true">Proactive</span>
+      <span class="sg-axis sg-axis--bottom" aria-hidden="true">Passive</span>
+      <span class="sg-axis sg-axis--left" aria-hidden="true">Pessimistic</span>
+      <span class="sg-axis sg-axis--right" aria-hidden="true">Optimistic</span>
+      <div class="sg-field" data-compass-field aria-hidden="true"></div>
+      <div class="sg-quadrants" data-compass-quadrants role="group" aria-label="Choose a segment quadrant"></div>
+    </figure>
 
-  <!-- Deck maze/bear-world transition: the "journey through" motif (DECK2 maze
-       + bear-world). A full-bleed warm band carries the orbit logo as a chapter
-       hinge between the compass and the network — no copy block behind it. -->
-  <div class="seg-maze-break reveal" aria-hidden="true">
-    <span class="si-orbit si-orbit--spin seg-maze-orbit" data-parallax="0.1"></span>
-    <img class="seg-maze-img" src="assets/deck/maze-hero.png" alt="" loading="lazy" decoding="async" data-parallax="0.16">
-    <p class="seg-maze-line"><span>Four camps.</span> <span>One way through.</span></p>
-  </div>
-
-  <!-- GraphRAG explorer: a second way in. Segments as hubs, attributes as satellites. -->
-  <section class="seg-graphblock reveal" aria-labelledby="seg-graph-title">
-    <div class="seg-graph-head">
-      <span class="vccp-eyebrow">A second way in</span>
-      <h3 class="seg-graph-title si-display si-display--sm" id="seg-graph-title">What the four <em class="hl hl-teal">share</em></h3>
-      <p class="seg-graph-intro si-measure">The same four segments as a living network. Select a segment to isolate its world, or select an attribute to see who else holds it. Shared interests, channels, AI stances and demographics bridge the camps.</p>
-    </div>
-    <div data-segment-graph></div>
+    <!-- The chosen quadrant's profile lands here (backgroundless). -->
+    <div class="sg-profile" data-compass-profile aria-live="polite"></div>
   </section>
 
-  <!-- The quiz: live "you" dot drops into the reader's segment. Two-column
-       deck lockup — the question column left, a deck bear-world "doors"
-       (choices / opting in) motif with a sweeping orbit right, so the band
-       fills the screen instead of leaving a dead half (FEEDBACK-V4 §4). -->
-  <section class="seg-quizblock reveal" data-quizblock aria-labelledby="seg-quiz-title">
-    <div class="seg-quiz-main">
-      <div class="seg-quiz-head">
-        <span class="vccp-eyebrow">Place yourself</span>
-        <h3 class="seg-quiz-title si-display si-display--sm" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
-        <p class="seg-quiz-intro" data-quiz-intro></p>
-      </div>
-      <div class="seg-quiz-host" data-quiz></div>
-      <div class="seg-result" data-result hidden></div>
+  <!-- ── The living segment network ─────────────────────────────── -->
+  <section class="sg-network-block reveal" aria-labelledby="sg-network-title">
+    <div class="sg-network-lede">
+      <p class="sg-network-eyebrow" id="sg-network-title">The living network</p>
+      <p class="sg-network-copy">
+        The four camps are not islands. Drag a hub, or pick one, to see the
+        interests, channels and attitudes that connect &mdash; and divide
+        &mdash; the four Britains.
+      </p>
     </div>
-    <div class="seg-quiz-art" aria-hidden="true">
-      <span class="si-orbit si-orbit--spin seg-quiz-orbit" data-parallax="0.08"></span>
-      <img class="seg-quiz-img" src="assets/deck/bear-world-doors.png" alt="" loading="lazy" decoding="async" data-parallax="0.14">
-      <p class="seg-quiz-arttag">Eight choices.<span>One of four.</span></p>
+    <div class="sg-graph" data-segment-graph></div>
+  </section>
+
+  <!-- ── Which Britain are you? (the quiz) ──────────────────────── -->
+  <section class="sg-quiz-block reveal" aria-labelledby="sg-quiz-title">
+    <div class="sg-quiz-lede">
+      <p class="sg-quiz-eyebrow" id="sg-quiz-title" data-quiz-title>Which of the four are you?</p>
+      <p class="sg-quiz-copy" data-quiz-intro>
+        Eight quick statements. Agree or disagree, and we'll place you on the
+        agency-to-act compass.
+      </p>
+    </div>
+    <div class="sg-quiz-stage">
+      <div class="sg-quiz-host" data-quiz-host></div>
+      <div class="sg-quiz-result" data-quiz-result hidden aria-live="polite"></div>
     </div>
   </section>
 
-  <p class="vccp-source seg-source">Segments: VCCP COCL segmentation. Quotes: qualitative 'Taking control' research. (Segment-level figures are not in the COCL survey file.)</p>
+  <!-- Mandatory footnote (kept visible — methodology note, not a hidden
+       .vccp-source caption). -->
+  <p class="sg-footnote">
+    Segments: VCCP COCL segmentation. Quotes: qualitative &lsquo;Taking
+    control&rsquo; research. (Segment-level figures are not in the COCL survey
+    file.)
+  </p>
+
 </div>

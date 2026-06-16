@@ -1,400 +1,351 @@
 /**
- * Chapter 02 — research. Warm State-of-Independence ground (navy ink), built
- * deck-faithful (FEEDBACK-V4): bigger/bolder Poppins, backgroundless, a longer
- * richer scroll, and the REAL client-supplied UK map (assets/deck/uk-map.svg)
- * carrying eight qualitative-research cities.
+ * Chapter 02: research — "How we listened to Britain".
  *
- * Left column: the method, told as a flowing rhythm with a big hero number and
- * three supporting counters (animated by observeCounters).
- * Right column: the navy UK map (backgroundless <img>) with eight cream city
- * markers (real <button>s) absolutely positioned over it by left%/top%.
- * Markers auto-pin in sequence on first reveal; selecting one
- * (click, focus, or arrow-key) opens a diary rail card. London is selected by
- * default so the rail never starts empty.
+ * The connecting ritual (EXPERIENTIAL-IDEATION D1 → D6):
+ * an ambient field of respondent dots CONVERGES out of a scatter onto the
+ * shape of the country, while eight city markers light in sequence on the
+ * real navy UK silhouette. The marquee interaction: open a city (click a
+ * marker or arrow-key the group) and its verbatim week-long video-diary quote
+ * surfaces beneath the map. Numbers for the what (1,504 / 8 / 1-week /
+ * mid-May 2026), real lives for the why.
  *
- * Quotes are verbatim from docs/STORY.md. Cities without a city-attributed
- * quote in the source show an honest sample note instead of a fabricated quote.
+ * Soft gating: the map is this step's marquee beat, so we call
+ * data.journey.gate() and clear the hint with ready() the first time a city is
+ * opened. Next is NEVER blocked — opening a city is an optional reward.
  *
- * Journey gating: this step REQUIRES an interaction — the visitor must open at
- * least one city marker before Next unlocks. init() calls data.journey.gate();
- * the first genuine marker selection (click or keyboard) fires
- * data.journey.ready(). The default London card is shown for context but does
- * NOT satisfy the gate — the visitor must act.
+ * Teal accent is allowed in this chapter. The "you" dot lands on the 1,504
+ * hero count (data-youdot-anchor in the fragment).
  *
- * @param {HTMLElement} rootEl - <section class="chapter" id="02-research">
- * @param {{survey: object, segments: object, tgi: object, journey: {gate: function, ready: function}}} data
+ * Reduced motion: the field jump-cuts to the converged formation, markers
+ * arrive without staggered delay, no parallax/pointer force runs. Keyboard:
+ * the marker group is one roving-focus control (Left/Right or Up/Down between
+ * cities, Enter/Space to open). The dotField canvas is destroyed on step-leave.
+ *
+ * @param {HTMLElement} rootEl - the <section class="journey-step" id="02-research">
+ * @param {{ survey:object|null, journey:{gate():void, ready():void} }} data
  */
-import { observeReveals } from '../lib/reveal.js';
+import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import {
-  observeParallax,
-  chapterTransition,
-  scrollScene,
-  arrival,
-  prefersReducedMotion as reducedMotion,
-} from '../lib/experiential.js';
+import { observeParallax, arrival, scrambleIn } from '../lib/experiential.js';
+import { dotField } from '../lib/charts.js';
+import { spring } from '../lib/tactile.js';
 
-/* Real UK map: client-supplied silhouette staged (navy, recoloured) at
-   assets/deck/uk-map.svg — a tall portrait GB outline (viewBox 0 0 823 1280,
-   aspect ≈ 0.643). Rendered backgroundless via <img>. Markers are placed by
-   left%/top% over the map container (NOT SVG coords): the map is GB portrait —
-   Scotland at the top, the south coast at the bottom, London bottom-right. */
 const MAP_SRC = 'assets/deck/uk-map.svg';
+const MAP_VIEW_W = 823;
+const MAP_VIEW_H = 1280;
+const FIELD_DOTS = 200; // ambient respondents — lively, not a crowd-crush
+const MARKER_STAGGER_MS = 130; // city pins light in sequence (the "connecting" build)
 
-/* City markers — left%/top% over the map container. Approximate placements,
-   nudged so each sits on its real landmass. Each carries either a verbatim
-   diary quote (with its source-stated attribution) or an honest note.
-   order = pin-in sequence. */
+const token = (name, fallback) =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+/**
+ * The eight qualitative cities (STORY.md slide 7 / 95), positioned in the
+ * map's viewBox space (823 × 1280) as fractions, roughly geographic:
+ * Glasgow top · Wigan/Bury NW (separated) · Cardiff/Bristol SW-Wales ·
+ * Watford/London SE · Southampton south.
+ *
+ * `quote`/`who` are VERBATIM week-long video-diary lines from STORY.md where a
+ * city is attributed. Two cities (Glasgow, Wigan) have no attributed verbatim
+ * line in STORY.md, so they carry the factual method note instead of an
+ * invented quote — never fabricate a quote.
+ */
 const CITIES = [
   {
-    id: 'glasgow',
-    name: 'Glasgow',
-    region: 'Scotland',
-    left: 40,
-    top: 30,
-    note: 'Scotland · families and individuals · week-long video diary, filmed early June.',
+    id: 'glasgow', name: 'Glasgow', fx: 0.40, fy: 0.285,
+    quote: null,
+    note: 'Week-long video diary with a local household — filmed early June.',
   },
   {
-    id: 'wigan',
-    name: 'Wigan',
-    region: 'North-west England',
-    left: 37,
-    top: 53,
-    note: 'North-west England · families and individuals · week-long video diary, filmed early June.',
+    id: 'wigan', name: 'Wigan', fx: 0.435, fy: 0.515,
+    quote: null,
+    note: 'Week-long video diary with a local household — filmed early June.',
   },
   {
-    id: 'bury',
-    name: 'Bury',
-    region: 'Greater Manchester',
-    left: 49,
-    top: 50,
-    quote:
-      'I would say that it is more of an empowering feeling being able to ' +
-      'do things yourself, to fix things yourself, to seek out answers ' +
-      'yourself.',
-    attribution: 'Bury, 39, Hustler',
+    id: 'bury', name: 'Bury', fx: 0.485, fy: 0.505,
+    quote: 'I would say that it is more of an empowering feeling being able to do things yourself, to fix things yourself, to seek out answers yourself.',
+    who: 'Bury, 39, Hustler',
   },
   {
-    id: 'cardiff',
-    name: 'Cardiff',
-    region: 'Wales',
-    left: 36,
-    top: 69,
-    quote:
-      'I do use ChatGPT all the time and find it really quite helpful when ' +
-      'I do have problems… I do feel more empowered now with everything at ' +
-      'my fingertips and I feel as if I’ve got more free time because of that.',
-    attribution: 'Wales, 68, Architects',
+    id: 'cardiff', name: 'Cardiff', fx: 0.365, fy: 0.735,
+    quote: 'I do use ChatGPT all the time and find it really quite helpful when I do have problems… I do feel more empowered now with everything at my fingertips and I feel as if I’ve got more free time because of that.',
+    who: 'Wales, 68, Architects',
   },
   {
-    id: 'bristol',
-    name: 'Bristol',
-    region: 'South-west England',
-    left: 44,
-    top: 68,
-    quote:
-      'I particularly like all the apps, the shopping apps and anything new ' +
-      'that comes into the shops, the loyalty apps. And, if we do want to ' +
-      'purchase anything, it’s very easy to go in and just cost the price ' +
-      'all across everywhere.',
-    attribution: 'Bristol, 61, Coaster',
+    id: 'bristol', name: 'Bristol', fx: 0.445, fy: 0.745,
+    quote: 'I particularly like all the apps, the shopping apps and anything new that comes into the shops, the loyalty apps. And, if we do want to purchase anything, it’s very easy to go in and just cost the price all across everywhere.',
+    who: 'Bristol, 61, Coaster',
   },
   {
-    id: 'watford',
-    name: 'Watford',
-    region: 'Hertfordshire',
-    left: 54,
-    top: 72,
-    quote:
-      'I don’t go out specifically to look for certain brand items. I go by, ' +
-      'comfort and price.',
-    attribution: 'Hertfordshire, 63, Coaster',
+    id: 'watford', name: 'Watford', fx: 0.585, fy: 0.755,
+    quote: 'I don’t go out specifically to look for certain brand items. I go by, comfort and price.',
+    who: 'Hertfordshire, 63, Coaster',
   },
   {
-    id: 'london',
-    name: 'London',
-    region: 'Greater London',
-    left: 63,
-    top: 76,
-    quote:
-      'I do know that calling the police would probably be a complete waste ' +
-      'of time. However I do have faith in the sense that maybe if I did my ' +
-      'own investigations, I would have to knock on my neighbours’ doors and ' +
-      'ask if they’ve got Ring camera footage. So I’d probably do half their ' +
-      'job for them before actually calling them.',
-    attribution: 'London, 42, Retreater',
+    id: 'london', name: 'London', fx: 0.625, fy: 0.770,
+    quote: 'If I could get some sort of app that would kind of help me or prompt me to do certain things that I should do because even if it’s sort of like twenty minutes, fifteen minutes aside, sometimes it becomes, I know it sounds silly, but really overwhelming.',
+    who: 'London, 42, Retreater',
   },
   {
-    id: 'southampton',
-    name: 'Southampton',
-    region: 'South coast',
-    left: 49,
-    top: 82,
-    quote:
-      'I now have a lot less trust in institutions such as the government ' +
-      'and politicians, local councils, than I did a few years ago… there’s ' +
-      'just scandal after scandal. You know, they’re in it for themselves… ' +
-      'Big brands are the same - I don’t want to give too much money to one ' +
-      'brand.',
-    attribution: 'Southampton, 63, Architects',
+    id: 'southampton', name: 'Southampton', fx: 0.525, fy: 0.805,
+    quote: 'I now have a lot less trust in institutions such as the government and politicians, local councils, than I did a few years ago… there’s just scandal after scandal. You know, they’re in it for themselves.',
+    who: 'Southampton, 63, Architects',
   },
 ];
 
-/* Real UK map as a backgroundless <img> — navy silhouette on the research
-   ground (no white/box behind it). The container preserves the map's portrait
-   aspect ratio so marker left%/top% land consistently. */
-const buildMapImage = () => {
-  const img = document.createElement('img');
-  img.className = 'research-map-img';
-  img.src = MAP_SRC;
-  img.alt = 'Map of the United Kingdom';
-  img.setAttribute('draggable', 'false');
-  return img;
-};
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
-const buildRailCard = (city) => {
-  // De-blocked: a flowing diary block, not a bordered card. Separation comes
-  // from a single accent rule + space, not a hard box (backgroundless).
-  const card = document.createElement('article');
-  card.className = 'research-card';
+/** Build target positions (0..1) for the converging field, scattered over the map area. */
+const fieldTargets = (count, colour) =>
+  Array.from({ length: count }, () => ({
+    x: 0.16 + Math.random() * 0.68,
+    y: 0.08 + Math.random() * 0.84,
+    colour,
+  }));
 
-  const head = document.createElement('header');
-  head.className = 'research-card-head';
-
-  const eyebrow = document.createElement('p');
-  eyebrow.className = 'vccp-eyebrow research-card-eyebrow';
-  eyebrow.textContent = 'Video diary';
-
-  const title = document.createElement('h3');
-  title.className = 'research-card-title';
-  title.textContent = city.name;
-
-  const region = document.createElement('p');
-  region.className = 'research-card-region';
-  region.textContent = city.region;
-
-  head.append(eyebrow, title, region);
-  card.append(head);
-
-  if (city.quote) {
-    const quote = document.createElement('blockquote');
-    quote.className = 'research-card-quote';
-    quote.textContent = `“${city.quote}”`;
-
-    const cite = document.createElement('p');
-    cite.className = 'research-card-cite';
-    cite.textContent = city.attribution;
-
-    card.append(quote, cite);
-  } else {
-    const noteP = document.createElement('p');
-    noteP.className = 'research-card-note';
-    noteP.textContent = city.note;
-    card.append(noteP);
+/**
+ * Fetch the real UK silhouette and inject it inline so markers can be overlaid
+ * in its viewBox coordinate space. Fails soft: returns null on any error.
+ * @returns {Promise<SVGSVGElement|null>}
+ */
+const loadMapSvg = async () => {
+  try {
+    const res = await fetch(MAP_SRC);
+    if (!res.ok) return null;
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+    if (doc.querySelector('parsererror')) return null;
+    return doc.querySelector('svg');
+  } catch (err) {
+    return null;
   }
-  return card;
 };
 
-const prefersReducedMotion = () =>
-  window.matchMedia &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** Create the focusable-group marker layer over the map viewBox. */
+const buildMarkers = (svg, onOpen, reduced) => {
+  const layer = document.createElementNS(SVG_NS, 'g');
+  layer.setAttribute('class', 'research-markers');
+
+  const markers = CITIES.map((city, i) => {
+    const g = document.createElementNS(SVG_NS, 'g');
+    g.setAttribute('class', 'research-marker');
+    g.dataset.city = city.id;
+    const cx = city.fx * MAP_VIEW_W;
+    const cy = city.fy * MAP_VIEW_H;
+
+    const halo = document.createElementNS(SVG_NS, 'circle');
+    halo.setAttribute('class', 'research-marker-halo');
+    halo.setAttribute('cx', cx);
+    halo.setAttribute('cy', cy);
+    halo.setAttribute('r', 26);
+
+    const dot = document.createElementNS(SVG_NS, 'circle');
+    dot.setAttribute('class', 'research-marker-dot');
+    dot.setAttribute('cx', cx);
+    dot.setAttribute('cy', cy);
+    dot.setAttribute('r', 13);
+
+    const label = document.createElementNS(SVG_NS, 'text');
+    label.setAttribute('class', 'research-marker-label');
+    // SE cluster (right of centre) labels to the right; everything else to the
+    // left of its dot → zero overlap with the silhouette edge or each other.
+    const right = city.fx > 0.5;
+    label.setAttribute('x', cx + (right ? 34 : -34));
+    label.setAttribute('y', cy + 9);
+    label.setAttribute('text-anchor', right ? 'start' : 'end');
+    label.textContent = city.name;
+
+    g.append(halo, dot, label);
+    if (!reduced) g.style.setProperty('--marker-delay', `${i * MARKER_STAGGER_MS}ms`);
+    g.addEventListener('click', () => onOpen(i));
+    layer.append(g);
+    return g;
+  });
+
+  svg.append(layer);
+  return markers;
+};
+
+/**
+ * The "we listened everywhere" trail: a faint polyline threaded between the
+ * cities that have been visited, in the array's geographic order (Glasgow in
+ * the north down to Southampton in the south). It is inserted BEFORE the
+ * markers so it sits behind the dots, and it draws on via stroke-dashoffset.
+ * @param {SVGSVGElement} svg
+ * @param {SVGGElement} markerLayer  the markers group (trail is inserted before it)
+ * @returns {(visited:Set<string>, reduced:boolean) => void} redraw(visited)
+ */
+const buildTrail = (svg, markerLayer) => {
+  const line = document.createElementNS(SVG_NS, 'polyline');
+  line.setAttribute('class', 'research-trail');
+  svg.insertBefore(line, markerLayer);
+
+  return (visited, reduced) => {
+    // Thread through visited cities in geographic order so the path stays tidy.
+    const pts = CITIES.filter((c) => visited.has(c.id)).map(
+      (c) => `${(c.fx * MAP_VIEW_W).toFixed(1)},${(c.fy * MAP_VIEW_H).toFixed(1)}`,
+    );
+    if (pts.length < 2) {
+      line.setAttribute('points', pts.join(' '));
+      line.style.strokeDasharray = '';
+      line.style.strokeDashoffset = '';
+      return;
+    }
+    line.setAttribute('points', pts.join(' '));
+    const len = line.getTotalLength ? line.getTotalLength() : 0;
+    if (reduced || !len) {
+      line.style.strokeDasharray = '';
+      line.style.strokeDashoffset = '';
+      return;
+    }
+    // Draw the newly extended segment on.
+    line.style.transition = 'none';
+    line.style.strokeDasharray = String(len);
+    line.style.strokeDashoffset = String(len);
+    // Next frame: animate to fully drawn.
+    requestAnimationFrame(() => {
+      line.style.transition = 'stroke-dashoffset 0.55s cubic-bezier(0.22,1,0.36,1)';
+      line.style.strokeDashoffset = '0';
+    });
+  };
+};
 
 export default function init(rootEl, data) {
+  const { journey } = data;
+
+  // Re-assemble the entrance on every arrival (idempotent).
+  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail || {}));
+
   observeReveals(rootEl);
   observeCounters(rootEl);
+  observeParallax(rootEl);
 
-  // Chapter arrival: each time this step becomes current, the method copy
-  // assembles (kicker/headline/standfirst lift in, the emphasis word decrypts)
-  // and the hero/cities numbers count up — meaning ASSEMBLES on entry rather
-  // than being shown pre-built. main.js fires `chapter:arrive`. This is step 02
-  // (not the first step), so no first-run ritual.
-  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
+  const reduced = prefersReducedMotion();
+  const counterEl = rootEl.querySelector('[data-research-counter]');
+  const hintEl = rootEl.querySelector('[data-research-hint]');
+  const diaryEl = rootEl.querySelector('[data-research-diary]');
+  const mapEl = rootEl.querySelector('[data-research-map]');
+  const fieldEl = rootEl.querySelector('[data-research-field]');
 
-  // Journey gating: Next stays LOCKED until the visitor opens a city marker.
-  const journey = data && data.journey;
-  if (journey && typeof journey.gate === 'function') journey.gate();
-  let hasUnlocked = false;
-  const markGateReady = () => {
-    if (hasUnlocked) return;
-    hasUnlocked = true;
-    if (journey && typeof journey.ready === 'function') journey.ready();
-  };
-
-  const mapHost = rootEl.querySelector('[data-research-map]');
-  const railHost = rootEl.querySelector('[data-research-rail]');
-  const hint = rootEl.querySelector('[data-research-hint]');
-  const counter = rootEl.querySelector('[data-research-counter]');
-  if (!mapHost || !railHost) return; // fail soft if markup missing
-
-  mapHost.append(buildMapImage());
-
-  const buttons = new Map();
-  const order = CITIES.map((c) => c.id);
-  let currentIndex = -1;
-
-  const updateCounter = (city) => {
-    if (!counter) return;
-    const i = order.indexOf(city.id) + 1;
-    counter.textContent = `${String(i).padStart(2, '0')} / ${String(
-      CITIES.length
-    ).padStart(2, '0')} — ${city.name}`;
-  };
-
-  // Surfacing-memory reveal: the diary card rises + fades in like a memory
-  // returning, rather than hard-swapping. The card mounts in a "surfacing"
-  // state, then settles on the next frame so CSS runs the transition.
-  // Reduced motion lands instantly (CSS disables the transition).
-  const surfaceCard = (city) => {
-    const card = buildRailCard(city);
-    card.classList.add('is-surfacing');
-    railHost.replaceChildren(card);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => card.classList.remove('is-surfacing'));
+  // ── Converging respondent field (D1) ──────────────────────────────
+  // Navy dots on the warm ground for contrast; they spring from scatter into
+  // a country-shaped cloud — the nation "connecting".
+  let field = null;
+  if (fieldEl) {
+    const navy = token('--soi-navy', '#0A1A5C');
+    field = dotField(fieldEl, {
+      count: FIELD_DOTS,
+      dotRadius: 2.4,
+      ariaLabel: '1,504 survey respondents converging onto the map of Britain',
     });
+    field.drift(0.5);
+    if (reduced) {
+      field.formation(fieldTargets(FIELD_DOTS, navy));
+    } else {
+      field.formation(
+        Array.from({ length: FIELD_DOTS }, () => ({ x: Math.random(), y: Math.random(), colour: navy })),
+        { spring: 0.012 },
+      );
+      window.setTimeout(
+        () => field && field.formation(fieldTargets(FIELD_DOTS, navy), { spring: 0.03 }),
+        420,
+      );
+    }
+  }
+
+  // ── The map + eight city markers (D6) ─────────────────────────────
+  let markers = [];
+  let activeIndex = -1;
+  let opened = false;
+  let redrawTrail = null;            // set once the SVG loads
+  const visited = new Set();         // cities opened so far → the listening trail
+
+  /** Surface a city's verbatim diary line (or its factual method note).
+      The diary RISES like a surfacing memory; the city name decrypts into
+      place (text-scramble), and the listening trail extends to this city. */
+  const openCity = (index) => {
+    if (index < 0 || index >= CITIES.length) return;
+    const city = CITIES[index];
+    activeIndex = index;
+    markers.forEach((m, i) => m.classList.toggle('is-active', i === index));
+
+    // Extend the "we listened everywhere" trail to the newly visited city.
+    visited.add(city.id);
+    if (redrawTrail) redrawTrail(visited, reduced);
+
+    if (diaryEl) {
+      if (city.quote) {
+        diaryEl.innerHTML =
+          '<blockquote class="research-quote"><p>' + city.quote + '</p>' +
+          '<footer class="research-quote-cite">' +
+          '<span class="research-quote-who">' + city.who + '</span>' +
+          ' &middot; week-long video diary</footer></blockquote>';
+      } else {
+        diaryEl.innerHTML =
+          '<p class="research-quote-note"><span class="research-quote-city">' +
+          city.name + '</span>' + city.note + '</p>';
+      }
+      diaryEl.classList.remove('is-live');
+      void diaryEl.offsetWidth; // restart the surface animation
+      diaryEl.classList.add('is-live');
+      // Decrypt the attribution / city name into place — a surfacing memory.
+      const decrypt = diaryEl.querySelector('.research-quote-who, .research-quote-city');
+      if (decrypt) scrambleIn(decrypt);
+    }
+    if (counterEl) counterEl.textContent = city.name + ' · ' + (index + 1) + ' of 8';
+
+    if (!opened) {
+      opened = true;
+      if (hintEl) hintEl.classList.add('is-done');
+      journey.ready(); // clear the gentle "try it" hint (Next was never blocked)
+    }
   };
 
-  const select = (city) => {
-    currentIndex = order.indexOf(city.id);
-    buttons.forEach((btn, id) => {
-      const isActive = id === city.id;
-      btn.classList.toggle('is-active', isActive);
-      btn.setAttribute('aria-pressed', String(isActive));
-    });
-    if (hint) hint.hidden = true;
-    surfaceCard(city);
-    updateCounter(city);
-  };
+  loadMapSvg().then((svg) => {
+    if (!svg || !mapEl) return;
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    svg.setAttribute('class', 'research-map-svg');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.setAttribute('aria-hidden', 'true');
 
-  // Arrow-key navigation between adjacent cities (the markers form a roving
-  // group; selection follows focus).
-  const focusByIndex = (index) => {
-    const wrapped = (index + CITIES.length) % CITIES.length;
-    const id = order[wrapped];
-    const btn = buttons.get(id);
-    if (btn) btn.focus();
-  };
+    markers = buildMarkers(svg, openCity, reduced);
+    // The listening trail draws behind the markers (inserted before the layer).
+    const markerLayer = svg.querySelector('.research-markers');
+    if (markerLayer) redrawTrail = buildTrail(svg, markerLayer);
+    mapEl.append(svg);
 
-  CITIES.forEach((city, index) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'research-marker';
-    btn.setAttribute('aria-pressed', 'false');
-    btn.setAttribute('aria-label', `${city.name}, ${city.region}, open video diary`);
-    btn.style.left = `${city.left}%`;
-    btn.style.top = `${city.top}%`;
-    btn.style.setProperty('--pin-delay', `${index * 110}ms`);
-
-    const label = document.createElement('span');
-    label.className = 'research-marker-label';
-    label.textContent = city.name;
-    btn.append(label);
-
-    // A genuine marker selection — click, keyboard activation, or focus
-    // (focus fires on pointer-down and on Tab) — opens the city's diary and
-    // unlocks the journey. Programmatic selection (default London, autoplay)
-    // never focuses, so it does not satisfy the gate.
-    btn.addEventListener('click', () => {
-      markGateReady();
-      select(city);
-    });
-    btn.addEventListener('focus', () => {
-      markGateReady();
-      select(city);
-    });
-    btn.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-        event.preventDefault();
-        markGateReady();
-        focusByIndex(index + 1);
-      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-        event.preventDefault();
-        markGateReady();
-        focusByIndex(index - 1);
+    // The map is one roving-focus keyboard group.
+    mapEl.setAttribute('tabindex', '0');
+    mapEl.setAttribute('role', 'application');
+    mapEl.setAttribute('aria-label', 'Eight research cities. Arrow keys to move between them, Enter to open a diary.');
+    mapEl.addEventListener('keydown', (ev) => {
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') {
+        ev.preventDefault();
+        openCity((activeIndex + 1) % CITIES.length);
+      } else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        openCity((activeIndex - 1 + CITIES.length) % CITIES.length);
+      } else if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        openCity(activeIndex < 0 ? 0 : activeIndex);
       }
     });
 
-    mapHost.append(btn);
-    buttons.set(city.id, btn);
+    if (counterEl) counterEl.textContent = '8 cities listening';
+    if (reduced) openCity(0); // show one diary immediately under reduced motion
   });
 
-  // Pin-in reveal: only animate the markers once the map scrolls into view.
-  const pinIn = () => {
-    if (prefersReducedMotion()) {
-      mapHost.classList.add('is-pinned');
-      return;
+  // Marquee beat → gentle "try it" hint (Next is never blocked).
+  journey.gate();
+
+  // Destroy the canvas sim when this step leaves view (shell toggles `hidden`).
+  const visObserver = new MutationObserver(() => {
+    if (rootEl.hidden && field) {
+      field.destroy();
+      field = null;
+      visObserver.disconnect();
     }
-    mapHost.classList.add('is-pinning');
-    requestAnimationFrame(() => mapHost.classList.add('is-pinned'));
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            pinIn();
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-    observer.observe(mapHost);
-  } else {
-    pinIn();
-  }
-
-  // London selected by default so the rail never starts empty (but the hint
-  // stays until the user interacts — show the card, keep the hint visible).
-  const londonCity = CITIES.find((c) => c.id === 'london');
-  if (londonCity) {
-    railHost.replaceChildren(buildRailCard(londonCity));
-    updateCounter(londonCity);
-    const londonBtn = buttons.get('london');
-    if (londonBtn) {
-      londonBtn.classList.add('is-active');
-      londonBtn.setAttribute('aria-pressed', 'true');
-    }
-    currentIndex = order.indexOf('london');
-  }
-
-  // ── Experiential motion (premium, restrained, reduced-motion safe) ──
-  // 1. Scroll-progress entrance: exposes --enter on the section so CSS can
-  //    fade/rise the two columns and ease the world-motif in as you arrive.
-  // 2. Parallax: the orbit ring, seed dots and brand-world marks drift at
-  //    different depths (clamped, transform-only — never covers copy).
-  // 3. Scroll scene: on first deep-scroll the diary auto-advances once through
-  //    the cities so the rail feels alive — pointer/keyboard interaction always
-  //    wins (autoplay stops the moment the user acts).
-  chapterTransition(rootEl);
-  observeParallax(rootEl, { maxShiftPx: 46 });
-
-  if (!reducedMotion()) {
-    let userEngaged = false;
-    let autoStep = 0;
-    const stopAutoplay = () => {
-      userEngaged = true;
-    };
-    // Any genuine interaction cancels the gentle autoplay.
-    buttons.forEach((btn) => {
-      btn.addEventListener('pointerdown', stopAutoplay, { once: true });
-      btn.addEventListener('keydown', stopAutoplay, { once: true });
-    });
-
-    scrollScene(
-      rootEl,
-      order.map((id, i) => ({
-        // Spread the auto-advance across the chapter's scroll travel so it
-        // reads as a slow reveal, not a flicker. Skip if the user engaged.
-        at: 0.34 + (i / order.length) * 0.5,
-        onEnter: () => {
-          if (userEngaged) return;
-          if (i <= autoStep) return;
-          autoStep = i;
-          const city = CITIES.find((c) => c.id === id);
-          if (city) select(city);
-        },
-      }))
-    );
-  }
+  });
+  visObserver.observe(rootEl, { attributes: true, attributeFilter: ['hidden'] });
 }

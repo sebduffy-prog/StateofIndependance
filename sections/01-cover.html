@@ -1,101 +1,110 @@
 <div class="chapter-inner">
-  <!-- HERO (the only act now — this is a single full-viewport journey step).
-       A warm yellow→orange gradient GROUND carries the signature MAZE motion
-       logo (isometric maze, navy bear cresting it, a small figure reading a
-       map at the entrance, a light-blue orbit ring sweeping the whole scene)
-       lifted straight from deck (2). A second, live SVG ORBIT RING is drawn
-       around the maze so the deck's orbit motif keeps sweeping even on the
-       static frame. Copy sits left, the maze fills the right; behind it all an
-       ambient navy respondent dot-field drifts.
+  <!-- 01 — COVER / HERO. The journey's single full-viewport opening beat; there
+       is no top nav, so this hero fills the screen edge-to-edge above the bottom
+       controls. A warm gold→orange gradient ground carries the signature deck
+       MAZE motion logo (right) with a live teal orbit ring sweeping it; the
+       wordmark assembles on the left in clear negative space; behind everything
+       an ambient navy respondent dot-field drifts (the 1,504 we listened to).
 
-       MARQUEE INTERACTION — TRACE-THE-MAZE: a cream "you" dot is BORN at the
-       maze entrance and the visitor DRAGS it along a winding path through the
-       maze to the centre. The act of starting = taking control: as the trace
-       advances, an ink line draws in behind the dot, the orbit ring brightens
-       and accelerates, a quiet control gauge fills, and on completion the
-       headline's highlighter word lands and the "you are here" marker settles.
-       Keyboard: the handle is focusable and arrow keys advance along the path.
-       The trace is the reward, NOT a hard gate — Next still auto-unlocks. -->
-  <section class="cover-hero si-ground-warm" data-cover-hero aria-label="The State of Independence — cover">
+       MARQUEE — TRACE-THE-MAZE (ungated reward): a cream "you" dot is BORN at
+       the maze entrance with a halo, and the visitor drags / arrow-keys it along
+       the path to the centre. Starting = taking control: an ink line draws in
+       behind the dot, the orbit ring brightens + accelerates, a quiet control
+       gauge fills, the respondent count settles, and on arrival the BEGIN button
+       wakes with a commit pulse. Next always unlocks after the dwell; the trace
+       is the reward, never a block. Reduced-motion pre-completes the inked path
+       and swaps the GIF for its poster. -->
+  <div class="cover-hero si-ground-warm" data-cover-root data-cover-hero data-parallax-x="0">
 
-    <!-- Ambient respondent dot-field, navy on warm, well behind everything. -->
-    <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
+    <!-- Ambient respondent dot-field — navy on warm, well behind the copy. -->
+    <div class="cover-field" data-cover-dots aria-hidden="true"></div>
 
-    <!-- Copy: left, no frame, no plate. Navy text on the warm ground. -->
-    <div class="cover-copy on-warm si-stack-tight" data-stagger="120">
-      <p class="vccp-eyebrow cover-eyebrow reveal">
-        <img class="cover-eyebrow-glyph" src="assets/deck/figure-silhouette.png" alt="" aria-hidden="true" width="14" height="44" />
+    <!-- LEFT: the wordmark + standfirst, hung in clear negative space. -->
+    <div class="cover-copy" data-stagger="120">
+      <p class="vccp-eyebrow cover-kicker" data-arrival>
+        <img class="cover-kicker-glyph" src="assets/deck/figure-silhouette.png"
+             alt="" aria-hidden="true" width="14" height="44" />
         <span>The Challenger Series · VCCP</span>
       </p>
-      <h1 class="cover-wordmark si-display reveal">
-        <span class="cover-word-line" data-arrival>The state of</span>
-        <em class="hl cover-word-em" data-cover-hl data-arrival data-arrival-scramble>independence</em>
+
+      <h1 class="cover-wordmark si-display">
+        <span class="cover-line" data-arrival>The state of</span>
+        <span class="cover-line cover-em hl" data-cover-hl data-arrival data-arrival-scramble>independence</span>
       </h1>
-      <p class="cover-standfirst si-measure reveal" data-arrival>
+
+      <p class="cover-standfirst si-measure" data-arrival>
         Britain has stopped waiting to be rescued. A nationwide study of how
         people are taking back control — and what it demands of every brand
         that serves them.
       </p>
-      <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Begin the journey">
-        <span class="cover-cue-arrow" aria-hidden="true"></span>
+
+      <!-- Primary CTA: a magnetic navy button (wired in JS). Quiet until the
+           trace completes, then it wakes with a commit pulse and invites Begin. -->
+      <button type="button" class="cover-cue" data-arrival data-cover-cue
+              data-cursor aria-label="Begin the journey">
         <span class="cover-cue-label">Begin</span>
-      </button>
-    </div>
-
-    <!-- The motion MAZE logo + a live orbit ring + the TRACE layer. The maze GIF
-         is decorative; the trace SVG above it is the interaction. -->
-    <div class="cover-stage" data-cover-stage data-parallax="0.05">
-      <svg class="cover-orbit" data-cover-orbit viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
-        <ellipse class="cover-orbit-ring" cx="300" cy="300" rx="262" ry="150" transform="rotate(-24 300 300)" />
-        <circle class="cover-orbit-bead" r="9" />
-      </svg>
-
-      <div class="cover-maze" aria-hidden="true">
-        <img
-          class="cover-maze-img"
-          src="assets/deck/maze-hero.gif"
-          data-cover-maze
-          data-still="assets/deck/maze-hero.png"
-          alt=""
-          width="800"
-          height="800"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-
-      <!-- TRACE overlay: the path the visitor threads. The guide is a faint
-           dashed hint; the ink draws in with progress; the handle is the
-           draggable cream "you" dot, born at the entrance. -->
-      <svg class="cover-trace" data-cover-trace viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
-        <path class="cover-trace-guide" data-cover-path
-          d="M 470 486 C 470 446 470 430 430 414 C 388 397 372 410 360 372 C 348 334 384 322 350 300 C 318 279 268 300 256 268 C 246 240 286 226 300 205" />
-        <path class="cover-trace-ink" data-cover-ink
-          d="M 470 486 C 470 446 470 430 430 414 C 388 397 372 410 360 372 C 348 334 384 322 350 300 C 318 279 268 300 256 268 C 246 240 286 226 300 205" />
-        <circle class="cover-trace-goal" data-cover-goal cx="300" cy="205" r="7" />
-      </svg>
-
-      <!-- The draggable cream "you" dot handle, born at the maze entrance.
-           pointer-events:auto so it can be grabbed; everything else in the
-           stage stays inert. -->
-      <button type="button" class="cover-trace-handle" data-cover-handle
-        aria-label="Trace a path through the maze to take control">
-        <span class="cover-trace-handle-dot" data-youdot-anchor aria-hidden="true"></span>
+        <span class="cover-cue-arrow" aria-hidden="true"></span>
       </button>
 
-      <!-- Quiet control gauge: a thin arc that fills as the trace advances.
-           Backgroundless, navy ink, low emphasis. -->
-      <p class="cover-trace-prompt" data-cover-prompt aria-hidden="true">
-        <span class="cover-trace-prompt-label" data-cover-prompt-label>Trace your way out</span>
+      <!-- Quiet respondent marker — the number counts up on arrival; the prompt
+           label resolves once the visitor has traced control. -->
+      <p class="cover-you" data-cover-you aria-live="polite">
+        <span class="cover-you-mark" aria-hidden="true"></span>
+        <span class="cover-you-label" data-cover-you-label>
+          You are respondent
+          <span class="cover-you-num" data-arrival-count data-to="1505">1505</span>
+          of 1,504 we listened to.
+        </span>
       </p>
     </div>
 
-    <!-- Quiet "you are the 1,505th respondent" marker, low-emphasis navy.
-         Settles once the visitor has traced control. -->
-    <p class="cover-you on-warm" data-cover-you>
-      <span class="cover-you-mark" aria-hidden="true"></span>
-      You are the 1,505th respondent.
-    </p>
+    <!-- RIGHT: the maze motion logo, a live orbit ring, and the trace layer.
+         The whole stage is inert except the one draggable handle. -->
+    <div class="cover-stage" data-cover-stage data-parallax="0.05">
 
-  </section>
+      <!-- Live teal orbit ring — the single bright accent, sweeping the maze.
+           Responds to the trace via the --trace custom property on the stage. -->
+      <svg class="cover-orbit" data-cover-orbit viewBox="0 0 600 600"
+           preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+        <ellipse class="cover-orbit-ring cover-orbit-ring--faint" cx="300" cy="300"
+                 rx="268" ry="158" transform="rotate(-22 300 300)" />
+        <ellipse class="cover-orbit-ring" cx="300" cy="300" rx="268" ry="158"
+                 transform="rotate(-22 300 300)" />
+        <circle class="cover-orbit-bead" r="8" />
+      </svg>
+
+      <!-- The maze motion logo (decorative). Reduced-motion swaps to the poster. -->
+      <div class="cover-maze" aria-hidden="true">
+        <img class="cover-maze-img" data-cover-maze
+             src="assets/deck/maze-hero.gif"
+             data-still="assets/deck/maze-hero.png"
+             alt="" width="800" height="800" loading="eager" decoding="async" />
+      </div>
+
+      <!-- TRACE overlay: faint dotted guide + the ink that draws in with
+           progress + a goal node that pulses until reached. -->
+      <svg class="cover-trace" data-cover-trace viewBox="0 0 600 600"
+           preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+        <path class="cover-trace-guide" data-cover-path
+              d="M 472 488 C 470 444 470 426 428 410 C 386 393 372 408 360 370 C 348 332 386 320 350 298 C 316 277 266 300 254 266 C 244 238 286 224 300 200" />
+        <path class="cover-trace-ink" data-cover-ink
+              d="M 472 488 C 470 444 470 426 428 410 C 386 393 372 408 360 370 C 348 332 386 320 350 298 C 316 277 266 300 254 266 C 244 238 286 224 300 200" />
+        <circle class="cover-trace-goal" data-cover-goal cx="300" cy="200" r="6" />
+      </svg>
+
+      <!-- The draggable cream "you" dot, born at the maze entrance with a halo.
+           The youDot anchor rides with it so the global marker tracks the trace. -->
+      <button type="button" class="cover-handle" data-cover-handle data-cursor
+              aria-label="Trace a path through the maze to take control">
+        <span class="cover-handle-halo" aria-hidden="true"></span>
+        <span class="cover-handle-dot" data-youdot-anchor aria-hidden="true"></span>
+      </button>
+
+      <!-- Quiet control gauge: a thin rail that fills as the trace advances. -->
+      <p class="cover-prompt" data-cover-prompt aria-hidden="true">
+        <span class="cover-prompt-label" data-cover-prompt-label>Trace your way out</span>
+      </p>
+    </div>
+
+  </div>
 </div>

@@ -3,29 +3,34 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>The state of independence — VCCP Challenger Series</title>
+  <title>The State of Independence — VCCP Challenger Series</title>
   <meta name="description" content="A nationwide study of how Britain is taking back control — and what it demands of every brand that serves them. VCCP x Watermelon Research, 1,504 UK adults, May 2026."/>
+
+  <!-- Favicon: cropped brand logo. -->
   <link rel="icon" type="image/png" href="assets/brand/Logo.png"/>
+
   <!-- Poppins is self-hosted via @font-face in css/vccp.css (assets/fonts/).
-       V4 brand switch — no CDN dependency. Preload the two most-used weights
-       (700 body/heading, 900 display) to avoid FOUT on the hero. -->
-  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin/>
+       Preload the two display weights used on the opening hero to avoid FOUT. -->
   <link rel="preload" href="assets/fonts/poppins-900.woff2" as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin/>
+
   <link rel="stylesheet" href="css/vccp.css"/>
   <link rel="stylesheet" href="css/sections.css"/>
 </head>
 <body>
 
+  <!-- One step is visible at a time; all chapters mount inside #app. -->
   <main id="app"></main>
 
-  <!-- Journey controls — bottom of the screen, NOT a top bar. Built/wired by
-       js/main.js. Back is always allowed; Next disables while a step is gated
-       and not yet ready. The hint surfaces on a gated, still-locked step. -->
+  <!-- Bottom journey controls — NOT a top bar, NOT a progress rail.
+       Built and wired by js/main.js. SOFT GATING: Next always unlocks after a
+       short dwell. The hint is an optional "try it" affordance only — it never
+       blocks Next. -->
   <div class="journey-controls" id="journeyControls" role="navigation" aria-label="Journey controls" hidden>
     <button type="button" class="journey-btn journey-back" id="journeyBack" aria-label="Previous step">Back</button>
     <div class="journey-meta">
       <span class="journey-indicator" id="journeyIndicator" aria-live="polite"></span>
-      <span class="journey-hint" id="journeyHint" role="status" aria-live="polite" hidden>Complete the interaction to continue</span>
+      <span class="journey-hint" id="journeyHint" role="status" aria-live="polite" hidden>Try the interaction below</span>
     </div>
     <button type="button" class="journey-btn journey-next journey-btn-primary" id="journeyNext" aria-label="Next step">Next</button>
   </div>

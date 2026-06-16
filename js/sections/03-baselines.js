@@ -1,358 +1,190 @@
 /**
- * Chapter 03 - baselines. "The numbers you already know."
+ * Chapter 03 — baselines. "The numbers you already know."
  *
- * The four baseline stats FLOW on a warm yellow->orange brand ground (the
- * "operational floor"), not a grid of bordered boxes. Each stat pairs a huge
- * Poppins-Black .si-bignum + label + sentence (navy on warm, via .on-warm)
- * with one supporting chart that sits DIRECTLY on the warm ground
- * (backgroundless, via .chart-holder — no white/paper card, no track box).
- * Components are NAVY (the charts.js default on warm grounds) so nothing is
- * mustard-on-mustard; faint ink-tint tracks, never a white box.
+ * Four squeeze hallmarks flow on the warm amber→orange ground (the
+ * "operational floor"). Each beat is a huge Poppins-Black count-up number +
+ * label + one sentence, paired with ONE backgroundless, non-bar chart that
+ * sits directly on the ground (navy marks so nothing is mustard-on-mustard;
+ * faint ink-tint tracks, never a white box).
  *
- * EXPERIENTIAL (top-tier pass): the chapter opens with a deck image-title
- * lockup (Poppins-Black title beside the maze/orbit brand-world motif), the
- * decorative orbit/seed/bear layers drift on PARALLAX as the chapter scrolls,
- * and each stat row reveals on a scroll-progress mask (`--enter` custom prop,
- * styled in CSS). Stat 03 gains a live DOT-PLOT ⇄ ORBIT-RING toggle so the
- * reader can re-read the same verified data as the deck's orbit motif. All
- * motion is reduced-motion safe (experiential.js jumps to rest; the toggle
- * is a click, never autoplay).
+ *   01 · 77% careful   — MARQUEE: clickToGuess → a custom 100-in-100 waffle
+ *                        where the visitor's own square is highlighted.
+ *   02 · 55% deal-seek — lollipopChart (shoppedAround highlighted).
+ *   03 · 60% anxious   — dotPlot of availability concerns.
+ *   04 · 54% trade-down— tugOfWar 54/46 + dotPlot of traded-down categories.
  *
- * Chart variety (no accent mustard anywhere):
- *   - mood of the nation     -> lollipopChart (navy, careful highlighted ink)
- *   - money-saving moves      -> lollipopChart (navy)
- *   - availability concerns   -> dotPlot OR orbitRingChart (navy; user toggles)
- *   - 54 / 46 trading split   -> tugOfWar (navy vs mustard fill — the binary
- *                                split where the two-colour read is meaningful)
- *   - traded-down categories  -> horizontalBars (navy) with a pillGroup toggle
- *                                that re-sorts/filters the ranking live.
+ * Soft gating: gate() lights the "try it" hint on the marquee guess; ready()
+ * clears it when the visitor locks in. Next is never blocked.
  *
- * Stat 1 is the MARQUEE, gated behind clickToGuess (the loved interaction):
- * the visitor guesses the 77% first, and only after they commit does the
- * number count up and assemble as a 100-in-100 crowd — a hundred people you
- * pass today, with the visitor's OWN square highlighted as one of them.
- *
- * Source captions are CUT site-wide (FEEDBACK-V4 §6); the strings remain in
- * data/survey.json, they are simply not rendered here.
- *
- * @param {HTMLElement} rootEl - <section class="chapter" id="03-baselines">
- * @param {{survey: object, segments: object, tgi: object}} data
+ * @param {HTMLElement} rootEl  <section class="chapter" id="03-baselines">
+ * @param {{ survey:object|null, segments:object|null, tgi:object|null,
+ *           journey:{ gate():void, ready():void } }} data
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
-import {
-  horizontalBars,
-  lollipopChart,
-  dotPlot,
-  tugOfWar,
-  orbitRingChart,
-} from '../lib/charts.js';
-import { clickToGuess, pillGroup } from '../lib/interactions.js';
-import { observeParallax, scrollScene, prefersReducedMotion, arrival } from '../lib/experiential.js';
+import { lollipopChart, dotPlot, tugOfWar } from '../lib/charts.js';
+import { clickToGuess } from '../lib/interactions.js';
+import { arrival, observeParallax, prefersReducedMotion } from '../lib/experiential.js';
 
-const CAREFUL_TRUE_VALUE = 77.3;
-const CAREFUL_WAFFLE_FILL = 77;
-const TRADING_DOWN_PCT = 54;
-const HOLDING_PCT = 46;
-const PANEL_LABEL_WIDTH = 210;
-const TOP_N = 4;
-
-// 100-in-100 marquee tuning.
+const CAREFUL_TRUE = 77.3;       // Q2r3 exact
+const CAREFUL_FILL = 77;         // squares filled in the 100-grid
 const CROWD_TOTAL = 100;
-const CROWD_FILL_STAGGER_MS = 16; // per-square cascade
-const CROWD_COUNT_MS = 1100; // caption count-up duration
+const CROWD_COUNT_MS = 1100;
+const CROWD_STAGGER_MS = 14;     // per-square cascade
+const YOU_INDEX = 44;            // a filled square near the crowd's middle
+const YOU_POP_AFTER_MS = 320;    // beat after your square fills, then it pops proud
+const TOP_N = 4;                 // beats 02–04 supporting charts
+const SCALE_MAX = 60;            // shared chart axis (largest baseline ≈ 55)
 
 /**
- * Build the 100-in-100 crowd: a 10×10 grid of squares that fills to `fill`
- * and singles out ONE filled square as the visitor's own ("you"). The fill
- * cascades on reveal; reduced motion paints the final state instantly.
- * Backgroundless — the squares carry the contrast, no card.
+ * Build the 100-in-100 crowd: a 10×10 grid filling to `fill`, with ONE filled
+ * square singled out as the visitor ("you"). Returns a `run(from)` that starts
+ * the cascade + caption count from the visitor's own guess; reduced motion
+ * paints the final state instantly. Backgroundless — squares carry the
+ * contrast, no card.
  * @param {HTMLElement} gridEl
- * @param {{ fill: number, youIndex: number }} opts
+ * @param {number} fill
+ * @param {HTMLElement|null} countEl
+ * @param {(youCell: HTMLElement) => void} [onYouLand] handed the you-square once
+ *        the cascade reaches it (used to travel the persistent you-dot there).
+ * @returns {(from?: number) => void}
  */
-const buildCrowd = (gridEl, { fill, youIndex }) => {
+const buildCrowd = (gridEl, fill, countEl, onYouLand) => {
   const reduced = prefersReducedMotion();
   const cells = [];
   for (let i = 0; i < CROWD_TOTAL; i += 1) {
     const cell = document.createElement('span');
     cell.className = 'bl-crowd-cell';
-    if (i === youIndex) cell.classList.add('is-you');
+    if (i === YOU_INDEX) cell.classList.add('is-you');
     gridEl.append(cell);
     cells.push(cell);
   }
+  const youCell = cells[YOU_INDEX];
 
-  const paintCell = (i) => {
-    if (i < fill) cells[i].classList.add('is-filled');
+  const paint = (cell, i) => {
+    if (i < fill) cell.classList.add('is-on');
+  };
+  const landYou = () => {
+    youCell.classList.add('is-landed');
+    if (typeof onYouLand === 'function') onYouLand(youCell);
   };
 
-  if (reduced) {
-    cells.forEach((_, i) => paintCell(i));
-    return;
-  }
-
-  // Cascade the fill in reading order; the you-square lands with the rest.
-  let i = 0;
-  const tick = () => {
-    if (i >= CROWD_TOTAL) return;
-    paintCell(i);
-    i += 1;
-    window.setTimeout(tick, CROWD_FILL_STAGGER_MS);
+  return (from = 0) => {
+    if (reduced) {
+      cells.forEach(paint);
+      landYou();
+      if (countEl) countEl.textContent = String(fill);
+      return;
+    }
+    cells.forEach((cell, i) => {
+      window.setTimeout(() => {
+        paint(cell, i);
+        if (i === YOU_INDEX) window.setTimeout(landYou, YOU_POP_AFTER_MS);
+      }, i * CROWD_STAGGER_MS);
+    });
+    // The caption rolls from what the visitor guessed up to the truth, so the
+    // gap between expectation and reality is felt as motion, not just stated.
+    if (countEl) countUp(countEl, { from, to: fill, durationMs: CROWD_COUNT_MS });
   };
-  tick();
 };
-
-/** Count a caption number up to `to` (eased, tabular). Reduced motion = set. */
-const countCaption = (el, to) => {
-  if (!el) return;
-  if (prefersReducedMotion()) {
-    el.textContent = String(to);
-    return;
-  }
-  const start = performance.now();
-  const tick = (now) => {
-    const t = Math.min((now - start) / CROWD_COUNT_MS, 1);
-    const eased = 1 - Math.pow(1 - t, 3);
-    el.textContent = String(Math.round(to * eased));
-    if (t < 1) requestAnimationFrame(tick);
-    else el.textContent = String(to);
-  };
-  requestAnimationFrame(tick);
-};
-
-const mapItems = (items) =>
-  items.map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
 
 export default function init(rootEl, data) {
-  const { survey, journey } = data || {};
-  if (!survey) return;
+  const { survey, journey } = data;
+  if (!survey) return; // fail soft — every dataset may be null
 
-  // Journey gating: this step REQUIRES the visitor to lock in their guess (the
-  // clickToGuess reveal) before Next unlocks. ready() fires from onReveal below.
-  if (journey) journey.gate();
-
-  const {
-    moodOfNation,
-    moneySavingMoves,
-    availabilityConcerns,
-    tradingDownByCategory,
-  } = survey;
+  // Entrance: re-assemble headline + count numbers on every arrival.
+  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
   observeReveals(rootEl);
+  observeCounters(rootEl);
+  observeParallax(rootEl, { maxShiftPx: 48 });
 
-  // Chapter arrival: assemble the heading (kicker/headline/standfirst lift in,
-  // the emphasis word decrypts) each time this step becomes current. Not the
-  // first step, so no ritual. Hero count-ups stay owned by observeCounters.
-  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
-
-  // ── Experiential motion ──────────────────────────────────────────────
-  // Subtle parallax on the decorative world layers (orbit, seeds, bear,
-  // maze, report-cover mark). Clamped + reduced-motion safe by the helper.
-  const cleanupParallax = observeParallax(rootEl, { maxShiftPx: 48 });
-
-  // Scroll-progress reveal: as the chapter travels through the viewport,
-  // expose `--enter` (0->1) on the root so CSS can mask/lift each row in.
-  let cleanupScene = () => {};
-  if (!prefersReducedMotion()) {
-    cleanupScene = scrollScene(rootEl, [], {
-      onProgress: (p) => rootEl.style.setProperty('--enter', p.toFixed(4)),
-    });
-  } else {
-    rootEl.style.setProperty('--enter', '1');
-  }
-  // Signature brand-world motion: the maze opener holds its light static
-  // frame until it scrolls into view, then swaps to the animated motion-logo
-  // GIF (the State of Independence brand-world animation). The 11MB GIF is
-  // never fetched on load, and reduced-motion readers keep the static frame.
-  let mazeObserver;
-  const maze = rootEl.querySelector('[data-motion-src]');
-  if (maze && !prefersReducedMotion()) {
-    mazeObserver = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const motionSrc = maze.dataset.motionSrc;
-          if (motionSrc && maze.getAttribute('src') !== motionSrc) {
-            maze.setAttribute('src', motionSrc);
-          }
-          obs.disconnect();
-        });
-      },
-      { rootMargin: '0px 0px -15% 0px' },
-    );
-    mazeObserver.observe(maze);
-  }
-
-  // Detach scroll work if the chapter is ever torn down (defensive; the
-  // static site keeps sections mounted, so this is a no-op in practice).
-  rootEl.addEventListener('chapter:teardown', () => {
-    cleanupParallax();
-    cleanupScene();
-    if (mazeObserver) mazeObserver.disconnect();
-  });
-
-  // Panel 1 — the MARQUEE: the guess gates the hero count-up AND the 100-in-100
-  // crowd reveal (your own square among the hundred). On reveal the mood chart
-  // steps aside and the crowd assembles full-bleed.
-  const heroOne = rootEl.querySelector('[data-bl-num1]');
-  const guessHost = rootEl.querySelector('[data-guess-1]');
-  const crowdFig = rootEl.querySelector('[data-crowd-1]');
+  /* ── Beat 01 · the marquee — guess, then the 100-in-100 crowd ─────── */
+  const guessHost = rootEl.querySelector('[data-guess]');
+  const crowdFig = rootEl.querySelector('[data-crowd]');
   const crowdGrid = rootEl.querySelector('[data-crowd-grid]');
   const crowdCount = rootEl.querySelector('[data-crowd-count]');
-  const moodFig = rootEl.querySelector('[data-mood-fig]');
-  let carefulRevealed = false;
+  const carefulNum = rootEl.querySelector('[data-careful-num]');
 
-  // The visitor's own square: fixed once so it is stable across re-renders,
-  // and always inside the filled set so "you" are genuinely one of the 77.
-  const youIndex = Math.floor(Math.random() * CAREFUL_WAFFLE_FILL);
-
-  // Placeholder before the guess gates the reveal — a neutral dash, never a
-  // literal "00%" that reads as a real zero in a static / pre-scroll capture.
-  if (heroOne) heroOne.textContent = '–';
-
-  const revealCareful = () => {
-    if (carefulRevealed) return;
-    carefulRevealed = true;
-    if (heroOne) countUp(heroOne, { to: CAREFUL_WAFFLE_FILL, suffix: '%' });
-    // The mood lollipop recedes; the crowd takes the marquee slot.
-    if (moodFig) moodFig.hidden = true;
-    if (crowdFig && crowdGrid) {
-      crowdFig.hidden = false;
-      crowdFig.classList.add('is-live');
-      buildCrowd(crowdGrid, { fill: CAREFUL_WAFFLE_FILL, youIndex });
-      countCaption(crowdCount, CAREFUL_WAFFLE_FILL);
-    }
+  // The you-dot anchor starts on the headline's "baseline" word; on reveal it
+  // travels to the visitor's own square in the crowd — meaningful continuity,
+  // never parked in dead space.
+  const headlineAnchor = rootEl.querySelector('[data-youdot-anchor]');
+  const handYouDotToCrowd = (youCell) => {
+    if (headlineAnchor) headlineAnchor.removeAttribute('data-youdot-anchor');
+    youCell.setAttribute('data-youdot-anchor', '');
+    // Nudge the persistent you-dot (it re-measures its anchor on scroll).
+    window.dispatchEvent(new Event('scroll'));
   };
 
-  if (guessHost) {
+  if (guessHost && crowdFig && crowdGrid) {
+    guessHost.hidden = false;
+    const runCrowd = buildCrowd(crowdGrid, CAREFUL_FILL, crowdCount, handYouDotToCrowd);
+
     clickToGuess(guessHost, {
-      trueValue: CAREFUL_TRUE_VALUE,
-      label: 'More careful with money than five years ago',
-      prompt: 'Before we show you, what share do you think?',
-      onReveal: () => {
-        revealCareful();
-        // The visitor has locked in their guess — unlock the journey's Next.
-        if (journey) journey.ready();
+      trueValue: CAREFUL_TRUE,
+      max: 100,
+      unit: '%',
+      label: 'How many in every 100 are more careful with money than five years ago?',
+      prompt: 'Take a guess',
+      onReveal: (guess) => {
+        const from = Number.isFinite(guess) ? guess : 0;
+        // The hero number rolls up from the visitor's own guess to the truth.
+        if (carefulNum) {
+          countUp(carefulNum, { from, to: CAREFUL_TRUE, decimals: 0, suffix: '%' });
+        }
+        crowdFig.hidden = false;
+        runCrowd(from);
+        journey.ready();
       },
     });
-  } else {
-    // No interaction host (defensive) — reveal immediately and unlock so the
-    // visitor is never trapped on a gated step that cannot complete.
-    revealCareful();
-    if (journey) journey.ready();
+    // Advisory "try it" hint (Next still unlocks after the dwell).
+    journey.gate();
   }
 
-  // Panels 2 to 4 - hero numbers count up declaratively on scroll-in.
-  observeCounters(rootEl);
-
-  // Panel 1 chart - mood of the nation as a lollipop, careful highlighted.
-  const moodHost = rootEl.querySelector('[data-bars-mood]');
-  if (moodHost && moodOfNation) {
-    lollipopChart(moodHost, {
-      // Navy dots/stems on the warm ground; the "careful" item draws in ink
-      // as the highlight (charts.js uses ink for the highlight on warm).
-      items: mapItems(moodOfNation.items),
-      highlightId: 'careful',
-      accent: 'navy',
-      ariaLabel: 'Mood of the nation, percentage who agree with each statement',
-    });
-  }
-
-  // Panel 2 chart - money-saving moves as a lollipop.
+  /* ── Beat 02 · 55% deal-seeking — lollipop ───────────────────────── */
   const moneyHost = rootEl.querySelector('[data-lollipop-money]');
-  if (moneyHost && moneySavingMoves) {
+  if (moneyHost && Array.isArray(survey.moneySavingMoves?.items)) {
     lollipopChart(moneyHost, {
-      items: mapItems(moneySavingMoves.items),
-      accent: 'navy',
-      ariaLabel: 'Money-saving moves taken in the last three months',
+      items: survey.moneySavingMoves.items.map((d) => ({
+        id: d.id, label: d.label, pct: d.pct,
+      })),
+      max: SCALE_MAX,
+      highlightId: 'shoppedAround',
+      ariaLabel: 'Money-saving moves in the last three months, percent who did each.',
     });
   }
 
-  // Panel 3 chart - availability concerns. The reader toggles between a dot
-  // plot (a flat "down / anxious" read) and the deck's ORBIT-RING motif as a
-  // live data view — same verified numbers, two readings.
-  const availabilityHost = rootEl.querySelector('[data-dotplot-availability]');
-  const orbitHost = rootEl.querySelector('[data-orbit-availability]');
-  const availabilityControls = rootEl.querySelector('[data-availability-controls]');
-  if (availabilityHost && availabilityConcerns) {
-    const availItems = mapItems(availabilityConcerns.items);
-
-    dotPlot(availabilityHost, {
-      items: availItems,
-      accent: 'navy',
-      ariaLabel: 'What Britain is anxious about in the coming months',
+  /* ── Beat 03 · 60% anxious — dot plot of availability concerns ───── */
+  const availHost = rootEl.querySelector('[data-dotplot-avail]');
+  if (availHost && Array.isArray(survey.availabilityConcerns?.items)) {
+    dotPlot(availHost, {
+      items: survey.availabilityConcerns.items.map((d) => ({
+        label: d.label, pct: d.pct,
+      })),
+      max: SCALE_MAX,
+      ariaLabel: 'Very or extremely concerned about availability, by category.',
     });
-
-    let orbitDrawn = false;
-    const drawOrbit = () => {
-      if (orbitDrawn || !orbitHost) return;
-      orbitDrawn = true;
-      orbitRingChart(orbitHost, {
-        items: availItems,
-        accent: 'navy',
-        centreLabel: 'WORRY',
-        ariaLabel: 'Availability concerns plotted as orbit rings, largest worry on the outer ring',
-      });
-    };
-
-    if (availabilityControls && orbitHost) {
-      pillGroup(availabilityControls, {
-        ariaLabel: 'Read the availability concerns as a list or as orbit rings',
-        value: 'list',
-        options: [
-          { value: 'list', label: 'List' },
-          { value: 'orbit', label: 'Orbit' },
-        ],
-        onChange: (value) => {
-          const showOrbit = value === 'orbit';
-          if (showOrbit) drawOrbit();
-          orbitHost.hidden = !showOrbit;
-          availabilityHost.hidden = showOrbit;
-        },
-      });
-    }
   }
 
-  // Panel 4 - the 54 / 46 split as a tugOfWar (navy ↔ mustard binary tension
-  // bar; labels sit on their own side so they can never overlap).
-  const tugHost = rootEl.querySelector('[data-tug-trading]');
+  /* ── Beat 04 · 54% trading down — tug-of-war + traded-down dot plot ─ */
+  const tugHost = rootEl.querySelector('[data-tug-grocery]');
   if (tugHost) {
     tugOfWar(tugHost, {
-      left: { label: 'Trading down', pct: TRADING_DOWN_PCT },
-      right: { label: 'Holding their basket', pct: HOLDING_PCT },
-      accent: 'navy',
-      ariaLabel: '54% trading down on groceries, 46% holding their basket',
+      left: { label: 'Trading down', pct: 54 },
+      right: { label: 'Holding their basket', pct: 46 },
+      ariaLabel: 'Fifty-four percent trading down, forty-six percent holding their basket.',
     });
   }
 
-  // Panel 4 chart - traded-down categories ranked, with a live pillGroup
-  // toggle: see every category, or just the top four where the squeeze bites.
-  const tradingHost = rootEl.querySelector('[data-bars-trading]');
-  const tradingControls = rootEl.querySelector('[data-trading-controls]');
-  if (tradingHost && tradingDownByCategory) {
-    const allItems = mapItems(tradingDownByCategory.items)
-      .slice()
-      .sort((a, b) => b.pct - a.pct);
-    const topItems = allItems.slice(0, TOP_N);
-
-    const chart = horizontalBars(tradingHost, {
-      items: allItems,
-      decimals: 0,
-      labelWidth: PANEL_LABEL_WIDTH,
-      ariaLabel: 'Categories where Britain has traded down in the last 12 months',
+  const tradedHost = rootEl.querySelector('[data-dotplot-traded]');
+  if (tradedHost && Array.isArray(survey.tradingDownByCategory?.items)) {
+    dotPlot(tradedHost, {
+      items: survey.tradingDownByCategory.items.slice(0, TOP_N).map((d) => ({
+        label: d.label, pct: d.pct,
+      })),
+      max: SCALE_MAX,
+      ariaLabel: 'Where Britain has traded down, top categories.',
     });
-
-    if (tradingControls) {
-      pillGroup(tradingControls, {
-        ariaLabel: 'Show all categories or just the top four',
-        value: 'all',
-        options: [
-          { value: 'all', label: 'All categories' },
-          { value: 'top', label: 'Top 4' },
-        ],
-        onChange: (value) => {
-          chart.update(value === 'top' ? topItems : allItems, { resort: true });
-        },
-      });
-    }
   }
 }

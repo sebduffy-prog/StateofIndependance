@@ -1,104 +1,73 @@
-<div class="chapter-inner research-shell">
+<div class="chapter-inner research">
 
-  <!-- Decorative orbit motif + seed dots + parallax brand-world motifs.
-       All sit BEHIND content (z-index:0, pointer-events:none) and never
-       occlude copy. The bear-world / figure marks are lifted from the deck
-       (DECK2-ASSETS): the wireframe-sphere world = "how we listened to the
-       whole country / its systems"; the figure mark = the brand "person". -->
-  <div class="si-orbit si-orbit--spin research-orbit" aria-hidden="true" data-parallax="0.12"></div>
-  <span class="si-seed research-seed research-seed--a" aria-hidden="true" data-parallax="0.4"></span>
-  <span class="si-seed research-seed research-seed--b" aria-hidden="true" data-parallax="0.28"></span>
-  <img class="research-figure-motif" src="assets/deck/figure-silhouette.png" alt=""
-       aria-hidden="true" data-parallax="0.22" data-parallax-x="0.06">
+  <!-- Decorative orbit motif — sits BEHIND everything, never occludes copy. -->
+  <div class="si-orbit research-orbit" aria-hidden="true" data-parallax="0.1"></div>
 
-  <div class="research-split si-split">
+  <div class="research-grid">
 
-    <!-- LEFT: the method, told as a flowing rhythm (no boxes behind any text).
-         Meaning ASSEMBLES on entry: each line lifts in on arrival (data-arrival),
-         the emphasis word decrypts last (data-arrival-scramble), the numbers
-         count up. -->
-    <div class="research-method si-stack-tight reveal" data-stagger="90">
-      <p class="vccp-eyebrow research-kicker reveal" data-arrival>The method</p>
+    <!-- LEFT: the method, assembling on arrival. No boxes behind any text. -->
+    <div class="research-method">
+      <p class="vccp-eyebrow research-kicker" data-arrival>The method</p>
 
-      <!-- Image-title lockup treatment (deck): huge Poppins-Black all-caps,
-           tight tracking, stacked, emphasis by colour + weight only. -->
-      <h2 class="research-headline reveal">
+      <h2 class="research-headline">
         <span data-arrival>How we</span>
-        <span class="hl hl-teal" data-arrival data-arrival-scramble>listened</span><br>
-        <span data-arrival>to Britain.</span>
+        <span class="hl hl-teal" data-arrival data-arrival-scramble>listened</span>
+        <span data-arrival>to Britain</span>
       </h2>
 
-      <p class="research-standfirst reveal" data-arrival>
-        A nationally representative survey, paired with week-long video
-        diaries. Numbers for the <strong>what</strong>, real lives for the
+      <p class="research-standfirst" data-arrival>
+        A nationally representative survey, paired with week-long video diaries in
+        eight cities. Numbers for the <strong>what</strong>, real lives for the
         <strong>why</strong>.
       </p>
 
-      <!-- Hero figure leads; the big number IS the headline (no panel).
-           data-youdot-anchor: the persistent "you" marker lands on the 1,504. -->
-      <div class="research-hero-stat reveal" data-arrival>
-        <span class="research-hero-value si-bignum" data-youdot-anchor><span data-count-to="1504"></span></span>
-        <span class="research-hero-label">respondents · nationally representative · UK adults&nbsp;18+</span>
-      </div>
-
-      <ul class="research-stats reveal">
-        <li class="research-stat">
-          <span class="research-stat-value num">mid-May 2026</span>
-          <span class="research-stat-label">quantitative fieldwork</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="8"></span></span>
-          <span class="research-stat-label">cities for qualitative research</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="1"></span><span class="research-stat-fix">-week</span></span>
-          <span class="research-stat-label">video diaries per home, filmed early June</span>
-        </li>
-      </ul>
-
-      <!-- Method rhythm — the two halves of the study, told without boxes -->
-      <div class="research-method-rhythm reveal">
-        <div class="research-method-step">
-          <span class="research-method-step-num">Quant</span>
-          <p class="research-method-step-copy">
-            <strong>1,504 UK adults,</strong> nationally representative, surveyed
-            in mid-May. The scale of the shift, in hard numbers.
-          </p>
+      <!-- The four counters. The big sample is the hero; the you-dot lands here. -->
+      <div class="research-counts">
+        <div class="research-count research-count--hero" data-arrival data-youdot-anchor>
+          <span class="research-count-value num" data-arrival-count data-to="1504">1,504</span>
+          <span class="research-count-label">human respondents · nationally representative · UK&nbsp;adults&nbsp;18+</span>
         </div>
-        <div class="research-method-step">
-          <span class="research-method-step-num">Qual</span>
-          <p class="research-method-step-copy">
-            <strong>Eight cities,</strong> week-long video diaries with families
-            and individuals, filmed early June. The reasons, in their own words.
-          </p>
+        <div class="research-count" data-arrival>
+          <span class="research-count-value num" data-arrival-count data-to="8">8</span>
+          <span class="research-count-label">cities for the qualitative research</span>
+        </div>
+        <div class="research-count" data-arrival>
+          <span class="research-count-value num">1<span class="research-count-unit">-week</span></span>
+          <span class="research-count-label">video diaries per home, filmed early&nbsp;June</span>
+        </div>
+        <div class="research-count" data-arrival>
+          <span class="research-count-value num research-count-value--text">mid-May<span class="research-count-unit">&nbsp;2026</span></span>
+          <span class="research-count-label">quantitative fieldwork window</span>
         </div>
       </div>
 
-      <p class="research-credit reveal">
-        Research partner <strong>VCCP&nbsp;x&nbsp;Watermelon&nbsp;Research</strong>
-      </p>
-      <p class="vccp-source reveal">
-        Source: VCCP x Watermelon Research COCL survey. 1,504 UK adults 18+,
-        nat. rep., May 2026. Qualitative: week-long video diaries, eight cities,
-        early June 2026.
+      <p class="research-credit" data-arrival>
+        Research partner <strong>VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research</strong>
       </p>
     </div>
 
-    <!-- RIGHT: GB map + 8 city markers (built in JS), flowing diary panel.
-         A backgroundless wireframe-world motif sits behind, lifted from the
-         deck (bear-world-sphere) and held faint so the map reads first. -->
-    <div class="research-map-wrap reveal">
-      <img class="research-world-motif" src="assets/deck/bear-world-sphere.png" alt=""
-           aria-hidden="true" data-parallax="0.16">
-      <div class="research-map-head">
-        <p class="research-map-eyebrow" data-arrival>Eight cities, in their own words</p>
-        <p class="research-map-counter" data-research-counter aria-live="polite"></p>
+    <!-- RIGHT: the connecting ritual — dots converge onto the UK, eight cities
+         light, open one for its verbatim diary. Built/wired in JS. -->
+    <div class="research-stage">
+      <div class="research-stage-head">
+        <p class="research-stage-eyebrow" data-arrival>Eight cities, in their own words</p>
+        <p class="research-stage-counter num" data-research-counter aria-live="polite">Connecting&hellip;</p>
       </div>
-      <div class="research-map" data-research-map aria-label="Map of the United Kingdom showing eight qualitative research cities"></div>
-      <p class="research-map-hint" data-research-hint>
-        Open a city — or use the arrow keys — and its diary surfaces.
+
+      <div class="research-map-wrap">
+        <!-- ambient converging field sits behind the silhouette -->
+        <div class="research-field" data-research-field aria-hidden="true"></div>
+        <!-- the real UK silhouette + 8 markers are injected here in JS -->
+        <div class="research-map" data-research-map
+             aria-label="Map of the United Kingdom showing eight qualitative research cities"></div>
+      </div>
+
+      <p class="research-stage-hint" data-research-hint>
+        Open a city &mdash; click a marker or use the arrow keys &mdash; to surface its diary.
       </p>
-      <div class="research-rail" data-research-rail aria-live="polite"></div>
+
+      <!-- the opened diary quote surfaces here, no box behind it -->
+      <div class="research-diary" data-research-diary aria-live="polite"></div>
     </div>
 
   </div>

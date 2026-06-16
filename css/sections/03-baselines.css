@@ -1,703 +1,389 @@
-/* Chapter 03 - baselines — top-tier, deck-faithful, experiential.
-   The four baseline stats FLOW on a warm yellow->orange brand ground (the
-   "operational floor"), not a grid of bordered boxes. Number + label +
-   sentence read as NAVY-on-warm (high contrast); each supporting chart sits
-   DIRECTLY on the warm ground via .chart-holder — NO white/paper card, NO
-   border, NO shadow, NO track box, and NO block/highlight behind ANY text.
-   Emphasis is navy WEIGHT + a clean STRAIGHT orange underline rule, never a
-   filled box, never a skewed parallelogram, never mustard-on-mustard.
+/* ============================================================
+   Chapter 03 — baselines · "The numbers you already know"
+   Four squeeze hallmarks flow on the warm amber→orange ground.
+   Backgroundless charts (navy marks), big Poppins count-up numbers,
+   thin orbit motif, square corners, no underline, no parallelogram.
+   All selectors scoped with the escaped id  #\30 3-baselines .
+   ============================================================ */
 
-   Deck components lifted: the image-TITLE lockup opener (Poppins-Black title
-   beside the maze/orbit brand-world motif), the orbit overlay + seed dots, the
-   bear-world coil panel, the orbit-ring data view (stat 03), and the
-   challenger-books credibility mark. Experiential motion: parallax drift on
-   the decorative layers + a scroll-progress `--enter` reveal that lifts the
-   title and each stat row in. Bigger, bolder Poppins throughout. Every
-   selector scoped to #\30 3-baselines. Square corners, tabular numbers,
-   reduced-motion safe (the reveal/parallax collapse to the rest state). */
-
-/* ─── The warm ground (full-bleed world, own stacking context) ──── */
+/* The section itself carries the warm signature ground. */
 #\30 3-baselines {
-  position: relative;
-  isolation: isolate;            /* contain decorative layers; no stale bleed */
-  /* Clip the decorative bleed sideways, but allow vertical scroll: as a
-     journey step this is a full-viewport stage and its tall stat flow scrolls
-     internally (.journey-step sets overflow-y:auto; an #id `overflow:hidden`
-     here would beat it on specificity and clip the content). */
-  overflow-x: hidden;
-  overflow-y: auto;
   background: var(--ground-warm);
-  color: var(--on-warm);         /* navy on amber — guaranteed contrast */
-  --enter: 1;                    /* scroll-progress; JS drives 0->1, CSS reads */
+  color: var(--on-warm);
 }
 
-#\30 3-baselines .chapter-inner {
+#\30 3-baselines .bl {
   position: relative;
-  z-index: 1;                    /* all content above decorative layers */
+  isolation: isolate;
+}
+
+/* ── Decorative world: orbit rings + seed dots (behind, no pointer) ── */
+#\30 3-baselines .bl-orbit {
+  z-index: 0;
+  opacity: 0.5;
+  background-position: 86% 14%;
+}
+#\30 3-baselines .bl-seed { z-index: 0; }
+#\30 3-baselines .bl-seed--a { top: 12%; left: 8%; }
+#\30 3-baselines .bl-seed--b { top: 64%; right: 11%; }
+
+/* Real content rides above the decorative layers. */
+#\30 3-baselines .bl-head,
+#\30 3-baselines .bl-flow { position: relative; z-index: 1; }
+
+/* ── Opener — balanced two-part title lockup ────────────────────── */
+#\30 3-baselines .bl-head {
+  max-width: 1240px;
+  margin: 0 auto clamp(2.5rem, 6vh, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+#\30 3-baselines .bl-head-title { min-width: 0; }
+#\30 3-baselines .bl-headline {
   display: flex;
   flex-direction: column;
-  gap: clamp(56px, 8vh, 112px);
-  /* Claim the available viewport height (less the chapter padding and the
-     bottom journey-controls reservation) so the warm ground reads as a full,
-     immersive screen with no dead band, and the header / stat flow / closing
-     band spread down it. Content taller than this scrolls internally. */
-  min-height: calc(
-    100svh - 2 * clamp(5rem, 8vh, 9rem)
-    - var(--journey-controls-h) - clamp(1.5rem, 4vh, 3rem)
-  );
-  justify-content: space-between;
+  line-height: 0.96;
+  margin: var(--space-2) 0 0;
+  color: var(--soi-navy);
 }
-
-/* ─── Decorative world layers (behind, never carry meaning) ─────── */
-#\30 3-baselines .bl-orbit {
-  /* thin concentric white rings, low opacity; sweeps from the right */
-  background-position: 88% 30%;
-  opacity: 0.6;
-  will-change: transform;
-}
-#\30 3-baselines .bl-seed--a { top: 22%; right: 14%; }
-#\30 3-baselines .bl-seed--b { top: 34%; right: 28%; width: 7px; height: 7px; }
-#\30 3-baselines .bl-seed--c { top: 16%; right: 36%; width: 6px; height: 6px; opacity: 0.85; }
-
-/* Bear-world coil panel as a soft watermark anchor, bottom-right, behind
-   content. Low opacity + luminosity blend so the navy stats stay high-
-   contrast over it. */
-#\30 3-baselines .bl-bear {
-  position: absolute;
-  z-index: 0;
-  right: -6%;
-  bottom: -8%;
-  width: clamp(280px, 36vw, 600px);
-  height: auto;
-  opacity: 0.14;
-  mix-blend-mode: luminosity;
-  pointer-events: none;
-  will-change: transform;
-}
-
-/* ─── Image-title lockup opener (deck signature composition) ─────── */
-#\30 3-baselines .bl-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 64px);
-  /* Claim the opening fold so the title lockup never floats in dead amber. */
-  min-height: min(78vh, 720px);
-  /* Scroll-progress entrance: lift + fade the whole lockup in. */
-  opacity: calc(0.25 + 0.75 * var(--enter));
-  transform: translateY(calc((1 - var(--enter)) * 26px));
-}
-#\30 3-baselines .bl-head-copy {
-  max-width: 30ch;
+#\30 3-baselines .bl-headline > span { display: block; }
+/* Emphasis = navy weight only (no box, no underline, no skew). */
+#\30 3-baselines .bl-emph { color: var(--soi-navy); font-weight: 900; }
+/* The aside fills the right of the lockup so the opener never reads as dead
+   amber: standfirst + a quiet "four numbers" cue with a short orange rule. */
+#\30 3-baselines .bl-head-aside {
   min-width: 0;
-}
-#\30 3-baselines .bl-kicker {
-  margin: 0 0 18px 0;
-  font-size: var(--t-xs);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.78;
-}
-/* Heavy Poppins-Black headline, tight tracking, big — matches the deck's
-   punchy title lockups (recreated in Poppins per FEEDBACK-V4 §1). overflow
-   visible + generous line-height so descenders/underline never clip. */
-#\30 3-baselines .bl-headline {
-  font-size: clamp(3.2rem, 6.8vw, 6.8rem);
-  font-weight: 900;
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-  margin: 0;
-  color: var(--on-warm);
-  overflow: visible;
-}
-/* Emphasis = navy weight + a clean STRAIGHT orange underline rule. No skew,
-   no fill, no block behind the word; the orange reads as a confident accent on
-   the warm ground while the word itself stays navy for contrast. */
-#\30 3-baselines .bl-emph {
-  position: relative;
-  white-space: nowrap;
-  color: var(--on-warm);
-}
-#\30 3-baselines .bl-emph::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.02em;
-  height: 0.14em;
-  background: var(--soi-orange);
-  z-index: -1;
-  /* Draw the underline in as the opener enters (scroll-progress driven). */
-  transform: scaleX(var(--enter));
-  transform-origin: left;
+  padding-bottom: clamp(0.25rem, 1.5vh, 1rem);
 }
 #\30 3-baselines .bl-standfirst {
   font-size: var(--t-md);
-  line-height: 1.55;
   font-weight: 500;
-  color: var(--on-warm);
-  opacity: 0.88;
-  margin: 26px 0 0 0;
-  max-width: 50ch;
-}
-/* Quiet scroll cue — fills the lower opener so the column never reads as dead
-   amber. A navy label + a thin orange arrow rule that pulses down on a loop.
-   No block behind the text; weight/colour emphasis only. */
-#\30 3-baselines .bl-scroll-cue {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: clamp(28px, 5vh, 56px) 0 0 0;
-}
-#\30 3-baselines .bl-scroll-word {
-  font-size: var(--t-xs);
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.72;
-}
-#\30 3-baselines .bl-scroll-arrow {
-  position: relative;
-  flex: 0 0 64px;
-  height: 2px;
-  background: rgba(10, 26, 92, 0.32);
-}
-#\30 3-baselines .bl-scroll-arrow::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 2px;
-  width: 24px;
-  background: var(--soi-orange);
-  animation: bl-arrow-run 2.6s ease-in-out infinite;
-}
-@keyframes bl-arrow-run {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(40px); }
-}
-
-/* The maze/orbit brand-world motif beside the title — backgroundless, lifts
-   off the warm ground with a soft navy shadow, never a box. The figure mark
-   is layered on the maze's orbit line, as the deck composes it. */
-#\30 3-baselines .bl-head-lockup {
-  position: relative;
+  line-height: 1.5;
+  color: var(--ink-soft);
   margin: 0;
-  justify-self: end;
-  min-width: 0;
-  width: 100%;
-  max-width: 460px;
 }
-#\30 3-baselines .bl-head-maze {
-  display: block;
-  width: 100%;
-  max-width: 460px;
-  height: auto;
-  margin-left: auto;
-  filter: drop-shadow(0 22px 46px rgba(10, 26, 92, 0.26));
-  will-change: transform;
-}
-#\30 3-baselines .bl-head-figure {
-  position: absolute;
-  left: 2%;
-  bottom: 6%;
-  /* The mark is a tall, thin "person" (≈104×585) — size by HEIGHT so it reads
-     as a small figure standing at the maze entrance, not a giant silhouette. */
-  width: auto;
-  height: clamp(96px, 16vw, 168px);
-  filter: drop-shadow(0 10px 22px rgba(10, 26, 92, 0.32));
-  will-change: transform;
-  pointer-events: none;
-}
-
-/* ─── The flow: alternating stat rows, seamless (no bordered cards) ─ */
-#\30 3-baselines .bl-flow {
+#\30 3-baselines .bl-head-cue {
   display: flex;
-  flex-direction: column;
-  gap: clamp(64px, 9vh, 120px);
-}
-
-/* Each stat: lede (number + words) beside its chart. Alternate which side
-   leads for an editorial rhythm — not a rigid grid of tiles. Scroll-progress
-   entrance lifts each row in (CSS reads the JS-driven --enter). */
-#\30 3-baselines .bl-stat {
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  gap: clamp(28px, 5vw, 72px);
-  opacity: calc(0.4 + 0.6 * var(--enter));
-  transform: translateY(calc((1 - var(--enter)) * 18px));
-}
-#\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 2; }
-#\30 3-baselines .bl-stat--rev .bl-chart { order: 1; }
-
-/* ─── Lede side (lives directly on the warm ground) ─────────────── */
-#\30 3-baselines .bl-stat-lede {
-  align-content: start;
-  display: flex;
-  flex-direction: column;
   gap: 14px;
-  min-width: 0;
-}
-/* Stat index — deck-style "NN / 04" tag preceded by a short orange rule, an
-   editorial tick that paces the four numbers. No block behind the text. */
-#\30 3-baselines .bl-index {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: var(--t-xs);
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  margin: clamp(1.25rem, 3vh, 2rem) 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.8;
+  color: var(--soi-navy);
+  opacity: 0.62;
 }
-#\30 3-baselines .bl-index::before {
-  content: "";
-  width: 30px;
+#\30 3-baselines .bl-head-cue-rule {
+  flex: 0 0 36px;
   height: 3px;
   background: var(--soi-orange);
 }
-#\30 3-baselines .bl-bignum-line {
-  margin: 0;
+
+/* ── Flow of four beats — generous vertical rhythm, fills the screen ─ */
+#\30 3-baselines .bl-flow {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 9vh, 7rem);
 }
-/* Hero number — Poppins Black via .si-bignum; bigger + tighter here. Slight
-   extra line-height + visible overflow so the descender-free numerals never
-   clip against the label below. */
+
+/* Each beat: number/copy lede beside its backgroundless chart. */
+#\30 3-baselines .bl-beat {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+/* Alternate sides so the eye zig-zags down the page (no dead band). */
+#\30 3-baselines .bl-beat--rev .bl-lede { order: 2; }
+#\30 3-baselines .bl-beat--rev .bl-chart,
+#\30 3-baselines .bl-beat--rev .bl-split { order: 1; }
+#\30 3-baselines .bl-beat--split { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); }
+
+/* ── Lede: index, hero number, label, sentence ──────────────────── */
+#\30 3-baselines .bl-lede { min-width: 0; }
+#\30 3-baselines .bl-index {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--soi-navy);
+  opacity: 0.55;
+  margin-bottom: var(--space-1);
+}
+#\30 3-baselines .bl-numline { margin: 0; }
 #\30 3-baselines .bl-num {
   display: block;
-  font-size: clamp(4.4rem, 9.4vw, 9rem);
-  letter-spacing: -0.04em;
-  line-height: 0.88;
-  color: var(--on-warm);         /* navy hero number on amber */
-  overflow: visible;
+  color: var(--soi-navy);
+  line-height: 0.86;
 }
 #\30 3-baselines .bl-label {
-  display: block;
-  margin-top: 16px;
-  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-  max-width: 22ch;
-  color: var(--on-warm);
+  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--soi-navy);
+  margin: var(--space-2) 0 var(--space-1);
+  max-width: 18ch;
 }
 #\30 3-baselines .bl-sentence {
-  margin: 0;
-  font-size: var(--t-md);
-  line-height: 1.55;
-  font-weight: 500;
-  color: var(--on-warm);
-  opacity: 0.82;
-  max-width: 42ch;
-}
-
-/* ─── Backgroundless chart (sits DIRECTLY on the warm ground) ─────
-   No paper background, no border, no shadow — chart-holder is transparent
-   and the marks carry the contrast (navy components + faint ink tracks). */
-#\30 3-baselines .bl-chart {
-  min-width: 0;
-  margin: 0;
-}
-/* Bigger, bolder caption — designed type on the warm ground, navy for high
-   contrast, not a tiny grey caption on paper. */
-#\30 3-baselines .bl-chart-sub {
   font-size: var(--t-sm);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--on-warm);         /* navy on amber */
-  margin: 0 0 12px 0;
-  line-height: 1.3;
-}
-#\30 3-baselines .bl-chart-sub--onwarm {
-  color: var(--on-warm);
-  opacity: 1;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
 }
 
-/* Availability stack: dot plot and orbit-ring occupy the same slot; only one
-   is visible at a time (the other is [hidden]). */
-#\30 3-baselines .bl-availability-stack {
-  position: relative;
+/* ── Charts: backgroundless, sit directly on the ground ─────────── */
+#\30 3-baselines .bl-chart,
+#\30 3-baselines .bl-tug { width: 100%; }
+#\30 3-baselines .bl-chart-sub {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.7;
+  margin: 0 0 var(--space-2);
+}
+#\30 3-baselines .bl-chart svg,
+#\30 3-baselines .bl-tug svg { width: 100%; height: auto; }
+
+/* Beat 04 stacks its two charts within the wide column. */
+#\30 3-baselines .bl-split {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3.5vh, 2.75rem);
   min-width: 0;
 }
-#\30 3-baselines .bl-availability-stack [hidden] { display: none; }
-#\30 3-baselines .bl-availability-stack svg {
-  width: 100%;
-  height: auto;
-}
 
-/* Inline "See it as [List | Orbit]" cue beside the stat-03 toggle. */
-#\30 3-baselines .bl-toggle-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-#\30 3-baselines .bl-toggle-cue {
-  font-size: var(--t-xs);
+/* ── Beat 01 marquee — guess then the 100-in-100 crowd ──────────── */
+#\30 3-baselines .bl-marquee { min-width: 0; }
+
+/* clickToGuess styling (behaviour comes from the lib). */
+#\30 3-baselines .bl-guess { max-width: 540px; }
+#\30 3-baselines .guess-prompt {
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.66;
-}
-
-/* ─── Live toggle (pillGroup) — backgroundless, no block behind labels ─
-   The active state is WEIGHT + an orange underline rule (no filled chip),
-   honouring "no block behind any text". */
-#\30 3-baselines .bl-chart-controls {
-  margin: 0 0 14px 0;
-}
-#\30 3-baselines .bl-toggle-row .bl-chart-controls {
-  margin: 0;
-}
-#\30 3-baselines .pillgroup {
-  display: inline-flex;
-  gap: 18px;
-  background: transparent;        /* no track box */
-  padding: 0;
-}
-#\30 3-baselines .pillgroup-chip {
-  appearance: none;
-  border: 0;
-  background: transparent;        /* no fill behind the label */
-  cursor: pointer;
-  position: relative;
-  font: 800 var(--t-xs)/1 var(--font-sans);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.52;
-  padding: 6px 0;
-  transition: opacity 0.18s ease;
-}
-#\30 3-baselines .pillgroup-chip::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 3px;
-  background: var(--soi-orange);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-#\30 3-baselines .pillgroup-chip:hover { opacity: 0.8; }
-#\30 3-baselines .pillgroup-chip.is-active {
-  opacity: 1;                     /* full-weight navy label + orange rule */
-}
-#\30 3-baselines .pillgroup-chip.is-active::after {
-  transform: scaleX(1);
-}
-#\30 3-baselines .pillgroup-chip:focus-visible {
-  outline: 2px solid var(--soi-navy);
-  outline-offset: 3px;
-}
-
-/* ─── Guess (clickToGuess hooks, stat 1) — box-less on the ground ─ */
-#\30 3-baselines .bl-guess {
-  margin-top: 4px;
-}
-/* No plate, no block: the guess sits on the warm ground with a navy hairline
-   rule, never a near-white card popped on the amber ground. */
-#\30 3-baselines .guess {
-  border: 0;
-  border-left: 3px solid var(--soi-navy);
-  background: transparent;
-  padding: 6px 0 6px 18px;
-  max-width: 440px;
-  box-shadow: none;
-}
-#\30 3-baselines .guess-prompt {
-  font-size: var(--t-xs);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.7;
-  margin: 0 0 8px 0;
+  color: var(--soi-navy);
+  opacity: 0.6;
+  margin: 0 0 6px;
 }
 #\30 3-baselines .guess-label {
   display: block;
   font-size: var(--t-sm);
   font-weight: 600;
-  line-height: 1.35;
-  color: var(--on-warm);
-  opacity: 0.9;
-  margin-bottom: 14px;
+  line-height: 1.4;
+  color: var(--soi-navy);
+  margin-bottom: var(--space-2);
+  max-width: 34ch;
 }
 #\30 3-baselines .guess-control {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
+/* Tactile guess slider — NO white track. The native runnable track becomes a
+   tinted ink rail; the thumb is a confident navy grab handle with an orange
+   ring. Square corners, grab cursor. */
 #\30 3-baselines .guess-range {
-  flex: 1;
-  accent-color: var(--soi-orange);
+  flex: 1 1 auto;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;        /* kill the default white track box */
   height: 22px;
+  cursor: grab;
+}
+#\30 3-baselines .guess-range:active { cursor: grabbing; }
+#\30 3-baselines .guess-range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(10, 26, 92, 0.22);
+  border-radius: 0;
+}
+#\30 3-baselines .guess-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -9px;
+  background: var(--soi-navy);
+  border: 3px solid var(--soi-orange);
+  border-radius: 0;
+  box-shadow: 0 3px 8px rgba(10, 26, 92, 0.3);
+}
+#\30 3-baselines .guess-range::-moz-range-track {
+  height: 4px;
+  background: rgba(10, 26, 92, 0.22);
+  border: 0;
+  border-radius: 0;
+}
+#\30 3-baselines .guess-range::-moz-range-progress {
+  height: 4px;
+  background: var(--soi-orange);
+}
+#\30 3-baselines .guess-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--soi-navy);
+  border: 3px solid var(--soi-orange);
+  border-radius: 0;
+  box-shadow: 0 3px 8px rgba(10, 26, 92, 0.3);
+}
+#\30 3-baselines .guess-range:focus-visible {
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 6px;
 }
 #\30 3-baselines .guess-output {
+  flex: 0 0 auto;
   min-width: 3.4ch;
-  font-size: var(--t-md);
+  font-size: 1.5rem;
   font-weight: 800;
+  color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
   text-align: right;
-  color: var(--on-warm);
 }
-#\30 3-baselines .guess-reveal {
-  margin-top: 14px;
+/* Reuse the journey square-button look — navy, no radius, no underline. */
+#\30 3-baselines .guess-submit {
+  font: 600 var(--t-sm)/1 var(--font-sans);
+  letter-spacing: 0.04em;
+  padding: 12px 22px;
+  border: 1px solid var(--soi-navy);
+  background: var(--soi-navy);
+  color: var(--soi-cream);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
+#\30 3-baselines .guess-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 var(--soi-navy);
+}
+#\30 3-baselines .guess-reveal { margin-top: var(--space-2); }
 #\30 3-baselines .guess-actual {
-  margin: 0 0 4px 0;
-  font-size: var(--t-sm);
-  color: var(--on-warm);
-}
-#\30 3-baselines .guess-actual strong {
-  font-variant-numeric: tabular-nums;
-}
-#\30 3-baselines .guess-delta {
-  margin: 0;
-  font-size: var(--t-xs);
-  color: var(--on-warm);
-  opacity: 0.78;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ─── The 100-in-100 marquee crowd (revealed after the guess) ──────
-   A hundred squares you pass today — backgroundless, the squares carry the
-   contrast (faint ink track empties, navy fills), with ONE square highlighted
-   in brand orange as "you". The reveal cascades the fill in; the caption
-   number counts up. Sits DIRECTLY on the warm ground — no card, no border. */
-#\30 3-baselines .bl-crowd {
-  min-width: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 2.4vh, 28px);
-  /* Assemble on reveal: the whole crowd lifts + fades up as it takes the slot. */
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-#\30 3-baselines .bl-crowd.is-live {
-  opacity: 1;
-  transform: none;
-}
-/* Big concrete caption — "77 of every 100 people you pass today…". The count
-   is a heavy navy numeral that counts up; the rest is quiet supporting type. */
-#\30 3-baselines .bl-crowd-cap {
-  margin: 0;
-  display: block;
-  max-width: 30ch;
-  font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+  font-size: var(--t-md);
   font-weight: 600;
-  line-height: 1.32;
-  color: var(--on-warm);
+  color: var(--soi-navy);
+  margin: 0 0 4px;
+}
+#\30 3-baselines .guess-actual strong { font-weight: 900; }
+#\30 3-baselines .guess-delta {
+  font-size: var(--t-sm);
+  font-weight: 700;
+  margin: 0;
+}
+/* Brand-legal delta colours (no green/red). */
+#\30 3-baselines .vccp-delta-up { color: var(--soi-up); }
+#\30 3-baselines .vccp-delta-down { color: var(--soi-orange); }
+
+/* The crowd caption — count + plain-language line. */
+#\30 3-baselines .bl-crowd { gap: var(--space-2); margin-top: var(--space-3); }
+#\30 3-baselines .bl-crowd-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0;
 }
 #\30 3-baselines .bl-crowd-count {
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
   font-weight: 900;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  margin-right: 0.12em;
-  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
   line-height: 1;
-  color: var(--on-warm);
+  color: var(--soi-navy);
 }
 #\30 3-baselines .bl-crowd-of {
-  font-weight: 600;
-  opacity: 0.9;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 30ch;
 }
 
-/* The grid: 10×10 squares, no gaps to a track box — generous breathing room
-   around it, square cells, flat colour. */
+/* The 100-square grid — backgroundless; empty squares a faint ink tint. */
 #\30 3-baselines .bl-crowd-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: clamp(4px, 0.7vw, 8px);
-  width: 100%;
   max-width: 420px;
-  aspect-ratio: 1 / 1;
 }
 #\30 3-baselines .bl-crowd-cell {
-  /* Empty = faint ink tint (never a white box); square corners. */
-  background: rgba(10, 26, 92, 0.12);
-  border-radius: 0;
-  transform: scale(0.78);
-  opacity: 0.55;
-  transition: background-color 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.32s ease;
-  will-change: transform;
+  aspect-ratio: 1 / 1;
+  background: rgba(10, 26, 92, 0.1);
+  transform: scale(0.82);          /* empties sit slightly recessed */
+  transition: background 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* Filled = navy, high-contrast on the warm amber ground; settles to full size. */
-#\30 3-baselines .bl-crowd-cell.is-filled {
+/* Filled = navy, settles up to full size as the cascade reaches it. */
+#\30 3-baselines .bl-crowd-cell.is-on {
   background: var(--soi-navy);
   transform: scale(1);
-  opacity: 1;
 }
-/* The you-square: brand orange, always reads as the one square that is YOU,
-   with a soft contact lift so it sits proud of the crowd. */
+/* "You" — the one teal square (the single bright accent, used sparingly). */
+#\30 3-baselines .bl-crowd-cell.is-you.is-on,
 #\30 3-baselines .bl-crowd-cell.is-you {
-  background: var(--soi-orange);
-  opacity: 1;
-}
-#\30 3-baselines .bl-crowd-cell.is-you.is-filled {
-  background: var(--soi-orange);
-  transform: scale(1.16);
-  box-shadow: 0 4px 10px rgba(10, 26, 92, 0.28);
+  background: var(--soi-up);
+  box-shadow: 0 0 0 2px rgba(10, 26, 92, 0.55);
+  position: relative;
   z-index: 1;
 }
-
-/* Quiet key line — "This square is you." with an orange swatch. */
+/* When the cascade reaches your square it "lands": a one-shot pop that
+   overshoots and settles proud of the crowd, so "one of them is you" is felt. */
+#\30 3-baselines .bl-crowd-cell.is-you.is-landed {
+  animation: bl-you-pop 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 6px 16px rgba(10, 26, 92, 0.36), 0 0 0 2px rgba(10, 26, 92, 0.55);
+  z-index: 2;
+}
+@keyframes bl-you-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.55); }
+  100% { transform: scale(1.28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 3-baselines .bl-crowd-cell { transition: none; transform: scale(1); }
+  #\30 3-baselines .bl-crowd-cell:not(.is-on) { transform: scale(0.82); }
+  #\30 3-baselines .bl-crowd-cell.is-you.is-landed {
+    animation: none;
+    transform: scale(1.28);
+  }
+}
 #\30 3-baselines .bl-crowd-key {
-  margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: var(--t-xs);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.78;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin: 0;
 }
-#\30 3-baselines .bl-crowd-key-you {
+#\30 3-baselines .bl-crowd-key-dot {
   width: 14px;
   height: 14px;
-  flex: 0 0 14px;
-  background: var(--soi-orange);
-  box-shadow: 0 2px 6px rgba(10, 26, 92, 0.26);
+  flex: 0 0 auto;
+  background: var(--soi-up);
+  box-shadow: 0 0 0 2px rgba(10, 26, 92, 0.55);
 }
 
-/* ─── 54 / 46 tug-of-war (stat 4 lede) — box-less, on the warm ground ─ */
-#\30 3-baselines .bl-strip {
-  margin-top: 8px;
-  max-width: 480px;
-}
-#\30 3-baselines .bl-strip .bl-chart-sub--onwarm {
-  color: var(--on-warm);
-  opacity: 1;
-  margin-bottom: 10px;
-}
-
-/* ─── Closing band: "operational floor" framing + credibility mark ─ */
-#\30 3-baselines .bl-floor {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(28px, 5vw, 64px);
-  /* A hairline navy rule separates the takeaway from the stat flow. */
-  border-top: 2px solid rgba(10, 26, 92, 0.22);
-  padding-top: clamp(28px, 4vh, 56px);
-  opacity: calc(0.4 + 0.6 * var(--enter));
-  transform: translateY(calc((1 - var(--enter)) * 16px));
-}
-#\30 3-baselines .bl-floor-copy { min-width: 0; }
-#\30 3-baselines .bl-floor-kicker {
-  margin: 0 0 14px 0;
-  font-size: var(--t-xs);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--on-warm);
-  opacity: 0.7;
-}
-#\30 3-baselines .bl-floor-line {
-  margin: 0;
-  font-size: clamp(1.6rem, 2.9vw, 2.7rem);
-  font-weight: 800;
-  line-height: 1.16;
-  letter-spacing: -0.02em;
-  color: var(--on-warm);
-  max-width: 26ch;
-}
-#\30 3-baselines .bl-floor-mark {
-  width: 100%;
-  height: auto;
-  max-width: 520px;
-  justify-self: end;
-  /* Lift the report-cover photo off the warm ground without a white box. */
-  filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.22));
-  will-change: transform;
-}
-
-/* ─── Responsive ─────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
+/* ── Responsive: single column on narrow screens (no overlap/cutoff) ─ */
+@media (max-width: 920px) {
   #\30 3-baselines .bl-head {
     grid-template-columns: 1fr;
-    gap: clamp(20px, 4vw, 36px);
-    min-height: 0;
+    align-items: start;
+    gap: var(--space-3);
   }
-  #\30 3-baselines .bl-head-copy { max-width: none; }
-  #\30 3-baselines .bl-head-lockup { justify-self: start; max-width: 360px; }
-  #\30 3-baselines .bl-head-maze { margin-left: 0; max-width: 360px; }
-  #\30 3-baselines .bl-scroll-cue { margin-top: clamp(20px, 4vh, 36px); }
-}
-
-@media (max-width: 560px) {
-  #\30 3-baselines .bl-scroll-cue { flex-wrap: wrap; gap: 12px; }
-}
-
-@media (max-width: 900px) {
-  #\30 3-baselines .chapter-inner {
-    min-height: 0;                /* let the stacked flow size naturally */
-  }
-  #\30 3-baselines .bl-stat,
-  #\30 3-baselines .bl-stat--rev {
+  #\30 3-baselines .bl-head-aside { padding-bottom: 0; }
+  #\30 3-baselines .bl-beat,
+  #\30 3-baselines .bl-beat--split {
     grid-template-columns: 1fr;
-    gap: clamp(20px, 4vw, 32px);
+    gap: var(--space-3);
   }
-  #\30 3-baselines .bl-stat--rev .bl-stat-lede { order: 0; }
-  #\30 3-baselines .bl-stat--rev .bl-chart { order: 0; }
-  #\30 3-baselines .bl-floor {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  #\30 3-baselines .bl-floor-mark {
-    justify-self: start;
-    max-width: 380px;
-  }
-  #\30 3-baselines .bl-bear {
-    width: clamp(220px, 52vw, 360px);
-    opacity: 0.1;
-  }
-}
-
-/* ─── Reduced motion: collapse all scroll-driven motion to the rest state ─ */
-@media (prefers-reduced-motion: reduce) {
-  #\30 3-baselines .bl-head,
-  #\30 3-baselines .bl-stat,
-  #\30 3-baselines .bl-stat--rev,
-  #\30 3-baselines .bl-floor {
-    opacity: 1;
-    transform: none;
-  }
-  /* Rest state: full underline, no looping arrow. */
-  #\30 3-baselines .bl-emph::after {
-    transform: none;
-  }
-  #\30 3-baselines .bl-scroll-arrow::before {
-    animation: none;
-  }
-  /* Crowd marquee: no lift-in, no per-cell settle — paint the final state. */
-  #\30 3-baselines .bl-crowd {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  #\30 3-baselines .bl-crowd-cell {
-    transform: scale(1);
-    opacity: 0.55;
-    transition: none;
-  }
-  #\30 3-baselines .bl-crowd-cell.is-filled { opacity: 1; }
-  #\30 3-baselines .bl-crowd-cell.is-you.is-filled {
-    transform: scale(1.16);
-  }
+  /* Keep natural source order when stacked. */
+  #\30 3-baselines .bl-beat--rev .bl-lede,
+  #\30 3-baselines .bl-beat--rev .bl-chart,
+  #\30 3-baselines .bl-beat--rev .bl-split { order: 0; }
+  #\30 3-baselines .bl-label { max-width: none; }
 }

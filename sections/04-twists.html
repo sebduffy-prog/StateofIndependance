@@ -1,156 +1,164 @@
-<div class="chapter-inner">
-  <!-- Chapter opener — deck image-title lockup: huge Poppins-Black title +
-       bear-world motif to the right (the deck's title-on-motif composition). -->
-  <header class="tw-head reveal">
-    <div class="tw-head-copy">
-      <p class="vccp-eyebrow">The twists in the story</p>
-      <h2 class="tw-title si-display si-display--sm si-display--black">There are <em class="hl">twists</em><br>in the story</h2>
-      <p class="tw-standfirst si-measure">Beneath the expected cutbacks, three anomalies surface. This is not a population retreating into a bunker. It is rewriting the rules of survival, institutional trust and technology.</p>
-      <ol class="tw-toc" aria-label="The three twists">
-        <li class="tw-toc-item"><span class="tw-toc-num">01</span><span class="tw-toc-name">The trust paradox</span></li>
-        <li class="tw-toc-item"><span class="tw-toc-num">02</span><span class="tw-toc-name">Protected joy</span></li>
-        <li class="tw-toc-item"><span class="tw-toc-num">03</span><span class="tw-toc-name">AI on tap</span></li>
-      </ol>
-    </div>
-    <figure class="tw-head-art" aria-hidden="true">
-      <span class="tw-head-art-img" data-host="head-art" data-parallax="0.12"></span>
-      <span class="si-orbit si-orbit--spin tw-head-orbit"></span>
-    </figure>
+<div class="chapter-inner tw-world">
+
+  <!-- ───────────────────────── Opener ─────────────────────────
+       Warm ground. The headline assembles on arrival; one emphasis
+       word ("twists") decrypts last. Standfirst sets up the three
+       anomalies. Generous space, no boxes. -->
+  <header class="tw-head on-warm" data-stagger="140">
+    <p class="vccp-eyebrow" data-arrival>The twists in the story</p>
+    <h2 class="tw-headline si-display si-display--black si-display--caseless">
+      <span data-arrival>There are </span><span class="hl" data-arrival data-arrival-scramble data-youdot-anchor>twists</span><br />
+      <span data-arrival>in the story</span>
+    </h2>
+    <p class="tw-standfirst si-measure" data-arrival>
+      Beneath the expected cutbacks, three anomalies emerge. This is not a
+      population retreating into a bunker &mdash; it is rewriting the rules of
+      survival, institutional trust and technology.
+    </p>
+    <ol class="tw-toc" aria-label="The three twists" data-arrival>
+      <li><span class="tw-toc-num" aria-hidden="true">01</span> Trust is slipping &mdash; but it has shifted, not collapsed</li>
+      <li><span class="tw-toc-num" aria-hidden="true">02</span> Joy is being ring-fenced, not abandoned</li>
+      <li><span class="tw-toc-num" aria-hidden="true">03</span> Expertise is now a prompt away</li>
+    </ol>
   </header>
 
-  <!-- (a) Twist one — the trust paradox — EARNED DARK MOMENT -->
-  <section class="tw-exhibit tw-exhibit--dark si-dark si-dark--velvet" id="tw-trust" aria-labelledby="tw-trust-h" data-exhibit>
-    <span class="si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.06"></span>
-    <div class="tw-exhibit-head reveal">
-      <span class="tw-num">Twist one</span>
-      <h3 class="tw-exhibit-title" id="tw-trust-h">The trust <em class="hl">paradox</em></h3>
-      <p class="tw-lede si-measure">Banks are no longer the enemy, even though confidence is slipping. Drag the seven institutions into the order you think Britain trusts to be there over the next twelve months, most trusted at the top.</p>
+  <!-- ──────────────────── Twist 01 · Trust paradox ────────────────────
+       The EARNED dark moment (navy velvet). Cream text on navy.
+       Marquee interaction: drag-rank the seven institutions, then snap to
+       truth. The 53% -> 24% spread and the NHS paradox land after. -->
+  <section class="tw-twist tw-twist--dark si-dark si-dark--velvet on-navy"
+           aria-labelledby="tw-trust-h">
+    <span class="si-orbit si-orbit--center tw-orbit-dark" aria-hidden="true"></span>
+
+    <div class="tw-twist-head">
+      <p class="vccp-stage-num">Twist 01</p>
+      <h3 class="tw-twist-title" id="tw-trust-h">
+        Banks are no longer the enemy. Even though trust is
+        <span class="hl">slipping</span>.
+      </h3>
+      <p class="tw-twist-lede si-measure">
+        Just one of seven institutions clears half the country&rsquo;s
+        confidence &mdash; and government trails every other. Before we show you:
+        rank them as you think Britain does, most trusted at the top.
+      </p>
     </div>
 
-    <div class="tw-trust-grid si-grid">
-      <div class="tw-rank-host reveal col-5" data-host="rank"></div>
-      <figure class="tw-truth chart-holder reveal col-7" data-host="trust-truth" hidden>
-        <figcaption class="tw-truth-cap">Share confident (7 to 10 out of 10) each institution will reliably support them over the next twelve months. Each value sits on its own orbit, biggest outermost.</figcaption>
-        <div class="tw-orbit" data-host="trust-orbit"></div>
-        <p class="tw-spread" data-host="spread"></p>
-      </figure>
-    </div>
+    <div class="tw-trust-grid">
+      <!-- Drag-rank marquee. dragRank builds its own list + reveal. -->
+      <div class="tw-rank chart-holder" data-rank-trust></div>
 
-    <div class="tw-paradox-row reveal">
-      <div class="tw-paradox">
-        <button type="button" class="tw-flip" data-host="paradox" aria-pressed="false">
-          <span class="tw-flip-hint">Click to flip the card</span>
-          <span class="tw-flip-face tw-flip-front">
-            <span class="vccp-stat-label">Most trusted institution</span>
-            <span class="tw-flip-stat"><span class="tw-flip-big">6.42</span><span class="tw-flip-unit"> / 10</span></span>
-            <span class="tw-flip-cap">NHS: the single highest mean trust score of any UK institution.</span>
-          </span>
-          <span class="tw-flip-face tw-flip-back" aria-hidden="true">
-            <span class="vccp-stat-label">And yet</span>
-            <span class="tw-flip-stat"><span class="tw-flip-big">53</span><span class="tw-flip-unit">%</span></span>
-            <span class="tw-flip-cap">say the NHS&rsquo;s performance has declined over the past decade. High regard and falling confidence, side by side.</span>
-          </span>
-        </button>
-      </div>
-      <!-- Real-world evidence lifted from the deck: a challenger brand acting
-           on exactly this distrust. Photographic proof, no source caption. -->
-      <figure class="tw-evidence reveal">
-        <span class="tw-evidence-img" data-host="evidence" data-parallax="0.08"></span>
-        <figcaption class="tw-evidence-cap">When trust in institutions slips, the honest alternative wins the gap. Challenger brands are already moving on it.</figcaption>
-      </figure>
-    </div>
+      <!-- The spread + paradox, revealed alongside the ranking truth. -->
+      <aside class="tw-trust-aside" data-trust-aside aria-hidden="true">
+        <p class="tw-spread-cap">A 29-point spread in who Britain trusts to be there</p>
+        <p class="tw-spread-line">
+          <span class="tw-spread-hi"><span class="num" data-count-to="53" data-count-suffix="%">53%</span><span class="tw-spread-who">NHS</span></span>
+          <span class="tw-spread-arrow" aria-hidden="true">&rarr;</span>
+          <span class="tw-spread-lo"><span class="num" data-count-to="24" data-count-suffix="%">24%</span><span class="tw-spread-who">Government</span></span>
+        </p>
 
-    <div class="tw-decline reveal">
-      <p class="tw-decline-cap">And it is not just the NHS. Across the board, more Britons say each institution has got worse over the past decade than say it has improved &mdash; government most of all.</p>
-      <div class="tw-decline-bars" data-host="decline-bars"></div>
-    </div>
-  </section>
-
-  <!-- (b) Twist two — protected joy -->
-  <section class="tw-exhibit" id="tw-joy" aria-labelledby="tw-joy-h" data-exhibit>
-    <div class="tw-exhibit-head reveal">
-      <span class="tw-num">Twist two</span>
-      <h3 class="tw-exhibit-title" id="tw-joy-h">Protected <em class="hl">joy</em></h3>
-      <p class="tw-lede si-measure">The lipstick effect is real. Hospitality and fashion are vulnerable. Holidays remain sacrosanct, reclassified as a wellbeing line item to defend, not a luxury to trim.</p>
-    </div>
-
-    <div class="tw-joy-grid si-grid">
-      <div class="tw-joy-hero reveal col-5">
-        <span class="si-orbit si-orbit--center tw-joy-orbit" aria-hidden="true" data-parallax="0.05"></span>
-        <span class="tw-joy-motif" data-host="joy-motif" aria-hidden="true" data-parallax="0.1"></span>
-        <div class="tw-joy-hero-copy">
-          <span class="vccp-stat-label on-warm">Protecting the holiday budget</span>
-          <span class="tw-joy-big si-bignum on-warm"><span data-count-to="39.6" data-count-decimals="0" data-count-suffix="%"></span></span>
-          <span class="tw-joy-sub on-warm">are protecting their holiday budget at all costs.</span>
-        </div>
-      </div>
-
-      <!-- (b) THE MARQUEE TACTILE BEAT — ring-fence the holiday.
-           A budget board of draggable spend chips. Drag the flexible ones off
-           to the right to cut them; they settle into the cut margin. The
-           ring-fenced HOLIDAY resists being dragged out and springs back —
-           "sacrosanct" made physical. Built on js/lib/tactile.js draggable(). -->
-      <div class="tw-cut col-7 reveal" data-host="cut-board"
-           role="group" aria-labelledby="tw-cut-h">
-        <div class="tw-cut-head">
-          <h4 class="tw-cut-h" id="tw-cut-h">Try to cut the budget</h4>
-          <p class="tw-cut-instr">
-            Drag a treat to the right to cut it. One line refuses to move
-            &mdash; drag a chip, or focus it and use the arrow keys.
-          </p>
-        </div>
-        <div class="tw-cut-stage" data-host="cut-stage">
-          <div class="tw-cut-keep" data-host="cut-keep" aria-hidden="true"></div>
-          <div class="tw-cut-bin" data-host="cut-bin" aria-hidden="true">
-            <span class="tw-cut-bin-label">Cut</span>
+        <div class="tw-paradox">
+          <figure class="tw-gauge chart-holder" data-gauge-nhs>
+            <figcaption class="tw-gauge-cap"><span class="num">6.42</span> / 10 &middot; the highest mean trust score of any UK institution</figcaption>
+          </figure>
+          <div class="tw-paradox-copy">
+            <p class="tw-paradox-cap">The NHS paradox</p>
+            <div class="tw-flip" data-flip-nhs></div>
+            <p class="tw-paradox-note">High regard and falling confidence, side by side.</p>
           </div>
-          <ul class="tw-cut-list" data-host="cut-list"></ul>
         </div>
-        <p class="tw-cut-readout" data-host="cut-readout" aria-live="polite"></p>
-      </div>
-
-      <figure class="tw-joy-bars chart-holder reveal col-12">
-        <figcaption class="tw-truth-cap">Non-essentials Britain is actively protecting (% protecting because it matters to their wellbeing).</figcaption>
-        <div class="tw-lolli" data-host="joy-lolli"></div>
-      </figure>
+      </aside>
     </div>
   </section>
 
-  <!-- (c) Twist three — AI on tap -->
-  <section class="tw-exhibit" id="tw-ai" aria-labelledby="tw-ai-h" data-exhibit>
-    <div class="tw-exhibit-head reveal">
-      <span class="tw-num">Twist three</span>
-      <h3 class="tw-exhibit-title" id="tw-ai-h">AI on <em class="hl">tap</em></h3>
-      <p class="tw-lede si-measure">Expertise once gatekept by professionals is now a prompt away, substituted across finance, health and legal advice.</p>
+  <!-- ──────────────────── Twist 02 · Protected joy ────────────────────
+       Warm ground. Tactile: the holiday is ring-fenced — it RESISTS being
+       dragged out and springs back, while the flexible items wobble loose.
+       Reveals 40% (39.6) protecting the holiday at all costs. -->
+  <section class="tw-twist tw-twist--warm on-warm" aria-labelledby="tw-joy-h">
+    <div class="tw-twist-head">
+      <p class="vccp-stage-num">Twist 02</p>
+      <h3 class="tw-twist-title" id="tw-joy-h">
+        Hospitality and fashion are vulnerable. Holidays remain
+        <span class="hl">sacrosanct</span>.
+      </h3>
+      <p class="tw-twist-lede si-measure">
+        The lipstick effect is real. The holiday has been reclassified as a
+        wellbeing line item to defend &mdash; not a luxury to trim. Try to drag
+        it out of the budget: it won&rsquo;t go.
+      </p>
     </div>
 
-    <div class="tw-ai-grid si-grid">
-      <div class="tw-ai-stats reveal col-5" data-stagger>
-        <div class="tw-ai-stat reveal">
-          <span class="vccp-stat-label">Used AI instead of a professional, any task</span>
-          <span class="tw-ai-value si-bignum"><span data-count-to="58.4" data-count-decimals="0" data-count-suffix="%"></span></span>
-          <span class="tw-ai-stat-sub">for at least one task in the last six months.</span>
+    <div class="tw-joy-grid">
+      <!-- The tactile stage. Items are built in JS; the fence + holiday tile
+           are draggable toys. Flexible spend trembles; the holiday resists. -->
+      <figure class="tw-joy-stage chart-holder" aria-hidden="true">
+        <div class="tw-joy-field" data-joy-field></div>
+        <figcaption class="tw-joy-key">
+          <span class="tw-joy-key-row"><span class="tw-key-swatch tw-key-swatch--fenced"></span> Ring-fenced &mdash; defended at all costs</span>
+          <span class="tw-joy-key-row"><span class="tw-key-swatch tw-key-swatch--flex"></span> Flexible spend &mdash; first to flex</span>
+        </figcaption>
+      </figure>
+
+      <div class="tw-joy-stat">
+        <span class="vccp-stat-label">Protecting the holiday budget</span>
+        <span class="tw-joy-big si-bignum num" data-count-to="40" data-count-suffix="%">40%</span>
+        <p class="tw-joy-sentence">
+          are protecting their holiday budget at all costs &mdash; the single
+          most-defended non-essential in the country.
+        </p>
+        <figure class="tw-joy-strip chart-holder">
+          <figcaption class="tw-joy-strip-cap">What Britain is actively protecting, % who defend each</figcaption>
+          <div data-strip-protected></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────── Twist 03 · AI on tap ────────────────────
+       Warm ground. tugOfWar Human professional vs AI (58.4 / 41.6).
+       A pillGroup toggles between ANY task (58%) and HIGH-STAKES (37%) —
+       the two are kept distinct. The verbatim qual quote closes it. -->
+  <section class="tw-twist tw-twist--warm on-warm" aria-labelledby="tw-ai-h">
+    <div class="tw-twist-head">
+      <p class="vccp-stage-num">Twist 03</p>
+      <h3 class="tw-twist-title" id="tw-ai-h">
+        Expertise once gatekept by professionals is now a
+        <span class="hl">prompt</span> away.
+      </h3>
+      <p class="tw-twist-lede si-measure">
+        Finance, health, legal &mdash; advice you once paid for is being
+        substituted. Toggle between every task and the high-stakes calls.
+      </p>
+    </div>
+
+    <div class="tw-ai-grid">
+      <div class="tw-ai-left">
+        <div class="tw-ai-toggle-row">
+          <span class="tw-ai-toggle-cue" id="tw-ai-toggle-cue">Show me</span>
+          <div class="tw-ai-controls" data-ai-controls></div>
         </div>
-        <div class="tw-ai-stat reveal">
-          <span class="vccp-stat-label">High-stakes only, finance, health or legal</span>
-          <span class="tw-ai-value si-bignum"><span data-count-to="37.4" data-count-decimals="0" data-count-suffix="%"></span></span>
-          <span class="tw-ai-stat-sub">used AI for at least one high-stakes call.</span>
-        </div>
-        <div class="tw-ai-tug-wrap reveal">
-          <span class="vccp-stat-label">Have used AI vs have not</span>
-          <div class="tw-tug" data-host="ai-tug"></div>
-        </div>
+        <figure class="tw-ai-tug chart-holder">
+          <figcaption class="tw-ai-tug-cap" data-ai-tug-cap>
+            Used AI instead of a human professional for at least one task
+          </figcaption>
+          <div data-tug-ai></div>
+        </figure>
+        <figure class="tw-ai-tasks chart-holder">
+          <figcaption class="tw-ai-tasks-cap">Tasks done with AI instead of a professional, % who did each</figcaption>
+          <div data-bars-ai></div>
+        </figure>
       </div>
 
-      <figure class="tw-ai-bars chart-holder reveal col-7">
-        <figcaption class="tw-truth-cap">Tasks done with AI instead of a professional (%). High-stakes tasks are framed.</figcaption>
-        <div class="tw-bars" data-host="ai-bars"></div>
-      </figure>
+      <blockquote class="tw-ai-quote si-quote">
+        <p class="si-quote-body tw-ai-quote-body">
+          I&rsquo;ve used ChatGPT to look at pensions and tax rules and tax
+          savings and tax codes and self-assessment tax regulations and
+          investment opportunities and some things for my son when he was buying
+          a house and by and large, it was pretty good.
+        </p>
+        <cite class="si-quote-cite">Qualitative video diaries</cite>
+      </blockquote>
     </div>
-
-    <figure class="tw-quote reveal si-quote">
-      <blockquote class="tw-quote-text si-quote-body">I&rsquo;ve used ChatGPT to look at pensions and tax rules and tax savings and tax codes and self-assessment tax regulations and investment opportunities and some things for my son when he was buying a house and by and large, it was pretty good</blockquote>
-      <figcaption class="tw-quote-cap si-quote-cite">qualitative video diaries (AI Video 01.26&ndash;01.46)</figcaption>
-    </figure>
   </section>
+
 </div>
