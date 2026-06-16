@@ -71,12 +71,14 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   align-items: center;
   gap: clamp(24px, 4vw, 64px);
+  /* Claim the opening fold so the title lockup never floats in dead amber. */
+  min-height: min(78vh, 720px);
   /* Scroll-progress entrance: lift + fade the whole lockup in. */
   opacity: calc(0.25 + 0.75 * var(--enter));
   transform: translateY(calc((1 - var(--enter)) * 26px));
 }
 #\30 3-baselines .bl-head-copy {
-  max-width: 22ch;
+  max-width: 30ch;
   min-width: 0;
 }
 #\30 3-baselines .bl-kicker {
@@ -113,10 +115,13 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.04em;
-  height: 0.1em;
+  bottom: -0.02em;
+  height: 0.14em;
   background: var(--soi-orange);
   z-index: -1;
+  /* Draw the underline in as the opener enters (scroll-progress driven). */
+  transform: scaleX(var(--enter));
+  transform-origin: left;
 }
 #\30 3-baselines .bl-standfirst {
   font-size: var(--t-md);
@@ -127,21 +132,75 @@
   margin: 26px 0 0 0;
   max-width: 50ch;
 }
+/* Quiet scroll cue — fills the lower opener so the column never reads as dead
+   amber. A navy label + a thin orange arrow rule that pulses down on a loop.
+   No block behind the text; weight/colour emphasis only. */
+#\30 3-baselines .bl-scroll-cue {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: clamp(28px, 5vh, 56px) 0 0 0;
+}
+#\30 3-baselines .bl-scroll-word {
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--on-warm);
+  opacity: 0.72;
+}
+#\30 3-baselines .bl-scroll-arrow {
+  position: relative;
+  flex: 0 0 64px;
+  height: 2px;
+  background: rgba(10, 26, 92, 0.32);
+}
+#\30 3-baselines .bl-scroll-arrow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 24px;
+  background: var(--soi-orange);
+  animation: bl-arrow-run 2.6s ease-in-out infinite;
+}
+@keyframes bl-arrow-run {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(40px); }
+}
+
 /* The maze/orbit brand-world motif beside the title — backgroundless, lifts
-   off the warm ground with a soft navy shadow, never a box. */
+   off the warm ground with a soft navy shadow, never a box. The figure mark
+   is layered on the maze's orbit line, as the deck composes it. */
 #\30 3-baselines .bl-head-lockup {
+  position: relative;
   margin: 0;
   justify-self: end;
   min-width: 0;
+  width: 100%;
+  max-width: 460px;
 }
 #\30 3-baselines .bl-head-maze {
   display: block;
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   height: auto;
   margin-left: auto;
   filter: drop-shadow(0 22px 46px rgba(10, 26, 92, 0.26));
   will-change: transform;
+}
+#\30 3-baselines .bl-head-figure {
+  position: absolute;
+  left: 2%;
+  bottom: 6%;
+  /* The mark is a tall, thin "person" (≈104×585) — size by HEIGHT so it reads
+     as a small figure standing at the maze entrance, not a giant silhouette. */
+  width: auto;
+  height: clamp(96px, 16vw, 168px);
+  filter: drop-shadow(0 10px 22px rgba(10, 26, 92, 0.32));
+  will-change: transform;
+  pointer-events: none;
 }
 
 /* ─── The flow: alternating stat rows, seamless (no bordered cards) ─ */
@@ -173,13 +232,24 @@
   gap: 14px;
   min-width: 0;
 }
+/* Stat index — deck-style "NN / 04" tag preceded by a short orange rule, an
+   editorial tick that paces the four numbers. No block behind the text. */
 #\30 3-baselines .bl-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-size: var(--t-xs);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--on-warm);
-  opacity: 0.7;
+  opacity: 0.8;
+}
+#\30 3-baselines .bl-index::before {
+  content: "";
+  width: 30px;
+  height: 3px;
+  background: var(--soi-orange);
 }
 #\30 3-baselines .bl-bignum-line {
   margin: 0;
@@ -460,10 +530,16 @@
   #\30 3-baselines .bl-head {
     grid-template-columns: 1fr;
     gap: clamp(20px, 4vw, 36px);
+    min-height: 0;
   }
   #\30 3-baselines .bl-head-copy { max-width: none; }
-  #\30 3-baselines .bl-head-lockup { justify-self: start; }
-  #\30 3-baselines .bl-head-maze { margin-left: 0; max-width: 320px; }
+  #\30 3-baselines .bl-head-lockup { justify-self: start; max-width: 360px; }
+  #\30 3-baselines .bl-head-maze { margin-left: 0; max-width: 360px; }
+  #\30 3-baselines .bl-scroll-cue { margin-top: clamp(20px, 4vh, 36px); }
+}
+
+@media (max-width: 560px) {
+  #\30 3-baselines .bl-scroll-cue { flex-wrap: wrap; gap: 12px; }
 }
 
 @media (max-width: 900px) {
@@ -499,5 +575,12 @@
   #\30 3-baselines .bl-floor {
     opacity: 1;
     transform: none;
+  }
+  /* Rest state: full underline, no looping arrow. */
+  #\30 3-baselines .bl-emph::after {
+    transform: none;
+  }
+  #\30 3-baselines .bl-scroll-arrow::before {
+    animation: none;
   }
 }

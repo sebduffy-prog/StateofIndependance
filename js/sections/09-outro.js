@@ -1,11 +1,17 @@
 /**
  * Chapter 09 — outro.
  *
- * Dark navy full-bleed closing surface (paper-on-navy) that resolves into a
- * grounded mustard back-cover. A field of ~200 paper-coloured dots drifts and
- * slowly disperses upward and off — the "nation released" motif. Motion is the
- * must-have ambient drift; under reduced motion the dotField jump-cuts to its
- * final scatter and nothing else animates. All copy is static in the HTML.
+ * The closing chapter: a dark navy full-bleed close (paper-on-navy) that
+ * resolves into a grounded mustard back-cover. EXPERIENTIAL motion:
+ *   - chapterTransition drives a scroll-progress --enter on each [data-enter]
+ *     band, easing it up + in (CSS owns the look; this only supplies 0→1).
+ *   - observeParallax drifts the deck bear-world motif, the orbit rings, the
+ *     figure mark and the maze at different speeds for depth.
+ *   - scrollScene staggers the five-move recap rows in as the list enters.
+ * Ambient: a field of ~200 paper dots drifts and disperses upward — the
+ * "nation released". Under reduced motion the dotField jump-cuts to its final
+ * scatter, --enter rests at 1, parallax is disabled, and nothing animates.
+ * All copy is static in the HTML.
  *
  * Contract: docs/CONTRACT.md.
  *
@@ -14,12 +20,14 @@
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { dotField } from '../lib/charts.js';
+import { chapterTransition, observeParallax, scrollScene } from '../lib/experiential.js';
 
 const DOT_COUNT = 200;
 const DOT_COLOUR = 'rgba(238,233,221,0.4)'; // warm cream dots (--soi-cream) on the navy ground
 const DRIFT_AMP = 1; // gentle ambient brownian motion
 const RISE_INTERVAL_MS = 2600; // cadence of the upward "release"
 const RISE_BATCH = 14; // dots released upward & off each cadence
+const RECAP_STAGGER_MS = 90; // delay between recap rows revealing
 
 /** A calm full-field scatter of light dots, biased to the lower band so the
  *  quote and recap stay readable. Returns normalised {x,y,colour} targets. */
@@ -35,6 +43,30 @@ const buildScatter = (count) =>
 const MAZE_GIF = 'assets/deck/maze-hero.gif';
 const MAZE_STATIC = 'assets/deck/maze-hero.png';
 
+/** Reveal recap rows one after another when the list scrolls into view. */
+const wireRecapStagger = (rootEl) => {
+  const list = rootEl.querySelector('[data-recap]');
+  if (!list) return;
+  const rows = Array.from(list.querySelectorAll('.outro-recap-item'));
+  if (!rows.length) return;
+
+  if (prefersReducedMotion()) {
+    rows.forEach((row) => row.classList.add('is-in'));
+    return;
+  }
+
+  scrollScene(list, [
+    {
+      at: 0.12,
+      onEnter: () => {
+        rows.forEach((row, i) => {
+          window.setTimeout(() => row.classList.add('is-in'), i * RECAP_STAGGER_MS);
+        });
+      },
+    },
+  ]);
+};
+
 export default function init(rootEl, data) {
   observeReveals(rootEl);
 
@@ -42,6 +74,11 @@ export default function init(rootEl, data) {
   if (maze && prefersReducedMotion()) {
     maze.src = MAZE_STATIC;
   }
+
+  // Scroll-driven entrance progress on each band + gentle depth parallax.
+  rootEl.querySelectorAll('[data-enter]').forEach((band) => chapterTransition(band));
+  observeParallax(rootEl, { maxShiftPx: 56 });
+  wireRecapStagger(rootEl);
 
   const dotsHost = rootEl.querySelector('[data-outro-dots]');
   if (!dotsHost) return;

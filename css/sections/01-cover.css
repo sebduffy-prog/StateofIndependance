@@ -1,27 +1,34 @@
-/* Chapter 01: cover — Design World V4 (deck-faithful).
-   The State-of-Independence hero: a warm yellow→orange gradient GROUND
-   carrying the signature MAZE motion logo (isometric maze, navy bear, small
-   figure with a map, sweeping orbit ring — lifted from deck (2)), an ambient
-   navy respondent dot-field, and a huge Poppins Black wordmark with a CLEAN
-   STRAIGHT (no parallelogram) highlight on "independence". Below the hero a
-   short Challenger-Series intro band gives the cover a longer, richer scroll
-   instead of a dead viewport. No bordered hero box, no hard rules.
+/* Chapter 01: cover — Design World V5 (deck-faithful, top-tier, experiential).
 
-   LAYERING / SAFETY (FEEDBACK-V4 §4):
-   - Decorative layers (dot-field, maze) sit BEHIND the copy (z-index ≤ 0) with
-     pointer-events:none, so nothing occludes the wordmark and the cursor
+   TWO acts, both backgroundless (no box/panel/plate behind any copy — emphasis
+   is colour + weight + a hairline underline only):
+
+   ACT 1 — HERO (warm amber→orange ground): a huge Poppins Black wordmark left,
+   the signature deck MAZE motion logo right, a live SVG ORBIT RING sweeping
+   around it (deck orbit motif), an ambient navy respondent dot-field behind
+   everything, and a tiny figure-silhouette brand glyph beside the eyebrow.
+   The maze + orbit drift on scroll (parallax); a thin scroll-progress meter
+   sits bottom-right. Fills the viewport (minus the fixed nav).
+
+   ACT 2 — STATEMENT (deep navy velvet ground): the brand's own image tells the
+   Challenger story — VCCP's logo of a girl standing up to a bear, as a big
+   full-bleed CREAM silhouette (cream-on-navy, never black-on-mustard) with the
+   copy beside it, then the five signature moves as a hover-reactive index.
+   This kills the dead band that used to sit under the hero.
+
+   LAYERING / SAFETY:
+   - Decorative layers (dot-field, maze, orbit) sit BEHIND the copy (z-index ≤ 0)
+     with pointer-events:none, so nothing occludes the wordmark and the cursor
      reaches the dot-field.
-   - .si-ground-warm owns its stacking context; .si-ground-warm > * lifts real
-     content to z-index 1.
-   - All text is navy on the warm ground (high contrast, never mustard-on-mustard).
+   - Each ground owns its own isolated stacking context; real content lifts to
+     z-index 1. ZERO overlap between columns (CSS grid columns).
+   - All text high-contrast: navy on warm, cream on navy. No mustard-on-mustard.
+   - overflow guards + tight-but-safe line-heights so NOTHING clips.
 
    PREFIX: a CSS id selector may not begin with a digit; "#\30 1-cover"
    (\30 = "0", trailing space ends the escape) is the valid escape for
    id="01-cover". Every selector is scoped to it. */
 
-/* Full-bleed: the loader fixes the section class to .chapter. The warm
-   gradient grounds are set on the inner panels, each owning its own isolated
-   stacking context. */
 #\30 1-cover {
   padding: 0;
   align-items: stretch;
@@ -34,14 +41,13 @@
   flex-direction: column;
 }
 
-/* ─── HERO: fills the viewport (minus the fixed nav). Two columns: copy left,
-   maze right; the dot-field spans the whole ground behind. ───────────────── */
+/* ═══ ACT 1 — HERO ════════════════════════════════════════════════════════ */
 #\30 1-cover .cover-hero {
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - var(--nav-height));
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
   align-items: center;
   column-gap: clamp(var(--space-2), 3vw, var(--space-5));
   padding: clamp(var(--space-3), 6vh, var(--space-5))
@@ -67,50 +73,60 @@
 /* ─── Copy block: top-left column, no frame, navy on warm ────── */
 #\30 1-cover .cover-copy {
   position: relative;
-  z-index: 1;                 /* above every decorative layer */
+  z-index: 2;                 /* above every decorative layer */
   align-self: center;
   justify-self: start;
-  max-width: 18ch;            /* wraps the wordmark into bold stacked lines */
+  max-width: 18ch;
   pointer-events: none;       /* let the dot-field receive the cursor */
 }
 #\30 1-cover .cover-eyebrow {
   margin: 0 0 var(--space-2);
   color: var(--on-warm);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1;
+}
+/* the figure-silhouette as a small brand glyph beside the kicker */
+#\30 1-cover .cover-eyebrow-glyph {
+  display: block;
+  height: 2.4em;
+  width: auto;
+  /* the figure png is dark on transparent → tint to navy via filter-free
+     opacity; it already reads navy-ish on the warm ground */
+  opacity: 0.9;
+  transform: translateY(1px);
 }
 
-/* ─── Wordmark: huge Poppins Black (900) display gravitas ───────
-   Poppins 900 is self-hosted, so .si-display rides the real Black weight.
-   Bigger + tighter than the shared scale so the title leads the screen. */
+/* ─── Wordmark: huge Poppins Black (900) display gravitas ─────── */
 #\30 1-cover .cover-wordmark {
   margin: 0;
   color: var(--on-warm);
   font-weight: 900;
   text-transform: none;       /* sentence case per STORY.md headline convention */
-  font-size: clamp(3.2rem, 6vw, 6.4rem);
-  line-height: 0.94;
+  font-size: clamp(3.4rem, 6.6vw, 7rem);
+  line-height: 0.96;          /* safe leading: descenders never clip */
   letter-spacing: -0.03em;
-  max-width: 9ch;             /* "independence" wraps onto its own line, clear of the maze */
+  max-width: 11ch;
+  overflow: visible;
+  padding-bottom: 0.06em;     /* clearance for the underline accent */
 }
-
-/* Keep the highlighted word in the display treatment (upright, same weight).
-   The shared .hl draws a CLEAN STRAIGHT squared block — no parallelogram, no
-   skew override here. */
-#\30 1-cover .cover-wordmark .hl {
+#\30 1-cover .cover-word-line { display: block; }
+#\30 1-cover .cover-word-em {
+  display: inline-block;
   font-style: normal;
   font-weight: inherit;
-  padding: 0.02em 0.14em;
 }
-/* Highlight wipe: a straight (no-skew) reveal from the left, landing the
-   clean squared mustard block. */
-#\30 1-cover .cover-wordmark .hl::before {
-  transform: scaleX(0);
-  transform-origin: 0% 50%;
-  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+/* "independence" reveals its hairline underline accent L→R on load (no block —
+   the global .hl is a single underline-gradient layer; we grow its width). */
+#\30 1-cover .cover-word-em {
+  background-size: 0% 0.06em;   /* underline starts hidden */
 }
-#\30 1-cover .cover-wordmark .hl.is-wiped::before {
-  transform: scaleX(1);
+#\30 1-cover .cover-word-em.is-wiped {
+  background-size: 100% 0.06em; /* underline grows in */
+  transition: background-size 0.66s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
 }
 
 /* ─── Standfirst: navy on warm, generous measure ─────────────── */
@@ -166,27 +182,60 @@
   transition: transform 0.16s ease, border-color 0.18s ease;
 }
 
-/* ─── The maze motion logo (right column, large, fills its half) ─
-   Sits behind the copy in stacking order (copy is z-index 1) but in its own
-   grid column so they never overlap. Drop shadow lifts it off the warm
-   ground; pointer-events:none so the cursor still drives the dot-field. */
-#\30 1-cover .cover-maze {
+/* ─── The maze stage: maze + a live orbit ring sharing the column ─
+   Both sit behind the copy in stacking order, in their own grid column so
+   they never overlap the text. pointer-events:none keeps the cursor on the
+   dot-field. ───────────────────────────────────────────────────────────── */
+#\30 1-cover .cover-stage {
   position: relative;
-  z-index: 0;
+  z-index: 1;
   justify-self: center;
   align-self: center;
   width: 100%;
-  max-width: min(46vw, 620px);
+  max-width: min(48vw, 660px);
+  aspect-ratio: 1 / 1;
   pointer-events: none;
+}
+#\30 1-cover .cover-maze {
+  position: absolute;
+  inset: 7%;
+  display: grid;
+  place-items: center;
 }
 #\30 1-cover .cover-maze-img {
   display: block;
   width: 100%;
   height: auto;
-  /* mix the white GIF backdrop into the warm ground — multiply drops the
-     near-white frame so the maze reads backgroundless on the gradient */
+  /* multiply drops the near-white GIF frame so the maze reads backgroundless
+     on the warm gradient */
   mix-blend-mode: multiply;
   filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.18));
+}
+
+/* live orbit ring (deck orbit motif) sweeping around the maze */
+#\30 1-cover .cover-orbit {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  overflow: visible;
+}
+#\30 1-cover .cover-orbit-ring {
+  fill: none;
+  stroke: var(--soi-teal);
+  stroke-width: 2.4;
+  opacity: 0.85;
+}
+#\30 1-cover .cover-orbit-bead {
+  fill: var(--soi-teal);
+  /* travels the ellipse via offset-path (graceful: bead just hides if
+     unsupported) */
+  offset-path: path('M 38 300 A 262 150 -24 1 1 562 300 A 262 150 -24 1 1 38 300');
+  offset-distance: 0%;
+  animation: cover-orbit-travel 9s linear infinite;
+}
+@keyframes cover-orbit-travel {
+  to { offset-distance: 100%; }
 }
 
 /* ─── Quiet respondent marker (navy, low-emphasis, no overlap) ── */
@@ -194,7 +243,7 @@
   position: absolute;
   left: clamp(var(--space-3), 5vw, var(--space-6));
   bottom: clamp(var(--space-2), 3vw, var(--space-4));
-  z-index: 1;
+  z-index: 2;
   margin: 0;
   max-width: 24ch;
   font-size: var(--t-xs);
@@ -216,59 +265,136 @@
   transform: translateY(1px);
 }
 
-/* ─── DEPTH BAND: Challenger-Series intro on the soft warm ground ─
-   Gives the cover a longer, richer scroll. Navy on warm, generous type. */
-#\30 1-cover .cover-intro {
+/* ─── Scroll-progress meter (bottom-right of hero) ─────────────── */
+#\30 1-cover .cover-progress {
+  position: absolute;
+  right: clamp(var(--space-3), 5vw, var(--space-6));
+  bottom: clamp(var(--space-2), 3vw, var(--space-4));
+  z-index: 2;
+  width: clamp(80px, 14vw, 180px);
+  height: 2px;
+  background: rgba(10, 26, 92, 0.18);
+  pointer-events: none;
+}
+#\30 1-cover .cover-progress span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--soi-navy);
+  transition: width 0.12s linear;
+}
+
+/* ═══ ACT 2 — STATEMENT (navy velvet ground) ══════════════════════════════ */
+#\30 1-cover .cover-statement {
   position: relative;
   isolation: isolate;
-  padding: clamp(var(--space-5), 9vh, var(--space-7))
+  padding: clamp(var(--space-5), 10vh, var(--space-7))
            clamp(var(--space-3), 5vw, var(--space-6));
+  display: grid;
+  gap: clamp(var(--space-4), 6vh, var(--space-6));
+  overflow: hidden;
 }
-#\30 1-cover .cover-intro-inner {
+
+/* the bear lockup + copy: asymmetric split, copy never overlaps the image */
+#\30 1-cover .cover-statement-inner {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
+  width: 100%;
   display: grid;
-  gap: clamp(var(--space-3), 4vh, var(--space-5));
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(var(--space-3), 4vw, var(--space-5));
 }
-#\30 1-cover .cover-intro-lede {
+#\30 1-cover .cover-bear {
   margin: 0;
-  color: var(--on-warm);
+  min-width: 0;
+}
+#\30 1-cover .cover-bear-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* cream silhouette on navy → lift it gently off the velvet */
+  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.35));
+}
+#\30 1-cover .cover-statement-copy {
+  min-width: 0;
+}
+#\30 1-cover .cover-statement-kicker {
+  margin: 0;
+  color: var(--soi-teal);
+  font-weight: 700;
+  font-size: var(--t-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+#\30 1-cover .cover-statement-lede {
+  margin: 0;
+  color: var(--on-navy);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
-  line-height: 1.32;
+  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+  line-height: 1.34;
   letter-spacing: -0.01em;
-  max-width: 30ch;
+  max-width: 26ch;
+}
+
+/* ─── The five moves: a hover-reactive index of the playbook ahead ─ */
+#\30 1-cover .cover-moves-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+}
+#\30 1-cover .cover-moves-eyebrow {
+  margin: 0 0 var(--space-3);
+  color: var(--soi-teal);
+  font-weight: 700;
+  font-size: var(--t-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 #\30 1-cover .cover-moves {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(var(--space-2), 2vw, var(--space-3));
+  gap: 0;
 }
-#\30 1-cover .cover-moves li {
-  color: var(--on-warm);
-  font-weight: 700;
-  font-size: var(--t-md);
-  line-height: 1.2;
-  padding-top: 14px;
-  border-top: 2px solid var(--soi-navy);
-  display: flex;
-  gap: 12px;
+#\30 1-cover .cover-move {
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: baseline;
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(14px, 2vh, 22px) 0;
+  border-top: 1.5px solid rgba(238, 233, 221, 0.22);
+  color: var(--on-navy);
+  transition: padding-left 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+#\30 1-cover .cover-move:last-child {
+  border-bottom: 1.5px solid rgba(238, 233, 221, 0.22);
+}
+#\30 1-cover .cover-move:hover {
+  padding-left: clamp(8px, 1.4vw, 18px);
+  color: var(--soi-amber);
 }
 #\30 1-cover .cover-move-no {
   font-weight: 900;
-  font-size: 0.86em;
-  color: var(--soi-navy);
-  opacity: 0.5;
-  flex: 0 0 auto;
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  color: var(--soi-teal);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+#\30 1-cover .cover-move:hover .cover-move-no { color: var(--soi-amber); }
+#\30 1-cover .cover-move-label {
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.6vw, 2.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
 }
 
-/* ─── Responsive ─────────────────────────────────────────────── */
+/* ═══ Responsive ══════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   #\30 1-cover .cover-hero {
     grid-template-columns: 1fr;
@@ -278,24 +404,35 @@
   }
   #\30 1-cover .cover-copy { max-width: 100%; justify-self: stretch; }
   #\30 1-cover .cover-wordmark { max-width: 14ch; }
-  #\30 1-cover .cover-maze {
+  #\30 1-cover .cover-stage {
     grid-row: 1;                 /* maze above the copy on narrow screens */
     justify-self: center;
     max-width: min(74vw, 460px);
   }
+  #\30 1-cover .cover-progress { display: none; }
+
+  #\30 1-cover .cover-statement-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(var(--space-3), 5vh, var(--space-5));
+  }
+  #\30 1-cover .cover-bear { order: -1; }
+  #\30 1-cover .cover-statement-lede { max-width: 100%; }
 }
 
 @media (max-width: 600px) {
-  #\30 1-cover .cover-maze { max-width: 84vw; }
+  #\30 1-cover .cover-stage { max-width: 84vw; }
   #\30 1-cover .cover-you {
     position: static;
     margin-top: var(--space-3);
   }
 }
 
-/* ─── Reduced motion: highlighter pre-wiped, no transitions ───── */
+/* ═══ Reduced motion ══════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-wordmark .hl::before { transition: none; }
+  #\30 1-cover .cover-word-em { transition: none; background-size: 100% 0.06em; }
+  #\30 1-cover .cover-orbit-bead { animation: none; }
   #\30 1-cover .cover-cue,
-  #\30 1-cover .cover-cue-arrow { transition: none; }
+  #\30 1-cover .cover-cue-arrow,
+  #\30 1-cover .cover-move { transition: none; }
+  #\30 1-cover .cover-progress span { transition: none; }
 }

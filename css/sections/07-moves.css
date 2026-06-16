@@ -1,22 +1,35 @@
-/* Chapter 07 — moves (V4: deck-faithful, Poppins, backgroundless).
+/* Chapter 07 — moves (V5: TOP-TIER experiential, backgroundless).
    Five signature moves as a FLOWING rhythm of full-bleed grounds that
-   alternate warm mustard→orange gradient and deep navy. A giant stage
-   numeral breathes beside the inlined deck thin-line icon and a Poppins
-   Black uppercase title; the lesson, beats, quotes and ad-mockup evidence
-   flow on the ground with a sticky less→more flip card alongside.
-   Backgroundless: no hard hairline bands, no white mats — separation comes
-   from the ground colour and generous space; evidence sits in a clean
-   currentColor frame, not a white box. Every selector is scoped to
-   #\30 7-moves so styles never leak.
-   Contrast (§6): warm grounds carry navy text (.si-ground-warm sets it),
-   navy grounds carry cream (.si-dark sets it). Decorative orbit/seed layers
-   sit behind via z-index:0 + pointer-events:none and never occlude UI. */
+   alternate warm mustard→orange gradient and deep navy, each carrying a deck
+   bear-world motif drifting behind the copy. A giant stage numeral breathes
+   beside the inlined deck thin-line icon and a Poppins Black uppercase title;
+   the lesson, beats, quotes and ad-mockup evidence flow ON THE GROUND with a
+   sticky less→more flip card alongside.
+
+   NO BLOCKS BEHIND TEXT (client, non-negotiable): brand examples, flip rows
+   and build-up beats carry emphasis by COLOUR + WEIGHT only — no pills, no
+   card fills, no outlined boxes behind copy. Charts/graph/venn were already
+   backgroundless; now text too. Ad-mockup evidence is an IMAGE (not text), so
+   a thin currentColor frame is allowed; never a white mat.
+
+   EXPERIENTIAL: each band eases up + in on --enter (chapterTransition); deck
+   world panels + the maze + evidence drift via [data-parallax]; flip-card rows
+   stage in on scroll (.is-shown). All pure transform/opacity → never clips,
+   reduced-motion safe.
+
+   Every selector is scoped to #\30 7-moves so styles never leak. */
+
+/* Contain the negatively-margined full-bleed bands so they never add page
+   horizontal scroll (the bands bleed past the padded chapter column). */
+#\30 7-moves { overflow-x: clip; }
 
 /* ─── Full-bleed flow: grounds run edge-to-edge, no bordered boxes ─── */
 #\30 7-moves .mv-hero,
-#\30 7-moves .mv-move {
+#\30 7-moves .mv-move,
+#\30 7-moves .mv-recap {
   position: relative;
   isolation: isolate;
+  overflow: clip; /* contain drifting world panels without clipping copy flow */
   /* bleed past the text column so each ground reads as a band of the page */
   margin-left: calc(-1 * clamp(24px, 6vw, 96px));
   margin-right: calc(-1 * clamp(24px, 6vw, 96px));
@@ -31,53 +44,121 @@
   min-height: 100vh;
 }
 
+/* ─── Experiential entrance: ease the band up + in on --enter (0→1 from
+   chapterTransition). Pure transform/opacity — never clips text. ─── */
+#\30 7-moves .mv-hero,
+#\30 7-moves .mv-move,
+#\30 7-moves .mv-recap {
+  --enter: 1;
+}
+#\30 7-moves .mv-hero-grid,
+#\30 7-moves .mv-contents,
+#\30 7-moves .mv-move-head,
+#\30 7-moves .mv-grid,
+#\30 7-moves .mv-recap-inner {
+  opacity: calc(0.4 + 0.6 * var(--enter));
+  transform: translate3d(0, calc((1 - var(--enter)) * 30px), 0);
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+/* ─── Deck bear-world panel: drifts behind the copy as the chapter motif ──
+   Backgroundless-friendly flat-gradient render; sits low-opacity at the band
+   edge, never occludes UI (z-index:0, pointer-events:none). */
+#\30 7-moves .mv-world {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  top: 50%;
+  right: clamp(-120px, -4vw, -40px);
+  width: clamp(360px, 42vw, 760px);
+  height: auto;
+  transform: translateY(-50%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+#\30 7-moves .mv-move--navy .mv-world {
+  mix-blend-mode: screen;
+  opacity: 0.34;
+}
+/* keep all real content above the motif */
+#\30 7-moves .mv-hero > *:not(.si-orbit):not(.si-seed):not(.mv-world),
+#\30 7-moves .mv-move > *:not(.si-orbit):not(.si-seed):not(.mv-world),
+#\30 7-moves .mv-recap > *:not(.mv-recap-scene) {
+  position: relative;
+  z-index: 1;
+}
+
 /* ─── Hero ───────────────────────────────────────────────── */
 #\30 7-moves .mv-hero {
   padding-top: clamp(56px, 7vw, 96px);
   padding-bottom: clamp(72px, 9vw, 132px);
-  overflow: hidden;
+}
+#\30 7-moves .mv-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
 }
 #\30 7-moves .mv-hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 70ch;
+  max-width: 60ch;
 }
-#\30 7-moves .mv-headline { margin: 0; font-size: clamp(2.6rem, 7vw, 5.4rem); }
+#\30 7-moves .mv-headline { margin: 0; font-size: clamp(2.8rem, 7.6vw, 6rem); }
 #\30 7-moves .mv-standfirst {
-  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
   line-height: 1.5;
-  margin: 0;
+  margin: clamp(14px, 2vw, 22px) 0 0;
   color: var(--on-warm);
   max-width: 58ch;
 }
-#\30 7-moves .mv-seed-a { top: 22%; right: 24%; }
-#\30 7-moves .mv-seed-b { bottom: 26%; right: 40%; }
+#\30 7-moves .mv-seed-a { top: 16%; left: 38%; }
+#\30 7-moves .mv-seed-b { bottom: 22%; left: 12%; }
+
+/* Hero maze — the State of Independence signature world animation. */
+#\30 7-moves .mv-hero-maze {
+  margin: 0;
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  justify-self: end;
+  aspect-ratio: 1 / 1;
+}
+#\30 7-moves .mv-hero-maze img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#\30 7-moves .mv-hero-maze-still { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  #\30 7-moves .mv-hero-maze-anim { display: none; }
+  #\30 7-moves .mv-hero-maze-still { display: block; }
+}
 
 /* ─── Hero contents lockup: five icon + title rows (the deck index) ─── */
 #\30 7-moves .mv-contents {
-  position: relative;
-  z-index: 1;
   list-style: none;
-  margin: clamp(28px, 4vw, 48px) 0 0;
+  margin: clamp(36px, 5vw, 64px) 0 0;
   padding: 0;
   display: grid;
   gap: clamp(4px, 1vw, 12px);
-  counter-reset: none;
 }
 #\30 7-moves .mv-contents-item {
   display: grid;
   grid-template-columns: clamp(40px, 4vw, 56px) clamp(40px, 4vw, 56px) 1fr;
   align-items: center;
   gap: clamp(14px, 2vw, 26px);
-  padding: clamp(10px, 1.4vw, 16px) 0;
+  padding: clamp(12px, 1.6vw, 20px) 0;
   border-top: 1.5px solid rgba(10, 26, 92, 0.18);
   color: var(--soi-navy);
+  transition: padding-left 200ms ease, color 200ms ease;
 }
 #\30 7-moves .mv-contents-item:last-child { border-bottom: 1.5px solid rgba(10, 26, 92, 0.18); }
+#\30 7-moves .mv-contents-item:hover { padding-left: clamp(8px, 1.4vw, 18px); color: var(--soi-orange); }
 #\30 7-moves .mv-contents-icon {
   width: 100%;
   height: auto;
-  color: var(--soi-navy);
+  color: inherit;
 }
 #\30 7-moves .mv-contents-no {
   font-weight: 800;
@@ -90,19 +171,16 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  line-height: 1.05;
+  line-height: 1.1;
   font-size: clamp(1.05rem, 2.4vw, 1.85rem);
-  color: var(--soi-navy);
+  color: inherit;
 }
 
 /* ─── Move head: GIANT stage numeral + INLINED ICON + display title ─
-   Deck "five moves" lockup: the thin-line deck icon sits above the heavy
-   uppercase title, with the giant stage numeral to the left. The SVG is
-   inlined so its stroke=currentColor tints per ground (navy on warm, cream
-   on navy) — never mustard-on-mustard, no white box behind it. */
+   The thin-line deck icon sits above the heavy uppercase title, with the
+   giant stage numeral to the left. The SVG is inlined so stroke=currentColor
+   tints per ground (navy on warm, cream on navy) — no white box behind it. */
 #\30 7-moves .mv-move-head {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -141,9 +219,11 @@
 
 #\30 7-moves .mv-title {
   margin: 0;
-  font-size: clamp(2.4rem, 5.4vw, 4.6rem);
-  line-height: 0.9;
+  font-size: clamp(2.6rem, 5.8vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   color: inherit;
+  overflow-wrap: break-word;
 }
 /* The deck drops the emphasis phrase to its own heavier line. */
 #\30 7-moves .mv-title-key { display: block; }
@@ -152,8 +232,6 @@
 
 /* ─── Flowing two-column grid (copy ◂▸ flip card) ────────── */
 #\30 7-moves .mv-grid {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: clamp(36px, 5vw, 80px);
@@ -163,11 +241,12 @@
   display: flex;
   flex-direction: column;
   gap: clamp(22px, 2.6vw, 36px);
+  min-width: 0;
 }
 
 /* ─── Lesson (lead line) ─────────────────────────────────── */
 #\30 7-moves .mv-lesson {
-  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
   line-height: 1.32;
   font-weight: 700;
   margin: 0;
@@ -177,7 +256,7 @@
 
 /* ─── Key copy line (move 03) — quieter than lesson, still legible ── */
 #\30 7-moves .mv-keyline {
-  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  font-size: clamp(1.02rem, 1.5vw, 1.22rem);
   line-height: 1.5;
   margin: 0;
   max-width: 50ch;
@@ -185,33 +264,36 @@
   opacity: 0.92;
 }
 
-/* ─── Build-up beats ("at the mercy of" / "death to") ────── */
+/* ─── Build-up beats ("at the mercy of" / "death to") ──────
+   NO boxes: emphasis by weight + colour + a leading rule glyph only. */
 #\30 7-moves .mv-beats {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 12px;
+  gap: clamp(10px, 1.4vw, 18px) clamp(20px, 2.6vw, 36px);
 }
 #\30 7-moves .mv-beats li {
-  font-weight: 700;
-  font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+  font-weight: 800;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
   letter-spacing: -0.01em;
-  padding: 8px 14px;
+  line-height: 1.2;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
 }
-#\30 7-moves .mv-move--warm .mv-beats li {
-  border: 1.5px solid rgba(10, 26, 92, 0.4);
-  color: var(--soi-navy);
+#\30 7-moves .mv-beats li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: clamp(14px, 1.6vw, 22px);
+  height: 2px;
+  align-self: center;
+  background: currentColor;
 }
-#\30 7-moves .mv-move--navy .mv-beats li {
-  border: 1.5px solid rgba(238, 233, 221, 0.4);
-  color: var(--on-navy);
-}
-#\30 7-moves .mv-move--navy .mv-beats--death li {
-  border-color: var(--soi-amber);
-  color: var(--soi-amber);
-}
+#\30 7-moves .mv-move--warm .mv-beats li { color: var(--soi-navy); }
+#\30 7-moves .mv-move--navy .mv-beats li { color: var(--on-navy); }
+#\30 7-moves .mv-move--navy .mv-beats--death li { color: var(--soi-amber); }
 
 /* ─── Hero stat (move 01) — borderless, space does the work ── */
 #\30 7-moves .mv-stat {
@@ -221,7 +303,7 @@
   margin: 0;
 }
 #\30 7-moves .mv-stat-value {
-  font-size: clamp(3.4rem, 8vw, 6rem);
+  font-size: clamp(3.6rem, 8.4vw, 6.4rem);
   font-weight: 900;
   line-height: 0.82;
   letter-spacing: -0.04em;
@@ -230,7 +312,7 @@
   flex: 0 0 auto;
 }
 #\30 7-moves .mv-stat-line {
-  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  font-size: clamp(1rem, 1.3vw, 1.14rem);
   line-height: 1.42;
   max-width: 30ch;
   color: var(--on-warm);
@@ -245,10 +327,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(22px, 2.8vw, 40px) clamp(28px, 3.2vw, 48px);
 }
-#\30 7-moves .mv-stat-row li { margin: 0; }
+#\30 7-moves .mv-stat-row li { margin: 0; min-width: 0; }
 #\30 7-moves .mv-mini-value {
   display: block;
-  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  font-size: clamp(2.8rem, 5.2vw, 3.8rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -258,44 +340,51 @@
 }
 #\30 7-moves .mv-mini-label {
   display: block;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.4;
   color: var(--on-navy);
   opacity: 0.92;
   max-width: 24ch;
 }
 
-/* ─── Brand examples — chips legible on either ground ────── */
+/* ─── Brand examples — COLOUR + WEIGHT only, no pill blocks ──
+   Label is an uppercase micro-eyebrow; brand names are heavy and tinted,
+   separated by a thin currentColor divider — no background fill anywhere. */
 #\30 7-moves .mv-brands {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: clamp(10px, 1.4vw, 18px) clamp(16px, 2vw, 26px);
   margin: 0;
 }
 #\30 7-moves .mv-brands-label {
+  flex: 0 0 100%;
   font-size: 0.74rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 800;
-  opacity: 0.8;
-  margin-right: 4px;
+  opacity: 0.7;
+  margin: 0 0 2px;
 }
 #\30 7-moves .mv-brand-chip {
-  font-weight: 800;
-  font-size: 0.96rem;
-  padding: 8px 16px;
+  font-weight: 900;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  position: relative;
 }
-/* warm ground: navy chip on cream pill */
-#\30 7-moves .mv-move--warm .mv-brand-chip {
-  background: var(--soi-cream);
-  color: var(--soi-navy);
+#\30 7-moves .mv-brand-chip:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: calc(-1 * clamp(8px, 1vw, 13px));
+  top: 12%;
+  bottom: 12%;
+  width: 1.5px;
+  background: currentColor;
+  opacity: 0.32;
 }
-/* navy ground: navy text on amber pill */
-#\30 7-moves .mv-move--navy .mv-brand-chip {
-  background: var(--soi-amber);
-  color: var(--soi-navy);
-}
+#\30 7-moves .mv-move--warm .mv-brand-chip { color: var(--soi-navy); }
+#\30 7-moves .mv-move--navy .mv-brand-chip { color: var(--soi-amber); }
 
 /* ─── Media from→to table (move 03) — backgroundless rule rows ── */
 #\30 7-moves .mv-media-table { margin: 0; max-width: 46ch; }
@@ -303,7 +392,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   margin: 0 0 10px;
   color: var(--soi-navy);
 }
@@ -314,9 +403,9 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 12px;
-  padding: 11px 0;
+  padding: 12px 0;
   border-top: 1.5px solid rgba(10, 26, 92, 0.18);
-  font-size: clamp(0.86rem, 1.1vw, 0.98rem);
+  font-size: clamp(0.88rem, 1.1vw, 1rem);
 }
 #\30 7-moves .mv-media-table li:last-child { border-bottom: 1.5px solid rgba(10, 26, 92, 0.18); }
 #\30 7-moves .mv-media-from {
@@ -335,22 +424,19 @@
 /* ─── Quotes (hanging-quote register from vccp.css) ──────── */
 #\30 7-moves .mv-quote { margin: 0; max-width: 52ch; }
 #\30 7-moves .mv-quote .si-quote-body {
-  font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
   line-height: 1.5;
   font-style: italic;
   color: inherit;
 }
-/* The vccp .si-quote::before hanging mark already resolves per-ground:
-   navy tint on warm, cream tint on dark. Nudge cite colour on warm. */
 #\30 7-moves .mv-move--warm .si-quote-cite { color: rgba(10,26,92,0.6); }
 
-/* ─── Evidence ad-mockup (§4) — BACKGROUNDLESS clean frame, no mat ──
-   The brief kills white boxes/tracks: override the shared .si-evidence
-   white mat + drop-shadow with a thin currentColor frame so the mockup
-   reads as evidence on the ground, square-cornered, no white box. */
+/* ─── Evidence ad-mockup (§4) — IMAGE, thin currentColor frame, no mat ──
+   Override the shared white mat + drop-shadow; the mockup reads as evidence
+   on the ground, square-cornered. Image only — not text — so a frame is fine. */
 #\30 7-moves .mv-evidence {
   margin: 0;
-  max-width: 440px;
+  max-width: 460px;
   width: 100%;
   background: none;
   padding: 6px;
@@ -360,7 +446,9 @@
 #\30 7-moves .mv-move--navy .mv-evidence { border: 2px solid rgba(238, 233, 221, 0.45); }
 #\30 7-moves .mv-evidence img { display: block; width: 100%; height: auto; }
 
-/* ─── Shift card (less→more flip table) ──────────────────── */
+/* ─── Shift card (less→more flip table) — NO card fills, ON the ground ──
+   Brief: no blocks behind text. Rows separate by a thin rule + space and
+   commit to the amber "more" answer via COLOUR + WEIGHT only on flip. */
 #\30 7-moves .mv-shift {
   position: sticky;
   top: calc(var(--nav-height) + 32px);
@@ -369,35 +457,35 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 1rem;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
   margin: 0 0 6px;
   color: inherit;
 }
 #\30 7-moves .mv-flip-caption {
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   letter-spacing: 0.01em;
   line-height: 1.4;
   opacity: 0.78;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: inherit;
+  max-width: 34ch;
 }
 
 /* the helper builds .flip-rows > .flip-head + .flip-row buttons */
 #\30 7-moves .flip-rows {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 #\30 7-moves .flip-head {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 12px;
-  font-size: 0.78rem;
+  gap: 14px;
+  font-size: 0.76rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 800;
   opacity: 0.8;
-  padding: 0 4px 8px;
+  padding: 0 0 10px;
   color: inherit;
 }
 #\30 7-moves .flip-head span:last-child { text-align: right; }
@@ -406,34 +494,31 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
   text-align: left;
   font: inherit;
-  font-size: clamp(1rem, 1.25vw, 1.18rem);
-  font-weight: 600;
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  font-weight: 700;
   cursor: pointer;
-  padding: 16px 18px;
-  transition: background 160ms ease, transform 160ms ease;
-}
-/* warm ground: cream card, navy ink */
-#\30 7-moves .mv-move--warm .flip-row {
-  background: var(--soi-cream);
-  color: var(--soi-navy);
+  padding: clamp(16px, 1.8vw, 22px) 0;
+  background: none;
   border: none;
+  border-top: 1.5px solid currentColor;
+  color: inherit;
+  /* staged reveal (scrollScene .is-shown): pure transform/opacity */
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .4s ease, transform .4s ease, color .2s ease;
 }
-#\30 7-moves .mv-move--warm .flip-row:hover { background: var(--soi-cream-warm); }
-/* navy ground: subtle cream-cut card, cream ink */
-#\30 7-moves .mv-move--navy .flip-row {
-  background: rgba(238, 233, 221, 0.08);
-  color: var(--on-navy);
-  border: none;
-}
-#\30 7-moves .mv-move--navy .flip-row:hover { background: rgba(238, 233, 221, 0.15); }
+#\30 7-moves .flip-row.is-shown { opacity: 1; transform: none; }
+#\30 7-moves .flip-rows .flip-row:last-child { border-bottom: 1.5px solid currentColor; }
+#\30 7-moves .mv-move--warm .flip-row { border-color: rgba(10, 26, 92, 0.22); }
+#\30 7-moves .mv-move--navy .flip-row { border-color: rgba(238, 233, 221, 0.22); }
 
 #\30 7-moves .flip-row:focus-visible {
   outline: 2px solid var(--soi-amber);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 /* "less" state — de-emphasised, struck through (legible on both grounds) */
@@ -441,32 +526,103 @@
   font-weight: 600;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
+  transition: color .2s ease;
 }
 #\30 7-moves .mv-move--warm .flip-less { color: rgba(10, 26, 92, 0.55); }
 #\30 7-moves .mv-move--navy .flip-less { color: rgba(238, 233, 221, 0.55); }
-#\30 7-moves .flip-arrow { font-weight: 700; opacity: 0.6; }
+#\30 7-moves .flip-arrow {
+  font-weight: 800;
+  opacity: 0.5;
+  transition: transform .2s ease, opacity .2s ease;
+}
 
 /* "more" state — hidden until flipped */
 #\30 7-moves .flip-more {
   text-align: right;
-  font-weight: 800;
+  font-weight: 900;
+  letter-spacing: -0.01em;
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 220ms ease, color .2s ease;
 }
 #\30 7-moves .mv-move--warm .flip-more { color: var(--soi-navy); }
 #\30 7-moves .mv-move--navy .flip-more { color: var(--soi-amber); }
 
-/* flipped: the row commits to the amber "more" answer */
-#\30 7-moves .flip-row.is-flipped { background: var(--soi-amber); }
-#\30 7-moves .flip-row.is-flipped .flip-less {
-  color: rgba(10, 26, 92, 0.45);
+/* flipped: COLOUR + WEIGHT commit (no background block) */
+#\30 7-moves .flip-row.is-flipped .flip-less { opacity: 0.35; }
+#\30 7-moves .flip-row.is-flipped .flip-arrow { opacity: 1; transform: translateX(4px); }
+#\30 7-moves .flip-row.is-flipped .flip-more { opacity: 1; }
+#\30 7-moves .mv-move--warm .flip-row.is-flipped { color: var(--soi-orange); }
+#\30 7-moves .mv-move--navy .flip-row.is-flipped { color: var(--soi-amber); }
+
+/* ─── Closing recap — the five-move architecture on the box scene ── */
+#\30 7-moves .mv-recap {
+  min-height: 84vh;
+  display: flex;
+  align-items: center;
 }
-#\30 7-moves .flip-row.is-flipped .flip-arrow,
-#\30 7-moves .flip-row.is-flipped .flip-more { color: var(--soi-navy); opacity: 1; }
+#\30 7-moves .mv-recap-scene {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.42;
+  pointer-events: none;
+  user-select: none;
+}
+#\30 7-moves .mv-recap-inner {
+  max-width: 56ch;
+}
+#\30 7-moves .mv-recap-title {
+  margin: clamp(10px, 1.6vw, 18px) 0 clamp(28px, 4vw, 48px);
+  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+}
+#\30 7-moves .mv-recap-title .mv-title-key { color: var(--soi-amber); }
+#\30 7-moves .mv-recap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+#\30 7-moves .mv-recap-list li {
+  display: grid;
+  grid-template-columns: clamp(44px, 4vw, 60px) 1fr;
+  align-items: baseline;
+  gap: clamp(16px, 2vw, 28px);
+  padding: clamp(12px, 1.5vw, 18px) 0;
+  border-top: 1.5px solid rgba(238, 233, 221, 0.22);
+}
+#\30 7-moves .mv-recap-list li:last-child { border-bottom: 1.5px solid rgba(238, 233, 221, 0.22); }
+#\30 7-moves .mv-recap-no {
+  font-weight: 900;
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--soi-amber);
+}
+#\30 7-moves .mv-recap-label {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  font-size: clamp(1.05rem, 2.2vw, 1.7rem);
+  color: var(--on-navy);
+}
 
 /* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  #\30 7-moves .mv-world { width: clamp(280px, 50vw, 460px); opacity: 0.32; }
+  #\30 7-moves .mv-move--navy .mv-world { opacity: 0.24; }
+}
 @media (max-width: 900px) {
   #\30 7-moves .mv-move { min-height: 0; }
+  #\30 7-moves .mv-hero-grid { grid-template-columns: 1fr; }
+  #\30 7-moves .mv-hero-maze { justify-self: start; max-width: 340px; }
   #\30 7-moves .mv-grid { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
   #\30 7-moves .mv-shift { position: static; }
   #\30 7-moves .mv-evidence { max-width: 100%; }
@@ -484,8 +640,15 @@
   #\30 7-moves .mv-contents-item { grid-template-columns: 34px 34px 1fr; gap: 12px; }
 }
 
-/* Reduced motion: libs short-circuit; drop our transitions + orbit spin. */
+/* Reduced motion: libs short-circuit; drop our transitions + show rows. */
 @media (prefers-reduced-motion: reduce) {
   #\30 7-moves .flip-row,
-  #\30 7-moves .flip-more { transition: none; }
+  #\30 7-moves .flip-more,
+  #\30 7-moves .flip-arrow,
+  #\30 7-moves .mv-hero-grid,
+  #\30 7-moves .mv-contents,
+  #\30 7-moves .mv-move-head,
+  #\30 7-moves .mv-grid,
+  #\30 7-moves .mv-recap-inner { transition: none; }
+  #\30 7-moves .flip-row { opacity: 1; transform: none; }
 }

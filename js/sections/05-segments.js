@@ -77,10 +77,25 @@ const buildClusterTargets = (segments) => {
   return targets;
 };
 
+/**
+ * Display-only short labels for the metric charts. The full survey wording is
+ * kept in the data; these trimmed forms fit the lollipop/dot-plot label slot
+ * (200 user-units) so no label is clipped at the chart's left edge. Same fact,
+ * no rephrasing of meaning.
+ */
+const SHORT_LABEL = {
+  'Optimistic about next decade': 'Optimistic on the decade',
+  'Self-reliant, look after myself': 'Self-reliant',
+  'Anxious about the future': 'Anxious about the future',
+  'In control of my life': 'In control of my life',
+  'Exhausted / stretched': 'Exhausted / stretched',
+};
+const shortLabel = (label) => SHORT_LABEL[label] || label;
+
 /** Top-N entries of a {label:{pct,index}} metric, sorted by pct, as chart items. */
 const metricItems = (metric, n) =>
   Object.entries(metric || {})
-    .map(([label, v]) => ({ label, pct: v.pct }))
+    .map(([label, v]) => ({ label: shortLabel(label), pct: v.pct }))
     .sort((a, b) => b.pct - a.pct)
     .slice(0, n);
 
@@ -171,6 +186,7 @@ export default function init(rootEl, data) {
   const mapEl = rootEl.querySelector('[data-map]');
   const fieldHost = rootEl.querySelector('[data-dotfield]');
   const profileHost = rootEl.querySelector('[data-profile]');
+  const profileRest = rootEl.querySelector('[data-profile-rest]');
   const hintEl = rootEl.querySelector('[data-maphint]');
   const youTag = rootEl.querySelector('[data-youtag]');
   const quads = Array.from(rootEl.querySelectorAll('.seg-quad'));
@@ -279,6 +295,7 @@ export default function init(rootEl, data) {
       q.setAttribute('aria-pressed', String(on));
     });
     if (hintEl) hintEl.hidden = true;
+    if (profileRest) profileRest.hidden = true;
     const card = renderProfile(profileHost, seg);
     profileHost.classList.add('is-open');
     if (card && !reduced) card.focus({ preventScroll: true });
@@ -295,6 +312,7 @@ export default function init(rootEl, data) {
     });
     profileHost.classList.remove('is-open');
     profileHost.innerHTML = '';
+    if (profileRest) profileRest.hidden = false;
     if (hintEl) hintEl.hidden = false;
     if (syncGraph && graph) graph.clear();
     syncRoster();

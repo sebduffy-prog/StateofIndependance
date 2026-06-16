@@ -29,7 +29,7 @@
 #\30 6-empowerment .emp-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--space-6), 12vh, var(--space-7));
+  gap: clamp(var(--space-5), 8vh, var(--space-6));
 }
 
 /* Decorative orbit rings — two soft, drifting rings behind everything. Never
@@ -49,7 +49,9 @@
 }
 #\30 6-empowerment .emp-head,
 #\30 6-empowerment .emp-reframe,
+#\30 6-empowerment .emp-maze-divider,
 #\30 6-empowerment .emp-asks,
+#\30 6-empowerment .emp-premium,
 #\30 6-empowerment .emp-venn {
   opacity: calc(0.35 + 0.65 * var(--enter));
   transform: translate3d(0, calc((1 - var(--enter)) * 26px), 0);
@@ -153,9 +155,14 @@
   isolation: isolate;
   width: 100%;
   aspect-ratio: 16 / 7;
-  min-height: clamp(300px, 42vh, 520px);
-  max-height: 560px;
+  min-height: clamp(320px, 46vh, 560px);
+  max-height: 600px;
   overflow: hidden;
+  /* Deck orbit motif: a thin navy ring frames the turning world. A straight
+     square frame (per brief, no skew) anchors the imagery as a deliberate
+     centrepiece rather than washed-out dead space. NO fill behind text — this
+     frames imagery only, copy lives below on the ground. */
+  border: 2px solid var(--soi-navy);
 }
 #\30 6-empowerment .emp-rf-art {
   position: absolute;
@@ -167,8 +174,28 @@
   pointer-events: none;
   user-select: none;
   transition: opacity .25s ease;
+  /* Lift the washed-out yellow renders so the bear-world reads with presence. */
+  filter: contrast(1.08) saturate(1.12);
 }
 #\30 6-empowerment .emp-rf-art-after { z-index: 1; }
+
+/* Live state tag — floats over the stage naming where the data rests. NO
+   block: a colour/weight label with a thin rule, contrast-safe via text
+   shadow on the warm imagery. Colour swings navy -> orange on the turn. */
+#\30 6-empowerment .emp-rf-state {
+  position: absolute;
+  z-index: 2;
+  top: clamp(14px, 3vh, 26px);
+  left: clamp(16px, 3vw, 30px);
+  font: 900 clamp(1rem, 1.6vw, 1.5rem) / 1 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  text-shadow: 0 1px 0 rgba(238, 233, 221, 0.9), 0 0 12px rgba(238, 233, 221, 0.85);
+  pointer-events: none;
+  transition: color .25s ease;
+}
+#\30 6-empowerment .emp-rf-stage[data-side="after"] .emp-rf-state { color: var(--soi-orange); }
 
 /* Readout — TWO side-by-side copy columns ON THE GROUND. No pill, no plate.
    Emphasis is colour + weight: the active side that the slider lands on goes
@@ -288,13 +315,58 @@
   color: var(--soi-navy);
 }
 
+/* ─── Maze divider — deck signature motion-maze motif marks the pivot ─ */
+#\30 6-empowerment .emp-maze-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(220px, 34vh, 380px);
+}
+#\30 6-empowerment .emp-maze-art {
+  width: clamp(240px, 30vw, 420px);
+  height: auto;
+  filter: drop-shadow(0 12px 28px rgba(10, 26, 92, 0.22));
+  will-change: transform;
+  pointer-events: none;
+  user-select: none;
+}
+/* Image-title caption ON the maze — colour/weight only, no block. */
+#\30 6-empowerment .emp-maze-cap {
+  position: absolute;
+  bottom: clamp(8px, 2vh, 18px);
+  font: 900 clamp(1.1rem, 2.4vw, 2.1rem) / 1 var(--font-sans);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  text-shadow: 0 1px 0 rgba(238, 233, 221, 0.9), 0 0 16px rgba(238, 233, 221, 0.8);
+  pointer-events: none;
+}
+
 /* ─── Brand-ask read — NO navy band; floats on the warm ground ─ */
 #\30 6-empowerment .emp-asks {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: clamp(var(--space-3), 4vw, var(--space-5));
   align-items: center;
 }
+/* Deck bear-world coil panel as the section motif — sits behind, faint,
+   warm-on-warm texture, never occludes the chart or copy. */
+#\30 6-empowerment .emp-asks-motif {
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  transform: translateY(-50%);
+  width: clamp(260px, 36vw, 540px);
+  height: auto;
+  opacity: 0.16;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+#\30 6-empowerment .emp-asks-lede,
+#\30 6-empowerment .emp-asks-mount { position: relative; z-index: 1; }
 #\30 6-empowerment .emp-asks-toggle {
   display: inline-flex;
   gap: 0;
@@ -316,14 +388,72 @@
 #\30 6-empowerment .emp-toggle-btn + .emp-toggle-btn { border-left: 1.5px solid var(--soi-navy); }
 #\30 6-empowerment .emp-toggle-btn.is-on { background: var(--soi-navy); color: var(--soi-cream); }
 #\30 6-empowerment .emp-toggle-btn:focus-visible { outline: 2px solid var(--soi-navy); outline-offset: 2px; }
-#\30 6-empowerment .emp-asks-mount { width: 100%; min-height: 320px; }
-#\30 6-empowerment .emp-asks-mount svg { width: 100%; height: auto; display: block; }
+#\30 6-empowerment .emp-asks-mount {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(260px, 32vh, 420px);
+}
+#\30 6-empowerment .emp-asks-mount svg { width: 100%; max-width: 640px; height: auto; display: block; }
+/* Orbit view is square — cap it so it doesn't balloon, keep it centred. */
+#\30 6-empowerment .emp-asks-mount svg[viewBox^="0 0 460"] { max-width: clamp(320px, 34vw, 460px); }
 #\30 6-empowerment .emp-asks-empty {
   border: 1.5px solid var(--soi-navy); padding: 24px; color: var(--soi-navy); margin: 0;
 }
 @media (max-width: 820px) {
   #\30 6-empowerment .emp-asks { grid-template-columns: 1fr; }
 }
+
+/* ─── Premium count-up stats — three numbers on the ground, no block ─ */
+#\30 6-empowerment .emp-premium {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+#\30 6-empowerment .emp-premium-kicker {
+  margin: 0;
+  font: 800 var(--t-xs) / 1 var(--font-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.8;
+}
+#\30 6-empowerment .emp-premium-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(var(--space-3), 4vw, var(--space-5));
+}
+@media (max-width: 720px) {
+  #\30 6-empowerment .emp-premium-row { grid-template-columns: 1fr; }
+}
+#\30 6-empowerment .emp-premium-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* A top rule (not a block) separates each stat — emphasis by weight/colour. */
+  border-top: 3px solid var(--soi-navy);
+  padding-top: var(--space-2);
+}
+#\30 6-empowerment .emp-premium-n {
+  font: 900 clamp(3rem, 6vw, 5.4rem) / 0.92 var(--font-sans);
+  letter-spacing: -0.03em;
+  color: var(--soi-navy);
+  font-variant-numeric: tabular-nums;
+}
+#\30 6-empowerment .emp-premium-lbl {
+  font: 500 clamp(1.05rem, 1.6vw, 1.45rem) / 1.2 var(--font-sans);
+  color: var(--soi-navy);
+}
+#\30 6-empowerment .emp-premium-lbl strong { font-weight: 900; }
+#\30 6-empowerment .emp-premium-tag {
+  align-self: flex-start;
+  font: 800 var(--t-xs) / 1 var(--font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+#\30 6-empowerment .emp-premium-tag--loud { color: rgba(10, 26, 92, 0.6); }
+#\30 6-empowerment .emp-premium-tag--quiet { color: var(--soi-orange); }
 
 /* ─── Venn section ─────────────────────────────────────────── */
 #\30 6-empowerment .emp-venn {
@@ -462,7 +592,9 @@
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-head,
   #\30 6-empowerment .emp-reframe,
+  #\30 6-empowerment .emp-maze-divider,
   #\30 6-empowerment .emp-asks,
+  #\30 6-empowerment .emp-premium,
   #\30 6-empowerment .emp-venn { opacity: 1; transform: none; transition: none; }
   #\30 6-empowerment .emp-rf-art,
   #\30 6-empowerment .emp-rf-side,

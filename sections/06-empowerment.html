@@ -35,7 +35,8 @@
          bear-world panels (coil = survival, sphere = agency). The two world
          panels cross-fade as you drag; the COPY lives on the ground beside
          them with colour/weight emphasis only — no scrim plate, no pill, no
-         block. This is the pivot of the whole chapter. -->
+         block. This is the pivot of the whole chapter. A deck orbit ring
+         sweeps the stage and the maze-hero motif marks the turn. -->
     <section class="emp-reframe" aria-labelledby="emp-reframe-title" data-emp-reframe-section>
       <div class="emp-reframe-lede">
         <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">
@@ -57,11 +58,22 @@
       </figure>
     </section>
 
+    <!-- Maze divider — deck signature motion-maze motif marks the pivot into
+         the brand-ask evidence. The maze IS the brand world; the title sits
+         on it as an image-title lockup (no block behind the text). -->
+    <div class="emp-maze-divider" aria-hidden="true">
+      <img class="emp-maze-art" src="assets/deck/maze-hero.png" alt=""
+           draggable="false" data-parallax="0.1" />
+      <span class="emp-maze-cap">Tools, not hand-holding</span>
+    </div>
+
     <!-- Brand-ask evidence (Q14): what people actually want brands to help
          with. NO navy band — the lollipop floats on the warm ground (navy on
          warm). A toggle reveals the same data as an orbit-ring (deck orbit
          motif) for a second, more interactive read. -->
     <section class="emp-asks" aria-labelledby="emp-asks-title">
+      <img class="emp-asks-motif" src="assets/deck/bear-world-coil.png" alt=""
+           aria-hidden="true" draggable="false" data-parallax="0.07" />
       <div class="emp-asks-lede">
         <h3 class="si-display si-display--sm emp-asks-title" id="emp-asks-title">
           What Britain asks of <em class="hl">brands</em>
@@ -76,6 +88,31 @@
         </div>
       </div>
       <div class="emp-asks-mount" data-emp-asks aria-label="Brand asks ranking"></div>
+    </section>
+
+    <!-- The premium pivot — three count-up stats on the ground (no block).
+         Money is the loud ask; time + stress are the quiet, premium ones the
+         deck argues brands undervalue. Numbers count up on scroll-in. All
+         verified Q14 values, injected from data (data-count-to set in JS). -->
+    <section class="emp-premium" aria-label="The premium asks brands undervalue">
+      <p class="emp-premium-kicker">The premium most brands leave on the table</p>
+      <div class="emp-premium-row">
+        <div class="emp-premium-stat">
+          <span class="emp-premium-n" data-emp-stat="money" data-count-suffix="%" data-count-decimals="1">0</span>
+          <span class="emp-premium-lbl">stretch my <strong>money</strong></span>
+          <span class="emp-premium-tag emp-premium-tag--loud">the loud ask</span>
+        </div>
+        <div class="emp-premium-stat">
+          <span class="emp-premium-n" data-emp-stat="time" data-count-suffix="%" data-count-decimals="1">0</span>
+          <span class="emp-premium-lbl">save me <strong>time</strong></span>
+          <span class="emp-premium-tag emp-premium-tag--quiet">the premium ask</span>
+        </div>
+        <div class="emp-premium-stat">
+          <span class="emp-premium-n" data-emp-stat="stress" data-count-suffix="%" data-count-decimals="1">0</span>
+          <span class="emp-premium-lbl">reduce my <strong>stress</strong></span>
+          <span class="emp-premium-tag emp-premium-tag--quiet">the premium ask</span>
+        </div>
+      </div>
     </section>
 
     <!-- The three pillars: one overlap at empowerment. Backgroundless venn —

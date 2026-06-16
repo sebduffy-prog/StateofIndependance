@@ -30,6 +30,7 @@
 import { observeReveals } from '../lib/reveal.js';
 import { horizontalBars, lollipopChart, dotPlot } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
+import { observeParallax, chapterTransition, prefersReducedMotion } from '../lib/experiential.js';
 
 /* Deck-canonical segment sizes — always displayed, never derived. Each carries
  * the verbatim deck/qualitative portrait (trio + who/money/channels + the
@@ -333,10 +334,34 @@ const initPanelC = (rootEl) => {
   const quoteEl = rootEl.querySelector('[data-pg-portrait-quote]');
   if (!pillHost || !nameEl) return;
 
+  const card = rootEl.querySelector('[data-pg-portrait-card]');
+
+  // Swap the motif with a brief crossfade so stepping segments feels premium,
+  // not a hard cut. Reduced-motion skips the fade and swaps instantly.
+  const swapMotif = (src, label) => {
+    if (!img) return;
+    if (prefersReducedMotion()) {
+      img.src = src;
+      img.alt = `${label} — brand-world motif`;
+      return;
+    }
+    img.classList.add('is-swapping');
+    const next = new Image();
+    next.onload = () => {
+      img.src = src;
+      img.alt = `${label} — brand-world motif`;
+      requestAnimationFrame(() => img.classList.remove('is-swapping'));
+    };
+    next.src = src;
+  };
+
   const paint = (seg) => {
-    if (img) {
-      img.src = seg.motif;
-      img.alt = `${seg.label} — brand-world motif`;
+    swapMotif(seg.motif, seg.label);
+    if (card) {
+      card.classList.remove('is-stepped');
+      // force reflow so the re-add restarts the subtle step animation
+      void card.offsetWidth;
+      card.classList.add('is-stepped');
     }
     if (shareEl) shareEl.textContent = `${seg.sharePct}% of the nation`;
     nameEl.textContent = `The ${seg.label}`;
@@ -368,6 +393,49 @@ const initPanelC = (rootEl) => {
   });
 };
 
+/* ── Title read-outs: a one-shot count-up when the lockup reveals ──────────
+ * Pure number animation (no fabricated data — these are the site's own
+ * verified counts). Fires once via IntersectionObserver; reduced-motion shows
+ * the final value immediately. */
+const COUNT_UP_MS = 1100;
+
+const initReadouts = (rootEl) => {
+  const nums = Array.from(rootEl.querySelectorAll('.pg-readout-num'));
+  if (!nums.length) return;
+
+  const targets = nums.map((el) => ({ el, to: Number(el.textContent.replace(/[^\d.]/g, '')) || 0 }));
+  const fmt = (n) => Math.round(n).toLocaleString('en-GB');
+
+  if (prefersReducedMotion()) {
+    targets.forEach(({ el, to }) => { el.textContent = fmt(to); });
+    return;
+  }
+
+  let started = false;
+  const run = () => {
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - start) / COUNT_UP_MS);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      targets.forEach(({ el, to }) => { el.textContent = fmt(to * eased); });
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        run();
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.4 });
+  const head = rootEl.querySelector('.pg-head');
+  if (head) io.observe(head); else run();
+};
+
 export default function init(rootEl, data) {
   const { survey, segments, tgi } = data || {};
   if (!survey || !segments) return; // fail soft — Panel A needs both.
@@ -376,4 +444,10 @@ export default function init(rootEl, data) {
   initPanelA(rootEl, survey, segments);
   if (tgi) initPanelB(rootEl, tgi);
   initPanelC(rootEl);
+  initReadouts(rootEl);
+
+  // Experiential motion (opt-in, reduced-motion safe): a scroll-progress
+  // entrance for the chapter and subtle parallax on the deck motifs.
+  chapterTransition(rootEl);
+  observeParallax(rootEl, { maxShiftPx: 48 });
 }

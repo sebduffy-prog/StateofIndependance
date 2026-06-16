@@ -90,8 +90,16 @@
               transform .6s cubic-bezier(.22,.61,.36,1);
 }
 #\30 5-segments .seg-title-line.is-in { opacity: 1; transform: none; }
-/* keep the orange/navy underline accent fully visible on the last line */
-#\30 5-segments .seg-title-line .hl { padding-bottom: 0.08em; }
+/* Client V6: NO block/bar behind ANY text. On the big display titles the
+   baseline underline rule reads as a block — so emphasis here is COLOUR +
+   WEIGHT ONLY (no underline image, no padding plate). Scoped to this chapter. */
+#\30 5-segments .si-display .hl,
+#\30 5-segments .seg-title-line .hl {
+  background-image: none;
+  background-size: 0 0;
+  padding-bottom: 0;
+  font-weight: 900;
+}
 @media (prefers-reduced-motion: reduce) {
   #\30 5-segments .seg-title-line { opacity: 1; transform: none; transition: none; }
 }
@@ -418,26 +426,70 @@
   text-align: center;
 }
 
-/* ─── Profile data-card ───────────────────────────────────── */
-/* BACKGROUNDLESS empty state (§4): no box, no tint plate — just a quiet hint
-   line with a hairline top rule so the column reads as "waiting", not a ghost. */
+/* ─── Profile column ──────────────────────────────────────── */
+/* The right stage cell. Before any selection it carries a deck bear-world
+   motif + a "how to read it" line (backgroundless — no box, no plate); once a
+   quadrant is chosen the live data-card replaces it. This kills the dead band
+   that used to sit beside the compass (FEEDBACK-V4 §4 NO DEAD SPACE). */
+#\30 5-segments .seg-profile-col { position: relative; min-height: 1px; }
 #\30 5-segments .seg-profile { min-height: 1px; }
-#\30 5-segments .seg-profile:not(.is-open) {
+#\30 5-segments .seg-profile:not(.is-open) { display: none; }
+
+/* Resting motif (shown when nothing is selected): a backgroundless deck
+   bear-world render with a spinning orbit ring behind it, then two lines of
+   navy copy. No box, no fill — colour/weight only. */
+#\30 5-segments .seg-profile-rest {
+  position: relative;
+  isolation: isolate;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  background: transparent;
-  border-top: 2px solid rgba(10,26,92,0.14);
-  min-height: 360px;
+  gap: 6px;
+  min-height: clamp(380px, 52vh, 560px);
+  padding-left: clamp(4px, 1vw, 16px);
+  overflow: visible;
 }
-#\30 5-segments .seg-profile:not(.is-open)::before {
-  content: 'Select a segment above to read its full profile.';
-  font-size: var(--t-md, 1.05rem);
-  color: rgba(10,26,92,0.6);
-  font-weight: 600;
-  padding: 24px;
-  text-align: center;
-  max-width: 22ch;
+#\30 5-segments .seg-profile-rest[hidden] { display: none; }
+#\30 5-segments .seg-rest-orbit {
+  position: absolute;
+  inset: -8% auto auto -6%;
+  width: clamp(220px, 24vw, 360px);
+  height: clamp(220px, 24vw, 360px);
+  z-index: 0;
+  opacity: 0.4;
+}
+#\30 5-segments .seg-rest-art {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: clamp(180px, 22vw, 300px);
+  height: auto;
+  margin-bottom: 14px;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+#\30 5-segments .seg-rest-lead {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  color: var(--soi-navy);
+  max-width: 16ch;
+}
+#\30 5-segments .seg-rest-sub {
+  position: relative;
+  z-index: 1;
+  margin: 8px 0 0 0;
+  font-size: var(--t-md, 1.02rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 34ch;
 }
 /* The open profile card: BACKGROUNDLESS (client V5 — no plate behind copy).
    The dense data (charts + facts + quote) is separated by a left ink rail and
@@ -535,6 +587,12 @@
   border: 0;
   box-shadow: 0 0 0 0 transparent;
 }
+/* The lollipop/dot-plot row labels are right-anchored at a fixed 200-unit slot;
+   on a narrow column a long label can run past the SVG's left edge. Let the SVG
+   paint outside its box so no label is clipped (FEEDBACK-V4 — no cut-off text),
+   and pad the holder so the overflow has room to land. */
+#\30 5-segments .seg-metric-chart svg { overflow: visible; }
+#\30 5-segments .seg-metric-chart { padding-left: 2px; }
 
 #\30 5-segments .seg-prof-ai {
   margin: 18px 0 0 0;
@@ -658,6 +716,55 @@
   border-top: 0;
   padding-top: 0;
 }
+/* Two-column quiz lockup: question column + deck bear-world motif. The motif
+   fills what was an empty right half (NO DEAD SPACE). */
+#\30 5-segments .seg-quizblock {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+#\30 5-segments .seg-quiz-main { min-width: 0; }
+#\30 5-segments .seg-quiz-art {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(280px, 40vh, 460px);
+  overflow: visible;
+}
+#\30 5-segments .seg-quiz-orbit {
+  position: absolute;
+  inset: -14%;
+  z-index: 0;
+  opacity: 0.42;
+}
+#\30 5-segments .seg-quiz-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: clamp(220px, 30vw, 380px);
+  height: auto;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+/* backgroundless tag line — navy weight/colour only, no box */
+#\30 5-segments .seg-quiz-arttag {
+  position: relative;
+  z-index: 1;
+  margin: 16px 0 0 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+  color: var(--soi-navy);
+}
+#\30 5-segments .seg-quiz-arttag span { display: block; color: var(--soi-orange); }
+
 #\30 5-segments .seg-quiz-head { margin-bottom: 26px; }
 /* Deck-like section heading: real Poppins 800 (.si-display--sm), bigger. */
 #\30 5-segments .seg-quiz-title {
@@ -745,7 +852,11 @@
 @media (max-width: 900px) {
   #\30 5-segments .seg-stage { grid-template-columns: 1fr; }
   #\30 5-segments .seg-quad-trio { display: none; }
-  #\30 5-segments .seg-profile:not(.is-open) { display: none; }
+  /* On a single column the resting motif would just add height before the
+     compass is even read — drop it; the maphint already explains the controls. */
+  #\30 5-segments .seg-profile-rest { display: none; }
+  #\30 5-segments .seg-quizblock { grid-template-columns: 1fr; }
+  #\30 5-segments .seg-quiz-art { order: -1; min-height: clamp(220px, 32vh, 320px); }
 }
 @media (max-width: 560px) {
   #\30 5-segments .seg-roster { grid-template-columns: 1fr; }

@@ -1,30 +1,56 @@
 <div class="chapter-inner">
   <!-- ── Dark, weighty close (cream-on-navy, full-bleed, fills the screen) ──
-       New world: navy ground, thin white orbit-circle motif + a calm field of
-       paper dots behind the content (both decorative, behind via z-index +
-       pointer-events:none — never occlude the copy). The State of Independence
-       MOTION MAZE LOGO returns here as the closing brand motif (deck §3), set
-       in its own column to the right of the hero quote so it never overlaps
-       the copy. All text resolves to cream/light for deliberate contrast (§6). -->
-  <div class="outro-dark si-dark">
+       TOP-TIER experiential close. Navy ground; a deck bear-world motif
+       ("doors" = choices / opting out) drifts low-opacity behind the copy as
+       the chapter's brand-world ground (deck §3); thin white orbit rings sweep
+       in; a calm field of paper dots rises and disperses — the "nation
+       released". Every decorative layer sits BEHIND via z-index 0 +
+       pointer-events:none and never occludes copy. The signature motion MAZE
+       LOGO returns as the closing brand motif. NO blocks behind any text —
+       emphasis is colour/weight only; copy reads on the ground. Each band eases
+       up + in on the scroll-driven --enter (chapterTransition); the maze, orbit
+       and world motif drift at different speeds via [data-parallax]. -->
+  <div class="outro-dark si-dark" data-outro-close>
+    <!-- Deck bear-world motif — the chapter's brand-world ground (parallax). -->
+    <img
+      class="outro-world"
+      src="assets/deck/bear-world-doors.png"
+      alt=""
+      aria-hidden="true"
+      data-parallax="0.16"
+      loading="lazy" decoding="async"
+    />
     <!-- Decorative orbit rings sweeping in from the right (behind copy). -->
-    <div class="outro-orbit si-orbit si-orbit--spin" aria-hidden="true"></div>
+    <div class="outro-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.08"></div>
     <!-- Paper-coloured dotField dispersing upward — the "nation released". -->
     <div class="outro-dots" data-outro-dots aria-hidden="true"></div>
 
     <div class="outro-frame">
-      <!-- Kicker + standfirst cluster, read as one calm block. -->
-      <header class="outro-head si-stack-tight reveal">
+      <!-- Title lockup opener (deck §3): the chapter headline in Poppins Black,
+           huge, deck-style — recreates the report-cover title treatment. The
+           brand figure-silhouette mark sits beside it (deck does this). -->
+      <header class="outro-head reveal" data-enter>
         <p class="vccp-eyebrow outro-eyebrow">The Challenger Series &middot; VCCP</p>
+        <h2 class="outro-title si-display si-display--black">
+          Hand them<br />the <span class="hl">tools</span>
+        </h2>
         <p class="outro-standfirst si-measure">
           Stop trying to lead the consumer. Your job is to equip them to lead
           themselves. Five moves, one architecture, a nation ready to act.
         </p>
+        <img
+          class="outro-head-figure"
+          src="assets/deck/figure-silhouette.png"
+          alt=""
+          aria-hidden="true"
+          data-parallax="-0.1"
+          loading="lazy" decoding="async"
+        />
       </header>
 
       <!-- Hero band: the quote (left) + the motion maze logo (right) read as
-           one composed lockup, deck-style. Two columns => zero overlap (§6). -->
-      <div class="outro-hero">
+           one composed lockup, deck-style. Two columns => zero overlap. -->
+      <div class="outro-hero" data-enter>
         <!-- The hero quote, given deck hanging-quote gravitas (Poppins Black). -->
         <figure class="outro-quote reveal">
           <blockquote class="outro-quote-text si-display si-display--black">
@@ -32,15 +58,21 @@
             them the <em class="hl">tools</em>.
           </blockquote>
           <figcaption class="outro-quote-cite">Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
+          <!-- The institutions>>>individuals motif — an animated typographic
+               note (the arrows sweep on view), not a boxed pill. -->
           <p class="outro-motif" aria-label="Institutions far outweigh individuals">
-            Institutions <span aria-hidden="true">&gt;&gt;&gt;&gt;</span> individuals
+            Institutions
+            <span class="outro-motif-arrows" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </span>
+            individuals
           </p>
         </figure>
 
         <!-- The signature motion maze logo — the State of Independence brand
              world animation (deck §3). Decorative closing motif; PNG static
-             fallback ships in <picture> for reduced-motion / no-gif. -->
-        <figure class="outro-maze reveal" aria-hidden="true">
+             fallback is swapped in for reduced motion / no-gif. -->
+        <figure class="outro-maze reveal" aria-hidden="true" data-parallax="-0.12">
           <img
             class="outro-maze-img"
             src="assets/deck/maze-hero.gif"
@@ -51,45 +83,61 @@
         </figure>
       </div>
 
-      <!-- The five moves as a clickable index, gravitas display treatment. -->
-      <nav class="outro-recap reveal" aria-label="The five moves, jump to the moves chapter">
+      <!-- The five moves as an interactive index — each row reveals on scroll
+           (scrollScene) and expands its one-line lesson on hover/focus. -->
+      <nav class="outro-recap" aria-label="The five moves, jump to the moves chapter" data-enter>
         <p class="outro-recap-label">The five moves</p>
-        <ol class="outro-recap-list" data-stagger="60">
-          <li class="reveal">
+        <ol class="outro-recap-list" data-recap>
+          <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">01</span>
-              <span class="outro-recap-text si-display si-display--sm">Unplug them from the grid</span>
+              <span class="outro-recap-body">
+                <span class="outro-recap-text si-display si-display--sm">Unplug them from the grid</span>
+                <span class="outro-recap-lesson">Help customers lower living costs and rely less on broken systems.</span>
+              </span>
             </a>
           </li>
-          <li class="reveal">
+          <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">02</span>
-              <span class="outro-recap-text si-display si-display--sm">Be the trusted antidote</span>
+              <span class="outro-recap-body">
+                <span class="outro-recap-text si-display si-display--sm">Be the trusted antidote</span>
+                <span class="outro-recap-lesson">Be the honest, transparent alternative when people feel let down.</span>
+              </span>
             </a>
           </li>
-          <li class="reveal">
+          <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">03</span>
-              <span class="outro-recap-text si-display si-display--sm">Ride the social self-help wave</span>
+              <span class="outro-recap-body">
+                <span class="outro-recap-text si-display si-display--sm">Ride the social self-help wave</span>
+                <span class="outro-recap-lesson">Exist in the self-help heartlands where context is king.</span>
+              </span>
             </a>
           </li>
-          <li class="reveal">
+          <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">04</span>
-              <span class="outro-recap-text si-display si-display--sm">Kill the mental load</span>
+              <span class="outro-recap-body">
+                <span class="outro-recap-text si-display si-display--sm">Kill the mental load</span>
+                <span class="outro-recap-lesson">Treat time as the currency and reduce the cognitive overload.</span>
+              </span>
             </a>
           </li>
-          <li class="reveal">
+          <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">
               <span class="outro-recap-num num">05</span>
-              <span class="outro-recap-text si-display si-display--sm">Boost good behaviours</span>
+              <span class="outro-recap-body">
+                <span class="outro-recap-text si-display si-display--sm">Boost good behaviours</span>
+                <span class="outro-recap-lesson">Gamify goals, form habits, reward what matters.</span>
+              </span>
             </a>
           </li>
         </ol>
       </nav>
 
       <!-- Credits + CTA, flowing on the ground (no bordered boxes). -->
-      <div class="outro-foot">
+      <div class="outro-foot" data-enter>
         <section class="outro-credits reveal" aria-label="Team credits">
           <p class="outro-credits-label">Built by</p>
           <ul class="outro-credits-list">
@@ -129,27 +177,25 @@
   </div>
 
   <!-- ── Grounded warm-gradient back-cover (the bear stands flush) ────
-       New world: mustard→orange→coral gradient ground. The girl-and-bear
-       stands flush on the floor at the right; the wordmark + copyright sit
-       in a clear column at the left and never overlap the figure. Orbit
-       seed dots add the world motif (decorative, behind). -->
-  <div class="outro-backcover si-ground-warm">
+       Mustard→orange→coral gradient ground. The girl-and-bear stands flush on
+       the floor at the right (its own grid column, parallax-free so feet stay
+       planted); the wordmark + copyright sit in a clear column at the left and
+       never overlap the figure. Orbit seed dots add the world motif. -->
+  <div class="outro-backcover si-ground-warm" data-outro-backcover>
     <div class="outro-backcover-orbit si-orbit" aria-hidden="true"></div>
     <span class="si-seed outro-seed-a" aria-hidden="true"></span>
     <span class="si-seed outro-seed-b" aria-hidden="true"></span>
 
-    <div class="outro-backcover-copy">
-      <p class="outro-backcover-series si-display si-display--black">The Challenger Series</p>
+    <div class="outro-backcover-copy" data-enter>
+      <p class="outro-backcover-series si-display si-display--black">The Challenger<br />Series</p>
       <p class="outro-backcover-org">VCCP</p>
       <p class="outro-backcover-copyright num">&copy; VCCP Media 2026</p>
     </div>
 
     <!-- The girl-and-bear stands flush on the gradient floor: big, grounded,
-         in its own column so it cannot overlap the wordmark/copyright. -->
-    <!-- Cream silhouette (deck world §1): the artwork is pre-cropped to its
-         content bbox and baked to warm cream (assets/brand/Girl_and_Bear_cream.png),
-         so the figures fill the frame edge-to-edge with feet flush to the floor —
-         no letterbox gap, no plate, no mask/aspect mismatch. Aspect 2817×1620. -->
+         in its own column so it cannot overlap the wordmark/copyright.
+         Pre-cropped to content bbox, baked to warm cream — feet flush, no
+         plate, no mask/aspect mismatch. Aspect 2817×1620. -->
     <img
       class="outro-backcover-bear si-ground"
       src="assets/brand/Girl_and_Bear_cream.png"

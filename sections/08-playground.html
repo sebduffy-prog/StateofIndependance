@@ -1,35 +1,39 @@
-<!-- Chapter 08 — playground. Design World V2: the interactive data explorer,
-     the research/appendix surface. This pass (FEEDBACK-V4):
-       • DECK-FAITHFUL: a deck title lockup (Poppins Black, navy on the research
-         ground) with the brand figure-silhouette motif beside it; a full-bleed
-         bear-world motif anchors the segment-portrait band so the chapter reads
-         as State-of-Independence brand world, not a bare dashboard.
-       • BACKGROUNDLESS: charts sit directly on the ground, no white box / no
-         track (the .chart-holder utility + chart navy defaults).
-       • NO MUSTARD: components are navy; teal is the chapter accent only (kicker,
-         index-100 line, active pill). No mustard-on-anything.
-       • NO OVERLAP: the colliding 4-way proportion-strip (finance) is replaced by
-         the orbitRingChart — radial golden-angle labels never stack, and a 0%
-         segment value reads cleanly at 12 o'clock instead of crushing a pill.
-       • FILL + LONGER SCROLL: three stacked surfaces — title lockup, the two
-         explorer panels, and a live segment-portrait band — so every screen earns
-         its space and the scroll has depth.
-     All loved interactions kept; every number still traces to the verified survey
-     file. No source captions (cut site-wide per brief). -->
-<div class="pg-world">
-  <span class="si-seed pg-seed pg-seed--a" aria-hidden="true"></span>
-  <span class="si-seed pg-seed pg-seed--b" aria-hidden="true"></span>
+<!-- Chapter 08 — playground. The interactive data explorer + research surface.
+     TOP-TIER / EXPERIENTIAL pass:
+       • BACKGROUNDLESS: zero blocks behind any copy. Text emphasis = colour +
+         weight only (.hl is a baseline-rule, not a fill). Charts/portrait sit
+         directly on the pale-teal research ground.
+       • DECK-WORLD: a maze-hero orbit motif anchors the title lockup; the
+         figure-silhouette + bear-world motifs are lifted from the deck; an
+         orbit ring rides behind the title for the brand "independence" motion.
+       • EXPERIENTIAL MOTION: the chapter drives a scroll-progress entrance
+         (--enter), motifs parallax through the viewport, surfaces stagger in.
+       • INTERACTIVE: metric explorer + TGI footprint + a live segment portrait
+         the visitor steps through (pills, hover-lift, crossfade motif).
+     All loved interactions kept; every number traces to the verified survey
+     file. No source captions. Reduced-motion safe (JS jumps to rest state). -->
+<div class="pg-world" data-pg-world>
+  <!-- Brand orbit ring + drifting seeds — the deck's "independence" motion,
+       decorative, behind all content, never occluding copy. -->
+  <span class="pg-orbit pg-orbit--ring" aria-hidden="true"></span>
+  <span class="si-seed pg-seed pg-seed--a" data-parallax="0.18" aria-hidden="true"></span>
+  <span class="si-seed pg-seed pg-seed--b" data-parallax="-0.12" aria-hidden="true"></span>
 
   <div class="chapter-inner pg-stage" data-stagger="120">
-    <!-- ── Deck title lockup: heavy Poppins Black, brand figure motif beside ── -->
+    <!-- ── Deck title lockup: heavy Poppins Black + maze-hero brand motif ── -->
     <header class="pg-head reveal">
       <div class="pg-head-copy">
         <p class="vccp-eyebrow pg-eyebrow">Chapter 08 · the appendix, opened up</p>
-        <h2 class="pg-headline si-display si-display--black">Explore the<br><em class="hl hl-teal">four Britains</em><br>yourself</h2>
+        <h2 class="pg-headline si-display si-display--black">Explore the <em class="hl hl-teal">four&nbsp;Britains</em> yourself</h2>
         <p class="pg-standfirst si-measure">Every chart on this site renders from the verified survey file. Pick a question, pick a segment, and watch the four Britains diverge. No number is typed in by hand.</p>
+        <ul class="pg-readouts" aria-hidden="true">
+          <li class="pg-readout"><span class="pg-readout-num">1,504</span><span class="pg-readout-cap">respondents</span></li>
+          <li class="pg-readout"><span class="pg-readout-num">4</span><span class="pg-readout-cap">Britains</span></li>
+          <li class="pg-readout"><span class="pg-readout-num">8</span><span class="pg-readout-cap">live questions</span></li>
+        </ul>
       </div>
-      <figure class="pg-head-motif" aria-hidden="true">
-        <img src="assets/deck/figure-silhouette.png" alt="" loading="lazy" decoding="async" />
+      <figure class="pg-head-motif" data-parallax="0.12" aria-hidden="true">
+        <img src="assets/deck/maze-hero.png" alt="" loading="lazy" decoding="async" />
       </figure>
     </header>
 
@@ -94,7 +98,9 @@
     <!-- ── Segment-portrait band: live, deck-faithful, fills the lower screen ──
          A shared segment selector swaps the brand-world motif + the qualitative
          portrait (who / money / channels — verbatim deck/qual descriptors, no
-         invented numbers; only the deck-canonical share is shown numerically). -->
+         invented numbers; only the deck-canonical share is shown numerically).
+         The visitor can also step the band with prev/next, and the motif
+         crossfades + parallaxes for an experiential, premium feel. -->
     <section class="pg-portrait reveal" aria-labelledby="pg-portrait-title">
       <header class="pg-portrait-head">
         <p class="pg-panel-kicker">The four Britains · who they are</p>
@@ -108,7 +114,8 @@
       </header>
 
       <article class="pg-portrait-card" data-pg-portrait-card>
-        <figure class="pg-portrait-motif">
+        <figure class="pg-portrait-motif" data-parallax="0.08">
+          <span class="pg-portrait-orbit" aria-hidden="true"></span>
           <img data-pg-portrait-img src="assets/deck/bear-world-circles.png" alt="" loading="lazy" decoding="async" />
         </figure>
         <div class="pg-portrait-body">

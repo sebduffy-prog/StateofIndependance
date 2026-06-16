@@ -1,16 +1,22 @@
-/* Chapter 09 — outro (Design World V2).
+/* Chapter 09 — outro (Design World V5 — TOP-TIER experiential close).
    The closing chapter: a dark, weighty navy close that resolves into a
    grounded WARM-gradient back-cover with the girl-and-bear standing flush.
-   New world: navy ground + thin white orbit motif behind the dark close;
-   mustard->orange->coral gradient ground on the back-cover; Inter Tight
-   display gravitas on the quote + recap; seamless flow (no bordered boxes,
-   no hard hairline rules — separation by space + soft tint shifts).
-   Contrast (§6): cream/light text on navy, navy text on warm; every label
-   has a deliberate, legible foreground. Overlap (§6): orbit + dotField sit
-   behind via z-index 0 + pointer-events:none; the bear lives in its own
-   grid column so it can never occlude the wordmark/copyright.
-   Square corners, tabular nums, one .hl word, reduced-motion safe.
-   Every rule scoped to #\30 9-outro. */
+   World: navy ground + a deck bear-world motif drifting behind (parallax) +
+   thin white orbit motif + a rising dotField; mustard→orange→coral gradient
+   ground on the back-cover.
+
+   V5 demands honoured:
+   - NO blocks behind text: zero card/box/highlight fills behind any copy;
+     emphasis is colour/weight only (.hl is a colour+underline, never a block);
+     the CTA marker is a thin left RULE, not a panel; copy reads on the ground.
+   - No cutoff: overflow-safe sizing, clamp()ed display type with generous
+     line-height, containers grow to content; the close fills ≥100vh.
+   - Experiential: each [data-enter] band eases up + in on the scroll-driven
+     --enter; orbit / world motif / figure / maze drift via [data-parallax];
+     the recap rows stagger in; the institutions>>>individuals arrows sweep.
+   - Bigger, bolder Poppins; zero overlap (decorative layers behind via
+     z-index 0 + pointer-events:none; bear in its own grid column).
+   Square corners, tabular nums, reduced-motion safe. Scoped to #\30 9-outro. */
 
 /* Both surfaces go full-bleed — break out of .chapter padding. */
 #\30 9-outro {
@@ -24,8 +30,8 @@
 }
 
 /* ─── Dark closing surface (navy) ────────────────────────── */
-/* Fills at least the full viewport so the close never leaves a dead band; the
-   frame inside distributes its rows to use the height (§4 FILL THE SCREEN). */
+/* Fills the full viewport so the close never leaves a dead band; the frame
+   inside distributes its rows to use the height (FILL THE SCREEN). */
 #\30 9-outro .outro-dark {
   position: relative;
   isolation: isolate;            /* own stacking context — no stale layer bleed */
@@ -35,7 +41,22 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: clamp(56px, 9vh, 128px) clamp(20px, 5vw, 96px);
+  padding: clamp(64px, 10vh, 140px) clamp(20px, 5vw, 96px);
+}
+
+/* Deck bear-world motif — the chapter's brand-world ground. Drifts low-opacity
+   at the right edge behind the copy (parallax), never occludes UI. */
+#\30 9-outro .outro-world {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  bottom: -6%;
+  right: clamp(-160px, -6vw, -40px);
+  width: clamp(380px, 46vw, 820px);
+  height: auto;
+  opacity: 0.22;
+  mix-blend-mode: screen;        /* lifts the navy-on-navy render without a box */
 }
 
 /* Orbit-circle motif: thin white concentric rings sweeping from the right,
@@ -60,19 +81,70 @@
   height: 100%;
 }
 
-/* The composed frame — content sits ABOVE the decorative layers (§6). */
+/* The composed frame — content sits ABOVE the decorative layers. */
 #\30 9-outro .outro-frame {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(40px, 6vh, 88px);   /* generous, uniform rhythm — de-blocked */
+  gap: clamp(44px, 6.5vh, 96px);   /* generous, uniform rhythm — de-blocked */
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
 }
 
+/* ─── Experiential entrance: ease each band up + in on --enter (0→1 from
+   chapterTransition). Pure transform/opacity — never clips text. ─── */
+#\30 9-outro [data-enter] {
+  --enter: 1;
+  opacity: calc(0.35 + 0.65 * var(--enter));
+  transform: translate3d(0, calc((1 - var(--enter)) * 34px), 0);
+  transition: opacity .5s ease, transform .5s ease;
+  will-change: opacity, transform;
+}
+
+/* ─── Title lockup opener (deck §3) ──────────────────────── */
+#\30 9-outro .outro-head {
+  position: relative;
+  display: grid;
+  gap: clamp(18px, 2.4vh, 30px);
+  padding-right: clamp(0px, 12vw, 200px);   /* room for the figure mark */
+}
+#\30 9-outro .outro-eyebrow {
+  margin: 0;
+  color: var(--soi-cream);        /* cream on navy — legible */
+  letter-spacing: 0.16em;
+}
+/* The chapter headline — Poppins Black, huge, deck title-lockup gravitas. */
+#\30 9-outro .outro-title {
+  margin: 0;
+  color: var(--soi-cream);
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  font-size: clamp(3rem, 8vw, 7rem);
+  text-transform: none;           /* sentence-case lockup, deck-faithful */
+}
+#\30 9-outro .outro-standfirst {
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--soi-cream);
+}
+/* The brand figure mark beside the title (deck pairs titles with the figure). */
+#\30 9-outro .outro-head-figure {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: clamp(-8px, 1vw, 24px);
+  width: clamp(80px, 11vw, 160px);
+  height: auto;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* ─── Hero band: quote (left) + motion maze logo (right) ──── */
-/* Two columns so the maze never overlaps the copy (§6). Bottom-aligned so the
+/* Two columns so the maze never overlaps the copy. Bottom-aligned so the
    quote baseline and the maze sit on a shared visual floor. */
 #\30 9-outro .outro-hero {
   display: grid;
@@ -85,7 +157,7 @@
   justify-self: end;
   align-self: center;
   width: 100%;
-  max-width: clamp(240px, 30vw, 440px);
+  max-width: clamp(240px, 30vw, 460px);
 }
 #\30 9-outro .outro-maze-img {
   display: block;
@@ -94,28 +166,14 @@
   pointer-events: none;
 }
 
-/* ─── Kicker + standfirst ────────────────────────────────── */
-#\30 9-outro .outro-eyebrow {
-  margin: 0;
-  color: var(--soi-cream);        /* cream on navy — legible (§6) */
-  letter-spacing: 0.14em;
-}
-#\30 9-outro .outro-standfirst {
-  font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.36;
-  margin: 0;
-  color: var(--soi-cream);
-}
-
 /* ─── Hero quote, deck hanging-quote gravitas ────────────── */
-/* No hard padding box — the oversized mark hangs into intentional space. */
+/* No padding box — the oversized mark hangs into intentional space. */
 #\30 9-outro .outro-quote {
   position: relative;
   margin: 0;
   padding-left: clamp(44px, 7vw, 120px);
 }
-/* The hanging quotation mark — oversized, mustard, set into the left margin,
+/* The hanging quotation mark — oversized, amber, set into the left margin,
    behind the text so it can never occlude it. */
 #\30 9-outro .outro-quote::before {
   content: "\201C";
@@ -133,22 +191,19 @@
 #\30 9-outro .outro-quote-text {
   position: relative;
   z-index: 1;
-  /* si-display--black gives Poppins 900; we keep sentence case for a spoken
-     quote but ride the real Black weight for deck gravitas (§4). */
+  /* Poppins Black, sentence case for a spoken quote; full deck gravitas. */
   margin: 0 0 clamp(22px, 2.8vw, 38px) 0;
   color: var(--soi-cream);
-  text-transform: none;          /* a spoken quote reads better in sentence case */
-  font-weight: 900;              /* Poppins Black — full deck gravitas (§4) */
-  letter-spacing: -0.03em;       /* tighter tracking to match the deck headlines */
-  line-height: 0.98;
-  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  text-transform: none;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(2.3rem, 4.3vw, 4rem);
   max-width: 18ch;
+  overflow-wrap: break-word;
 }
-/* The highlighter must read on the dark ground: keep the mustard-light fill
-   (from .hl::before) and force the highlighted word's text to dark ink so it
-   never sits ink-on-ink or cream-on-cream (§6). */
+/* Emphasis is colour + underline only (no block); amber on navy stays legible. */
 #\30 9-outro .outro-quote-text .hl {
-  color: var(--soi-navy);
   line-height: inherit;
 }
 #\30 9-outro .outro-quote-cite {
@@ -161,28 +216,43 @@
   margin: 0 0 clamp(20px, 2.4vw, 30px) 0;
   font-variant-numeric: tabular-nums;
 }
-/* The institutions>>>individuals motif — a typographic note, not a boxed pill.
-   De-blocked: no border; reads as a quiet mustard caption. */
+/* institutions >>>> individuals — an animated typographic note, not a box.
+   The arrows sweep rightward on a loop to dramatise the imbalance. */
 #\30 9-outro .outro-motif {
   position: relative;
   z-index: 1;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   margin: 0;
   color: var(--soi-amber);
-  font-size: var(--t-sm);
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: lowercase;
-  font-variant-numeric: tabular-nums;
 }
-#\30 9-outro .outro-motif span {
-  margin: 0 0.18em;
-  color: rgba(251, 193, 0, 0.55);
+#\30 9-outro .outro-motif-arrows {
+  display: inline-flex;
+  gap: 0.18em;
+}
+#\30 9-outro .outro-motif-arrows i {
+  width: 0.62em;
+  height: 0.62em;
+  border-top: 2px solid var(--soi-amber);
+  border-right: 2px solid var(--soi-amber);
+  transform: rotate(45deg);
+  opacity: 0.4;
+  animation: outro-arrow-sweep 1.8s ease-in-out infinite;
+}
+#\30 9-outro .outro-motif-arrows i:nth-child(2) { animation-delay: 0.15s; }
+#\30 9-outro .outro-motif-arrows i:nth-child(3) { animation-delay: 0.3s; }
+#\30 9-outro .outro-motif-arrows i:nth-child(4) { animation-delay: 0.45s; }
+@keyframes outro-arrow-sweep {
+  0%, 100% { opacity: 0.28; }
+  50%      { opacity: 1; }
 }
 
-/* ─── Five-move recap index (display treatment) ──────────── */
-/* De-blocked: drop the per-row hairline borders; rely on the link's hover
-   tint + generous row padding for separation. */
+/* ─── Five-move recap index (interactive, display treatment) ──────────── */
 #\30 9-outro .outro-recap-label {
   font-size: var(--t-xs);
   letter-spacing: 0.16em;
@@ -195,40 +265,69 @@
   margin: 0;
   padding: 0;
 }
-/* Soft separation only — a faint tint hairline between rows, not a hard rule;
-   the first/last rows have none, so the list breathes at its edges. */
-#\30 9-outro .outro-recap-list > li + li {
+/* Soft separation only — a faint tint hairline between rows, not a hard rule. */
+#\30 9-outro .outro-recap-item + .outro-recap-item {
   box-shadow: inset 0 1px 0 rgba(238, 233, 221, 0.1);
+}
+/* Each row staggers in (scrollScene adds .is-in). Pure transform/opacity. */
+#\30 9-outro .outro-recap-item {
+  opacity: 0;
+  transform: translateX(-18px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+#\30 9-outro .outro-recap-item.is-in {
+  opacity: 1;
+  transform: none;
 }
 #\30 9-outro .outro-recap-link {
   display: flex;
   align-items: baseline;
   gap: clamp(18px, 2.6vw, 40px);
-  padding: clamp(14px, 1.8vw, 22px) clamp(6px, 1vw, 14px);
+  padding: clamp(16px, 2vw, 26px) clamp(6px, 1vw, 16px);
   text-decoration: none;
   color: var(--soi-cream);
-  transition: background-color 0.18s ease, padding-left 0.18s ease, color 0.18s ease;
+  transition: padding-left 0.2s ease, color 0.2s ease;
 }
 #\30 9-outro .outro-recap-num {
   flex: 0 0 auto;
-  font-size: clamp(1.4rem, 2.4vw, 2.4rem);
-  font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.6rem);
+  font-weight: 800;
   line-height: 1;
   color: var(--soi-amber);
   font-variant-numeric: tabular-nums;
 }
+#\30 9-outro .outro-recap-body {
+  display: grid;
+  gap: 0;
+}
 #\30 9-outro .outro-recap-text {
-  /* si-display: uppercase weight 700 — pushed to deck gravitas (§4) with
-     tighter tracking and leading so the move titles command the line. */
-  font-size: clamp(1.45rem, 2.9vw, 2.9rem);
+  font-size: clamp(1.55rem, 3.1vw, 3rem);
   letter-spacing: -0.035em;
-  line-height: 0.94;
+  line-height: 0.96;
   color: var(--soi-cream);
+  text-transform: uppercase;
+}
+/* The one-line lesson is hidden at rest and expands on hover/focus — an
+   interactive reveal, NOT a block (no fill; colour-only on the ground). */
+#\30 9-outro .outro-recap-lesson {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: var(--t-md);
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(238, 233, 221, 0.78);
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+#\30 9-outro .outro-recap-link:hover .outro-recap-lesson,
+#\30 9-outro .outro-recap-link:focus-visible .outro-recap-lesson {
+  max-height: 4em;
+  opacity: 1;
+  margin-top: 8px;
 }
 #\30 9-outro .outro-recap-link:hover,
 #\30 9-outro .outro-recap-link:focus-visible {
-  background: rgba(238, 233, 221, 0.08);
-  padding-left: clamp(14px, 1.8vw, 24px);
+  padding-left: clamp(14px, 1.8vw, 28px);
   outline: none;
 }
 #\30 9-outro .outro-recap-link:hover .outro-recap-text,
@@ -278,9 +377,8 @@
   color: rgba(238, 233, 221, 0.66);
 }
 
-/* CTA — de-blocked: NO bordered box. A teal accent rule (ch.09's permitted
-   accent) on the leading edge marks it as a distinct focal element while it
-   flows on the same ground. Teal on navy is high-contrast. */
+/* CTA — de-blocked: NO bordered box. A teal accent RULE on the leading edge
+   marks it as a distinct focal element while it flows on the same ground. */
 #\30 9-outro .outro-cta {
   padding-left: clamp(18px, 1.8vw, 26px);
   box-shadow: inset 2px 0 0 var(--soi-teal);
@@ -313,19 +411,18 @@
 }
 
 /* ─── Grounded warm-gradient back-cover ──────────────────────
-   New world: the signature mustard->orange->coral gradient ground
-   (.si-ground-warm) instead of a flat mustard fill. The girl-and-bear
-   stands flush on the floor in its OWN grid column (right); the wordmark +
-   copyright occupy the left column. Two columns => no overlap (§6). */
+   Signature mustard→orange→coral gradient ground (.si-ground-warm). The
+   girl-and-bear stands flush on the floor in its OWN grid column (right); the
+   wordmark + copyright occupy the left column. Two columns => no overlap. */
 #\30 9-outro .outro-backcover {
   position: relative;
   isolation: isolate;
-  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 96px) 0;
+  padding: clamp(64px, 10vh, 130px) clamp(20px, 5vw, 96px) 0;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
   gap: clamp(32px, 5vw, 80px);
-  min-height: clamp(340px, 48vh, 600px);
+  min-height: clamp(380px, 56vh, 680px);
   overflow: hidden;
 }
 /* Decorative orbit rings on the warm ground, behind content. */
@@ -346,15 +443,15 @@
   gap: 8px;
   max-width: 30ch;
 }
-/* Wordmark in display gravitas — navy on the warm ground (high contrast §6).
-   Pushed heavier/tighter to match the deck's punchy headline type (feedback
-   §4): largest weight/scale, negative tracking, tight leading. */
+/* Wordmark in display gravitas — navy on the warm ground (high contrast).
+   Largest weight/scale, negative tracking, tight leading to match the deck. */
 #\30 9-outro .outro-backcover-series {
   margin: 0;
   color: var(--soi-navy);
   font-weight: 900;              /* Poppins Black — matches the deck wordmark */
   letter-spacing: -0.04em;
-  line-height: 0.88;
+  line-height: 0.86;
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
 }
 #\30 9-outro .outro-backcover-org {
   margin: 0;
@@ -366,22 +463,19 @@
 #\30 9-outro .outro-backcover-copyright {
   margin: 10px 0 0;
   font-size: var(--t-sm);
-  color: rgba(10, 26, 92, 0.8);    /* navy @ 80% — lifted so it's never the faintest text */
+  color: rgba(10, 26, 92, 0.8);    /* navy @ 80% — never the faintest text */
   font-variant-numeric: tabular-nums;
 }
 /* The illustration: large, anchored flush to the bottom edge of the ground, in
-   its own grid column so it never overlaps the copy. The PNG is pre-cropped to
-   content and pre-coloured warm cream (deck world §1), so it ships as a plain
-   <img> with feet flush to the floor — no mask, no aspect mismatch, no
-   letterbox gap, no plate/box. Large and grounded. Decorative — ignores
-   pointer events. The intrinsic aspect (2817×1620) is honoured by height:auto
-   so the silhouette never distorts. */
+   its own grid column so it never overlaps the copy. Pre-cropped + pre-coloured
+   warm cream — feet flush, no mask, no aspect mismatch, no plate/box.
+   Decorative — ignores pointer events. Aspect 2817×1620 honoured by height:auto. */
 #\30 9-outro .outro-backcover-bear {
   position: relative;
   z-index: 1;
   align-self: end;            /* feet sit on the grid baseline (ground floor) */
   display: block;
-  width: clamp(320px, 46vw, 760px);   /* large, matching the cover's presence */
+  width: clamp(340px, 48vw, 820px);   /* large, matching the cover's presence */
   height: auto;
   margin-bottom: 0;           /* flush — no gap below the feet */
   pointer-events: none;
@@ -389,8 +483,7 @@
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 920px) {
-  /* Stack the quote above the maze; the maze shrinks and centres so it stays
-     a closing flourish, never a competing block. */
+  /* Stack the quote above the maze; the maze shrinks and centres. */
   #\30 9-outro .outro-hero {
     grid-template-columns: 1fr;
     align-items: start;
@@ -399,6 +492,12 @@
   #\30 9-outro .outro-maze {
     justify-self: start;
     max-width: clamp(180px, 44vw, 300px);
+  }
+  #\30 9-outro .outro-head {
+    padding-right: 0;
+  }
+  #\30 9-outro .outro-head-figure {
+    width: clamp(64px, 16vw, 110px);
   }
 }
 @media (max-width: 820px) {
@@ -421,16 +520,25 @@
   /* On narrow screens the bear takes its own row beneath the copy — still no
      overlap because they no longer share a column. */
   #\30 9-outro .outro-backcover-bear {
-    width: clamp(220px, 62vw, 360px);
+    width: clamp(240px, 66vw, 380px);
     justify-self: end;
   }
   #\30 9-outro .outro-seed-a,
   #\30 9-outro .outro-seed-b { display: none; }
 }
 
-/* ─── Reduced motion: no link transitions ────────────────── */
+/* ─── Reduced motion: rest flat, no decorative animation ─── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 9-outro .outro-recap-link {
+  #\30 9-outro [data-enter] {
+    --enter: 1;
     transition: none;
   }
+  #\30 9-outro .outro-recap-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #\30 9-outro .outro-recap-link,
+  #\30 9-outro .outro-recap-lesson { transition: none; }
+  #\30 9-outro .outro-motif-arrows i { animation: none; opacity: 0.7; }
 }

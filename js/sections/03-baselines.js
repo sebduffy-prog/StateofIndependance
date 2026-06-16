@@ -87,11 +87,35 @@ export default function init(rootEl, data) {
   } else {
     rootEl.style.setProperty('--enter', '1');
   }
+  // Signature brand-world motion: the maze opener holds its light static
+  // frame until it scrolls into view, then swaps to the animated motion-logo
+  // GIF (the State of Independence brand-world animation). The 11MB GIF is
+  // never fetched on load, and reduced-motion readers keep the static frame.
+  let mazeObserver;
+  const maze = rootEl.querySelector('[data-motion-src]');
+  if (maze && !prefersReducedMotion()) {
+    mazeObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const motionSrc = maze.dataset.motionSrc;
+          if (motionSrc && maze.getAttribute('src') !== motionSrc) {
+            maze.setAttribute('src', motionSrc);
+          }
+          obs.disconnect();
+        });
+      },
+      { rootMargin: '0px 0px -15% 0px' },
+    );
+    mazeObserver.observe(maze);
+  }
+
   // Detach scroll work if the chapter is ever torn down (defensive; the
   // static site keeps sections mounted, so this is a no-op in practice).
   rootEl.addEventListener('chapter:teardown', () => {
     cleanupParallax();
     cleanupScene();
+    if (mazeObserver) mazeObserver.disconnect();
   });
 
   // Panel 1 - the guess gates both the hero count-up and the 77/100 waffle.

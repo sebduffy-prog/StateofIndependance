@@ -30,16 +30,33 @@
         hallmarks of the squeeze are the operational floor: table stakes, not
         the strategy.
       </p>
+      <!-- Deck "person" mark + a quiet scroll cue fill the lower-left of the
+           opener so the column never reads as dead amber. -->
+      <p class="bl-scroll-cue" aria-hidden="true">
+        <span class="bl-scroll-word">Four numbers you can already feel</span>
+        <span class="bl-scroll-arrow"></span>
+      </p>
     </div>
     <!-- Deck maze/orbit brand-world lockup beside the title (the deck's signature
-         image-title composition). Decorative, never carries meaning. -->
+         image-title composition). The maze swaps to its animated motion-logo when
+         it scrolls into view (the signature State of Independence brand-world
+         animation). Decorative, never carries meaning. -->
     <figure class="bl-head-lockup" aria-hidden="true">
       <img
         class="bl-head-maze"
         src="assets/deck/maze-hero.png"
+        data-motion-src="assets/deck/maze-hero.gif"
         alt=""
         loading="lazy"
         data-parallax="-0.08"
+      />
+      <!-- The deck's brand "person" mark, set on the maze's orbit line. -->
+      <img
+        class="bl-head-figure"
+        src="assets/deck/figure-silhouette.png"
+        alt=""
+        loading="lazy"
+        data-parallax="0.14"
       />
     </figure>
   </header>

@@ -34,26 +34,26 @@
   <!-- Roster band: four backgroundless segment tiles, each a deck bear-world
        motif + share + trio. A fast at-a-glance way in; selecting one opens its
        profile on the compass below (wired in JS). More depth, no dead space. -->
-  <div class="seg-roster reveal" role="group" aria-label="The four segments at a glance. Select one to open its profile.">
-    <button type="button" class="seg-tile" data-tile="hustlers">
+  <div class="seg-roster reveal" data-stagger="90" role="group" aria-label="The four segments at a glance. Select one to open its profile.">
+    <button type="button" class="seg-tile reveal" data-tile="hustlers">
       <span class="seg-tile-art"><img src="assets/deck/bear-world-coil.png" alt="" loading="lazy" decoding="async"></span>
       <span class="seg-tile-share num" data-share="hustlers">28%</span>
       <span class="seg-tile-name">The Hustlers</span>
       <span class="seg-tile-trio">Self-sufficient. Savvy. Sceptical.</span>
     </button>
-    <button type="button" class="seg-tile" data-tile="architects">
+    <button type="button" class="seg-tile reveal" data-tile="architects">
       <span class="seg-tile-art"><img src="assets/deck/bear-world-cube.png" alt="" loading="lazy" decoding="async"></span>
       <span class="seg-tile-share num" data-share="architects">17%</span>
       <span class="seg-tile-name">The Architects</span>
       <span class="seg-tile-trio">Organised. Positive. In control.</span>
     </button>
-    <button type="button" class="seg-tile" data-tile="coasters">
+    <button type="button" class="seg-tile reveal" data-tile="coasters">
       <span class="seg-tile-art"><img src="assets/deck/bear-world-arches.png" alt="" loading="lazy" decoding="async"></span>
       <span class="seg-tile-share num" data-share="coasters">27%</span>
       <span class="seg-tile-name">The Coasters</span>
       <span class="seg-tile-trio">Easygoing. Careful. Open-minded.</span>
     </button>
-    <button type="button" class="seg-tile" data-tile="retreaters">
+    <button type="button" class="seg-tile reveal" data-tile="retreaters">
       <span class="seg-tile-art"><img src="assets/deck/bear-world-doors.png" alt="" loading="lazy" decoding="async"></span>
       <span class="seg-tile-share num" data-share="retreaters">28%</span>
       <span class="seg-tile-name">The Retreaters</span>
@@ -104,8 +104,18 @@
       <p class="seg-maphint" data-maphint>Select a quadrant to open its profile, or take the quiz below to find your own.</p>
     </div>
 
-    <!-- Profile data-card — filled in by JS when a quadrant is chosen. -->
-    <aside class="seg-profile" data-profile aria-live="polite"></aside>
+    <!-- Profile column. When nothing is selected this carries a deck bear-world
+         "how to read it" motif (no dead band, no box behind copy); JS swaps in
+         the live profile data-card the moment a quadrant is chosen. -->
+    <div class="seg-profile-col">
+      <aside class="seg-profile" data-profile aria-live="polite"></aside>
+      <div class="seg-profile-rest" data-profile-rest aria-hidden="true">
+        <span class="si-orbit si-orbit--spin seg-rest-orbit" data-parallax="0.07"></span>
+        <img class="seg-rest-art" src="assets/deck/bear-world-sphere.png" alt="" loading="lazy" decoding="async" data-parallax="0.13">
+        <p class="seg-rest-lead">Two questions split Britain in four.</p>
+        <p class="seg-rest-sub">How you see the decade ahead, and whether you act on it. Pick a camp on the compass, or take the quiz, to read its full profile.</p>
+      </div>
+    </div>
   </div>
 
   <!-- Deck maze/bear-world transition: the "journey through" motif (DECK2 maze
@@ -127,15 +137,25 @@
     <div data-segment-graph></div>
   </section>
 
-  <!-- The quiz: live "you" dot drops into the reader's segment. -->
+  <!-- The quiz: live "you" dot drops into the reader's segment. Two-column
+       deck lockup — the question column left, a deck bear-world "doors"
+       (choices / opting in) motif with a sweeping orbit right, so the band
+       fills the screen instead of leaving a dead half (FEEDBACK-V4 §4). -->
   <section class="seg-quizblock reveal" data-quizblock aria-labelledby="seg-quiz-title">
-    <div class="seg-quiz-head">
-      <span class="vccp-eyebrow">Place yourself</span>
-      <h3 class="seg-quiz-title si-display si-display--sm" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
-      <p class="seg-quiz-intro" data-quiz-intro></p>
+    <div class="seg-quiz-main">
+      <div class="seg-quiz-head">
+        <span class="vccp-eyebrow">Place yourself</span>
+        <h3 class="seg-quiz-title si-display si-display--sm" id="seg-quiz-title">Which segment are <em class="hl">you</em>?</h3>
+        <p class="seg-quiz-intro" data-quiz-intro></p>
+      </div>
+      <div class="seg-quiz-host" data-quiz></div>
+      <div class="seg-result" data-result hidden></div>
     </div>
-    <div class="seg-quiz-host" data-quiz></div>
-    <div class="seg-result" data-result hidden></div>
+    <div class="seg-quiz-art" aria-hidden="true">
+      <span class="si-orbit si-orbit--spin seg-quiz-orbit" data-parallax="0.08"></span>
+      <img class="seg-quiz-img" src="assets/deck/bear-world-doors.png" alt="" loading="lazy" decoding="async" data-parallax="0.14">
+      <p class="seg-quiz-arttag">Eight choices.<span>One of four.</span></p>
+    </div>
   </section>
 
   <p class="vccp-source seg-source">Segments: VCCP COCL segmentation. Quotes: qualitative 'Taking control' research. (Segment-level figures are not in the COCL survey file.)</p>

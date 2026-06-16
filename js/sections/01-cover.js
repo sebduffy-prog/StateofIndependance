@@ -1,12 +1,17 @@
 /**
- * Chapter 01: cover — Design World V4 (deck-faithful).
+ * Chapter 01: cover — Design World V5 (deck-faithful, top-tier, experiential).
  *
- * The State-of-Independence hero: a warm yellow→orange gradient ground (CSS)
- * carrying the signature MAZE motion logo (deck (2) — isometric maze, navy
- * bear, small figure with a map, sweeping orbit ring) in the right column, a
- * huge Poppins Black wordmark in the left column with a CLEAN STRAIGHT (no
- * parallelogram) highlight wiping in on "independence", and — behind it all —
- * an ambient field of respondent dots tinted navy for contrast on the amber.
+ * ACT 1 — HERO: a warm yellow→orange gradient ground (CSS) carrying the
+ * signature deck MAZE motion logo with a live SVG orbit ring, a huge Poppins
+ * Black wordmark whose "independence" underline accent wipes in on load, and —
+ * behind it all — an ambient field of respondent dots tinted navy for contrast
+ * on the amber. The maze, orbit and bear drift on scroll (parallax), and a thin
+ * scroll-progress meter tracks the reader through the hero.
+ *
+ * ACT 2 — STATEMENT: a deep navy velvet ground carrying VCCP's brand image (a
+ * girl standing up to a bear, cream-on-navy) beside the Challenger copy, then
+ * the five signature moves as a hover-reactive index. Its entrance is driven by
+ * scroll progress (chapterTransition → CSS --enter).
  *
  * The dotField carries its own physics (mutual repulsion, momentum, cursor
  * force). One dot is the highlighted "you" (the 1,505th respondent), parked
@@ -16,13 +21,15 @@
  * pointer-events:none, so nothing occludes the wordmark and the cursor reaches
  * the dot-field. (See css/sections/01-cover.css.)
  *
- * Reduced motion: the highlight lands instantly, the maze swaps to its static
- * first-frame PNG, the field jump-cuts to its layout, and no pointer force /
- * drift runs (the lib enforces this too).
+ * Reduced motion: the underline lands instantly, the maze swaps to its static
+ * first-frame PNG, the orbit bead stops, the field jump-cuts to its layout, no
+ * parallax/pointer force runs, and the progress meter freezes at rest (the libs
+ * enforce reduced-motion too).
  *
  * @param {HTMLElement} rootEl - the <section class="chapter" id="01-cover"> element
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
+import { observeParallax, chapterTransition, scrollScene } from '../lib/experiential.js';
 import { dotField } from '../lib/charts.js';
 
 const DOT_COUNT = 240; // dense enough to read as a lively field on the warm ground
@@ -37,6 +44,9 @@ const token = (name, fallback) =>
  * Build the ambient layout: a calm scatter, with "you" parked in the
  * lower-left clearing near its caption. Returns normalised {x,y,colour}
  * targets in 0..1 space.
+ * @param {number} count
+ * @param {string} dotColour
+ * @returns {{x:number,y:number,colour:string}[]}
  */
 const buildTargets = (count, dotColour) =>
   Array.from({ length: count }, (_, i) => {
@@ -49,10 +59,12 @@ const buildTargets = (count, dotColour) =>
 export default function init(rootEl) {
   observeReveals(rootEl);
 
-  const hero = rootEl.querySelector('.cover-hero');
+  const hero = rootEl.querySelector('[data-cover-hero]');
   const dotsHost = rootEl.querySelector('[data-cover-dots]');
   const hl = rootEl.querySelector('[data-cover-hl]');
   const maze = rootEl.querySelector('[data-cover-maze]');
+  const statement = rootEl.querySelector('[data-cover-statement]');
+  const progressBar = rootEl.querySelector('[data-cover-progress]');
   const reduced = prefersReducedMotion();
 
   // Navy on the warm ground keeps the dots legible (contrast safety).
@@ -77,7 +89,7 @@ export default function init(rootEl) {
     });
   }
 
-  // Trigger the highlight wipe once the layout has painted.
+  // Trigger the underline wipe once the layout has painted.
   if (hl) {
     if (reduced) {
       hl.classList.add('is-wiped');
@@ -86,6 +98,21 @@ export default function init(rootEl) {
         requestAnimationFrame(() => hl.classList.add('is-wiped'));
       });
     }
+  }
+
+  // Experiential motion: subtle parallax across the whole chapter (maze, orbit,
+  // bear) and a scroll-progress entrance for the statement band. Both are
+  // reduced-motion safe inside the lib (jump to rest, install no scroll work).
+  observeParallax(rootEl, { maxShiftPx: 48 });
+  if (statement) chapterTransition(statement);
+
+  // Thin scroll-progress meter through the hero (continuous, rAF-batched).
+  if (hero && progressBar) {
+    scrollScene(hero, [], {
+      onProgress: (p) => {
+        progressBar.style.width = `${Math.round(p * 100)}%`;
+      },
+    });
   }
 
   if (!dotsHost) return;

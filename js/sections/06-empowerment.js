@@ -30,6 +30,7 @@
  * @param {{survey: object, segments: object, tgi: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
+import { observeCounters } from '../lib/counter.js';
 import vennDiagram from '../lib/venn.js';
 import { lollipopChart, orbitRingChart } from '../lib/charts.js';
 import {
@@ -68,6 +69,7 @@ const buildReframe = (mount) => {
            alt="" aria-hidden="true" draggable="false" />
       <img class="emp-rf-art emp-rf-art-after" src="${ASSET_BASE}${REFRAME.after.art}"
            alt="" aria-hidden="true" draggable="false" />
+      <span class="emp-rf-state" aria-hidden="true"></span>
     </div>
     <div class="emp-rf-readout" data-side="before">
       <div class="emp-rf-side emp-rf-side-before">
@@ -91,6 +93,7 @@ const buildReframe = (mount) => {
   const readout = mount.querySelector('.emp-rf-readout');
   const artBefore = mount.querySelector('.emp-rf-art-before');
   const artAfter = mount.querySelector('.emp-rf-art-after');
+  const state = mount.querySelector('.emp-rf-state');
   const slider = mount.querySelector('.emp-rf-slider');
 
   const apply = (pct) => {
@@ -104,6 +107,9 @@ const buildReframe = (mount) => {
     stage.dataset.side = side;
     readout.dataset.side = side;
     mount.style.setProperty('--rf', f.toFixed(3));
+    // Live state tag floats over the stage as a coloured/weighted label
+    // (no block) so the turn always names where the data is resting.
+    if (state) state.textContent = side === 'after' ? REFRAME.after.tag : REFRAME.before.tag;
   };
 
   slider.addEventListener('input', () => apply(Number(slider.value)));
@@ -221,6 +227,22 @@ const buildVenn = (mount, brandAsks) => {
   });
 };
 
+// Inject verified Q14 values onto the premium count-up stats. The numbers are
+// never typed into the HTML — they come from segments meta and observeCounters
+// animates them in on scroll. No fabricated values.
+const PREMIUM_KEYS = Object.freeze({
+  money: 'Stretch my money further',
+  time: 'Save me time',
+  stress: 'Reduce stress',
+});
+const fillPremium = (rootEl, brandAsks) => {
+  if (!brandAsks) return;
+  rootEl.querySelectorAll('[data-emp-stat]').forEach((el) => {
+    const v = brandAsks[PREMIUM_KEYS[el.dataset.empStat]];
+    if (typeof v === 'number') el.setAttribute('data-count-to', String(v));
+  });
+};
+
 export default function init(rootEl, data) {
   const shell = rootEl.querySelector('[data-emp-root]');
   const reframeMount = rootEl.querySelector('[data-emp-reframe]');
@@ -233,8 +255,10 @@ export default function init(rootEl, data) {
   if (reframeMount) reframe = buildReframe(reframeMount);
   if (asksMount) buildAsks(asksMount, brandAsks, rootEl);
   if (vennMount) buildVenn(vennMount, brandAsks);
+  fillPremium(rootEl, brandAsks);
 
   observeReveals(rootEl);
+  observeCounters(rootEl);
 
   // ── Experiential motion (cleaned up on chapter teardown if the loader
   //    ever re-inits; helpers no-op under reduced motion). ──

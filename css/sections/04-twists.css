@@ -71,8 +71,9 @@
 #\30 4-twists .tw-title {
   margin: 12px 0 22px 0;
   font-size: clamp(2.8rem, 6.4vw, 5.6rem);   /* bigger, bolder Poppins display */
-  line-height: 0.94;
+  line-height: 1.02;                         /* >=1 so the box contains all ink */
   letter-spacing: -0.03em;
+  overflow: visible;                          /* belt-and-braces cutoff guard */
 }
 #\30 4-twists .tw-standfirst {
   font-size: var(--t-md);
@@ -114,6 +115,7 @@
 #\30 4-twists .tw-head-art {
   position: relative;
   isolation: isolate;
+  overflow: hidden;          /* clip the spinning orbit — never escapes horizontally */
   margin: 0;
   align-self: stretch;
   min-height: clamp(280px, 40vw, 520px);
@@ -156,9 +158,10 @@
   font-weight: 900;                          /* Poppins Black */
   text-transform: uppercase;
   letter-spacing: -0.035em;
-  line-height: 0.95;
+  line-height: 1.06;                         /* >=1 so caps + .hl rule never clip */
   margin: 0 0 16px 0;
   color: var(--soi-navy);
+  overflow: visible;
 }
 #\30 4-twists .tw-lede {
   font-size: var(--t-md);
