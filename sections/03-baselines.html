@@ -19,11 +19,11 @@
        The maze + figure motif sits to the right of a Poppins-Black stacked title. -->
   <header class="bl-head reveal" data-enter-head>
     <div class="bl-head-copy">
-      <p class="bl-kicker">The numbers you already know</p>
+      <p class="bl-kicker" data-arrival>The numbers you already know</p>
       <h2 class="bl-headline">
-        Carefulness<br />
-        is the new<br />
-        <span class="bl-emph">baseline</span>.
+        <span data-arrival>Carefulness</span><br />
+        <span data-arrival>is the new</span><br />
+        <span class="bl-emph" data-arrival data-arrival-scramble data-youdot-anchor>baseline</span>.
       </h2>
       <p class="bl-standfirst">
         Yes, the country is cost-conscious. Yes, budgets are tight. But these
@@ -63,8 +63,10 @@
 
   <div class="bl-flow" data-stagger="140">
 
-    <!-- Stat 01: 77% more careful (gated by the guess) -->
-    <section class="bl-stat reveal" aria-labelledby="bl-1-title" data-enter-stat>
+    <!-- Stat 01: 77% more careful — the MARQUEE beat. Guess first (commit),
+         then the number assembles as a 100-in-100 crowd where YOUR square is
+         one of the hundred. Gated: Next unlocks on the guess reveal. -->
+    <section class="bl-stat bl-stat--marquee reveal" aria-labelledby="bl-1-title" data-enter-stat>
       <div class="bl-stat-lede">
         <span class="bl-index" aria-hidden="true">01 / 04</span>
         <p class="bl-bignum-line" id="bl-1-title">
@@ -76,11 +78,24 @@
           passing mood.
         </p>
         <div class="bl-guess" data-guess-1></div>
-        <div class="bl-waffle" data-waffle-1 hidden>
-          <p class="bl-waffle-caption">Each square is 1 in 100 UK adults.</p>
-        </div>
       </div>
-      <figure class="chart-holder bl-chart">
+
+      <!-- The 100-in-100 marquee — a hundred people you pass today; the squares
+           fill to the stat and one is highlighted as YOU. Built in JS so the
+           you-square can be singled out (the shared waffleGrid cannot). -->
+      <figure class="bl-crowd chart-holder" data-crowd-1 hidden>
+        <figcaption class="bl-crowd-cap">
+          <span class="bl-crowd-count" data-crowd-count aria-hidden="true">0</span>
+          <span class="bl-crowd-of">of every 100 people you pass today are more careful than they were.</span>
+        </figcaption>
+        <div class="bl-crowd-grid" data-crowd-grid role="img"
+             aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."></div>
+        <p class="bl-crowd-key" aria-hidden="true">
+          <span class="bl-crowd-key-you"></span> This square is you.
+        </p>
+      </figure>
+
+      <figure class="chart-holder bl-chart" data-mood-fig>
         <figcaption class="bl-chart-sub">Mood of the nation, % who agree</figcaption>
         <div data-bars-mood></div>
       </figure>

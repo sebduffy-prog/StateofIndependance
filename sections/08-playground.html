@@ -1,17 +1,20 @@
 <!-- Chapter 08 — playground. The interactive data explorer + research surface.
-     TOP-TIER / EXPERIENTIAL pass:
-       • BACKGROUNDLESS: zero blocks behind any copy. Text emphasis = colour +
-         weight only (.hl is a baseline-rule, not a fill). Charts/portrait sit
-         directly on the pale-teal research ground.
-       • DECK-WORLD: a maze-hero orbit motif anchors the title lockup; the
-         figure-silhouette + bear-world motifs are lifted from the deck; an
-         orbit ring rides behind the title for the brand "independence" motion.
-       • EXPERIENTIAL MOTION: the chapter drives a scroll-progress entrance
-         (--enter), motifs parallax through the viewport, surfaces stagger in.
-       • INTERACTIVE: metric explorer + TGI footprint + a live segment portrait
-         the visitor steps through (pills, hover-lift, crossfade motif).
-     All loved interactions kept; every number traces to the verified survey
-     file. No source captions. Reduced-motion safe (JS jumps to rest state). -->
+     EXPERIENTIAL pass (reference calibre — Blue Marine / Moooi):
+       • ASSEMBLING ENTRY: the lockup arrives, not loads — kicker/headline/
+         standfirst cascade in via [data-arrival]; the emphasis word decrypts
+         ([data-arrival-scramble]); the three read-outs count up
+         ([data-arrival-count]). Wired to the journey's `chapter:arrive` beat.
+       • MARQUEE INTERACTION — "the divergence dial": the metric explorer's
+         morph elevated. Picking a binary question renders a tugOfWar (no white
+         track, no proportion-strip label overlap); other questions render
+         varied viz (bars / dotplot / lollipop / orbit-ring). Switching segment
+         makes the picture SPRING — the four Britains diverge before your eyes.
+         This is the step's point: the first filter change unlocks Next (gate).
+       • BACKGROUNDLESS: zero blocks behind any copy. Charts sit transparently
+         on the pale-teal research ground; viz crossfades buttery between types.
+       • TACTILE FINISH: the active selection lifts; the chart host eases in.
+     Every number traces to the verified survey file. No source captions.
+     Reduced-motion safe (JS jumps to rest state). -->
 <div class="pg-world" data-pg-world>
   <!-- Brand orbit ring + drifting seeds — the deck's "independence" motion,
        decorative, behind all content, never occluding copy. -->
@@ -19,17 +22,30 @@
   <span class="si-seed pg-seed pg-seed--a" data-parallax="0.18" aria-hidden="true"></span>
   <span class="si-seed pg-seed pg-seed--b" data-parallax="-0.12" aria-hidden="true"></span>
 
-  <div class="chapter-inner pg-stage" data-stagger="120">
+  <div class="chapter-inner pg-stage">
     <!-- ── Deck title lockup: heavy Poppins Black + maze-hero brand motif ── -->
-    <header class="pg-head reveal">
+    <header class="pg-head">
       <div class="pg-head-copy">
-        <p class="vccp-eyebrow pg-eyebrow">Chapter 08 · the appendix, opened up</p>
-        <h2 class="pg-headline si-display si-display--black">Explore the <em class="hl hl-teal">four&nbsp;Britains</em> yourself</h2>
-        <p class="pg-standfirst si-measure">Every chart on this site renders from the verified survey file. Pick a question, pick a segment, and watch the four Britains diverge. No number is typed in by hand.</p>
+        <p class="vccp-eyebrow pg-eyebrow" data-arrival>Chapter 08 · the appendix, opened up</p>
+        <h2 class="pg-headline si-display si-display--black">
+          <span data-arrival>Explore the</span>
+          <span class="hl hl-teal" data-arrival data-arrival-scramble data-youdot-anchor>four&nbsp;Britains</span>
+          <span data-arrival>yourself</span>
+        </h2>
+        <p class="pg-standfirst si-measure" data-arrival>Every chart here renders from the verified survey file. Pick a question, pick a Britain, and watch the four diverge. No number is typed in by hand.</p>
         <ul class="pg-readouts" aria-hidden="true">
-          <li class="pg-readout"><span class="pg-readout-num">1,504</span><span class="pg-readout-cap">respondents</span></li>
-          <li class="pg-readout"><span class="pg-readout-num">4</span><span class="pg-readout-cap">Britains</span></li>
-          <li class="pg-readout"><span class="pg-readout-num">8</span><span class="pg-readout-cap">live questions</span></li>
+          <li class="pg-readout" data-arrival>
+            <span class="pg-readout-num" data-arrival-count data-to="1504">1,504</span>
+            <span class="pg-readout-cap">respondents</span>
+          </li>
+          <li class="pg-readout" data-arrival>
+            <span class="pg-readout-num" data-arrival-count data-to="4">4</span>
+            <span class="pg-readout-cap">Britains</span>
+          </li>
+          <li class="pg-readout" data-arrival>
+            <span class="pg-readout-num" data-arrival-count data-to="9">9</span>
+            <span class="pg-readout-cap">live questions</span>
+          </li>
         </ul>
       </div>
       <figure class="pg-head-motif" data-parallax="0.12" aria-hidden="true">
@@ -39,13 +55,13 @@
 
     <!-- Two flowing panels on the research ground — divided by space + a faint
          tint rule, not two bordered cards. Charts sit box-less inside. -->
-    <div class="pg-instrument reveal">
-      <!-- PANEL A — metric explorer -->
+    <div class="pg-instrument">
+      <!-- PANEL A — the divergence dial (marquee interaction) -->
       <section class="pg-panel pg-panel-a" aria-labelledby="pg-a-title">
         <header class="pg-panel-head">
-          <p class="pg-panel-kicker">Panel A · metric explorer</p>
+          <p class="pg-panel-kicker">Panel A · the divergence dial</p>
           <h3 id="pg-a-title" class="pg-panel-title">Make your own cut</h3>
-          <p class="pg-panel-sub">Choose a question, then a segment. The chart morphs to the cut you pick, and the read-out tells you exactly whose figure you are looking at.</p>
+          <p class="pg-panel-sub">Choose a question, then a Britain. The picture morphs to the cut you pick, and the read-out tells you exactly whose figure you are looking at.</p>
         </header>
 
         <div class="pg-controls">
@@ -54,13 +70,13 @@
             <div data-pg-metric-pills aria-describedby="pg-metric-label"></div>
           </div>
           <div class="pg-control">
-            <span class="pg-control-label" id="pg-segment-label">Segment</span>
+            <span class="pg-control-label" id="pg-segment-label">Britain</span>
             <div data-pg-segment-pills aria-describedby="pg-segment-label"></div>
           </div>
         </div>
 
         <p class="pg-view-note" data-pg-view-note role="status" aria-live="polite"></p>
-        <!-- box-less chart: transparent, sits on the ground -->
+        <!-- box-less chart: transparent, sits on the ground; JS crossfades it -->
         <div class="chart-holder pg-chart-holder">
           <div class="pg-chart" data-pg-metric-chart></div>
         </div>
@@ -79,7 +95,7 @@
 
         <div class="pg-controls">
           <div class="pg-control">
-            <span class="pg-control-label" id="pg-tgi-label">Segment</span>
+            <span class="pg-control-label" id="pg-tgi-label">Britain</span>
             <div data-pg-tgi-pills aria-describedby="pg-tgi-label"></div>
           </div>
         </div>
@@ -98,16 +114,14 @@
     <!-- ── Segment-portrait band: live, deck-faithful, fills the lower screen ──
          A shared segment selector swaps the brand-world motif + the qualitative
          portrait (who / money / channels — verbatim deck/qual descriptors, no
-         invented numbers; only the deck-canonical share is shown numerically).
-         The visitor can also step the band with prev/next, and the motif
-         crossfades + parallaxes for an experiential, premium feel. -->
-    <section class="pg-portrait reveal" aria-labelledby="pg-portrait-title">
+         invented numbers; only the deck-canonical share is shown numerically). -->
+    <section class="pg-portrait" aria-labelledby="pg-portrait-title">
       <header class="pg-portrait-head">
         <p class="pg-panel-kicker">The four Britains · who they are</p>
         <h3 id="pg-portrait-title" class="pg-panel-title">Pick a Britain, meet it</h3>
         <div class="pg-controls">
           <div class="pg-control">
-            <span class="pg-control-label" id="pg-portrait-label">Segment</span>
+            <span class="pg-control-label" id="pg-portrait-label">Britain</span>
             <div data-pg-portrait-pills aria-describedby="pg-portrait-label"></div>
           </div>
         </div>

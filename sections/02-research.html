@@ -13,25 +13,31 @@
 
   <div class="research-split si-split">
 
-    <!-- LEFT: the method, told as a flowing rhythm (no boxes behind any text) -->
+    <!-- LEFT: the method, told as a flowing rhythm (no boxes behind any text).
+         Meaning ASSEMBLES on entry: each line lifts in on arrival (data-arrival),
+         the emphasis word decrypts last (data-arrival-scramble), the numbers
+         count up. -->
     <div class="research-method si-stack-tight reveal" data-stagger="90">
-      <p class="vccp-eyebrow research-kicker reveal">The method</p>
+      <p class="vccp-eyebrow research-kicker reveal" data-arrival>The method</p>
 
       <!-- Image-title lockup treatment (deck): huge Poppins-Black all-caps,
            tight tracking, stacked, emphasis by colour + weight only. -->
       <h2 class="research-headline reveal">
-        How we <span class="hl hl-teal">listened</span><br>to Britain.
+        <span data-arrival>How we</span>
+        <span class="hl hl-teal" data-arrival data-arrival-scramble>listened</span><br>
+        <span data-arrival>to Britain.</span>
       </h2>
 
-      <p class="research-standfirst reveal">
+      <p class="research-standfirst reveal" data-arrival>
         A nationally representative survey, paired with week-long video
         diaries. Numbers for the <strong>what</strong>, real lives for the
         <strong>why</strong>.
       </p>
 
-      <!-- Hero figure leads; the big number IS the headline (no panel). -->
-      <div class="research-hero-stat reveal">
-        <span class="research-hero-value si-bignum"><span data-count-to="1504"></span></span>
+      <!-- Hero figure leads; the big number IS the headline (no panel).
+           data-youdot-anchor: the persistent "you" marker lands on the 1,504. -->
+      <div class="research-hero-stat reveal" data-arrival>
+        <span class="research-hero-value si-bignum" data-youdot-anchor><span data-count-to="1504"></span></span>
         <span class="research-hero-label">respondents · nationally representative · UK adults&nbsp;18+</span>
       </div>
 
@@ -85,12 +91,12 @@
       <img class="research-world-motif" src="assets/deck/bear-world-sphere.png" alt=""
            aria-hidden="true" data-parallax="0.16">
       <div class="research-map-head">
-        <p class="research-map-eyebrow">Eight cities, in their own words</p>
+        <p class="research-map-eyebrow" data-arrival>Eight cities, in their own words</p>
         <p class="research-map-counter" data-research-counter aria-live="polite"></p>
       </div>
       <div class="research-map" data-research-map aria-label="Map of the United Kingdom showing eight qualitative research cities"></div>
       <p class="research-map-hint" data-research-hint>
-        Select a city — or use the arrow keys — to read from its video diary.
+        Open a city — or use the arrow keys — and its diary surfaces.
       </p>
       <div class="research-rail" data-research-rail aria-live="polite"></div>
     </div>

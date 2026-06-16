@@ -21,6 +21,13 @@
  * rest of the page.
  */
 
+import {
+  youDot,
+  magneticButton,
+  magneticCursor,
+  prefersReducedMotion,
+} from './lib/experiential.js';
+
 const DATA_FILES = {
   survey: 'data/survey.json',
   segments: 'data/segments.json',
@@ -30,6 +37,12 @@ const DATA_FILES = {
 // Tuning constants — no magic numbers inline.
 const DEFAULT_UNLOCK_MS = 1200; // ungated/narrative steps unlock after this dwell
 const AVG_SECONDS_PER_STEP = 100; // drives the average-time label (~15 min over 9 steps)
+
+// Orbit progress meridian — a thin SVG arc in the controls that fills with
+// journey progress (brand-world finish, NOT a top bar).
+const MERIDIAN_SIZE = 30; // px box
+const MERIDIAN_R = 12; // arc radius
+const MERIDIAN_CIRC = 2 * Math.PI * MERIDIAN_R;
 
 const fetchJson = async (url) => {
   const res = await fetch(url);
@@ -126,6 +139,47 @@ const mountSection = async (entry, data, app) => {
 };
 
 /**
+ * Build the orbit progress meridian into the controls' meta block: a thin SVG
+ * ring whose stroke fills with journey progress. Returns a setter (0..1).
+ * Unobtrusive, sits beside the step indicator — never a top bar.
+ * @param {HTMLElement} metaEl
+ * @returns {(progress:number)=>void}
+ */
+const createMeridian = (metaEl) => {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('class', 'journey-meridian');
+  svg.setAttribute('viewBox', `0 0 ${MERIDIAN_SIZE} ${MERIDIAN_SIZE}`);
+  svg.setAttribute('width', String(MERIDIAN_SIZE));
+  svg.setAttribute('height', String(MERIDIAN_SIZE));
+  svg.setAttribute('aria-hidden', 'true');
+
+  const c = MERIDIAN_SIZE / 2;
+  const track = document.createElementNS(ns, 'circle');
+  const fill = document.createElementNS(ns, 'circle');
+  [track, fill].forEach((el) => {
+    el.setAttribute('cx', String(c));
+    el.setAttribute('cy', String(c));
+    el.setAttribute('r', String(MERIDIAN_R));
+    el.setAttribute('fill', 'none');
+  });
+  track.setAttribute('class', 'journey-meridian__track');
+  fill.setAttribute('class', 'journey-meridian__fill');
+  // Start the arc at 12 o'clock and run clockwise.
+  fill.setAttribute('transform', `rotate(-90 ${c} ${c})`);
+  fill.style.strokeDasharray = String(MERIDIAN_CIRC);
+  fill.style.strokeDashoffset = String(MERIDIAN_CIRC);
+
+  svg.append(track, fill);
+  metaEl.prepend(svg);
+
+  return (progress) => {
+    const clamped = Math.min(1, Math.max(0, progress));
+    fill.style.strokeDashoffset = String(MERIDIAN_CIRC * (1 - clamped));
+  };
+};
+
+/**
  * The journey controller. Owns the per-step gating state, the current index,
  * the dwell timer, and the bottom controls. Exposes makeJourneyApi(index) so a
  * section's init() can gate()/ready() its own step, and showStep(index) to
@@ -137,12 +191,41 @@ const createJourney = (stepCount) => {
   const nextBtn = document.getElementById('journeyNext');
   const indicator = document.getElementById('journeyIndicator');
   const hint = document.getElementById('journeyHint');
+  const meta = document.querySelector('.journey-meta');
 
   const averageLabel = computeAverageLabel(stepCount);
   const states = Array.from({ length: stepCount }, makeStepState);
   let sections = [];
   let current = 0;
   let dwellTimer = null;
+
+  // ── Connective tissue (Blue-Marine feel) ─────────────────────────────
+  // Orbit progress meridian: a quiet completion ring in the controls.
+  const setMeridian = meta ? createMeridian(meta) : () => {};
+  // Persistent "you" marker: born here, eases toward each step's anchor.
+  const marker = youDot();
+  // Magnetic finish: Next is pulled toward the cursor; a commit pulse fires
+  // on gated unlock. Both are reduced-motion / coarse-pointer safe in the lib.
+  magneticButton(nextBtn, { radius: 120, strength: 0.3 });
+  if (!prefersReducedMotion() && !window.matchMedia('(pointer: coarse)').matches) {
+    magneticCursor();
+  }
+
+  // Track which step has already played its arrival so re-showing a visited
+  // step assembles again but the first-step ritual runs only once.
+  let firstArrivalDone = false;
+
+  // Fill the meridian to the END of the current step (1-based / total).
+  const refreshMeridian = () => setMeridian((current + 1) / stepCount);
+
+  // A short tactile "commit" pulse when a gated step unlocks (the reward for
+  // completing the interaction). Pure class toggle; CSS owns the motion.
+  let lastUnlocked = false;
+  const commitPulse = () => {
+    if (prefersReducedMotion()) return;
+    nextBtn.classList.remove('is-committed');
+    requestAnimationFrame(() => nextBtn.classList.add('is-committed'));
+  };
 
   const isLast = () => current === stepCount - 1;
 
@@ -156,6 +239,9 @@ const createJourney = (stepCount) => {
     // non-final step.
     hint.hidden = !(state.gated && !state.ready && !isLast());
     indicator.textContent = `Step ${current + 1} of ${stepCount} · ${averageLabel}`;
+    // Fire the commit pulse when this step crosses from locked to unlocked.
+    if (unlocked && !lastUnlocked && state.gated && !isLast()) commitPulse();
+    lastUnlocked = unlocked;
   };
 
   const clearDwell = () => {
@@ -194,6 +280,22 @@ const createJourney = (stepCount) => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     section.scrollTop = 0;
     focusHeading(section);
+
+    // Reset the unlock latch so a freshly-shown gated step can pulse on commit.
+    lastUnlocked = false;
+
+    // ── Connective tissue per step ─────────────────────────────────────
+    refreshMeridian();
+    marker.anchorTo(section);
+    // Fire the chapter ARRIVAL: the first step gets the brief connecting
+    // ritual (once); every step assembles its heading/lines and counts up.
+    // Sections own the assemble via their arrival() call; main.js signals
+    // them with a `chapter:arrive` event carrying whether the ritual runs.
+    const withRitual = index === 0 && !firstArrivalDone;
+    if (withRitual) firstArrivalDone = true;
+    section.dispatchEvent(
+      new CustomEvent('chapter:arrive', { detail: { ritual: withRitual } }),
+    );
 
     // Ungated steps default-unlock after the dwell; gated steps wait for
     // ready(). A step that already gated gets no dwell timer.

@@ -378,6 +378,40 @@
 #\30 5-segments .seg-quad[data-pos="br"] { align-items: flex-end; text-align: right; justify-content: flex-end; }
 #\30 5-segments .seg-quad[data-pos="bl"] { justify-content: flex-end; }
 
+/* ANTICIPATORY STAGING (DNA): the crowd forms FIRST, then it is named. The
+   quadrant labels + axis labels hold back until the dots have begun to land
+   (JS adds .is-resolved ~0.5s after formation), then assemble in. The axes
+   draw outward from the centre on resolve. Reduced-motion = shown at once. */
+#\30 5-segments .seg-quad {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .55s cubic-bezier(.22,.61,.36,1),
+              transform .55s cubic-bezier(.22,.61,.36,1),
+              background .25s ease;
+}
+#\30 5-segments .seg-map.is-resolved .seg-quad { opacity: 1; transform: none; }
+#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="architects"],
+#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="tr"] { transition-delay: .06s; }
+#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="bl"] { transition-delay: .12s; }
+#\30 5-segments .seg-map.is-resolved .seg-quad[data-pos="br"] { transition-delay: .18s; }
+
+#\30 5-segments .seg-axis-label { opacity: 0; transition: opacity .55s ease .24s; }
+#\30 5-segments .seg-map.is-resolved .seg-axis-label { opacity: 1; }
+
+#\30 5-segments .seg-axis-x { transform: translateY(-0.5px) scaleX(0); transform-origin: 50% 50%;
+  transition: transform .7s cubic-bezier(.22,.61,.36,1); }
+#\30 5-segments .seg-axis-y { transform: translateX(-0.5px) scaleY(0); transform-origin: 50% 50%;
+  transition: transform .7s cubic-bezier(.22,.61,.36,1) .08s; }
+#\30 5-segments .seg-map.is-resolved .seg-axis-x { transform: translateY(-0.5px) scaleX(1); }
+#\30 5-segments .seg-map.is-resolved .seg-axis-y { transform: translateX(-0.5px) scaleY(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  #\30 5-segments .seg-quad,
+  #\30 5-segments .seg-axis-label { opacity: 1; transform: none; transition: none; }
+  #\30 5-segments .seg-axis-x { transform: translateY(-0.5px); transition: none; }
+  #\30 5-segments .seg-axis-y { transform: translateX(-0.5px); transition: none; }
+}
+
 /* Quadrant label text: a page-tinted text-shadow halo (NOT a mustard chip)
    keeps every glyph legible over the physics dots drawn behind — backgroundless
    keep-out, no white/mustard boxes (FEEDBACK-V4 §4/§6). */
@@ -436,8 +470,13 @@
   text-shadow:
     0 0 3px var(--soi-cream), 0 0 3px var(--soi-cream),
     0 1px 2px var(--soi-cream), 0 -1px 2px var(--soi-cream);
-  transition: left .6s cubic-bezier(.22,.61,.36,1), top .6s cubic-bezier(.22,.61,.36,1);
+  /* Position (left/top) is driven per-frame by a JS spring (tactile.spring) so
+     the dot travels with embodied weight as the reader answers — no CSS tween
+     on left/top here (it would fight the spring). Only the entrance fades. */
+  opacity: 0;
+  transition: opacity .4s ease;
 }
+#\30 5-segments .seg-youtag:not([hidden]) { opacity: 1; }
 /* the dot anchor that pins the exact position */
 #\30 5-segments .seg-youtag::before {
   content: "";
@@ -452,7 +491,18 @@
   box-shadow: 0 0 0 3px var(--soi-cream);
 }
 #\30 5-segments .seg-youtag.is-instant { transition: none; }
+/* Landed: the dot has come to rest in the reader's camp. A one-shot tactile
+   "settle" pulse on the anchor (scale overshoot + a brief contact ring) marks
+   the payoff. Reduced motion holds the final state (animation disabled below). */
 #\30 5-segments .seg-youtag.is-landed { color: var(--soi-navy); }
+#\30 5-segments .seg-youtag.is-landed::before {
+  animation: seg-you-settle .62s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes seg-you-settle {
+  0%   { transform: translateX(-50%) scale(0.6); box-shadow: 0 0 0 3px var(--soi-cream); }
+  55%  { transform: translateX(-50%) scale(1.34); box-shadow: 0 0 0 7px rgba(253,141,32,0.28); }
+  100% { transform: translateX(-50%) scale(1);    box-shadow: 0 0 0 3px var(--soi-cream); }
+}
 
 #\30 5-segments .seg-maphint {
   font-size: var(--t-sm, 0.9rem);
@@ -903,4 +953,5 @@
   #\30 5-segments .seg-quad,
   #\30 5-segments .seg-tile,
   #\30 5-segments .seg-youtag { transition: none; }
+  #\30 5-segments .seg-youtag.is-landed::before { animation: none; }
 }

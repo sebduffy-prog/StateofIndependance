@@ -1,42 +1,47 @@
 /**
- * Chapter 06: empowerment. Design World V5 (TOP-TIER experiential pass).
+ * Chapter 06: empowerment. EXPERIENTIAL-2 pass — the tactile three-needs venn.
  *
- * One continuous warm bear-figure world. NO blocks behind any text — every
- * navy band, scrim plate, cream pill, legend card and centre plate from the
- * prior pass is gone; copy now sits on the ground with colour + weight
- * emphasis only. Charts / venn / orbit ring float backgroundless.
+ * One continuous warm bear-figure world. NO blocks behind any text — copy sits
+ * on the ground with colour + weight emphasis only. Charts / venn / orbit ring
+ * float backgroundless. Three beats, all deck-lifted:
  *
- * Three moments, all deck-lifted:
- *   1. The survival-mode -> active-agency REFRAME, told on the deck's
- *      bear-world panels (coil = survival, sphere = active agency). A range
- *      input cross-fades the two world panels; the COPY lives on the ground
- *      beside them (no scrim plate). scrollScene primes the wipe as the
- *      section enters so the turn feels alive. Keyboard operable via the range.
+ *   1. The survival-mode -> active-agency REFRAME (the cinematic pivot wipe).
+ *      Two cross-fading deck bear-world panels (coil = survival, sphere = active
+ *      agency); a range input drives the wipe and scrollScene primes it as the
+ *      section enters so the turn arrives rather than cuts. Keyboard operable.
+ *      This is a NARRATIVE beat — it no longer gates.
+ *
  *   2. A brand-ask read (Q14) with TWO interactive views the user toggles:
- *      a ranked lollipop and an orbit-ring (the deck's orbit motif). Both
- *      float on the warm ground — no navy band.
- *   3. The shared vennDiagram: three circles save me money / time / stress,
- *      centre word "empowerment". Backgroundless; the deck's overlapping-
- *      circles bear-world sits behind as the section motif.
+ *      a ranked lollipop and an orbit-ring (the deck's orbit motif).
+ *
+ *   3. THE MARQUEE INTERACTION — "Three needs, one overlap." Money / time /
+ *      stress begin as three flat circles held APART on the warm ground. The
+ *      visitor DRAGS them together (real physics, contact shadow, settle from
+ *      tactile.js); as they converge the shared overlap region GROWS and the
+ *      word "empowerment" assembles in the centre. When all three meet, the
+ *      turn completes — this is the step's gate: journey.ready() fires the
+ *      first time the three needs fully overlap. Fully keyboard operable
+ *      (arrow-nudge each circle) and reduced-motion safe (circles start met).
  *
  * Experiential motion (js/lib/experiential.js): chapterTransition supplies the
  * --enter entrance progress; observeParallax drifts the world panels + orbit
- * rings; scrollScene primes the reframe wipe. All reduced-motion safe.
+ * rings; arrival() assembles the headings; scrollScene primes the reframe wipe.
  *
  * Contract: docs/CONTRACT.md. Every selector is scoped #06-empowerment.
  * No fabricated numbers (all from data). No console.log.
  *
  * @param {HTMLElement} rootEl - <section class="chapter" id="06-empowerment">
- * @param {{survey: object, segments: object, tgi: object}} data
+ * @param {{survey: object, segments: object, tgi: object, journey: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import vennDiagram from '../lib/venn.js';
 import { lollipopChart, orbitRingChart } from '../lib/charts.js';
+import { draggable } from '../lib/tactile.js';
 import {
   chapterTransition,
   observeParallax,
   scrollScene,
+  arrival,
   prefersReducedMotion,
 } from '../lib/experiential.js';
 
@@ -97,9 +102,6 @@ const buildReframe = (mount) => {
   const slider = mount.querySelector('.emp-rf-slider');
 
   const apply = (pct) => {
-    // pct 0 = all survival mode; 100 = all active agency. Cross-fade the two
-    // world panels; the active-agency emphasis on the copy follows the same
-    // value (colour/weight only — no block).
     const f = pct / 100;
     artAfter.style.opacity = String(f);
     artBefore.style.opacity = String(1 - f);
@@ -107,8 +109,6 @@ const buildReframe = (mount) => {
     stage.dataset.side = side;
     readout.dataset.side = side;
     mount.style.setProperty('--rf', f.toFixed(3));
-    // Live state tag floats over the stage as a coloured/weighted label
-    // (no block) so the turn always names where the data is resting.
     if (state) state.textContent = side === 'after' ? REFRAME.after.tag : REFRAME.before.tag;
   };
 
@@ -173,7 +173,6 @@ const buildAsks = (mount, brandAsks, rootEl) => {
   const views = { bars: renderBars, orbit: renderOrbit };
   renderBars();
 
-  // View toggle — bars (ranked lollipop) vs orbit (deck orbit motif).
   const buttons = Array.from(rootEl.querySelectorAll('[data-asks-view]'));
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -189,47 +188,293 @@ const buildAsks = (mount, brandAsks, rootEl) => {
   });
 };
 
-const buildVenn = (mount, brandAsks) => {
+/* ─────────────────── THE MARQUEE: tactile three-needs venn ───────────────── */
+
+// The three needs, with their verified Q14 values. The colours are three
+// clearly distinct flat brand hues so overlaps stay legible.
+const NEED_KEYS = Object.freeze({
+  money: 'Stretch my money further',
+  time: 'Save me time',
+  stress: 'Reduce stress',
+});
+
+// Geometry as FRACTIONS of the stage box (responsive). The three need circles
+// are HTML elements dragged in real screen px by tactile.js; their HOME centres
+// sit on a wide triangle (held apart) and converge to a tight triangle around
+// the stage centre as the visitor drags them together.
+const VENN = Object.freeze({
+  diamFrac: 0.42, // circle diameter as a fraction of the stage's shorter side
+  spreadFrac: 0.27, // home distance of each centre from the stage centre (frac of short side)
+  lockFrac: 0.085, // resolved distance of each centre from the centre (the tight triangle)
+  metFrac: 0.16, // centre-distance (frac) under which a circle counts as "met"
+});
+
+// Home directions on a triangle: money top, time lower-left, stress lower-right.
+const NEED_LAYOUT = [
+  { id: 'money', ang: -90 },
+  { id: 'time', ang: 150 },
+  { id: 'stress', ang: 30 },
+];
+
+const dirXY = (ang) => ({
+  x: Math.cos((ang * Math.PI) / 180),
+  y: Math.sin((ang * Math.PI) / 180),
+});
+
+/**
+ * Build the tactile venn. Returns { onConverged } registration so the caller
+ * can gate on the three needs fully overlapping.
+ */
+const buildVenn = (mount, brandAsks, onConverged) => {
   if (!brandAsks) {
     mount.innerHTML = '<p class="emp-venn-empty">Brand-ask data is not available.</p>';
-    return;
+    return { destroy() {} };
   }
+
+  const reduced = prefersReducedMotion();
   const fmt = (v) => (typeof v === 'number' ? v.toFixed(1) + '%' : '');
 
-  // Distinct flat fills resolved from brand tokens — amber / royal-blue /
-  // orange. Three clearly different hues so overlaps stay readable.
   const accents = {
     money: cssVar('--soi-amber', '#FBC100'),
     time: cssVar('--soi-blue', '#0B3DB4'),
     stress: cssVar('--soi-orange', '#FD8D20'),
   };
+  const META = {
+    money: { label: 'Save me money', short: 'money', sub: 'the obvious ask' },
+    time: { label: 'Save me time', short: 'time', sub: 'the premium ask' },
+    stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask' },
+  };
 
-  vennDiagram(mount, {
-    ariaLabel: 'Save me money, save me time and save me stress overlap at empowerment',
-    centre: { label: 'They want', value: 'empowerment', sub: 'tools, not hand-holding' },
-    sets: [
-      {
-        id: 'money', label: 'Save me money',
-        value: fmt(brandAsks['Stretch my money further']),
-        sub: 'the obvious ask', accent: accents.money,
-      },
-      {
-        id: 'time', label: 'Save me time',
-        value: fmt(brandAsks['Save me time']),
-        sub: 'the premium ask', accent: accents.time,
-      },
-      {
-        id: 'stress', label: 'Save me stress',
-        value: fmt(brandAsks['Reduce stress']),
-        sub: 'the premium ask', accent: accents.stress,
-      },
-    ],
+  // ── DOM scaffold. HTML circles (tactile drags them in real px); the overlap
+  //    wash + centre word are HTML too, so everything stays in one px space. ──
+  mount.innerHTML = `
+    <div class="emp-tv-stage" role="group"
+         aria-label="Drag save me money, save me time and save me stress together until they overlap on empowerment">
+      <div class="emp-tv-field" data-emp-tv-field>
+        <div class="emp-tv-overlap" aria-hidden="true"></div>
+        <div class="emp-tv-centre" aria-hidden="true">
+          <span class="emp-tv-centre-lbl">They want</span>
+          <span class="emp-tv-centre-word">empowerment</span>
+          <span class="emp-tv-centre-sub">tools, not hand-holding</span>
+        </div>
+      </div>
+      <p class="emp-tv-hint" data-emp-tv-hint aria-live="polite">Drag the three circles together</p>
+    </div>
+    <div class="emp-tv-legend"></div>`;
+
+  const stage = mount.querySelector('.emp-tv-stage');
+  const field = mount.querySelector('[data-emp-tv-field]');
+  const overlap = mount.querySelector('.emp-tv-overlap');
+  const centre = mount.querySelector('.emp-tv-centre');
+  const hint = mount.querySelector('[data-emp-tv-hint]');
+  const legend = mount.querySelector('.emp-tv-legend');
+
+  // Live geometry in px, recomputed from the field box (responsive). Returns
+  // centre + radius + the home/lock distances, all in px.
+  const geom = () => {
+    const r = field.getBoundingClientRect();
+    const short = Math.min(r.width, r.height);
+    return {
+      w: r.width, h: r.height,
+      cx: r.width / 2, cy: r.height / 2,
+      diam: short * VENN.diamFrac,
+      spread: short * VENN.spreadFrac,
+      lock: short * VENN.lockFrac,
+      met: short * VENN.metFrac,
+    };
+  };
+
+  // The three need circles — absolutely-positioned HTML, centred via a base
+  // left/top then translated by tactile (real px). fill via flat brand colour
+  // with a touch of transparency so overlaps read as colour mixes.
+  const needs = NEED_LAYOUT.map(({ id, ang }) => {
+    const el = document.createElement('div');
+    el.className = 'emp-tv-need';
+    el.dataset.need = id;
+    el.style.setProperty('--accent', accents[id]);
+    el.innerHTML = `<span class="emp-tv-need-lbl">${META[id].short}</span>`;
+    field.appendChild(el);
+    return { id, el, dir: dirXY(ang) };
   });
+
+  // Place each circle's HOME (the wide triangle) and size it. Called on layout
+  // + resize so positions track the responsive field. Home is the circle's
+  // resting CSS position; tactile's transform is the live drag offset on top.
+  const placeHome = () => {
+    const g = geom();
+    needs.forEach((n) => {
+      n.el.style.width = `${g.diam}px`;
+      n.el.style.height = `${g.diam}px`;
+      const hx = g.cx + n.dir.x * g.spread;
+      const hy = g.cy + n.dir.y * g.spread;
+      n.el.style.left = `${hx - g.diam / 2}px`;
+      n.el.style.top = `${hy - g.diam / 2}px`;
+      n.homeX = hx;
+      n.homeY = hy;
+    });
+  };
+  placeHome();
+
+  // Legend — backgroundless focusable rows; each is also the KEYBOARD path.
+  const legRows = needs.map(({ id }) => {
+    const row = document.createElement('div');
+    row.className = 'emp-tv-leg';
+    row.dataset.need = id;
+    row.style.setProperty('--accent', accents[id]);
+    row.innerHTML =
+      `<span class="emp-tv-leg-name">${META[id].label}</span>` +
+      `<span class="emp-tv-leg-n num">${fmt(brandAsks[NEED_KEYS[id]])}</span>` +
+      `<span class="emp-tv-leg-sub">${META[id].sub}</span>`;
+    legend.appendChild(row);
+    return { id, row };
+  });
+
+  // ── Convergence model (all px) ──
+  // Each circle's live offset {dx,dy} is its tactile drag transform (px). Its
+  // centre = home + offset. Togetherness t in [0,1]: 1 = all on the centre.
+  const offsets = new Map(needs.map((n) => [n.id, { dx: 0, dy: 0 }]));
+  let converged = false;
+
+  const centreDist = (n) => {
+    const o = offsets.get(n.id);
+    return Math.hypot(n.homeX + o.dx - geom().cx, n.homeY + o.dy - geom().cy);
+  };
+
+  const render = () => {
+    const g = geom();
+    // Guard: while the step is hidden the field has no size, so every distance
+    // collapses to ~0 and would falsely read as "met". Skip until laid out.
+    if (g.spread < 1) return;
+    const dists = needs.map(centreDist);
+    const meanDist = dists.reduce((a, b) => a + b, 0) / dists.length;
+    const t = Math.max(0, Math.min(1, 1 - meanDist / g.spread));
+    // Overlap wash grows with togetherness; flat navy, opacity rises with t so
+    // the "empowerment" core resolves as the three needs meet.
+    const od = t * g.diam * 0.86;
+    overlap.style.width = `${od}px`;
+    overlap.style.height = `${od}px`;
+    overlap.style.opacity = (0.1 + t * 0.5).toFixed(3);
+    centre.style.setProperty('--tv', t.toFixed(3));
+    stage.classList.toggle('is-converging', t > 0.15);
+
+    const allMet = dists.every((d) => d <= g.met);
+    if (allMet && !converged) {
+      converged = true;
+      stage.classList.add('is-converged');
+      centre.classList.add('is-on');
+      if (hint) hint.textContent = 'They all resolve to one thing: empowerment.';
+      onConverged();
+      lockToCentre();
+    } else if (!allMet && !converged && hint) {
+      hint.textContent = 'Drag the three circles together';
+    }
+  };
+
+  // Settle all three onto the resolved TIGHT triangle (a shared core, not a
+  // single stack) and hold there so the overlap is stable. Drives each
+  // controller via setPosition so pointer + keyboard share one source of truth.
+  const drags = new Map();
+  const lockToCentre = () => {
+    const g = geom();
+    needs.forEach((n) => {
+      const ctrl = drags.get(n.id);
+      if (!ctrl) return;
+      const tx = g.cx + n.dir.x * g.lock - n.homeX;
+      const ty = g.cy + n.dir.y * g.lock - n.homeY;
+      ctrl.setPosition(tx, ty, { animate: true });
+    });
+  };
+
+  needs.forEach((n) => {
+    const o = offsets.get(n.id);
+    const ctrl = draggable(n.el, {
+      spring: 'settle',
+      springOpts: { stiffness: 150, bounce: 0.16 },
+      momentum: 0, // settle exactly where dropped — no drift past the centre
+      keyboardStep: 22,
+      // Keep the circle centre inside the field.
+      bounds: ({ x, y }) => {
+        const g = geom();
+        const half = g.diam / 2;
+        const cx = n.homeX + x;
+        const cy = n.homeY + y;
+        const clampedCx = Math.min(g.w - half, Math.max(half, cx));
+        const clampedCy = Math.min(g.h - half, Math.max(half, cy));
+        return { x: clampedCx - n.homeX, y: clampedCy - n.homeY };
+      },
+      onMove: ({ x, y }) => {
+        o.dx = x;
+        o.dy = y;
+        render();
+      },
+    });
+    drags.set(n.id, ctrl);
+  });
+
+  // Legend rows = KEYBOARD path: focus a row, press Enter/Space/arrow to bring
+  // that need into the resolved triangle. Three presses resolve the overlap.
+  legRows.forEach(({ id, row }) => {
+    row.tabIndex = 0;
+    const n = needs.find((x) => x.id === id);
+    const bringIn = () => {
+      const g = geom();
+      const tx = g.cx + n.dir.x * g.lock - n.homeX;
+      const ty = g.cy + n.dir.y * g.lock - n.homeY;
+      drags.get(id).setPosition(tx, ty, { animate: true });
+    };
+    row.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' ||
+          e.key === 'ArrowUp' || e.key === 'ArrowDown' ||
+          e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        bringIn();
+      }
+    });
+    row.addEventListener('mouseenter', () => { stage.dataset.focus = id; });
+    row.addEventListener('mouseleave', () => { delete stage.dataset.focus; });
+    row.addEventListener('focus', () => { stage.dataset.focus = id; });
+    row.addEventListener('blur', () => { delete stage.dataset.focus; });
+  });
+
+  render();
+
+  // Reduced motion: satisfy the gate without interaction by snapping every
+  // circle onto the resolved triangle (done in onLayout once it has a real box).
+  const snapResolved = () => {
+    const g = geom();
+    needs.forEach((n) => {
+      const o = offsets.get(n.id);
+      o.dx = g.cx + n.dir.x * g.lock - n.homeX;
+      o.dy = g.cy + n.dir.y * g.lock - n.homeY;
+      n.el.style.transform = `translate3d(${o.dx}px, ${o.dy}px, 0) scale(var(--tactile-scale, 1))`;
+    });
+  };
+
+  // Re-place homes + re-render whenever the field gains/changes size. This also
+  // covers the first real layout: the step mounts HIDDEN (field box = 0), so the
+  // initial placeHome() is a no-op; the ResizeObserver fires once the step is
+  // shown and lays the circles out for real. Under reduced motion it snaps the
+  // resolved overlap; if already converged it re-settles the tight triangle.
+  const onLayout = () => {
+    placeHome();
+    if (reduced) snapResolved();
+    else if (converged) lockToCentre();
+    render();
+  };
+  const ro = new ResizeObserver(onLayout);
+  ro.observe(field);
+  window.addEventListener('resize', onLayout, { passive: true });
+
+  return {
+    destroy() {
+      ro.disconnect();
+      window.removeEventListener('resize', onLayout);
+      drags.forEach((d) => d.destroy());
+    },
+  };
 };
 
-// Inject verified Q14 values onto the premium count-up stats. The numbers are
-// never typed into the HTML — they come from segments meta and observeCounters
-// animates them in on scroll. No fabricated values.
+// Inject verified Q14 values onto the premium count-up stats.
 const PREMIUM_KEYS = Object.freeze({
   money: 'Stretch my money further',
   time: 'Save me time',
@@ -250,44 +495,42 @@ export default function init(rootEl, data) {
   const asksMount = rootEl.querySelector('[data-emp-asks]');
   const vennMount = rootEl.querySelector('[data-emp-venn]');
   const brandAsks = data?.segments?.meta?.metricsTotals?.brandAsks ?? null;
-
-  // Journey gating: this is a narrative-ish step, but it has a clear hero
-  // interaction (the survival -> agency reframe slider). Gate Next and unlock
-  // it the moment the visitor moves the slider for the first time. If the
-  // reframe failed to build for any reason, fall back to ungated (auto-unlock)
-  // so the journey can never dead-end here.
   const journey = data?.journey ?? null;
 
-  let reframe = null;
-  if (reframeMount) reframe = buildReframe(reframeMount);
+  // Journey gating: the MARQUEE interaction is the gate. The three needs must
+  // be dragged together into overlap (empowerment) before Next unlocks. If the
+  // venn fails to build, fall back to ungated so the journey can't dead-end.
+  let unlocked = false;
+  const unlock = () => {
+    if (unlocked) return;
+    unlocked = true;
+    if (journey) journey.ready();
+  };
+
+  const reframe = reframeMount ? buildReframe(reframeMount) : null;
   if (asksMount) buildAsks(asksMount, brandAsks, rootEl);
-  if (vennMount) buildVenn(vennMount, brandAsks);
   fillPremium(rootEl, brandAsks);
 
-  if (journey && reframe) {
-    journey.gate();
-    let unlocked = false;
-    const unlock = () => {
-      if (unlocked) return;
-      unlocked = true;
-      journey.ready();
-    };
-    // Any genuine move of the reframe slider (drag or keyboard) counts.
-    reframe.slider.addEventListener('input', unlock);
+  let venn = null;
+  if (vennMount) {
+    venn = buildVenn(vennMount, brandAsks, unlock);
+    if (journey) journey.gate();
+    // Defensive: if the venn couldn't build (no data), don't trap the visitor.
+    if (!brandAsks && journey) unlock();
   }
 
   observeReveals(rootEl);
   observeCounters(rootEl);
 
-  // ── Experiential motion (cleaned up on chapter teardown if the loader
-  //    ever re-inits; helpers no-op under reduced motion). ──
+  // Chapter arrival: assemble the headings each time this step becomes current.
+  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
+
+  // ── Experiential motion ──
   const cleanups = [];
   if (shell) cleanups.push(chapterTransition(shell));
   if (shell) cleanups.push(observeParallax(shell, { maxShiftPx: 48 }));
 
-  // Prime the reframe wipe as the section scrolls in: nudge the data from
-  // survival toward agency so the turn reads as motion (only when the user
-  // hasn't already grabbed the slider, and never under reduced motion).
+  // Prime the reframe wipe as the section scrolls in (cinematic pivot, ungated).
   if (reframe && reframeSection && !prefersReducedMotion()) {
     let touched = false;
     reframe.slider.addEventListener('pointerdown', () => { touched = true; });
@@ -296,15 +539,23 @@ export default function init(rootEl, data) {
       scrollScene(reframeSection, [], {
         onProgress: (p) => {
           if (touched) return;
-          // Map the section's mid-travel (0.25 -> 0.7) to the wipe 30 -> 78%.
           const t = Math.max(0, Math.min(1, (p - 0.25) / 0.45));
           const pct = START_PCT + t * (78 - START_PCT);
           reframe.slider.value = String(Math.round(pct));
           reframe.apply(pct);
         },
-      })
+      }),
     );
   }
 
-  rootEl._empCleanup = () => cleanups.forEach((fn) => fn && fn());
+  // Teardown is idempotent (it may be reached via either entry point).
+  let torndown = false;
+  const teardown = () => {
+    if (torndown) return;
+    torndown = true;
+    cleanups.forEach((fn) => fn && fn());
+    if (venn) venn.destroy();
+  };
+  rootEl.addEventListener('chapter:teardown', teardown);
+  rootEl._empCleanup = teardown;
 }

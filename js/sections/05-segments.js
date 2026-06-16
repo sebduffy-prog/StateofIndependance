@@ -20,7 +20,8 @@ import { countUp } from '../lib/counter.js';
 import { dotField, clusterPoints, lollipopChart, dotPlot } from '../lib/charts.js';
 import { quiz } from '../lib/interactions.js';
 import segmentGraph from '../lib/segment-graph.js';
-import { observeParallax } from '../lib/experiential.js';
+import { observeParallax, arrival, magneticButton } from '../lib/experiential.js';
+import { spring } from '../lib/tactile.js';
 
 const DOT_COUNT = 200;
 const FORMATION_DELAY_MS = 480; // drift, then resolve into clusters
@@ -170,6 +171,13 @@ export default function init(rootEl, data) {
 
   observeReveals(rootEl);
 
+  /* Chapter ARRIVAL (connective tissue): each time this step becomes current
+     the kicker/headline/standfirst assemble (cascade lift + the emphasis word
+     decrypts) — meaning builds on entry rather than being shown pre-built
+     (Blue-Marine DNA). The compass formation + count-ups are owned below. */
+  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
+  arrival(rootEl);
+
   /* Experiential motion: subtle parallax on the hero/maze decorative layers
      (orbit rings + deck renders drift as they pass through the viewport). Pure
      transform/opacity, reduced-motion safe, clamped so nothing covers copy. */
@@ -216,7 +224,16 @@ export default function init(rootEl, data) {
 
   const resolve = () => {
     if (!reduced) field.drift(0); // settle drift before forming
-    field.formation(clusterTargets);
+    // Cinematic resolve: a soft, slightly-springy formation so the ~200 ink
+    // dots glide into their quadrants and settle (DNA: tactility / settle),
+    // rather than snapping. Reduced motion still jump-cuts inside formation().
+    field.formation(clusterTargets, reduced ? {} : { spring: 0.045, jostle: 0.00006 });
+    // Stage the quadrant labels in AFTER the dots begin to land — meaning
+    // assembles on entry (the crowd forms first, then it is named).
+    if (mapEl) {
+      if (reduced) mapEl.classList.add('is-resolved');
+      else window.setTimeout(() => mapEl.classList.add('is-resolved'), 520);
+    }
   };
 
   const runCounters = () => {
@@ -372,15 +389,37 @@ export default function init(rootEl, data) {
   }
 
   /* ── the "you" dot marker over the map ────────────────────────────── */
+  /* The marker travels with EMBODIED spring physics (tactile.spring): as the
+     reader answers, the "you" dot glides across the compass with weight and a
+     soft settle, rather than a flat CSS tween. It carries the whole journey's
+     persistent-you metaphor into the data field. Positions are normalised
+     (0..1); the spring drives left/top % so it tracks the map at any size. */
   let youShown = false;
+  let youSpring = null;
+  const youPos = { x: 0.5, y: 0.5 };
+  const writeYou = () => {
+    if (!youTag) return;
+    youTag.style.left = `${(youPos.x * 100).toFixed(2)}%`;
+    youTag.style.top = `${(youPos.y * 100).toFixed(2)}%`;
+  };
   const placeYou = (nx, ny, { instant = false } = {}) => {
     if (!youTag) return;
     youTag.hidden = false;
     youShown = true;
-    if (instant || reduced) youTag.classList.add('is-instant');
-    else youTag.classList.remove('is-instant');
-    youTag.style.left = `${(nx * 100).toFixed(2)}%`;
-    youTag.style.top = `${(ny * 100).toFixed(2)}%`;
+    if (youSpring) { youSpring.stop(); youSpring = null; }
+    if (instant || reduced) {
+      youTag.classList.add('is-instant');
+      youPos.x = nx; youPos.y = ny;
+      writeYou();
+      return;
+    }
+    youTag.classList.remove('is-instant');
+    // Drive the dot with a critically-damped spring so it has glide + weight.
+    youSpring = spring({ x: youPos.x, y: youPos.y }, { x: nx, y: ny }, {
+      stiffness: 150,
+      precision: 0.0008,
+      onUpdate: ({ x, y }) => { youPos.x = x; youPos.y = y; writeYou(); },
+    });
   };
 
   /* ── the quiz: nudge the "you" dot live, then land it ─────────────── */
@@ -447,18 +486,48 @@ export default function init(rootEl, data) {
       onComplete: (x, y) => {
         const segId = resolveSegmentId(x, y);
         const centre = quadCentre(segId);
+        // The marquee payoff: the "you" dot lands in its quadrant with a soft
+        // settle (overshoot then rest) — the journey's persistent dot coming
+        // to rest in the reader's camp (DNA: tactility is the reward).
         placeYou(centre.x, centre.y);
-        // mark one real dot mustard near the landing point too
+        if (youShown && youTag) {
+          if (reduced) youTag.classList.add('is-landed');
+          else window.setTimeout(() => youTag.classList.add('is-landed'), 360);
+        }
+        // mark one real dot mustard near the landing point too, and let the
+        // whole field re-settle around the new "you" target.
         field.highlight(DOT_COUNT - 1, '#FFC931');
         clusterTargets[DOT_COUNT - 1] = { x: centre.x, y: centre.y };
-        field.formation(clusterTargets);
-        if (youShown && youTag) youTag.classList.add('is-landed');
+        field.formation(clusterTargets, reduced ? {} : { spring: 0.06 });
         selectQuad(segId);
         renderResult(segId);
         declareReady(); // completing the quiz also unlocks Next
-
       },
     });
+
+    // Tactile finish: the quiz's Agree/Disagree controls lean toward the cursor
+    // (magnetic), matching the journey's premium button feel. The shared quiz
+    // lib rebuilds its actions per question, so re-apply on each render. Each
+    // call returns its own cleanup; we collect and dispose them on rebuild.
+    // Desktop + fine pointer only, reduced-motion no-op (the helper guards both).
+    magnetizeQuizButtons();
   };
+
+  let magnetCleanups = [];
+  const magnetizeQuizButtons = () => {
+    magnetCleanups.forEach((fn) => fn());
+    magnetCleanups = [];
+    if (!quizHost) return;
+    quizHost.querySelectorAll('.quiz-actions .vccp-btn').forEach((btn) => {
+      magnetCleanups.push(magneticButton(btn, { radius: 90, strength: 0.28 }));
+    });
+  };
+  // The quiz swaps its action buttons in on every question; re-magnetize them
+  // as they mount so the tactile feel persists across all eight beats.
+  if (quizHost) {
+    const mo = new MutationObserver(() => magnetizeQuizButtons());
+    mo.observe(quizHost, { childList: true, subtree: true });
+  }
+
   buildQuiz();
 }

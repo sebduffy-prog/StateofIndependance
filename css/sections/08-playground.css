@@ -65,15 +65,14 @@
 }
 #\30 8-playground .pg-world > * { position: relative; z-index: 1; }
 
-/* ─── Scroll-progress entrance (experiential.js sets --enter 0→1) ───────
-   The stage rises + fades in as the chapter scrolls into rest. Pure
-   transform/opacity — never clips text, never shifts layout. Reduced-motion
-   pins --enter to 1 (handled in JS) so this resolves to the at-rest state. */
-#\30 8-playground .pg-stage {
-  --enter: 1;
-  opacity: calc(0.25 + 0.75 * var(--enter));
-  transform: translate3d(0, calc((1 - var(--enter)) * 26px), 0);
-  will-change: transform, opacity;
+/* ─── Assembling entry ──────────────────────────────────────────────────
+   This is a gated full-screen step (no scroll), so the lockup ARRIVES via
+   the journey's `chapter:arrive` beat: the global [data-arrival] cascade
+   (vccp.css) lifts + fades each line in, the emphasis word decrypts, and the
+   read-outs count up. Transform/opacity only; reduced-motion shows the settled
+   state. The headline spans must be inline-block for translateY to apply. */
+#\30 8-playground .pg-headline [data-arrival] {
+  display: inline-block;
 }
 
 /* ─── Brand orbit ring — the deck's "independence" sweep, behind the title.
@@ -345,6 +344,16 @@
   width: 100%;
   /* reserve space so the panel does not jump as charts swap between viz types */
   min-height: 280px;
+  /* buttery, backgroundless crossfade when the viz TYPE changes (JS toggles
+     .is-fading for ~220ms while it rebuilds the chart into a fresh host) */
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.22s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+#\30 8-playground .pg-chart.is-fading {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
 }
 #\30 8-playground .pg-chart > svg { max-width: 100%; height: auto; }
 
@@ -529,10 +538,9 @@
   #\30 8-playground .pg-portrait-card.is-stepped .pg-portrait-body {
     animation: none;
   }
-  /* pin the entrance to its at-rest state */
-  #\30 8-playground .pg-stage {
-    opacity: 1;
-    transform: none;
+  /* no viz crossfade under reduced motion — charts swap instantly */
+  #\30 8-playground .pg-chart {
+    transition: none;
   }
 }
 

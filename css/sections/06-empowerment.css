@@ -490,106 +490,197 @@
 #\30 6-empowerment .emp-venn-lede,
 #\30 6-empowerment .emp-venn-mount { position: relative; z-index: 1; }
 
-/* Stage — BACKGROUNDLESS: transparent, the three colour circles float on the
-   warm world ground. */
-#\30 6-empowerment .venn-stage {
+/* ── THE MARQUEE: tactile three-needs venn ──────────────────────────────
+   BACKGROUNDLESS: transparent stage, three flat colour circles the visitor
+   drags together on the warm world ground. The overlap blob + "empowerment"
+   word assemble in the centre as they meet. Square/flat, no block behind text. */
+#\30 6-empowerment .emp-tv-stage {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 580px;
-  min-height: 400px;
+  /* Lock the stage to the SVG viewBox aspect so there is NO letterboxing:
+     the uniform meet-scale is then width/100 === height/72 everywhere, which
+     keeps the drag-to-unit mapping exact. Width follows the height cap. */
+  aspect-ratio: 100 / 72;
+  height: min(56vh, 520px);
+  max-width: 100%;
+  margin: 0 auto;
   background: transparent;
   overflow: visible;
+  touch-action: none; /* circles own the gesture */
 }
-#\30 6-empowerment .venn-svg { display: block; width: 100%; height: 100%; }
-
-#\30 6-empowerment .venn-petal {
-  fill-opacity: 0.62;
-  stroke: var(--soi-navy);
-  stroke-width: 2;
-  cursor: pointer;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: fill-opacity .2s ease, transform .2s cubic-bezier(.2,.7,.2,1);
-}
-#\30 6-empowerment .venn-svg.reduced .venn-petal { transition: none; }
-#\30 6-empowerment .venn-petal:hover,
-#\30 6-empowerment .venn-petal.is-on { fill-opacity: 0.85; transform: scale(1.02); }
-#\30 6-empowerment .venn-svg.is-focus .venn-petal:not(.is-on) { fill-opacity: 0.16; }
-
-#\30 6-empowerment .venn-leader { stroke: var(--soi-navy); stroke-width: 1.2; }
-#\30 6-empowerment .venn-ltext {
-  font: 800 20px var(--font-sans); fill: var(--soi-navy);
-}
-#\30 6-empowerment .venn-lmeta {
-  font: 600 12px var(--font-sans); letter-spacing: .06em;
-  fill: rgba(10, 26, 92, 0.72); font-variant-numeric: tabular-nums;
+/* The field holds the three draggable circles + the overlap/centre, all in one
+   px coordinate space (positions set inline from JS). */
+#\30 6-empowerment .emp-tv-field {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
 }
 
-/* Centre word — NO block. The "empowerment" word floats; a tight navy text
-   shadow keeps it legible above the translucent circles without a plate. */
-#\30 6-empowerment .venn-centre {
-  position: absolute; top: 50%; left: 50%;
+/* Overlap wash — a flat navy disc beneath the circles whose size + opacity
+   track how converged the three needs are (set inline from JS). Centred. */
+#\30 6-empowerment .emp-tv-overlap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
   transform: translate(-50%, -50%);
-  padding: 0; min-width: 0; text-align: center;
-  background: none;            /* de-blocked: no navy plate */
-  pointer-events: none; z-index: 3;
+  border-radius: 50%;
+  background: var(--soi-navy);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
 }
-#\30 6-empowerment .venn-centre .lbl {
-  display: block; font: 800 .7rem var(--font-sans);
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--soi-navy); opacity: 0.7;
-}
-#\30 6-empowerment .venn-centre .val {
-  display: block; font: 900 2.1rem/1 var(--font-sans); color: var(--soi-navy);
-  letter-spacing: -0.02em;
-  text-shadow: 0 1px 0 var(--soi-cream), 0 0 14px rgba(238,233,221,0.95),
-               0 0 4px rgba(238,233,221,1);
-}
-#\30 6-empowerment .venn-centre .sub {
-  display: block; font: 600 .92rem var(--font-sans);
-  color: var(--soi-navy); opacity: 0.8; margin-top: 5px;
-  text-shadow: 0 0 10px rgba(238,233,221,0.9);
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-tv-overlap { transition: none; }
 }
 
-/* Legend — NO cards / NO block. Each entry is a focusable button that reads as
-   text on the ground: a square colour swatch + bold navy name + big number,
-   emphasised by weight/colour only. */
-#\30 6-empowerment .venn-legend {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: clamp(var(--space-3), 4vw, var(--space-5)); margin-top: var(--space-4);
+/* The three need circles — draggable HTML discs. tactile.js owns the transform
+   (translate + --tactile-scale); flat brand fill, thin navy ink ring, a touch
+   of transparency so the overlaps read as colour mixes. */
+#\30 6-empowerment .emp-tv-need {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid var(--soi-navy);
+  opacity: 0.82;
+  cursor: grab;
+  touch-action: none;
+  will-change: transform;
 }
-@media (max-width: 720px) { #\30 6-empowerment .venn-legend { grid-template-columns: 1fr; } }
-#\30 6-empowerment .venn-leg {
-  text-align: left; padding: 0;
-  border: 0; background: none;        /* de-blocked: no cream card */
+#\30 6-empowerment .emp-tv-need.is-dragging,
+#\30 6-empowerment .emp-tv-need.is-lifted { cursor: grabbing; }
+#\30 6-empowerment .emp-tv-need:focus-visible {
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 3px;
+}
+#\30 6-empowerment .emp-tv-need-lbl {
+  font: 800 clamp(0.85rem, 1.5vw, 1.2rem) / 1 var(--font-sans);
+  color: var(--soi-navy);
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Centre word — NO block. "empowerment" assembles (fades/scales up) as the
+   needs converge; a tight cream text shadow keeps it legible without a plate.
+   --tv (0..1 togetherness) is set from JS. */
+#\30 6-empowerment .emp-tv-centre {
+  position: absolute;
+  top: 50%; /* matches the venn centre cy (36/72) */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 3;
+  opacity: calc(0.15 + 0.85 * var(--tv, 0));
+}
+#\30 6-empowerment .emp-tv-centre-lbl {
+  display: block;
+  font: 800 .68rem var(--font-sans);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--soi-cream);
+  opacity: calc(0.25 + 0.75 * var(--tv, 0));
+  text-shadow: 0 1px 2px rgba(10, 26, 92, 0.6);
+}
+#\30 6-empowerment .emp-tv-centre-word {
+  display: block;
+  font: 900 clamp(1.6rem, 3.4vw, 2.8rem) / 0.95 var(--font-sans);
+  letter-spacing: -0.03em;
+  color: var(--soi-cream);
+  transform: scale(calc(0.86 + 0.14 * var(--tv, 0)));
+  transition: transform .2s cubic-bezier(.2,.7,.2,1);
+  text-shadow: 0 2px 6px rgba(10, 26, 92, 0.55);
+}
+#\30 6-empowerment .emp-tv-centre.is-on .emp-tv-centre-word { color: var(--soi-cream); }
+#\30 6-empowerment .emp-tv-centre-sub {
+  display: block;
+  margin-top: 6px;
+  font: 600 .9rem var(--font-sans);
+  color: var(--soi-cream);
+  opacity: calc(0.0 + 0.9 * var(--tv, 0));
+  text-shadow: 0 1px 3px rgba(10, 26, 92, 0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-tv-centre-word { transition: none; }
+}
+
+/* Hint — colour/weight only, no block. Centred under the stage; swaps copy
+   when the needs converge (the reward line). */
+#\30 6-empowerment .emp-tv-hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(-6px, -1vh, 4px);
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  font: 800 var(--t-xs) / 1.2 var(--font-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.7;
+  text-shadow: 0 1px 0 rgba(238, 233, 221, 0.9);
+  transition: opacity .2s ease, color .2s ease;
+}
+#\30 6-empowerment .emp-tv-stage.is-converged .emp-tv-hint {
+  color: var(--soi-orange);
+  opacity: 1;
+}
+
+/* Legend — NO cards / NO block. Each entry is a focusable row (keyboard path:
+   focus + arrow/Enter nudges its circle toward the centre). Colour swatch +
+   bold navy name + big tabular number, emphasis by weight/colour only. */
+#\30 6-empowerment .emp-tv-legend {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(var(--space-3), 4vw, var(--space-5));
+  margin-top: var(--space-4);
+}
+@media (max-width: 720px) {
+  #\30 6-empowerment .emp-tv-legend { grid-template-columns: 1fr; }
+}
+#\30 6-empowerment .emp-tv-leg {
   border-top: 2px solid var(--soi-navy);
   padding-top: 12px;
-  display: flex; flex-direction: column; gap: 6px; cursor: pointer;
-  font-family: inherit;
-  transition: opacity .15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: opacity .15s ease, border-top-width .15s ease;
 }
-#\30 6-empowerment .venn-leg:hover,
-#\30 6-empowerment .venn-leg.is-on { opacity: 1; }
-#\30 6-empowerment .venn-svg.is-focus ~ .venn-legend .venn-leg,
-#\30 6-empowerment .venn-legend:hover .venn-leg:not(:hover) { opacity: 0.6; }
-#\30 6-empowerment .venn-leg:focus-visible { outline: 2px solid var(--soi-navy); outline-offset: 4px; }
-#\30 6-empowerment .venn-leg.is-on { box-shadow: none; border-top-width: 4px; }
-#\30 6-empowerment .venn-leg .name {
-  display: flex; align-items: center; gap: 10px;
-  font: 800 1.1rem var(--font-sans); color: var(--soi-navy);
+#\30 6-empowerment .emp-tv-leg:focus-visible {
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 4px;
 }
-#\30 6-empowerment .venn-leg .name::before {
-  content: ''; width: 15px; height: 15px; flex: none;
+#\30 6-empowerment .emp-tv-legend:hover .emp-tv-leg:not(:hover) { opacity: 0.6; }
+#\30 6-empowerment .emp-tv-leg-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 800 1.1rem var(--font-sans);
+  color: var(--soi-navy);
+}
+#\30 6-empowerment .emp-tv-leg-name::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  flex: none;
   background: var(--accent);
 }
-#\30 6-empowerment .venn-leg .n {
-  font: 900 2.2rem/1 var(--font-sans); color: var(--soi-navy);
+#\30 6-empowerment .emp-tv-leg-n {
+  font: 900 2.2rem/1 var(--font-sans);
+  color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
 }
-#\30 6-empowerment .venn-leg .pct {
-  font: 700 .7rem var(--font-sans); letter-spacing: .12em;
-  text-transform: uppercase; color: rgba(10, 26, 92, 0.64);
+#\30 6-empowerment .emp-tv-leg-sub {
+  font: 700 .7rem var(--font-sans);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(10, 26, 92, 0.64);
 }
 #\30 6-empowerment .emp-venn-empty {
   border: 1.5px solid var(--soi-navy); padding: 24px; color: var(--soi-navy); margin: 0;
@@ -610,6 +701,6 @@
   #\30 6-empowerment .emp-venn { opacity: 1; transform: none; transition: none; }
   #\30 6-empowerment .emp-rf-art,
   #\30 6-empowerment .emp-rf-side,
-  #\30 6-empowerment .venn-leg,
-  #\30 6-empowerment .venn-petal { transition: none; }
+  #\30 6-empowerment .emp-tv-leg,
+  #\30 6-empowerment .emp-tv-need { transition: none; }
 }

@@ -485,13 +485,166 @@
 }
 #\30 4-twists .tw-tug { margin: 26px 0 12px; width: 100%; }
 #\30 4-twists .tw-tug svg { width: 100%; height: auto; }
-#\30 4-twists .tw-ringfence-cap {
-  font-size: var(--t-sm);
-  line-height: 1.45;
-  font-weight: 500;
-  margin: 0;
-  max-width: 32ch;
+
+/* ── (b) THE MARQUEE TACTILE BEAT — ring-fence board ─────────
+   Backgroundless: the board sits directly on the page ground, structured by
+   space + a single hairline cut line. Chips are the only "objects" (paper,
+   square, contact-shadowed by tactile.js). One idea, generous negative space. */
+#\30 4-twists .tw-cut {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2vw, 28px);
+  align-self: center;
+  min-width: 0;
 }
+#\30 4-twists .tw-cut-h {
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--soi-navy);
+  margin: 0 0 8px 0;
+}
+#\30 4-twists .tw-cut-instr {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 46ch;
+}
+
+/* The stage: a keep margin (left) and a cut margin (right), divided by one
+   dashed hairline. Decorative zones are aria-hidden and never intercept. */
+#\30 4-twists .tw-cut-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(280px, 34vh, 380px);
+  display: block;
+}
+#\30 4-twists .tw-cut-keep,
+#\30 4-twists .tw-cut-bin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#\30 4-twists .tw-cut-keep { left: 0; right: 42%; }
+#\30 4-twists .tw-cut-bin {
+  left: 58%;
+  right: 0;
+  border-left: 1.5px dashed rgba(10, 26, 92, 0.28);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 6px 4px;
+}
+#\30 4-twists .tw-cut-bin-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: rgba(10, 26, 92, 0.42);
+}
+
+#\30 4-twists .tw-cut-list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(58%, 360px);
+}
+
+/* A spend chip — the draggable "object". Paper, square, navy ink; the only
+   blocks on the board (they ARE the toys, not text panels). tactile.js owns
+   transform + contact shadow; we own the colour/affordance state. */
+#\30 4-twists .tw-chip {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: var(--paper);
+  color: var(--soi-navy);
+  border: 1px solid rgba(10, 26, 92, 0.18);
+  padding: 14px 16px;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  --cut-near: 0;
+  /* near-the-cut tint comes through colour only (compositor-safe). */
+  border-color: rgba(10, 26, 92, calc(0.18 + 0.5 * var(--cut-near)));
+}
+#\30 4-twists .tw-chip:focus-visible {
+  outline: 3px solid var(--soi-navy);
+  outline-offset: 3px;
+}
+#\30 4-twists .tw-chip-grip {
+  width: 14px;
+  height: 14px;
+  background:
+    linear-gradient(to bottom, currentColor 0, currentColor 2px, transparent 2px) 0 1px / 14px 5px repeat-y;
+  opacity: 0.34;
+}
+#\30 4-twists .tw-chip-name { letter-spacing: -0.01em; }
+#\30 4-twists .tw-chip-pct {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--soi-orange);
+}
+#\30 4-twists .tw-chip.is-arming {
+  border-color: var(--soi-orange);
+  color: var(--soi-orange);
+}
+/* Cut: locked in the bin margin, struck through, dimmed — the act, recorded. */
+#\30 4-twists .tw-chip.is-cut {
+  opacity: 0.5;
+  border-style: dashed;
+  border-color: rgba(10, 26, 92, 0.3);
+}
+#\30 4-twists .tw-chip.is-cut .tw-chip-name {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+/* The RING-FENCED holiday chip: navy fill, cream ink, and a fence outline that
+   flexes (scale) under strain but never lets go. The strain (0..1) is set by
+   JS as --fence-strain. */
+#\30 4-twists .tw-chip.is-fenced {
+  background: var(--soi-navy);
+  color: var(--soi-cream);
+  border-color: var(--soi-navy);
+  --fence-strain: 0;
+}
+#\30 4-twists .tw-chip.is-fenced .tw-chip-pct { color: var(--teal-deep); }
+#\30 4-twists .tw-chip-fence {
+  position: absolute;
+  inset: -7px;
+  z-index: -1;
+  border: 1.5px solid var(--teal-deep);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+#\30 4-twists .tw-chip.is-fenced .tw-chip-fence { opacity: 0.5; }
+/* Under strain the fence tightens (scales in a touch) and brightens — it
+   fights the pull. transform/opacity only. */
+#\30 4-twists .tw-chip.is-fenced.is-straining .tw-chip-fence {
+  opacity: calc(0.6 + 0.4 * var(--fence-strain));
+  transform: scale(calc(1 - 0.02 * var(--fence-strain)));
+}
+
+#\30 4-twists .tw-cut-readout {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--soi-navy);
+  margin: 0;
+  min-height: 1.5em;
+}
+
 #\30 4-twists .tw-joy-bars { margin: 0; align-self: center; width: 100%; }
 #\30 4-twists .tw-lolli { width: 100%; }
 #\30 4-twists .tw-lolli svg { width: 100%; height: auto; }
@@ -573,6 +726,11 @@
 }
 @media (max-width: 860px) {
   #\30 4-twists .tw-exhibit--dark { margin: 0; }
+  /* Ring-fence board: widen the keep column, pull the cut line in so chips
+     have room to be dragged to the cut on narrow viewports. */
+  #\30 4-twists .tw-cut-list { width: min(64%, 320px); }
+  #\30 4-twists .tw-cut-keep { right: 36%; }
+  #\30 4-twists .tw-cut-bin { left: 52%; }
 }
 
 /* ─── Reduced motion: no card spin, swap faces flat ──────── */
@@ -584,4 +742,10 @@
   #\30 4-twists .tw-flip .tw-flip-back { opacity: 0; pointer-events: none; }
   #\30 4-twists .tw-flip.is-flipped .tw-flip-front { opacity: 0; pointer-events: none; }
   #\30 4-twists .tw-flip.is-flipped .tw-flip-back { opacity: 1; pointer-events: auto; }
+
+  /* Ring-fence: the fence holds its state with no flex/scale animation. The
+     draggable still works (tactile.js snaps to final state under reduced
+     motion); the chip just doesn't visibly strain. */
+  #\30 4-twists .tw-chip-fence { transition: none; }
+  #\30 4-twists .tw-chip.is-fenced.is-straining .tw-chip-fence { transform: none; }
 }

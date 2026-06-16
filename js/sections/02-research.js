@@ -30,6 +30,7 @@ import {
   observeParallax,
   chapterTransition,
   scrollScene,
+  arrival,
   prefersReducedMotion as reducedMotion,
 } from '../lib/experiential.js';
 
@@ -57,15 +58,15 @@ const CITIES = [
     id: 'wigan',
     name: 'Wigan',
     region: 'North-west England',
-    left: 44,
-    top: 51,
+    left: 37,
+    top: 53,
     note: 'North-west England · families and individuals · week-long video diary, filmed early June.',
   },
   {
     id: 'bury',
     name: 'Bury',
     region: 'Greater Manchester',
-    left: 48,
+    left: 49,
     top: 50,
     quote:
       'I would say that it is more of an empowering feeling being able to ' +
@@ -102,8 +103,8 @@ const CITIES = [
     id: 'watford',
     name: 'Watford',
     region: 'Hertfordshire',
-    left: 57,
-    top: 74,
+    left: 54,
+    top: 72,
     quote:
       'I don’t go out specifically to look for certain brand items. I go by, ' +
       'comfort and price.',
@@ -113,8 +114,8 @@ const CITIES = [
     id: 'london',
     name: 'London',
     region: 'Greater London',
-    left: 61,
-    top: 75,
+    left: 63,
+    top: 76,
     quote:
       'I do know that calling the police would probably be a complete waste ' +
       'of time. However I do have faith in the sense that maybe if I did my ' +
@@ -127,8 +128,8 @@ const CITIES = [
     id: 'southampton',
     name: 'Southampton',
     region: 'South coast',
-    left: 52,
-    top: 80,
+    left: 49,
+    top: 82,
     quote:
       'I now have a lot less trust in institutions such as the government ' +
       'and politicians, local councils, than I did a few years ago… there’s ' +
@@ -202,6 +203,13 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
+  // Chapter arrival: each time this step becomes current, the method copy
+  // assembles (kicker/headline/standfirst lift in, the emphasis word decrypts)
+  // and the hero/cities numbers count up — meaning ASSEMBLES on entry rather
+  // than being shown pre-built. main.js fires `chapter:arrive`. This is step 02
+  // (not the first step), so no first-run ritual.
+  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
+
   // Journey gating: Next stays LOCKED until the visitor opens a city marker.
   const journey = data && data.journey;
   if (journey && typeof journey.gate === 'function') journey.gate();
@@ -232,6 +240,19 @@ export default function init(rootEl, data) {
     ).padStart(2, '0')} — ${city.name}`;
   };
 
+  // Surfacing-memory reveal: the diary card rises + fades in like a memory
+  // returning, rather than hard-swapping. The card mounts in a "surfacing"
+  // state, then settles on the next frame so CSS runs the transition.
+  // Reduced motion lands instantly (CSS disables the transition).
+  const surfaceCard = (city) => {
+    const card = buildRailCard(city);
+    card.classList.add('is-surfacing');
+    railHost.replaceChildren(card);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => card.classList.remove('is-surfacing'));
+    });
+  };
+
   const select = (city) => {
     currentIndex = order.indexOf(city.id);
     buttons.forEach((btn, id) => {
@@ -240,7 +261,7 @@ export default function init(rootEl, data) {
       btn.setAttribute('aria-pressed', String(isActive));
     });
     if (hint) hint.hidden = true;
-    railHost.replaceChildren(buildRailCard(city));
+    surfaceCard(city);
     updateCounter(city);
   };
 

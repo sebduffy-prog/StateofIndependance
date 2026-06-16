@@ -1,16 +1,25 @@
 <div class="chapter-inner">
-  <!-- ── Dark, weighty close (cream-on-navy, full-bleed, fills the screen) ──
-       The journey's FINAL, narrative step (no gate — Next default-unlocks).
+  <!-- ── Cinematic close (cream-on-navy, full-bleed, fills the screen) ──
+       The journey's FINAL, narrative step (no gate — it is the last step, so
+       Next reads "Finished" and is disabled; gating would have nothing to
+       unlock to). It DOES, however, play a single orchestrated CLOSE
+       SEQUENCE on chapter arrival (js drives it), so the ending ARRIVES the
+       way Blue Marine / Moooi do rather than appearing pre-built:
+
+         beat 1 — INSTITUTIONS ▸▸▸ INDIVIDUALS assembles: the word
+                  "Institutions" lands, the arrows sweep rightward in
+                  cascade (power flowing), "Individuals" settles, and a
+                  release of cream dots crosses into the nation field.
+         beat 2 — the Martin Lewis line DECRYPTS into place (text-scramble),
+                  attribution last.
+         beat 3 — the persistent you-dot DISPERSES with the nation as the
+                  dotField rises and releases upward.
+
        Navy ground; a deck bear-world motif ("doors" = choices / opting out)
        drifts low-opacity behind the copy as the chapter's brand-world ground
-       (deck §3); thin white orbit rings sweep in; a calm field of paper dots
-       rises and disperses — the "nation released". Every decorative layer sits
-       BEHIND via z-index 0 + pointer-events:none and never occludes copy. The
-       signature motion MAZE LOGO returns as the closing brand motif. NO blocks
-       behind any text — emphasis is colour/weight only; copy reads on the
-       ground. The [data-enter] bands rest at full strength and ride the
-       journey's own per-step entrance animation; the maze, orbit and world
-       motif drift at different speeds via [data-parallax]. -->
+       (deck §3). Every decorative layer sits BEHIND via z-index 0 +
+       pointer-events:none and never occludes copy. NO blocks behind any text —
+       emphasis is colour/weight only; copy reads on the ground. -->
   <div class="outro-dark si-dark" data-outro-close>
     <!-- Deck bear-world motif — the chapter's brand-world ground (parallax). -->
     <img
@@ -28,14 +37,15 @@
 
     <div class="outro-frame">
       <!-- Title lockup opener (deck §3): the chapter headline in Poppins Black,
-           huge, deck-style — recreates the report-cover title treatment. The
-           brand figure-silhouette mark sits beside it (deck does this). -->
+           huge, deck-style — recreates the report-cover title treatment.
+           Headline lines assemble line-by-line on arrival ([data-arrival]). -->
       <header class="outro-head reveal" data-enter>
-        <p class="vccp-eyebrow outro-eyebrow">The Challenger Series &middot; VCCP</p>
+        <p class="vccp-eyebrow outro-eyebrow" data-arrival>The Challenger Series &middot; VCCP</p>
         <h2 class="outro-title si-display si-display--black">
-          Hand them<br />the <span class="hl">tools</span>
+          <span class="outro-title-line" data-arrival>Hand them</span>
+          <span class="outro-title-line" data-arrival>the <span class="hl">tools</span></span>
         </h2>
-        <p class="outro-standfirst si-measure">
+        <p class="outro-standfirst si-measure" data-arrival>
           Stop trying to lead the consumer. Your job is to equip them to lead
           themselves. Five moves, one architecture, a nation ready to act.
         </p>
@@ -49,25 +59,28 @@
         />
       </header>
 
+      <!-- ── MARQUEE BEAT · Institutions ▸▸▸ Individuals ──────────────────
+           The thesis resolved in one closing image (deck slide 75 / outro):
+           power flows from the institution side to the field of individuals.
+           Full-width, on the ground, no box. JS reveals it as the FIRST beat
+           of the close sequence; reduced motion rests it fully assembled. -->
+      <div class="outro-resolve" data-outro-resolve aria-label="Power flows from institutions to individuals">
+        <span class="outro-resolve-word outro-resolve-from" data-resolve-from>Institutions</span>
+        <span class="outro-resolve-flow" aria-hidden="true" data-resolve-flow>
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+        <span class="outro-resolve-word outro-resolve-to hl" data-resolve-to>Individuals</span>
+      </div>
+
       <!-- Hero band: the quote (left) + the motion maze logo (right) read as
            one composed lockup, deck-style. Two columns => zero overlap. -->
       <div class="outro-hero" data-enter>
-        <!-- The hero quote, given deck hanging-quote gravitas (Poppins Black). -->
+        <!-- The hero quote, given deck hanging-quote gravitas (Poppins Black).
+             The quote text DECRYPTS into place on the close sequence's second
+             beat (data-resolve-quote); attribution follows. -->
         <figure class="outro-quote reveal">
-          <blockquote class="outro-quote-text si-display si-display--black">
-            They do not want brands to hold their hands. They want brands to hand
-            them the <em class="hl">tools</em>.
-          </blockquote>
-          <figcaption class="outro-quote-cite">Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
-          <!-- The institutions>>>individuals motif — an animated typographic
-               note (the arrows sweep on view), not a boxed pill. -->
-          <p class="outro-motif" aria-label="Institutions far outweigh individuals">
-            Institutions
-            <span class="outro-motif-arrows" aria-hidden="true">
-              <i></i><i></i><i></i><i></i>
-            </span>
-            individuals
-          </p>
+          <blockquote class="outro-quote-text si-display si-display--black" data-resolve-quote>They do not want brands to hold their hands. They want brands to hand them the tools.</blockquote>
+          <figcaption class="outro-quote-cite" data-resolve-cite>Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
         </figure>
 
         <!-- The signature motion maze logo — the State of Independence brand

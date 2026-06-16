@@ -136,6 +136,25 @@
   font-size: clamp(2.6rem, 6.4vw, 5.6rem);
   text-transform: none;           /* sentence-case lockup, deck-faithful */
 }
+/* Each headline line is its own assembling element (lands in cascade). */
+#\30 9-outro .outro-title-line {
+  display: block;
+}
+
+/* ─── Arrival cascade: [data-arrival] lines lift + fade in on the close
+   sequence's first beat (.is-arrived added by the JS). Pure transform/opacity,
+   never clips type; rests assembled under reduced motion. ─── */
+#\30 9-outro [data-arrival] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity .6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform .6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+#\30 9-outro [data-arrival].is-arrived {
+  opacity: 1;
+  transform: none;
+}
 #\30 9-outro .outro-standfirst {
   font-size: var(--t-lg);
   font-weight: 500;
@@ -212,12 +231,20 @@
   letter-spacing: -0.03em;
   line-height: 1.02;
   font-size: clamp(2rem, 3.6vw, 3.3rem);
-  max-width: 18ch;
+  max-width: 20ch;
   overflow-wrap: break-word;
+  /* Reserve height while the text decrypts in so the layout never jumps as
+     the glyphs resolve (the JS holds it blank until the decrypt beat). */
+  min-height: 1.02em;
 }
-/* Emphasis is colour + underline only (no block); amber on navy stays legible. */
-#\30 9-outro .outro-quote-text .hl {
-  line-height: inherit;
+/* While the quote is decrypting its glyphs sit dimmer; it lifts to full
+   strength as it resolves (.is-resolved added by the JS decrypt beat). */
+#\30 9-outro .outro-quote-text:not(.is-resolved) {
+  opacity: 0.45;
+}
+#\30 9-outro .outro-quote-text.is-resolved {
+  opacity: 1;
+  transition: opacity .5s ease;
 }
 #\30 9-outro .outro-quote-cite {
   position: relative;
@@ -226,43 +253,89 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(238, 233, 221, 0.74);   /* cream @ ~74% — clears the navy */
-  margin: 0 0 clamp(20px, 2.4vw, 30px) 0;
+  margin: 0;
   font-variant-numeric: tabular-nums;
+  /* Fades in after the quote resolves (.is-in added by the JS). */
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: opacity .6s ease, transform .6s ease;
 }
-/* institutions >>>> individuals — an animated typographic note, not a box.
-   The arrows sweep rightward on a loop to dramatise the imbalance. */
-#\30 9-outro .outro-motif {
+#\30 9-outro .outro-quote-cite.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── MARQUEE BEAT · Institutions ▸▸▸ Individuals ────────────────────────
+   The thesis resolved in one closing image. Full-width, on the ground, no box.
+   "Institutions" lands, the arrows sweep rightward (power flowing), then
+   "Individuals" settles in amber. Sequenced by the JS via .is-resolved. */
+#\30 9-outro .outro-resolve {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5em;
-  margin: 0;
+  gap: clamp(14px, 2.4vw, 40px);
+  margin: clamp(6px, 1vh, 18px) 0 clamp(2px, 0.5vh, 10px);
+  font-family: inherit;
+}
+#\30 9-outro .outro-resolve-word {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  font-size: clamp(1.7rem, 3.4vw, 3rem);
+  color: var(--soi-cream);
+  transition: opacity .6s ease, transform .6s ease;
+}
+/* "Institutions" arrives first, from the left. */
+#\30 9-outro .outro-resolve-from {
+  opacity: 0;
+  transform: translate3d(-18px, 0, 0);
+}
+/* "Individuals" lands last, in amber — the focal payoff of the marquee. */
+#\30 9-outro .outro-resolve-to {
   color: var(--soi-amber);
-  font-size: var(--t-md);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
+  opacity: 0;
+  transform: translate3d(22px, 0, 0);
+  transition-delay: .25s;
 }
-#\30 9-outro .outro-motif-arrows {
+#\30 9-outro .outro-resolve.is-resolved .outro-resolve-from,
+#\30 9-outro .outro-resolve.is-resolved .outro-resolve-to {
+  opacity: 1;
+  transform: none;
+}
+/* The arrow flow — a row of chevrons sweeping rightward, the power FLOWING. */
+#\30 9-outro .outro-resolve-flow {
   display: inline-flex;
-  gap: 0.18em;
+  align-items: center;
+  gap: 0.34em;
+  opacity: 0;
+  transition: opacity .5s ease;
 }
-#\30 9-outro .outro-motif-arrows i {
-  width: 0.62em;
-  height: 0.62em;
+#\30 9-outro .outro-resolve.is-resolved .outro-resolve-flow {
+  opacity: 1;
+}
+#\30 9-outro .outro-resolve-flow i {
+  width: clamp(0.5rem, 1vw, 0.8rem);
+  height: clamp(0.5rem, 1vw, 0.8rem);
   border-top: 2px solid var(--soi-amber);
   border-right: 2px solid var(--soi-amber);
   transform: rotate(45deg);
-  opacity: 0.4;
-  animation: outro-arrow-sweep 1.8s ease-in-out infinite;
+  opacity: 0.28;
 }
-#\30 9-outro .outro-motif-arrows i:nth-child(2) { animation-delay: 0.15s; }
-#\30 9-outro .outro-motif-arrows i:nth-child(3) { animation-delay: 0.3s; }
-#\30 9-outro .outro-motif-arrows i:nth-child(4) { animation-delay: 0.45s; }
-@keyframes outro-arrow-sweep {
-  0%, 100% { opacity: 0.28; }
-  50%      { opacity: 1; }
+/* Once resolved the chevrons pulse rightward in a staggered cascade — a
+   continuous "flow" from institutions toward individuals. */
+#\30 9-outro .outro-resolve.is-resolved .outro-resolve-flow i {
+  animation: outro-flow-sweep 1.8s ease-in-out infinite;
+}
+#\30 9-outro .outro-resolve-flow i:nth-child(2) { animation-delay: 0.12s; }
+#\30 9-outro .outro-resolve-flow i:nth-child(3) { animation-delay: 0.24s; }
+#\30 9-outro .outro-resolve-flow i:nth-child(4) { animation-delay: 0.36s; }
+#\30 9-outro .outro-resolve-flow i:nth-child(5) { animation-delay: 0.48s; }
+#\30 9-outro .outro-resolve-flow i:nth-child(6) { animation-delay: 0.60s; }
+@keyframes outro-flow-sweep {
+  0%, 100% { opacity: 0.22; transform: rotate(45deg) translateX(-1px); }
+  50%      { opacity: 1;    transform: rotate(45deg) translateX(2px); }
 }
 
 /* ─── Five-move recap index (interactive, display treatment) ──────────── */
@@ -541,7 +614,7 @@
   #\30 9-outro .outro-seed-b { display: none; }
 }
 
-/* ─── Reduced motion: rest flat, no decorative animation ─── */
+/* ─── Reduced motion: rest flat, fully assembled, no decorative animation ─── */
 @media (prefers-reduced-motion: reduce) {
   #\30 9-outro [data-enter] {
     --enter: 1;
@@ -554,5 +627,24 @@
   }
   #\30 9-outro .outro-recap-link,
   #\30 9-outro .outro-recap-lesson { transition: none; }
-  #\30 9-outro .outro-motif-arrows i { animation: none; opacity: 0.7; }
+  /* Headline lines, the resolve marquee, quote + cite all rest assembled. */
+  #\30 9-outro [data-arrival] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #\30 9-outro .outro-resolve-word,
+  #\30 9-outro .outro-resolve-flow {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #\30 9-outro .outro-resolve-flow i { animation: none; opacity: 0.7; }
+  #\30 9-outro .outro-quote-text:not(.is-resolved),
+  #\30 9-outro .outro-quote-text.is-resolved { opacity: 1; transition: none; }
+  #\30 9-outro .outro-quote-cite {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

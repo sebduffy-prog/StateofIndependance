@@ -12,6 +12,18 @@
  *   observeParallax(rootEl, opts?)      subtle parallax for [data-parallax]
  *   chapterTransition(rootEl, opts?)    scroll-progress reveal/mask for a section
  *   scrollScene(rootEl, steps, opts?)   ties scroll progress to step callbacks
+ *   arrival(rootEl, opts?)              premium chapter-arrival (assemble + count)
+ *   youDot(opts?)                       persistent fixed mustard marker (controller)
+ *   magneticButton(el, opts?)           cursor-attracted button with spring follow
+ *   magneticCursor(opts?)               custom blend-mode cursor dot (controller)
+ *   scrambleIn(el, opts?)               decrypt-into-place text reveal for one el
+ *
+ * ── CONNECTIVE TISSUE (Blue-Marine feel) ────────────────────────────
+ * These four ported/new helpers give the journey its premium connective
+ * feel: chapters ARRIVE (assemble) rather than cut, a single "you" marker
+ * persists across steps, and the finish is tactile (magnetic). They are
+ * all dependency-free, transform/opacity only, rAF-batched, and jump to a
+ * settled final state under prefers-reduced-motion.
  *
  * Every helper returns a cleanup function () => void that detaches all
  * listeners/observers it created.
@@ -268,5 +280,412 @@ export const scrollScene = (rootEl, steps = [], opts = {}) => {
     scheduler.cancel();
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onScroll);
+  };
+};
+
+/* ──────────────────────────────────────────────────────────────────
+   CONNECTIVE TISSUE
+   ────────────────────────────────────────────────────────────────── */
+
+// Arrival timing — one slow embodied beat, not a flash.
+const ARRIVAL_RITUAL_MS = 1500; // first-step "connecting" ritual length
+const ARRIVAL_ASSEMBLE_STAGGER_MS = 90; // per-line cascade
+const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#________';
+const SCRAMBLE_FRAME_MS = 28;
+
+/**
+ * Step ARRIVAL — the premium "this chapter is arriving" beat.
+ *
+ * Markup the step opts into (all optional):
+ *   - [data-arrival]            assembling lines fade+lift in cascade
+ *   - [data-arrival-scramble]   that line decrypts into place (one per step)
+ *   - [data-arrival-count]      number counts up to its data-to / textContent
+ *
+ * On a NORMAL step: heading + key lines assemble, numbers count up.
+ * On the FIRST step only (opts.ritual): a brief 1.5s connecting micro-ritual
+ * plays before the assemble — skippable by any key/click, instant under
+ * reduced motion.
+ *
+ * Reusable: every section calls `arrival(rootEl)` from its init(); main.js
+ * re-fires it when a step becomes current via the `chapter:arrive` event.
+ *
+ * @param {HTMLElement} rootEl
+ * @param {{ ritual?: boolean, onRitualDone?: () => void }} [opts]
+ * @returns {() => void} cleanup
+ */
+export const arrival = (rootEl, opts = {}) => {
+  const { ritual = false, onRitualDone } = opts;
+  const reduced = prefersReducedMotion();
+
+  const lines = Array.from(rootEl.querySelectorAll('[data-arrival]'));
+  const counters = Array.from(rootEl.querySelectorAll('[data-arrival-count]'));
+
+  // Run the assemble: cascade lines in, scramble the flagged line, count up.
+  const assemble = () => {
+    lines.forEach((el, i) => {
+      el.classList.remove('is-arrived');
+      if (reduced) {
+        el.classList.add('is-arrived');
+        return;
+      }
+      el.style.setProperty('--arrival-delay', `${i * ARRIVAL_ASSEMBLE_STAGGER_MS}ms`);
+      // Force a reflow-free restart of the entrance by toggling on next frame.
+      requestAnimationFrame(() => el.classList.add('is-arrived'));
+    });
+
+    rootEl.querySelectorAll('[data-arrival-scramble]').forEach((el) => {
+      scrambleIn(el);
+    });
+
+    counters.forEach((el) => countUpArrival(el, reduced));
+  };
+
+  // First-step listening ritual: a brief staged "connecting" overlay.
+  if (ritual && !reduced) {
+    const overlay = buildRitualOverlay(rootEl);
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      overlay.dismiss(() => {
+        assemble();
+        if (onRitualDone) onRitualDone();
+      });
+      window.removeEventListener('keydown', finish, true);
+      overlay.el.removeEventListener('click', finish);
+    };
+    const timer = window.setTimeout(finish, ARRIVAL_RITUAL_MS);
+    window.addEventListener('keydown', finish, true);
+    overlay.el.addEventListener('click', finish);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', finish, true);
+      overlay.remove();
+    };
+  }
+
+  assemble();
+  if (ritual && onRitualDone) onRitualDone();
+  return () => {};
+};
+
+/** Build the brief first-step connecting overlay (returns a small controller). */
+const buildRitualOverlay = (rootEl) => {
+  const el = document.createElement('div');
+  el.className = 'arrival-ritual';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML =
+    '<div class="arrival-ritual__inner">' +
+    '<span class="arrival-ritual__line">Listening to 1,504 people…</span>' +
+    '<span class="arrival-ritual__bar"><span class="arrival-ritual__fill"></span></span>' +
+    '</div>';
+  rootEl.appendChild(el);
+  // Kick the fill on the next frame so the transition runs.
+  requestAnimationFrame(() => el.classList.add('is-live'));
+  return {
+    el,
+    dismiss(after) {
+      el.classList.add('is-leaving');
+      const remove = () => {
+        el.remove();
+        if (after) after();
+      };
+      el.addEventListener('transitionend', remove, { once: true });
+      // Fallback in case transitionend never fires.
+      window.setTimeout(remove, 600);
+    },
+    remove() {
+      el.remove();
+    },
+  };
+};
+
+/** Count a [data-arrival-count] element up to its target (eased, tabular). */
+const countUpArrival = (el, reduced) => {
+  const target = Number(el.dataset.to ?? parseFloat(el.textContent)) || 0;
+  const decimals = Number(el.dataset.decimals) || 0;
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const format = (v) => prefix + v.toFixed(decimals) + suffix;
+  if (reduced) {
+    el.textContent = format(target);
+    return;
+  }
+  const duration = 900;
+  const start = performance.now();
+  const tick = (now) => {
+    const t = clamp((now - start) / duration, 0, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    el.textContent = format(target * eased);
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = format(target);
+  };
+  requestAnimationFrame(tick);
+};
+
+/**
+ * scrambleIn — decrypt one element's text into place (ported text-scramble).
+ * The final string is the element's current textContent. Reduced motion =
+ * instant (no scramble). Stores the resolved text so a re-run still resolves.
+ * @param {HTMLElement} el
+ * @param {{ speedMs?: number, chars?: string }} [opts]
+ * @returns {() => void} cleanup
+ */
+export const scrambleIn = (el, opts = {}) => {
+  const { speedMs = SCRAMBLE_FRAME_MS, chars = SCRAMBLE_CHARS } = opts;
+  const text = el.dataset.scrambleText || el.textContent || '';
+  el.dataset.scrambleText = text;
+
+  if (prefersReducedMotion()) {
+    el.textContent = text;
+    return () => {};
+  }
+
+  const queue = Array.from(text, (to) => {
+    const start = Math.floor(Math.random() * 12);
+    return { to, start, end: start + 14 + Math.floor(Math.random() * 14), char: '' };
+  });
+
+  let frame = 0;
+  let timer = 0;
+  const run = () => {
+    let complete = 0;
+    const out = queue.map((q) => {
+      if (frame >= q.end) {
+        complete += 1;
+        return q.to;
+      }
+      if (frame >= q.start) {
+        if (!q.char || Math.random() < 0.28) {
+          q.char = chars[Math.floor(Math.random() * chars.length)];
+        }
+        return q.char;
+      }
+      return '';
+    });
+    el.textContent = out.join('');
+    if (complete === queue.length) return;
+    frame += 1;
+    timer = window.setTimeout(run, speedMs);
+  };
+  run();
+  return () => clearTimeout(timer);
+};
+
+/**
+ * youDot — a single persistent fixed-position mustard marker that eases toward
+ * a per-step anchor. Connective tissue: born on the cover, persists across
+ * every step behind the controls. pointer-events:none; reduced motion = static
+ * (it snaps to each anchor with no travel).
+ *
+ * Steps set the anchor by marking ONE element [data-youdot-anchor]; the
+ * controller reads its centre. main.js calls .anchorTo(section) on each step.
+ *
+ * @param {{ size?: number, stiffness?: number, damping?: number }} [opts]
+ * @returns {{ anchorTo:(scope:HTMLElement)=>void, destroy:()=>void, el:HTMLElement }}
+ */
+export const youDot = (opts = {}) => {
+  const { size = 12, stiffness = 0.08, damping = 0.82 } = opts;
+  const reduced = prefersReducedMotion();
+
+  const el = document.createElement('div');
+  el.className = 'you-dot';
+  el.setAttribute('aria-hidden', 'true');
+  el.style.width = `${size}px`;
+  el.style.height = `${size}px`;
+  document.body.appendChild(el);
+
+  const target = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.5 };
+  const cur = { x: target.x, y: target.y, vx: 0, vy: 0 };
+  let raf = 0;
+  let scope = null;
+
+  const measure = () => {
+    if (!scope) return;
+    const a = scope.querySelector('[data-youdot-anchor]');
+    if (!a) return;
+    const r = a.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) return;
+    target.x = r.left + r.width / 2;
+    target.y = r.top + r.height / 2;
+    if (reduced) {
+      cur.x = target.x;
+      cur.y = target.y;
+      el.style.transform = `translate3d(${cur.x - size / 2}px, ${cur.y - size / 2}px, 0)`;
+    }
+  };
+
+  const tick = () => {
+    cur.vx = (cur.vx + (target.x - cur.x) * stiffness) * damping;
+    cur.vy = (cur.vy + (target.y - cur.y) * stiffness) * damping;
+    cur.x += cur.vx;
+    cur.y += cur.vy;
+    el.style.transform = `translate3d(${(cur.x - size / 2).toFixed(2)}px, ${(cur.y - size / 2).toFixed(2)}px, 0)`;
+    raf = requestAnimationFrame(tick);
+  };
+
+  const onResize = () => measure();
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('scroll', onResize, { passive: true });
+
+  if (!reduced) {
+    el.classList.add('is-live');
+    raf = requestAnimationFrame(tick);
+  }
+
+  return {
+    el,
+    anchorTo(nextScope) {
+      scope = nextScope;
+      // Re-measure across a few frames; the step may still be settling in.
+      measure();
+      requestAnimationFrame(measure);
+      window.setTimeout(measure, 120);
+      window.setTimeout(measure, 480);
+    },
+    destroy() {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onResize);
+      el.remove();
+    },
+  };
+};
+
+/**
+ * magneticButton — el is pulled toward the cursor within `radius`, spring-damped,
+ * elastic snap-back on exit (ported from SEBSKILLS MagneticButton). Wraps the
+ * element's children in a span so the label can sit pointer-events:none.
+ * Reduced motion = no follow (a no-op). Returns a cleanup function.
+ * @param {HTMLElement} el
+ * @param {{ strength?:number, radius?:number, stiffness?:number, damping?:number }} [opts]
+ * @returns {() => void} cleanup
+ */
+export const magneticButton = (el, opts = {}) => {
+  const { strength = 0.32, radius = 110, stiffness = 0.12, damping = 0.72 } = opts;
+  if (!el || prefersReducedMotion()) return () => {};
+  if (window.matchMedia('(pointer: coarse)').matches) return () => {};
+
+  el.classList.add('is-magnetic');
+  const target = { x: 0, y: 0 };
+  const cur = { x: 0, y: 0, vx: 0, vy: 0 };
+  let raf = 0;
+
+  const onMove = (e) => {
+    const rect = el.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    if (Math.hypot(dx, dy) < radius) {
+      target.x = dx * strength;
+      target.y = dy * strength;
+    } else {
+      target.x = 0;
+      target.y = 0;
+    }
+  };
+  const onLeave = () => {
+    target.x = 0;
+    target.y = 0;
+  };
+  const tick = () => {
+    cur.vx = (cur.vx + (target.x - cur.x) * stiffness) * damping;
+    cur.vy = (cur.vy + (target.y - cur.y) * stiffness) * damping;
+    cur.x += cur.vx;
+    cur.y += cur.vy;
+    el.style.transform = `translate3d(${cur.x.toFixed(2)}px, ${cur.y.toFixed(2)}px, 0)`;
+    raf = requestAnimationFrame(tick);
+  };
+
+  window.addEventListener('mousemove', onMove);
+  el.addEventListener('mouseleave', onLeave);
+  raf = requestAnimationFrame(tick);
+
+  return () => {
+    window.removeEventListener('mousemove', onMove);
+    el.removeEventListener('mouseleave', onLeave);
+    if (raf) cancelAnimationFrame(raf);
+    el.style.transform = '';
+    el.classList.remove('is-magnetic');
+  };
+};
+
+/**
+ * magneticCursor — custom cursor dot with spring lag that grows over
+ * interactive elements (ported from SEBSKILLS MagneticCursor). Disabled on
+ * coarse pointers and under reduced motion. Returns a cleanup function.
+ * @param {{ size?:number, hoverScale?:number, hoverSelector?:string }} [opts]
+ * @returns {() => void} cleanup
+ */
+export const magneticCursor = (opts = {}) => {
+  const {
+    size = 16,
+    hoverScale = 2.6,
+    hoverSelector = 'a, button, [data-cursor]',
+  } = opts;
+  if (prefersReducedMotion()) return () => {};
+  if (window.matchMedia('(pointer: coarse)').matches) return () => {};
+
+  const dot = document.createElement('div');
+  dot.className = 'magnetic-cursor';
+  dot.setAttribute('aria-hidden', 'true');
+  dot.style.width = `${size}px`;
+  dot.style.height = `${size}px`;
+  document.body.appendChild(dot);
+
+  const pos = { x: -100, y: -100 };
+  const cur = { x: -100, y: -100, vx: 0, vy: 0 };
+  let scale = 1;
+  let targetScale = 1;
+  let hovering = false;
+  let raf = 0;
+
+  const onMove = (e) => {
+    pos.x = e.clientX;
+    pos.y = e.clientY;
+  };
+  const onDown = () => {
+    targetScale = 0.8;
+  };
+  const onUp = () => {
+    targetScale = hovering ? hoverScale : 1;
+  };
+  const onOver = (e) => {
+    if (e.target?.closest?.(hoverSelector)) {
+      hovering = true;
+      targetScale = hoverScale;
+    }
+  };
+  const onOut = (e) => {
+    if (e.target?.closest?.(hoverSelector)) {
+      hovering = false;
+      targetScale = 1;
+    }
+  };
+  const tick = () => {
+    cur.vx = (cur.vx + (pos.x - cur.x) * 0.18) * 0.75;
+    cur.vy = (cur.vy + (pos.y - cur.y) * 0.18) * 0.75;
+    cur.x += cur.vx;
+    cur.y += cur.vy;
+    scale += (targetScale - scale) * 0.15;
+    dot.style.transform = `translate3d(${(cur.x - size / 2).toFixed(2)}px, ${(cur.y - size / 2).toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
+    raf = requestAnimationFrame(tick);
+  };
+
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mousedown', onDown);
+  window.addEventListener('mouseup', onUp);
+  document.addEventListener('mouseover', onOver);
+  document.addEventListener('mouseout', onOut);
+  raf = requestAnimationFrame(tick);
+
+  return () => {
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mousedown', onDown);
+    window.removeEventListener('mouseup', onUp);
+    document.removeEventListener('mouseover', onOver);
+    document.removeEventListener('mouseout', onOut);
+    if (raf) cancelAnimationFrame(raf);
+    dot.remove();
   };
 };

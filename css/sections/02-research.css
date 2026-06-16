@@ -112,7 +112,7 @@
 /* ─── Left: the method as a flowing rhythm ──────────────────── */
 #\30 2-research .research-method {
   align-content: center;
-  gap: clamp(14px, 1.8vw, 24px);
+  gap: clamp(12px, 1.4vw, 20px);
 }
 
 /* Kicker — navy on warm, high contrast. */
@@ -296,9 +296,13 @@
    left%/top%. Backgroundless: no box, no track behind the silhouette. */
 #\30 2-research .research-map {
   position: relative;
-  width: 100%;
-  max-width: 320px;
-  margin: clamp(8px, 1.4vw, 16px) auto 0;
+  /* Portrait GB map: size from HEIGHT so the head + hint + diary rail all stay
+     on one screen (the marquee reward — the surfacing diary — must be visible).
+     Width follows from the 823/1280 aspect; capped so it never gets huge. */
+  height: min(48vh, 470px);
+  width: calc(min(48vh, 470px) * 823 / 1280);
+  max-width: 100%;
+  margin: clamp(8px, 1.4vw, 18px) auto 0;
   aspect-ratio: 823 / 1280;
 }
 /* Real UK map silhouette — navy on the warm ground, no white/box behind it. */
@@ -317,18 +321,22 @@
 /* ─── City markers (cream squares on the navy land) ─────────── */
 #\30 2-research .research-marker {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   padding: 0;
   transform: translate(-50%, -50%);
   background: var(--soi-cream-warm);   /* warm cream on navy land → contrast */
   border: 1.5px solid var(--soi-navy);
   cursor: pointer;
-  transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+  /* Quiet resting presence so all eight read distinctly on the navy land,
+     without a box: a faint cream halo ring (square, drawn with box-shadow). */
+  box-shadow: 0 0 0 3px rgba(250, 233, 197, 0.16);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
 }
 #\30 2-research .research-marker:hover {
-  transform: translate(-50%, -50%) scale(1.2);
+  transform: translate(-50%, -50%) scale(1.22);
   background: var(--soi-gold);
+  box-shadow: 0 0 0 4px rgba(250, 233, 197, 0.3);
 }
 #\30 2-research .research-marker:focus-visible {
   outline: 2px solid var(--soi-navy);
@@ -416,6 +424,19 @@
 #\30 2-research .research-card {
   border-left: 3px solid var(--teal-deep);
   padding-left: clamp(16px, 1.6vw, 22px);
+  /* Surfacing-memory reveal: the diary rises + fades in like a memory
+     returning to the surface (transform/opacity only, compositor-friendly). */
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#\30 2-research .research-card.is-surfacing {
+  opacity: 0;
+  transform: translateY(14px);
+}
+/* The accent rule "draws up" with the memory — a quiet, restrained flourish. */
+#\30 2-research .research-card.is-surfacing {
+  border-left-color: transparent;
 }
 #\30 2-research .research-card-head {
   margin-bottom: 12px;
@@ -467,6 +488,13 @@
   #\30 2-research .research-marker { transition: none; }
   #\30 2-research .research-map.is-pinned .research-marker { transition: none; }
   #\30 2-research .research-marker.is-active::after { animation: none; }
+  /* Surfacing-memory reveal → land instantly. */
+  #\30 2-research .research-card { transition: none; }
+  #\30 2-research .research-card.is-surfacing {
+    opacity: 1;
+    transform: none;
+    border-left-color: var(--teal-deep);
+  }
   #\30 2-research .research-orbit { animation: none; }
   /* Entrance + thread draw → straight to rested state (no scroll work). */
   #\30 2-research.is-entering .research-method,

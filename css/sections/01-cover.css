@@ -188,7 +188,8 @@
   width: 100%;
   max-width: min(48vw, 660px);
   aspect-ratio: 1 / 1;
-  pointer-events: none;
+  pointer-events: none;          /* only the trace handle opts back in */
+  --trace: 0;                    /* 0..1 trace progress, set by JS */
 }
 #\30 1-cover .cover-maze {
   position: absolute;
@@ -206,30 +207,184 @@
   filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.18));
 }
 
-/* live orbit ring (deck orbit motif) sweeping around the maze */
+/* live orbit ring (deck orbit motif) sweeping around the maze. It RESPONDS to
+   the trace: dim + slow at rest, brightening + tightening as the visitor takes
+   control (driven by the --trace custom property on .cover-stage). */
 #\30 1-cover .cover-orbit {
   position: absolute;
   inset: -4%;
   width: 108%;
   height: 108%;
   overflow: visible;
+  /* a quiet inward draw as control is taken (1 → 1.018 scale) */
+  transform: scale(calc(1 + var(--trace) * 0.018));
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 #\30 1-cover .cover-orbit-ring {
   fill: none;
   stroke: var(--soi-teal);
-  stroke-width: 2.4;
-  opacity: 0.85;
+  stroke-width: calc(2.4 + var(--trace) * 1.1);
+  /* dim at rest, full-bright once traced */
+  opacity: calc(0.55 + var(--trace) * 0.4);
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
 }
 #\30 1-cover .cover-orbit-bead {
   fill: var(--soi-teal);
   /* travels the ellipse via offset-path (graceful: bead just hides if
-     unsupported) */
+     unsupported). Speeds up as the trace advances. */
   offset-path: path('M 38 300 A 262 150 -24 1 1 562 300 A 262 150 -24 1 1 38 300');
   offset-distance: 0%;
-  animation: cover-orbit-travel 9s linear infinite;
+  opacity: calc(0.5 + var(--trace) * 0.5);
+  animation: cover-orbit-travel calc(11s - var(--trace) * 5s) linear infinite;
 }
 @keyframes cover-orbit-travel {
   to { offset-distance: 100%; }
+}
+
+/* ─── TRACE-THE-MAZE: the marquee interaction ─────────────────────────
+   A faint guide path winds from the maze entrance to its centre; the ink
+   draws in behind the dragged cream handle; a quiet prompt/gauge fills. The
+   trace SVG sits ABOVE the maze image but only the handle is interactive. ── */
+#\30 1-cover .cover-trace {
+  position: absolute;
+  inset: 7%;                     /* match .cover-maze inset so coords align */
+  width: 86%;
+  height: 86%;
+  overflow: visible;
+  z-index: 2;
+  pointer-events: none;
+}
+/* faint dashed hint of the route — discovery over instruction */
+#\30 1-cover .cover-trace-guide {
+  fill: none;
+  stroke: var(--soi-navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1 11;        /* dotted breadcrumb */
+  opacity: 0.28;
+  transition: opacity 0.4s ease;
+}
+/* the inked trail the visitor draws */
+#\30 1-cover .cover-trace-ink {
+  fill: none;
+  stroke: var(--soi-navy);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* strokeDasharray / strokeDashoffset set by JS to reveal with progress */
+}
+/* the goal node at the maze centre, pulsing softly until reached */
+#\30 1-cover .cover-trace-goal {
+  fill: none;
+  stroke: var(--soi-teal);
+  stroke-width: 2.5;
+  opacity: calc(0.4 + var(--trace) * 0.6);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cover-goal-pulse 2.4s ease-in-out infinite;
+}
+@keyframes cover-goal-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+}
+
+/* the draggable cream "you" dot — born at the maze entrance.
+   Anchored at the path start; draggable moves it by transform. */
+#\30 1-cover .cover-trace-handle {
+  position: absolute;
+  /* path start (470,486) within a 0..600 trace box that is inset 7% of the
+     stage → as a % of the stage: 7% + (coord/600)*86% */
+  left: calc(7% + (470 / 600) * 86%);
+  top: calc(7% + (486 / 600) * 86%);
+  z-index: 3;
+  width: 44px;                   /* generous, forgiving touch target */
+  height: 44px;
+  margin: -22px 0 0 -22px;       /* centre the hit target on the point */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  pointer-events: auto;          /* the one interactive thing in the stage */
+  cursor: grab;
+  touch-action: none;
+  display: grid;
+  place-items: center;
+}
+#\30 1-cover .cover-trace-handle:focus-visible {
+  outline: 2px solid var(--soi-navy);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+#\30 1-cover .cover-trace-handle.is-dragging { cursor: grabbing; }
+#\30 1-cover .cover-trace-handle-dot {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--soi-cream);
+  border: 2px solid var(--soi-navy);
+  /* a soft ring invites the touch; tightens once control is taken */
+  box-shadow: 0 0 0 6px rgba(43, 183, 232, 0.22);
+  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* gentle "touch me" breathing on the resting handle (Moooi affordance) */
+#\30 1-cover .cover-trace-handle-dot {
+  animation: cover-handle-breathe 2.6s ease-in-out infinite;
+}
+@keyframes cover-handle-breathe {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(43, 183, 232, 0.18); }
+  50% { box-shadow: 0 0 0 10px rgba(43, 183, 232, 0.10); }
+}
+#\30 1-cover .cover-trace-handle.is-dragging .cover-trace-handle-dot {
+  animation: none;
+  box-shadow: 0 0 0 9px rgba(43, 183, 232, 0.28);
+  transform: scale(1.08);
+}
+
+/* quiet trace prompt / control gauge — backgroundless navy, low emphasis.
+   A thin underline-free bar fills with --trace beneath the label. */
+#\30 1-cover .cover-trace-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: -2.6em;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+#\30 1-cover .cover-trace-prompt-label {
+  font: 700 var(--t-xs) / 1 var(--font-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.72;
+  transition: opacity 0.3s ease;
+}
+#\30 1-cover .cover-trace-prompt::after {
+  content: '';
+  width: clamp(120px, 16vw, 200px);
+  height: 2px;
+  background:
+    linear-gradient(to right, var(--soi-teal) 0 calc(var(--trace) * 100%),
+                              rgba(10, 26, 92, 0.16) calc(var(--trace) * 100%) 100%);
+  transition: none;              /* --trace already eases via JS frame cadence */
+}
+
+/* COMPLETION reward state */
+#\30 1-cover.cover-trace-done .cover-trace-guide { opacity: 0; }
+#\30 1-cover.cover-trace-done .cover-trace-handle-dot {
+  animation: none;
+  box-shadow: 0 0 0 4px rgba(43, 183, 232, 0.30);
+  background: var(--soi-teal);
+}
+#\30 1-cover.cover-trace-done .cover-trace-goal { animation: none; opacity: 0; }
+#\30 1-cover.cover-trace-done .cover-trace-prompt-label {
+  opacity: 0.9;
+  color: var(--soi-navy);
 }
 
 /* ─── Quiet respondent marker (navy, low-emphasis, no overlap) ── */
@@ -243,13 +398,16 @@
   font-size: var(--t-xs);
   line-height: 1.4;
   color: var(--soi-navy);
-  opacity: 0.66;
+  /* dimmer until the visitor has traced control, then it settles up */
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
   display: flex;
   align-items: baseline;
   gap: 8px;
   pointer-events: none;
 }
-#\30 1-cover .cover-you-dot {
+#\30 1-cover.cover-trace-done .cover-you { opacity: 0.78; }
+#\30 1-cover .cover-you-mark {
   flex: 0 0 auto;
   width: 9px;
   height: 9px;
@@ -257,7 +415,9 @@
   background: var(--soi-cream);
   border: 1.4px solid var(--soi-navy);
   transform: translateY(1px);
+  transition: background 0.5s ease;
 }
+#\30 1-cover.cover-trace-done .cover-you-mark { background: var(--soi-teal); }
 
 /* ═══ Responsive ══════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -290,4 +450,12 @@
   #\30 1-cover .cover-orbit-bead { animation: none; }
   #\30 1-cover .cover-cue,
   #\30 1-cover .cover-cue-arrow { transition: none; }
+  /* no idle motion on the trace affordances; JS pre-completes the ink */
+  #\30 1-cover .cover-trace-handle-dot,
+  #\30 1-cover .cover-trace-goal { animation: none; }
+  #\30 1-cover .cover-orbit,
+  #\30 1-cover .cover-orbit-ring,
+  #\30 1-cover .cover-trace-handle-dot,
+  #\30 1-cover .cover-you,
+  #\30 1-cover .cover-you-mark { transition: none; }
 }

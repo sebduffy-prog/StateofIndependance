@@ -82,11 +82,34 @@
           <span class="vccp-stat-label on-warm">Protecting the holiday budget</span>
           <span class="tw-joy-big si-bignum on-warm"><span data-count-to="39.6" data-count-decimals="0" data-count-suffix="%"></span></span>
           <span class="tw-joy-sub on-warm">are protecting their holiday budget at all costs.</span>
-          <div class="tw-tug" data-host="ringfence"></div>
-          <p class="tw-ringfence-cap on-warm">The holiday is ring-fenced. Most other treats stay flexible.</p>
         </div>
       </div>
-      <figure class="tw-joy-bars chart-holder reveal col-7">
+
+      <!-- (b) THE MARQUEE TACTILE BEAT — ring-fence the holiday.
+           A budget board of draggable spend chips. Drag the flexible ones off
+           to the right to cut them; they settle into the cut margin. The
+           ring-fenced HOLIDAY resists being dragged out and springs back —
+           "sacrosanct" made physical. Built on js/lib/tactile.js draggable(). -->
+      <div class="tw-cut col-7 reveal" data-host="cut-board"
+           role="group" aria-labelledby="tw-cut-h">
+        <div class="tw-cut-head">
+          <h4 class="tw-cut-h" id="tw-cut-h">Try to cut the budget</h4>
+          <p class="tw-cut-instr">
+            Drag a treat to the right to cut it. One line refuses to move
+            &mdash; drag a chip, or focus it and use the arrow keys.
+          </p>
+        </div>
+        <div class="tw-cut-stage" data-host="cut-stage">
+          <div class="tw-cut-keep" data-host="cut-keep" aria-hidden="true"></div>
+          <div class="tw-cut-bin" data-host="cut-bin" aria-hidden="true">
+            <span class="tw-cut-bin-label">Cut</span>
+          </div>
+          <ul class="tw-cut-list" data-host="cut-list"></ul>
+        </div>
+        <p class="tw-cut-readout" data-host="cut-readout" aria-live="polite"></p>
+      </div>
+
+      <figure class="tw-joy-bars chart-holder reveal col-12">
         <figcaption class="tw-truth-cap">Non-essentials Britain is actively protecting (% protecting because it matters to their wellbeing).</figcaption>
         <div class="tw-lolli" data-host="joy-lolli"></div>
       </figure>

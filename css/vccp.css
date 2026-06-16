@@ -530,6 +530,140 @@ h5, h6 { font-weight: 600; }
   .journey-btn { transition: none; }
 }
 
+/* ─── CONNECTIVE TISSUE (Blue-Marine feel) ──────────────────────────
+   Chapter arrival, the persistent "you" marker, the orbit progress
+   meridian, the magnetic cursor + commit pulse. All transform/opacity,
+   all reduced-motion safe (jump to settled state, no travel).
+   ──────────────────────────────────────────────────────────────────── */
+
+/* — Chapter ARRIVAL: lines assemble (lift + fade) in a staggered cascade.
+   They begin hidden only when JS is driving them, so a no-JS / static
+   capture still shows the copy (the .is-arrived class settles them). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-arrival] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: var(--arrival-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  [data-arrival].is-arrived {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* — First-step listening ritual: a calm full-bleed wash with one line and a
+   thin fill bar that runs over ~1.5s, then lifts away. */
+.arrival-ritual {
+  position: fixed;
+  inset: 0;
+  z-index: 95; /* over content, under the magnetic cursor (9999) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ground-warm);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: auto;
+}
+.arrival-ritual.is-leaving { opacity: 0; }
+.arrival-ritual__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.arrival-ritual__line {
+  font: 600 var(--t-sm)/1.2 var(--font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.85;
+}
+.arrival-ritual__bar {
+  width: clamp(140px, 24vw, 260px);
+  height: 2px;
+  background: rgba(10, 26, 92, 0.18);
+  overflow: hidden;
+}
+.arrival-ritual__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--soi-navy);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.arrival-ritual.is-live .arrival-ritual__fill { transform: scaleX(1); }
+
+/* — Persistent "you" marker: a small mustard dot with a soft contact glow.
+   Fixed, behind the controls, never catches the pointer. */
+.you-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90; /* below .journey-controls (100), above page content */
+  border-radius: 50%;
+  background: var(--mustard);
+  box-shadow:
+    0 0 0 3px rgba(255, 201, 49, 0.22),
+    0 2px 8px rgba(10, 26, 92, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  will-change: transform;
+}
+.you-dot.is-live { opacity: 0.92; }
+@media (prefers-reduced-motion: reduce) {
+  .you-dot { opacity: 0.92; transition: none; }
+}
+
+/* — Magnetic cursor: a small navy dot that inverts via difference blend. */
+.magnetic-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  border-radius: 50%;
+  background: var(--paper);
+  mix-blend-mode: difference;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* — Orbit progress MERIDIAN: a thin completion ring in the controls. */
+.journey-meridian {
+  flex: 0 0 auto;
+  display: block;
+}
+.journey-meridian__track {
+  stroke: rgba(10, 26, 92, 0.16);
+  stroke-width: 2;
+}
+.journey-meridian__fill {
+  stroke: var(--mustard);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-meridian__fill { transition: none; }
+}
+
+/* — Magnetic Next + commit pulse: a quick tactile confirmation when a gated
+   step unlocks. transform-only, settles to rest. */
+.journey-next.is-magnetic { will-change: transform; }
+@media (prefers-reduced-motion: no-preference) {
+  .journey-next.is-committed { animation: journey-commit 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+}
+@keyframes journey-commit {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 201, 49, 0.55); }
+  40%  { box-shadow: 0 0 0 8px rgba(255, 201, 49, 0.18); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 201, 49, 0); }
+}
+
 /* Narrow screens: stack indicator above a button row would be heavy; instead
    keep one row but tighten paddings. */
 @media (max-width: 560px) {

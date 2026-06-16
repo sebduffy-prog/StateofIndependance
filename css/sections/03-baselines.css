@@ -470,17 +470,109 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Waffle (revealed after the guess) — sits on the warm ground ── */
-#\30 3-baselines .bl-waffle {
-  margin-top: 4px;
-  max-width: 240px;
+/* ─── The 100-in-100 marquee crowd (revealed after the guess) ──────
+   A hundred squares you pass today — backgroundless, the squares carry the
+   contrast (faint ink track empties, navy fills), with ONE square highlighted
+   in brand orange as "you". The reveal cascades the fill in; the caption
+   number counts up. Sits DIRECTLY on the warm ground — no card, no border. */
+#\30 3-baselines .bl-crowd {
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vh, 28px);
+  /* Assemble on reveal: the whole crowd lifts + fades up as it takes the slot. */
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-#\30 3-baselines .bl-waffle-caption {
-  margin: 12px 0 0 0;
-  font-size: var(--t-xs);
+#\30 3-baselines .bl-crowd.is-live {
+  opacity: 1;
+  transform: none;
+}
+/* Big concrete caption — "77 of every 100 people you pass today…". The count
+   is a heavy navy numeral that counts up; the rest is quiet supporting type. */
+#\30 3-baselines .bl-crowd-cap {
+  margin: 0;
+  display: block;
+  max-width: 30ch;
+  font-size: clamp(1.15rem, 1.7vw, 1.55rem);
   font-weight: 600;
+  line-height: 1.32;
   color: var(--on-warm);
-  opacity: 0.82;
+}
+#\30 3-baselines .bl-crowd-count {
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  margin-right: 0.12em;
+  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+  line-height: 1;
+  color: var(--on-warm);
+}
+#\30 3-baselines .bl-crowd-of {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* The grid: 10×10 squares, no gaps to a track box — generous breathing room
+   around it, square cells, flat colour. */
+#\30 3-baselines .bl-crowd-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: clamp(4px, 0.7vw, 8px);
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+}
+#\30 3-baselines .bl-crowd-cell {
+  /* Empty = faint ink tint (never a white box); square corners. */
+  background: rgba(10, 26, 92, 0.12);
+  border-radius: 0;
+  transform: scale(0.78);
+  opacity: 0.55;
+  transition: background-color 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.32s ease;
+  will-change: transform;
+}
+/* Filled = navy, high-contrast on the warm amber ground; settles to full size. */
+#\30 3-baselines .bl-crowd-cell.is-filled {
+  background: var(--soi-navy);
+  transform: scale(1);
+  opacity: 1;
+}
+/* The you-square: brand orange, always reads as the one square that is YOU,
+   with a soft contact lift so it sits proud of the crowd. */
+#\30 3-baselines .bl-crowd-cell.is-you {
+  background: var(--soi-orange);
+  opacity: 1;
+}
+#\30 3-baselines .bl-crowd-cell.is-you.is-filled {
+  background: var(--soi-orange);
+  transform: scale(1.16);
+  box-shadow: 0 4px 10px rgba(10, 26, 92, 0.28);
+  z-index: 1;
+}
+
+/* Quiet key line — "This square is you." with an orange swatch. */
+#\30 3-baselines .bl-crowd-key {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--on-warm);
+  opacity: 0.78;
+}
+#\30 3-baselines .bl-crowd-key-you {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  background: var(--soi-orange);
+  box-shadow: 0 2px 6px rgba(10, 26, 92, 0.26);
 }
 
 /* ─── 54 / 46 tug-of-war (stat 4 lede) — box-less, on the warm ground ─ */
@@ -592,5 +684,20 @@
   }
   #\30 3-baselines .bl-scroll-arrow::before {
     animation: none;
+  }
+  /* Crowd marquee: no lift-in, no per-cell settle — paint the final state. */
+  #\30 3-baselines .bl-crowd {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #\30 3-baselines .bl-crowd-cell {
+    transform: scale(1);
+    opacity: 0.55;
+    transition: none;
+  }
+  #\30 3-baselines .bl-crowd-cell.is-filled { opacity: 1; }
+  #\30 3-baselines .bl-crowd-cell.is-you.is-filled {
+    transform: scale(1.16);
   }
 }

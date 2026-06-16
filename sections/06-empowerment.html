@@ -1,14 +1,14 @@
-<!-- Chapter 06 — empowerment. Design World V5 (TOP-TIER experiential pass).
+<!-- Chapter 06 — empowerment. EXPERIENTIAL-2 pass.
      One continuous warm bear-figure world. NO blocks behind any text: every
      navy band / scrim plate / cream pill / legend card / centre plate is gone.
-     Copy sits on the ground with colour + weight emphasis only. Charts, venn
-     and the orbit ring float backgroundless. Deck components lifted: the
-     bear-world gradient panels (coil → sphere → circles) as full-bleed,
-     parallaxed grounds; the figure-silhouette glyph beside titles; decorative
-     orbit rings; an image-title lockup treatment. Experiential motion comes
-     from js/lib/experiential.js (chapterTransition entrance, observeParallax
-     on the world panels, scrollScene driving the reframe wipe). All copy
-     contrast-safe, square corners, reduced-motion safe. -->
+     Copy sits on the ground with colour + weight emphasis only. Deck assets:
+     the figure-silhouette glyph, bear-world panels (coil → sphere), the
+     maze-hero motif, decorative orbit rings.
+     The MARQUEE interaction is the tactile three-needs venn (money/time/stress
+     dragged together until they overlap on empowerment) — it is the step gate.
+     The survival→agency reframe stays a cinematic, ungated pivot wipe.
+     Headings assemble via arrival() (data-arrival). All contrast-safe, square
+     corners, reduced-motion safe. -->
 <div class="si-ground-warm emp-shell" data-emp-root>
   <div class="si-orbit si-orbit--spin emp-orbit emp-orbit--a" aria-hidden="true" data-parallax="0.06"></div>
   <div class="si-orbit emp-orbit emp-orbit--b" aria-hidden="true" data-parallax="-0.05"></div>
@@ -20,29 +20,28 @@
       <img class="emp-head-glyph" src="assets/deck/figure-silhouette.png" alt=""
            aria-hidden="true" draggable="false" data-parallax="0.12" />
       <div class="emp-head-copy">
-        <p class="vccp-eyebrow emp-eyebrow">The empowerment architecture</p>
-        <h2 class="si-display si-display--lg emp-title">
+        <p class="vccp-eyebrow emp-eyebrow" data-arrival>The empowerment architecture</p>
+        <h2 class="si-display si-display--lg emp-title" data-arrival>
           One need unifies<br>everyone: <em class="hl">control</em>
         </h2>
-        <p class="emp-standfirst si-measure">
+        <p class="emp-standfirst si-measure" data-arrival>
           Money is the obvious ask. But saving people time and stress holds far more
           premium value than brands realise.
         </p>
       </div>
     </header>
 
-    <!-- THE TURN: survival-mode → active-agency reframe on the deck's
-         bear-world panels (coil = survival, sphere = agency). The two world
-         panels cross-fade as you drag; the COPY lives on the ground beside
+    <!-- THE PIVOT (cinematic, ungated): survival-mode → active-agency reframe on
+         the deck's bear-world panels (coil = survival, sphere = agency). The two
+         world panels cross-fade as you drag; the COPY lives on the ground beside
          them with colour/weight emphasis only — no scrim plate, no pill, no
-         block. This is the pivot of the whole chapter. A deck orbit ring
-         sweeps the stage and the maze-hero motif marks the turn. -->
+         block. A deck orbit ring frames the turning world. -->
     <section class="emp-reframe" aria-labelledby="emp-reframe-title" data-emp-reframe-section>
       <div class="emp-reframe-lede">
-        <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">
+        <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title" data-arrival>
           Survival mode to active <em class="hl">agency</em>
         </h3>
-        <p class="emp-reframe-intro si-measure">
+        <p class="emp-reframe-intro si-measure" data-arrival>
           Britain is not a passive, bruised victim waiting to be saved. The true
           data forces a more optimistic reading. Drag to make the turn.
         </p>
@@ -75,10 +74,10 @@
       <img class="emp-asks-motif" src="assets/deck/bear-world-coil.png" alt=""
            aria-hidden="true" draggable="false" data-parallax="0.07" />
       <div class="emp-asks-lede">
-        <h3 class="si-display si-display--sm emp-asks-title" id="emp-asks-title">
+        <h3 class="si-display si-display--sm emp-asks-title" id="emp-asks-title" data-arrival>
           What Britain asks of <em class="hl">brands</em>
         </h3>
-        <p class="emp-asks-intro si-measure">
+        <p class="emp-asks-intro si-measure" data-arrival>
           Money leads, as expected. But time and stress sit right behind it — the
           premium territory most brands leave on the table.
         </p>
@@ -115,23 +114,25 @@
       </div>
     </section>
 
-    <!-- The three pillars: one overlap at empowerment. Backgroundless venn —
-         flat distinct circles float on the warm world, centre word + legend
-         carry NO block (colour/weight only). The deck's overlapping-circles
-         bear-world sits behind as the section motif. -->
+    <!-- THE MARQUEE INTERACTION — three needs, one overlap. Money / time /
+         stress begin as three flat circles held APART on the warm ground. The
+         visitor DRAGS them together (real physics via tactile.js); the shared
+         overlap GROWS and the word "empowerment" assembles in the centre as
+         they meet. Completing the overlap is the step's GATE. The "you" dot
+         lands here. Backgroundless — circles + word float on the warm world. -->
     <section class="emp-venn" aria-labelledby="emp-venn-title">
       <img class="emp-venn-motif" src="assets/deck/bear-world-circles.png" alt=""
            aria-hidden="true" draggable="false" data-parallax="0.08" />
       <div class="emp-venn-lede">
-        <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title">
+        <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title" data-arrival>
           Three needs, one <em class="hl">overlap</em>
         </h3>
-        <p class="emp-venn-intro si-measure">
-          Save me money, save me time, save me stress. Hover or focus a circle to
-          read the brand ask behind it — they all resolve to one thing.
+        <p class="emp-venn-intro si-measure" data-arrival>
+          Save me money, save me time, save me stress. Drag the three circles
+          together — they all resolve to one thing.
         </p>
       </div>
-      <div class="emp-venn-mount" data-emp-venn aria-live="polite"></div>
+      <div class="emp-venn-mount" data-emp-venn data-youdot-anchor aria-live="polite"></div>
     </section>
   </div>
 </div>

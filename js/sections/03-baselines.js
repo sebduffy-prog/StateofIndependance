@@ -27,8 +27,10 @@
  *   - traded-down categories  -> horizontalBars (navy) with a pillGroup toggle
  *                                that re-sorts/filters the ranking live.
  *
- * Stat 1 stays gated behind clickToGuess (the loved interaction): the 77%
- * number and its waffle only reveal after the reader commits a guess.
+ * Stat 1 is the MARQUEE, gated behind clickToGuess (the loved interaction):
+ * the visitor guesses the 77% first, and only after they commit does the
+ * number count up and assemble as a 100-in-100 crowd — a hundred people you
+ * pass today, with the visitor's OWN square highlighted as one of them.
  *
  * Source captions are CUT site-wide (FEEDBACK-V4 §6); the strings remain in
  * data/survey.json, they are simply not rendered here.
@@ -40,14 +42,13 @@ import { observeReveals } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
 import {
   horizontalBars,
-  waffleGrid,
   lollipopChart,
   dotPlot,
   tugOfWar,
   orbitRingChart,
 } from '../lib/charts.js';
 import { clickToGuess, pillGroup } from '../lib/interactions.js';
-import { observeParallax, scrollScene, prefersReducedMotion } from '../lib/experiential.js';
+import { observeParallax, scrollScene, prefersReducedMotion, arrival } from '../lib/experiential.js';
 
 const CAREFUL_TRUE_VALUE = 77.3;
 const CAREFUL_WAFFLE_FILL = 77;
@@ -55,6 +56,68 @@ const TRADING_DOWN_PCT = 54;
 const HOLDING_PCT = 46;
 const PANEL_LABEL_WIDTH = 210;
 const TOP_N = 4;
+
+// 100-in-100 marquee tuning.
+const CROWD_TOTAL = 100;
+const CROWD_FILL_STAGGER_MS = 16; // per-square cascade
+const CROWD_COUNT_MS = 1100; // caption count-up duration
+
+/**
+ * Build the 100-in-100 crowd: a 10×10 grid of squares that fills to `fill`
+ * and singles out ONE filled square as the visitor's own ("you"). The fill
+ * cascades on reveal; reduced motion paints the final state instantly.
+ * Backgroundless — the squares carry the contrast, no card.
+ * @param {HTMLElement} gridEl
+ * @param {{ fill: number, youIndex: number }} opts
+ */
+const buildCrowd = (gridEl, { fill, youIndex }) => {
+  const reduced = prefersReducedMotion();
+  const cells = [];
+  for (let i = 0; i < CROWD_TOTAL; i += 1) {
+    const cell = document.createElement('span');
+    cell.className = 'bl-crowd-cell';
+    if (i === youIndex) cell.classList.add('is-you');
+    gridEl.append(cell);
+    cells.push(cell);
+  }
+
+  const paintCell = (i) => {
+    if (i < fill) cells[i].classList.add('is-filled');
+  };
+
+  if (reduced) {
+    cells.forEach((_, i) => paintCell(i));
+    return;
+  }
+
+  // Cascade the fill in reading order; the you-square lands with the rest.
+  let i = 0;
+  const tick = () => {
+    if (i >= CROWD_TOTAL) return;
+    paintCell(i);
+    i += 1;
+    window.setTimeout(tick, CROWD_FILL_STAGGER_MS);
+  };
+  tick();
+};
+
+/** Count a caption number up to `to` (eased, tabular). Reduced motion = set. */
+const countCaption = (el, to) => {
+  if (!el) return;
+  if (prefersReducedMotion()) {
+    el.textContent = String(to);
+    return;
+  }
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min((now - start) / CROWD_COUNT_MS, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = String(Math.round(to * eased));
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = String(to);
+  };
+  requestAnimationFrame(tick);
+};
 
 const mapItems = (items) =>
   items.map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
@@ -75,6 +138,11 @@ export default function init(rootEl, data) {
   } = survey;
 
   observeReveals(rootEl);
+
+  // Chapter arrival: assemble the heading (kicker/headline/standfirst lift in,
+  // the emphasis word decrypts) each time this step becomes current. Not the
+  // first step, so no ritual. Hero count-ups stay owned by observeCounters.
+  rootEl.addEventListener('chapter:arrive', () => arrival(rootEl));
 
   // ── Experiential motion ──────────────────────────────────────────────
   // Subtle parallax on the decorative world layers (orbit, seeds, bear,
@@ -122,11 +190,20 @@ export default function init(rootEl, data) {
     if (mazeObserver) mazeObserver.disconnect();
   });
 
-  // Panel 1 - the guess gates both the hero count-up and the 77/100 waffle.
+  // Panel 1 — the MARQUEE: the guess gates the hero count-up AND the 100-in-100
+  // crowd reveal (your own square among the hundred). On reveal the mood chart
+  // steps aside and the crowd assembles full-bleed.
   const heroOne = rootEl.querySelector('[data-bl-num1]');
   const guessHost = rootEl.querySelector('[data-guess-1]');
-  const waffleHost = rootEl.querySelector('[data-waffle-1]');
+  const crowdFig = rootEl.querySelector('[data-crowd-1]');
+  const crowdGrid = rootEl.querySelector('[data-crowd-grid]');
+  const crowdCount = rootEl.querySelector('[data-crowd-count]');
+  const moodFig = rootEl.querySelector('[data-mood-fig]');
   let carefulRevealed = false;
+
+  // The visitor's own square: fixed once so it is stable across re-renders,
+  // and always inside the filled set so "you" are genuinely one of the 77.
+  const youIndex = Math.floor(Math.random() * CAREFUL_WAFFLE_FILL);
 
   // Placeholder before the guess gates the reveal — a neutral dash, never a
   // literal "00%" that reads as a real zero in a static / pre-scroll capture.
@@ -136,17 +213,13 @@ export default function init(rootEl, data) {
     if (carefulRevealed) return;
     carefulRevealed = true;
     if (heroOne) countUp(heroOne, { to: CAREFUL_WAFFLE_FILL, suffix: '%' });
-    if (waffleHost) {
-      waffleHost.hidden = false;
-      waffleGrid(waffleHost, {
-        value: CAREFUL_WAFFLE_FILL,
-        // Navy filled squares read high-contrast on the warm amber ground;
-        // mustard squares would vanish colour-on-colour.
-        accent: 'navy',
-        square: 18,
-        gap: 4,
-        ariaLabel: `${CAREFUL_WAFFLE_FILL} in 100 UK adults are more careful with money`,
-      });
+    // The mood lollipop recedes; the crowd takes the marquee slot.
+    if (moodFig) moodFig.hidden = true;
+    if (crowdFig && crowdGrid) {
+      crowdFig.hidden = false;
+      crowdFig.classList.add('is-live');
+      buildCrowd(crowdGrid, { fill: CAREFUL_WAFFLE_FILL, youIndex });
+      countCaption(crowdCount, CAREFUL_WAFFLE_FILL);
     }
   };
 
