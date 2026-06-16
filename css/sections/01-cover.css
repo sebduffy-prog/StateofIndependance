@@ -119,15 +119,9 @@
   font-style: normal;
   font-weight: inherit;
 }
-/* "independence" reveals its hairline underline accent L→R on load (no block —
-   the global .hl is a single underline-gradient layer; we grow its width). */
-#\30 1-cover .cover-word-em {
-  background-size: 0% 0.06em;   /* underline starts hidden */
-}
-#\30 1-cover .cover-word-em.is-wiped {
-  background-size: 100% 0.06em; /* underline grows in */
-  transition: background-size 0.66s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
-}
+/* "independence" emphasis: colour + weight only (no underline, no block).
+   Always visible; .is-wiped is a no-op kept for the JS hook. */
+#\30 1-cover .cover-word-em { opacity: 1; }
 
 /* ─── Standfirst: navy on warm, generous measure ─────────────── */
 #\30 1-cover .cover-standfirst {
@@ -429,7 +423,7 @@
 
 /* ═══ Reduced motion ══════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-word-em { transition: none; background-size: 100% 0.06em; }
+  #\30 1-cover .cover-word-em { transition: none; }
   #\30 1-cover .cover-orbit-bead { animation: none; }
   #\30 1-cover .cover-cue,
   #\30 1-cover .cover-cue-arrow,
