@@ -1,23 +1,21 @@
-/* Chapter 04 — twists (Design World V2, professional pass).
+/* Chapter 04 — twists (Design World V5 — TOP-TIER experiential pass).
    Three exhibits with one EARNED DARK moment (navy-velvet ground) for the
-   trust paradox. Seamless, de-blocked flow: spacing rhythm instead of
-   hairline rules, warm gradient ground for the protected-joy hero, orbit
-   motifs behind content, a cream bear+child stamp watermark behind the
-   intro. Scope EVERY rule with #\30 4-twists.
+   trust paradox. NO BLOCKS BEHIND TEXT anywhere: every stat, lede and caption
+   sits on the ground with colour/weight emphasis only. The flip-card faces,
+   formerly washed, are now stroke-framed type panels (no fill). Charts, orbit,
+   tug, lollipop are all backgroundless.
+
+   Deck (2) branding lifted biblically: an image-TITLE lockup header pairing a
+   huge Poppins-Black title with a bear-world motif + sweeping orbit; the
+   Nationwide evidence photo as real-world proof in the trust exhibit; a
+   bear-world coil motif behind the joy hero. Experiential motion: scroll
+   --enter entrance on each exhibit, gentle parallax on the decorative art.
 
    Branding (FEEDBACK-V4): NO mustard accent. Navy on warm grounds; cream +
-   teal on the navy trust ground (onNavy). Backgroundless components — no
-   white boxes, no white chart tracks; the orbit/bars/lolli/tug float on the
-   ground. Bigger, bolder Poppins type. Zero overlap, screen-filling depth.
+   teal on the navy trust ground (onNavy). Bigger, bolder Poppins. Zero
+   overlap, screen-filling depth, no clipped text. Square corners.
 
-   Contrast / overlap safety:
-   - Decorative layers (orbit, bear stamp) are z-index 0 + pointer-events:none;
-     content is z-index 1. Nothing occludes interactive UI.
-   - Navy ground => cream + teal components/text. No ink-on-navy.
-   - Warm hero => navy text/components. No cream-on-mustard low contrast.
-   - dragRank tiles + revealed charts: tiles read as soft paper; charts are
-     backgroundless (cream/teal marks on velvet).
-   Square corners, flat chart fills, tabular numbers, reduced-motion safe. */
+   Scope EVERY rule with #\30 4-twists. */
 
 #\30 4-twists {
   display: block;            /* override flex-centre: this chapter flows tall */
@@ -26,74 +24,140 @@
 #\30 4-twists .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(72px, 10vh, 132px);   /* seamless rhythm — space replaces rules */
+  gap: clamp(80px, 11vh, 148px);   /* seamless rhythm — space replaces rules */
 }
 
-/* ─── Chapter header + cream bear+child stamp watermark ───── */
+/* ─── Experiential entrance — driven by --enter (experiential.js) ─────
+   Each [data-exhibit] gets a CSS custom property --enter 0..1 as it scrolls
+   in; we map it to a gentle rise + fade. Only transform/opacity (no reflow,
+   no clipping). Reduced motion: lib sets --enter:1, so this rests flat. */
+#\30 4-twists [data-exhibit] {
+  --enter: 1;                /* default visible (pre-JS / no-JS safe) */
+  will-change: transform, opacity;
+}
+#\30 4-twists [data-exhibit].is-entering {
+  opacity: calc(0.35 + 0.65 * var(--enter));
+  transform: translate3d(0, calc((1 - var(--enter)) * 36px), 0);
+}
+#\30 4-twists [data-exhibit].is-entered {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 4-twists [data-exhibit],
+  #\30 4-twists [data-exhibit].is-entering {
+    opacity: 1;
+    transform: none;
+  }
+  #\30 4-twists [data-parallax] { transform: none !important; }
+}
+
+/* ─── Chapter header — deck image-TITLE lockup (title + bear-world motif) ─ */
 #\30 4-twists .tw-head {
   position: relative;
   isolation: isolate;
-  min-height: clamp(240px, 32vw, 420px);
-  padding-top: clamp(8px, 2vw, 24px);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   align-items: center;
+  gap: clamp(24px, 4vw, 72px);
+  min-height: clamp(420px, 56vh, 640px);   /* fills the opening viewport */
+  padding-top: clamp(8px, 2vw, 24px);
 }
 #\30 4-twists .tw-head-copy {
   position: relative;
-  z-index: 1;                 /* copy always above the decorative stamp */
-  max-width: 64ch;
-}
-#\30 4-twists .tw-bear-stamp {
-  position: absolute;
-  top: 50%;
-  right: clamp(-24px, -1vw, 0px);
-  transform: translateY(-50%);
-  width: clamp(260px, 36vw, 500px);
-  height: clamp(260px, 36vw, 500px);
-  background-repeat: no-repeat;
-  background-position: center right;
-  background-size: contain;
-  /* cream-tint the watercolour so it reads as a soft warm watermark, never
-     a sharp competing image; low opacity keeps it firmly in the background */
-  opacity: 0.14;
-  filter: saturate(0.65) brightness(1.04);
-  pointer-events: none;       /* decorative — never intercepts clicks */
-  z-index: 0;
+  z-index: 1;
+  max-width: 56ch;
 }
 #\30 4-twists .tw-title {
-  margin: 10px 0 20px 0;
-  font-size: clamp(2.4rem, 5vw, 4rem);   /* bigger, bolder Poppins display */
+  margin: 12px 0 22px 0;
+  font-size: clamp(2.8rem, 6.4vw, 5.6rem);   /* bigger, bolder Poppins display */
+  line-height: 0.94;
+  letter-spacing: -0.03em;
 }
 #\30 4-twists .tw-standfirst {
   font-size: var(--t-md);
   line-height: 1.55;
   color: var(--ink-soft);
-  margin: 0;
+  margin: 0 0 28px 0;
 }
 
-/* ─── Exhibit shell — de-blocked: no top rules, spacing carries it ─── */
+/* Three-twist contents row — numbered, box-less, weight/colour only */
+#\30 4-twists .tw-toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(18px, 2.4vw, 36px);
+}
+#\30 4-twists .tw-toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+#\30 4-twists .tw-toc-num {
+  font-size: 1.05rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--soi-orange);
+  letter-spacing: -0.02em;
+}
+#\30 4-twists .tw-toc-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--soi-navy);
+  letter-spacing: -0.01em;
+}
+
+/* The bear-world motif + sweeping orbit, to the right of the title (deck
+   composition). Decorative — z-index 0, never intercepts. */
+#\30 4-twists .tw-head-art {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  align-self: stretch;
+  min-height: clamp(280px, 40vw, 520px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#\30 4-twists .tw-head-art-img {
+  position: absolute;
+  inset: 6% 0 6% 0;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+}
+#\30 4-twists .tw-head-orbit {
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ─── Exhibit shell — de-blocked: spacing carries it, no rules ─── */
 #\30 4-twists .tw-exhibit {
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 3.5vh, 48px);
+  gap: clamp(32px, 4vh, 56px);
 }
 #\30 4-twists .tw-exhibit-head { max-width: 72ch; }
 #\30 4-twists .tw-num {
   display: inline-block;
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 800;
   color: var(--soi-navy);     /* navy kicker on the warm page — high contrast */
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 #\30 4-twists .tw-exhibit-title {
-  font-size: clamp(2rem, 3.6vw, 3.2rem);   /* bigger deck-scale display */
-  font-weight: 900;                        /* Poppins Black */
+  font-size: clamp(2.4rem, 4.4vw, 3.8rem);   /* bigger deck-scale display */
+  font-weight: 900;                          /* Poppins Black */
   text-transform: uppercase;
   letter-spacing: -0.035em;
   line-height: 0.95;
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
   color: var(--soi-navy);
 }
 #\30 4-twists .tw-lede {
@@ -120,10 +184,10 @@
   background-color: var(--soi-navy-velvet);
   background-size: cover;
   background-position: center;
-  padding: clamp(40px, 5.5vw, 88px);
+  padding: clamp(44px, 6vw, 96px);
   /* full-bleed-ish pull so it reads as one dark moment, not a boxed panel */
   margin: 0 calc(-1 * clamp(0px, 3vw, 48px));
-  gap: clamp(32px, 4vh, 56px);
+  gap: clamp(40px, 5vh, 64px);
 }
 /* The orbit overlay sweeps behind everything in the dark moment. */
 #\30 4-twists .tw-exhibit--dark .si-orbit { z-index: 0; }
@@ -139,11 +203,14 @@
 
 #\30 4-twists .tw-trust-grid { align-items: start; }
 
-/* dragRank tiles read as soft warm paper cards on the velvet ground */
+/* dragRank tiles — interactive drag affordance. Soft warm paper so they read
+   as movable chips against the velvet (this is functional UI, not text on a
+   block). Square corners, soft tint border. */
 #\30 4-twists .rank-help {
-  font-size: var(--t-xs);
-  color: rgba(238, 233, 221, 0.78);
-  margin: 0 0 14px 0;
+  font-size: var(--t-sm);
+  color: rgba(238, 233, 221, 0.82);
+  margin: 0 0 16px 0;
+  line-height: 1.45;
 }
 #\30 4-twists .rank-list {
   list-style: none;
@@ -151,23 +218,27 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 #\30 4-twists .rank-item {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto;
+  grid-template-columns: 30px 1fr auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: var(--paper);
   color: var(--ink);
-  border: 1px solid rgba(10, 26, 92, 0.18);   /* soft tint, not hard ink */
-  padding: 13px 15px;
+  border: 1px solid rgba(10, 26, 92, 0.18);
+  padding: 15px 17px;
   cursor: grab;
   font-size: var(--t-sm);
   font-weight: 600;
-  transition: border-color 0.18s ease, transform 0.18s ease;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
-#\30 4-twists .rank-item:hover { border-color: var(--soi-navy); }
+#\30 4-twists .rank-item:hover {
+  border-color: var(--soi-navy);
+  transform: translateX(3px);
+  box-shadow: -3px 0 0 0 var(--teal-deep);
+}
 #\30 4-twists .rank-item:focus-visible {
   outline: 3px solid var(--teal-deep);   /* teal focus on the dark ground */
   outline-offset: 2px;
@@ -185,13 +256,13 @@
   letter-spacing: 0.02em;
 }
 #\30 4-twists .rank-submit {
-  margin-top: 18px;
+  margin-top: 20px;
   background: var(--teal-deep);
   color: var(--soi-navy);
   border: none;
   font-weight: 800;
   letter-spacing: 0.02em;
-  padding: 12px 22px;
+  padding: 13px 24px;
   cursor: pointer;
 }
 #\30 4-twists .rank-submit:hover { background: var(--soi-cream); }
@@ -213,30 +284,37 @@
   display: flex;
   justify-content: center;
 }
-#\30 4-twists .tw-orbit svg { max-width: min(100%, 460px); }
+#\30 4-twists .tw-orbit svg { max-width: min(100%, 500px); height: auto; }
 #\30 4-twists .tw-spread {
   font-size: var(--t-md);                 /* reads as designed type */
   line-height: 1.5;
   color: rgba(238, 233, 221, 0.92);       /* cream on velvet — high contrast */
-  margin: 18px 0 0 0;
-  padding-top: 18px;
+  margin: 20px 0 0 0;
+  padding-top: 20px;
   border-top: 1px solid rgba(238, 233, 221, 0.22);
 }
 #\30 4-twists .tw-spread strong { font-weight: 800; color: var(--soi-cream); }
 
-/* The paradox flip card — backgroundless on the velvet: cream-stroked faces,
-   NO mustard, NO paper box. */
+/* ── Paradox row: flip card + Nationwide evidence side by side ── */
+#\30 4-twists .tw-paradox-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+/* The paradox flip card — NO BLOCK BEHIND TEXT. Faces are now stroke-framed
+   type panels (transparent fill); emphasis is colour + weight only. */
 #\30 4-twists .tw-paradox {
   perspective: 1400px;
   display: flex;
-  max-width: 560px;
 }
 #\30 4-twists .tw-flip {
   position: relative;
   display: block;
   width: 100%;
-  min-height: 230px;
-  margin-top: 22px;
+  min-height: 250px;
+  margin-top: 26px;
   background: none;
   border: none;
   padding: 0;
@@ -248,7 +326,7 @@
 #\30 4-twists .tw-flip.is-flipped { transform: rotateY(180deg); }
 #\30 4-twists .tw-flip-hint {
   position: absolute;
-  top: -22px;
+  top: -24px;
   left: 0;
   font-size: var(--t-xs);
   color: rgba(238, 233, 221, 0.78);
@@ -262,16 +340,19 @@
   flex-direction: column;
   gap: 6px;
   justify-content: center;
-  padding: 26px 28px;
-  /* Backgroundless: a faint cream wash + cream hairline, no solid box. */
-  background: rgba(238, 233, 221, 0.06);
-  border: 1px solid rgba(238, 233, 221, 0.28);
+  padding: 24px 26px 24px 24px;
+  /* NO fill behind text — a thin cream hairline frames it; type does the work. */
+  background: none;
+  border-left: 3px solid var(--teal-deep);
   color: var(--soi-cream);
 }
 #\30 4-twists .tw-flip-back { transform: rotateY(180deg); }
 #\30 4-twists .tw-flip-face .vccp-stat-label {
   color: var(--teal-deep);
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: var(--t-xs);
 }
 #\30 4-twists .tw-flip-stat {
   display: flex;
@@ -281,27 +362,48 @@
   font-variant-numeric: tabular-nums;
 }
 #\30 4-twists .tw-flip-big {
-  font-size: clamp(3.2rem, 6.5vw, 4.4rem);
+  font-size: clamp(3.6rem, 7vw, 5rem);
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   color: var(--soi-cream);
 }
-#\30 4-twists .tw-flip-unit { font-size: 1.4rem; font-weight: 700; color: rgba(238, 233, 221, 0.8); }
+#\30 4-twists .tw-flip-unit { font-size: 1.5rem; font-weight: 700; color: rgba(238, 233, 221, 0.8); }
 #\30 4-twists .tw-flip-cap {
   font-size: var(--t-sm);
-  line-height: 1.45;
-  color: rgba(238, 233, 221, 0.84);
-  margin-top: 6px;
+  line-height: 1.5;
+  color: rgba(238, 233, 221, 0.88);
+  margin-top: 8px;
   max-width: 42ch;
+}
+
+/* Nationwide evidence photo — real-world proof, square, framed cream hairline.
+   This is photographic evidence (an image), not a text block. */
+#\30 4-twists .tw-evidence { margin: 0; }
+#\30 4-twists .tw-evidence-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 1px solid rgba(238, 233, 221, 0.28);
+}
+#\30 4-twists .tw-evidence-cap {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  font-weight: 500;
+  color: rgba(238, 233, 221, 0.86);
+  margin: 14px 0 0 0;
+  max-width: 48ch;
 }
 
 /* Wider decline picture — backgroundless bars on the velvet ground. */
 #\30 4-twists .tw-decline {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 880px;
+  gap: 18px;
+  max-width: 920px;
 }
 #\30 4-twists .tw-decline-cap {
   font-size: var(--t-sm);
@@ -309,9 +411,10 @@
   line-height: 1.5;
   color: rgba(238, 233, 221, 0.86);
   margin: 0;
-  max-width: 60ch;
+  max-width: 62ch;
 }
 #\30 4-twists .tw-decline-bars { width: 100%; }
+#\30 4-twists .tw-decline-bars svg { width: 100%; height: auto; }
 
 /* ─── (b) Protected joy — warm gradient hero ─────────────── */
 #\30 4-twists .tw-joy-grid { align-items: stretch; }
@@ -321,110 +424,141 @@
   overflow: hidden;
   background: var(--ground-warm);     /* signature mustard→orange→coral wash */
   color: var(--on-warm);
-  padding: clamp(28px, 3vw, 44px);
+  padding: clamp(32px, 3.4vw, 52px);
 }
 #\30 4-twists .tw-joy-hero .si-orbit { z-index: 0; }
+#\30 4-twists .tw-joy-orbit { opacity: 0.6; }
+/* Bear-world coil motif, low-opacity, lower-right — deck composition. */
+#\30 4-twists .tw-joy-motif {
+  position: absolute;
+  z-index: 0;
+  inset: auto -8% -6% auto;
+  width: clamp(180px, 28vw, 340px);
+  height: clamp(180px, 28vw, 340px);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: contain;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
 #\30 4-twists .tw-joy-hero-copy {
   position: relative;
-  z-index: 1;                          /* copy above the orbit motif */
+  z-index: 1;                          /* copy above the orbit + motif */
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 #\30 4-twists .tw-joy-hero .vccp-stat-label {
   font-size: var(--t-xs);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
 }
 #\30 4-twists .tw-joy-big {
   display: block;
-  margin: 10px 0 8px;
-  font-size: clamp(4rem, 8vw, 6rem);
-  line-height: 0.86;
+  margin: 12px 0 10px;
+  font-size: clamp(4.6rem, 9vw, 7rem);
+  line-height: 0.84;
   font-weight: 900;
+  letter-spacing: -0.04em;
 }
 #\30 4-twists .tw-joy-sub {
   display: block;
-  font-size: var(--t-sm);
+  font-size: var(--t-md);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.45;
   max-width: 26ch;
 }
-#\30 4-twists .tw-tug { margin: 22px 0 10px; width: 100%; }
+#\30 4-twists .tw-tug { margin: 26px 0 12px; width: 100%; }
+#\30 4-twists .tw-tug svg { width: 100%; height: auto; }
 #\30 4-twists .tw-ringfence-cap {
-  font-size: var(--t-xs);
+  font-size: var(--t-sm);
   line-height: 1.45;
   font-weight: 500;
   margin: 0;
+  max-width: 32ch;
 }
 #\30 4-twists .tw-joy-bars { margin: 0; align-self: center; width: 100%; }
 #\30 4-twists .tw-lolli { width: 100%; }
+#\30 4-twists .tw-lolli svg { width: 100%; height: auto; }
 
 /* ─── (c) AI on tap — flowing stats, no bordered boxes ───── */
 #\30 4-twists .tw-ai-grid { align-items: start; }
 #\30 4-twists .tw-ai-stats {
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 3vw, 44px);
+  gap: clamp(32px, 3.4vw, 52px);
 }
 #\30 4-twists .tw-ai-stat {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding-left: 18px;
+  gap: 7px;
+  padding-left: 20px;
   border-left: 3px solid var(--soi-navy);   /* navy rule, not mustard */
 }
 #\30 4-twists .tw-ai-stat .vccp-stat-label {
   font-size: var(--t-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--soi-navy);
 }
 #\30 4-twists .tw-ai-value {
   display: block;
-  font-size: clamp(3.2rem, 5.5vw, 4.6rem);
+  font-size: clamp(3.6rem, 6vw, 5.2rem);
   line-height: 0.9;
   font-weight: 900;
+  letter-spacing: -0.04em;
   color: var(--soi-navy);
 }
 #\30 4-twists .tw-ai-stat-sub {
   font-size: var(--t-sm);
   line-height: 1.5;
   color: var(--ink-soft);
-  max-width: 28ch;
+  max-width: 30ch;
 }
 #\30 4-twists .tw-ai-tug-wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 #\30 4-twists .tw-ai-tug-wrap .vccp-stat-label {
   font-size: var(--t-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--soi-navy);
 }
 #\30 4-twists .tw-ai-bars { margin: 0; }
+#\30 4-twists .tw-ai-bars svg { width: 100%; height: auto; }
 
 /* Quote: hanging-mark treatment (shared .si-quote), de-blocked — no panel. */
 #\30 4-twists .tw-quote {
   margin: 0;
-  max-width: 66ch;
+  max-width: 68ch;
 }
 #\30 4-twists .tw-quote-text {
-  font-size: var(--t-md);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
   line-height: 1.45;
-  margin: 0 0 16px 0;
-  font-weight: 500;
+  margin: 0 0 18px 0;
+  font-weight: 600;
   color: var(--ink);
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 980px) {
+  #\30 4-twists .tw-head {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  #\30 4-twists .tw-head-art {
+    order: -1;
+    min-height: clamp(220px, 50vw, 360px);
+  }
+  #\30 4-twists .tw-paradox-row { grid-template-columns: 1fr; }
+}
 @media (max-width: 860px) {
-  #\30 4-twists .tw-bear-stamp { opacity: 0.1; }
   #\30 4-twists .tw-exhibit--dark { margin: 0; }
 }
 

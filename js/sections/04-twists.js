@@ -25,8 +25,12 @@ import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
 import { horizontalBars, lollipopChart, orbitRingChart, tugOfWar } from '../lib/charts.js';
 import { dragRank } from '../lib/interactions.js';
+import { observeParallax, chapterTransition } from '../lib/experiential.js';
 
-const BEAR_SILHOUETTE = 'assets/deck/bear-child-stamp.png';
+// Deck (2) brand-world assets lifted per DECK2-ASSETS.md.
+const HEAD_MOTIF = 'assets/deck/bear-world-doors.png';   // doors = choices / opting out
+const JOY_MOTIF = 'assets/deck/bear-world-coil.png';     // coil = momentum toward joy
+const EVIDENCE_NATIONWIDE = 'assets/deck/evidence-nationwide.png';
 const VELVET_GROUND = 'assets/deck/ground-navy-velvet.png';
 
 /** Deterministic shuffle so tiles never start in rank order. */
@@ -35,20 +39,21 @@ const shuffleStable = (items) => {
   return order.filter((i) => i < items.length).map((i) => items[i]);
 };
 
-/** Faint cream bear+child watermark behind the twists intro (decorative,
- *  sits behind the header copy via CSS z-index, never occludes content). */
-const placeBearStamp = (rootEl) => {
-  const host = rootEl.querySelector('[data-host="bear-stamp"]');
-  if (!host) return;
-  host.style.backgroundImage = `url("${BEAR_SILHOUETTE}")`;
+/** Set a background-image on a [data-host] decorative layer (no-op if absent). */
+const paintHost = (rootEl, host, url) => {
+  const el = rootEl.querySelector(`[data-host="${host}"]`);
+  if (el) el.style.backgroundImage = `url("${url}")`;
 };
 
-/** Textured deep-navy velvet ground for the earned-dark trust exhibit
- *  (decorative wash beneath the navy fallback; content sits above via CSS). */
-const placeVelvetGround = (rootEl) => {
+/** Place all deck imagery: the bear-world chapter motif, the joy motif, the
+ *  Nationwide evidence photo, and the velvet ground for the dark exhibit. All
+ *  decorative — CSS keeps them behind/beside content, never occluding UI. */
+const placeDeckArt = (rootEl) => {
+  paintHost(rootEl, 'head-art', HEAD_MOTIF);
+  paintHost(rootEl, 'joy-motif', JOY_MOTIF);
+  paintHost(rootEl, 'evidence', EVIDENCE_NATIONWIDE);
   const dark = rootEl.querySelector('.tw-exhibit--dark');
-  if (!dark) return;
-  dark.style.backgroundImage = `url("${VELVET_GROUND}")`;
+  if (dark) dark.style.backgroundImage = `url("${VELVET_GROUND}")`;
 };
 
 const buildTrustParadox = (rootEl, institutionTrust) => {
@@ -233,9 +238,14 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
-  placeBearStamp(rootEl);
-  placeVelvetGround(rootEl);
+  placeDeckArt(rootEl);
   buildTrustParadox(rootEl, survey.institutionTrust);
   buildProtectedJoy(rootEl, survey.protectedSpend);
   buildAiOnTap(rootEl, survey.aiTasks);
+
+  // Experiential motion: subtle parallax on the decorative deck art and a
+  // scroll-progress entrance on each exhibit (CSS owns the visual treatment
+  // via --enter). Both are reduced-motion safe inside the lib.
+  observeParallax(rootEl, { maxShiftPx: 48 });
+  rootEl.querySelectorAll('[data-exhibit]').forEach((ex) => chapterTransition(ex));
 }

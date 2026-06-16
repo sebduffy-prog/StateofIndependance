@@ -20,6 +20,7 @@ import { countUp } from '../lib/counter.js';
 import { dotField, clusterPoints, lollipopChart, dotPlot } from '../lib/charts.js';
 import { quiz } from '../lib/interactions.js';
 import segmentGraph from '../lib/segment-graph.js';
+import { observeParallax } from '../lib/experiential.js';
 
 const DOT_COUNT = 200;
 const FORMATION_DELAY_MS = 480; // drift, then resolve into clusters
@@ -141,6 +142,30 @@ export default function init(rootEl, data) {
   if (!segments || !quizSpec) return; // fail soft
 
   observeReveals(rootEl);
+
+  /* Experiential motion: subtle parallax on the hero/maze decorative layers
+     (orbit rings + deck renders drift as they pass through the viewport). Pure
+     transform/opacity, reduced-motion safe, clamped so nothing covers copy. */
+  observeParallax(rootEl, { maxShiftPx: 48 });
+
+  /* Staggered entrance for the stacked image-title lines (deck lockup feel):
+     each line reveals in sequence the first time the hero scrolls in. */
+  const titleLines = Array.from(rootEl.querySelectorAll('[data-seg-stagger] .seg-title-line'));
+  if (titleLines.length && !prefersReducedMotion()) {
+    const tio = new IntersectionObserver((entries, obs) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        titleLines.forEach((line, i) => {
+          line.style.transitionDelay = `${i * 90}ms`;
+          line.classList.add('is-in');
+        });
+        obs.disconnect();
+      });
+    }, { threshold: 0.4 });
+    tio.observe(titleLines[0]);
+  } else {
+    titleLines.forEach((line) => line.classList.add('is-in'));
+  }
 
   const byId = new Map(segments.map((s) => [s.id, s]));
   const mapEl = rootEl.querySelector('[data-map]');

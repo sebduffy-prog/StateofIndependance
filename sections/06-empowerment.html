@@ -1,30 +1,42 @@
-<!-- Chapter 06 — empowerment. Design World V2 (V4 pro pass): warm gradient
-     ground world, deck bear-vs-figure imagery, deck-faithful Poppins-Black
-     titles. Backgroundless venn (circles float on the warm world, single
-     navy centre plate). Reframe wipe clips BOTH layers so only one copy
-     plate ever shows. A navy data band gives the chapter depth + contrast.
-     Decorative orbit overlay sits behind everything (.si-orbit, z-0,
-     pointer-events:none); content flows above on z-1. All copy contrast-safe. -->
-<div class="si-ground-warm emp-shell">
-  <div class="si-orbit si-orbit--center emp-orbit" aria-hidden="true"></div>
+<!-- Chapter 06 — empowerment. Design World V5 (TOP-TIER experiential pass).
+     One continuous warm bear-figure world. NO blocks behind any text: every
+     navy band / scrim plate / cream pill / legend card / centre plate is gone.
+     Copy sits on the ground with colour + weight emphasis only. Charts, venn
+     and the orbit ring float backgroundless. Deck components lifted: the
+     bear-world gradient panels (coil → sphere → circles) as full-bleed,
+     parallaxed grounds; the figure-silhouette glyph beside titles; decorative
+     orbit rings; an image-title lockup treatment. Experiential motion comes
+     from js/lib/experiential.js (chapterTransition entrance, observeParallax
+     on the world panels, scrollScene driving the reframe wipe). All copy
+     contrast-safe, square corners, reduced-motion safe. -->
+<div class="si-ground-warm emp-shell" data-emp-root>
+  <div class="si-orbit si-orbit--spin emp-orbit emp-orbit--a" aria-hidden="true" data-parallax="0.06"></div>
+  <div class="si-orbit emp-orbit emp-orbit--b" aria-hidden="true" data-parallax="-0.05"></div>
 
   <div class="chapter-inner emp-inner">
-    <header class="emp-head reveal">
-      <p class="vccp-eyebrow emp-eyebrow">The empowerment architecture</p>
-      <h2 class="si-display si-display--lg emp-title">
-        One need unifies<br>everyone: <em class="hl">control</em>
-      </h2>
-      <p class="emp-standfirst si-measure">
-        Money is the obvious ask. But saving people time and stress holds far more
-        premium value than brands realise.
-      </p>
+    <!-- Image-title lockup: deck figure glyph + huge Poppins-Black title, copy
+         on the ground (no block). -->
+    <header class="emp-head">
+      <img class="emp-head-glyph" src="assets/deck/figure-silhouette.png" alt=""
+           aria-hidden="true" draggable="false" data-parallax="0.12" />
+      <div class="emp-head-copy">
+        <p class="vccp-eyebrow emp-eyebrow">The empowerment architecture</p>
+        <h2 class="si-display si-display--lg emp-title">
+          One need unifies<br>everyone: <em class="hl">control</em>
+        </h2>
+        <p class="emp-standfirst si-measure">
+          Money is the obvious ask. But saving people time and stress holds far more
+          premium value than brands realise.
+        </p>
+      </div>
     </header>
 
-    <!-- THE TURN: survival-mode → active-agency reframe, told on the deck's
-         bear-vs-figure world. The warm imagery sits on a deep navy bed so it
-         pops (real contrast, not cream-on-cream). Both layers clip at the
-         divide so exactly one copy plate shows. This is the pivot. -->
-    <section class="emp-reframe reveal" aria-labelledby="emp-reframe-title">
+    <!-- THE TURN: survival-mode → active-agency reframe on the deck's
+         bear-world panels (coil = survival, sphere = agency). The two world
+         panels cross-fade as you drag; the COPY lives on the ground beside
+         them with colour/weight emphasis only — no scrim plate, no pill, no
+         block. This is the pivot of the whole chapter. -->
+    <section class="emp-reframe" aria-labelledby="emp-reframe-title" data-emp-reframe-section>
       <div class="emp-reframe-lede">
         <h3 class="si-display si-display--sm emp-reframe-title" id="emp-reframe-title">
           Survival mode to active <em class="hl">agency</em>
@@ -34,7 +46,9 @@
           data forces a more optimistic reading. Drag to make the turn.
         </p>
       </div>
-      <div class="emp-reframe-mount" data-emp-reframe></div>
+      <div class="emp-reframe-grid">
+        <div class="emp-reframe-mount" data-emp-reframe></div>
+      </div>
       <figure class="emp-reframe-quote">
         <blockquote>
           The British consumer has pivoted to an active agency model — resourceful,
@@ -43,24 +57,34 @@
       </figure>
     </section>
 
-    <!-- Brand-ask evidence: what people actually want brands to help with
-         (Q14). On a navy band for depth + contrast; animated lollipop. -->
-    <section class="emp-asks reveal" aria-labelledby="emp-asks-title">
+    <!-- Brand-ask evidence (Q14): what people actually want brands to help
+         with. NO navy band — the lollipop floats on the warm ground (navy on
+         warm). A toggle reveals the same data as an orbit-ring (deck orbit
+         motif) for a second, more interactive read. -->
+    <section class="emp-asks" aria-labelledby="emp-asks-title">
       <div class="emp-asks-lede">
         <h3 class="si-display si-display--sm emp-asks-title" id="emp-asks-title">
-          What Britain asks of <em class="hl hl-teal">brands</em>
+          What Britain asks of <em class="hl">brands</em>
         </h3>
         <p class="emp-asks-intro si-measure">
           Money leads, as expected. But time and stress sit right behind it — the
           premium territory most brands leave on the table.
         </p>
+        <div class="emp-asks-toggle" role="group" aria-label="Choose a view of the brand asks">
+          <button type="button" class="emp-toggle-btn is-on" data-asks-view="bars" aria-pressed="true">Ranked</button>
+          <button type="button" class="emp-toggle-btn" data-asks-view="orbit" aria-pressed="false">Orbit</button>
+        </div>
       </div>
       <div class="emp-asks-mount" data-emp-asks aria-label="Brand asks ranking"></div>
     </section>
 
     <!-- The three pillars: one overlap at empowerment. Backgroundless venn —
-         flat distinct circles float on the warm world; single navy centre plate. -->
-    <section class="emp-venn reveal" aria-labelledby="emp-venn-title">
+         flat distinct circles float on the warm world, centre word + legend
+         carry NO block (colour/weight only). The deck's overlapping-circles
+         bear-world sits behind as the section motif. -->
+    <section class="emp-venn" aria-labelledby="emp-venn-title">
+      <img class="emp-venn-motif" src="assets/deck/bear-world-circles.png" alt=""
+           aria-hidden="true" draggable="false" data-parallax="0.08" />
       <div class="emp-venn-lede">
         <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title">
           Three needs, one <em class="hl">overlap</em>

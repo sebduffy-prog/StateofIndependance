@@ -19,6 +19,12 @@
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
+import {
+  observeParallax,
+  chapterTransition,
+  scrollScene,
+  prefersReducedMotion as reducedMotion,
+} from '../lib/experiential.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -180,6 +186,9 @@ const buildMapSvg = () => {
   );
   thread.setAttribute('class', 'research-map-thread');
   thread.setAttribute('aria-hidden', 'true');
+  // Normalise the geometry length to 1 so CSS can "draw" the thread from a
+  // single dashoffset driven by scroll progress (--thread, set in JS).
+  thread.setAttribute('pathLength', '1');
 
   svg.append(halo, land, thread);
   return svg;
@@ -348,5 +357,54 @@ export default function init(rootEl, data) {
       londonBtn.setAttribute('aria-pressed', 'true');
     }
     currentIndex = order.indexOf('london');
+  }
+
+  // ── Experiential motion (premium, restrained, reduced-motion safe) ──
+  // 1. Scroll-progress entrance: exposes --enter on the section so CSS can
+  //    fade/rise the two columns and ease the world-motif in as you arrive.
+  // 2. Parallax: the orbit ring, seed dots and brand-world marks drift at
+  //    different depths (clamped, transform-only — never covers copy).
+  // 3. Scroll scene: as the map travels through the viewport its progress
+  //    drives a faint "sweep" highlight across the cities (the connective
+  //    thread fills in), and on first deep-scroll the diary auto-advances
+  //    once through the cities so the rail feels alive — pointer/keyboard
+  //    interaction always wins (autoplay stops the moment the user acts).
+  chapterTransition(rootEl);
+  observeParallax(rootEl, { maxShiftPx: 46 });
+
+  if (!reducedMotion()) {
+    const thread = svg.querySelector('.research-map-thread');
+    let userEngaged = false;
+    let autoStep = 0;
+    const stopAutoplay = () => {
+      userEngaged = true;
+    };
+    // Any genuine interaction cancels the gentle autoplay.
+    buttons.forEach((btn) => {
+      btn.addEventListener('pointerdown', stopAutoplay, { once: true });
+      btn.addEventListener('keydown', stopAutoplay, { once: true });
+    });
+
+    scrollScene(
+      rootEl,
+      order.map((id, i) => ({
+        // Spread the auto-advance across the chapter's scroll travel so it
+        // reads as a slow reveal, not a flicker. Skip if the user engaged.
+        at: 0.34 + (i / order.length) * 0.5,
+        onEnter: () => {
+          if (userEngaged) return;
+          if (i <= autoStep) return;
+          autoStep = i;
+          const city = CITIES.find((c) => c.id === id);
+          if (city) select(city);
+        },
+      })),
+      {
+        onProgress: (p) => {
+          // The connective thread "draws" itself as you scroll the chapter.
+          if (thread) thread.style.setProperty('--thread', p.toFixed(3));
+        },
+      }
+    );
   }
 }

@@ -1,26 +1,35 @@
 <div class="chapter-inner research-shell">
 
-  <!-- Decorative orbit motif + seed dots — sit BEHIND content, never occlude
-       (z-index:0 + pointer-events:none via .si-orbit / .si-seed). -->
-  <div class="si-orbit si-orbit--spin research-orbit" aria-hidden="true"></div>
-  <span class="si-seed research-seed research-seed--a" aria-hidden="true"></span>
-  <span class="si-seed research-seed research-seed--b" aria-hidden="true"></span>
+  <!-- Decorative orbit motif + seed dots + parallax brand-world motifs.
+       All sit BEHIND content (z-index:0, pointer-events:none) and never
+       occlude copy. The bear-world / figure marks are lifted from the deck
+       (DECK2-ASSETS): the wireframe-sphere world = "how we listened to the
+       whole country / its systems"; the figure mark = the brand "person". -->
+  <div class="si-orbit si-orbit--spin research-orbit" aria-hidden="true" data-parallax="0.12"></div>
+  <span class="si-seed research-seed research-seed--a" aria-hidden="true" data-parallax="0.4"></span>
+  <span class="si-seed research-seed research-seed--b" aria-hidden="true" data-parallax="0.28"></span>
+  <img class="research-figure-motif" src="assets/deck/figure-silhouette.png" alt=""
+       aria-hidden="true" data-parallax="0.22" data-parallax-x="0.06">
 
   <div class="research-split si-split">
 
-    <!-- LEFT: the method, told as a flowing rhythm (no hairline boxes) -->
+    <!-- LEFT: the method, told as a flowing rhythm (no boxes behind any text) -->
     <div class="research-method si-stack-tight reveal" data-stagger="90">
       <p class="vccp-eyebrow research-kicker reveal">The method</p>
+
+      <!-- Image-title lockup treatment (deck): huge Poppins-Black all-caps,
+           tight tracking, stacked, emphasis by colour + weight only. -->
       <h2 class="research-headline reveal">
         How we <span class="hl hl-teal">listened</span><br>to Britain.
       </h2>
+
       <p class="research-standfirst reveal">
         A nationally representative survey, paired with week-long video
         diaries. Numbers for the <strong>what</strong>, real lives for the
         <strong>why</strong>.
       </p>
 
-      <!-- Hero figure leads; supporting stats flow beneath on space, not in boxes -->
+      <!-- Hero figure leads; the big number IS the headline (no panel). -->
       <div class="research-hero-stat reveal">
         <span class="research-hero-value si-bignum"><span data-count-to="1504"></span></span>
         <span class="research-hero-label">respondents · nationally representative · UK adults&nbsp;18+</span>
@@ -69,8 +78,12 @@
       </p>
     </div>
 
-    <!-- RIGHT: GB map + 8 city markers (built in JS), flowing diary panel -->
+    <!-- RIGHT: GB map + 8 city markers (built in JS), flowing diary panel.
+         A backgroundless wireframe-world motif sits behind, lifted from the
+         deck (bear-world-sphere) and held faint so the map reads first. -->
     <div class="research-map-wrap reveal">
+      <img class="research-world-motif" src="assets/deck/bear-world-sphere.png" alt=""
+           aria-hidden="true" data-parallax="0.16">
       <div class="research-map-head">
         <p class="research-map-eyebrow">Eight cities, in their own words</p>
         <p class="research-map-counter" data-research-counter aria-live="polite"></p>

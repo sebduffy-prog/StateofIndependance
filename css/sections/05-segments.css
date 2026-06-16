@@ -43,16 +43,28 @@
 /* The deck motif (overlapping circles = "what the four share"): backgroundless,
    blends into the warm ground via multiply so no white plate appears. */
 #\30 5-segments .seg-hero-art {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  isolation: isolate;
+}
+/* orbit motif behind the deck render — drifts opposite to the image (parallax) */
+#\30 5-segments .seg-art-orbit {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  opacity: 0.5;
 }
 #\30 5-segments .seg-hero-img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   max-width: 460px;
   height: auto;
   mix-blend-mode: multiply;
+  will-change: transform;
 }
 
 /* Deck-matching display: real Poppins Black (900 via .si-display--black),
@@ -60,10 +72,28 @@
    Sized up to fill the hero (no dead band). */
 #\30 5-segments .seg-title {
   margin: 10px 0 22px 0;
-  max-width: 12ch;
+  max-width: 14ch;
   font-size: clamp(3rem, 6vw, 6rem);
   letter-spacing: -0.045em;
-  line-height: 0.84;
+  line-height: 0.86;
+  /* image-title lockup: stacked lines, no clipping of the descenders/accent */
+  overflow: visible;
+}
+/* Each stacked title line reveals in sequence (deck lockup entrance). Pure
+   transform/opacity, overflow visible so nothing clips. */
+#\30 5-segments .seg-title-line {
+  display: block;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(0.32em);
+  transition: opacity .6s cubic-bezier(.22,.61,.36,1),
+              transform .6s cubic-bezier(.22,.61,.36,1);
+}
+#\30 5-segments .seg-title-line.is-in { opacity: 1; transform: none; }
+/* keep the orange/navy underline accent fully visible on the last line */
+#\30 5-segments .seg-title-line .hl { padding-bottom: 0.08em; }
+@media (prefers-reduced-motion: reduce) {
+  #\30 5-segments .seg-title-line { opacity: 1; transform: none; transition: none; }
 }
 #\30 5-segments .seg-standfirst {
   font-size: clamp(1.05rem, 1.45vw, 1.4rem);
@@ -93,6 +123,55 @@
 }
 #\30 5-segments .seg-hinge-axis { color: rgba(10,26,92,0.7); }
 #\30 5-segments .seg-hinge-x { font-weight: 700; opacity: 0.5; }
+
+/* ─── Maze / bear-world transition break (deck "journey through" motif) ─── */
+/* Full-bleed warm band that hinges the compass into the network. The deck maze
+   render sits centred with a spinning orbit ring behind it; the line of copy is
+   BACKGROUNDLESS (navy weight/colour on the warm ground, no box). Fills what
+   would otherwise be a dead gap between two dense interactives. */
+#\30 5-segments .seg-maze-break {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vh, 26px);
+  min-height: clamp(280px, 42vh, 460px);
+  padding: clamp(28px, 5vh, 64px) clamp(20px, 4vw, 56px);
+  background: var(--ground-warm);
+  overflow: hidden;
+}
+#\30 5-segments .seg-maze-orbit {
+  position: absolute;
+  inset: -20% -10%;
+  z-index: 0;
+  opacity: 0.45;
+}
+#\30 5-segments .seg-maze-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: clamp(180px, 26vw, 320px);
+  height: auto;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+/* backgroundless copy: navy, big, bold Poppins — colour/weight only, no box */
+#\30 5-segments .seg-maze-line {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+  font-size: clamp(1.8rem, 4.4vw, 3.4rem);
+  color: var(--soi-navy);
+  max-width: 18ch;
+}
+#\30 5-segments .seg-maze-line span:last-child { color: var(--soi-orange); }
 
 /* ─── Roster band: four backgroundless segment tiles ──────── */
 /* No cards/boxes — each tile is a deck bear-world motif over a hairline-tinted
@@ -154,8 +233,10 @@
   color: rgba(10,26,92,0.7);
   line-height: 1.35;
 }
+/* Selection affordance is the top accent rule + lift — NO fill plate behind the
+   tile copy (client V5: no block behind text). Hover only lifts + thickens the
+   accent; active latches a navy accent and orange share number. */
 #\30 5-segments .seg-tile:hover {
-  background: var(--mustard-pale);
   border-top-color: var(--soi-orange);
   transform: translateY(-2px);
 }
@@ -164,9 +245,10 @@
   outline-offset: 2px;
 }
 #\30 5-segments .seg-tile.is-active {
-  background: var(--mustard-light);
   border-top-color: var(--soi-navy);
+  border-top-width: 4px;
 }
+#\30 5-segments .seg-tile.is-active .seg-tile-share { color: var(--soi-orange); }
 
 /* ─── Stage: map + profile side by side ───────────────────── */
 #\30 5-segments .seg-stage {
@@ -357,14 +439,16 @@
   text-align: center;
   max-width: 22ch;
 }
-/* The open profile card: one device (soft shadow), warm paper, no ink frame.
-   This is dense data (two charts + facts + quote) so a faint grounded plate
-   aids separation; it is the only grounded surface in the stage. */
+/* The open profile card: BACKGROUNDLESS (client V5 — no plate behind copy).
+   The dense data (charts + facts + quote) is separated by a left ink rail and
+   spacing rhythm, not a paper box. Sits directly on the warm page. */
 #\30 5-segments .seg-profile.is-open .si-datacard {
   border: 0;
-  background: var(--paper-warm);
-  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 16px 40px rgba(10,26,92,0.10);
-  padding: clamp(22px, 2.4vw, 34px);
+  background: transparent;
+  box-shadow: none;
+  border-left: 3px solid var(--soi-orange);
+  padding: 4px 0 4px clamp(18px, 2vw, 28px);
+  overflow: visible;
 }
 #\30 5-segments .seg-card { outline: none; }
 #\30 5-segments .seg-card-top {
@@ -525,11 +609,13 @@
 }
 #\30 5-segments .sg-hub .sg-label { font-weight: 700; font-size: 15px; }
 
-/* Detail panel: de-blocked — soft shadow on warm paper, no ink frame. */
+/* Detail panel: BACKGROUNDLESS (client V5). No paper plate — a left ink rail
+   carries the structure; the panel copy reads directly on the warm page. */
 #\30 5-segments .sg-panel {
-  border: 0; background: var(--paper-warm);
-  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 12px 32px rgba(10,26,92,0.09);
-  padding: 18px; min-height: 200px;
+  border: 0; background: transparent; box-shadow: none;
+  border-left: 3px solid rgba(10,26,92,0.16);
+  padding: 4px 0 4px 16px; min-height: 200px;
+  overflow: visible;
 }
 #\30 5-segments .sg-panel .sg-hint { color: var(--ink-soft); font-size: var(--t-sm); }
 #\30 5-segments .sg-tag {
@@ -597,13 +683,17 @@
   color: var(--soi-navy);
   margin: 0 0 12px 0;
 }
-/* Quiz card: one device — soft shadow on warm paper, no ink frame. */
+/* Quiz card: BACKGROUNDLESS (client V5). No paper plate behind the statement —
+   a left ink rail + spacing carry the structure; the statement reads as big
+   bold copy on the warm page. */
 #\30 5-segments .quiz-card {
   border: 0;
-  background: var(--paper-warm);
-  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 14px 36px rgba(10,26,92,0.09);
-  padding: 26px 28px;
+  background: transparent;
+  box-shadow: none;
+  border-left: 3px solid var(--soi-orange);
+  padding: 6px 0 6px clamp(18px, 2vw, 28px);
   min-height: 120px;
+  overflow: visible;
 }
 #\30 5-segments .quiz-statement {
   font-size: var(--t-md, 1.2rem);
@@ -619,8 +709,11 @@
 #\30 5-segments .seg-result.is-open .si-datacard,
 #\30 5-segments .seg-result .si-datacard {
   border: 0;
-  background: var(--paper-warm);
-  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 16px 40px rgba(10,26,92,0.10);
+  background: transparent;
+  box-shadow: none;
+  border-left: 3px solid var(--soi-orange);
+  padding: 4px 0 4px clamp(18px, 2vw, 28px);
+  overflow: visible;
 }
 #\30 5-segments .seg-result-card { outline: none; }
 #\30 5-segments .seg-result-name {

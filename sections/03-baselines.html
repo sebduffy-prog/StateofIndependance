@@ -1,34 +1,53 @@
 <div class="chapter-inner bl-world on-warm">
 
-  <!-- Decorative world layers: behind everything, pointer-events:none, never carry meaning -->
-  <div class="si-orbit si-orbit--spin bl-orbit" aria-hidden="true"></div>
-  <span class="si-seed bl-seed bl-seed--a" aria-hidden="true"></span>
-  <span class="si-seed bl-seed bl-seed--b" aria-hidden="true"></span>
+  <!-- Decorative world layers: behind everything, pointer-events:none, never carry meaning.
+       Parallax + slow orbit spin give the warm ground depth without occluding type. -->
+  <div class="si-orbit si-orbit--spin bl-orbit" aria-hidden="true" data-parallax="0.06"></div>
+  <span class="si-seed bl-seed bl-seed--a" aria-hidden="true" data-parallax="0.18"></span>
+  <span class="si-seed bl-seed bl-seed--b" aria-hidden="true" data-parallax="0.26"></span>
+  <span class="si-seed bl-seed bl-seed--c" aria-hidden="true" data-parallax="0.32"></span>
   <img
     class="bl-bear"
     src="assets/deck/bear-world-coil.png"
     alt=""
     aria-hidden="true"
     loading="lazy"
+    data-parallax="0.1"
   />
 
-  <header class="bl-head reveal">
-    <p class="bl-kicker">The numbers you already know</p>
-    <h2 class="bl-headline">
-      Carefulness is the<br />
-      new <span class="bl-emph">baseline</span>.
-    </h2>
-    <p class="bl-standfirst">
-      Yes, the country is cost-conscious. Yes, budgets are tight. But these
-      hallmarks of the squeeze are the operational floor: table stakes, not
-      the strategy.
-    </p>
+  <!-- Image-title lockup opener — lifts the deck's huge-title-over-motif treatment.
+       The maze + figure motif sits to the right of a Poppins-Black stacked title. -->
+  <header class="bl-head reveal" data-enter-head>
+    <div class="bl-head-copy">
+      <p class="bl-kicker">The numbers you already know</p>
+      <h2 class="bl-headline">
+        Carefulness<br />
+        is the new<br />
+        <span class="bl-emph">baseline</span>.
+      </h2>
+      <p class="bl-standfirst">
+        Yes, the country is cost-conscious. Yes, budgets are tight. But these
+        hallmarks of the squeeze are the operational floor: table stakes, not
+        the strategy.
+      </p>
+    </div>
+    <!-- Deck maze/orbit brand-world lockup beside the title (the deck's signature
+         image-title composition). Decorative, never carries meaning. -->
+    <figure class="bl-head-lockup" aria-hidden="true">
+      <img
+        class="bl-head-maze"
+        src="assets/deck/maze-hero.png"
+        alt=""
+        loading="lazy"
+        data-parallax="-0.08"
+      />
+    </figure>
   </header>
 
   <div class="bl-flow" data-stagger="140">
 
     <!-- Stat 01: 77% more careful (gated by the guess) -->
-    <section class="bl-stat reveal" aria-labelledby="bl-1-title">
+    <section class="bl-stat reveal" aria-labelledby="bl-1-title" data-enter-stat>
       <div class="bl-stat-lede">
         <span class="bl-index" aria-hidden="true">01 / 04</span>
         <p class="bl-bignum-line" id="bl-1-title">
@@ -51,7 +70,7 @@
     </section>
 
     <!-- Stat 02: 55% deal-hunting -->
-    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-2-title">
+    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-2-title" data-enter-stat>
       <div class="bl-stat-lede">
         <span class="bl-index" aria-hidden="true">02 / 04</span>
         <p class="bl-bignum-line" id="bl-2-title">
@@ -69,8 +88,9 @@
       </figure>
     </section>
 
-    <!-- Stat 03: 60% anxious -->
-    <section class="bl-stat reveal" aria-labelledby="bl-3-title">
+    <!-- Stat 03: 60% anxious — paired with an interactive orbit-ring read of the
+         availability concerns (deck orbit motif made into live data). -->
+    <section class="bl-stat reveal" aria-labelledby="bl-3-title" data-enter-stat>
       <div class="bl-stat-lede">
         <span class="bl-index" aria-hidden="true">03 / 04</span>
         <p class="bl-bignum-line" id="bl-3-title">
@@ -81,15 +101,22 @@
           The mood is forward-looking and unsettled, even where finances are
           stable.
         </p>
+        <div class="bl-toggle-row">
+          <span class="bl-toggle-cue">See it as</span>
+          <div class="bl-chart-controls" data-availability-controls></div>
+        </div>
       </div>
       <figure class="chart-holder bl-chart">
         <figcaption class="bl-chart-sub">% very or extremely concerned about availability</figcaption>
-        <div data-dotplot-availability></div>
+        <div class="bl-availability-stack">
+          <div data-dotplot-availability></div>
+          <div data-orbit-availability hidden></div>
+        </div>
       </figure>
     </section>
 
     <!-- Stat 04: 54% trading down groceries -->
-    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-4-title">
+    <section class="bl-stat bl-stat--rev reveal" aria-labelledby="bl-4-title" data-enter-stat>
       <div class="bl-stat-lede">
         <span class="bl-index" aria-hidden="true">04 / 04</span>
         <p class="bl-bignum-line" id="bl-4-title">
@@ -116,7 +143,7 @@
 
   <!-- Closing band: the deck's "operational floor" framing — fills the screen,
        gives the chapter depth, lifts the deck's challenger-books credibility mark. -->
-  <aside class="bl-floor reveal" aria-label="The operational floor">
+  <aside class="bl-floor reveal" aria-label="The operational floor" data-enter-floor>
     <div class="bl-floor-copy">
       <p class="bl-floor-kicker">The takeaway</p>
       <p class="bl-floor-line">
@@ -130,6 +157,7 @@
       src="assets/deck/challenger-books.png"
       alt="The four VCCP Challenger Series report covers"
       loading="lazy"
+      data-parallax="0.05"
     />
   </aside>
 </div>

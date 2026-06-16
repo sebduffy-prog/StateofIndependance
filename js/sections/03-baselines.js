@@ -9,10 +9,19 @@
  * Components are NAVY (the charts.js default on warm grounds) so nothing is
  * mustard-on-mustard; faint ink-tint tracks, never a white box.
  *
+ * EXPERIENTIAL (top-tier pass): the chapter opens with a deck image-title
+ * lockup (Poppins-Black title beside the maze/orbit brand-world motif), the
+ * decorative orbit/seed/bear layers drift on PARALLAX as the chapter scrolls,
+ * and each stat row reveals on a scroll-progress mask (`--enter` custom prop,
+ * styled in CSS). Stat 03 gains a live DOT-PLOT ⇄ ORBIT-RING toggle so the
+ * reader can re-read the same verified data as the deck's orbit motif. All
+ * motion is reduced-motion safe (experiential.js jumps to rest; the toggle
+ * is a click, never autoplay).
+ *
  * Chart variety (no accent mustard anywhere):
  *   - mood of the nation     -> lollipopChart (navy, careful highlighted ink)
  *   - money-saving moves      -> lollipopChart (navy)
- *   - availability concerns   -> dotPlot (navy, a down/anxious read)
+ *   - availability concerns   -> dotPlot OR orbitRingChart (navy; user toggles)
  *   - 54 / 46 trading split   -> tugOfWar (navy vs mustard fill — the binary
  *                                split where the two-colour read is meaningful)
  *   - traded-down categories  -> horizontalBars (navy) with a pillGroup toggle
@@ -35,8 +44,10 @@ import {
   lollipopChart,
   dotPlot,
   tugOfWar,
+  orbitRingChart,
 } from '../lib/charts.js';
 import { clickToGuess, pillGroup } from '../lib/interactions.js';
+import { observeParallax, scrollScene, prefersReducedMotion } from '../lib/experiential.js';
 
 const CAREFUL_TRUE_VALUE = 77.3;
 const CAREFUL_WAFFLE_FILL = 77;
@@ -60,6 +71,28 @@ export default function init(rootEl, data) {
   } = survey;
 
   observeReveals(rootEl);
+
+  // ── Experiential motion ──────────────────────────────────────────────
+  // Subtle parallax on the decorative world layers (orbit, seeds, bear,
+  // maze, report-cover mark). Clamped + reduced-motion safe by the helper.
+  const cleanupParallax = observeParallax(rootEl, { maxShiftPx: 48 });
+
+  // Scroll-progress reveal: as the chapter travels through the viewport,
+  // expose `--enter` (0->1) on the root so CSS can mask/lift each row in.
+  let cleanupScene = () => {};
+  if (!prefersReducedMotion()) {
+    cleanupScene = scrollScene(rootEl, [], {
+      onProgress: (p) => rootEl.style.setProperty('--enter', p.toFixed(4)),
+    });
+  } else {
+    rootEl.style.setProperty('--enter', '1');
+  }
+  // Detach scroll work if the chapter is ever torn down (defensive; the
+  // static site keeps sections mounted, so this is a no-op in practice).
+  rootEl.addEventListener('chapter:teardown', () => {
+    cleanupParallax();
+    cleanupScene();
+  });
 
   // Panel 1 - the guess gates both the hero count-up and the 77/100 waffle.
   const heroOne = rootEl.querySelector('[data-bl-num1]');
@@ -126,14 +159,49 @@ export default function init(rootEl, data) {
     });
   }
 
-  // Panel 3 chart - availability concerns as a dot plot (down / anxious read).
+  // Panel 3 chart - availability concerns. The reader toggles between a dot
+  // plot (a flat "down / anxious" read) and the deck's ORBIT-RING motif as a
+  // live data view — same verified numbers, two readings.
   const availabilityHost = rootEl.querySelector('[data-dotplot-availability]');
+  const orbitHost = rootEl.querySelector('[data-orbit-availability]');
+  const availabilityControls = rootEl.querySelector('[data-availability-controls]');
   if (availabilityHost && availabilityConcerns) {
+    const availItems = mapItems(availabilityConcerns.items);
+
     dotPlot(availabilityHost, {
-      items: mapItems(availabilityConcerns.items),
+      items: availItems,
       accent: 'navy',
       ariaLabel: 'What Britain is anxious about in the coming months',
     });
+
+    let orbitDrawn = false;
+    const drawOrbit = () => {
+      if (orbitDrawn || !orbitHost) return;
+      orbitDrawn = true;
+      orbitRingChart(orbitHost, {
+        items: availItems,
+        accent: 'navy',
+        centreLabel: 'WORRY',
+        ariaLabel: 'Availability concerns plotted as orbit rings, largest worry on the outer ring',
+      });
+    };
+
+    if (availabilityControls && orbitHost) {
+      pillGroup(availabilityControls, {
+        ariaLabel: 'Read the availability concerns as a list or as orbit rings',
+        value: 'list',
+        options: [
+          { value: 'list', label: 'List' },
+          { value: 'orbit', label: 'Orbit' },
+        ],
+        onChange: (value) => {
+          const showOrbit = value === 'orbit';
+          if (showOrbit) drawOrbit();
+          orbitHost.hidden = !showOrbit;
+          availabilityHost.hidden = showOrbit;
+        },
+      });
+    }
   }
 
   // Panel 4 - the 54 / 46 split as a tugOfWar (navy ↔ mustard binary tension

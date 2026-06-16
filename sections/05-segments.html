@@ -4,12 +4,18 @@
        all content sits at z-index:1 via .seg-hero-body. A deck bear-world motif
        (overlapping circles = "what the four share") anchors the right. -->
   <header class="seg-head reveal">
-    <div class="seg-hero-ground si-ground-warm">
-      <span class="si-orbit seg-hero-orbit" aria-hidden="true"></span>
+    <div class="seg-hero-ground si-ground-warm" data-seg-hero>
+      <span class="si-orbit si-orbit--spin seg-hero-orbit" aria-hidden="true" data-parallax="0.08"></span>
       <div class="seg-hero-grid">
         <div class="seg-hero-body">
           <span class="vccp-eyebrow">The four Britains</span>
-          <h2 class="si-display si-display--black seg-title">Britain in four <em class="hl">segments</em></h2>
+          <!-- Deck image-TITLE lockup feel: huge all-caps Poppins Black, stacked,
+               tight tracking + leading, navy on the warm ground (DECK2 §image-title). -->
+          <h2 class="si-display si-display--black seg-title" data-seg-stagger>
+            <span class="seg-title-line">Britain</span>
+            <span class="seg-title-line">in four</span>
+            <span class="seg-title-line"><em class="hl">segments</em></span>
+          </h2>
           <p class="seg-standfirst si-measure">This time we dug deeper: past how people feel, into what they are doing about it. A new dimension, the agency to act, splits the nation into four very different camps.</p>
           <p class="seg-hinge">
             <span class="seg-hinge-pair"><span class="seg-hinge-dim">outlook</span> <span class="seg-hinge-axis">pessimistic to optimistic</span></span>
@@ -18,7 +24,8 @@
           </p>
         </div>
         <div class="seg-hero-art" aria-hidden="true">
-          <img class="seg-hero-img" src="assets/deck/bear-world-circles.png" alt="" loading="lazy" decoding="async">
+          <span class="si-orbit seg-art-orbit" aria-hidden="true" data-parallax="-0.06"></span>
+          <img class="seg-hero-img" src="assets/deck/bear-world-circles.png" alt="" loading="lazy" decoding="async" data-parallax="0.12">
         </div>
       </div>
     </div>
@@ -99,6 +106,15 @@
 
     <!-- Profile data-card — filled in by JS when a quadrant is chosen. -->
     <aside class="seg-profile" data-profile aria-live="polite"></aside>
+  </div>
+
+  <!-- Deck maze/bear-world transition: the "journey through" motif (DECK2 maze
+       + bear-world). A full-bleed warm band carries the orbit logo as a chapter
+       hinge between the compass and the network — no copy block behind it. -->
+  <div class="seg-maze-break reveal" aria-hidden="true">
+    <span class="si-orbit si-orbit--spin seg-maze-orbit" data-parallax="0.1"></span>
+    <img class="seg-maze-img" src="assets/deck/maze-hero.png" alt="" loading="lazy" decoding="async" data-parallax="0.16">
+    <p class="seg-maze-line"><span>Four camps.</span> <span>One way through.</span></p>
   </div>
 
   <!-- GraphRAG explorer: a second way in. Segments as hubs, attributes as satellites. -->

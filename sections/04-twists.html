@@ -1,16 +1,26 @@
 <div class="chapter-inner">
+  <!-- Chapter opener — deck image-title lockup: huge Poppins-Black title +
+       bear-world motif to the right (the deck's title-on-motif composition). -->
   <header class="tw-head reveal">
-    <span class="tw-bear-stamp" data-host="bear-stamp" aria-hidden="true"></span>
     <div class="tw-head-copy">
       <p class="vccp-eyebrow">The twists in the story</p>
-      <h2 class="tw-title si-display si-display--sm si-display--black">There are <em class="hl">twists</em> in the story</h2>
+      <h2 class="tw-title si-display si-display--sm si-display--black">There are <em class="hl">twists</em><br>in the story</h2>
       <p class="tw-standfirst si-measure">Beneath the expected cutbacks, three anomalies surface. This is not a population retreating into a bunker. It is rewriting the rules of survival, institutional trust and technology.</p>
+      <ol class="tw-toc" aria-label="The three twists">
+        <li class="tw-toc-item"><span class="tw-toc-num">01</span><span class="tw-toc-name">The trust paradox</span></li>
+        <li class="tw-toc-item"><span class="tw-toc-num">02</span><span class="tw-toc-name">Protected joy</span></li>
+        <li class="tw-toc-item"><span class="tw-toc-num">03</span><span class="tw-toc-name">AI on tap</span></li>
+      </ol>
     </div>
+    <figure class="tw-head-art" aria-hidden="true">
+      <span class="tw-head-art-img" data-host="head-art" data-parallax="0.12"></span>
+      <span class="si-orbit si-orbit--spin tw-head-orbit"></span>
+    </figure>
   </header>
 
   <!-- (a) Twist one — the trust paradox — EARNED DARK MOMENT -->
-  <section class="tw-exhibit tw-exhibit--dark si-dark si-dark--velvet" id="tw-trust" aria-labelledby="tw-trust-h">
-    <span class="si-orbit si-orbit--spin" aria-hidden="true"></span>
+  <section class="tw-exhibit tw-exhibit--dark si-dark si-dark--velvet" id="tw-trust" aria-labelledby="tw-trust-h" data-exhibit>
+    <span class="si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.06"></span>
     <div class="tw-exhibit-head reveal">
       <span class="tw-num">Twist one</span>
       <h3 class="tw-exhibit-title" id="tw-trust-h">The trust <em class="hl">paradox</em></h3>
@@ -26,20 +36,28 @@
       </figure>
     </div>
 
-    <div class="tw-paradox reveal">
-      <button type="button" class="tw-flip" data-host="paradox" aria-pressed="false">
-        <span class="tw-flip-hint">Click to flip the card</span>
-        <span class="tw-flip-face tw-flip-front">
-          <span class="vccp-stat-label">Most trusted institution</span>
-          <span class="tw-flip-stat"><span class="tw-flip-big">6.42</span><span class="tw-flip-unit"> / 10</span></span>
-          <span class="tw-flip-cap">NHS: the single highest mean trust score of any UK institution.</span>
-        </span>
-        <span class="tw-flip-face tw-flip-back" aria-hidden="true">
-          <span class="vccp-stat-label">And yet</span>
-          <span class="tw-flip-stat"><span class="tw-flip-big">53</span><span class="tw-flip-unit">%</span></span>
-          <span class="tw-flip-cap">say the NHS&rsquo;s performance has declined over the past decade. High regard and falling confidence, side by side.</span>
-        </span>
-      </button>
+    <div class="tw-paradox-row reveal">
+      <div class="tw-paradox">
+        <button type="button" class="tw-flip" data-host="paradox" aria-pressed="false">
+          <span class="tw-flip-hint">Click to flip the card</span>
+          <span class="tw-flip-face tw-flip-front">
+            <span class="vccp-stat-label">Most trusted institution</span>
+            <span class="tw-flip-stat"><span class="tw-flip-big">6.42</span><span class="tw-flip-unit"> / 10</span></span>
+            <span class="tw-flip-cap">NHS: the single highest mean trust score of any UK institution.</span>
+          </span>
+          <span class="tw-flip-face tw-flip-back" aria-hidden="true">
+            <span class="vccp-stat-label">And yet</span>
+            <span class="tw-flip-stat"><span class="tw-flip-big">53</span><span class="tw-flip-unit">%</span></span>
+            <span class="tw-flip-cap">say the NHS&rsquo;s performance has declined over the past decade. High regard and falling confidence, side by side.</span>
+          </span>
+        </button>
+      </div>
+      <!-- Real-world evidence lifted from the deck: a challenger brand acting
+           on exactly this distrust. Photographic proof, no source caption. -->
+      <figure class="tw-evidence reveal">
+        <span class="tw-evidence-img" data-host="evidence" data-parallax="0.08"></span>
+        <figcaption class="tw-evidence-cap">When trust in institutions slips, the honest alternative wins the gap. Challenger brands are already moving on it.</figcaption>
+      </figure>
     </div>
 
     <div class="tw-decline reveal">
@@ -49,7 +67,7 @@
   </section>
 
   <!-- (b) Twist two — protected joy -->
-  <section class="tw-exhibit" id="tw-joy" aria-labelledby="tw-joy-h">
+  <section class="tw-exhibit" id="tw-joy" aria-labelledby="tw-joy-h" data-exhibit>
     <div class="tw-exhibit-head reveal">
       <span class="tw-num">Twist two</span>
       <h3 class="tw-exhibit-title" id="tw-joy-h">Protected <em class="hl">joy</em></h3>
@@ -58,7 +76,8 @@
 
     <div class="tw-joy-grid si-grid">
       <div class="tw-joy-hero reveal col-5">
-        <span class="si-orbit si-orbit--center" aria-hidden="true"></span>
+        <span class="si-orbit si-orbit--center tw-joy-orbit" aria-hidden="true" data-parallax="0.05"></span>
+        <span class="tw-joy-motif" data-host="joy-motif" aria-hidden="true" data-parallax="0.1"></span>
         <div class="tw-joy-hero-copy">
           <span class="vccp-stat-label on-warm">Protecting the holiday budget</span>
           <span class="tw-joy-big si-bignum on-warm"><span data-count-to="39.6" data-count-decimals="0" data-count-suffix="%"></span></span>
@@ -75,7 +94,7 @@
   </section>
 
   <!-- (c) Twist three — AI on tap -->
-  <section class="tw-exhibit" id="tw-ai" aria-labelledby="tw-ai-h">
+  <section class="tw-exhibit" id="tw-ai" aria-labelledby="tw-ai-h" data-exhibit>
     <div class="tw-exhibit-head reveal">
       <span class="tw-num">Twist three</span>
       <h3 class="tw-exhibit-title" id="tw-ai-h">AI on <em class="hl">tap</em></h3>

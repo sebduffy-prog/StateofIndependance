@@ -42,10 +42,65 @@
 #\30 2-research .research-seed--a { top: 18%; left: 60%; }
 #\30 2-research .research-seed--b { top: 74%; left: 90%; }
 
+/* ─── Deck brand-world motifs (lifted from DECK2-ASSETS) ─────
+   The figure mark + wireframe-sphere world sit BEHIND content, held faint
+   and multiply-blended into the warm ground so they read as texture, never
+   as a box. pointer-events:none + z-index:0 → never occlude copy/UI. */
+#\30 2-research .research-figure-motif {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  left: clamp(-40px, -2vw, 0px);
+  bottom: 6%;
+  width: clamp(120px, 16vw, 240px);
+  height: auto;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+#\30 2-research .research-world-motif {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  width: 116%;
+  max-width: 116%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+
 /* Content sits above the decorative layer. */
 #\30 2-research .research-split,
 #\30 2-research .research-method > *,
-#\30 2-research .research-map-wrap > * { position: relative; z-index: 1; }
+#\30 2-research .research-map-wrap > *:not(.research-world-motif) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Scroll-progress entrance (experiential.js → --enter) ───
+   The two columns fade + rise as the chapter arrives; the world motif
+   eases up from below and brightens. Transform/opacity only — no reflow,
+   no clipping. Reduced motion jumps straight to the rested state. */
+#\30 2-research .research-method,
+#\30 2-research .research-map-wrap {
+  --enter: 1;                /* default rested (overridden live on scroll) */
+}
+#\30 2-research.is-entering .research-method {
+  transform: translateY(calc((1 - var(--enter, 1)) * 26px));
+  opacity: calc(0.35 + var(--enter, 1) * 0.65);
+}
+#\30 2-research.is-entering .research-map-wrap {
+  transform: translateY(calc((1 - var(--enter, 1)) * 40px));
+  opacity: calc(0.25 + var(--enter, 1) * 0.75);
+}
+#\30 2-research.is-entering .research-world-motif {
+  opacity: calc(var(--enter, 1) * 0.13);
+  transform: translate(-50%, calc(-50% + (1 - var(--enter, 1)) * 30px));
+}
 
 /* ─── Split: flowing, both columns breathe and fill height ──── */
 #\30 2-research .research-split {
@@ -65,15 +120,25 @@
   margin: 0;
 }
 
-/* Headline — bigger, BOLDER Poppins (deck-faithful display). */
+/* Headline — image-TITLE lockup recreated in Poppins Black (deck-faithful):
+   huge, all-caps weight, very tight tracking + line-height, emphasis by
+   COLOUR + WEIGHT only. overflow visible + safe line-height so descenders
+   and the underline accent never clip. */
 #\30 2-research .research-headline {
-  font-size: clamp(3rem, 5.6vw, 5.4rem);
-  font-weight: 800;
-  line-height: 0.96;
-  letter-spacing: -0.03em;
+  font-size: clamp(3.1rem, 6vw, 5.8rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
   margin: 0;
-  max-width: 16ch;
+  max-width: 15ch;
   color: var(--soi-navy);
+  overflow: visible;
+  padding-bottom: 0.06em;            /* clear the .hl underline + descenders */
+  text-wrap: balance;
+}
+#\30 2-research .research-headline .hl,
+#\30 2-research .research-headline .hl-teal {
+  font-weight: 900;
 }
 
 #\30 2-research .research-standfirst {
@@ -196,6 +261,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  isolation: isolate;                /* own stacking context for the world bed */
 }
 #\30 2-research .research-map-head {
   display: flex;
@@ -252,13 +318,17 @@
   stroke-width: 1.4;
   stroke-linejoin: round;
 }
-/* Faint cream graticule connecting the cities (decoration). */
+/* Connective "we listened across the island" thread. It DRAWS itself as the
+   chapter scrolls (--thread 0→1, set in JS via scrollScene). pathLength=1 on
+   the element normalises the geometry so a single dashoffset works. */
 #\30 2-research .research-map-thread {
   fill: none;
   stroke: var(--soi-cream-warm);
-  stroke-width: 1;
-  stroke-dasharray: 3 5;
-  opacity: 0.4;
+  stroke-width: 1.4;
+  opacity: 0.55;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--thread, 1));
+  transition: stroke-dashoffset 0.18s linear;
 }
 
 /* ─── City markers (cream squares on the navy land) ─────────── */
@@ -294,22 +364,27 @@
               transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) var(--pin-delay, 0ms);
 }
 
-/* Marker label — hidden until hover/focus/active; cream chip, navy ink. */
+/* Marker label — hidden until hover/focus/active. NO block behind text:
+   emphasis is COLOUR + WEIGHT only (navy, heavy Poppins) with a soft halo
+   text-shadow so it stays legible over the navy land without a chip fill. */
 #\30 2-research .research-marker-label {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 7px);
+  bottom: calc(100% + 8px);
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
   color: var(--soi-navy);
-  background: var(--soi-page);
-  padding: 3px 8px;
+  background: none;                  /* NO block behind text */
+  padding: 0;
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0 4px 14px rgba(10,26,92,0.24);
+  text-shadow:
+    0 0 4px var(--soi-page),
+    0 0 8px var(--soi-page),
+    0 1px 2px rgba(244,241,234,0.9);
   transition: opacity 0.12s ease;
 }
 #\30 2-research .research-marker:hover .research-marker-label,
@@ -410,6 +485,20 @@
   #\30 2-research .research-map.is-pinned .research-marker { transition: none; }
   #\30 2-research .research-marker.is-active::after { animation: none; }
   #\30 2-research .research-orbit { animation: none; }
+  /* Entrance + thread draw → straight to rested state (no scroll work). */
+  #\30 2-research.is-entering .research-method,
+  #\30 2-research.is-entering .research-map-wrap,
+  #\30 2-research.is-entering .research-world-motif {
+    transform: none;
+    opacity: 1;
+  }
+  #\30 2-research .research-world-motif {
+    transform: translate(-50%, -50%);
+  }
+  #\30 2-research .research-map-thread {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
 }
 
 /* ─── Responsive: stack columns under the grid breakpoint ───── */
@@ -420,9 +509,13 @@
   #\30 2-research .research-map-head,
   #\30 2-research .research-map-hint,
   #\30 2-research .research-rail { max-width: 420px; }
+  /* Motifs shrink + soften so they never crowd the stacked copy. */
+  #\30 2-research .research-figure-motif { width: clamp(90px, 22vw, 150px); opacity: 0.1; }
+  #\30 2-research .research-world-motif { width: 130%; max-width: 130%; opacity: 0.09; }
 }
 @media (max-width: 520px) {
   #\30 2-research .research-stats,
   #\30 2-research .research-method-rhythm { grid-template-columns: 1fr; }
   #\30 2-research .research-rail { min-height: 0; }
+  #\30 2-research .research-figure-motif { display: none; }
 }
