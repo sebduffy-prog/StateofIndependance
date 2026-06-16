@@ -211,10 +211,14 @@ export function segmentGraph(container, opts = {}) {
   // ── Force simulation tick (damped) ─────────────────────────────────────────
   let dragNode = null;
 
+  // Hub labels are rendered BELOW the circle, so a hub centre must stay far
+  // enough off the bottom edge that its label is not clipped (FEEDBACK-V4 §4).
+  const HUB_LABEL_DROP = HUB_R + LABEL_GAP + HUB_LABEL_FS * 2;
   const clamp = (n) => {
     const m = n.r + 4;
+    const bottomM = n.kind === 'seg' ? HUB_LABEL_DROP : m;
     n.x = Math.max(PAD + m, Math.min(W - PAD - m, n.x));
-    n.y = Math.max(PAD + m, Math.min(H - PAD - m, n.y));
+    n.y = Math.max(PAD + m, Math.min(H - PAD - bottomM, n.y));
   };
 
   // Effective keep-out radius. Hubs always carry their label clearance. An

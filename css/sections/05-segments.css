@@ -197,7 +197,9 @@
   aspect-ratio: 1 / 1;
   max-width: 620px;
   margin-inline: auto;
-  background: rgba(255,237,187,0.28);
+  /* Backgroundless (§4): the compass floats on the page ground — no cream/
+     mustard plate. Axes + dots carry the structure. */
+  background: transparent;
 }
 
 /* dot field canvas host — sits behind the quadrant UI (anti-overlap §6) */

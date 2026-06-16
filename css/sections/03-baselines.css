@@ -236,12 +236,16 @@
 #\30 3-baselines .bl-guess {
   margin-top: 4px;
 }
+/* BACKGROUNDLESS (FEEDBACK-V4 §4): the guess sits on the warm ground with a
+   navy hairline rule instead of a near-white plate, so it no longer reads as a
+   white box popped on the amber ground. */
 #\30 3-baselines .guess {
   border: 0;
-  background: var(--paper-warm);
-  padding: 18px 20px;
+  border-left: 3px solid var(--soi-navy);
+  background: transparent;
+  padding: 6px 0 6px 18px;
   max-width: 420px;
-  box-shadow: 0 1px 2px rgba(10, 26, 92, 0.05), 0 16px 36px rgba(10, 26, 92, 0.10);
+  box-shadow: none;
 }
 #\30 3-baselines .guess-prompt {
   font-size: var(--t-xs);

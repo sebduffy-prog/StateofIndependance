@@ -441,29 +441,43 @@ h5, h6 { font-weight: 600; }
    leaves a tall empty band beside a short copy pane. */
 .si-stretch-grid { align-items: stretch; }
 
-/* ─── Highlight emphasis (V4: clean SQUARED block, NO skew) ──
-   The old skewX(-12deg) parallelogram is killed. .hl now draws a
-   straight, square-cornered mustard-light block behind the word —
-   transform:none, no shear anywhere. Reads as a confident marker
-   highlight, not a slanted shape. Stays usable inside .si-display. */
+/* ─── Highlight emphasis (V5: NO BLOCK behind text — colour + weight) ──
+   Client demand: text never sits on a solid block. The old mustard-light
+   marker block is killed. .hl is now a COLOUR + WEIGHT emphasis: the word
+   turns brand orange and bolder, with a thin orange underline accent drawn
+   on the baseline (a 0.08em rule, NOT a fill behind the glyphs). No
+   background, no box, no ::before fill. Reads as a confident editorial
+   emphasis. Stays legible inside .si-display and on any ground. */
 .hl {
-  font-weight: 600;
-  position: relative;
-  display: inline-block;
-  line-height: inherit;
-  padding: 0.04em 0.12em;
-  z-index: 0;
+  font-weight: 700;
+  color: var(--soi-orange);
+  background: none;                 /* NO block behind text */
+  /* underline accent rides the baseline, never behind the glyphs */
+  background-image: linear-gradient(var(--soi-orange), var(--soi-orange));
+  background-repeat: no-repeat;
+  background-size: 100% 0.08em;
+  background-position: 0 100%;
+  padding-bottom: 0.04em;           /* keep the rule clear of descenders */
 }
-.hl::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--mustard-light);
-  transform: none;            /* squared block — no parallelogram */
-  z-index: -1;
-  pointer-events: none;
+/* Teal variant — same box-less treatment, teal hue. */
+.hl-teal {
+  color: var(--soi-teal);
+  background-image: linear-gradient(var(--soi-teal), var(--soi-teal));
 }
-.hl-teal::before { background: var(--teal-light); }
+/* On a warm ground the orange would clash with the bed → flip emphasis to
+   navy weight + navy underline so it stays legible and on-palette. */
+.si-ground-warm .hl,
+.on-warm .hl {
+  color: var(--soi-navy);
+  background-image: linear-gradient(var(--soi-navy), var(--soi-navy));
+}
+/* On navy/blue/dark grounds emphasis flips to warm amber for contrast. */
+.si-ground-blue .hl,
+.si-dark .hl,
+.on-navy .hl {
+  color: var(--soi-amber);
+  background-image: linear-gradient(var(--soi-amber), var(--soi-amber));
+}
 
 /* ─── Cards ─────────────────────────────────────────────── */
 .vccp-card {
@@ -500,17 +514,36 @@ h5, h6 { font-weight: 600; }
   max-width: 56ch;
 }
 
-/* ─── Stage-number chip ─────────────────────────────────── */
+/* ─── Stage-number "chip" (V5: de-blocked — no fill behind text) ──
+   Was a mustard box with an ink border. Client: text never sits on a solid
+   block. Now a box-less label: orange weight + a short leading rule before
+   the number, like an editorial kicker. No background, no border, no box. */
 .vccp-stage-num {
-  display: inline-block;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
   font-size: 0.72rem;
   letter-spacing: 0.18em;
-  background: var(--mustard);
-  border: 1px solid var(--ink);
-  padding: 4px 8px;
+  color: var(--soi-orange);
+  background: none;
+  border: 0;
+  padding: 0;
   margin-bottom: 14px;
 }
+.vccp-stage-num::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+/* Contrast flips on coloured grounds (kicker rule + text follow the ground). */
+.si-ground-warm .vccp-stage-num,
+.on-warm .vccp-stage-num { color: var(--soi-navy); }
+.si-ground-blue .vccp-stage-num,
+.si-dark .vccp-stage-num,
+.on-navy .vccp-stage-num { color: var(--soi-amber); }
 
 /* ─── Eyebrow / source caption ──────────────────────────── */
 .vccp-eyebrow {
@@ -704,10 +737,13 @@ h5, h6 { font-weight: 600; }
   font-variant-numeric: tabular-nums;
 }
 
-/* Highlighter coexists with uppercase display: keep italic from .hl but
-   neutralise its tight line-height so it doesn't collapse inside a display
-   headline; the parallelogram still renders behind the word. */
-.si-display .hl { line-height: inherit; }
+/* Emphasis coexists with uppercase display: inherit the headline's leading
+   and scale the underline rule down a touch so it reads as a hairline accent
+   under a Black headline rather than a heavy bar. No block, no box. */
+.si-display .hl {
+  line-height: inherit;
+  background-size: 100% 0.05em;
+}
 
 /* ─── 12-col grid + spans (§3) ──────────────────────────── */
 .si-grid {
