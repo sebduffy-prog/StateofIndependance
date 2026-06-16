@@ -451,32 +451,22 @@ h5, h6 { font-weight: 600; }
 .hl {
   font-weight: 700;
   color: var(--soi-orange);
-  background: none;                 /* NO block behind text */
-  /* underline accent rides the baseline, never behind the glyphs */
-  background-image: linear-gradient(var(--soi-orange), var(--soi-orange));
-  background-repeat: no-repeat;
-  background-size: 100% 0.08em;
-  background-position: 0 100%;
-  padding-bottom: 0.04em;           /* keep the rule clear of descenders */
+  background: none;                 /* NO block behind text, NO underline */
 }
-/* Teal variant — same box-less treatment, teal hue. */
+/* Teal variant — colour-only emphasis, teal hue. */
 .hl-teal {
   color: var(--soi-teal);
-  background-image: linear-gradient(var(--soi-teal), var(--soi-teal));
 }
-/* On a warm ground the orange would clash with the bed → flip emphasis to
-   navy weight + navy underline so it stays legible and on-palette. */
+/* On a warm ground the orange would clash with the bed → flip to navy. */
 .si-ground-warm .hl,
 .on-warm .hl {
   color: var(--soi-navy);
-  background-image: linear-gradient(var(--soi-navy), var(--soi-navy));
 }
 /* On navy/blue/dark grounds emphasis flips to warm amber for contrast. */
 .si-ground-blue .hl,
 .si-dark .hl,
 .on-navy .hl {
   color: var(--soi-amber);
-  background-image: linear-gradient(var(--soi-amber), var(--soi-amber));
 }
 
 /* ─── Cards ─────────────────────────────────────────────── */
