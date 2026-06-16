@@ -156,6 +156,18 @@ export default function init(rootEl, data) {
   const quizSpec = data && data.segments && data.segments.quiz;
   if (!segments || !quizSpec) return; // fail soft
 
+  /* Journey gating: this step REQUIRES an interaction. Next starts LOCKED and
+     unlocks the first time the visitor either opens a segment profile or
+     completes the quiz — whichever comes first. Guarded so it only fires once. */
+  const journey = data && data.journey;
+  let readyFired = false;
+  const declareReady = () => {
+    if (readyFired) return;
+    readyFired = true;
+    if (journey && typeof journey.ready === 'function') journey.ready();
+  };
+  if (journey && typeof journey.gate === 'function') journey.gate();
+
   observeReveals(rootEl);
 
   /* Experiential motion: subtle parallax on the hero/maze decorative layers
@@ -301,6 +313,8 @@ export default function init(rootEl, data) {
     if (card && !reduced) card.focus({ preventScroll: true });
     if (syncGraph && graph) graph.selectSegment(id);
     syncRoster();
+    // First profile opened (via quad, roster, graph, or quiz landing) unlocks Next.
+    declareReady();
   };
 
   const clearQuad = ({ syncGraph = true } = {}) => {
@@ -441,6 +455,8 @@ export default function init(rootEl, data) {
         if (youShown && youTag) youTag.classList.add('is-landed');
         selectQuad(segId);
         renderResult(segId);
+        declareReady(); // completing the quiz also unlocks Next
+
       },
     });
   };

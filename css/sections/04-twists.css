@@ -19,12 +19,22 @@
 
 #\30 4-twists {
   display: block;            /* override flex-centre: this chapter flows tall */
+  /* Journey step: fill the viewport from the very top, gradient ground covers
+     the whole stage (no top nav, so no dead band). The .journey-step wrapper
+     supplies min-height + bottom-controls clearance; here we own the ground
+     and the top padding that replaces the removed nav offset. */
+  min-height: 100vh;
+  min-height: 100svh;
   background: var(--soi-page);
+  padding: clamp(40px, 6vh, 88px) clamp(20px, 4vw, 72px)
+           0 clamp(40px, 5vw, 96px);
 }
 #\30 4-twists .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(80px, 11vh, 148px);   /* seamless rhythm — space replaces rules */
+  /* Tighter rhythm than the old scroll layout — three exhibits read as one
+     immersive stage with internal scroll, not acres of dead space. */
+  gap: clamp(56px, 8vh, 104px);
 }
 
 /* ─── Experiential entrance — driven by --enter (experiential.js) ─────

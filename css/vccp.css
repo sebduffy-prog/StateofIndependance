@@ -268,7 +268,9 @@ body {
   background: var(--paper);
   font-feature-settings: 'tnum';
   -webkit-font-smoothing: antialiased;
-  padding-top: var(--nav-height);
+  /* Journey engine: no fixed top nav, so no top padding. Bottom space for the
+     journey controls is reserved per-step on .journey-step instead. */
+  padding-top: 0;
 }
 /* Form controls do not inherit font-family by default — force the brand
    font (Inter Tight) on every control so buttons, pills, sliders, quiz and
@@ -400,6 +402,140 @@ h5, h6 { font-weight: 600; }
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
+}
+
+/* ─── JOURNEY ENGINE ─────────────────────────────────────────
+   The site is a guided journey: exactly one step visible at a time,
+   full-viewport, with the gradient ground filling the page. The bottom
+   controls (Next/Back/indicator) live in .journey-controls. Steps that are
+   not current are display:none via the [hidden] attribute (set by main.js).
+   ──────────────────────────────────────────────────────────── */
+
+/* Height of the bottom controls bar — steps reserve this so content never
+   sits under the controls. */
+:root { --journey-controls-h: 72px; }
+
+/* A step is a full-viewport stage. The ground fills the whole screen; the
+   inner composition centres. Reserve room for the bottom controls. */
+.journey-step {
+  min-height: 100vh;
+  min-height: 100svh;
+  /* Internal scroll if a step's content exceeds the viewport. */
+  overflow-y: auto;
+  scroll-margin-top: 0;
+  /* Pad the bottom so content clears the fixed controls bar. */
+  padding-bottom: calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem));
+}
+
+/* Hidden steps are fully removed from layout + a11y tree. !important is
+   required because some chapters scope a `display` rule on their own #id
+   selector (e.g. #04-twists { display:block }), whose specificity would
+   otherwise beat the native [hidden] display:none and leak the step in. */
+.journey-step[hidden] { display: none !important; }
+
+/* Step entry transition (fade + gentle slide). Applied each time a step
+   becomes the current/visible one. */
+@media (prefers-reduced-motion: no-preference) {
+  .journey-step:not([hidden]) {
+    animation: journey-step-in 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+}
+@keyframes journey-step-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Reduced motion: jump-cut, no slide/fade. */
+@media (prefers-reduced-motion: reduce) {
+  .journey-step:not([hidden]) { animation: none; }
+}
+
+/* ─── Bottom journey controls ───────────────────────────────── */
+.journey-controls {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  min-height: var(--journey-controls-h);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  padding: 12px clamp(16px, 3vw, 44px);
+  background: rgba(244, 241, 234, 0.92); /* warm-page band, slightly translucent */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(10, 26, 92, 0.12);
+}
+.journey-controls[hidden] { display: none; }
+
+.journey-meta {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
+  min-width: 0;
+}
+.journey-indicator {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+}
+.journey-hint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--soi-orange);
+}
+.journey-hint[hidden] { display: none; }
+
+/* On-brand Poppins buttons, square corners, no underline. */
+.journey-btn {
+  flex: 0 0 auto;
+  font: 600 var(--t-sm)/1 var(--font-sans);
+  letter-spacing: 0.04em;
+  padding: 13px clamp(18px, 2.4vw, 30px);
+  border: 1px solid var(--soi-navy);
+  background: transparent;
+  color: var(--soi-navy);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    background 0.18s ease, opacity 0.18s ease;
+}
+.journey-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 var(--soi-navy);
+}
+.journey-btn-primary {
+  background: var(--soi-navy);
+  color: var(--soi-cream);
+}
+.journey-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  transform: none;
+  box-shadow: none;
+}
+/* Locked Next reads as a subtle, on-hold state (not just dimmed). */
+.journey-next:disabled {
+  background: rgba(10, 26, 92, 0.18);
+  color: rgba(10, 26, 92, 0.55);
+  border-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-btn { transition: none; }
+}
+
+/* Narrow screens: stack indicator above a button row would be heavy; instead
+   keep one row but tighten paddings. */
+@media (max-width: 560px) {
+  .journey-controls { gap: 10px; padding: 10px 14px; }
+  .journey-btn { padding: 11px 16px; }
+  .journey-indicator { font-size: 0.66rem; letter-spacing: 0.04em; }
 }
 
 /* ─── FILL SCREEN / KILL DEAD SPACE (V3 §6) ─────────────────
@@ -988,10 +1124,9 @@ canvas.dot-field,
   z-index: 0;
   pointer-events: none;
 }
-/* Fixed chrome never overlaps content: keep section content clear of the
-   nav (top) and the progress rail (left). scroll-margin already on
-   .chapter; this guards anchored children too. */
-[id] { scroll-margin-top: calc(var(--nav-height) + 8px); }
+/* Journey engine: no fixed top nav, so anchored children need no top offset.
+   (The former [id] scroll-margin-top for the fixed nav is neutralised.) */
+[id] { scroll-margin-top: 0; }
 
 /* ─── .chart-holder — box-less chart container (client feedback) ──
    CONTRACT: charts must NOT sit in white paper/card boxes. Wrap a chart

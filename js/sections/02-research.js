@@ -15,8 +15,14 @@
  * Quotes are verbatim from docs/STORY.md. Cities without a city-attributed
  * quote in the source show an honest sample note instead of a fabricated quote.
  *
+ * Journey gating: this step REQUIRES an interaction — the visitor must open at
+ * least one city marker before Next unlocks. init() calls data.journey.gate();
+ * the first genuine marker selection (click or keyboard) fires
+ * data.journey.ready(). The default London card is shown for context but does
+ * NOT satisfy the gate — the visitor must act.
+ *
  * @param {HTMLElement} rootEl - <section class="chapter" id="02-research">
- * @param {{survey: object, segments: object, tgi: object}} data
+ * @param {{survey: object, segments: object, tgi: object, journey: {gate: function, ready: function}}} data
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
@@ -196,6 +202,16 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
+  // Journey gating: Next stays LOCKED until the visitor opens a city marker.
+  const journey = data && data.journey;
+  if (journey && typeof journey.gate === 'function') journey.gate();
+  let hasUnlocked = false;
+  const markGateReady = () => {
+    if (hasUnlocked) return;
+    hasUnlocked = true;
+    if (journey && typeof journey.ready === 'function') journey.ready();
+  };
+
   const mapHost = rootEl.querySelector('[data-research-map]');
   const railHost = rootEl.querySelector('[data-research-rail]');
   const hint = rootEl.querySelector('[data-research-hint]');
@@ -252,14 +268,26 @@ export default function init(rootEl, data) {
     label.textContent = city.name;
     btn.append(label);
 
-    btn.addEventListener('click', () => select(city));
-    btn.addEventListener('focus', () => select(city));
+    // A genuine marker selection — click, keyboard activation, or focus
+    // (focus fires on pointer-down and on Tab) — opens the city's diary and
+    // unlocks the journey. Programmatic selection (default London, autoplay)
+    // never focuses, so it does not satisfy the gate.
+    btn.addEventListener('click', () => {
+      markGateReady();
+      select(city);
+    });
+    btn.addEventListener('focus', () => {
+      markGateReady();
+      select(city);
+    });
     btn.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
         event.preventDefault();
+        markGateReady();
         focusByIndex(index + 1);
       } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
         event.preventDefault();
+        markGateReady();
         focusByIndex(index - 1);
       }
     });

@@ -56,7 +56,7 @@ const placeDeckArt = (rootEl) => {
   if (dark) dark.style.backgroundImage = `url("${VELVET_GROUND}")`;
 };
 
-const buildTrustParadox = (rootEl, institutionTrust) => {
+const buildTrustParadox = (rootEl, institutionTrust, onRevealed) => {
   const ranking = institutionTrust?.confidenceRanking?.items;
   if (!Array.isArray(ranking) || ranking.length === 0) return;
 
@@ -77,6 +77,8 @@ const buildTrustParadox = (rootEl, institutionTrust) => {
   const revealTruth = () => {
     if (!truthFig.hidden) return;
     truthFig.hidden = false;
+    // Drag-rank reveal completed — this is the gating interaction; unlock Next.
+    if (typeof onRevealed === 'function') onRevealed();
     // EARNED-DARK navy ground: the orbit motif renders cream + teal on the
     // velvet (onNavy path) — never mustard (vanishes), never a white box.
     orbitRingChart(orbitHost, {
@@ -232,14 +234,19 @@ const frameRows = (svg, rowItems, ids, labelWidth) => {
 };
 
 export default function init(rootEl, data) {
-  const { survey } = data || {};
+  const { survey, journey } = data || {};
   if (!survey) return;
+
+  // Journey gating: this step REQUIRES the trust drag-rank reveal. Next starts
+  // locked and unlocks when revealTruth fires (the "reveal the real ranking"
+  // action). gate() is a no-op when running outside the journey engine.
+  journey?.gate?.();
 
   observeReveals(rootEl);
   observeCounters(rootEl);
 
   placeDeckArt(rootEl);
-  buildTrustParadox(rootEl, survey.institutionTrust);
+  buildTrustParadox(rootEl, survey.institutionTrust, () => journey?.ready?.());
   buildProtectedJoy(rootEl, survey.protectedSpend);
   buildAiOnTap(rootEl, survey.aiTasks);
 

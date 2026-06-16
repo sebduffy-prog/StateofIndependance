@@ -251,11 +251,30 @@ export default function init(rootEl, data) {
   const vennMount = rootEl.querySelector('[data-emp-venn]');
   const brandAsks = data?.segments?.meta?.metricsTotals?.brandAsks ?? null;
 
+  // Journey gating: this is a narrative-ish step, but it has a clear hero
+  // interaction (the survival -> agency reframe slider). Gate Next and unlock
+  // it the moment the visitor moves the slider for the first time. If the
+  // reframe failed to build for any reason, fall back to ungated (auto-unlock)
+  // so the journey can never dead-end here.
+  const journey = data?.journey ?? null;
+
   let reframe = null;
   if (reframeMount) reframe = buildReframe(reframeMount);
   if (asksMount) buildAsks(asksMount, brandAsks, rootEl);
   if (vennMount) buildVenn(vennMount, brandAsks);
   fillPremium(rootEl, brandAsks);
+
+  if (journey && reframe) {
+    journey.gate();
+    let unlocked = false;
+    const unlock = () => {
+      if (unlocked) return;
+      unlocked = true;
+      journey.ready();
+    };
+    // Any genuine move of the reframe slider (drag or keyboard) counts.
+    reframe.slider.addEventListener('input', unlock);
+  }
 
   observeReveals(rootEl);
   observeCounters(rootEl);

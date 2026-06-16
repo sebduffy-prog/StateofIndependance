@@ -1,22 +1,25 @@
 <div class="chapter-inner">
-  <!-- HERO: the State-of-Independence brand world. A warm yellow→orange
-       gradient GROUND carries the signature MAZE motion logo (isometric maze,
-       navy bear cresting it, a small figure reading a map at the entrance, a
-       light-blue orbit ring sweeping the whole scene) lifted straight from
-       deck (2). A second, live SVG ORBIT RING is drawn around the maze so the
-       deck's orbit motif keeps sweeping even on the static frame. Copy sits
-       top-left, the maze fills the right; behind it all an ambient navy
-       respondent dot-field drifts. Every decorative layer sits BEHIND the copy
-       via z-index + pointer-events:none, so nothing occludes the wordmark and
-       all text keeps deliberate navy-on-warm contrast. NO block, panel or
-       plate behind any copy — text hangs in open space, emphasis by
-       weight/colour only. -->
+  <!-- HERO (the only act now — this is a single full-viewport journey step).
+       A warm yellow→orange gradient GROUND carries the signature MAZE motion
+       logo (isometric maze, navy bear cresting it, a small figure reading a
+       map at the entrance, a light-blue orbit ring sweeping the whole scene)
+       lifted straight from deck (2). A second, live SVG ORBIT RING is drawn
+       around the maze so the deck's orbit motif keeps sweeping even on the
+       static frame. Copy sits left, the maze fills the right; behind it all an
+       ambient navy respondent dot-field drifts. Every decorative layer sits
+       BEHIND the copy via z-index + pointer-events:none, so nothing occludes
+       the wordmark and all text keeps deliberate navy-on-warm contrast. NO
+       block, panel or plate behind any copy — text hangs in open space,
+       emphasis by weight/colour only. The five signature moves + the
+       Challenger explanation are NO LONGER here: the moves are the journey's
+       payoff (chapter 07-moves) and only a short "Challenger Series" tag
+       remains in the eyebrow. -->
   <section class="cover-hero si-ground-warm" data-cover-hero aria-label="The State of Independence — cover">
 
     <!-- Ambient respondent dot-field, navy on warm, well behind everything. -->
     <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
 
-    <!-- Copy: top-left, no frame, no plate. Navy text on the warm ground. -->
+    <!-- Copy: left, no frame, no plate. Navy text on the warm ground. -->
     <div class="cover-copy on-warm si-stack-tight" data-stagger="120">
       <p class="vccp-eyebrow cover-eyebrow reveal">
         <img class="cover-eyebrow-glyph" src="assets/deck/figure-silhouette.png" alt="" aria-hidden="true" width="14" height="44" />
@@ -31,7 +34,7 @@
         people are taking back control — and what it demands of every brand
         that serves them.
       </p>
-      <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Scroll to the research">
+      <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Begin the journey">
         <span class="cover-cue-arrow" aria-hidden="true"></span>
         <span class="cover-cue-label">Begin</span>
       </button>
@@ -66,45 +69,5 @@
       You are the 1,505th respondent.
     </p>
 
-    <!-- Scroll-progress meter pinned bottom-right of the hero. -->
-    <div class="cover-progress" aria-hidden="true"><span data-cover-progress></span></div>
-  </section>
-
-  <!-- DEPTH BAND: the Challenger-Series statement, told through the brand's
-       own image — VCCP's logo of a young girl standing up to a bear. The
-       full-bleed silhouette lockup (assets/brand/Girl_and_Bear.png) lifts the
-       deck's bear-figure world; copy hangs beside it on the warm ground with
-       NO box behind it. Below, the five signature moves are a hover-reactive
-       index that teases the playbook ahead — interactive, not a static list. -->
-  <section class="cover-statement si-dark si-dark--velvet on-navy" data-cover-statement aria-label="About the Challenger Series">
-    <div class="cover-statement-inner">
-
-      <figure class="cover-bear" data-parallax="0.05">
-        <img class="cover-bear-img" src="assets/brand/Girl_and_Bear_cream.png" alt="VCCP's brand mark: a young girl standing up to a bear" width="2817" height="1620" loading="lazy" decoding="async" />
-      </figure>
-
-      <div class="cover-statement-copy si-stack-tight" data-stagger="120">
-        <p class="cover-statement-kicker reveal">The Challenger Series</p>
-        <p class="cover-statement-lede reveal">
-          VCCP's logo is a young girl standing up to a bear — our commitment to
-          <strong class="hl">face up to life's biggest challenges</strong>, take them
-          on, and win. Challenger doesn't mean underdog. It means answering the
-          category's hardest questions.
-        </p>
-      </div>
-
-    </div>
-
-    <!-- The five moves: an interactive index of the playbook ahead. -->
-    <div class="cover-moves-wrap">
-      <p class="cover-moves-eyebrow reveal">Five signature moves ahead</p>
-      <ol class="cover-moves" data-stagger="90" aria-label="The five signature moves explored ahead">
-        <li class="cover-move reveal"><span class="cover-move-no">01</span><span class="cover-move-label">Unplug them from the grid</span></li>
-        <li class="cover-move reveal"><span class="cover-move-no">02</span><span class="cover-move-label">Be a trusted alternative</span></li>
-        <li class="cover-move reveal"><span class="cover-move-no">03</span><span class="cover-move-label">Help people help themselves</span></li>
-        <li class="cover-move reveal"><span class="cover-move-no">04</span><span class="cover-move-label">Kill the mental load</span></li>
-        <li class="cover-move reveal"><span class="cover-move-no">05</span><span class="cover-move-label">Boost good behaviours</span></li>
-      </ol>
-    </div>
   </section>
 </div>

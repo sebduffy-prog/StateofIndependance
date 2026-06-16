@@ -20,7 +20,12 @@
 #\30 3-baselines {
   position: relative;
   isolation: isolate;            /* contain decorative layers; no stale bleed */
-  overflow: hidden;              /* clip orbit + silhouette to the chapter */
+  /* Clip the decorative bleed sideways, but allow vertical scroll: as a
+     journey step this is a full-viewport stage and its tall stat flow scrolls
+     internally (.journey-step sets overflow-y:auto; an #id `overflow:hidden`
+     here would beat it on specificity and clip the content). */
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--ground-warm);
   color: var(--on-warm);         /* navy on amber — guaranteed contrast */
   --enter: 1;                    /* scroll-progress; JS drives 0->1, CSS reads */
@@ -32,9 +37,14 @@
   display: flex;
   flex-direction: column;
   gap: clamp(56px, 8vh, 112px);
-  /* Claim the full viewport height so the chapter never leaves a dead band:
-     the header, stat flow, and closing band spread down the screen. */
-  min-height: calc(100vh - 2 * clamp(5rem, 8vh, 9rem));
+  /* Claim the available viewport height (less the chapter padding and the
+     bottom journey-controls reservation) so the warm ground reads as a full,
+     immersive screen with no dead band, and the header / stat flow / closing
+     band spread down it. Content taller than this scrolls internally. */
+  min-height: calc(
+    100svh - 2 * clamp(5rem, 8vh, 9rem)
+    - var(--journey-controls-h) - clamp(1.5rem, 4vh, 3rem)
+  );
   justify-content: space-between;
 }
 

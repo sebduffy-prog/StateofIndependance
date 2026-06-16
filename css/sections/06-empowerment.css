@@ -9,27 +9,43 @@
    Every selector is prefixed #\30 6-empowerment so styles never leak.
    Square corners, tabular nums, reduced-motion safe, no console.log. */
 
+/* JOURNEY: this step is a full-viewport stage. With no top bar, the warm
+   gradient ground must fill the page edge-to-edge from the very top — no dead
+   band of page background around it. So the chapter root drops its base padding
+   (the old left gutter cleared a progress rail that no longer exists) and the
+   warm shell becomes the full-bleed ground; its own padding holds the copy in. */
 #\30 6-empowerment {
   background: transparent;
+  padding: 0;
+  align-items: stretch;
 }
+#\30 6-empowerment > .si-ground-warm.emp-shell { max-width: none; }
 
-/* The warm-ground world fills the whole chapter frame edge-to-edge and runs a
-   long, generous scroll so nothing feels cramped and no band sits empty. */
+/* The warm-ground world fills the whole step edge-to-edge and runs a long,
+   generous scroll so nothing feels cramped and no band sits empty. The bottom
+   padding clears the fixed journey controls. */
 #\30 6-empowerment .emp-shell {
   position: relative;
   width: 100%;
   align-self: stretch;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: clamp(var(--space-5), 10vh, var(--space-7));
+  padding: clamp(var(--space-5), 9vh, var(--space-7))
+           clamp(20px, 4vw, 72px)
+           calc(var(--journey-controls-h) + clamp(var(--space-4), 6vh, var(--space-6)))
+           clamp(20px, 4vw, 72px);
   overflow: clip; /* contain parallaxed motifs without clipping copy flow */
 }
 #\30 6-empowerment .emp-inner {
   display: flex;
   flex-direction: column;
   gap: clamp(var(--space-5), 8vh, var(--space-6));
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
 /* Decorative orbit rings — two soft, drifting rings behind everything. Never

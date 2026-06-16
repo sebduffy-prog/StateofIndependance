@@ -58,14 +58,21 @@ const FLIP_ROWS_BY_MOVE = {
  * Mount one flip table into its band's placeholder.
  * @param {HTMLElement} rootEl
  * @param {number} moveNumber
+ * @param {() => void} onFirstFlip - fired once when any row is first flipped
  * @returns {HTMLButtonElement[]} the flip-row buttons (for staged reveal)
  */
-const mountFlipTable = (rootEl, moveNumber) => {
+const mountFlipTable = (rootEl, moveNumber, onFirstFlip) => {
   const container = rootEl.querySelector(`[data-flip-${moveNumber}]`);
   if (!container) return [];
   const rows = FLIP_ROWS_BY_MOVE[moveNumber];
   if (!rows) return [];
-  flipReveal(container, { rows, fromToLabels: FROM_TO_LABELS });
+  flipReveal(container, {
+    rows,
+    fromToLabels: FROM_TO_LABELS,
+    onFlip: (_index, flipped) => {
+      if (flipped) onFirstFlip();
+    },
+  });
   return Array.from(container.querySelectorAll('.flip-row'));
 };
 
@@ -96,9 +103,20 @@ export default function init(rootEl, data) {
 
   const cleanups = [];
 
+  // GATING: this step requires the visitor to flip at least one shift-row.
+  // ready() fires the first time any row across the five tables is flipped.
+  const journey = data && data.journey;
+  if (journey && typeof journey.gate === 'function') journey.gate();
+  let unlocked = false;
+  const onFirstFlip = () => {
+    if (unlocked) return;
+    unlocked = true;
+    if (journey && typeof journey.ready === 'function') journey.ready();
+  };
+
   Object.keys(FLIP_ROWS_BY_MOVE).forEach((key) => {
     const moveNumber = Number(key);
-    const rows = mountFlipTable(rootEl, moveNumber);
+    const rows = mountFlipTable(rootEl, moveNumber, onFirstFlip);
     const band = rootEl.querySelector(`[aria-labelledby="mv-${moveNumber}-title"]`);
     if (band) cleanups.push(stageShiftRows(band, rows));
   });

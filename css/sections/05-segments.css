@@ -7,13 +7,28 @@
 
 #\30 5-segments { background: var(--soi-page); }
 
+/* JOURNEY: full-screen immersive. With no top nav bar, the step must fill the
+   viewport from the very top — kill the chapter base's large top/bottom padding
+   (it was reserved for the old top nav) so the warm hero ground starts at the
+   page edge with no dead band. The journey-step already reserves room for the
+   fixed bottom controls and provides internal scroll for this content-rich
+   chapter, so we only set a comfortable left/right gutter here. */
+#\30 5-segments.chapter {
+  display: block;
+  align-items: stretch;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-inline: clamp(20px, 4vw, 72px);
+}
+
 #\30 5-segments .chapter-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(48px, 7vh, 110px);
-  /* fill the laptop/monitor screen — the chapter earns its vertical space */
-  min-height: 100vh;
-  padding-block: clamp(8px, 2vh, 32px);
+  gap: clamp(40px, 6vh, 96px);
+  /* Fill the screen (minus the fixed controls bar) so the gradient grounds and
+     dense interactives occupy the page — no dead band top or bottom. */
+  min-height: calc(100svh - var(--journey-controls-h));
+  padding-block: clamp(24px, 4vh, 56px);
 }
 
 /* ─── Hero band: the warm gradient world + deck motif ─────── */

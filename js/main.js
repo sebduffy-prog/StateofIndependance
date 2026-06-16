@@ -1,16 +1,24 @@
 /**
- * main.js — site loader for The State of Independence.
+ * main.js — journey engine for The State of Independence.
+ *
+ * The site is a GUIDED JOURNEY: exactly one chapter (step) is visible at a
+ * time, full-viewport. There is no top nav and no progress rail. Movement is
+ * via the bottom Next/Back controls (or the keyboard).
  *
  * Responsibilities:
  *   1. Load the three datasets once (survey, segments, tgi).
- *   2. Read sections/manifest.json and, for each chapter, fetch its HTML
- *      fragment into <section class="chapter" id="{id}"> and dynamic-import
- *      js/sections/{id}.js, calling its default export init(rootEl, data).
- *   3. Build the chapter pill nav and the left progress rail.
- *   4. Highlight the active chapter on scroll (IntersectionObserver).
+ *   2. Read sections/manifest.json; for each chapter fetch its HTML fragment
+ *      into <section class="chapter journey-step" id="{id}"> and dynamic-import
+ *      js/sections/{id}.js, calling its default export init(rootEl, data) with
+ *      data = { survey, segments, tgi, journey }.
+ *   3. Show only the current step; provide Next + Back + a step indicator and
+ *      an average-time label (bottom controls, not a top bar).
+ *   4. GATING: each step receives a per-step `data.journey` with gate()/ready().
+ *      A step that calls gate() locks Next until it calls ready(). A step that
+ *      does NOT call gate() default-unlocks after a short dwell (~1200ms).
  *
- * A failed section renders a visible inline error card and never blanks
- * the rest of the page.
+ * A failed section renders a visible inline error card and never blanks the
+ * rest of the page.
  */
 
 const DATA_FILES = {
@@ -18,6 +26,10 @@ const DATA_FILES = {
   segments: 'data/segments.json',
   tgi: 'data/tgi.json',
 };
+
+// Tuning constants — no magic numbers inline.
+const DEFAULT_UNLOCK_MS = 1200; // ungated/narrative steps unlock after this dwell
+const AVG_SECONDS_PER_STEP = 50; // drives the average-time label
 
 const fetchJson = async (url) => {
   const res = await fetch(url);
@@ -56,11 +68,41 @@ const loadData = async () => {
   return Object.fromEntries(entries);
 };
 
+/**
+ * Per-step gating state.
+ * @typedef {Object} StepState
+ * @property {boolean} gated   step called gate() — Next starts locked
+ * @property {boolean} ready   gating interaction completed (ready() fired)
+ * @property {boolean} dwelled default-unlock dwell elapsed (ungated steps)
+ */
+const makeStepState = () => ({ gated: false, ready: false, dwelled: false });
+
+// Advanceable when: gated and ready, OR never gated and the dwell has elapsed.
+const isStepUnlocked = (state) => (state.gated ? state.ready : state.dwelled);
+
+const computeAverageLabel = (stepCount) => {
+  const totalSeconds = stepCount * AVG_SECONDS_PER_STEP;
+  const minutes = Math.max(1, Math.round(totalSeconds / 60));
+  return `about ${minutes} minute${minutes === 1 ? '' : 's'}`;
+};
+
+const focusHeading = (section) => {
+  const heading = section.querySelector('h1, h2, [role="heading"]') || section;
+  if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+  try {
+    heading.focus({ preventScroll: true });
+  } catch {
+    heading.focus();
+  }
+};
+
 const mountSection = async (entry, data, app) => {
   const section = document.createElement('section');
-  section.className = 'chapter';
+  section.className = 'chapter journey-step';
   section.id = entry.id;
   section.setAttribute('aria-label', entry.title);
+  section.setAttribute('role', 'group');
+  section.hidden = true;
   app.append(section);
 
   try {
@@ -83,73 +125,122 @@ const mountSection = async (entry, data, app) => {
   return section;
 };
 
-const buildNav = (manifest) => {
-  const nav = document.getElementById('chapterNav');
-  const rail = document.getElementById('progressRail');
-  if (nav) {
-    manifest.forEach((entry) => {
-      const a = document.createElement('a');
-      a.className = 'chapter-pill';
-      a.href = `#${entry.id}`;
-      a.dataset.target = entry.id;
-      a.textContent = entry.title;
-      nav.append(a);
-    });
-  }
-  if (rail) {
-    manifest.forEach((entry, i) => {
-      const a = document.createElement('a');
-      a.className = 'rail-chip';
-      a.href = `#${entry.id}`;
-      a.dataset.target = entry.id;
-      a.setAttribute('aria-label', `Chapter ${i + 1}: ${entry.title}`);
-      a.textContent = String(i + 1).padStart(2, '0');
-      rail.append(a);
-    });
-  }
-};
+/**
+ * The journey controller. Owns the per-step gating state, the current index,
+ * the dwell timer, and the bottom controls. Exposes makeJourneyApi(index) so a
+ * section's init() can gate()/ready() its own step, and showStep(index) to
+ * drive navigation.
+ */
+const createJourney = (stepCount) => {
+  const controls = document.getElementById('journeyControls');
+  const backBtn = document.getElementById('journeyBack');
+  const nextBtn = document.getElementById('journeyNext');
+  const indicator = document.getElementById('journeyIndicator');
+  const hint = document.getElementById('journeyHint');
 
-// How long observer-driven active updates are suppressed after a nav click,
-// so the clicked chapter stays active while the smooth-scroll settles rather
-// than snapping to whatever section the scroll passes through.
-const CLICK_LOCK_MS = 800;
+  const averageLabel = computeAverageLabel(stepCount);
+  const states = Array.from({ length: stepCount }, makeStepState);
+  let sections = [];
+  let current = 0;
+  let dwellTimer = null;
 
-const wireScrollSpy = (manifest) => {
-  const setActive = (id) => {
-    document.querySelectorAll('[data-target]').forEach((node) => {
-      node.classList.toggle('is-active', node.dataset.target === id);
-    });
+  const isLast = () => current === stepCount - 1;
+
+  const refreshControls = () => {
+    const state = states[current];
+    const unlocked = isStepUnlocked(state);
+    backBtn.disabled = current === 0;
+    nextBtn.disabled = isLast() || !unlocked;
+    nextBtn.textContent = isLast() ? 'Finished' : 'Next';
+    // "Interact to continue" hint shows only on a gated, still-locked,
+    // non-final step.
+    hint.hidden = !(state.gated && !state.ready && !isLast());
+    indicator.textContent = `Step ${current + 1} of ${stepCount} · ${averageLabel}`;
   };
 
-  // Click lock: while > 0, the observer must not overwrite the active state.
-  let lockUntil = 0;
+  const clearDwell = () => {
+    if (dwellTimer) {
+      clearTimeout(dwellTimer);
+      dwellTimer = null;
+    }
+  };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (Date.now() < lockUntil) return;
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) setActive(visible.target.id);
+  const makeJourneyApi = (index) => ({
+    // Declare this step REQUIRES an interaction — Next starts LOCKED.
+    gate() {
+      states[index].gated = true;
+      if (index === current) {
+        clearDwell();
+        refreshControls();
+      }
     },
-    { threshold: [0.25, 0.5, 0.75], rootMargin: '-20% 0px -20% 0px' }
-  );
-
-  manifest.forEach((entry) => {
-    const section = document.getElementById(entry.id);
-    if (section) observer.observe(section);
+    // The gating interaction is complete — UNLOCK Next.
+    ready() {
+      states[index].ready = true;
+      if (index === current) refreshControls();
+    },
   });
 
-  // When a nav pill or rail chip is clicked, set its target active at once and
-  // hold the observer off so its highlight does not race the smooth-scroll.
-  document.querySelectorAll('[data-target]').forEach((node) => {
-    node.addEventListener('click', () => {
-      const { target } = node.dataset;
-      if (!target) return;
-      lockUntil = Date.now() + CLICK_LOCK_MS;
-      setActive(target);
+  const showStep = (index) => {
+    if (index < 0 || index >= stepCount) return;
+    clearDwell();
+
+    sections.forEach((section, i) => {
+      section.hidden = i !== index;
     });
+    current = index;
+
+    const section = sections[index];
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    section.scrollTop = 0;
+    focusHeading(section);
+
+    // Ungated steps default-unlock after the dwell; gated steps wait for
+    // ready(). A step that already gated gets no dwell timer.
+    const state = states[index];
+    if (!state.gated && !state.dwelled) {
+      dwellTimer = window.setTimeout(() => {
+        states[index].dwelled = true;
+        if (current === index) refreshControls();
+      }, DEFAULT_UNLOCK_MS);
+    }
+
+    refreshControls();
+  };
+
+  const goNext = () => {
+    if (isLast() || !isStepUnlocked(states[current])) return;
+    showStep(current + 1);
+  };
+  const goBack = () => {
+    if (current === 0) return;
+    showStep(current - 1);
+  };
+
+  backBtn.addEventListener('click', goBack);
+  nextBtn.addEventListener('click', goNext);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.defaultPrevented) return;
+    const tag = (event.target?.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (event.key === 'ArrowLeft') {
+      goBack();
+    } else if (event.key === 'ArrowRight' || event.key === 'Enter') {
+      goNext();
+    }
   });
+
+  return {
+    makeJourneyApi,
+    setSections: (list) => {
+      sections = list;
+    },
+    start: () => {
+      controls.hidden = false;
+      showStep(0);
+    },
+  };
 };
 
 const init = async () => {
@@ -162,16 +253,21 @@ const init = async () => {
     return;
   }
 
-  buildNav(manifest);
   const data = await loadData();
+  const journey = createJourney(manifest.length);
 
-  // Mount sections in order so the DOM reads top-to-bottom correctly.
-  for (const entry of manifest) {
+  // Mount each section in manifest order, swapping data.journey to that step's
+  // own API immediately before its init() runs.
+  const sections = [];
+  for (let i = 0; i < manifest.length; i += 1) {
+    data.journey = journey.makeJourneyApi(i);
     // eslint-disable-next-line no-await-in-loop
-    await mountSection(entry, data, app);
+    const section = await mountSection(manifest[i], data, app);
+    sections.push(section);
   }
 
-  wireScrollSpy(manifest);
+  journey.setSections(sections);
+  journey.start();
 };
 
 init();

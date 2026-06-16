@@ -162,7 +162,7 @@ const makeChart = (host, metric, items) => {
 
 /* ── Panel A: metric explorer ─────────────────────────────────────────── */
 
-const initPanelA = (rootEl, survey, segments) => {
+const initPanelA = (rootEl, survey, segments, onFilterChange) => {
   const chartHost = rootEl.querySelector('[data-pg-metric-chart]');
   const metricHost = rootEl.querySelector('[data-pg-metric-pills]');
   const segmentHost = rootEl.querySelector('[data-pg-segment-pills]');
@@ -243,6 +243,7 @@ const initPanelA = (rootEl, survey, segments) => {
     onChange: (value) => {
       currentSegment = value;
       render();
+      onFilterChange?.();
     },
   });
 
@@ -254,6 +255,7 @@ const initPanelA = (rootEl, survey, segments) => {
       currentMetric = METRICS.find((m) => m.id === value) || METRICS[0];
       syncSegmentAvailability(segmentGroup);
       render();
+      onFilterChange?.();
     },
   });
 
@@ -437,11 +439,22 @@ const initReadouts = (rootEl) => {
 };
 
 export default function init(rootEl, data) {
-  const { survey, segments, tgi } = data || {};
+  const { survey, segments, tgi, journey } = data || {};
   if (!survey || !segments) return; // fail soft — Panel A needs both.
   observeReveals(rootEl);
 
-  initPanelA(rootEl, survey, segments);
+  // GATING: this is the explorer step — Next stays locked until the visitor
+  // actually changes a filter (a metric or segment pill in Panel A). The first
+  // such change fires ready() exactly once to unlock the journey.
+  journey?.gate?.();
+  let hasInteracted = false;
+  const onFilterChange = () => {
+    if (hasInteracted) return;
+    hasInteracted = true;
+    journey?.ready?.();
+  };
+
+  initPanelA(rootEl, survey, segments, onFilterChange);
   if (tgi) initPanelB(rootEl, tgi);
   initPanelC(rootEl);
   initReadouts(rootEl);

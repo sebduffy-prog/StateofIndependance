@@ -11,14 +11,19 @@
      the CTA marker is a thin left RULE, not a panel; copy reads on the ground.
    - No cutoff: overflow-safe sizing, clamp()ed display type with generous
      line-height, containers grow to content; the close fills ≥100vh.
-   - Experiential: each [data-enter] band eases up + in on the scroll-driven
-     --enter; orbit / world motif / figure / maze drift via [data-parallax];
-     the recap rows stagger in; the institutions>>>individuals arrows sweep.
+   - Experiential: [data-enter] bands rest at full strength and ride the
+     journey's per-step entrance; orbit / world motif / figure / maze drift via
+     [data-parallax]; the recap rows stagger in on step entry; the
+     institutions>>>individuals arrows sweep.
    - Bigger, bolder Poppins; zero overlap (decorative layers behind via
      z-index 0 + pointer-events:none; bear in its own grid column).
    Square corners, tabular nums, reduced-motion safe. Scoped to #\30 9-outro. */
 
-/* Both surfaces go full-bleed — break out of .chapter padding. */
+/* Both surfaces go full-bleed — break out of .chapter padding. The journey
+   step itself owns the full-viewport floor (.journey-step min-height:100vh)
+   and the bottom-controls reserve; this chapter just fills it edge to edge
+   with the navy close flowing straight into the warm back-cover (no dead
+   band between them, gradient ground reaches the page edges). */
 #\30 9-outro {
   padding: 0;
   background: var(--soi-navy);
@@ -27,21 +32,29 @@
   max-width: none;
   margin: 0;
   width: 100%;
+  /* Fill the step from the top: the navy close grows, the warm back-cover
+     sits flush beneath it and the ground reaches the very bottom edge. */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ─── Dark closing surface (navy) ────────────────────────── */
-/* Fills the full viewport so the close never leaves a dead band; the frame
-   inside distributes its rows to use the height (FILL THE SCREEN). */
+/* The substance of the close. It grows to fit its content and takes the lion's
+   share of the step (flex:1) so the navy ground never leaves a dead band above
+   the warm back-cover; the frame inside centres + distributes its rows to use
+   the height (FILL THE SCREEN). */
 #\30 9-outro .outro-dark {
   position: relative;
   isolation: isolate;            /* own stacking context — no stale layer bleed */
   width: 100%;
-  min-height: 100vh;
+  flex: 1 1 auto;                /* take the available step height, no dead band */
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: clamp(64px, 10vh, 140px) clamp(20px, 5vw, 96px);
+  padding: clamp(36px, 5vh, 88px) clamp(20px, 5vw, 96px);
 }
 
 /* Deck bear-world motif — the chapter's brand-world ground. Drifts low-opacity
@@ -86,14 +99,14 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(44px, 6.5vh, 96px);   /* generous, uniform rhythm — de-blocked */
+  gap: clamp(26px, 3.4vh, 56px);   /* tightened so the close packs nearer one screen */
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
 }
 
-/* ─── Experiential entrance: ease each band up + in on --enter (0→1 from
-   chapterTransition). Pure transform/opacity — never clips text. ─── */
+/* ─── Bands rest at full strength (--enter:1) and ride the journey's own
+   per-step entrance animation. Pure transform/opacity — never clips text. ─── */
 #\30 9-outro [data-enter] {
   --enter: 1;
   opacity: calc(0.35 + 0.65 * var(--enter));
@@ -106,7 +119,7 @@
 #\30 9-outro .outro-head {
   position: relative;
   display: grid;
-  gap: clamp(18px, 2.4vh, 30px);
+  gap: clamp(12px, 1.6vh, 22px);
   padding-right: clamp(0px, 12vw, 200px);   /* room for the figure mark */
 }
 #\30 9-outro .outro-eyebrow {
@@ -120,7 +133,7 @@
   color: var(--soi-cream);
   letter-spacing: -0.04em;
   line-height: 0.86;
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
   text-transform: none;           /* sentence-case lockup, deck-faithful */
 }
 #\30 9-outro .outro-standfirst {
@@ -157,7 +170,7 @@
   justify-self: end;
   align-self: center;
   width: 100%;
-  max-width: clamp(240px, 30vw, 460px);
+  max-width: clamp(200px, 24vw, 340px);
 }
 #\30 9-outro .outro-maze-img {
   display: block;
@@ -197,8 +210,8 @@
   text-transform: none;
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 1;
-  font-size: clamp(2.3rem, 4.3vw, 4rem);
+  line-height: 1.02;
+  font-size: clamp(2rem, 3.6vw, 3.3rem);
   max-width: 18ch;
   overflow-wrap: break-word;
 }
@@ -258,7 +271,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(238, 233, 221, 0.6);
-  margin: 0 0 18px 0;
+  margin: 0 0 10px 0;
 }
 #\30 9-outro .outro-recap-list {
   list-style: none;
@@ -269,7 +282,7 @@
 #\30 9-outro .outro-recap-item + .outro-recap-item {
   box-shadow: inset 0 1px 0 rgba(238, 233, 221, 0.1);
 }
-/* Each row staggers in (scrollScene adds .is-in). Pure transform/opacity. */
+/* Each row staggers in on step entry (.is-in added by the timer). Pure transform/opacity. */
 #\30 9-outro .outro-recap-item {
   opacity: 0;
   transform: translateX(-18px);
@@ -283,7 +296,7 @@
   display: flex;
   align-items: baseline;
   gap: clamp(18px, 2.6vw, 40px);
-  padding: clamp(16px, 2vw, 26px) clamp(6px, 1vw, 16px);
+  padding: clamp(10px, 1.3vw, 16px) clamp(6px, 1vw, 16px);
   text-decoration: none;
   color: var(--soi-cream);
   transition: padding-left 0.2s ease, color 0.2s ease;
@@ -301,7 +314,7 @@
   gap: 0;
 }
 #\30 9-outro .outro-recap-text {
-  font-size: clamp(1.55rem, 3.1vw, 3rem);
+  font-size: clamp(1.35rem, 2.5vw, 2.4rem);
   letter-spacing: -0.035em;
   line-height: 0.96;
   color: var(--soi-cream);
@@ -417,12 +430,13 @@
 #\30 9-outro .outro-backcover {
   position: relative;
   isolation: isolate;
-  padding: clamp(64px, 10vh, 130px) clamp(20px, 5vw, 96px) 0;
+  flex: 0 0 auto;             /* a fixed-presence band flush at the page bottom */
+  padding: clamp(40px, 6vh, 96px) clamp(20px, 5vw, 96px) 0;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
   gap: clamp(32px, 5vw, 80px);
-  min-height: clamp(380px, 56vh, 680px);
+  min-height: clamp(300px, 38vh, 480px);
   overflow: hidden;
 }
 /* Decorative orbit rings on the warm ground, behind content. */

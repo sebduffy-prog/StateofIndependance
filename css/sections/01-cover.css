@@ -1,20 +1,18 @@
-/* Chapter 01: cover — Design World V5 (deck-faithful, top-tier, experiential).
+/* Chapter 01: cover — the journey's opening step (single full-viewport hero).
 
-   TWO acts, both backgroundless (no box/panel/plate behind any copy — emphasis
-   is colour + weight + a hairline underline only):
+   ONE act, backgroundless (no box/panel/plate behind any copy — emphasis is
+   colour + weight only):
 
-   ACT 1 — HERO (warm amber→orange ground): a huge Poppins Black wordmark left,
-   the signature deck MAZE motion logo right, a live SVG ORBIT RING sweeping
-   around it (deck orbit motif), an ambient navy respondent dot-field behind
+   HERO (warm amber→orange ground): a huge Poppins Black wordmark left, the
+   signature deck MAZE motion logo right, a live SVG ORBIT RING sweeping around
+   it (deck orbit motif), an ambient navy respondent dot-field behind
    everything, and a tiny figure-silhouette brand glyph beside the eyebrow.
-   The maze + orbit drift on scroll (parallax); a thin scroll-progress meter
-   sits bottom-right. Fills the viewport (minus the fixed nav).
+   The maze + orbit drift on pointer (parallax). The whole step fills the
+   viewport from the top — there is no nav bar in the journey.
 
-   ACT 2 — STATEMENT (deep navy velvet ground): the brand's own image tells the
-   Challenger story — VCCP's logo of a girl standing up to a bear, as a big
-   full-bleed CREAM silhouette (cream-on-navy, never black-on-mustard) with the
-   copy beside it, then the five signature moves as a hover-reactive index.
-   This kills the dead band that used to sit under the hero.
+   (The five signature moves + the Challenger explanation that used to follow
+   the hero are gone: the moves are the journey's payoff in chapter 07-moves,
+   and only a short "Challenger Series" tag survives in the eyebrow.)
 
    LAYERING / SAFETY:
    - Decorative layers (dot-field, maze, orbit) sit BEHIND the copy (z-index ≤ 0)
@@ -22,7 +20,7 @@
      reaches the dot-field.
    - Each ground owns its own isolated stacking context; real content lifts to
      z-index 1. ZERO overlap between columns (CSS grid columns).
-   - All text high-contrast: navy on warm, cream on navy. No mustard-on-mustard.
+   - All text high-contrast: navy on warm. No mustard-on-mustard.
    - overflow guards + tight-but-safe line-heights so NOTHING clips.
 
    PREFIX: a CSS id selector may not begin with a digit; "#\30 1-cover"
@@ -37,15 +35,17 @@
   max-width: none;
   margin: 0;
   width: 100%;
+  flex: 1 1 auto;             /* fill the journey-step from the top */
   display: flex;
   flex-direction: column;
 }
 
-/* ═══ ACT 1 — HERO ════════════════════════════════════════════════════════ */
+/* ═══ HERO — the full-viewport opening stage ══════════════════════════════ */
 #\30 1-cover .cover-hero {
   position: relative;
   isolation: isolate;
-  min-height: calc(100vh - var(--nav-height));
+  flex: 1 1 auto;            /* the warm ground fills the whole step, no dead band */
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
   align-items: center;
@@ -259,135 +259,6 @@
   transform: translateY(1px);
 }
 
-/* ─── Scroll-progress meter (bottom-right of hero) ─────────────── */
-#\30 1-cover .cover-progress {
-  position: absolute;
-  right: clamp(var(--space-3), 5vw, var(--space-6));
-  bottom: clamp(var(--space-2), 3vw, var(--space-4));
-  z-index: 2;
-  width: clamp(80px, 14vw, 180px);
-  height: 2px;
-  background: rgba(10, 26, 92, 0.18);
-  pointer-events: none;
-}
-#\30 1-cover .cover-progress span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  background: var(--soi-navy);
-  transition: width 0.12s linear;
-}
-
-/* ═══ ACT 2 — STATEMENT (navy velvet ground) ══════════════════════════════ */
-#\30 1-cover .cover-statement {
-  position: relative;
-  isolation: isolate;
-  padding: clamp(var(--space-5), 10vh, var(--space-7))
-           clamp(var(--space-3), 5vw, var(--space-6));
-  display: grid;
-  gap: clamp(var(--space-4), 6vh, var(--space-6));
-  overflow: hidden;
-}
-
-/* the bear lockup + copy: asymmetric split, copy never overlaps the image */
-#\30 1-cover .cover-statement-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 1240px;
-  margin: 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
-  align-items: center;
-  gap: clamp(var(--space-3), 4vw, var(--space-5));
-}
-#\30 1-cover .cover-bear {
-  margin: 0;
-  min-width: 0;
-}
-#\30 1-cover .cover-bear-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  /* cream silhouette on navy → lift it gently off the velvet */
-  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.35));
-}
-#\30 1-cover .cover-statement-copy {
-  min-width: 0;
-}
-#\30 1-cover .cover-statement-kicker {
-  margin: 0;
-  color: var(--soi-teal);
-  font-weight: 700;
-  font-size: var(--t-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-#\30 1-cover .cover-statement-lede {
-  margin: 0;
-  color: var(--on-navy);
-  font-weight: 600;
-  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
-  line-height: 1.34;
-  letter-spacing: -0.01em;
-  max-width: 26ch;
-}
-
-/* ─── The five moves: a hover-reactive index of the playbook ahead ─ */
-#\30 1-cover .cover-moves-wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1240px;
-  margin: 0 auto;
-  width: 100%;
-}
-#\30 1-cover .cover-moves-eyebrow {
-  margin: 0 0 var(--space-3);
-  color: var(--soi-teal);
-  font-weight: 700;
-  font-size: var(--t-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-#\30 1-cover .cover-moves {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0;
-}
-#\30 1-cover .cover-move {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  gap: clamp(16px, 2vw, 32px);
-  padding: clamp(14px, 2vh, 22px) 0;
-  border-top: 1.5px solid rgba(238, 233, 221, 0.22);
-  color: var(--on-navy);
-  transition: padding-left 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
-}
-#\30 1-cover .cover-move:last-child {
-  border-bottom: 1.5px solid rgba(238, 233, 221, 0.22);
-}
-#\30 1-cover .cover-move:hover {
-  padding-left: clamp(8px, 1.4vw, 18px);
-  color: var(--soi-amber);
-}
-#\30 1-cover .cover-move-no {
-  font-weight: 900;
-  font-size: clamp(1rem, 1.4vw, 1.3rem);
-  color: var(--soi-teal);
-  font-variant-numeric: tabular-nums;
-  transition: color 0.2s ease;
-}
-#\30 1-cover .cover-move:hover .cover-move-no { color: var(--soi-amber); }
-#\30 1-cover .cover-move-label {
-  font-weight: 800;
-  font-size: clamp(1.3rem, 2.6vw, 2.4rem);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-}
-
 /* ═══ Responsive ══════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   #\30 1-cover .cover-hero {
@@ -403,14 +274,6 @@
     justify-self: center;
     max-width: min(74vw, 460px);
   }
-  #\30 1-cover .cover-progress { display: none; }
-
-  #\30 1-cover .cover-statement-inner {
-    grid-template-columns: 1fr;
-    gap: clamp(var(--space-3), 5vh, var(--space-5));
-  }
-  #\30 1-cover .cover-bear { order: -1; }
-  #\30 1-cover .cover-statement-lede { max-width: 100%; }
 }
 
 @media (max-width: 600px) {
@@ -426,7 +289,5 @@
   #\30 1-cover .cover-word-em { transition: none; }
   #\30 1-cover .cover-orbit-bead { animation: none; }
   #\30 1-cover .cover-cue,
-  #\30 1-cover .cover-cue-arrow,
-  #\30 1-cover .cover-move { transition: none; }
-  #\30 1-cover .cover-progress span { transition: none; }
+  #\30 1-cover .cover-cue-arrow { transition: none; }
 }

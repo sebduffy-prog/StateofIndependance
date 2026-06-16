@@ -60,8 +60,12 @@ const mapItems = (items) =>
   items.map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
 
 export default function init(rootEl, data) {
-  const { survey } = data || {};
+  const { survey, journey } = data || {};
   if (!survey) return;
+
+  // Journey gating: this step REQUIRES the visitor to lock in their guess (the
+  // clickToGuess reveal) before Next unlocks. ready() fires from onReveal below.
+  if (journey) journey.gate();
 
   const {
     moodOfNation,
@@ -151,10 +155,17 @@ export default function init(rootEl, data) {
       trueValue: CAREFUL_TRUE_VALUE,
       label: 'More careful with money than five years ago',
       prompt: 'Before we show you, what share do you think?',
-      onReveal: revealCareful,
+      onReveal: () => {
+        revealCareful();
+        // The visitor has locked in their guess — unlock the journey's Next.
+        if (journey) journey.ready();
+      },
     });
   } else {
+    // No interaction host (defensive) — reveal immediately and unlock so the
+    // visitor is never trapped on a gated step that cannot complete.
     revealCareful();
+    if (journey) journey.ready();
   }
 
   // Panels 2 to 4 - hero numbers count up declaratively on scroll-in.

@@ -39,6 +39,18 @@
   --pg-rule: rgba(10, 26, 92, 0.14);
 }
 
+/* JOURNEY: this step is a full-viewport immersive stage. The shared .chapter
+   base centres its child vertically, which would leave a dead band above a
+   tall explorer; here the world fills from the TOP so the gradient ground
+   covers the whole screen with no gap under the (removed) top bar. */
+#\30 8-playground.journey-step {
+  display: block;          /* override .chapter flex-centre — top-aligned */
+  padding-top: 0;
+}
+#\30 8-playground.journey-step .pg-world {
+  min-height: 100%;        /* fill the step so the ground reaches the controls */
+}
+
 /* The research surface fills the chapter. Three stacked surfaces (title
    lockup, explorer panels, segment portrait) give the chapter depth and a
    longer scroll — top-aligned so the content fills rather than floats. */

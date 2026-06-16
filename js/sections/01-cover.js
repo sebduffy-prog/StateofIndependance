@@ -1,17 +1,14 @@
 /**
- * Chapter 01: cover — Design World V5 (deck-faithful, top-tier, experiential).
+ * Chapter 01: cover — the journey's opening step (narrative, NOT gated).
  *
- * ACT 1 — HERO: a warm yellow→orange gradient ground (CSS) carrying the
- * signature deck MAZE motion logo with a live SVG orbit ring, a huge Poppins
- * Black wordmark whose "independence" underline accent wipes in on load, and —
- * behind it all — an ambient field of respondent dots tinted navy for contrast
- * on the amber. The maze, orbit and bear drift on scroll (parallax), and a thin
- * scroll-progress meter tracks the reader through the hero.
+ * HERO: a warm yellow→orange gradient ground (CSS) carrying the signature deck
+ * MAZE motion logo with a live SVG orbit ring, a huge Poppins Black wordmark,
+ * and — behind it all — an ambient field of respondent dots tinted navy for
+ * contrast on the amber. The maze + orbit drift on pointer (parallax).
  *
- * ACT 2 — STATEMENT: a deep navy velvet ground carrying VCCP's brand image (a
- * girl standing up to a bear, cream-on-navy) beside the Challenger copy, then
- * the five signature moves as a hover-reactive index. Its entrance is driven by
- * scroll progress (chapterTransition → CSS --enter).
+ * JOURNEY: this is a narrative step, so it does NOT call data.journey.gate();
+ * Next default-unlocks after the engine's short dwell. The on-page "Begin"
+ * button is a convenience that simply triggers the journey's own Next control.
  *
  * The dotField carries its own physics (mutual repulsion, momentum, cursor
  * force). One dot is the highlighted "you" (the 1,505th respondent), parked
@@ -21,15 +18,14 @@
  * pointer-events:none, so nothing occludes the wordmark and the cursor reaches
  * the dot-field. (See css/sections/01-cover.css.)
  *
- * Reduced motion: the underline lands instantly, the maze swaps to its static
- * first-frame PNG, the orbit bead stops, the field jump-cuts to its layout, no
- * parallax/pointer force runs, and the progress meter freezes at rest (the libs
- * enforce reduced-motion too).
+ * Reduced motion: the maze swaps to its static first-frame PNG, the orbit bead
+ * stops, the field jump-cuts to its layout, and no parallax/pointer force runs
+ * (the libs enforce reduced-motion too).
  *
- * @param {HTMLElement} rootEl - the <section class="chapter" id="01-cover"> element
+ * @param {HTMLElement} rootEl - the <section class="journey-step" id="01-cover"> element
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
-import { observeParallax, chapterTransition, scrollScene } from '../lib/experiential.js';
+import { observeParallax } from '../lib/experiential.js';
 import { dotField } from '../lib/charts.js';
 
 const DOT_COUNT = 240; // dense enough to read as a lively field on the warm ground
@@ -61,10 +57,7 @@ export default function init(rootEl) {
 
   const hero = rootEl.querySelector('[data-cover-hero]');
   const dotsHost = rootEl.querySelector('[data-cover-dots]');
-  const hl = rootEl.querySelector('[data-cover-hl]');
   const maze = rootEl.querySelector('[data-cover-maze]');
-  const statement = rootEl.querySelector('[data-cover-statement]');
-  const progressBar = rootEl.querySelector('[data-cover-progress]');
   const reduced = prefersReducedMotion();
 
   // Navy on the warm ground keeps the dots legible (contrast safety).
@@ -77,43 +70,20 @@ export default function init(rootEl) {
     if (still) maze.setAttribute('src', still);
   }
 
-  // Scroll cue: a real <button> (keyboard-activatable) that smooth-scrolls to
-  // the research chapter, honouring reduced motion.
+  // "Begin" is a convenience that triggers the journey's own Next control.
+  // This step is narrative (ungated), so Next default-unlocks after the dwell;
+  // before then the click is a no-op (the disabled control simply ignores it).
   const cue = rootEl.querySelector('[data-cover-cue]');
   if (cue) {
     cue.addEventListener('click', () => {
-      const research = document.getElementById('02-research');
-      if (research) {
-        research.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-      }
+      const next = document.getElementById('journeyNext');
+      if (next) next.click();
     });
   }
 
-  // Trigger the underline wipe once the layout has painted.
-  if (hl) {
-    if (reduced) {
-      hl.classList.add('is-wiped');
-    } else {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => hl.classList.add('is-wiped'));
-      });
-    }
-  }
-
-  // Experiential motion: subtle parallax across the whole chapter (maze, orbit,
-  // bear) and a scroll-progress entrance for the statement band. Both are
-  // reduced-motion safe inside the lib (jump to rest, install no scroll work).
+  // Experiential motion: subtle pointer parallax across the maze + orbit.
+  // Reduced-motion safe inside the lib (jumps to rest, installs no work).
   observeParallax(rootEl, { maxShiftPx: 48 });
-  if (statement) chapterTransition(statement);
-
-  // Thin scroll-progress meter through the hero (continuous, rAF-batched).
-  if (hero && progressBar) {
-    scrollScene(hero, [], {
-      onProgress: (p) => {
-        progressBar.style.width = `${Math.round(p * 100)}%`;
-      },
-    });
-  }
 
   if (!dotsHost) return;
 
@@ -127,6 +97,24 @@ export default function init(rootEl) {
   field.formation(buildTargets(DOT_COUNT, dotColour));
   field.highlight(YOU_INDEX, youColour);
   field.drift(DRIFT_AMP);
+
+  // The journey mounts every step hidden, so this init() runs while the host
+  // has zero size and the dotField canvas measures 1×1. Once the step is shown
+  // and the host gains real dimensions, nudge the field to re-measure (it
+  // re-sizes its canvas on a window 'resize'); otherwise the 1×1 canvas would
+  // stretch a single navy pixel full-bleed over the warm ground.
+  if (typeof ResizeObserver !== 'undefined') {
+    let measured = false;
+    const ro = new ResizeObserver((entries) => {
+      const rect = entries[0]?.contentRect;
+      if (!rect || rect.width === 0 || rect.height === 0) return;
+      if (measured) return;
+      measured = true;
+      ro.disconnect();
+      window.dispatchEvent(new Event('resize'));
+    });
+    ro.observe(dotsHost);
+  }
 
   if (reduced) return; // no pointer force under reduced motion
   if (!hero) return;

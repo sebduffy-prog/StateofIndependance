@@ -23,6 +23,27 @@
    horizontal scroll (the bands bleed past the padded chapter column). */
 #\30 7-moves { overflow-x: clip; }
 
+/* ─── JOURNEY: full-screen immersive, no dead band ───────────────────
+   In the guided journey there is no top bar; this step is a full-viewport
+   stage. The shell's bands carry the gradient grounds, so pull the first
+   band up to the very top edge and the last band down to the bottom edge —
+   cancelling the chapter's flex padding so the ground fills the page rather
+   than leaving the page background showing as a dead band above/below. */
+#\30 7-moves.chapter { align-items: stretch; }
+#\30 7-moves .mv-shell {
+  width: 100%;
+  margin-top: calc(-1 * clamp(5rem, 8vh, 9rem));
+  margin-bottom: calc(-1 * clamp(5rem, 8vh, 9rem));
+}
+/* Marry the first/last band's vertical padding back so the ground still
+   breathes once it reaches the page edge. */
+#\30 7-moves .mv-shell > .mv-hero:first-child {
+  padding-top: clamp(64px, 9vw, 132px);
+}
+#\30 7-moves .mv-shell > .mv-recap:last-child {
+  padding-bottom: clamp(64px, 9vw, 132px);
+}
+
 /* ─── Full-bleed flow: grounds run edge-to-edge, no bordered boxes ─── */
 #\30 7-moves .mv-hero,
 #\30 7-moves .mv-move,
@@ -451,7 +472,7 @@
    commit to the amber "more" answer via COLOUR + WEIGHT only on flip. */
 #\30 7-moves .mv-shift {
   position: sticky;
-  top: calc(var(--nav-height) + 32px);
+  top: 32px;
 }
 #\30 7-moves .mv-shift-title {
   font-weight: 900;
