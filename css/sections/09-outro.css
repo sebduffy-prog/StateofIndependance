@@ -48,13 +48,54 @@
   position: relative;
   isolation: isolate;            /* own stacking context — no stale layer bleed */
   width: 100%;
-  flex: 1 1 auto;                /* take the available step height, no dead band */
-  min-height: 0;
+  /* GROW, never shrink: the navy close always fills ≥ a full screen and grows
+     to its content. Previously flex:1 1 auto + min-height:0 let the box SHRINK
+     at narrow widths so the cream back-cover dominated the viewport and the
+     cream-on-navy copy rendered cream-on-cream (the ≤1024px paint bug). Now the
+     navy band owns at least the controls-reserved viewport at every width. */
+  flex: 1 0 auto;
+  min-height: calc(100svh - var(--journey-controls-h, 72px));
+  /* Belt-and-braces: paint the navy fill on this element directly so the close
+     can never read as cream-on-cream even if a shared ground rule is overridden. */
+  background: var(--soi-navy);
+  color: var(--on-navy, var(--soi-cream));
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
   padding: clamp(36px, 5vh, 88px) clamp(20px, 5vw, 96px);
+}
+
+/* Commit-pulse finish flourish — a single soft amber bloom from the centre as
+   the close completes (.is-finished added by the JS beat 4 / reduced motion).
+   Backgroundless: a radial glow on screen-blend behind ALL copy (z-index 0,
+   pointer-events none), so it lifts the navy ground without a box and can never
+   occlude text. Rests invisible until the finish; one gentle pulse, then holds
+   a faint warmth. */
+#\30 9-outro .outro-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 50% at 50% 46%,
+    rgba(251, 193, 0, 0.16) 0%,
+    rgba(251, 193, 0, 0.06) 38%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+#\30 9-outro .outro-dark.is-finished::after {
+  opacity: 1;
+  animation: outro-finish-pulse 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes outro-finish-pulse {
+  0%   { opacity: 0;    transform: scale(0.94); }
+  45%  { opacity: 1;    transform: scale(1.04); }
+  100% { opacity: 0.55; transform: scale(1); }
 }
 
 /* Deck bear-world motif — the chapter's brand-world ground. Drifts low-opacity
@@ -340,11 +381,31 @@
 
 /* ─── Five-move recap index (interactive, display treatment) ──────────── */
 #\30 9-outro .outro-recap-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px clamp(12px, 1.6vw, 22px);
   font-size: var(--t-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(238, 233, 221, 0.6);
   margin: 0 0 10px 0;
+}
+/* The "N / 5 equipped" tally — ticks up as the rows land; lights amber on the
+   fifth (.is-complete). Pure colour, no box. */
+#\30 9-outro .outro-recap-progress {
+  letter-spacing: 0.14em;
+  color: rgba(238, 233, 221, 0.5);
+  transition: color .4s ease;
+}
+#\30 9-outro .outro-recap-progress-num {
+  font-variant-numeric: tabular-nums;
+  color: rgba(238, 233, 221, 0.78);
+  transition: color .4s ease;
+}
+#\30 9-outro .outro-recap-progress.is-complete,
+#\30 9-outro .outro-recap-progress.is-complete .outro-recap-progress-num {
+  color: var(--soi-amber);
 }
 #\30 9-outro .outro-recap-list {
   list-style: none;
@@ -647,4 +708,13 @@
     transform: none;
     transition: none;
   }
+  /* The finish flourish rests as a held warmth — no pulse animation. */
+  #\30 9-outro .outro-dark::after { transition: none; }
+  #\30 9-outro .outro-dark.is-finished::after {
+    opacity: 0.55;
+    animation: none;
+    transform: none;
+  }
+  #\30 9-outro .outro-recap-progress,
+  #\30 9-outro .outro-recap-progress-num { transition: none; }
 }

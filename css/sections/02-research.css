@@ -1,135 +1,140 @@
-/* ═══════════════════════════════════════════════════════════════════════
-   Chapter 02 — research · "How we listened to Britain"
-   Warm State-of-Independence ground, navy ink, backgroundless components.
-   Left: the method assembling on arrival. Right: the connecting ritual —
-   respondent dots converge onto the real navy UK silhouette, eight cities
-   light, open one for its verbatim video-diary line.
+/* ============================================================
+   02-research — scoped to #\30 2-research (the journey-step section).
+   "How we listened to Britain": the method as oversized counters on
+   the left; the navy UK silhouette as a living constellation of eight
+   cities on the right; respondent dots converge onto the country and
+   each city opens its verbatim diary line.
 
-   SCOPE: a CSS id selector may not begin with a digit, so id="02-research"
-   is escaped "#\30 2-research" (\30 = "0", trailing space ends the escape).
-   Every selector below is scoped to it; nothing leaks.
-   ═══════════════════════════════════════════════════════════════════════ */
+   Warm gradient ground, cream/navy world, thin orbit motif, Poppins.
+   Backgroundless, square corners, NO underline, navy-on-warm, AA.
+   Teal accent is permitted in this chapter (the city markers + listen
+   trail). All decorative layers sit behind real content (z-index 0).
+   ============================================================ */
 
+/* The section IS the warm gradient ground, full-bleed (no top nav). */
 #\30 2-research {
-  padding: 0;
-  align-items: stretch;
   background: var(--ground-warm);
-  color: var(--on-warm);
-}
-#\30 2-research .chapter-inner {
-  max-width: none;
-  margin: 0;
-  width: 100%;
-  position: relative;
+  color: var(--soi-navy);
+  padding: 0;
   isolation: isolate;
-  flex: 1 1 auto;
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  align-items: center;
-  column-gap: clamp(var(--space-3), 4vw, var(--space-6));
-  padding: clamp(var(--space-4), 7vh, var(--space-6))
-           clamp(var(--space-3), 5vw, var(--space-6))
-           calc(var(--journey-controls-h) + clamp(var(--space-3), 5vh, var(--space-5)))
-           clamp(var(--space-3), 5vw, var(--space-6));
   overflow: hidden;
 }
 
-/* ── Decorative orbit — faint, behind everything ──────────────────────── */
+#\30 2-research .chapter-inner {
+  max-width: none;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* Decorative orbit — anchored over the map side, far behind content. */
 #\30 2-research .research-orbit {
-  position: absolute;
-  inset: -10% -10% -10% 30%;     /* drift the rings toward the map side */
-  z-index: 0;
-  opacity: 0.7;
+  background:
+    radial-gradient(circle at 78% 46%,
+      transparent 0,               transparent calc(15% - 1px),
+      var(--soi-orbit) 15%,        transparent calc(15% + 1px),
+      transparent calc(26% - 1px),
+      var(--soi-orbit-strong) 26%, transparent calc(26% + 1px),
+      transparent calc(38% - 1px),
+      var(--soi-orbit) 38%,        transparent calc(38% + 1px),
+      transparent calc(50% - 1px),
+      var(--soi-orbit) 50%,        transparent calc(50% + 1px),
+      transparent 100%);
+  transform-origin: 78% 46%;
 }
+@media (prefers-reduced-motion: no-preference) {
+  #\30 2-research .research-orbit--spin {
+    animation: research-orbit-spin 140s linear infinite;
+  }
+}
+@keyframes research-orbit-spin { to { transform: rotate(360deg); } }
 
+/* ── Layout: method | stage, filling the screen ───────────────────── */
 #\30 2-research .research-grid {
-  display: contents;             /* the two columns sit on the .chapter-inner grid */
-}
-
-/* ─────────────────────────── LEFT · the method ───────────────────────── */
-#\30 2-research .research-method {
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(var(--space-2), 2.2vh, var(--space-3));
-  max-width: 34rem;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 88px);
+  padding: clamp(3rem, 7vh, 6.5rem) clamp(24px, 6vw, 96px)
+           calc(var(--journey-controls-h, 72px) + clamp(2.4rem, 6vh, 5rem));
 }
 
-#\30 2-research .research-kicker {
-  margin: 0;
-  color: var(--soi-navy);
-}
-
+/* ── LEFT: the method ──────────────────────────────────────────────── */
 #\30 2-research .research-headline {
-  margin: 0;
-  font-weight: 900;
-  line-height: 0.94;
+  margin: 0 0 clamp(18px, 2.4vh, 28px);
+  font-weight: 800;
+  line-height: 1.04;
   letter-spacing: -0.03em;
-  font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+  font-size: clamp(2.6rem, 4.6vw, 4.6rem);
   color: var(--soi-navy);
+  text-wrap: balance;
 }
-#\30 2-research .research-headline span { display: inline; }
-#\30 2-research .research-headline .hl-teal { color: var(--soi-teal); }
+#\30 2-research .research-headline span { display: block; }
+#\30 2-research .research-headline .hl-teal {
+  color: var(--soi-teal);
+  font-weight: 900;
+}
 
 #\30 2-research .research-standfirst {
-  margin: 0;
-  max-width: 30rem;
-  font-size: clamp(1rem, 1.25vw, 1.18rem);
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-#\30 2-research .research-standfirst strong {
+  margin: 0 0 clamp(28px, 4vh, 44px);
+  font-size: var(--t-md);
+  line-height: 1.55;
   color: var(--soi-navy);
-  font-weight: 700;
 }
+#\30 2-research .research-standfirst strong { font-weight: 700; }
 
-/* ── The four counters — backgroundless, the sample is the hero ──────── */
+/* The four facts — flowing rhythm, no boxes, no rules. */
 #\30 2-research .research-counts {
+  margin: 0 0 clamp(24px, 3.5vh, 40px);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(var(--space-2), 2vh, var(--space-3)) var(--space-4);
-  margin-top: clamp(var(--space-1), 1vh, var(--space-2));
+  gap: clamp(20px, 2.6vw, 36px) clamp(28px, 3vw, 52px);
 }
-#\30 2-research .research-count {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-#\30 2-research .research-count--hero {
-  grid-column: 1 / -1;
-}
+#\30 2-research .research-count { margin: 0; min-width: 0; }
+#\30 2-research .research-count--hero { grid-column: 1 / -1; }
+
 #\30 2-research .research-count-value {
+  display: block;
+  margin: 0;
   font-weight: 900;
-  letter-spacing: -0.03em;
   line-height: 0.92;
+  letter-spacing: -0.03em;
   color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(2rem, 3vw, 2.7rem);
+  font-size: clamp(2.6rem, 4.4vw, 4rem);
 }
 #\30 2-research .research-count--hero .research-count-value {
-  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-size: clamp(4.6rem, 9vw, 8.4rem);
 }
 #\30 2-research .research-count-value--text {
-  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-size: clamp(2.1rem, 3.4vw, 3.1rem);
 }
 #\30 2-research .research-count-unit {
-  font-size: 0.5em;
-  font-weight: 800;
+  font-size: 0.42em;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 #\30 2-research .research-count-label {
-  font-size: clamp(0.78rem, 0.92vw, 0.92rem);
+  display: block;
+  margin: 8px 0 0;
+  max-width: 30ch;
+  font-size: var(--t-xs);
+  line-height: 1.45;
   font-weight: 500;
-  line-height: 1.32;
   color: var(--ink-soft);
-  max-width: 26ch;
+}
+#\30 2-research .research-count--hero .research-count-label {
+  max-width: 44ch;
+  font-size: var(--t-sm);
 }
 
 #\30 2-research .research-credit {
-  margin: clamp(var(--space-1), 1.4vh, var(--space-2)) 0 0;
-  font-size: 0.86rem;
+  margin: 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
   font-weight: 500;
   color: var(--ink-soft);
 }
@@ -138,66 +143,55 @@
   font-weight: 700;
 }
 
-/* ─────────────────────────── RIGHT · the stage ───────────────────────── */
+/* ── RIGHT: the connecting stage ───────────────────────────────────── */
 #\30 2-research .research-stage {
-  position: relative;
-  z-index: 2;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--space-1), 1.4vh, var(--space-2));
-  min-height: 0;
-  height: 100%;
   justify-content: center;
+  gap: clamp(14px, 2vh, 22px);
 }
 
 #\30 2-research .research-stage-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: 16px;
   flex-wrap: wrap;
 }
 #\30 2-research .research-stage-eyebrow {
   margin: 0;
-  font-size: clamp(0.82rem, 1vw, 0.98rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  font-size: var(--t-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
   color: var(--soi-navy);
 }
-#\30 2-research .research-stage-counter {
+#\30 2-research .research-stage-status {
   margin: 0;
-  font-size: 0.84rem;
-  font-weight: 700;
+  font-size: var(--t-xs);
   letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--soi-teal);
-  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--soi-navy);
+  opacity: 0.78;
 }
 
-/* ── Map theatre: the field + silhouette share one centred stage ──────── */
+/* Map wrapper: the field canvas + the SVG silhouette share one box. */
 #\30 2-research .research-map-wrap {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  /* Tall enough to dominate the right column; capped to the viewport. */
+  height: clamp(320px, 52vh, 560px);
 }
 #\30 2-research .research-field {
   position: absolute;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
-}
-#\30 2-research .research-field canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
 }
 #\30 2-research .research-map {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  height: clamp(300px, 52vh, 560px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,170 +201,188 @@
   outline: 2px solid var(--soi-navy);
   outline-offset: 6px;
 }
+
+/* The navy silhouette: backgroundless, contained, slightly translucent so
+   the converging dots read through its eastern edge as "the nation". */
 #\30 2-research .research-map-svg {
-  height: 100%;
   width: auto;
+  height: 100%;
   max-width: 100%;
-  overflow: visible;
   display: block;
+  fill: var(--soi-navy);
+  opacity: 0.92;
+  filter: drop-shadow(0 18px 30px rgba(10, 26, 92, 0.22));
 }
 
-/* ── City markers — cream dots read on the navy silhouette ─────────────
-   Backgroundless: no plate, just the dot, halo and label. */
-#\30 2-research .research-marker {
-  cursor: pointer;
-  opacity: 0;
-  animation: research-marker-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  animation-delay: var(--marker-delay, 0ms);
+/* The silhouette fill is decorative — it must never intercept marker clicks.
+   Scope to groups that are NOT the marker/trail layers we inject. */
+#\30 2-research .research-map-svg > g:not(.research-markers) { pointer-events: none; }
+
+/* ── City markers (teal — the one bright accent here) ──────────────── */
+#\30 2-research .research-markers { pointer-events: auto; }
+#\30 2-research .research-marker { cursor: pointer; pointer-events: auto; }
+/* Wide invisible hit target so taps near the dot still register. */
+#\30 2-research .research-marker-pulse,
+#\30 2-research .research-marker-dot { pointer-events: auto; }
+#\30 2-research .research-marker-dot {
+  fill: var(--soi-teal);
+  stroke: var(--soi-cream);
+  stroke-width: 3;
+  transition: r 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-#\30 2-research .research-marker-halo {
+#\30 2-research .research-marker-pulse {
   fill: none;
   stroke: var(--soi-teal);
-  stroke-width: 2;
+  stroke-width: 2.5;
   opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.2s ease;
-}
-#\30 2-research .research-marker-dot {
-  fill: var(--soi-cream);
-  stroke: var(--soi-navy);
-  stroke-width: 3;
-  transition: fill 0.18s ease, r 0.18s ease;
 }
 #\30 2-research .research-marker-label {
   font-family: var(--font-sans);
   font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  fill: var(--soi-navy);
-  paint-order: stroke;
-  stroke: var(--soi-cream-warm);       /* readable halo over the navy edge */
-  stroke-width: 5px;
-  stroke-linejoin: round;
-}
-/* hover/focus PAIR + active state (Moooi lamp): the dot warms to teal */
-#\30 2-research .research-marker:hover .research-marker-dot,
-#\30 2-research .research-marker.is-active .research-marker-dot {
-  fill: var(--soi-teal);
-}
-#\30 2-research .research-marker:hover .research-marker-halo,
-#\30 2-research .research-marker.is-active .research-marker-halo {
-  opacity: 0.9;
-}
-#\30 2-research .research-marker.is-active .research-marker-halo {
-  animation: research-halo-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes research-marker-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes research-halo-pulse {
-  0%, 100% { opacity: 0.9; transform: scale(1); }
-  50%      { opacity: 0.4; transform: scale(1.18); }
-}
-
-/* ── Hint + the surfacing diary quote ─────────────────────────────────── */
-#\30 2-research .research-stage-hint {
-  margin: 0;
-  font-size: clamp(0.78rem, 0.92vw, 0.9rem);
-  font-weight: 600;
-  color: var(--ink-soft);
-  transition: opacity 0.3s ease;
-}
-#\30 2-research .research-stage-hint.is-done { opacity: 0; }
-
-#\30 2-research .research-diary {
-  min-height: clamp(5rem, 11vh, 7.5rem);
-  display: flex;
-  align-items: flex-start;
-}
-#\30 2-research .research-quote {
-  margin: 0;
-  opacity: 0;
-  transform: translateY(8px);
-}
-#\30 2-research .research-diary.is-live .research-quote {
-  animation: research-quote-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-}
-#\30 2-research .research-quote p {
-  margin: 0;
-  font-size: clamp(1rem, 1.4vw, 1.32rem);
-  line-height: 1.42;
-  font-weight: 600;
-  color: var(--soi-navy);
-}
-#\30 2-research .research-quote-cite {
-  margin-top: var(--space-1);
-  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--soi-teal);
+  letter-spacing: -0.01em;
+  fill: var(--soi-cream);
+  paint-order: stroke;
+  stroke: var(--soi-navy);
+  stroke-width: 5;
+  stroke-linejoin: round;
+  pointer-events: none;
 }
-#\30 2-research .research-quote-note {
+
+/* Entrance: markers pop in sequence as the country "connects". */
+@media (prefers-reduced-motion: no-preference) {
+  #\30 2-research .research-marker {
+    opacity: 0;
+    transform: scale(0.4);
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: research-marker-in 0.5s cubic-bezier(0.22, 1.4, 0.4, 1) forwards;
+    animation-delay: var(--marker-delay, 0ms);
+  }
+  @keyframes research-marker-in {
+    to { opacity: 1; transform: scale(1); }
+  }
+}
+
+#\30 2-research .research-marker:hover .research-marker-dot,
+#\30 2-research .research-marker.is-active .research-marker-dot { r: 18; }
+#\30 2-research .research-marker.is-active .research-marker-dot {
+  fill: var(--soi-cream);
+  stroke: var(--soi-teal);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #\30 2-research .research-marker.is-active .research-marker-pulse {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: research-pulse 1.8s ease-out infinite;
+  }
+  @keyframes research-pulse {
+    0%   { opacity: 0.5; transform: scale(1); }
+    70%  { opacity: 0;   transform: scale(2.2); }
+    100% { opacity: 0; }
+  }
+}
+
+/* The listening trail — faint cream thread between visited cities. */
+#\30 2-research .research-trail {
+  fill: none;
+  stroke: var(--soi-cream);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+  stroke-dasharray: 2 18;
+}
+
+/* ── The "try it" hint + opened diary ──────────────────────────────── */
+#\30 2-research .research-hint {
   margin: 0;
-  opacity: 0;
-  transform: translateY(8px);
-  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  line-height: 1.45;
+  font-size: var(--t-xs);
   font-weight: 500;
   color: var(--ink-soft);
+  transition: opacity 0.4s ease;
 }
-#\30 2-research .research-diary.is-live .research-quote-note {
-  animation: research-quote-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+#\30 2-research .research-hint.is-done { opacity: 0; pointer-events: none; }
+
+/* Diary surfaces below the map — backgroundless, rises like a memory. */
+#\30 2-research .research-diary {
+  min-height: clamp(96px, 14vh, 140px);
+}
+#\30 2-research .research-quote { margin: 0; }
+#\30 2-research .research-quote-text {
+  margin: 0;
+  position: relative;
+  padding-left: 1.4em;
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--soi-navy);
+}
+#\30 2-research .research-quote-text::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.04em;
+  top: -0.18em;
+  font-size: 2.4em;
+  line-height: 1;
+  font-weight: 900;
+  color: var(--soi-teal);
+}
+#\30 2-research .research-quote-cite {
+  margin: 12px 0 0;
+  padding-left: 1.4em;
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+#\30 2-research .research-quote-who { color: var(--soi-navy); font-weight: 700; }
+#\30 2-research .research-quote-note {
+  margin: 0;
+  font-size: var(--t-md);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--soi-navy);
 }
 #\30 2-research .research-quote-city {
   display: block;
   font-weight: 800;
-  color: var(--soi-navy);
   letter-spacing: -0.01em;
+  color: var(--soi-navy);
+  margin-bottom: 4px;
 }
 
-@keyframes research-quote-in {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Arrival assemble (lines lift in; experiential.arrival drives this) ── */
-#\30 2-research [data-arrival] {
+/* Surfacing transition. */
+#\30 2-research .research-diary .research-quote,
+#\30 2-research .research-diary .research-quote-note {
   opacity: 0;
   transform: translateY(14px);
 }
-#\30 2-research [data-arrival].is-arrived {
+#\30 2-research .research-diary.is-live .research-quote,
+#\30 2-research .research-diary.is-live .research-quote-note {
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transition-delay: var(--arrival-delay, 0ms);
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-/* ─────────────────────────── responsive ──────────────────────────────── */
-@media (max-width: 960px) {
-  #\30 2-research .chapter-inner {
-    grid-template-columns: 1fr;
-    row-gap: clamp(var(--space-3), 4vh, var(--space-5));
-    align-items: start;
-  }
-  #\30 2-research .research-orbit { inset: -20% -20% 40% -20%; }
-  #\30 2-research .research-map { height: clamp(280px, 46vh, 460px); }
-  #\30 2-research .research-counts { max-width: 34rem; }
-}
-
-@media (max-width: 540px) {
-  #\30 2-research .research-counts { grid-template-columns: 1fr; }
-  #\30 2-research .research-marker-label { font-size: 36px; }
-}
-
-/* ── Reduced motion: jump-cut to settled states, no decorative motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 2-research .research-marker,
-  #\30 2-research .research-quote,
-  #\30 2-research .research-quote-note {
-    animation: none !important;
-    opacity: 1;
-    transform: none;
+  #\30 2-research .research-diary .research-quote,
+  #\30 2-research .research-diary .research-quote-note { opacity: 1; transform: none; }
+}
+
+/* ── Responsive: stack the method over the stage on narrow screens ─── */
+@media (max-width: 900px) {
+  #\30 2-research .research-grid {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: clamp(28px, 5vh, 48px);
+    padding: clamp(2.5rem, 6vh, 4rem) clamp(20px, 7vw, 40px)
+             calc(var(--journey-controls-h, 72px) + clamp(2rem, 5vh, 3.5rem));
   }
-  #\30 2-research .research-marker.is-active .research-marker-halo {
-    animation: none;
-  }
-  #\30 2-research [data-arrival] { opacity: 1; transform: none; }
+  #\30 2-research .research-counts { gap: 20px 28px; }
+  #\30 2-research .research-map-wrap { height: clamp(300px, 46vh, 460px); }
+}
+@media (max-width: 520px) {
+  #\30 2-research .research-counts { grid-template-columns: 1fr; }
+  #\30 2-research .research-count--hero .research-count-value { font-size: clamp(3.6rem, 18vw, 5rem); }
 }

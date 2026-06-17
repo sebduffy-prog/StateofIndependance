@@ -41,6 +41,9 @@ const FROM_TO_LABELS = ['Dependence', 'Agency'];
 const TOTAL_TOOLS = 5;
 // How close (px) a dropped tool must land to the tray to count as handed over.
 const HANDOVER_RADIUS = 150;
+// A short pop on the running count each time a tool lands (class toggled off
+// next frame so the CSS keyframe can re-trigger). Pure transform/opacity.
+const COUNT_POP_MS = 420;
 
 /** The five moves' less -> more rows, verbatim from STORY.md ch.07. */
 const FLIP_ROWS_BY_MOVE = {
@@ -142,17 +145,42 @@ const mountToolkit = (rootEl, onComplete) => {
   const stage = rootEl.querySelector('.mv-toolkit-stage');
   const pegboard = rootEl.querySelector('.mv-pegboard');
   const tray = rootEl.querySelector('.mv-tray');
+  const tally = rootEl.querySelector('.mv-tray-tally');
   const template = rootEl.querySelector('.mv-tool-source');
   const countEl = rootEl.querySelector('.mv-toolkit-count');
   if (!stage || !pegboard || !tray || !template) return () => {};
 
+  const reduced = prefersReducedMotion();
   const sources = Array.from(template.content.querySelectorAll('li'));
-  const handles = [];
+  const tools = []; // { el, handle }
   let handed = 0;
+  let popTimer = 0;
+
+  // The running count gets a brief pop each time a tool lands, so the number
+  // is felt rather than silently swapped. CSS owns the keyframe.
+  const popCount = () => {
+    if (!countEl || reduced) return;
+    countEl.classList.remove('is-pop');
+    // restart the animation on the next frame
+    requestAnimationFrame(() => {
+      countEl.classList.add('is-pop');
+      clearTimeout(popTimer);
+      popTimer = window.setTimeout(
+        () => countEl.classList.remove('is-pop'),
+        COUNT_POP_MS,
+      );
+    });
+  };
 
   const updateCount = () => {
     if (countEl) countEl.textContent = String(handed);
-    rootEl.classList.toggle('is-toolkit-complete', handed >= TOTAL_TOOLS);
+    if (tally) {
+      // light a tally pip for each tool delivered (built once, lit on landing)
+      const pips = tally.querySelectorAll('.mv-tray-pip');
+      pips.forEach((pip, i) => pip.classList.toggle('is-lit', i < handed));
+    }
+    const complete = handed >= TOTAL_TOOLS;
+    rootEl.classList.toggle('is-toolkit-complete', complete);
   };
 
   const handOver = (toolEl) => {
@@ -167,7 +195,36 @@ const mountToolkit = (rootEl, onComplete) => {
     }
     handed += 1;
     updateCount();
+    popCount();
     if (handed >= TOTAL_TOOLS) onComplete();
+  };
+
+  // Hand a tool over with a brief physical "delivery" arc to the tray, then
+  // settle it back into its pegboard slot as a ghosted/ticked tool. The flight
+  // gives the hand-over weight (contact shadow + amber glow), while returning
+  // it to its own slot keeps the pegboard a clean grid — five tools never stack
+  // and overlap in the tray. The tray tells the running tally via its pips.
+  // Under reduced motion this is an instant commit (no travel).
+  const deliver = (tool) => {
+    if (tool.el.classList.contains('is-handed')) return;
+    if (reduced) {
+      handOver(tool.el);
+      return;
+    }
+    tool.el.classList.add('is-delivering');
+    const t = tool.el.getBoundingClientRect();
+    const r = tray.getBoundingClientRect();
+    // vector from the tool's current centre to the tray's centre
+    const dx = r.left + r.width / 2 - (t.left + t.width / 2);
+    const dy = r.top + r.height / 2 - (t.top + t.height / 2);
+    tool.handle.setPosition(dx, dy, { animate: true });
+    // at the tray (spring ≈ 320ms) commit it, then settle it home into its
+    // own slot so the pegboard stays an orderly, non-overlapping grid.
+    window.setTimeout(() => {
+      tool.el.classList.remove('is-delivering');
+      handOver(tool.el);
+      tool.handle.setPosition(0, 0, { animate: true });
+    }, 320);
   };
 
   // Is the tool's centre near the tray? (drop hit-test, in viewport coords)
@@ -181,33 +238,63 @@ const mountToolkit = (rootEl, onComplete) => {
     return Math.hypot(cx - nx, cy - ny) < HANDOVER_RADIUS;
   };
 
+  // Build the tray tally pips (one per tool) once.
+  if (tally) {
+    for (let i = 0; i < TOTAL_TOOLS; i += 1) {
+      const pip = document.createElement('span');
+      pip.className = 'mv-tray-pip';
+      tally.append(pip);
+    }
+  }
+
   sources.forEach((sourceLi) => {
     const toolEl = buildToolEl(sourceLi);
     pegboard.append(toolEl);
 
-    const handle = draggable(toolEl, {
-      spring: 'return', // springs home if not handed over
-      momentum: 0.1,
+    // Track whether the most recent release came from a real pointer drag, so
+    // arrow-key nudges (which also fire onRelease) never yank the tool home
+    // mid-carry. A short pointer drop returns home; a keyboard carry just rests
+    // where the arrows left it (and delivers if it reaches the tray).
+    let wasPointerDrag = false;
+    toolEl.addEventListener('pointerdown', () => { wasPointerDrag = true; });
+
+    const tool = { el: toolEl, handle: null };
+    // spring:false => the lib never moves the tool on release; WE decide where
+    // it goes (fly into the tray, or spring back to the pegboard) so the
+    // delivery flight is never interrupted by the library's own return spring.
+    tool.handle = draggable(toolEl, {
+      spring: false,
+      momentum: 0,
       keyboardStep: 36,
+      springOpts: { stiffness: 200 },
       onRelease: () => {
-        if (isOverTray(toolEl)) handOver(toolEl);
+        if (toolEl.classList.contains('is-handed')) return;
+        if (isOverTray(toolEl)) {
+          deliver(tool); // reached the tray (drag or keyboard): fly it in
+        } else if (wasPointerDrag) {
+          tool.handle.setPosition(0, 0, { animate: true }); // short drop: home
+        }
+        wasPointerDrag = false;
       },
     });
-    handles.push(handle);
+    tools.push(tool);
 
     // Discovery-friendly keyboard shortcut: Enter on the tool hands it over
-    // straight away (the draggable's Enter toggles grab; this is the simple
-    // path for keyboard users who don't want to carry it across).
+    // straight away — it flies into the tray (the simple path for keyboard
+    // users who don't want to carry it across with the arrow keys).
     toolEl.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter' || toolEl.classList.contains('is-handed')) return;
       e.preventDefault();
       e.stopPropagation(); // don't let the journey engine treat Enter as Next
-      handOver(toolEl);
+      deliver(tool);
     });
   });
 
   updateCount();
-  return () => handles.forEach((h) => h.destroy());
+  return () => {
+    clearTimeout(popTimer);
+    tools.forEach((t) => t.handle.destroy());
+  };
 };
 
 /**

@@ -15,11 +15,11 @@
   margin: 0 auto;
   background: var(--ground-warm);
   color: var(--soi-navy);
-  padding: clamp(2.5rem, 6vh, 6rem) clamp(1.4rem, 4vw, 4rem)
-           clamp(3rem, 7vh, 7rem);
+  padding: clamp(2.25rem, 5vh, 4.5rem) clamp(1.4rem, 4vw, 4rem)
+           clamp(2.75rem, 6vh, 5.5rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(3.5rem, 9vh, 8rem);
+  gap: clamp(2.75rem, 7vh, 6rem);
   overflow: hidden;
 }
 
@@ -37,13 +37,20 @@
   gap: clamp(1.5rem, 4vw, 3.5rem);
   align-items: center;
 }
+/* The deck figure is a solid-black silhouette PNG; tint it to navy via a mask
+   so it reads as on-brand ink (never harsh black, never dark-mustard) on the
+   warm ground. The <img> src is masked out and a navy fill shows through. */
 #\30 6-empowerment .emp-head-glyph {
   display: block;
   width: 100%;
-  max-width: 280px;
+  max-width: 250px;
+  aspect-ratio: 170 / 587;   /* the silhouette's intrinsic ratio */
   height: auto;
   justify-self: center;
-  filter: drop-shadow(0 8px 18px rgba(10, 26, 92, 0.16));
+  background: var(--soi-navy);
+  -webkit-mask: url('../../assets/deck/figure-silhouette.png') center / contain no-repeat;
+  mask: url('../../assets/deck/figure-silhouette.png') center / contain no-repeat;
+  filter: drop-shadow(0 10px 22px rgba(10, 26, 92, 0.22));
 }
 #\30 6-empowerment .emp-eyebrow {
   color: var(--soi-navy);
@@ -76,6 +83,39 @@
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment [data-arrival] { opacity: 1; transform: none; transition: none; }
+}
+
+/* Scroll cue — backgroundless, navy; signals the gated marquee lives below the
+   hero so a reader never hits a locked Next without knowing what to do. */
+#\30 6-empowerment .emp-scrollcue {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1.6rem 0 0;
+  color: var(--soi-navy);
+}
+#\30 6-empowerment .emp-scrollcue-txt {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+#\30 6-empowerment .emp-scrollcue-arrow {
+  width: 11px;
+  height: 11px;
+  border-right: 2.5px solid var(--soi-navy);
+  border-bottom: 2.5px solid var(--soi-navy);
+  transform: rotate(45deg);
+  opacity: 0.7;
+  animation: emp-cue-bob 1.7s ease-in-out infinite;
+}
+@keyframes emp-cue-bob {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); }
+  50% { transform: rotate(45deg) translate(2px, 2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-scrollcue-arrow { animation: none; }
 }
 
 /* ============================================================
@@ -323,8 +363,32 @@
   position: relative;
   width: 100%;
   aspect-ratio: 5 / 4;
-  max-height: 58vh;
+  max-height: 62vh;
   margin: 0 auto;
+}
+
+/* Soft radial glow that blooms from the shared core as the needs converge —
+   the "they all resolve to one thing" reward (driven by --tv 0..1). */
+#\30 6-empowerment .emp-tv-field::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78%;
+  height: 78%;
+  transform: translate(-50%, -50%) scale(calc(0.5 + var(--tvg, 0) * 0.7));
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(10, 26, 92, 0.30) 0%,
+    rgba(10, 26, 92, 0.10) 38%,
+    rgba(10, 26, 92, 0) 68%);
+  opacity: var(--tvg, 0);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 240ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-tv-field::before { transition: none; }
 }
 
 /* The shared overlap wash — flat navy, grows + intensifies with togetherness. */
@@ -384,6 +448,14 @@
   line-height: 1;
   color: var(--soi-cream);
   transform: scale(calc(0.86 + var(--tv, 0) * 0.14));
+  transition: text-shadow 320ms ease;
+}
+/* On full resolution the word gains a soft cream glow — the finishing flourish. */
+#\30 6-empowerment .emp-tv-centre.is-on .emp-tv-centre-word {
+  text-shadow: 0 0 24px rgba(238, 233, 221, 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-tv-centre-word { transition: none; }
 }
 #\30 6-empowerment .emp-tv-centre-sub {
   font-size: 0.82rem;

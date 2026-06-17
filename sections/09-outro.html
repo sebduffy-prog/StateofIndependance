@@ -69,7 +69,10 @@
         <span class="outro-resolve-flow" aria-hidden="true" data-resolve-flow>
           <i></i><i></i><i></i><i></i><i></i><i></i>
         </span>
-        <span class="outro-resolve-word outro-resolve-to hl" data-resolve-to>Individuals</span>
+        <!-- The you-dot lands HERE — power resolves to the individual. The
+             persistent marker eases onto "Individuals", rests as the close
+             plays, then disperses with the nation field (js beat 3). -->
+        <span class="outro-resolve-word outro-resolve-to hl" data-resolve-to data-youdot-anchor>Individuals</span>
       </div>
 
       <!-- Hero band: the quote (left) + the motion maze logo (right) read as
@@ -100,7 +103,12 @@
       <!-- The five moves as an interactive index — each row staggers in on
            step entry and expands its one-line lesson on hover/focus. -->
       <nav class="outro-recap" aria-label="The five moves, jump to the moves chapter" data-enter>
-        <p class="outro-recap-label">The five moves</p>
+        <p class="outro-recap-label">
+          The five moves
+          <!-- Counts up 0 → 5 as the rows land in cascade; the line lights amber
+               on the fifth — the "toolkit complete" finish, backgroundless. -->
+          <span class="outro-recap-progress" data-recap-progress aria-hidden="true"><span class="outro-recap-progress-num num" data-recap-count>0</span> / 5 equipped</span>
+        </p>
         <ol class="outro-recap-list" data-recap>
           <li class="outro-recap-item">
             <a class="outro-recap-link" href="#07-moves">

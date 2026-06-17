@@ -20,8 +20,10 @@
 
   <!-- Image-title lockup: deck figure glyph + huge Poppins-Black title -->
   <header class="emp-head">
-    <img class="emp-head-glyph" src="assets/deck/figure-silhouette.png" alt=""
-         aria-hidden="true" draggable="false" data-parallax="0.1" />
+    <!-- Decorative figure: a navy box clipped to the deck silhouette via CSS
+         mask (the source PNG is solid black, so we tint it on-brand to navy
+         rather than render harsh black-on-mustard). -->
+    <span class="emp-head-glyph" aria-hidden="true" data-parallax="0.1"></span>
     <div class="emp-head-copy">
       <p class="vccp-eyebrow emp-eyebrow" data-arrival>The empowerment architecture</p>
       <h2 class="si-display si-display--lg emp-title" data-arrival>
@@ -30,6 +32,10 @@
       <p class="emp-standfirst si-measure" data-arrival>
         Money is the obvious ask. But saving people time and stress holds far more
         premium value than brands realise.
+      </p>
+      <p class="emp-scrollcue" data-arrival aria-hidden="true">
+        <span class="emp-scrollcue-txt">Make the turn, then bring the three needs together</span>
+        <span class="emp-scrollcue-arrow"></span>
       </p>
     </div>
   </header>

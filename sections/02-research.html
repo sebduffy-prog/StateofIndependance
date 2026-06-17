@@ -1,72 +1,70 @@
 <div class="chapter-inner research">
 
-  <!-- Decorative orbit motif — sits BEHIND everything, never occludes copy. -->
-  <div class="si-orbit research-orbit" aria-hidden="true" data-parallax="0.1"></div>
+  <!-- decorative orbit, far behind everything; never carries meaning -->
+  <div class="si-orbit research-orbit research-orbit--spin" aria-hidden="true"></div>
 
   <div class="research-grid">
 
-    <!-- LEFT: the method, assembling on arrival. No boxes behind any text. -->
+    <!-- LEFT — the method, assembling on arrival. No boxes behind any text. -->
     <div class="research-method">
-      <p class="vccp-eyebrow research-kicker" data-arrival>The method</p>
+      <p class="vccp-eyebrow" data-arrival>The method</p>
 
       <h2 class="research-headline">
         <span data-arrival>How we</span>
-        <span class="hl hl-teal" data-arrival data-arrival-scramble>listened</span>
+        <span class="hl-teal" data-arrival data-arrival-scramble>listened</span>
         <span data-arrival>to Britain</span>
       </h2>
 
-      <p class="research-standfirst" data-arrival>
-        A nationally representative survey, paired with week-long video diaries in
-        eight cities. Numbers for the <strong>what</strong>, real lives for the
-        <strong>why</strong>.
+      <p class="research-standfirst si-measure" data-arrival>
+        A nationally representative survey, paired with week-long video diaries
+        across eight cities. Numbers for the <strong>what</strong>,
+        real lives for the <strong>why</strong>.
       </p>
 
-      <!-- The four counters. The big sample is the hero; the you-dot lands here. -->
-      <div class="research-counts">
+      <!-- four facts. 1,504 is the hero; the you-dot lands on it. -->
+      <dl class="research-counts">
         <div class="research-count research-count--hero" data-arrival data-youdot-anchor>
-          <span class="research-count-value num" data-arrival-count data-to="1504">1,504</span>
-          <span class="research-count-label">human respondents · nationally representative · UK&nbsp;adults&nbsp;18+</span>
+          <dt class="research-count-value num"
+              data-research-hero-count data-to="1504">1,504</dt>
+          <dd class="research-count-label">human respondents · nationally representative · UK&nbsp;adults&nbsp;18+</dd>
         </div>
         <div class="research-count" data-arrival>
-          <span class="research-count-value num" data-arrival-count data-to="8">8</span>
-          <span class="research-count-label">cities for the qualitative research</span>
+          <dt class="research-count-value num"
+              data-arrival-count data-to="8">8</dt>
+          <dd class="research-count-label">cities for the qualitative research</dd>
         </div>
         <div class="research-count" data-arrival>
-          <span class="research-count-value num">1<span class="research-count-unit">-week</span></span>
-          <span class="research-count-label">video diaries per home, filmed early&nbsp;June</span>
+          <dt class="research-count-value num">1<span class="research-count-unit">&nbsp;week</span></dt>
+          <dd class="research-count-label">of video diaries per home, filmed&nbsp;early&nbsp;June</dd>
         </div>
         <div class="research-count" data-arrival>
-          <span class="research-count-value num research-count-value--text">mid-May<span class="research-count-unit">&nbsp;2026</span></span>
-          <span class="research-count-label">quantitative fieldwork window</span>
+          <dt class="research-count-value research-count-value--text">mid&#8209;May<span class="research-count-unit">&nbsp;2026</span></dt>
+          <dd class="research-count-label">the quantitative fieldwork window</dd>
         </div>
-      </div>
+      </dl>
 
       <p class="research-credit" data-arrival>
-        Research partner <strong>VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research</strong>
+        In partnership with <strong>VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research</strong>
       </p>
     </div>
 
-    <!-- RIGHT: the connecting ritual — dots converge onto the UK, eight cities
-         light, open one for its verbatim diary. Built/wired in JS. -->
+    <!-- RIGHT — the connecting ritual: respondent dots converge onto the navy
+         UK silhouette, eight cities light, open one for its verbatim diary. -->
     <div class="research-stage">
-      <div class="research-stage-head">
-        <p class="research-stage-eyebrow" data-arrival>Eight cities, in their own words</p>
-        <p class="research-stage-counter num" data-research-counter aria-live="polite">Connecting&hellip;</p>
+      <div class="research-stage-head" data-arrival>
+        <p class="research-stage-eyebrow">Eight cities, in their own words</p>
+        <p class="research-stage-status num" data-research-status aria-live="polite">Connecting&hellip;</p>
       </div>
 
       <div class="research-map-wrap">
-        <!-- ambient converging field sits behind the silhouette -->
         <div class="research-field" data-research-field aria-hidden="true"></div>
-        <!-- the real UK silhouette + 8 markers are injected here in JS -->
-        <div class="research-map" data-research-map
-             aria-label="Map of the United Kingdom showing eight qualitative research cities"></div>
+        <div class="research-map" data-research-map></div>
       </div>
 
-      <p class="research-stage-hint" data-research-hint>
-        Open a city &mdash; click a marker or use the arrow keys &mdash; to surface its diary.
+      <p class="research-hint" data-research-hint>
+        Open a city &mdash; tap a marker or use the arrow keys &mdash; to surface its diary.
       </p>
 
-      <!-- the opened diary quote surfaces here, no box behind it -->
       <div class="research-diary" data-research-diary aria-live="polite"></div>
     </div>
 

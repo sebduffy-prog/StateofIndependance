@@ -1,103 +1,88 @@
 /**
  * Chapter 03 — baselines. "The numbers you already know."
  *
- * Four squeeze hallmarks flow on the warm amber→orange ground (the
- * "operational floor"). Each beat is a huge Poppins-Black count-up number +
- * label + one sentence, paired with ONE backgroundless, non-bar chart that
- * sits directly on the ground (navy marks so nothing is mustard-on-mustard;
- * faint ink-tint tracks, never a white box).
+ * Four classic squeeze hallmarks flow on the warm amber→orange ground — the
+ * "operational floor". Each beat is a huge Poppins-Black number + a short bold
+ * label + one sentence, paired with ONE backgroundless, non-bar chart that sits
+ * directly on the ground (navy marks, faint ink-tint tracks — never a box).
  *
- *   01 · 77% careful   — MARQUEE: clickToGuess → a custom 100-in-100 waffle
- *                        where the visitor's own square is highlighted.
+ *   01 · 77% careful   — MARQUEE: clickToGuess → a 100-in-100 crowd waffle
+ *                        where the visitor's own square is singled out.
  *   02 · 55% deal-seek — lollipopChart (shoppedAround highlighted).
  *   03 · 60% anxious   — dotPlot of availability concerns.
- *   04 · 54% trade-down— tugOfWar 54/46 + dotPlot of traded-down categories.
+ *   04 · 54% trade-down— tugOfWar 54 / 46 (trading down vs holding the basket).
  *
- * Soft gating: gate() lights the "try it" hint on the marquee guess; ready()
- * clears it when the visitor locks in. Next is never blocked.
+ * Soft gating: gate() lights the advisory "try it" hint on the marquee guess;
+ * ready() clears it when the visitor locks in. Next is NEVER blocked.
  *
- * @param {HTMLElement} rootEl  <section class="chapter" id="03-baselines">
+ * @param {HTMLElement} rootEl  <section class="journey-step" id="03-baselines">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
  *           journey:{ gate():void, ready():void } }} data
  */
-import { observeReveals } from '../lib/reveal.js';
+import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
 import { lollipopChart, dotPlot, tugOfWar } from '../lib/charts.js';
 import { clickToGuess } from '../lib/interactions.js';
-import { arrival, observeParallax, prefersReducedMotion } from '../lib/experiential.js';
+import { arrival } from '../lib/experiential.js';
 
-const CAREFUL_TRUE = 77.3;       // Q2r3 exact
-const CAREFUL_FILL = 77;         // squares filled in the 100-grid
+const CAREFUL_TRUE = 77.3;     // Q2r3 exact
+const CAREFUL_FILL = 77;       // squares lit in the 100-grid (deck-rounded)
 const CROWD_TOTAL = 100;
-const CROWD_COUNT_MS = 1100;
-const CROWD_STAGGER_MS = 14;     // per-square cascade
-const YOU_INDEX = 44;            // a filled square near the crowd's middle
-const YOU_POP_AFTER_MS = 320;    // beat after your square fills, then it pops proud
-const TOP_N = 4;                 // beats 02–04 supporting charts
-const SCALE_MAX = 60;            // shared chart axis (largest baseline ≈ 55)
+const COUNT_MS = 1200;
+const STAGGER_MS = 11;         // per-square cascade
+const YOU_INDEX = 44;          // a lit square near the crowd's heart = "you"
+const YOU_POP_MS = 280;        // beat after your square lights, then it stands proud
+const SCALE_MAX = 60;          // shared axis for beats 02–03 (largest baseline ≈ 55)
 
 /**
- * Build the 100-in-100 crowd: a 10×10 grid filling to `fill`, with ONE filled
- * square singled out as the visitor ("you"). Returns a `run(from)` that starts
- * the cascade + caption count from the visitor's own guess; reduced motion
- * paints the final state instantly. Backgroundless — squares carry the
- * contrast, no card.
+ * Build the 100-in-100 crowd grid into `gridEl`: 100 squares, `fill` of them
+ * lit, with ONE lit square singled out as the visitor. Returns `run(from)`
+ * which cascades the fill and rolls the caption count from the visitor's guess
+ * up to the truth. Reduced motion paints the final state instantly.
  * @param {HTMLElement} gridEl
- * @param {number} fill
  * @param {HTMLElement|null} countEl
- * @param {(youCell: HTMLElement) => void} [onYouLand] handed the you-square once
- *        the cascade reaches it (used to travel the persistent you-dot there).
  * @returns {(from?: number) => void}
  */
-const buildCrowd = (gridEl, fill, countEl, onYouLand) => {
+const buildCrowd = (gridEl, countEl) => {
   const reduced = prefersReducedMotion();
   const cells = [];
   for (let i = 0; i < CROWD_TOTAL; i += 1) {
     const cell = document.createElement('span');
-    cell.className = 'bl-crowd-cell';
+    cell.className = 'bl-cell';
     if (i === YOU_INDEX) cell.classList.add('is-you');
     gridEl.append(cell);
     cells.push(cell);
   }
-  const youCell = cells[YOU_INDEX];
 
-  const paint = (cell, i) => {
-    if (i < fill) cell.classList.add('is-on');
-  };
-  const landYou = () => {
-    youCell.classList.add('is-landed');
-    if (typeof onYouLand === 'function') onYouLand(youCell);
-  };
+  const light = (cell, i) => { if (i < CAREFUL_FILL) cell.classList.add('is-on'); };
+  const landYou = () => cells[YOU_INDEX].classList.add('is-landed');
 
   return (from = 0) => {
     if (reduced) {
-      cells.forEach(paint);
+      cells.forEach(light);
       landYou();
-      if (countEl) countEl.textContent = String(fill);
+      if (countEl) countEl.textContent = String(CAREFUL_FILL);
       return;
     }
     cells.forEach((cell, i) => {
       window.setTimeout(() => {
-        paint(cell, i);
-        if (i === YOU_INDEX) window.setTimeout(landYou, YOU_POP_AFTER_MS);
-      }, i * CROWD_STAGGER_MS);
+        light(cell, i);
+        if (i === YOU_INDEX) window.setTimeout(landYou, YOU_POP_MS);
+      }, i * STAGGER_MS);
     });
-    // The caption rolls from what the visitor guessed up to the truth, so the
-    // gap between expectation and reality is felt as motion, not just stated.
-    if (countEl) countUp(countEl, { from, to: fill, durationMs: CROWD_COUNT_MS });
+    if (countEl) countUp(countEl, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
   };
 };
 
 export default function init(rootEl, data) {
   const { survey, journey } = data;
-  if (!survey) return; // fail soft — every dataset may be null
+  if (!survey) return; // fail soft — any dataset may be null
 
-  // Entrance: re-assemble headline + count numbers on every arrival.
+  // Entrance: re-assemble headline + count numbers on every arrival (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
   observeReveals(rootEl);
   observeCounters(rootEl);
-  observeParallax(rootEl, { maxShiftPx: 48 });
 
   /* ── Beat 01 · the marquee — guess, then the 100-in-100 crowd ─────── */
   const guessHost = rootEl.querySelector('[data-guess]');
@@ -106,20 +91,8 @@ export default function init(rootEl, data) {
   const crowdCount = rootEl.querySelector('[data-crowd-count]');
   const carefulNum = rootEl.querySelector('[data-careful-num]');
 
-  // The you-dot anchor starts on the headline's "baseline" word; on reveal it
-  // travels to the visitor's own square in the crowd — meaningful continuity,
-  // never parked in dead space.
-  const headlineAnchor = rootEl.querySelector('[data-youdot-anchor]');
-  const handYouDotToCrowd = (youCell) => {
-    if (headlineAnchor) headlineAnchor.removeAttribute('data-youdot-anchor');
-    youCell.setAttribute('data-youdot-anchor', '');
-    // Nudge the persistent you-dot (it re-measures its anchor on scroll).
-    window.dispatchEvent(new Event('scroll'));
-  };
-
   if (guessHost && crowdFig && crowdGrid) {
-    guessHost.hidden = false;
-    const runCrowd = buildCrowd(crowdGrid, CAREFUL_FILL, crowdCount, handYouDotToCrowd);
+    const runCrowd = buildCrowd(crowdGrid, crowdCount);
 
     clickToGuess(guessHost, {
       trueValue: CAREFUL_TRUE,
@@ -129,16 +102,18 @@ export default function init(rootEl, data) {
       prompt: 'Take a guess',
       onReveal: (guess) => {
         const from = Number.isFinite(guess) ? guess : 0;
-        // The hero number rolls up from the visitor's own guess to the truth.
         if (carefulNum) {
-          countUp(carefulNum, { from, to: CAREFUL_TRUE, decimals: 0, suffix: '%' });
+          // Roll the hero number from the visitor's guess to the truth; keep the
+          // small "%" glyph that the markup carries.
+          carefulNum.textContent = '';
+          countUp(carefulNum, { from, to: CAREFUL_FILL, suffix: '%' });
         }
         crowdFig.hidden = false;
         runCrowd(from);
         journey.ready();
       },
     });
-    // Advisory "try it" hint (Next still unlocks after the dwell).
+    // Advisory "try it" hint only (Next still unlocks after the dwell).
     journey.gate();
   }
 
@@ -146,9 +121,7 @@ export default function init(rootEl, data) {
   const moneyHost = rootEl.querySelector('[data-lollipop-money]');
   if (moneyHost && Array.isArray(survey.moneySavingMoves?.items)) {
     lollipopChart(moneyHost, {
-      items: survey.moneySavingMoves.items.map((d) => ({
-        id: d.id, label: d.label, pct: d.pct,
-      })),
+      items: survey.moneySavingMoves.items.map((d) => ({ id: d.id, label: d.label, pct: d.pct })),
       max: SCALE_MAX,
       highlightId: 'shoppedAround',
       ariaLabel: 'Money-saving moves in the last three months, percent who did each.',
@@ -159,32 +132,19 @@ export default function init(rootEl, data) {
   const availHost = rootEl.querySelector('[data-dotplot-avail]');
   if (availHost && Array.isArray(survey.availabilityConcerns?.items)) {
     dotPlot(availHost, {
-      items: survey.availabilityConcerns.items.map((d) => ({
-        label: d.label, pct: d.pct,
-      })),
+      items: survey.availabilityConcerns.items.map((d) => ({ label: d.label, pct: d.pct })),
       max: SCALE_MAX,
       ariaLabel: 'Very or extremely concerned about availability, by category.',
     });
   }
 
-  /* ── Beat 04 · 54% trading down — tug-of-war + traded-down dot plot ─ */
+  /* ── Beat 04 · 54% trading down — tug-of-war 54 / 46 ─────────────── */
   const tugHost = rootEl.querySelector('[data-tug-grocery]');
   if (tugHost) {
     tugOfWar(tugHost, {
       left: { label: 'Trading down', pct: 54 },
       right: { label: 'Holding their basket', pct: 46 },
       ariaLabel: 'Fifty-four percent trading down, forty-six percent holding their basket.',
-    });
-  }
-
-  const tradedHost = rootEl.querySelector('[data-dotplot-traded]');
-  if (tradedHost && Array.isArray(survey.tradingDownByCategory?.items)) {
-    dotPlot(tradedHost, {
-      items: survey.tradingDownByCategory.items.slice(0, TOP_N).map((d) => ({
-        label: d.label, pct: d.pct,
-      })),
-      max: SCALE_MAX,
-      ariaLabel: 'Where Britain has traded down, top categories.',
     });
   }
 }

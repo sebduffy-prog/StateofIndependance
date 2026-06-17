@@ -51,6 +51,7 @@ const SEQ_RESOLVE_MS = 620; // then institutions ▸▸▸ individuals lands
 const SEQ_QUOTE_MS = 1850; // then the quote decrypts in
 const SEQ_CITE_MS = 3050; // attribution follows the resolved quote
 const SEQ_DISPERSE_MS = 3400; // the you-dot disperses with the nation
+const SEQ_FINISH_MS = 3900; // the journey-complete commit pulse lands last
 
 /** A calm full-field scatter of light dots, biased to the lower band so the
  *  quote and recap stay readable. Returns normalised {x,y,colour} targets. */
@@ -76,14 +77,27 @@ const wireRecapStagger = (rootEl) => {
   const rows = Array.from(list.querySelectorAll('.outro-recap-item'));
   if (!rows.length) return;
 
+  // The "N / 5 equipped" tally ticks up one per row as the toolkit assembles,
+  // and the line lights (is-complete) on the fifth — the finish flourish.
+  const progress = rootEl.querySelector('[data-recap-progress]');
+  const countEl = rootEl.querySelector('[data-recap-count]');
+  const land = (i) => {
+    rows[i].classList.add('is-in');
+    if (countEl) countEl.textContent = String(i + 1);
+    if (progress && i === rows.length - 1) progress.classList.add('is-complete');
+  };
+
   if (prefersReducedMotion()) {
-    rows.forEach((row) => row.classList.add('is-in'));
+    rows.forEach((_, i) => land(i));
     return;
   }
 
+  if (countEl) countEl.textContent = '0';
+  if (progress) progress.classList.remove('is-complete');
   rows.forEach((row, i) => {
+    row.classList.remove('is-in');
     window.setTimeout(
-      () => row.classList.add('is-in'),
+      () => land(i),
       RECAP_START_DELAY_MS + i * RECAP_STAGGER_MS
     );
   });
@@ -113,6 +127,7 @@ export default function init(rootEl, data) {
 
   /* ── The close-sequence elements ───────────────────────────────────── */
   const headLines = Array.from(rootEl.querySelectorAll('[data-arrival]'));
+  const closeEl = rootEl.querySelector('[data-outro-close]');
   const resolve = rootEl.querySelector('[data-outro-resolve]');
   const quoteEl = rootEl.querySelector('[data-resolve-quote]');
   const citeEl = rootEl.querySelector('[data-resolve-cite]');
@@ -198,6 +213,7 @@ export default function init(rootEl, data) {
       quoteEl.classList.add('is-resolved');
     }
     if (citeEl) citeEl.classList.add('is-in');
+    if (closeEl) closeEl.classList.add('is-finished');
   };
 
   const playSequence = () => {
@@ -216,6 +232,7 @@ export default function init(rootEl, data) {
       quoteEl.textContent = ''; // hold blank until the decrypt beat
     }
     if (citeEl) citeEl.classList.remove('is-in');
+    if (closeEl) closeEl.classList.remove('is-finished');
 
     // beat 0 — headline lines assemble in cascade.
     later(() => {
@@ -246,6 +263,12 @@ export default function init(rootEl, data) {
 
     // beat 3 — the you-dot disperses with the nation.
     later(disperseYouDot, SEQ_DISPERSE_MS);
+
+    // beat 4 — the journey-complete commit pulse: the close lights its centre
+    // once as the toolkit lands, a single tactile "finished" flourish.
+    later(() => {
+      if (closeEl) closeEl.classList.add('is-finished');
+    }, SEQ_FINISH_MS);
   };
 
   // Build on first real visibility; afterward, gate the drift to spare the

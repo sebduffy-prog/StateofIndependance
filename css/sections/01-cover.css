@@ -83,6 +83,12 @@
 }
 #\30 1-cover .cover-line { display: block; }
 
+/* The wordmark is focused programmatically for SR/keyboard orientation on
+   arrival — it must NOT paint the browser's blue focus ring (that read as a
+   stray outlined box over the headline). Keyboard nav never lands here, so a
+   keyboard-only focus-visible ring is unnecessary; suppress the outline. */
+#\30 1-cover .cover-wordmark:focus { outline: none; }
+
 /* Emphasis = colour + weight only. No box, no underline, no skew. */
 #\30 1-cover .cover-em {
   color: var(--soi-orange);
@@ -123,6 +129,15 @@
 }
 #\30 1-cover .cover-cue.is-awake {
   box-shadow: 0 0 0 3px var(--soi-teal), 0 10px 26px rgba(10, 26, 92, 0.28);
+}
+/* The first commit (finishing the trace) wakes the CTA with one soft pulse — a
+   single ring that blooms out from the teal halo, then settles. JS toggles
+   .is-pulsing on completion; the animation runs once. */
+#\30 1-cover .cover-cue.is-pulsing { animation: cover-cue-commit 760ms cubic-bezier(0.22, 1, 0.36, 1) 1; }
+@keyframes cover-cue-commit {
+  0%   { box-shadow: 0 0 0 0 rgba(43, 183, 232, 0.55), 0 10px 26px rgba(10, 26, 92, 0.28); }
+  60%  { box-shadow: 0 0 0 12px rgba(43, 183, 232, 0),   0 10px 26px rgba(10, 26, 92, 0.28); }
+  100% { box-shadow: 0 0 0 3px var(--soi-teal),          0 10px 26px rgba(10, 26, 92, 0.28); }
 }
 #\30 1-cover .cover-cue-arrow {
   width: 9px;
@@ -181,6 +196,14 @@
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 18px 34px rgba(10, 26, 92, 0.22));
+  /* a slow embodied bob so the marquee breathes on arrival rather than sitting
+     inert — the figure is forever finding its way out. Reduced-motion kills it. */
+  animation: cover-maze-float 9s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes cover-maze-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-1.4%) rotate(0.4deg); }
 }
 
 /* Live teal orbit ring sweeping the maze — the single bright accent.
@@ -193,7 +216,9 @@
   height: 100%;
   overflow: visible;
   transform-origin: 50% 50%;
-  animation: cover-orbit-spin 26s linear infinite;
+  /* The ring sweeps continuously and ACCELERATES as the trace advances — taking
+     control speeds the world up. 26s at rest → ~11s once traced. */
+  animation: cover-orbit-spin calc(26s - 15s * var(--trace, 0)) linear infinite;
 }
 #\30 1-cover .cover-orbit-ring {
   fill: none;
@@ -208,6 +233,9 @@
 #\30 1-cover .cover-orbit-bead {
   fill: var(--soi-teal);
   transform: translate(300px, 300px) rotate(-22deg) translate(268px, 0);
+  /* the bead brightens + grows a soft glow as control is taken */
+  filter: drop-shadow(0 0 calc(2px + 8px * var(--trace, 0)) var(--soi-teal));
+  transition: filter 200ms ease;
 }
 @keyframes cover-orbit-spin { to { transform: rotate(360deg); } }
 
@@ -366,7 +394,10 @@
 /* ── reduced-motion: kill ambient motion, keep state legible ─────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 1-cover .cover-orbit,
+  #\30 1-cover .cover-maze-img,
+  #\30 1-cover .cover-cue.is-pulsing,
   #\30 1-cover .cover-handle-halo,
   #\30 1-cover .cover-trace-goal { animation: none; }
+  #\30 1-cover .cover-maze-img { transform: none; }
   #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }

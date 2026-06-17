@@ -17,13 +17,17 @@
         </p>
         <p class="mv-filmstrip-hint" data-arrival aria-hidden="true">
           <span class="mv-filmstrip-hint-frames">
-            <span class="mv-filmstrip-cell" data-youdot-anchor></span>
+            <span class="mv-filmstrip-cell"></span>
             <span class="mv-filmstrip-cell"></span>
             <span class="mv-filmstrip-cell"></span>
             <span class="mv-filmstrip-cell"></span>
             <span class="mv-filmstrip-cell"></span>
           </span>
-          Five frames, then the tools are yours to keep.
+          Five frames, then the tools are yours to hand over.
+        </p>
+        <p class="mv-scroll-cue" data-arrival aria-hidden="true">
+          <span class="mv-scroll-cue-rule"></span>
+          <span class="mv-scroll-cue-text">Scroll the reel &mdash; the handover is the final frame</span>
         </p>
       </div>
       <!-- Deck signature: the State of Independence motion maze world -->
@@ -393,12 +397,22 @@
           <!-- tools injected here as draggable objects by the section script,
                cloned from these source templates (icon + label + number). -->
         </ol>
-        <!-- The hand / workbench tray that receives the tools. -->
-        <div class="mv-tray" aria-hidden="true">
+        <!-- The hand / workbench tray that receives the tools. The persistent
+             you-dot anchors here, so its travel into this step reads as
+             "you are delivering the tools". -->
+        <div class="mv-tray" data-youdot-anchor aria-hidden="true">
           <span class="mv-tray-rule"></span>
           <span class="mv-tray-label">Handed over</span>
+          <span class="mv-tray-tally" aria-hidden="true"></span>
         </div>
       </div>
+
+      <!-- Completion payoff: revealed only once all five tools are handed over.
+           The reel's last frame resolves into the playbook's core line. -->
+      <p class="mv-toolkit-done" aria-live="polite">
+        <span class="mv-toolkit-done-mark" aria-hidden="true"></span>
+        <span class="mv-toolkit-done-text">Toolkit complete. The playbook is in their hands.</span>
+      </p>
 
       <!-- Source data for the five tools (icons mirror the deck move glyphs).
            Hidden; the script reads these to build the draggable tools so the

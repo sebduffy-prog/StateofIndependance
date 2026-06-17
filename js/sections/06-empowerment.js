@@ -160,9 +160,10 @@ const NEED_LAYOUT = [
 
 // Geometry as fractions of the stage's shorter side (responsive).
 const VENN = Object.freeze({
-  diamFrac: 0.42,    // circle diameter
-  spreadFrac: 0.36,  // home distance of each centre from stage centre — held
-                     // wide so the drag-to-overlap journey is a real, felt move
+  diamFrac: 0.40,    // circle diameter
+  spreadFrac: 0.42,  // home distance of each centre from stage centre — held
+                     // WIDE so the drag-to-overlap journey is a real, felt move
+                     // (they start clearly apart, not pre-resolved)
   lockFrac: 0.082,   // resolved (overlapping) distance from centre
   metFrac: 0.16,     // centre-distance under which a circle counts as "met"
 });
@@ -186,7 +187,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   }
 
   const reduced = prefersReducedMotion();
-  const fmt = (v) => (typeof v === 'number' ? `${v.toFixed(1)}%` : '');
   const accent = (id) => cssVar(NEED_META[id].token, NEED_META[id].fallback);
 
   mount.innerHTML = `
@@ -246,9 +246,14 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     row.dataset.need = id;
     row.tabIndex = 0;
     row.style.setProperty('--accent', accent(id));
+    const v = brandAsks[NEED_KEYS[id]];
+    const numAttrs =
+      typeof v === 'number'
+        ? `data-count-to="${v}" data-count-suffix="%" data-count-decimals="1"`
+        : '';
     row.innerHTML =
       `<span class="emp-tv-leg-name">${NEED_META[id].label}</span>` +
-      `<span class="emp-tv-leg-n num">${fmt(brandAsks[NEED_KEYS[id]])}</span>` +
+      `<span class="emp-tv-leg-n num" ${numAttrs}>0</span>` +
       `<span class="emp-tv-leg-sub">${NEED_META[id].sub}</span>`;
     legend.appendChild(row);
     return { id, row };
@@ -294,6 +299,9 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     overlap.style.height = `${od}px`;
     overlap.style.opacity = (0.08 + t * 0.5).toFixed(3);
     centre.style.setProperty('--tv', t.toFixed(3));
+    // Glow blooms only in the back half of the journey so it reads as a reward,
+    // not an ambient haze — eased from 0 at t=0.45 to full at t=1.
+    field.style.setProperty('--tvg', Math.max(0, (t - 0.45) / 0.55).toFixed(3));
     stage.classList.toggle('is-converging', t > 0.15);
 
     const allMet = dists.every((d) => d <= g.met);
@@ -391,6 +399,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     row.addEventListener('blur', off);
   });
 
+  if (reduced) snapResolved();
   render();
 
   // First real layout fires here (the step mounts hidden, so the initial
