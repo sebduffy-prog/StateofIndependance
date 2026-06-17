@@ -409,3 +409,10 @@
   #\30 1-cover .cover-stage { animation: none; }
   #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }
+
+/* Colleague feedback: "is the box over the girl where people should click?"
+   The maze-trace handle + trail are vestigial now that the journey navigates by
+   scroll and the persistent you-dot is retired. Hide them so the maze hero reads
+   clean (the figure inside the GIF stays). */
+#\30 1-cover .cover-handle,
+#\30 1-cover .cover-trace { display: none !important; }

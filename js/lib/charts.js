@@ -178,11 +178,19 @@ const wrapToLines = (probe, text, availWidth, maxLines) => {
  */
 const fitEndLabel = (label, availWidth, baseFontSize, opts = {}) => {
   const minFont = opts.minFont != null ? opts.minFont : LABEL_MIN_FONT;
-  const fullText = label.textContent;
+  // Cache the original text on first fit: once wrapped into tspans, reading
+  // textContent would lose the inter-line whitespace, so we re-read the cache
+  // on every subsequent re-fit (e.g. after an update()).
+  if (label.dataset.fullLabel == null) {
+    label.dataset.fullLabel = label.textContent || '';
+  }
+  const fullText = label.dataset.fullLabel;
   if (!fullText || availWidth <= 0) return;
 
-  // Reset to the design size, single line, before measuring.
+  // Reset to the design size, single line, before measuring. Restore the
+  // central baseline in case a previous fit wrapped this node into tspans.
   label.setAttribute('font-size', baseFontSize);
+  label.setAttribute('dominant-baseline', 'central');
   label.textContent = fullText;
   const fullWidth = measureText(label);
   if (fullWidth === 0) return; // not laid out yet; caller re-fits on view
@@ -206,21 +214,18 @@ const fitEndLabel = (label, availWidth, baseFontSize, opts = {}) => {
 
   // Render the wrapped lines as tspans, vertically centred on the row.
   const x = label.getAttribute('x');
-  const cy = opts.cy;
+  const cy = opts.cy != null ? opts.cy : Number(label.getAttribute('y')) || 0;
   const lineH = minFont * 1.05;
+  // First line baseline so the multi-line block is vertically centred on cy.
+  const firstY = cy - ((lines.length - 1) * lineH) / 2;
   label.textContent = '';
-  label.removeAttribute('dominant-baseline');
+  label.setAttribute('dominant-baseline', 'central');
   lines.forEach((line, i) => {
-    const tspan = el('tspan', { x });
-    // Centre the block: first line offset up by half the total block height.
-    const dy = i === 0 ? -((lines.length - 1) * lineH) / 2 : lineH;
-    if (cy != null && i === 0) {
-      tspan.setAttribute('y', cy);
-      tspan.setAttribute('dy', dy);
-    } else {
-      tspan.setAttribute('dy', i === 0 ? dy : lineH);
-    }
-    tspan.setAttribute('dominant-baseline', 'central');
+    const tspan = el('tspan', {
+      x,
+      y: firstY + i * lineH,
+      'dominant-baseline': 'central',
+    });
     tspan.textContent = line;
     label.append(tspan);
   });
@@ -735,16 +740,20 @@ export const lollipopChart = (container, opts) => {
   const height = items.length * rowH;
 
   const svg = svgRoot(width, height, opts.ariaLabel || 'Lollipop chart');
+  svg.style.overflow = 'visible';
   const xFor = (pct) => valueX + (Math.min(pct, max) / max) * trackW;
   const rows = [];
+  const labelMeta = [];
+  const LABEL_FONT = 15;
 
   items.forEach((item, index) => {
     const cy = index * rowH + rowH / 2;
     const isHi = highlightId && item.id === highlightId;
     const label = textNode({
       x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
-      fill: textColour, 'font-size': 15, 'font-weight': 600,
+      fill: textColour, 'font-size': LABEL_FONT, 'font-weight': 600,
     }, item.label);
+    labelMeta.push({ node: label, availWidth: labelWidth - 4, baseFont: LABEL_FONT, cy });
     const baseline = el('line', {
       x1: valueX, y1: cy, x2: valueX + trackW, y2: cy,
       stroke: scheme.stroke, 'stroke-width': 1, opacity: 0.18,
@@ -765,6 +774,7 @@ export const lollipopChart = (container, opts) => {
   });
 
   container.append(svg);
+  fitLabelsWhenReady(svg, labelMeta);
   const render = (row, pct) => {
     const x = xFor(pct);
     row.stem.setAttribute('x2', x);
@@ -802,7 +812,10 @@ export const dotPlot = (container, opts) => {
   const axisY = topPad + items.length * rowH;
 
   const svg = svgRoot(width, height, opts.ariaLabel || 'Dot plot');
+  svg.style.overflow = 'visible';
   const xFor = (pct) => axisX + (Math.min(pct, max) / max) * trackW;
+  const labelMeta = [];
+  const LABEL_FONT = 15;
 
   // shared axis + gridline ticks (faint component-coloured tint)
   svg.append(el('line', {
@@ -825,8 +838,9 @@ export const dotPlot = (container, opts) => {
     const cy = topPad + index * rowH + rowH / 2;
     const label = textNode({
       x: labelWidth, y: cy, 'text-anchor': 'end', 'dominant-baseline': 'central',
-      fill: textColour, 'font-size': 15, 'font-weight': 600,
+      fill: textColour, 'font-size': LABEL_FONT, 'font-weight': 600,
     }, item.label);
+    labelMeta.push({ node: label, availWidth: labelWidth - 4, baseFont: LABEL_FONT, cy });
     const dot = el('circle', {
       cx: axisX, cy, r: 7, fill: dotColour,
     });
@@ -839,6 +853,7 @@ export const dotPlot = (container, opts) => {
   });
 
   container.append(svg);
+  fitLabelsWhenReady(svg, labelMeta);
   const render = (row, pct) => {
     const x = xFor(pct);
     row.dot.setAttribute('cx', x);

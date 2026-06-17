@@ -167,6 +167,22 @@
 }
 
 /* ── RIGHT: data / index chart panel ────────────────────────────── */
+
+/* Flat navy+yellow drafting-compass icon — consistent G&B segment mark. */
+#\31 0-segment-architects .segment-architects-icon {
+  color: var(--navy);
+  width: clamp(40px, 4vw, 54px);
+  height: clamp(40px, 4vw, 54px);
+  flex-shrink: 0;
+}
+#\31 0-segment-architects .segment-architects-icon svg { width: 100%; height: 100%; }
+#\31 0-segment-architects .segment-architects-icon .ic-yellow {
+  fill: var(--yellow, #F0CB08);
+  color: var(--yellow, #F0CB08);
+  stroke: var(--yellow, #F0CB08);
+}
+#\31 0-segment-architects .segment-architects-icon .ic-navy { fill: var(--navy, #041654); }
+
 #\31 0-segment-architects .segment-architects-data {
   display: flex;
   flex-direction: column;
