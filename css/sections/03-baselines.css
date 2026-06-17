@@ -307,33 +307,61 @@
   z-index: 4;
 }
 
-/* Crowd caption: count + supporting copy — below the grid */
+/* ── Crowd caption — composed block under the grid ────────────────
+   A two-tier read: a small navy kicker over a baseline-aligned figure
+   (big tabular count + short unit phrase). A hairline ties it to the
+   grid above. Works identically in guess and truth states — only the
+   words change, the structure holds. Left-aligned so it never strands. */
 #\30 3-baselines .bl-crowd-cap {
+  margin-top: clamp(0.7rem, 1.6vh, 1.1rem);
+  padding-top: clamp(0.55rem, 1.2vh, 0.85rem);
+  border-top: 1px solid rgba(4, 22, 84, 0.16);
   display: flex;
-  align-items: baseline;
-  justify-content: flex-end;   /* tuck under the grid's right edge */
-  text-align: right;
-  gap: 0.5ch;
-  flex-wrap: wrap;
-  min-height: 1.5rem;
-  margin-top: clamp(0.6rem, 1.5vh, 1rem);
+  flex-direction: column;
+  gap: clamp(0.25rem, 0.7vh, 0.45rem);
   flex-shrink: 0;
 }
+
+/* State label — quiet navy kicker, mirrors the left-rail prompt voice */
+#\30 3-baselines .bl-cap-kicker {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+}
+
+/* Figure row — count and unit phrase share a baseline */
+#\30 3-baselines .bl-cap-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6ch;
+}
 #\30 3-baselines .bl-crowd-count {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 1;
+  line-height: 0.9;
   font-variant-numeric: tabular-nums;
   color: var(--navy);
   flex-shrink: 0;
 }
-#\30 3-baselines .bl-crowd-of {
-  font-size: var(--t-sm, 0.875rem);
+#\30 3-baselines .bl-cap-unit {
+  font-size: var(--t-sm, 1rem);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.3;
   color: var(--ink-soft);
-  max-width: 38ch;
+  opacity: 0.85;
+  max-width: 30ch;
+}
+
+/* Truth state — the count earns a touch more presence once it's real */
+#\30 3-baselines .bl-crowd-cap.is-truth .bl-cap-kicker { opacity: 0.85; }
+#\30 3-baselines .bl-crowd-cap.is-truth .bl-cap-unit {
+  font-weight: 600;
+  opacity: 1;
+  color: var(--ink);
 }
 
 /* ── Responsive: stack hero on narrow viewports ─────────────────── */

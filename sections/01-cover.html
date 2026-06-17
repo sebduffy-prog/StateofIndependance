@@ -64,36 +64,17 @@
       </button>
     </header>
 
-    <!-- RIGHT — the maze logo-moment, large and centred in its field. The whole
-         illustration is inert except the one cream "you" dot born at the maze mouth
-         and traced inward. The illustration carries its own orbit ring, the navy
-         bear and the figure; no second ring is drawn over it. -->
+    <!-- RIGHT — the maze logo-moment, large and centred in its field. The maze is
+         a clean still/animation: the amber isometric maze, the navy bear and the
+         small figure at the entrance. The stray orbit ring and the figure's map
+         (the "box") are removed from the artwork, so the maze reads clean — no
+         trace overlay, no handle, no ring drawn over it. -->
     <figure class="cover-stage" data-cover-stage>
       <img class="cover-maze" data-cover-maze
-           src="assets/brand-final/maze-logo.gif"
-           data-still="assets/brand-final/maze-logo-static.png"
-           alt="The State of Independence maze: an amber isometric maze with a navy bear inside and a small figure with a map at its entrance, an orbit ring sweeping around it"
+           src="assets/brand-final/maze-logo-clean.gif"
+           data-still="assets/brand-final/maze-logo-clean-static.png"
+           alt="The State of Independence maze: an amber isometric maze with a navy bear inside and a small figure standing at its entrance"
            width="800" height="800" loading="eager" decoding="async" />
-
-      <!-- TRACE overlay, in the illustration's own 800×800 user space: a faint
-           guide from the maze mouth to its heart, the ink that draws in behind
-           the dot, and the goal at the centre. Pointer-inert; the handle owns it. -->
-      <svg class="cover-trace" data-cover-trace viewBox="0 0 800 800"
-           preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
-        <path class="cover-trace-guide" data-cover-path
-              d="M 554 488 C 512 452 488 430 470 392 C 452 354 486 338 470 300" />
-        <path class="cover-trace-ink" data-cover-ink
-              d="M 554 488 C 512 452 488 430 470 392 C 452 354 486 338 470 300" />
-        <circle class="cover-trace-goal" data-cover-goal cx="470" cy="300" r="7" />
-      </svg>
-
-      <!-- The cream "you" dot, born at the maze mouth. The youDot anchor rides it
-           so the global marker is seeded here for the whole journey. -->
-      <button type="button" class="cover-handle" data-cover-handle data-cursor
-              aria-label="Trace a path into the maze to take control">
-        <span class="cover-handle-halo" aria-hidden="true"></span>
-        <span class="cover-handle-dot" data-youdot-anchor aria-hidden="true"></span>
-      </button>
     </figure>
 
   </div>

@@ -166,9 +166,11 @@ export default function init(rootEl, data) {
   const claim      = rootEl.querySelector('[data-claim]');
   const truth      = rootEl.querySelector('[data-truth]');
   const crowdGrid  = rootEl.querySelector('[data-crowd-grid]');
-  const crowdCount = rootEl.querySelector('[data-crowd-count]');
-  const crowdOf    = rootEl.querySelector('[data-crowd-of]');
-  const crowdLabel = rootEl.querySelector('[data-crowd-label]');
+  const crowdCount  = rootEl.querySelector('[data-crowd-count]');
+  const crowdOf     = rootEl.querySelector('[data-crowd-of]');
+  const crowdLabel  = rootEl.querySelector('[data-crowd-label]');
+  const crowdKicker = rootEl.querySelector('[data-crowd-kicker]');
+  const crowdCap    = rootEl.querySelector('[data-crowd-cap]');
   const carefulNum = rootEl.querySelector('[data-careful-num]');
 
   if (!guessHost || !crowdGrid) return;
@@ -213,9 +215,11 @@ export default function init(rootEl, data) {
       if (claim) claim.classList.add('is-revealed');
       if (truth) truth.hidden = false;
 
-      // Update crowd label now the crowd has meaning.
-      if (crowdLabel) crowdLabel.textContent = '77 in 100 are more careful. One square is you.';
-      if (crowdOf)    crowdOf.textContent    = 'of every 100 people you pass today. One of them is you.';
+      // Caption shifts from guess to truth — structure holds, words change.
+      if (crowdLabel)  crowdLabel.textContent  = '77 in 100 are more careful. One square is you.';
+      if (crowdCap)    crowdCap.classList.add('is-truth');
+      if (crowdKicker) crowdKicker.textContent = 'The truth';
+      if (crowdOf)     crowdOf.textContent     = 'in 100 are more careful. One of them is you.';
 
       if (crowdCount) {
         countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });

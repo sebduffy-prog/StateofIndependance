@@ -11,23 +11,37 @@
 /* ── Root wrapper — fills the stage, never overflows ──────────────── */
 #\31 0-segment-architects .chapter-inner {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.22fr);
-  column-gap: clamp(32px, 5vw, 88px);
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: flex;
   align-items: center;
+  padding: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* ── Two-column grid — the real layout ────────────────────────────── */
+#\31 0-segment-architects .segment-architects-grid {
+  position: relative;
   width: 100%;
   height: 100%;
   max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.22fr);
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: clamp(32px, 5vw, 88px);
+  align-items: stretch;
   padding: clamp(30px, 6vh, 72px) clamp(28px, 4vw, 72px)
            calc(var(--journey-controls-h, 72px) + clamp(18px, 3vh, 36px))
            clamp(28px, 4vw, 72px);
-  overflow: hidden;
 }
 
 /* A faint warm hairline runs the join between the two columns — keeps the
    data lens visually distinct from the identity rail so they never read as
    colliding, and lifts the composition with a deliberate seam. */
-#\31 0-segment-architects .chapter-inner::before {
+#\31 0-segment-architects .segment-architects-grid::before {
   content: "";
   position: absolute;
   top: clamp(64px, 12vh, 128px);
@@ -56,6 +70,7 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: clamp(8px, 1.6vh, 18px);
   min-height: 0;
   max-width: 30ch;
@@ -362,12 +377,13 @@
 
 /* ── Narrow / short viewports — stack, keep one screen ────────────── */
 @media (max-width: 900px) {
-  #\31 0-segment-architects .chapter-inner {
+  #\31 0-segment-architects .segment-architects-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
     row-gap: clamp(18px, 3vh, 28px);
     align-content: center;
   }
-  #\31 0-segment-architects .chapter-inner::before { display: none; }
+  #\31 0-segment-architects .segment-architects-grid::before { display: none; }
   #\31 0-segment-architects .segment-architects-id { max-width: none; }
   #\31 0-segment-architects .segment-architects-data { height: auto; }
   #\31 0-segment-architects .segment-fingerprint { display: none; }
