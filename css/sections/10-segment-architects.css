@@ -140,16 +140,16 @@
   max-width: 28ch;
 }
 
-/* The you-dot anchor — positioned at the share number. */
+/* The you-dot anchor — zero-size invisible spatial target; never visually rendered. */
 #\31 0-segment-architects .segment-architects-dot {
   position: absolute;
   left: 0;
-  bottom: calc(100% + 6px);
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+  top: 50%;
+  width: 0;
+  height: 0;
+  overflow: hidden;
   pointer-events: none;
+  visibility: hidden;
 }
 
 /* ── RIGHT: data / index chart panel ────────────────────────────── */

@@ -137,13 +137,15 @@
   color: var(--ink-soft);
 }
 
-/* The you-dot anchor sits invisibly at the foot of the share line. */
+/* The you-dot anchor — zero-size invisible point, purely a spatial anchor.
+   The global you-dot eases to its centre; never a visible element in layout. */
 #\31 2-segment-coasters .segment-coasters-dot {
   display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 /* ── RIGHT: the book-cover profile card ───────────────────────────── */

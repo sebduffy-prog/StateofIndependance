@@ -10,9 +10,14 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   padding-inline: clamp(28px, 6vw, 110px);
-  padding-block: clamp(28px, 6vh, 72px);
+  padding-block: clamp(14px, 2vh, 28px) clamp(14px, 2vh, 28px);
+}
+
+/* Grid fills the stretched container */
+#\30 9-segments-intro .segments-intro .segments-intro-grid {
+  align-items: center;
 }
 
 /* The tiny Challenger-Series stamp, top-right (book-cover position). */
@@ -138,7 +143,7 @@
 
 #\30 9-segments-intro .segments-intro-compass {
   position: relative;
-  width: min(56vh, 100%, 620px);
+  width: min(68vh, 100%, 680px);
   aspect-ratio: 1 / 1;
 }
 
