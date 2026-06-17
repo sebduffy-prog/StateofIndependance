@@ -1,65 +1,60 @@
 /* ============================================================
-   Chapter 06 — the empowerment architecture (clean rebuild)
+   Chapter 06 — the empowerment architecture
    Scope: #\30 6-empowerment  ("\30 " = escaped digit 0 + space)
-   One continuous warm gradient world. Backgroundless: no white
-   boxes, no scrim plates, no pills behind text. Navy on warm,
-   square corners, no underline, no skew, tabular nums, AA contrast.
+
+   ONE focal point: the marquee venn — three needs pulled together
+   until they meet on empowerment (ART-DIRECTION §7). Everything else
+   is a quiet prelude that leads the eye to it. One continuous warm
+   gradient world, backgroundless: no white boxes, no scrim plates,
+   no pills behind text. Navy on warm, square corners, no underline,
+   no skew, tabular nums, AA contrast. One accent moment = the cream
+   "empowerment" word in the dark shared core.
    ============================================================ */
 
-/* ── Root: the warm gradient world fills the step ── */
+/* ── Root: the warm ground is FULL-BLEED (§2); content held to a centred inner
+      max-width via auto inline padding, with real margins. No cream gutters. ── */
 #\30 6-empowerment .emp-root {
   position: relative;
   isolation: isolate;
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
+  margin: 0;
   background: var(--ground-warm);
   color: var(--soi-navy);
-  padding: clamp(2.25rem, 5vh, 4.5rem) clamp(1.4rem, 4vw, 4rem)
-           clamp(2.75rem, 6vh, 5.5rem);
+  /* clamp() floor = real margins; auto-growing inline padding keeps the content
+     column ~1240px and centred on wide screens (1fr each side of 1240px). */
+  padding: clamp(2.5rem, 6vh, 5rem)
+           max(clamp(24px, 5vw, 96px), calc((100% - 1240px) / 2))
+           clamp(3rem, 7vh, 6rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(2.75rem, 7vh, 6rem);
+  /* large between groups (the prelude → the focal point) */
+  gap: clamp(3rem, 9vh, 7rem);
   overflow: hidden;
 }
 
-/* Decorative orbit motif — behind everything, carries no meaning. */
-#\30 6-empowerment .emp-orbit {
-  z-index: 0;
-  opacity: 0.85;
-}
+/* Decorative orbit — the connective signature, behind everything, no meaning. */
+#\30 6-empowerment .emp-orbit { z-index: 0; opacity: 0.7; }
 #\30 6-empowerment .emp-root > * { position: relative; z-index: 1; }
 
-/* ── Header lockup ── */
+/* ============================================================
+   HERO — one display moment, hangs left, generous negative space.
+   ============================================================ */
 #\30 6-empowerment .emp-head {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
-}
-/* The deck figure is a solid-black silhouette PNG; tint it to navy via a mask
-   so it reads as on-brand ink (never harsh black, never dark-mustard) on the
-   warm ground. The <img> src is masked out and a navy fill shows through. */
-#\30 6-empowerment .emp-head-glyph {
-  display: block;
-  width: 100%;
-  max-width: 250px;
-  aspect-ratio: 170 / 587;   /* the silhouette's intrinsic ratio */
-  height: auto;
-  justify-self: center;
-  background: var(--soi-navy);
-  -webkit-mask: url('../../assets/deck/figure-silhouette.png') center / contain no-repeat;
-  mask: url('../../assets/deck/figure-silhouette.png') center / contain no-repeat;
-  filter: drop-shadow(0 10px 22px rgba(10, 26, 92, 0.22));
+  display: flex;
+  flex-direction: column;
+  /* tight within the group */
+  gap: 0;
+  max-width: 64ch;
 }
 #\30 6-empowerment .emp-eyebrow {
   color: var(--soi-navy);
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.9rem;
 }
 #\30 6-empowerment .emp-title {
   color: var(--soi-navy);
-  margin: 0 0 1.1rem;
-  line-height: 1.04;
+  margin: 0 0 1.4rem;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
 }
 #\30 6-empowerment .emp-standfirst {
   color: var(--soi-navy);
@@ -67,7 +62,8 @@
   font-weight: 500;
   line-height: 1.5;
   margin: 0;
-  opacity: 0.92;
+  max-width: 56ch;
+  opacity: 0.9;
 }
 
 /* Arrival assemble — lines lift + fade in (idempotent; reduced-motion = instant). */
@@ -78,282 +74,131 @@
 #\30 6-empowerment [data-arrival].is-arrived {
   opacity: 1;
   transform: none;
-  transition: opacity 560ms ease, transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 600ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-delay: var(--arrival-delay, 0ms);
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment [data-arrival] { opacity: 1; transform: none; transition: none; }
 }
 
-/* Scroll cue — backgroundless, navy; signals the gated marquee lives below the
-   hero so a reader never hits a locked Next without knowing what to do. */
-#\30 6-empowerment .emp-scrollcue {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin: 1.6rem 0 0;
-  color: var(--soi-navy);
-}
-#\30 6-empowerment .emp-scrollcue-txt {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-#\30 6-empowerment .emp-scrollcue-arrow {
-  width: 11px;
-  height: 11px;
-  border-right: 2.5px solid var(--soi-navy);
-  border-bottom: 2.5px solid var(--soi-navy);
-  transform: rotate(45deg);
-  opacity: 0.7;
-  animation: emp-cue-bob 1.7s ease-in-out infinite;
-}
-@keyframes emp-cue-bob {
-  0%, 100% { transform: rotate(45deg) translate(0, 0); }
-  50% { transform: rotate(45deg) translate(2px, 2px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  #\30 6-empowerment .emp-scrollcue-arrow { animation: none; }
-}
-
-/* ============================================================
-   BEAT 1 — the pivot wipe (survival -> active agency)
-   ============================================================ */
+/* ── PRELUDE — the pivot wipe, a single thin strip (NOT a competing beat) ── */
 #\30 6-empowerment .emp-pivot {
+  --pv: 0.14;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(11.5rem, auto) minmax(0, 1fr);
   align-items: center;
+  gap: clamp(1rem, 2.5vw, 1.8rem);
+  margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  max-width: 40rem;
 }
-#\30 6-empowerment .emp-pivot-title {
-  color: var(--soi-navy);
-  margin: 0 0 1rem;
-  line-height: 1.08;
-}
-#\30 6-empowerment .emp-pivot-intro {
-  color: var(--soi-navy);
-  font-size: var(--t-md);
-  line-height: 1.55;
-  margin: 0;
-  opacity: 0.92;
-}
-#\30 6-empowerment .emp-pivot-mount { position: relative; }
-
-/* Two cross-fading world panels share one stage box. */
-#\30 6-empowerment .emp-pv-stage {
+/* One word at a time — the off side is clipped, never stacked. */
+#\30 6-empowerment .emp-pivot-readout {
   position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  max-height: 56vh;
-  margin: 0 auto;
-}
-#\30 6-empowerment .emp-pv-art {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  will-change: opacity;
-  transition: opacity 360ms ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  #\30 6-empowerment .emp-pv-art { transition: none; }
-}
-
-/* Readout shows exactly ONE side's copy — the off side is clipped, never stacked. */
-#\30 6-empowerment .emp-pv-readout {
   display: grid;
-  margin-top: clamp(1rem, 2.5vh, 1.6rem);
-  min-height: 7.5rem;
+  min-height: 1.5em;
 }
-#\30 6-empowerment .emp-pv-side {
+#\30 6-empowerment .emp-pivot-word {
   grid-area: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  transition: opacity 320ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-#\30 6-empowerment .emp-pv-readout[data-side="before"] .emp-pv-side--after,
-#\30 6-empowerment .emp-pv-readout[data-side="after"] .emp-pv-side--before {
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  #\30 6-empowerment .emp-pv-side { transition: none; }
-}
-#\30 6-empowerment .emp-pv-tag {
   font-weight: 800;
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-#\30 6-empowerment .emp-pv-tag--before { color: var(--soi-navy); opacity: 0.7; }
-#\30 6-empowerment .emp-pv-tag--after { color: var(--soi-navy); }
-#\30 6-empowerment .emp-pv-lead {
-  font-weight: 800;
-  font-size: var(--t-lg);
+  font-size: clamp(1.05rem, 1.8vw, 1.45rem);
+  letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--soi-navy);
+  transition: opacity 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-#\30 6-empowerment .emp-pv-body {
-  margin: 0;
-  font-size: var(--t-md);
-  line-height: 1.5;
-  color: var(--soi-navy);
-  opacity: 0.9;
-  max-width: 42ch;
+#\30 6-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--after,
+#\30 6-empowerment .emp-pivot-readout[data-side="after"] .emp-pivot-word--before {
+  opacity: 0;
+  transform: translateY(6px);
 }
-
-/* The reframe control — backgroundless track, navy fill, square thumb. */
-#\30 6-empowerment .emp-pv-control {
+#\30 6-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--before { opacity: 0.62; }
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-empowerment .emp-pivot-word { transition: none; }
+}
+/* Backgroundless track: faint ink tint, navy fill, square thumb. */
+#\30 6-empowerment .emp-pivot-track {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-top: clamp(1rem, 2.5vh, 1.6rem);
-}
-#\30 6-empowerment .emp-pv-control-text {
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.8;
-}
-#\30 6-empowerment .emp-pv-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 4px;
-  background: rgba(10, 26, 92, 0.22);
-  cursor: pointer;
-  margin: 0.4rem 0;
-}
-#\30 6-empowerment .emp-pv-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
+  align-items: center;
   height: 22px;
+}
+#\30 6-empowerment .emp-pivot-track::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: rgba(10, 26, 92, 0.18);
+}
+#\30 6-empowerment .emp-pivot-fill {
+  position: absolute;
+  left: 0; top: 50%;
+  height: 3px;
+  width: 14%;
+  transform: translateY(-50%);
+  background: var(--soi-navy);
+  pointer-events: none;
+}
+#\30 6-empowerment .emp-pivot-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+#\30 6-empowerment .emp-pivot-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
   background: var(--soi-navy);
   border: 0;
   cursor: grab;
 }
-#\30 6-empowerment .emp-pv-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+#\30 6-empowerment .emp-pivot-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
   background: var(--soi-navy);
   border: 0;
   border-radius: 0;
   cursor: grab;
 }
-#\30 6-empowerment .emp-pv-slider:focus-visible {
+#\30 6-empowerment .emp-pivot-slider:focus-visible {
   outline: 3px solid var(--soi-navy);
   outline-offset: 4px;
 }
 
 /* ============================================================
-   BEAT 2 — the premium (three Q14 count-ups on the ground)
-   ============================================================ */
-#\30 6-empowerment .emp-premium {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 4vh, 2.6rem);
-  align-items: center;
-  text-align: center;
-}
-#\30 6-empowerment .emp-premium-kicker {
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.82;
-  margin: 0;
-}
-#\30 6-empowerment .emp-premium-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.4rem, 4vw, 3.5rem);
-  width: 100%;
-  max-width: 920px;
-}
-#\30 6-empowerment .emp-premium-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-/* reveal helper (stagger from data-stagger on the row parent) */
-#\30 6-empowerment .reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 600ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-#\30 6-empowerment .reveal.is-visible { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  #\30 6-empowerment .reveal { opacity: 1; transform: none; transition: none; }
-}
-#\30 6-empowerment .emp-premium-n {
-  font-weight: 900;
-  font-size: clamp(3rem, 7vw, 6rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-}
-#\30 6-empowerment .emp-premium-lbl {
-  font-size: var(--t-md);
-  font-weight: 500;
-  color: var(--soi-navy);
-}
-#\30 6-empowerment .emp-premium-lbl strong { font-weight: 800; }
-#\30 6-empowerment .emp-premium-tag {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.62;
-}
-#\30 6-empowerment .emp-premium-tag--premium {
-  color: var(--soi-blue);
-  opacity: 1;
-}
-
-/* ============================================================
-   BEAT 3 — the marquee: tactile three-needs venn
+   THE MARQUEE — the focal point: tactile three-needs venn.
+   Generous space; the stage is the hero, the legend supports.
    ============================================================ */
 #\30 6-empowerment .emp-venn {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 4vh, 2.6rem);
   align-items: center;
-  text-align: center;
+  gap: clamp(1.6rem, 4.5vh, 3rem);
 }
 #\30 6-empowerment .emp-venn-title {
   color: var(--soi-navy);
-  margin: 0 0 0.8rem;
-  line-height: 1.08;
-}
-#\30 6-empowerment .emp-venn-intro {
-  color: var(--soi-navy);
-  font-size: var(--t-md);
-  line-height: 1.5;
-  margin: 0 auto;
-  opacity: 0.92;
+  margin: 0;
+  line-height: 1.05;
+  text-align: center;
 }
 #\30 6-empowerment .emp-venn-mount {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.2rem, 3vh, 2.2rem);
+  gap: clamp(1.4rem, 3.5vh, 2.6rem);
 }
 #\30 6-empowerment .emp-tv-stage {
   width: 100%;
-  max-width: 760px;
+  max-width: 720px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -362,20 +207,21 @@
 #\30 6-empowerment .emp-tv-field {
   position: relative;
   width: 100%;
-  aspect-ratio: 5 / 4;
-  max-height: 62vh;
+  aspect-ratio: 1 / 1;
+  max-height: 60vh;
+  max-width: 60vh;
   margin: 0 auto;
 }
 
-/* Soft radial glow that blooms from the shared core as the needs converge —
-   the "they all resolve to one thing" reward (driven by --tv 0..1). */
+/* Soft radial glow blooming from the shared core as the needs converge —
+   the "they all resolve to one thing" reward (driven by --tvg 0..1). */
 #\30 6-empowerment .emp-tv-field::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 78%;
-  height: 78%;
+  width: 80%;
+  height: 80%;
   transform: translate(-50%, -50%) scale(calc(0.5 + var(--tvg, 0) * 0.7));
   border-radius: 50%;
   background: radial-gradient(circle,
@@ -385,7 +231,7 @@
   opacity: var(--tvg, 0);
   pointer-events: none;
   z-index: 1;
-  transition: opacity 240ms ease;
+  transition: opacity 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-tv-field::before { transition: none; }
@@ -408,60 +254,44 @@
 
 /* One-shot reward pulse when the three needs fully resolve. */
 #\30 6-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap {
-  animation: emp-tv-pulse 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: emp-tv-pulse 640ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 @keyframes emp-tv-pulse {
   0% { box-shadow: 0 0 0 0 rgba(10, 26, 92, 0.35); }
-  100% { box-shadow: 0 0 0 26px rgba(10, 26, 92, 0); }
+  100% { box-shadow: 0 0 0 28px rgba(10, 26, 92, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap { animation: none; }
 }
 
-/* Centre word assembles as the needs converge (driven by --tv 0..1). */
+/* Centre word assembles as the needs converge (driven by --tv 0..1). The ONE
+   accent moment of the screen: cream on the dark navy core. */
 #\30 6-empowerment .emp-tv-centre {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
   text-align: center;
   pointer-events: none;
-  opacity: calc(0.25 + var(--tv, 0) * 0.75);
+  opacity: calc(0.2 + var(--tv, 0) * 0.8);
   z-index: 4;
 }
-#\30 6-empowerment .emp-tv-centre-lbl {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--soi-cream);
-  opacity: calc(var(--tv, 0));
-}
 #\30 6-empowerment .emp-tv-centre-word {
+  display: block;
   font-weight: 900;
-  font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+  font-size: clamp(1.5rem, 3.8vw, 2.9rem);
   letter-spacing: -0.02em;
   line-height: 1;
   color: var(--soi-cream);
-  transform: scale(calc(0.86 + var(--tv, 0) * 0.14));
-  transition: text-shadow 320ms ease;
+  transform: scale(calc(0.84 + var(--tv, 0) * 0.16));
+  transition: text-shadow 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 /* On full resolution the word gains a soft cream glow — the finishing flourish. */
 #\30 6-empowerment .emp-tv-centre.is-on .emp-tv-centre-word {
-  text-shadow: 0 0 24px rgba(238, 233, 221, 0.45);
+  text-shadow: 0 0 26px rgba(238, 233, 221, 0.45);
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-tv-centre-word { transition: none; }
-}
-#\30 6-empowerment .emp-tv-centre-sub {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--soi-cream);
-  opacity: calc(var(--tv, 0));
 }
 /* Before the overlap is dark enough, keep the word navy for contrast. */
 #\30 6-empowerment .emp-tv-stage:not(.is-converging) .emp-tv-centre-word { color: var(--soi-navy); }
@@ -482,8 +312,8 @@
 #\30 6-empowerment .emp-tv-need.is-dragging { z-index: 5; cursor: grabbing; }
 #\30 6-empowerment .emp-tv-need-lbl {
   font-weight: 800;
-  font-size: clamp(0.85rem, 1.6vw, 1.15rem);
-  letter-spacing: 0.02em;
+  font-size: clamp(0.9rem, 1.7vw, 1.2rem);
+  letter-spacing: 0.01em;
   color: var(--soi-cream);
   pointer-events: none;
   text-transform: lowercase;
@@ -498,31 +328,33 @@
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--soi-navy);
-  opacity: 0.8;
+  opacity: 0.75;
   min-height: 1.4em;
+  text-align: center;
 }
 #\30 6-empowerment .emp-tv-stage.is-converged .emp-tv-hint {
   color: var(--soi-blue);
   opacity: 1;
 }
 
-/* Legend — backgroundless focusable rows (also the keyboard path). */
+/* Legend — backgroundless focusable rows; keyboard path AND the inline data
+   reality (each verified Q14 value reads at its need). */
 #\30 6-empowerment .emp-tv-legend {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(0.8rem, 2.5vw, 2rem);
+  gap: clamp(1rem, 3vw, 2.4rem);
   width: 100%;
-  max-width: 640px;
+  max-width: 660px;
 }
 #\30 6-empowerment .emp-tv-leg {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.5rem 0.4rem;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.7rem 0 0;
   cursor: pointer;
   border-top: 3px solid var(--accent);
-  transition: transform 200ms ease;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 6-empowerment .emp-tv-leg:hover,
 #\30 6-empowerment .emp-tv-leg:focus-visible { transform: translateY(-3px); }
@@ -530,20 +362,21 @@
   outline: 3px solid var(--soi-navy);
   outline-offset: 3px;
 }
-#\30 6-empowerment .emp-tv-leg-name {
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: var(--soi-navy);
-}
 #\30 6-empowerment .emp-tv-leg-n {
   font-weight: 900;
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   color: var(--soi-navy);
   font-variant-numeric: tabular-nums;
 }
+#\30 6-empowerment .emp-tv-leg-name {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--soi-navy);
+}
 #\30 6-empowerment .emp-tv-leg-sub {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -557,24 +390,25 @@
 }
 
 /* ============================================================
-   Responsive — stack columns; never overflow, never cut off.
+   Responsive — stack; never overflow, never cut off.
    ============================================================ */
-@media (max-width: 860px) {
-  #\30 6-empowerment .emp-head,
-  #\30 6-empowerment .emp-pivot {
-    grid-template-columns: 1fr;
-  }
-  #\30 6-empowerment .emp-head-glyph { max-width: 180px; }
+@media (max-width: 720px) {
+  #\30 6-empowerment .emp-pivot { grid-template-columns: 1fr; gap: 0.6rem; }
+  #\30 6-empowerment .emp-tv-legend { gap: 0.9rem; }
 }
-@media (max-width: 600px) {
-  #\30 6-empowerment .emp-premium-row {
-    grid-template-columns: 1fr;
-    gap: 1.6rem;
-  }
+@media (max-width: 540px) {
   #\30 6-empowerment .emp-tv-legend {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
+    gap: 0.6rem;
     max-width: 320px;
   }
-  #\30 6-empowerment .emp-tv-field { aspect-ratio: 1 / 1; }
+  #\30 6-empowerment .emp-tv-leg {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.6rem;
+    border-top: 0;
+    border-left: 3px solid var(--accent);
+    padding: 0.2rem 0 0.2rem 0.7rem;
+  }
+  #\30 6-empowerment .emp-tv-leg-n { font-size: 1.6rem; }
 }

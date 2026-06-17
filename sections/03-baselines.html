@@ -1,112 +1,75 @@
 <div class="chapter-inner on-warm" id="bl">
 
-  <!-- Decorative world: thin orbit rings + seed dots. Behind everything,
-       pointer-events:none, never carry meaning. -->
+  <!-- Decorative world: one thin orbit ring, behind everything,
+       pointer-events:none, never carries meaning. -->
   <div class="bl-orbit si-orbit si-orbit--spin" aria-hidden="true"></div>
-  <span class="bl-seed bl-seed--a" aria-hidden="true"></span>
-  <span class="bl-seed bl-seed--b" aria-hidden="true"></span>
 
-  <!-- ── Opener ─────────────────────────────────────────────── -->
+  <!-- ── Opener — hangs on the left axis ─────────────────────── -->
   <header class="bl-head">
     <p class="vccp-stage-num" data-arrival>The numbers you already know</p>
-    <h2 class="bl-headline si-display si-display--caseless">
+    <h2 class="bl-headline si-display">
       <span data-arrival>Carefulness is</span>
       <span data-arrival>the new <span class="hl" data-arrival-scramble>baseline</span></span>
     </h2>
     <p class="bl-standfirst si-measure" data-arrival>
-      Yes, the country is cost-conscious. Yes, budgets are constricted. These
-      hallmarks of the squeeze are the operational floor &mdash; table stakes,
-      not the strategy.
+      The country is cost-conscious; budgets are constricted. These hallmarks of
+      the squeeze are the operational floor &mdash; table stakes, not the strategy.
     </p>
   </header>
 
-  <!-- ── Beat 01 · 77% careful — the MARQUEE ──────────────────
-       Guess first; the truth then assembles as a 100-in-100 crowd
-       with the visitor's own square singled out. -->
-  <section class="bl-beat bl-beat--hero reveal" aria-labelledby="bl-t1">
-    <div class="bl-lede">
-      <span class="bl-index" aria-hidden="true">01 / 04</span>
-      <p class="bl-numline" id="bl-t1">
-        <span class="si-bignum bl-num" data-careful-num>77<span class="bl-pct">%</span></span>
-      </p>
-      <p class="bl-label">are more careful with money than they were five years ago.</p>
-      <p class="bl-sentence si-measure">
-        Carefulness is now the default lens on every spend decision &mdash; not a
-        passing mood, but the baseline.
-      </p>
+  <!-- ── THE ONE MEMORABLE THING ──────────────────────────────
+       You guess; the truth lands as a crowd of 100 with YOUR
+       square in it. The number is display-scale; the crowd is
+       the form. Everything else on the screen is quiet. -->
+  <section class="bl-hero" aria-labelledby="bl-claim">
+    <!-- LEFT: the claim. Before lock-in the guess lives here; after,
+         the display number IS the headline. -->
+    <div class="bl-claim" data-claim>
+      <div class="bl-guess" data-guess></div>
+
+      <div class="bl-truth" data-truth hidden>
+        <p class="bl-numline">
+          <span class="si-bignum bl-num" data-careful-num aria-hidden="true">77<span class="bl-pct">%</span></span>
+        </p>
+        <p class="bl-label" id="bl-claim">are more careful with money than they were five years ago.</p>
+        <p class="bl-sentence si-measure">
+          Carefulness is now the default lens on every spend decision &mdash; not a
+          passing mood, the baseline.
+        </p>
+      </div>
     </div>
 
-    <div class="bl-marquee">
-      <div class="bl-guess" data-guess></div>
-      <figure class="bl-crowd" data-crowd hidden>
-        <div class="bl-crowd-grid" data-crowd-grid role="img"
-             aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."
-             data-youdot-anchor></div>
-        <figcaption class="bl-crowd-cap">
-          <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
-          <span class="bl-crowd-of">of every 100 people you pass today &mdash; and one of them is you.</span>
-        </figcaption>
-      </figure>
-    </div>
+    <!-- RIGHT: the crowd of 100. The reality the number describes. -->
+    <figure class="bl-crowd" data-crowd hidden>
+      <div class="bl-crowd-grid" data-crowd-grid role="img"
+           aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."
+           data-youdot-anchor></div>
+      <figcaption class="bl-crowd-cap">
+        <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
+        <span class="bl-crowd-of">of every 100 people you pass today &mdash; and one of them is you.</span>
+      </figcaption>
+    </figure>
   </section>
 
-  <!-- ── The three supporting baselines ───────────────────────── -->
-  <div class="bl-grid">
-
-    <!-- Beat 02 · 55% deal-seeking — lollipop -->
-    <section class="bl-beat reveal" aria-labelledby="bl-t2">
-      <div class="bl-lede">
-        <span class="bl-index" aria-hidden="true">02 / 04</span>
-        <p class="bl-numline" id="bl-t2">
-          <span class="si-bignum bl-num bl-num--md num" data-count-to="55" data-count-suffix="%">55%</span>
-        </p>
-        <p class="bl-label">actively hunt out deals and shop around.</p>
-        <p class="bl-sentence si-measure">
-          Deal-seeking is a habit now, not a chore.
-        </p>
+  <!-- ── The operational floor — quiet supporting evidence ────
+       The other table-stakes baselines, demoted to a single
+       restrained line so the crowd stays the sole focal point.
+       Verified data, no charts, no boxes. -->
+  <aside class="bl-floor" aria-label="The rest of the operational floor">
+    <p class="bl-floor-kicker">The rest of the floor</p>
+    <dl class="bl-floor-row">
+      <div class="bl-floor-fig">
+        <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
+        <dd class="bl-floor-lbl">actively hunt out deals and shop around.</dd>
       </div>
-      <figure class="bl-chart">
-        <figcaption class="bl-chart-sub">Money-saving moves in the last three months</figcaption>
-        <div class="bl-chart-stage" data-lollipop-money></div>
-      </figure>
-    </section>
-
-    <!-- Beat 03 · 60% anxious — dot plot -->
-    <section class="bl-beat reveal" aria-labelledby="bl-t3">
-      <div class="bl-lede">
-        <span class="bl-index" aria-hidden="true">03 / 04</span>
-        <p class="bl-numline" id="bl-t3">
-          <span class="si-bignum bl-num bl-num--md num" data-count-to="60" data-count-suffix="%">60%</span>
-        </p>
-        <p class="bl-label">feel anxious about what the next few months bring.</p>
-        <p class="bl-sentence si-measure">
-          The mood is forward-looking and unsettled.
-        </p>
+      <div class="bl-floor-fig">
+        <dt class="bl-floor-num num"><span data-count-to="60" data-count-suffix="%">60%</span></dt>
+        <dd class="bl-floor-lbl">feel anxious about the next few months.</dd>
       </div>
-      <figure class="bl-chart">
-        <figcaption class="bl-chart-sub">Very or extremely concerned about availability</figcaption>
-        <div class="bl-chart-stage" data-dotplot-avail></div>
-      </figure>
-    </section>
-
-    <!-- Beat 04 · 54% trading down — tug-of-war + proportion read -->
-    <section class="bl-beat bl-beat--wide reveal" aria-labelledby="bl-t4">
-      <div class="bl-lede">
-        <span class="bl-index" aria-hidden="true">04 / 04</span>
-        <p class="bl-numline" id="bl-t4">
-          <span class="si-bignum bl-num bl-num--md num" data-count-to="54" data-count-suffix="%">54%</span>
-        </p>
-        <p class="bl-label">are trading down to cheaper grocery alternatives.</p>
-        <p class="bl-sentence si-measure">
-          The single clearest behavioural signal in the data &mdash; over half
-          are swapping to own-label and smaller baskets.
-        </p>
+      <div class="bl-floor-fig">
+        <dt class="bl-floor-num num"><span data-count-to="54" data-count-suffix="%">54%</span></dt>
+        <dd class="bl-floor-lbl">are trading down to cheaper groceries.</dd>
       </div>
-      <figure class="bl-chart bl-chart--tug">
-        <figcaption class="bl-chart-sub">Their weekly grocery basket, right now</figcaption>
-        <div class="bl-chart-stage" data-tug-grocery></div>
-      </figure>
-    </section>
-
-  </div>
+    </dl>
+  </aside>
 </div>

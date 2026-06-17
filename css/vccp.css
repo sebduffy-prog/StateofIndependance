@@ -4,32 +4,18 @@
    Chapter builders scope their own styles in css/sections/{id}.css;
    they REUSE the tokens + classes declared here and never edit this file.
 
-   The visual world (DESIGN-WORLD-V2): warm mustard->orange->coral GRADIENT
-   grounds, cream silhouettes, thin orbit-circle motifs, navy for dark/data,
-   Poppins display. Square corners. NO underlines. NO blocks behind text.
-   NO source captions. Reduced-motion safe.
+   The bar is docs/ART-DIRECTION.md: a £100k, art-directed, experiential
+   piece — restrained, cinematic, tactile. Warm mustard->orange GROUNDS
+   dominate; navy is gravity; cream is silhouette; ONE teal accent. Poppins,
+   dramatic type contrast, asymmetric editorial grid, one focal point per
+   screen, generous negative space, ONE easing system. Square corners.
+   NO underlines. NO blocks behind text. NO source captions. Reduced-motion
+   safe. Tabular numbers.
    ============================================================ */
 
 /* ============================================================
-   SELF-HOSTED FONTS — Inter Tight (kept declared, no longer the
-   primary face; harmless legacy faces in assets/fonts/).
-   ============================================================ */
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/fonts/inter-tight-300.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/inter-tight-400.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/inter-tight-500.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/inter-tight-600.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/inter-tight-700.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:italic; font-weight:400; font-display:swap; src:url('../assets/fonts/inter-tight-400-italic.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:italic; font-weight:500; font-display:swap; src:url('../assets/fonts/inter-tight-500-italic.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:800; font-display:swap; src:url('../assets/fonts/inter-tight-800.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:normal; font-weight:900; font-display:swap; src:url('../assets/fonts/inter-tight-900.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:italic; font-weight:800; font-display:swap; src:url('../assets/fonts/inter-tight-800-italic.woff2') format('woff2'); }
-@font-face { font-family:'Inter Tight'; font-style:italic; font-weight:900; font-display:swap; src:url('../assets/fonts/inter-tight-900-italic.woff2') format('woff2'); }
-
-/* ============================================================
-   SELF-HOSTED FONTS — Poppins (primary face). Weights 400-900
-   normal + 400/600 italic. Family name 'Poppins'. font-display
-   :swap avoids FOIT. This is --font-sans.
+   SELF-HOSTED FONTS — Poppins (the primary face). Weights 400-900
+   normal + 400/600 italic. font-display:swap avoids FOIT.
    ============================================================ */
 @font-face { font-family:'Poppins'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/poppins-400.woff2') format('woff2'); }
 @font-face { font-family:'Poppins'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/poppins-500.woff2') format('woff2'); }
@@ -41,10 +27,10 @@
 @font-face { font-family:'Poppins'; font-style:italic; font-weight:600; font-display:swap; src:url('../assets/fonts/poppins-600-italic.woff2') format('woff2'); }
 
 /* ============================================================
-   TOKENS — the SOI design world (DESIGN-WORLD-V2 §1).
+   TOKENS
    ============================================================ */
 :root {
-  /* ── Warm grounds (the signature world) ────────────────── */
+  /* ── Warm grounds (the signature world, 60-70% of the piece) ── */
   --soi-amber:   #FBC100;   /* core mustard — base of every warm ground */
   --soi-gold:    #FCD407;   /* lightest warm tint — top of gradient */
   --soi-orange:  #FD8D20;   /* the orange the mustard warms into */
@@ -55,18 +41,18 @@
   --soi-cream-warm: #FAE9C5; /* warmer cream variant for figures */
   --soi-page:       #F4F1EA; /* warm off-white page ground (default light) */
 
-  /* ── Navy / blue (dark, data, headlines on light) ──────── */
+  /* ── Navy / blue (gravity: text, data, the bear) ───────── */
   --soi-navy:        #0A1A5C; /* signature dark; ink for headlines on light */
   --soi-blue:        #0B3DB4; /* bright royal-blue ground centre */
   --soi-blue-deep:   #073AAC; /* darker blue stop */
-  --soi-navy-velvet: #16194A; /* deep-navy ground for quote / twist punctuation */
+  --soi-navy-velvet: #16194A; /* deep-navy ground for quote / punctuation */
 
-  /* ── Orbit lines, seeds, accents ───────────────────────── */
-  --soi-orbit:        rgba(255,255,255,0.26); /* thin concentric orbit lines */
-  --soi-orbit-strong: rgba(255,255,255,0.34);
+  /* ── Orbit lines, seeds, the ONE teal accent ───────────── */
+  --soi-orbit:        rgba(255,255,255,0.22); /* thin concentric orbit lines */
+  --soi-orbit-strong: rgba(255,255,255,0.32);
   --soi-seed:         #FCC107; /* pale mustard seed dots on orbit lines */
-  --soi-teal:         #2BB7E8; /* cover-maze ring + ch.09 accent (sparingly) */
-  --soi-teal-pale:    #A6E1F8; /* lightest teal */
+  --soi-teal:         #2BB7E8; /* THE single accent — orbit ring + ch.09 (sparing) */
+  --soi-teal-pale:    #A6E1F8;
 
   /* ── Data / chart series (flat — clarity over decoration) ─ */
   --soi-azure: #1E90FF; /* AI-use series */
@@ -78,7 +64,7 @@
   --ink-soft: #2A3258;
   --paper:    #FFFFFF;
 
-  /* ── Signature gradients ───────────────────────────────── */
+  /* ── Signature gradients (grounds only — never on charts) ─ */
   --ground-warm: linear-gradient(135deg,
                    var(--soi-gold)   0%,
                    var(--soi-amber)  42%,
@@ -88,34 +74,48 @@
                    var(--soi-blue-deep) 0%,
                    var(--soi-blue)      55%,
                    #194DC8              100%);
-  /* warm-page -> gradient bleed, for de-blocked section transitions */
   --ground-warm-soft: linear-gradient(180deg,
                    var(--soi-page) 0%,
                    #FBEAC4         60%,
                    var(--soi-amber) 100%);
 
-  /* ── Contrast-safe foregrounds per ground ──────────────── */
+  /* ── Contrast-safe foregrounds per ground (§3) ─────────── */
   --on-warm:  var(--soi-navy);  /* navy on amber */
   --on-navy:  var(--soi-cream); /* cream on navy/blue */
   --on-paper: var(--ink-soft);  /* ink on warm off-white */
 
-  /* ── Spacing scale (8px base) — one rhythm everywhere ──── */
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 40px;
-  --space-5: 64px;
-  --space-6: 96px;
-  --space-7: 128px;
+  /* ── Spacing — 8px base; tight within / large between (§2) ─ */
+  --space-1:  8px;    /* within a group */
+  --space-2:  16px;   /* within a group */
+  --space-3:  24px;
+  --space-4:  40px;
+  --space-5:  64px;   /* between groups */
+  --space-6:  96px;   /* between groups */
+  --space-7:  128px;  /* between groups */
+  /* Editorial outer margin — nothing but the ground touches the edge. */
+  --margin-page: clamp(24px, 5vw, 96px);
 
-  /* ── Type ──────────────────────────────────────────────── */
+  /* ── Type — exact Poppins scale (ART-DIRECTION §1) ─────── */
   --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --t-display: clamp(3.5rem, 7.6vw, 8.2rem); /* hero / full-bleed titles */
-  --t-xl: clamp(2.8rem, 5.2vw, 5rem);        /* divider / section titles */
-  --t-lg: clamp(1.8rem, 2.6vw, 2.6rem);
+  /* Display: the ONE hero line per screen. Poppins 900. */
+  --t-display: clamp(3.5rem, 8vw, 8rem);
+  /* Sub-head. Poppins 600. */
+  --t-sub:     clamp(1.5rem, 2.6vw, 2.4rem);
+  /* Hero stat — the number IS the headline. */
+  --t-bignum:  clamp(4.4rem, 9.6vw, 9.6rem);
+  /* Legacy aliases kept so chapter CSS that reads them still resolves. */
+  --t-xl: clamp(2.8rem, 5.2vw, 5rem);
+  --t-lg: var(--t-sub);
   --t-md: clamp(1.15rem, 1.4vw, 1.4rem);
-  --t-sm: 0.95rem;
+  --t-sm: 1rem;
   --t-xs: 0.78rem;
+
+  /* ── Motion — ONE easing system (ART-DIRECTION §4) ─────── */
+  --ease-entrance: cubic-bezier(0.2, 0.8, 0.2, 1);  /* arrivals, reveals */
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);       /* leaves */
+  --dur-micro:     180ms;  /* hover / focus acknowledgement */
+  --dur-reveal:    720ms;  /* the 600-900ms reveal band */
+  --dur-reveal-lg: 900ms;
 
   /* ── Journey engine ────────────────────────────────────── */
   --journey-controls-h: 72px;
@@ -130,8 +130,8 @@ html, body { margin: 0; padding: 0; }
 body {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: var(--t-sm);
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.5;
   color: var(--ink);
   background: var(--soi-page);
   font-feature-settings: 'tnum';
@@ -143,45 +143,73 @@ img { display: block; object-fit: contain; }
 /* Tabular numerals on every figure so counters never jitter. */
 .num, [data-count-to] { font-variant-numeric: tabular-nums; }
 
+/* Headings: sub-head weight by default. The display moment is .si-display. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: 1.1;
+  line-height: 1.05;
   margin: 0 0 0.4em;
 }
-h3, h4, h5, h6 { font-weight: 600; }
 
 /* HARD RULE: no underlines anywhere. */
 a { color: inherit; text-decoration: none; }
 a:hover { text-decoration: none; }
 
 /* ============================================================
-   TYPE SCALE — display + big numbers (DESIGN-WORLD-V2 §2)
-   The huge stat IS the headline. Poppins 900, tight tracking.
+   TYPE SCALE — dramatic contrast, nothing in the muddy middle (§1)
    ============================================================ */
+
+/* Display — the ONE hero line per screen. Poppins 900.
+   Sentence case is the default (narrative); UPPERCASE is opt-in via
+   .si-display--upper, used only for divider/move titles + the wordmark.
+   Section CSS that sets its own text-transform always wins. */
 .si-display {
   font-family: var(--font-sans);
   font-weight: 900;
-  text-transform: uppercase;   /* uppercase OPTIONAL — drop on a span if not wanted */
-  letter-spacing: -0.02em;
-  line-height: 0.9;
   font-size: var(--t-display);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: none;
   margin: 0;
 }
 .si-display--lg { font-size: var(--t-display); }
-.si-display--sm { font-size: var(--t-xl); font-weight: 800; }
-.si-display--black { font-weight: 900; letter-spacing: -0.04em; }
-.si-display--caseless { text-transform: none; }
+.si-display--sm { font-size: var(--t-sub); font-weight: 600; letter-spacing: -0.01em; line-height: 1.05; }
+.si-display--black { font-weight: 900; letter-spacing: -0.03em; }
+.si-display--upper { text-transform: uppercase; letter-spacing: -0.01em; }
+.si-display--caseless { text-transform: none; } /* legacy alias — now a no-op vs the new default */
 
+/* Hero stat — the number IS the headline. Poppins 900, tabular. */
 .si-bignum {
   font-weight: 900;
   letter-spacing: -0.03em;
-  font-size: clamp(4.4rem, 9.6vw, 9.6rem);
+  font-size: var(--t-bignum);
   line-height: 0.86;
   font-variant-numeric: tabular-nums;
   margin: 0;
 }
+
+/* Sub-head utility. */
+.si-subhead {
+  font-weight: 600;
+  font-size: var(--t-sub);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+/* Standfirst — set above body, held to measure. Poppins 500. */
+.si-standfirst {
+  font-weight: 500;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.5;
+  max-width: 58ch;
+  margin: 0;
+}
+
+/* Body measure — text never runs the full page width (52-62ch). */
+.si-measure { max-width: 60ch; }
+.si-measure--tight { max-width: 52ch; }
 
 /* ── .hl — emphasis is COLOUR + WEIGHT only. No box, no underline,
    no parallelogram, no fill behind glyphs. ──────────────────── */
@@ -189,9 +217,11 @@ a:hover { text-decoration: none; }
   font-weight: 700;
   color: var(--soi-orange);
   background: none;
+  border: 0;
+  text-decoration: none;
 }
-.hl-teal { color: var(--soi-teal); font-weight: 700; }
-/* On a warm ground orange clashes with the bed -> flip to navy. */
+.hl-teal { color: var(--soi-teal); font-weight: 700; background: none; }
+/* On a warm ground orange clashes with the bed -> flip emphasis to navy. */
 .si-ground-warm .hl,
 .on-warm .hl { color: var(--soi-navy); }
 /* On navy/blue grounds emphasis flips to warm amber. */
@@ -201,14 +231,15 @@ a:hover { text-decoration: none; }
 /* Emphasis inside a Black display heading inherits its leading. */
 .si-display .hl { line-height: inherit; }
 
-/* ── Eyebrow / kicker — one per section, no rule under it ── */
+/* ── Eyebrow / kicker — Poppins 600, UPPERCASE, +0.18em, 0.7 opacity ── */
 .vccp-eyebrow {
   display: block;
-  font-size: var(--t-xs);
+  font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
   color: var(--soi-navy);
+  opacity: 0.7;
   margin: 0 0 var(--space-2);
 }
 
@@ -217,11 +248,13 @@ a:hover { text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--soi-orange);
-  margin-bottom: 14px;
+  opacity: 0.85;
+  margin-bottom: var(--space-2);
 }
 .vccp-stage-num::before {
   content: "";
@@ -231,11 +264,18 @@ a:hover { text-decoration: none; }
   flex: 0 0 auto;
 }
 
-/* ── Prose measure — text never runs the full page width ─── */
-.si-measure { max-width: 62ch; }
+/* ── Stat label (small caps kicker above a big number) ───── */
+.vccp-stat-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
 
 /* ============================================================
-   GROUNDS + CONTRAST UTILITIES (DESIGN-WORLD-V2 §1, §6)
+   GROUNDS + CONTRAST UTILITIES (§3)
    Each ground owns a stacking context and a guaranteed-legible
    foreground. Decorative overlays sit behind real content.
    ============================================================ */
@@ -271,20 +311,20 @@ a:hover { text-decoration: none; }
 .on-paper { color: var(--on-paper); }
 
 /* Headlines / eyebrows resolve to the ground's safe foreground. */
-.si-ground-warm :is(h1,h2,h3,.si-display,.si-bignum,.vccp-eyebrow),
-.on-warm :is(h1,h2,h3,.si-display,.si-bignum,.vccp-eyebrow) { color: var(--on-warm); }
-.si-ground-blue :is(h1,h2,h3,.si-display,.si-bignum,.vccp-eyebrow),
-.si-dark :is(h1,h2,h3,.si-display,.si-bignum,.vccp-eyebrow),
-.on-navy :is(h1,h2,h3,.si-display,.si-bignum,.vccp-eyebrow) { color: var(--on-navy); }
-/* On warm/dark grounds the stage-num kicker follows the ground. */
+.si-ground-warm :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.on-warm :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow) { color: var(--on-warm); }
+.si-ground-blue :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.si-dark :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.on-navy :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow) { color: var(--on-navy); }
+/* The stage-num kicker follows the ground. */
 .si-ground-warm .vccp-stage-num,
 .on-warm .vccp-stage-num { color: var(--soi-navy); }
 .si-ground-blue .vccp-stage-num,
 .si-dark .vccp-stage-num,
 .on-navy .vccp-stage-num { color: var(--soi-amber); }
 
-/* ── Orbit-motif overlay — thin concentric circles, decorative
-   only, behind content, never carries meaning, ignores pointer. */
+/* ── Orbit-motif overlay — thin concentric circles, decorative only,
+   behind content, carries no meaning, ignores the pointer (§6). ── */
 .si-orbit {
   position: absolute;
   inset: 0;
@@ -305,7 +345,7 @@ a:hover { text-decoration: none; }
 }
 .si-orbit--center { background-position: center; }
 @media (prefers-reduced-motion: no-preference) {
-  .si-orbit--spin { animation: si-orbit-spin 120s linear infinite; transform-origin: 70% 50%; }
+  .si-orbit--spin { animation: si-orbit-spin 160s linear infinite; transform-origin: 70% 50%; }
 }
 @keyframes si-orbit-spin { to { transform: rotate(360deg); } }
 
@@ -350,18 +390,19 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   padding-bottom: calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem));
 }
 
-/* A chapter centres its inner composition with generous padding. */
+/* A chapter holds its composition with generous, intentional margins.
+   Left-aligned by default — editorial, not a centred column. */
 .chapter {
   display: flex;
   align-items: center;
-  padding: clamp(4rem, 7vh, 8rem) clamp(20px, 5vw, 88px)
-           calc(var(--journey-controls-h) + clamp(2rem, 5vh, 4rem)) clamp(20px, 5vw, 88px);
+  padding: clamp(4rem, 7vh, 8rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(2rem, 5vh, 4rem)) var(--margin-page);
 }
 .chapter--bleed { padding: 0; align-items: stretch; }
 .chapter--bleed > .chapter-inner { max-width: none; }
 .chapter--dense {
-  padding: clamp(2rem, 3vh, 3.5rem) clamp(20px, 5vw, 88px)
-           calc(var(--journey-controls-h) + clamp(1.5rem, 3vh, 2.5rem)) clamp(20px, 5vw, 88px);
+  padding: clamp(2rem, 3vh, 3.5rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(1.5rem, 3vh, 2.5rem)) var(--margin-page);
 }
 .chapter-inner {
   width: 100%;
@@ -373,14 +414,14 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
    chapter-scoped `#id { display: … }` rule that would otherwise leak. */
 .journey-step[hidden] { display: none !important; }
 
-/* Step entry — fade + gentle slide each time a step becomes current. */
+/* Step entry — ONE arrival: fade + gentle lift, on the entrance easing. */
 @media (prefers-reduced-motion: no-preference) {
   .journey-step:not([hidden]) {
-    animation: journey-step-in 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: journey-step-in var(--dur-reveal) var(--ease-entrance) both;
   }
 }
 @keyframes journey-step-in {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -415,11 +456,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   min-width: 0;
 }
 .journey-indicator {
-  font-size: var(--t-xs);
+  font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--soi-navy);
+  opacity: 0.7;
 }
 /* Gentle "try it" affordance — soft gating, Next is always allowed. */
 .journey-hint {
@@ -433,14 +475,17 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 /* On-brand square buttons, no underline, no parallelogram. */
 .journey-btn {
   flex: 0 0 auto;
-  font: 600 var(--t-sm)/1 var(--font-sans);
+  font: 600 0.95rem/1 var(--font-sans);
   letter-spacing: 0.04em;
   padding: 13px clamp(18px, 2.4vw, 30px);
   border: 1px solid var(--soi-navy);
   background: transparent;
   color: var(--soi-navy);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.18s ease, opacity 0.18s ease;
+  transition: transform var(--dur-micro) var(--ease-entrance),
+              box-shadow var(--dur-micro) var(--ease-entrance),
+              background var(--dur-micro) var(--ease-entrance),
+              opacity var(--dur-micro) var(--ease-entrance);
 }
 .journey-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 0 var(--soi-navy); }
 .journey-btn-primary { background: var(--soi-navy); color: var(--soi-cream); }
@@ -452,21 +497,22 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 @media (prefers-reduced-motion: reduce) { .journey-btn { transition: none; } }
 
-/* ── Orbit progress MERIDIAN — thin completion arc in the controls ── */
+/* ── Orbit progress MERIDIAN — thin completion arc in the controls (§6) ── */
 .journey-meridian { flex: 0 0 auto; display: block; }
 .journey-meridian__track { stroke: rgba(10, 26, 92, 0.16); stroke-width: 2; }
 .journey-meridian__fill {
   stroke: var(--soi-amber);
   stroke-width: 2.4;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: stroke-dashoffset var(--dur-reveal) var(--ease-entrance);
 }
 @media (prefers-reduced-motion: reduce) { .journey-meridian__fill { transition: none; } }
 
-/* Commit pulse when a gated step unlocks (transform/box-shadow only). */
+/* Commit pulse when a gated step unlocks (transform/box-shadow only,
+   critically damped — no cartoon bounce). */
 .journey-next.is-magnetic { will-change: transform; }
 @media (prefers-reduced-motion: no-preference) {
-  .journey-next.is-committed { animation: journey-commit 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .journey-next.is-committed { animation: journey-commit 0.5s var(--ease-entrance); }
 }
 @keyframes journey-commit {
   0%   { box-shadow: 0 0 0 0 rgba(251, 193, 0, 0.55); }
@@ -475,18 +521,19 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 
 /* ============================================================
-   CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor
-   (DESIGN-WORLD-V2 cinematic feel). Transform/opacity only,
-   reduced-motion settles to the composed state.
+   CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor (§4, §6)
+   Transform/opacity only; reduced-motion settles to the composed state.
    ============================================================ */
 
-/* Arrival: lines assemble (lift + fade) staggered. They begin hidden
-   only when JS drives them, so a no-JS capture still shows the copy. */
+/* Arrival: lines assemble (lift + fade) staggered on the entrance easing.
+   They begin hidden only when JS drives them, so a no-JS capture still
+   shows the copy. */
 @media (prefers-reduced-motion: no-preference) {
   [data-arrival] {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform: translateY(16px);
+    transition: opacity var(--dur-reveal) var(--ease-entrance),
+                transform var(--dur-reveal) var(--ease-entrance);
     transition-delay: var(--arrival-delay, 0ms);
     will-change: opacity, transform;
   }
@@ -503,12 +550,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   justify-content: center;
   background: var(--ground-warm);
   opacity: 1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s var(--ease-exit);
 }
 .arrival-ritual.is-leaving { opacity: 0; }
 .arrival-ritual__inner { display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .arrival-ritual__line {
-  font: 600 var(--t-sm)/1.2 var(--font-sans);
+  font: 600 0.95rem/1.2 var(--font-sans);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--soi-navy);
@@ -527,12 +574,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   background: var(--soi-navy);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 1.4s var(--ease-entrance);
 }
 .arrival-ritual.is-live .arrival-ritual__fill { transform: scaleX(1); }
 
 /* Persistent "you" marker — small mustard dot, soft glow, never catches
-   the pointer, sits below the controls. */
+   the pointer, sits below the controls (§6). */
 .you-dot {
   position: fixed;
   top: 0; left: 0;
@@ -542,7 +589,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   box-shadow: 0 0 0 3px rgba(251, 193, 0, 0.22), 0 2px 8px rgba(10, 26, 92, 0.35);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity var(--dur-reveal) var(--ease-entrance);
   will-change: transform;
 }
 .you-dot.is-live { opacity: 0.92; }
@@ -561,13 +608,13 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 
 /* ============================================================
-   COMPONENTS
+   DATA — backgroundless; faint ink tracks, never white boxes (§5)
    ============================================================ */
 
-/* ── Box-less chart holder — charts NEVER sit in a white box.
-   Layout ONLY: no background, border, shadow or radius. The chart
-   sits directly on its (often gradient) ground; the surrounding
-   .si-ground-* / .on-* utility carries contrast. ─────────────── */
+/* Box-less chart holder — charts NEVER sit in a white box. Layout ONLY:
+   no background, border, shadow or radius. The chart sits directly on its
+   (often gradient) ground; the surrounding .si-ground-* / .on-* utility
+   carries contrast. */
 .chart-holder {
   display: flex;
   flex-direction: column;
@@ -580,8 +627,23 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 .chart-holder > figure { margin: 0; }
 
-/* ── Data card — only where genuinely a card (the deck "AI & BRAND"
-   card). Square corners, one lift device. ──────────────────────── */
+/* ── Photographic evidence card — a SEPARATE register (ch07). Square mat,
+   ONE lift device, caption beneath; photo never bleeds onto a gradient. ── */
+.si-evidence {
+  background: var(--paper);
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(10,26,92,0.08), 0 18px 44px rgba(10,26,92,0.12);
+}
+.si-evidence img { width: 100%; height: auto; object-fit: cover; }
+.si-evidence-cap {
+  margin: 12px 2px 2px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* ── Data card — only where genuinely a card (the deck "AI & BRAND" card).
+   Square corners, one lift device. ── */
 .si-datacard {
   background: var(--paper);
   border: 0;
@@ -598,22 +660,11 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   border-bottom: 1.5px solid var(--soi-navy);
 }
 
-/* ── Photographic evidence card — square mat, ONE lift device,
-   caption beneath; photo never bleeds onto a gradient ground. ── */
-.si-evidence {
-  background: var(--paper);
-  padding: 12px;
-  box-shadow: 0 2px 6px rgba(10,26,92,0.08), 0 18px 44px rgba(10,26,92,0.12);
-}
-.si-evidence img { width: 100%; height: auto; object-fit: cover; }
-.si-evidence-cap {
-  margin: 12px 2px 2px;
-  font-size: var(--t-xs);
-  line-height: 1.4;
-  color: var(--ink-soft);
-}
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
 
-/* ── Hanging-quote block — quote gets real estate (DESIGN-WORLD §2) ── */
+/* ── Hanging-quote block — the quote gets real estate (§2) ── */
 .si-quote { position: relative; padding-left: clamp(28px, 4vw, 64px); }
 .si-quote::before {
   content: "\201C";
@@ -629,7 +680,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .si-quote-body { position: relative; z-index: 1; font-weight: 400; line-height: 1.4; }
 .si-quote-cite {
   margin-top: var(--space-2);
-  font-size: var(--t-xs);
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -647,10 +698,11 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   color: var(--soi-navy);
   border: 1px solid var(--soi-navy);
   padding: 12px 18px;
-  font: 600 var(--t-sm)/1 var(--font-sans);
+  font: 600 0.95rem/1 var(--font-sans);
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
+  transition: transform var(--dur-micro) var(--ease-entrance),
+              box-shadow var(--dur-micro) var(--ease-entrance);
 }
 .vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--soi-navy); }
 .vccp-btn-primary { background: var(--soi-navy); color: var(--soi-cream); }
@@ -666,7 +718,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .vccp-table th, .vccp-table td {
   padding: 10px 12px;
   border-bottom: 1px solid rgba(10,26,92,0.10);
-  font-size: var(--t-sm);
+  font-size: 0.95rem;
 }
 .vccp-table th {
   text-align: left;
@@ -681,18 +733,13 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .vccp-delta-up   { color: var(--soi-up);   font-weight: 600; }
 .vccp-delta-down { color: var(--soi-down); font-weight: 600; }
 
-/* ── Stat label (small caps kicker above a big number) ───── */
-.vccp-stat-label {
-  display: block;
-  font-size: var(--t-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-soft);
+/* ── Reveal-on-scroll (js/lib/reveal.js) — entrance easing, reveal band ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-reveal) var(--ease-entrance),
+              transform var(--dur-reveal) var(--ease-entrance);
 }
-
-/* ── Reveal-on-scroll (js/lib/reveal.js) ─────────────────── */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ── Section error / awaiting-data fallbacks (main.js) ───── */
@@ -705,15 +752,14 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   padding: 28px 32px;
 }
 .section-error-card h2 { font-size: var(--t-md); font-weight: 600; margin: 0 0 8px; }
-.section-error-card p { margin: 0; font-size: var(--t-xs); color: var(--ink-soft); }
+.section-error-card p { margin: 0; font-size: 0.78rem; color: var(--ink-soft); }
 .awaiting-card { max-width: 640px; margin: 0 auto; }
 
 /* ============================================================
-   SOURCE CAPTIONS — HIDDEN site-wide (FEEDBACK: cut sources for
-   now, remember them). Strings stay in markup + STORY.md. This
-   block alone, deleted, restores every caption. Does NOT touch
-   chart DATA hooks (data-source-money/-mood/etc carry no bare
-   [data-source]).
+   SOURCE CAPTIONS — HIDDEN site-wide (sources cut for now, remembered).
+   Strings stay in markup + STORY.md. Deleting this one block restores
+   every caption. Does NOT touch chart DATA hooks (data-source-money/-mood
+   etc. carry no bare [data-source]).
    ============================================================ */
 .vccp-source,
 .chart-holder-cap,
@@ -725,7 +771,8 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 
 /* ============================================================
-   LAYOUT UTILITIES — fill the screen, kill dead space, breathe
+   LAYOUT UTILITIES — asymmetric editorial grid, one focal point,
+   fill the screen, kill dead space, breathe (§2)
    ============================================================ */
 
 /* 12-col grid + spans. */
@@ -738,7 +785,8 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .col-8  { grid-column: span 8; }
 .col-12 { grid-column: span 12; }
 
-/* Asymmetric two-pane split. */
+/* Asymmetric two-pane split — content hangs on a clear axis, never a
+   centred stack. */
 .si-split {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -747,7 +795,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 .si-split--even { grid-template-columns: 1fr 1fr; }
 
-/* Tight cluster stack. */
+/* Tight cluster stack (within-group rhythm). */
 .si-stack-tight { display: grid; gap: clamp(10px, 1.2vw, 16px); }
 
 /* Fill the viewport — centre a lone composition, no dead band below. */
@@ -796,7 +844,6 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   .si-split { gap: clamp(20px, 3vw, 40px); }
 }
 @media (max-width: 600px) {
-  :root { --t-sm: 0.92rem; }
   .si-grid,
   .si-split,
   .si-split--even { grid-template-columns: 1fr; }
@@ -807,5 +854,5 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   }
   .journey-controls { gap: 10px; padding: 10px 14px; }
   .journey-btn { padding: 11px 16px; }
-  .journey-indicator { font-size: 0.66rem; letter-spacing: 0.04em; }
+  .journey-indicator { font-size: 0.66rem; letter-spacing: 0.1em; }
 }

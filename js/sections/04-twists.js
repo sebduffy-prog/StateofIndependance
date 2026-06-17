@@ -1,31 +1,30 @@
 /**
  * Chapter 04 — twists. "There are twists in the story."
  *
- * Three anomalies, each its own beat, composed from the shared lib
- * primitives (never reinvented):
+ * The art-direction north star for this screen (§7): drag the trust ladder;
+ * the holiday physically resists being cut. ONE twist commands the screen at a
+ * time; navy gravity for the paradox. So each twist is its own focal beat,
+ * composed from the shared lib primitives (never reinvented):
  *
- *   Twist 01 — the institutional-trust paradox. The EARNED DARK moment
- *     (navy velvet, cream text). The MARQUEE interaction: dragRank the seven
- *     institutions into the order the visitor THINKS Britain trusts them, then
- *     snap to truth (Q7 confidence, NHS 52.8 -> Government 23.9). On reveal an
- *     aside lifts in: the 53% -> 24% spread (29-point), and the NHS paradox —
- *     a radialGauge of the 6.42/10 trust score beside a flipReveal that flips
- *     "most trusted institution" -> "yet 53% say it has declined". This is the
- *     gated beat: journey.gate() shows the hint, journey.ready() clears it on
- *     the rank reveal (Next is never blocked — soft gating only).
+ *   Twist 01 — THE MARQUEE. The earned dark moment (navy velvet, cream on
+ *     navy). The reader drags the seven institutions into the order they THINK
+ *     Britain trusts them, then it snaps to truth (Q7 confidence, NHS 52.8 ->
+ *     Government 23.9). On reveal, ONE editorial reality lands: the 29-point
+ *     spread (53% NHS -> 24% government) and the NHS paradox as a single line
+ *     (6.42/10, the highest, yet 53% say it has declined). This is the gated
+ *     beat: gate() shows the hint, ready() clears it on the reveal (soft only).
  *
- *   Twist 02 — protected joy. A TACTILE reward on the warm ground: the holiday
- *     tile is ring-fenced — dragging it RESISTS (clamped to the fence) and it
- *     springs back, while the flexible-spend tiles wobble loose. Reveals 40%
- *     (exact 39.6) protect the holiday at all costs, with a proportionStrip of
- *     what Britain defends (tactile.draggable + charts.proportionStrip).
+ *   Twist 02 — TACTILE. On the warm ground the holiday tile is ring-fenced:
+ *     dragging it RESISTS (clamped to the fence) and it springs straight back,
+ *     while the flexible-spend tiles wobble and fling loose. The contrast is
+ *     physical. Reveals 40% (exact 39.6) protect the holiday at all costs.
  *
- *   Twist 03 — AI on tap. tugOfWar Human professional vs AI; a pillGroup
- *     toggles between ANY task (58%, exact 58.4) and HIGH-STAKES finance/health/
- *     legal (37%, exact 37.4) — the two are kept strictly distinct. A
- *     horizontalBars of tasks and the verbatim qual quote close it.
+ *   Twist 03 — AI on tap. ONE tugOfWar tension bar, Human professional vs AI;
+ *     a pillGroup toggles ANY task (58%, exact 58.4) and HIGH-STAKES finance/
+ *     health/legal (37%, exact 37.4) — the two are kept strictly distinct. The
+ *     verbatim qual quote is the quiet supporting note.
  *
- * House rules: backgroundless (charts float on grounds, faint tint tracks),
+ * House rules: backgroundless (charts float on grounds, faint-tint tracks),
  * navy marks on warm / cream on dark, square corners, no underline, tabular
  * nums, reduced-motion safe (libs jump to rest), keyboard path on every
  * interaction (dragRank arrows, draggable arrows, pillGroup arrows). Sources
@@ -38,15 +37,14 @@
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
 import { arrival, prefersReducedMotion } from '../lib/experiential.js';
-import { radialGauge, tugOfWar, horizontalBars, proportionStrip } from '../lib/charts.js';
-import { dragRank, flipReveal, pillGroup } from '../lib/interactions.js';
+import { tugOfWar } from '../lib/charts.js';
+import { dragRank, pillGroup } from '../lib/interactions.js';
 import { draggable } from '../lib/tactile.js';
 
-const NHS_TRUST_SCORE = 6.42; // Q7r1 mean
-const HOLIDAY_PROTECT_PCT = 39.6; // Q5r3 exact (displayed as 40%)
 const AI_ANY_PCT = 58.4; // Q11 any task (exact)
 const AI_HIGH_STAKES_PCT = 37.4; // Q11 finance/health/legal (exact)
 const FENCE_GIVE_PX = 18; // how far the ring-fenced holiday yields before resisting
+const STRAIN_PX = 6; // drag distance past which the holiday reads "strained"
 
 /** Fisher–Yates shuffle into a NEW array (no mutation of the source). */
 const shuffled = (arr) => {
@@ -58,16 +56,14 @@ const shuffled = (arr) => {
   return next;
 };
 
-/* ───────────────────────── Twist 01 · trust ───────────────────────── */
+/* ───────────────────────── Twist 01 · trust (marquee) ─────────────────── */
 
-const buildTrustParadox = (rootEl, survey, journey) => {
+const buildTrustLadder = (rootEl, survey, journey) => {
   const trust = survey.institutionTrust;
   if (!trust) return;
 
   const rankHost = rootEl.querySelector('[data-rank-trust]');
-  const aside = rootEl.querySelector('[data-trust-aside]');
-  const gaugeHost = rootEl.querySelector('[data-gauge-nhs]');
-  const flipHost = rootEl.querySelector('[data-flip-nhs]');
+  const reveal = rootEl.querySelector('[data-trust-reveal]');
   if (!rankHost) return;
 
   // True order = most -> least confident (Q7 pctConfident, descending).
@@ -79,35 +75,14 @@ const buildTrustParadox = (rootEl, survey, journey) => {
 
   if (journey) journey.gate();
 
-  let revealed = false;
-  const revealAside = () => {
-    if (revealed || !aside) return;
-    revealed = true;
-    aside.hidden = false;
-    aside.setAttribute('aria-hidden', 'false');
-    aside.classList.add('is-live');
-    observeCounters(aside); // count the 53% -> 24% spread numbers
-
-    // NHS trust gauge (6.42 / 10) — cream arc on the dark ground.
-    if (gaugeHost) {
-      radialGauge(gaugeHost, {
-        value: NHS_TRUST_SCORE,
-        max: 10,
-        label: 'NHS trust, out of 10',
-        onNavy: true,
-        ariaLabel: 'NHS trust score 6.42 out of 10 — the highest of any institution',
-      });
-    }
-    // The paradox flip: most trusted <-> yet 53% say it has declined.
-    if (flipHost) {
-      flipReveal(flipHost, {
-        fromToLabels: ['The regard', 'The reality'],
-        rows: [{
-          less: 'The single most trusted institution in Britain',
-          more: 'Yet 53% say its performance has declined over the past decade',
-        }],
-      });
-    }
+  let shown = false;
+  const showReveal = () => {
+    if (shown || !reveal) return;
+    shown = true;
+    reveal.hidden = false;
+    reveal.setAttribute('aria-hidden', 'false');
+    reveal.classList.add('is-live');
+    observeCounters(reveal); // count the 53% -> 24% spread numbers
   };
 
   dragRank(rankHost, {
@@ -116,22 +91,23 @@ const buildTrustParadox = (rootEl, survey, journey) => {
     instructions:
       'Drag institutions into the order you think Britain trusts them — or focus a row and use the up and down arrow keys.',
     onReveal: () => {
-      revealAside();
+      showReveal();
       if (journey) journey.ready();
     },
   });
 };
 
-/* ───────────────────── Twist 02 · ring-fence the holiday ───────────── */
+/* ───────────────────── Twist 02 · ring-fence the holiday ───────────────── */
 
 /**
- * Build the tactile spend field. The "holiday" tile is ring-fenced: dragging
- * it only yields a few pixels before it resists and springs straight back
+ * Build the tactile spend field. The "holiday" tile is ring-fenced: dragging it
+ * only yields a few pixels before it resists and springs straight back
  * (spring:'return', tight bounds). The flexible-spend tiles wobble and CAN be
- * flung loose (spring:'settle'), making the contrast physical. Once the
- * visitor has wrestled the holiday and it sprang back, the 40% reveals.
+ * flung loose (spring:'settle'). Once the visitor has wrestled the holiday and
+ * it sprang back, the fence glows defended.
  * @param {HTMLElement} fieldEl
  * @param {() => void} onResisted  fired the first time the holiday springs back
+ * @returns {() => void} destroy
  */
 const buildJoyField = (fieldEl, onResisted) => {
   const reduced = prefersReducedMotion();
@@ -143,7 +119,7 @@ const buildJoyField = (fieldEl, onResisted) => {
   ];
   const handles = [];
 
-  // Flexible spend — these flex away. Light tiles, settle where flung.
+  // Flexible spend — light tiles that wobble and settle where flung.
   flexible.forEach((item, i) => {
     const tile = document.createElement('button');
     tile.type = 'button';
@@ -183,7 +159,7 @@ const buildJoyField = (fieldEl, onResisted) => {
       // It yields only a little before the fence holds it.
       bounds: { minX: -FENCE_GIVE_PX, maxX: FENCE_GIVE_PX, minY: -FENCE_GIVE_PX, maxY: FENCE_GIVE_PX },
       onMove: (state) => {
-        const strained = Math.abs(state.x) + Math.abs(state.y) > 6;
+        const strained = Math.abs(state.x) + Math.abs(state.y) > STRAIN_PX;
         tile.classList.toggle('is-strained', strained && state.grabbed);
       },
       onSettle: () => {
@@ -196,66 +172,34 @@ const buildJoyField = (fieldEl, onResisted) => {
   return () => handles.forEach((h) => h.destroy());
 };
 
-const buildProtectedJoy = (rootEl, survey) => {
-  const protectedSpend = survey.protectedSpend;
+const buildProtectedJoy = (rootEl) => {
   const fieldEl = rootEl.querySelector('[data-joy-field]');
-  const stripHost = rootEl.querySelector('[data-strip-protected]');
-  let destroyField = () => {};
-
-  if (fieldEl) {
-    destroyField = buildJoyField(fieldEl, () => {
-      fieldEl.classList.add('is-defended');
-    });
-  }
-
-  // The defended share, as a single proportion strip: holidays vs the rest.
-  if (stripHost && protectedSpend) {
-    const holiday = protectedSpend.items.find((i) => i.id === 'holidays');
-    const family = protectedSpend.items.find((i) => i.id === 'familyExperiences');
-    const streaming = protectedSpend.items.find((i) => i.id === 'streaming');
-    const hobbies = protectedSpend.items.find((i) => i.id === 'hobbies');
-    const segs = [holiday, family, streaming, hobbies]
-      .filter(Boolean)
-      .map((i, idx) => ({
-        label: i.label,
-        pct: i.pct,
-        accent: idx === 0 ? 'navy' : 'teal',
-      }));
-    proportionStrip(stripHost, {
-      segments: segs,
-      ariaLabel:
-        'Non-essentials Britain protects: holidays 40%, family experiences 39%, streaming 33%, hobbies 32%',
-    });
-  }
-
-  return destroyField;
+  if (!fieldEl) return () => {};
+  return buildJoyField(fieldEl, () => fieldEl.classList.add('is-defended'));
 };
 
-/* ───────────────────────── Twist 03 · AI on tap ───────────────────── */
+/* ───────────────────────── Twist 03 · AI on tap ───────────────────────── */
 
 const buildAiOnTap = (rootEl, survey) => {
   const ai = survey.aiTasks;
   if (!ai) return;
 
   const tugHost = rootEl.querySelector('[data-tug-ai]');
-  const barsHost = rootEl.querySelector('[data-bars-ai]');
   const controlsHost = rootEl.querySelector('[data-ai-controls]');
   const capEl = rootEl.querySelector('[data-ai-tug-cap]');
+  if (!tugHost) return;
 
-  let tug;
-  if (tugHost) {
-    tug = tugOfWar(tugHost, {
-      left: { label: 'Used AI', pct: AI_ANY_PCT },
-      right: { label: 'A human professional', pct: 100 - AI_ANY_PCT },
-      accent: 'navy',
-      ariaLabel: '58% have used AI instead of a human professional for at least one task',
-    });
-  }
+  const tug = tugOfWar(tugHost, {
+    left: { label: 'Used AI', pct: AI_ANY_PCT },
+    right: { label: 'A human professional', pct: 100 - AI_ANY_PCT },
+    accent: 'navy',
+    ariaLabel: '58% have used AI instead of a human professional for at least one task',
+  });
 
   // ANY task (58.4) vs HIGH-STAKES finance/health/legal (37.4) — distinct.
   const CAP_ANY = 'Used AI instead of a human professional for at least one task';
   const CAP_HIGH = 'Used AI for a high-stakes call — finance, health or legal advice';
-  if (controlsHost && tug) {
+  if (controlsHost) {
     pillGroup(controlsHost, {
       ariaLabel: 'Show AI substitution for any task or only high-stakes calls',
       value: 'any',
@@ -273,23 +217,9 @@ const buildAiOnTap = (rootEl, survey) => {
       },
     });
   }
-
-  // Task breakdown, ranked. High-stakes tasks highlighted in ink.
-  if (barsHost) {
-    const items = ai.items
-      .slice()
-      .sort((a, b) => b.pct - a.pct)
-      .map((i) => ({ id: i.id, label: i.label, pct: i.pct }));
-    horizontalBars(barsHost, {
-      items,
-      decimals: 0,
-      labelWidth: 190,
-      ariaLabel: 'Tasks done with AI instead of a professional, by share',
-    });
-  }
 };
 
-/* ─────────────────────────────── init ─────────────────────────────── */
+/* ─────────────────────────────── init ─────────────────────────────────── */
 
 export default function init(rootEl, data) {
   const { survey, journey } = data || {};
@@ -302,8 +232,8 @@ export default function init(rootEl, data) {
   // ritual; the emphasis word ("twists") decrypts via data-arrival-scramble.
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail || {}));
 
-  buildTrustParadox(rootEl, survey, journey);
-  const destroyJoyField = buildProtectedJoy(rootEl, survey);
+  buildTrustLadder(rootEl, survey, journey);
+  const destroyJoyField = buildProtectedJoy(rootEl);
   buildAiOnTap(rootEl, survey);
 
   // Tear down the tactile sim's listeners if the step is ever destroyed.

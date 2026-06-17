@@ -1,317 +1,173 @@
-/* Chapter 08 — playground. Design World V2: the interactive data explorer on
-   the research/appendix surface. Every selector is prefixed with
-   #\30 8-playground so styles never leak.
+/* Chapter 08 — playground. ONE instrument: the data, beautifully, on demand.
+   Every selector is prefixed with #\30 8-playground so nothing leaks.
 
-   THE SURFACE (this pass): a calm PALE-TEAL research ground — the brand's
-   appendix/research register — NOT the warm gradient and NOT a white card.
-   Charts sit DIRECTLY on this ground with a transparent background (the
-   .chart-holder utility in vccp.css), out of any paper box (client feedback §1).
+   THE BAR (ART-DIRECTION): one focal point — the divergence dial. A calm,
+   precise instrument on a quiet research ground (the appendix register —
+   distinct from the warm narrative chapters, light enough that navy marks +
+   ink copy stay AA-legible). Backgroundless: the chart sits transparently on
+   the ground, no white box, no gridlines.
 
-   THE COMPONENTS: charts default to high-contrast NAVY (accent:'navy' in the JS).
-   On the pale-teal ground navy reads AA — mustard/teal marks would vanish, so
-   teal is the chapter's ACCENT identity only (kickers, the index-100 reference
-   line, the legend marker, the active pill), never a teal component on teal.
+   COMPOSITION: an asymmetric editorial split. A left INSTRUMENT RAIL hangs the
+   eyebrow, the display-scale live read-out (the data as the hero), and the two
+   controls on a left axis; the chart is the single hero on the open ground to
+   its right. Deliberate spacing: tight within a group, large between groups.
 
-   CHART TEXT: charts.js carries the bigger/bolder house labels (15–16px, 600/700,
-   tabular nums). Nothing here shrinks it.
+   COLOUR: navy = gravity (text + chart marks; AA on the pale ground). Teal =
+   the ONE accent — the eyebrow, the live word, the active control, the orbit
+   ring. Never a teal mark on the teal ground; never mustard-on-mustard.
 
-   Layering contract (no overlap / no double-layer / contrast-safe):
-     z 0  — .pg-seed dots (decorative, pointer-events:none)
-     z 1  — .pg-stage flowing content
-   All copy is navy/ink on the light teal ground; no element sits on a
-   same/similar background colour.
+   MOTION: one hero motion — the chart morphs (tugOfWar springs / bars re-sort /
+   viz crossfade) and the read-out figure counts. Everything else is quiet. */
 
-   TGI reference-line geometry: the bar lib draws a 720-wide viewBox with
-   valueX = labelWidth + 12 and trackWidth = 720 - valueX - 56. For Panel B
-   (labelWidth 230, max 250) the index-100 line falls at
-   (242 + (100/250)*422) / 720 ≈ 57.06% — hence --pg-tgi-100. */
-
-/* Pale-teal research ground — light enough that navy chart marks + ink copy
-   stay AA-legible, and distinct from the warm world of the narrative chapters.
-   A faint top-light gives depth without a hard box. */
+/* ─── The research ground — a quiet pale wash built from the real tokens.
+   Light enough for navy AA; a soft top-light gives depth without a box. ─── */
 #\30 8-playground {
   background:
-    radial-gradient(120% 90% at 18% 0%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
-    linear-gradient(165deg, var(--teal-pale) 0%, #CFF3F0 60%, #BDEDE9 100%);
+    radial-gradient(130% 100% at 14% 0%, rgba(255, 255, 255, 0.45) 0%, transparent 52%),
+    linear-gradient(168deg, #DBEEEC 0%, #E7EDE6 100%);
   color: var(--soi-navy);
-  --pg-tgi-100: 57.06%;
-  /* faint navy tint used for divides + tracks — never a white box */
-  --pg-rule: rgba(10, 26, 92, 0.14);
+  /* faint navy ink tint — for tracks/rules, never a white box */
+  --pg-rule: rgba(10, 26, 92, 0.12);
 }
 
-/* JOURNEY: this step is a full-viewport immersive stage. The shared .chapter
-   base centres its child vertically, which would leave a dead band above a
-   tall explorer; here the world fills from the TOP so the gradient ground
-   covers the whole screen with no gap under the (removed) top bar. */
+/* Full-viewport immersive stage; top-aligned so the ground fills the screen. */
 #\30 8-playground.journey-step {
-  display: block;          /* override .chapter flex-centre — top-aligned */
+  display: block;
   padding-top: 0;
 }
-#\30 8-playground.journey-step .pg-world {
-  min-height: 100%;        /* fill the step so the ground reaches the controls */
-}
 
-/* The research surface fills the chapter. Three stacked surfaces (title
-   lockup, explorer panels, segment portrait) give the chapter depth and a
-   longer scroll — top-aligned so the content fills rather than floats. */
 #\30 8-playground .pg-world {
   position: relative;
-  isolation: isolate;            /* own stacking context — no stale layer bleed */
+  isolation: isolate;
+  overflow: hidden;              /* clip the ambient orbit ring to the ground */
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding-block: clamp(var(--space-4), 6vh, var(--space-7)) 0;
+  justify-content: center;       /* the one instrument sits in the centre band */
+  padding-block: clamp(var(--space-4), 8vh, var(--space-6));
 }
 #\30 8-playground .pg-world > * { position: relative; z-index: 1; }
 
-/* ─── Assembling entry ──────────────────────────────────────────────────
-   This is a gated full-screen step (no scroll), so the lockup ARRIVES via
-   the journey's `chapter:arrive` beat: the global [data-arrival] cascade
-   (vccp.css) lifts + fades each line in, the emphasis word decrypts, and the
-   read-outs count up. Transform/opacity only; reduced-motion shows the settled
-   state. The headline spans must be inline-block for translateY to apply. */
-#\30 8-playground .pg-headline [data-arrival] {
-  display: inline-block;
-}
-
-/* ─── Brand orbit ring — the deck's "independence" sweep, behind the title.
-   Decorative stroke only (no fill block), slowly rotating. ─── */
-#\30 8-playground .pg-orbit--ring {
+/* The orbit signature — one thin teal ring, ambient, behind everything. */
+#\30 8-playground .pg-orbit {
   position: absolute;
   z-index: 0;
-  top: clamp(-120px, -6vw, -40px);
-  right: clamp(-160px, -4vw, -40px);
-  width: clamp(360px, 42vw, 720px);
-  height: clamp(360px, 42vw, 720px);
+  top: clamp(-160px, -8vw, -60px);
+  right: clamp(-200px, -6vw, -80px);
+  width: clamp(420px, 48vw, 820px);
+  height: clamp(420px, 48vw, 820px);
   border-radius: 50%;
-  border: 1.5px solid rgba(0, 188, 165, 0.28);
+  border: 1.5px solid rgba(43, 183, 232, 0.32);
   pointer-events: none;
-  animation: pg-orbit-spin 64s linear infinite;
+  animation: pg-orbit-spin 80s linear infinite;
 }
-#\30 8-playground .pg-orbit--ring::after {
+#\30 8-playground .pg-orbit::after {
   content: "";
   position: absolute;
-  inset: 14%;
+  inset: 16%;
   border-radius: 50%;
-  border: 1px solid rgba(10, 26, 92, 0.12);
+  border: 1px solid var(--pg-rule);
 }
-@keyframes pg-orbit-spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes pg-orbit-spin { to { transform: rotate(360deg); } }
 
-/* ─── Decorative seed dots (behind content, never occluding) ─── */
-/* Teal-deep seeds with a faint white core — the only ornament; sparse. */
-#\30 8-playground .pg-seed {
-  z-index: 0;
-  background: var(--teal-deep);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
-}
-#\30 8-playground .pg-seed--a { top: 16%; right: 9%; }
-#\30 8-playground .pg-seed--b { bottom: 22%; right: 5%; width: 8px; height: 8px; }
-
+/* ─── The asymmetric split: instrument rail | chart hero ─────────────── */
 #\30 8-playground .pg-stage {
   width: 100%;
-}
-
-/* ─── Deck title lockup — heavy Poppins Black + brand figure motif ───── */
-/* Copy on the left, the brand "person" mark on the right (as the deck pairs a
-   title with a motif). On a narrow column the motif drops away. */
-#\30 8-playground .pg-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
-  gap: clamp(var(--space-3), 4vw, var(--space-6));
-  margin-bottom: clamp(var(--space-4), 5vh, var(--space-6));
-}
-#\30 8-playground .pg-head-copy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  max-width: 46ch;
-}
-#\30 8-playground .pg-eyebrow {
-  margin: 0;
-  color: var(--teal-deep);
-  font-weight: 700;
-}
-/* Heavier, tighter, deck-like display headline (si-display--black). Bigger
-   and bolder per brief — the title lockup is the first thing on the screen. */
-#\30 8-playground .pg-headline {
-  margin: 0;
-  color: var(--soi-navy);
-  font-size: clamp(2.6rem, 6vw, 5.4rem);
-  line-height: 0.94;            /* >0.9 so descenders/cap-tops never clip */
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
-  overflow: visible;            /* never clip the heavy display glyphs */
-  text-wrap: balance;
-}
-/* "four Britains" emphasis = COLOUR + WEIGHT only (no block, no fill behind
-   the glyphs). The shared .hl-teal paints a thin teal baseline rule, which we
-   keep; the word turns the brand teal and stays on the research ground. */
-#\30 8-playground .pg-headline .hl {
-  font-style: normal;
-  white-space: nowrap;          /* keep the two-word emphasis on one line */
-}
-#\30 8-playground .pg-standfirst {
-  margin: 0;
-  color: var(--soi-navy);
-  font-size: clamp(1.08rem, 1.6vw, 1.35rem);
-  line-height: 1.5;
-  font-weight: 500;
-  opacity: 0.9;
-  max-width: 52ch;
-}
-/* Title read-outs — three count-up stats on the ground (no boxes). They give
-   the lockup weight and an experiential count-up on reveal. */
-#\30 8-playground .pg-readouts {
-  list-style: none;
-  margin: var(--space-2) 0 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(var(--space-3), 3vw, var(--space-5));
-}
-#\30 8-playground .pg-readout {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-#\30 8-playground .pg-readout-num {
-  font-size: clamp(1.7rem, 3vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-#\30 8-playground .pg-readout-cap {
-  margin-top: 4px;
-  font-size: var(--t-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--teal-deep);
+  gap: clamp(var(--space-4), 6vw, var(--space-7));
 }
 
-/* Brand maze-hero motif — the State-of-Independence world, beside the title.
-   It parallaxes through the viewport (data-parallax in markup). */
-#\30 8-playground .pg-head-motif {
-  margin: 0;
-  align-self: center;
-  justify-self: end;
-  will-change: transform;
-}
-#\30 8-playground .pg-head-motif img {
-  display: block;
-  height: clamp(160px, 22vw, 320px);
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 18px 40px rgba(10, 26, 92, 0.18));
-}
-
-/* ─── The two flowing panels (de-blocked — no plate, no cards) ──────── */
-/* They flow on the research ground, divided by space + a faint tint rule.
-   No background, no border, no shadow — the ground shows through. */
-#\30 8-playground .pg-instrument {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) auto minmax(0, 5fr);
-  align-items: stretch;
-  gap: clamp(var(--space-4), 4vw, var(--space-6));
-}
-
-/* Soft inner divide — a hairline navy tint, never a hard ink rule. */
-#\30 8-playground .pg-divide {
-  width: 1px;
-  align-self: stretch;
-  background: linear-gradient(
-    to bottom,
-    transparent 0,
-    var(--pg-rule) 12%,
-    var(--pg-rule) 88%,
-    transparent 100%
-  );
-}
-
-#\30 8-playground .pg-panel {
+/* ─── LEFT: the instrument rail ──────────────────────────────────────── */
+#\30 8-playground .pg-rail {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
-
-/* ─── Panel heads — refined hierarchy, no boxes, no hard rules ─────── */
-#\30 8-playground .pg-panel-head {
-  margin-bottom: var(--space-3);
-}
-#\30 8-playground .pg-panel-kicker {
-  margin: 0 0 var(--space-1) 0;
-  font-size: var(--t-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--teal-deep);
-}
-/* Heavier, deck-like panel titles. */
-#\30 8-playground .pg-panel-title {
-  margin: 0 0 var(--space-1) 0;
-  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-  color: var(--soi-navy);
-}
-#\30 8-playground .pg-panel-sub {
+#\30 8-playground .pg-eyebrow {
   margin: 0;
-  font-size: var(--t-sm);
-  line-height: 1.5;
-  color: var(--soi-navy);
-  opacity: 0.78;
-  max-width: 46ch;
+  color: var(--soi-teal);
+  font-weight: 700;
+}
+#\30 8-playground .pg-eyebrow[data-arrival],
+#\30 8-playground .pg-readout-num[data-arrival],
+#\30 8-playground .pg-readout-line[data-arrival] {
+  display: block;
 }
 
-/* ─── Controls (pill groups) — square, navy on the teal ground ─────── */
+/* The display moment — tight within the read-out group, large gap to controls. */
+#\30 8-playground .pg-readout {
+  margin: var(--space-2) 0 clamp(var(--space-4), 6vh, var(--space-6)) 0;
+}
+#\30 8-playground .pg-readout-num {
+  margin: 0;
+  color: var(--soi-navy);
+  font-weight: 900;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+#\30 8-playground .pg-readout-unit {
+  font-size: 0.42em;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-left: 0.06em;
+  vertical-align: baseline;
+  color: var(--soi-teal);
+}
+#\30 8-playground .pg-readout-line {
+  margin: var(--space-1) 0 0 0;
+  color: var(--soi-navy);
+  font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.2;
+  max-width: 30ch;
+}
+
+/* ─── Controls — square chips, navy on the pale ground; large gap above ─ */
 #\30 8-playground .pg-controls {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  gap: var(--space-3);
 }
 #\30 8-playground .pg-control-label {
   display: block;
   font-size: var(--t-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--soi-navy);
-  opacity: 0.7;
+  opacity: 0.55;
   margin-bottom: var(--space-1);
 }
-
 #\30 8-playground .pillgroup {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-/* Rest state: navy outline on the teal ground (no fill box → de-blocked feel). */
+/* Rest: navy outline, no fill box (de-blocked). */
 #\30 8-playground .pillgroup-chip {
   background: transparent;
   color: var(--soi-navy);
-  border: 1.5px solid rgba(10, 26, 92, 0.42);
+  border: 1.5px solid rgba(10, 26, 92, 0.38);
   padding: 8px 13px;
   font: 600 var(--t-xs) / 1 var(--font-sans);
   letter-spacing: 0.02em;
   cursor: pointer;
   font-variant-numeric: tabular-nums;
-  transition: transform 0.14s ease, background 0.14s ease,
-    border-color 0.14s ease, color 0.14s ease;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 8-playground .pillgroup-chip:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: var(--soi-navy);
-  background: rgba(10, 26, 92, 0.06);
+  background: rgba(10, 26, 92, 0.05);
 }
-/* Active: solid navy with cream text — strong, deliberate contrast. */
+/* Active: solid navy, cream text — deliberate contrast. */
 #\30 8-playground .pillgroup-chip.is-active {
   background: var(--soi-navy);
   color: var(--soi-cream);
@@ -323,254 +179,66 @@
 }
 #\30 8-playground .pillgroup-chip:disabled {
   cursor: not-allowed;
-  opacity: 0.36;
+  opacity: 0.34;
 }
 
-/* ─── View note + box-less chart ────────────────────────────────────── */
-#\30 8-playground .pg-view-note {
-  font-size: var(--t-sm);
-  font-weight: 700;
+/* The honest view-note — small, quiet, below the controls. */
+#\30 8-playground .pg-note {
+  margin: var(--space-3) 0 0 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  font-weight: 600;
   color: var(--soi-navy);
-  margin: 0 0 var(--space-2) 0;
+  opacity: 0.6;
   min-height: 1.4em;
   font-variant-numeric: tabular-nums;
 }
-/* .chart-holder (vccp.css) already forces transparent / no border / no shadow.
-   The holder just stretches to fill the panel column. */
-#\30 8-playground .pg-chart-holder {
-  margin-top: auto;
+
+/* ─── RIGHT: the single hero — the chart, box-less on the open ground ─── */
+#\30 8-playground .pg-instrument {
+  min-width: 0;
 }
+#\30 8-playground .pg-chart-holder { width: 100%; }
 #\30 8-playground .pg-chart {
   width: 100%;
-  /* reserve space so the panel does not jump as charts swap between viz types */
-  min-height: 280px;
-  /* buttery, backgroundless crossfade when the viz TYPE changes (JS toggles
-     .is-fading for ~220ms while it rebuilds the chart into a fresh host) */
+  min-height: 340px;             /* reserve space so the panel never jumps */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* the buttery, backgroundless crossfade when the viz TYPE changes */
   opacity: 1;
   transform: none;
-  transition: opacity 0.22s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.36s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: opacity, transform;
 }
 #\30 8-playground .pg-chart.is-fading {
   opacity: 0;
-  transform: translate3d(0, 8px, 0);
+  transform: translate3d(0, 10px, 0);
 }
 #\30 8-playground .pg-chart > svg { max-width: 100%; height: auto; }
-
-/* TGI panel — relative wrapper so the 100 marker overlays its own bars only.
-   The marker is decorative (pointer-events:none) and carries no text, so it
-   never occludes data labels. Teal-deep dashed = the research accent. */
-#\30 8-playground .pg-chart-tgi {
-  position: relative;
-}
-#\30 8-playground .pg-chart-tgi::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--pg-tgi-100);
-  width: 0;
-  border-left: 1.5px dashed var(--teal-deep);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ─── TGI legend (the index-100 reference) ──────────────────────────── */
-#\30 8-playground .pg-legend {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: var(--space-2);
-  font-size: var(--t-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--soi-navy);
-  opacity: 0.8;
-}
-#\30 8-playground .pg-legend-marker {
-  display: inline-block;
-  width: 16px;
-  height: 0;
-  border-top: 1.5px dashed var(--teal-deep);
-}
-
-/* ─── Panel C: live segment portrait — fills the lower screen, deck world ──
-   A full-width band: a brand-world motif image + the qualitative portrait.
-   Backgroundless (no card box) — the motif image carries the colour, copy
-   sits navy on the research ground. */
-#\30 8-playground .pg-portrait {
-  margin-top: clamp(var(--space-5), 7vh, var(--space-7));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-#\30 8-playground .pg-portrait-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-/* The selector sits inline under the band title. */
-#\30 8-playground .pg-portrait-head .pg-controls {
-  margin-bottom: 0;
-}
-
-#\30 8-playground .pg-portrait-card {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
-  align-items: center;
-  gap: clamp(var(--space-3), 4vw, var(--space-6));
-}
-#\30 8-playground .pg-portrait-motif {
-  position: relative;
-  margin: 0;
-  will-change: transform;
-}
-/* Orbit ring riding behind the bear-world motif — deck motion motif, no fill. */
-#\30 8-playground .pg-portrait-orbit {
-  position: absolute;
-  inset: 4%;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(0, 188, 165, 0.35);
-  pointer-events: none;
-  animation: pg-orbit-spin 48s linear infinite;
-}
-#\30 8-playground .pg-portrait-motif img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  transition: opacity 0.32s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Crossfade while the motif image swaps (JS toggles .is-swapping). */
-#\30 8-playground .pg-portrait-motif img.is-swapping {
-  opacity: 0;
-  transform: scale(0.96);
-}
-/* When a new segment is picked the card eases up a touch (JS toggles). */
-#\30 8-playground .pg-portrait-card.is-stepped .pg-portrait-body {
-  animation: pg-step-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes pg-step-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
-}
-#\30 8-playground .pg-portrait-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-width: 0;
-}
-#\30 8-playground .pg-portrait-share {
-  margin: 0;
-  font-size: var(--t-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--teal-deep);
-  font-variant-numeric: tabular-nums;
-}
-/* Big bold deck-style name. */
-#\30 8-playground .pg-portrait-name {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1;               /* >0.95 so heavy 900 caps never clip */
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
-  font-weight: 900;
-  color: var(--soi-navy);
-  overflow: visible;
-}
-#\30 8-playground .pg-portrait-trio {
-  margin: 0;
-  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
-  font-weight: 700;
-  color: var(--soi-navy);
-  opacity: 0.92;
-}
-/* Who / Money / Channels — a clean two-column definition grid, no boxes. */
-#\30 8-playground .pg-portrait-facts {
-  margin: var(--space-1) 0 0 0;
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 6px var(--space-3);
-}
-#\30 8-playground .pg-portrait-facts dt {
-  font-size: var(--t-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--soi-navy);
-  opacity: 0.6;
-  align-self: baseline;
-}
-#\30 8-playground .pg-portrait-facts dd {
-  margin: 0;
-  font-size: var(--t-sm);
-  font-weight: 600;
-  color: var(--soi-navy);
-}
-/* Qualitative quote — a left teal rule, navy ink, no box. */
-#\30 8-playground .pg-portrait-quote {
-  margin: var(--space-2) 0 0 0;
-  padding-left: var(--space-2);
-  border-left: 3px solid var(--teal-deep);
-  font-size: clamp(1rem, 1.5vw, 1.22rem);
-  line-height: 1.45;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--soi-navy);
-  opacity: 0.9;
-}
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 8-playground .pillgroup-chip,
-  #\30 8-playground .pg-portrait-motif img,
-  #\30 8-playground .pg-head-motif {
-    transition: none;
-  }
-  #\30 8-playground .pg-orbit--ring,
-  #\30 8-playground .pg-portrait-orbit,
-  #\30 8-playground .pg-portrait-card.is-stepped .pg-portrait-body {
-    animation: none;
-  }
-  /* no viz crossfade under reduced motion — charts swap instantly */
   #\30 8-playground .pg-chart {
     transition: none;
   }
+  #\30 8-playground .pg-orbit { animation: none; }
 }
 
-/* ─── Responsive: stack the two panels; flip the inner divide ───────── */
-@media (max-width: 920px) {
-  #\30 8-playground .pg-head {
-    grid-template-columns: 1fr;
-  }
-  #\30 8-playground .pg-head-motif { display: none; }
-  #\30 8-playground .pg-portrait-card {
+/* ─── Responsive: stack the rail above the chart ─────────────────────── */
+@media (max-width: 900px) {
+  #\30 8-playground .pg-stage {
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
-  #\30 8-playground .pg-portrait-motif img {
-    max-width: 320px;
-    margin-inline: auto;
+  #\30 8-playground .pg-world {
+    justify-content: flex-start;
+    padding-block: clamp(var(--space-4), 6vh, var(--space-6));
   }
-  #\30 8-playground .pg-instrument {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+  #\30 8-playground .pg-readout {
+    margin-bottom: var(--space-4);
   }
-  #\30 8-playground .pg-divide {
-    width: auto;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent 0,
-      var(--pg-rule) 12%,
-      var(--pg-rule) 88%,
-      transparent 100%
-    );
-  }
+  #\30 8-playground .pg-chart { min-height: 300px; }
 }

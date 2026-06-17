@@ -1,352 +1,309 @@
 /**
- * Chapter 07 — moves. The FIVE-MOVE FILMSTRIP plus the TOOLKIT close.
+ * Chapter 07 — moves. THE REEL.
  *
- * Filmstrip: five full-bleed frames (warm/navy alternating) each carrying a
- * deck bear-world motif, the lesson/beats/quotes/ad-mockup evidence, and a
- * Less→More flip table (shared flipReveal helper) — the strategy CONSTRUCTS
- * itself frame by frame. A per-frame "Frame 0n of 05" sprocket lockup and a
- * staged row reveal give the reel its cadence.
+ * One cinematic stage: the five signature moves as a film reel. Exactly one
+ * frame is in focus at a time — its Poppins-900 title, deck icon, the lesson,
+ * its single carried form (one stat OR one quote) and the Less→More shift. The
+ * other four sit small in the strip below as the reel.
  *
- * Toolkit (the marquee interaction, "hand them the tools"): the five moves
- * become physical tool-objects on a pegboard. The visitor picks each one up
- * (tactile.js draggable — real weight, lift shadow, spring) and passes it
- * across to the open hand/tray; it settles as "handed over" and the count-up
- * ticks. Handing over ALL FIVE completes the step and unlocks Next. Fully
- * keyboard-operable: focus a tool, Enter/Space to grab, arrows to carry, then
- * Enter/Space again — or simply Enter on a tool hands it straight over.
+ * THE ONE MEMORABLE THING / the marquee interaction: the tools you pick up. The
+ * active frame carries a draggable tool (tactile.js — real weight, lift shadow,
+ * spring). Drag it down into the toolbelt, or click / press Enter, and it is
+ * handed over: the belt slot lights, the count ticks, and the reel travels to
+ * the next move (the ONE hero motion). Picking up all five reveals the payoff.
+ * Fully keyboard operable: Tab to the active tool, Enter to pick it up.
  *
- * Experiential motion (experiential.js): chapterTransition eases each frame up
- * + in; observeParallax drifts the bear-world panels + evidence; scrollScene
- * stages each shift card's rows in sequence; arrival() assembles the hero and
- * toolkit copy and counts the handover up. All reduced-motion safe — drags
- * still work but snap to final state.
- *
- * No fabricated numbers — every stat/quote/shift/title is verbatim from STORY.md.
+ * Everything else is quiet (a soft arrival, the shift flip). No fabricated
+ * numbers — every title, lesson, stat, quote and shift is verbatim from the
+ * verified <template> source (traced to STORY.md ch.07).
  *
  * Contract: docs/CONTRACT.md.
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { flipReveal } from '../lib/interactions.js';
-import {
-  chapterTransition,
-  observeParallax,
-  scrollScene,
-  arrival,
-  prefersReducedMotion,
-} from '../lib/experiential.js';
+import { arrival, prefersReducedMotion } from '../lib/experiential.js';
 import { draggable } from '../lib/tactile.js';
 
-const FROM_TO_LABELS = ['Dependence', 'Agency'];
-const TOTAL_TOOLS = 5;
-// How close (px) a dropped tool must land to the tray to count as handed over.
-const HANDOVER_RADIUS = 150;
-// A short pop on the running count each time a tool lands (class toggled off
-// next frame so the CSS keyframe can re-trigger). Pure transform/opacity.
-const COUNT_POP_MS = 420;
-
-/** The five moves' less -> more rows, verbatim from STORY.md ch.07. */
-const FLIP_ROWS_BY_MOVE = {
-  1: [
-    { less: 'Escalating charges', more: 'Hacking the system' },
-    { less: 'Prison', more: 'Hotel' },
-    { less: 'Reinforcing unfair', more: 'Fighting for change' },
-  ],
-  2: [
-    { less: 'Treating pain', more: 'Diagnosing the problem' },
-    { less: 'Lipstick on a pig', more: 'Backing it up' },
-    { less: 'Opaque', more: 'Transparent' },
-  ],
-  3: [
-    { less: 'Dependency', more: 'Independency' },
-    { less: 'Dictation from the brand', more: 'Walk throughs on YT & TikTok' },
-    { less: 'Broadcast to audiences', more: 'Self-help contexts' },
-  ],
-  4: [
-    { less: 'Status as currency', more: 'Time as currency' },
-    { less: 'Fragmentation', more: 'Ecosystems' },
-    { less: 'Customer support', more: 'Life advisory' },
-  ],
-  5: [
-    { less: 'Setting tasks', more: 'Gamifying goals' },
-    { less: 'CRM modules', more: 'Habit forming' },
-    { less: 'Random rewards', more: 'Meaningful rewards' },
-  ],
-};
+const TOTAL_MOVES = 5;
+// Drag distance (px, downward) past which a release counts as "handed over".
+const HANDOVER_THRESHOLD = 90;
 
 /**
- * Mount one flip table into its frame's placeholder.
+ * Read the verified moves from the hidden <template> into plain objects.
  * @param {HTMLElement} rootEl
- * @param {number} moveNumber
- * @returns {HTMLButtonElement[]} the flip-row buttons (for staged reveal)
+ * @returns {Array<object>}
  */
-const mountFlipTable = (rootEl, moveNumber) => {
-  const container = rootEl.querySelector(`[data-flip-${moveNumber}]`);
-  if (!container) return [];
-  const rows = FLIP_ROWS_BY_MOVE[moveNumber];
-  if (!rows) return [];
-  flipReveal(container, { rows, fromToLabels: FROM_TO_LABELS });
-  return Array.from(container.querySelectorAll('.flip-row'));
+const readMoves = (rootEl) => {
+  const tpl = rootEl.querySelector('.mv-source');
+  if (!tpl) return [];
+  return Array.from(tpl.content.querySelectorAll('li[data-move]')).map((li) => {
+    const svg = li.querySelector('svg');
+    const shift = Array.from(li.querySelectorAll('.mv-shift-data li')).map((row) => ({
+      less: row.dataset.less,
+      more: row.dataset.more,
+    }));
+    return {
+      num: li.dataset.move,
+      title: li.dataset.title,
+      key: li.dataset.key,
+      lesson: li.dataset.lesson,
+      stat: li.dataset.stat || null,
+      statSuffix: li.dataset.statSuffix || '',
+      statLine: li.dataset.statLine || '',
+      quote: li.dataset.quote || null,
+      cite: li.dataset.cite || '',
+      iconHTML: svg ? svg.outerHTML : '',
+      shift,
+    };
+  });
 };
 
 /**
- * Stagger the flip-card rows into view as the frame scrolls through, so the
- * shift reads as a build rather than a static list. Pure class toggle; CSS
- * owns the at-rest + revealed visuals, so this never clips or reflows text.
- * @param {HTMLElement} bandEl
- * @param {HTMLButtonElement[]} rows
- * @returns {() => void} cleanup
+ * Build one reel frame element for a move.
+ * @param {object} move
+ * @returns {HTMLElement}
  */
-const stageShiftRows = (bandEl, rows) => {
-  if (!rows.length) return () => {};
-  const steps = rows.map((row, i) => ({
-    at: 0.22 + i * 0.1,
-    onEnter: () => row.classList.add('is-shown'),
-    onLeave: () => row.classList.remove('is-shown'),
-  }));
-  return scrollScene(bandEl, steps);
+const buildFrame = (move) => {
+  const frame = document.createElement('article');
+  frame.className = 'mv-frame';
+  frame.dataset.move = move.num;
+  frame.setAttribute('aria-roledescription', 'slide');
+  frame.setAttribute('aria-label', `Move ${move.num} of ${TOTAL_MOVES}`);
+
+  // The single carried supporting form: one stat OR one quote — never both.
+  let carried = '';
+  if (move.stat) {
+    carried =
+      '<div class="mv-carried mv-carried--stat">' +
+      `<span class="mv-stat-value num" data-count-to="${move.stat}" data-count-suffix="${move.statSuffix}">${move.stat}${move.statSuffix}</span>` +
+      `<span class="mv-stat-line">${move.statLine}</span>` +
+      '</div>';
+  } else if (move.quote) {
+    carried =
+      '<blockquote class="mv-carried mv-carried--quote">' +
+      `<p class="mv-quote-body">${move.quote}</p>` +
+      `<cite class="mv-quote-cite">${move.cite}</cite>` +
+      '</blockquote>';
+  }
+
+  // The shift, rendered as a quiet static dependence→agency ledger (data as a
+  // reality, not a second competing widget). Less struck-through, more in amber.
+  const shiftRows = move.shift
+    .map(
+      (row) =>
+        '<li>' +
+        `<span class="mv-shift-less">${row.less}</span>` +
+        '<span class="mv-shift-arrow" aria-hidden="true">→</span>' +
+        `<span class="mv-shift-more">${row.more}</span>` +
+        '</li>',
+    )
+    .join('');
+
+  frame.innerHTML =
+    '<p class="mv-frame-no" aria-hidden="true">' +
+    `<span class="mv-frame-no-num num">0${move.num}</span><span class="mv-frame-no-of">/ 05</span></p>` +
+    '<header class="mv-frame-head">' +
+    `<span class="mv-frame-icon" aria-hidden="true">${move.iconHTML}</span>` +
+    `<h3 class="mv-title si-display si-display--black">${move.title} <span class="mv-title-key">${move.key}</span></h3>` +
+    '</header>' +
+    '<div class="mv-frame-body">' +
+    `<p class="mv-lesson">${move.lesson}</p>` +
+    carried +
+    '</div>' +
+    '<div class="mv-shift">' +
+    '<p class="mv-shift-head"><span>Dependence</span><span>Agency</span></p>' +
+    `<ul class="mv-shift-list">${shiftRows}</ul>` +
+    '</div>' +
+    // The tool: the draggable object the visitor picks up to hand the move over.
+    '<div class="mv-pickup">' +
+    `<button type="button" class="mv-tool" data-tool aria-label="${move.title} ${move.key}. Pick up this tool to hand it over. Move ${move.num} of ${TOTAL_MOVES}.">` +
+    `<span class="mv-tool-icon" aria-hidden="true">${move.iconHTML}</span>` +
+    '</button>' +
+    '<span class="mv-pickup-hint" aria-hidden="true">Pick it up</span>' +
+    '</div>';
+  return frame;
 };
 
 /**
- * Build one draggable tool-object from a template <li>.
- * @param {HTMLElement} sourceLi  - template entry (data-tool, data-label, svg)
+ * Build one toolbelt slot.
+ * @param {object} move
  * @returns {HTMLLIElement}
  */
-const buildToolEl = (sourceLi) => {
-  const num = sourceLi.dataset.tool;
-  const label = sourceLi.dataset.label;
-  const svg = sourceLi.querySelector('svg');
+const buildSlot = (move) => {
   const li = document.createElement('li');
-  li.className = 'mv-tool';
-  li.dataset.tool = num;
-  li.setAttribute('role', 'button');
-  li.setAttribute(
-    'aria-label',
-    `${label}. Tool ${num} of ${TOTAL_TOOLS}. Press Enter to hand it over.`,
-  );
-  // .mv-tool-grip is the physical handle the contact shadow + drag act on.
-  li.innerHTML =
-    '<span class="mv-tool-grip">' +
-    `<span class="mv-tool-no" aria-hidden="true">0${num}</span>` +
-    `<span class="mv-tool-icon">${svg ? svg.outerHTML : ''}</span>` +
-    '</span>' +
-    `<span class="mv-tool-label">${label}</span>`;
+  li.className = 'mv-belt-slot';
+  li.dataset.move = move.num;
+  li.innerHTML = `<span class="mv-belt-icon">${move.iconHTML}</span>`;
   return li;
 };
 
 /**
- * Mount the toolkit: five draggable tools that hand over to the tray.
- * Handing over all five fires onComplete() (the gate's ready()).
- * @param {HTMLElement} rootEl
- * @param {() => void} onComplete
- * @returns {() => void} cleanup
- */
-const mountToolkit = (rootEl, onComplete) => {
-  const stage = rootEl.querySelector('.mv-toolkit-stage');
-  const pegboard = rootEl.querySelector('.mv-pegboard');
-  const tray = rootEl.querySelector('.mv-tray');
-  const tally = rootEl.querySelector('.mv-tray-tally');
-  const template = rootEl.querySelector('.mv-tool-source');
-  const countEl = rootEl.querySelector('.mv-toolkit-count');
-  if (!stage || !pegboard || !tray || !template) return () => {};
-
-  const reduced = prefersReducedMotion();
-  const sources = Array.from(template.content.querySelectorAll('li'));
-  const tools = []; // { el, handle }
-  let handed = 0;
-  let popTimer = 0;
-
-  // The running count gets a brief pop each time a tool lands, so the number
-  // is felt rather than silently swapped. CSS owns the keyframe.
-  const popCount = () => {
-    if (!countEl || reduced) return;
-    countEl.classList.remove('is-pop');
-    // restart the animation on the next frame
-    requestAnimationFrame(() => {
-      countEl.classList.add('is-pop');
-      clearTimeout(popTimer);
-      popTimer = window.setTimeout(
-        () => countEl.classList.remove('is-pop'),
-        COUNT_POP_MS,
-      );
-    });
-  };
-
-  const updateCount = () => {
-    if (countEl) countEl.textContent = String(handed);
-    if (tally) {
-      // light a tally pip for each tool delivered (built once, lit on landing)
-      const pips = tally.querySelectorAll('.mv-tray-pip');
-      pips.forEach((pip, i) => pip.classList.toggle('is-lit', i < handed));
-    }
-    const complete = handed >= TOTAL_TOOLS;
-    rootEl.classList.toggle('is-toolkit-complete', complete);
-  };
-
-  const handOver = (toolEl) => {
-    if (toolEl.classList.contains('is-handed')) return;
-    toolEl.classList.add('is-handed');
-    toolEl.setAttribute('aria-disabled', 'true');
-    const label = toolEl.querySelector('.mv-tool-label');
-    if (label) {
-      const base = label.textContent;
-      label.dataset.base = base;
-      toolEl.setAttribute('aria-label', `${base}. Handed over.`);
-    }
-    handed += 1;
-    updateCount();
-    popCount();
-    if (handed >= TOTAL_TOOLS) onComplete();
-  };
-
-  // Hand a tool over with a brief physical "delivery" arc to the tray, then
-  // settle it back into its pegboard slot as a ghosted/ticked tool. The flight
-  // gives the hand-over weight (contact shadow + amber glow), while returning
-  // it to its own slot keeps the pegboard a clean grid — five tools never stack
-  // and overlap in the tray. The tray tells the running tally via its pips.
-  // Under reduced motion this is an instant commit (no travel).
-  const deliver = (tool) => {
-    if (tool.el.classList.contains('is-handed')) return;
-    if (reduced) {
-      handOver(tool.el);
-      return;
-    }
-    tool.el.classList.add('is-delivering');
-    const t = tool.el.getBoundingClientRect();
-    const r = tray.getBoundingClientRect();
-    // vector from the tool's current centre to the tray's centre
-    const dx = r.left + r.width / 2 - (t.left + t.width / 2);
-    const dy = r.top + r.height / 2 - (t.top + t.height / 2);
-    tool.handle.setPosition(dx, dy, { animate: true });
-    // at the tray (spring ≈ 320ms) commit it, then settle it home into its
-    // own slot so the pegboard stays an orderly, non-overlapping grid.
-    window.setTimeout(() => {
-      tool.el.classList.remove('is-delivering');
-      handOver(tool.el);
-      tool.handle.setPosition(0, 0, { animate: true });
-    }, 320);
-  };
-
-  // Is the tool's centre near the tray? (drop hit-test, in viewport coords)
-  const isOverTray = (toolEl) => {
-    const t = toolEl.getBoundingClientRect();
-    const r = tray.getBoundingClientRect();
-    const cx = t.left + t.width / 2;
-    const cy = t.top + t.height / 2;
-    const nx = Math.max(r.left, Math.min(cx, r.right));
-    const ny = Math.max(r.top, Math.min(cy, r.bottom));
-    return Math.hypot(cx - nx, cy - ny) < HANDOVER_RADIUS;
-  };
-
-  // Build the tray tally pips (one per tool) once.
-  if (tally) {
-    for (let i = 0; i < TOTAL_TOOLS; i += 1) {
-      const pip = document.createElement('span');
-      pip.className = 'mv-tray-pip';
-      tally.append(pip);
-    }
-  }
-
-  sources.forEach((sourceLi) => {
-    const toolEl = buildToolEl(sourceLi);
-    pegboard.append(toolEl);
-
-    // Track whether the most recent release came from a real pointer drag, so
-    // arrow-key nudges (which also fire onRelease) never yank the tool home
-    // mid-carry. A short pointer drop returns home; a keyboard carry just rests
-    // where the arrows left it (and delivers if it reaches the tray).
-    let wasPointerDrag = false;
-    toolEl.addEventListener('pointerdown', () => { wasPointerDrag = true; });
-
-    const tool = { el: toolEl, handle: null };
-    // spring:false => the lib never moves the tool on release; WE decide where
-    // it goes (fly into the tray, or spring back to the pegboard) so the
-    // delivery flight is never interrupted by the library's own return spring.
-    tool.handle = draggable(toolEl, {
-      spring: false,
-      momentum: 0,
-      keyboardStep: 36,
-      springOpts: { stiffness: 200 },
-      onRelease: () => {
-        if (toolEl.classList.contains('is-handed')) return;
-        if (isOverTray(toolEl)) {
-          deliver(tool); // reached the tray (drag or keyboard): fly it in
-        } else if (wasPointerDrag) {
-          tool.handle.setPosition(0, 0, { animate: true }); // short drop: home
-        }
-        wasPointerDrag = false;
-      },
-    });
-    tools.push(tool);
-
-    // Discovery-friendly keyboard shortcut: Enter on the tool hands it over
-    // straight away — it flies into the tray (the simple path for keyboard
-    // users who don't want to carry it across with the arrow keys).
-    toolEl.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter' || toolEl.classList.contains('is-handed')) return;
-      e.preventDefault();
-      e.stopPropagation(); // don't let the journey engine treat Enter as Next
-      deliver(tool);
-    });
-  });
-
-  updateCount();
-  return () => {
-    clearTimeout(popTimer);
-    tools.forEach((t) => t.handle.destroy());
-  };
-};
-
-/**
- * @param {HTMLElement} rootEl - the <section class="chapter" id="07-moves"> element
- * @param {{survey: object, segments: object, tgi: object, journey: object}} data
+ * @param {HTMLElement} rootEl - the <section class="journey-step" id="07-moves">
+ * @param {{survey:object, segments:object, tgi:object, journey:object}} data
  */
 export default function init(rootEl, data) {
   if (!rootEl) return;
 
+  const moves = readMoves(rootEl);
+  if (!moves.length) return; // fail soft — no source, no build
+
+  const track = rootEl.querySelector('.mv-reel-track');
+  const beltSlots = rootEl.querySelector('.mv-belt-slots');
+  const beltCount = rootEl.querySelector('.mv-belt-count');
+  const reel = rootEl.querySelector('.mv-reel');
+  if (!track || !beltSlots || !reel) return;
+
+  const reduced = prefersReducedMotion();
   const cleanups = [];
 
-  // GATING: this step's marquee interaction is the TOOLKIT — the visitor must
-  // hand over all five tools. ready() fires once the fifth is handed over.
+  // GATING: the marquee interaction is picking up all five tools. ready() fires
+  // once the fifth is handed over; gate() turns on the gentle hint meanwhile.
   const journey = data && data.journey;
   if (journey && typeof journey.gate === 'function') journey.gate();
   let unlocked = false;
-  const onToolkitComplete = () => {
+  const onComplete = () => {
     if (unlocked) return;
     unlocked = true;
+    rootEl.classList.add('is-complete');
     if (journey && typeof journey.ready === 'function') journey.ready();
   };
 
-  // Filmstrip: mount each frame's flip table and stage its rows on scroll.
-  Object.keys(FLIP_ROWS_BY_MOVE).forEach((key) => {
-    const moveNumber = Number(key);
-    const rows = mountFlipTable(rootEl, moveNumber);
-    const band = rootEl.querySelector(`[aria-labelledby="mv-${moveNumber}-title"]`);
-    if (band) cleanups.push(stageShiftRows(band, rows));
+  // Build the reel frames + belt slots.
+  const frames = moves.map((move) => {
+    const frame = buildFrame(move);
+    track.append(frame);
+    beltSlots.append(buildSlot(move));
+    return frame;
   });
 
-  // Toolkit close — the gating marquee interaction.
-  cleanups.push(mountToolkit(rootEl, onToolkitComplete));
+  let activeIndex = 0;
+  let handed = 0;
+  const isHanded = new Array(TOTAL_MOVES).fill(false);
 
-  // Experiential: ease each frame in on scroll, drift the deck world panels.
-  const shell = rootEl.querySelector('.mv-shell');
-  if (shell) {
-    rootEl.querySelectorAll('.mv-move, .mv-hero, .mv-toolkit').forEach((band) => {
-      cleanups.push(chapterTransition(band));
+  // Move the reel so the active frame is centred. Pure transform (the hero
+  // motion). CSS owns the easing; under reduced motion the jump is instant.
+  const layoutReel = () => {
+    track.style.transform = `translate3d(${-activeIndex * 100}%, 0, 0)`;
+    frames.forEach((frame, i) => {
+      const active = i === activeIndex;
+      frame.classList.toggle('is-active', active);
+      frame.setAttribute('aria-hidden', active ? 'false' : 'true');
+      const tool = frame.querySelector('[data-tool]');
+      if (tool) {
+        // Only the active, un-picked tool is reachable / pickable.
+        tool.disabled = isHanded[i] || !active;
+        tool.tabIndex = active && !isHanded[i] ? 0 : -1;
+      }
     });
-    cleanups.push(observeParallax(shell, { maxShiftPx: 56 }));
-  }
+  };
 
+  // Advance to the next move that hasn't been picked up yet (wraps).
+  const advanceToNextUnpicked = () => {
+    for (let step = 1; step <= TOTAL_MOVES; step += 1) {
+      const i = (activeIndex + step) % TOTAL_MOVES;
+      if (!isHanded[i]) {
+        activeIndex = i;
+        layoutReel();
+        const tool = frames[i].querySelector('[data-tool]');
+        if (tool && !reduced) tool.focus({ preventScroll: true });
+        return;
+      }
+    }
+  };
+
+  const updateBelt = () => {
+    if (beltCount) beltCount.textContent = String(handed);
+    Array.from(beltSlots.children).forEach((slot, i) => {
+      slot.classList.toggle('is-filled', isHanded[i]);
+    });
+  };
+
+  // Hand a move over: light its belt slot, tick the count, advance the reel.
+  const handOver = (index) => {
+    if (isHanded[index]) return;
+    isHanded[index] = true;
+    handed += 1;
+    const frame = frames[index];
+    frame.classList.add('is-handed');
+    const tool = frame.querySelector('[data-tool]');
+    if (tool) {
+      tool.disabled = true;
+      tool.setAttribute('aria-label', `${moves[index].title} ${moves[index].key}. Picked up.`);
+    }
+    updateBelt();
+    if (handed >= TOTAL_MOVES) {
+      layoutReel();
+      onComplete();
+    } else {
+      advanceToNextUnpicked();
+    }
+  };
+
+  // Wire each frame's tool: tactile drag (down into the belt) + click/Enter.
+  frames.forEach((frame, index) => {
+    const tool = frame.querySelector('[data-tool]');
+    if (!tool) return;
+
+    // A short downward drag past the threshold = picked up; otherwise spring
+    // back. Click / Enter is the simple keyboard path (handled by the button).
+    let pickedByDrag = false;
+    const handle = draggable(tool, {
+      axis: 'y',
+      bounds: { minY: -40, maxY: 220 },
+      spring: 'return',
+      momentum: 0,
+      keyboardStep: 40,
+      springOpts: { stiffness: 220 },
+      onMove: (state) => {
+        // light the belt-bound affordance as the tool nears the threshold
+        const near = state.y > HANDOVER_THRESHOLD * 0.55;
+        frame.classList.toggle('is-reaching', near && !isHanded[index]);
+      },
+      onRelease: (state) => {
+        frame.classList.remove('is-reaching');
+        if (isHanded[index]) return;
+        if (state.y > HANDOVER_THRESHOLD) {
+          pickedByDrag = true;
+          // commit on the next frame so the drag's own release spring (return)
+          // doesn't fight the hand-over; we hand over then reset the transform.
+          handle.setPosition(0, 0, { animate: false });
+          handOver(index);
+        }
+      },
+    });
+    cleanups.push(() => handle.destroy());
+
+    // Click / Enter / Space = pick it up straight away (the simple path). The
+    // draggable's keydown also toggles a grab on Enter/Space, so we only act on
+    // a real click here to avoid double-firing; keyboard users get a dedicated
+    // Enter handler that picks up directly and stops the journey-engine Enter.
+    tool.addEventListener('click', (e) => {
+      if (pickedByDrag) { pickedByDrag = false; return; }
+      if (isHanded[index] || activeIndex !== index) return;
+      e.preventDefault();
+      handOver(index);
+    });
+    tool.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+      if (isHanded[index] || activeIndex !== index) return;
+      e.preventDefault();
+      e.stopPropagation(); // don't let the journey engine treat Enter as Next
+      handle.setPosition(0, 0, { animate: false });
+      handOver(index);
+    });
+  });
+
+  // Quiet reveal of the active frame's shift rows when the reel scrolls in.
   observeReveals(rootEl);
   observeCounters(rootEl);
+  updateBelt();
+  layoutReel();
 
-  // Chapter ARRIVAL — assemble the hero + toolkit copy when this step becomes
-  // current (main.js fires `chapter:arrive`). Also run once on mount so a
-  // direct mount (e.g. tests) still assembles.
+  // Chapter ARRIVAL — assemble the head copy when this step becomes current.
   const runArrival = () => arrival(rootEl);
   rootEl.addEventListener('chapter:arrive', runArrival);
   cleanups.push(() => rootEl.removeEventListener('chapter:arrive', runArrival));
-  if (prefersReducedMotion()) runArrival();
+  if (reduced) runArrival();
 
   return () => cleanups.forEach((fn) => fn && fn());
 }

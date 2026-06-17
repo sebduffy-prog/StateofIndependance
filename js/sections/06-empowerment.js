@@ -1,30 +1,29 @@
 /**
- * Chapter 06 — the empowerment architecture. Clean rebuild.
+ * Chapter 06 — the empowerment architecture.
  *
- * One continuous warm bear-figure world, backgroundless throughout. Three
- * orchestrated beats, all deck-lifted, no fabricated numbers:
+ * THE ONE MEMORABLE THING (ART-DIRECTION §7): three needs you pull together
+ * until they meet on empowerment. Tactile, elemental, lots of space. The screen
+ * has exactly ONE focal point — the marquee venn — and a quiet prelude:
  *
- *   1. THE PIVOT WIPE (ungated, cinematic). Survival mode -> active agency.
- *      A reframe slider clips the world + copy so only ONE side is ever visible
- *      (no stacked text); two cross-fading deck bear-world panels (coil =
- *      survival, sphere = agency). scrollScene primes the turn as the section
- *      enters so it arrives rather than cuts. Keyboard operable (the range
- *      input). NARRATIVE beat — it does not gate.
+ *   PRELUDE (ungated, cinematic). A single thin strip wipes "survival mode" to
+ *   "active agency". One word shows at a time (the off side is clipped, never
+ *   stacked). A range input drives it; scroll primes the turn until touched.
+ *   Keyboard operable. Narrative only — it does not gate.
  *
- *   2. THE PREMIUM. Three verified Q14 brand-asks count up on the ground:
- *      money is the loud ask, time + stress the premium ones brands undervalue.
- *
- *   3. THE MARQUEE (gated). "Three needs, one overlap." Money / time / stress
- *      start as three flat circles held APART; the visitor DRAGS them together
- *      (real physics + contact shadow via tactile.js). As they converge the
- *      shared overlap grows and the word "empowerment" assembles in the centre.
- *      When all three meet, journey.ready() fires (advisory — Next is never
- *      blocked). Fully keyboard operable (focus a need, arrows/Enter bring it
- *      in) and reduced-motion safe (circles start resolved). The "you" dot
- *      lands on this mount.
+ *   THE MARQUEE (gated, the hero motion). "Bring the three together." Money /
+ *   time / stress start as three flat brand circles held WIDE apart on the open
+ *   ground. The visitor DRAGS them together (real physics + contact shadow via
+ *   tactile.js); as they converge the shared overlap grows and the word
+ *   "empowerment" assembles in the centre. The three verified Q14 brand-ask
+ *   values read inline beneath each need — data as a reality, not a chart. When
+ *   the three meet, journey.ready() fires (advisory — Next is never blocked).
+ *   Fully keyboard operable (focus a need in the legend, Enter/arrows bring it
+ *   in) and reduced-motion safe (circles start resolved). The "you" dot lands
+ *   on the resolved core.
  *
  * Contract: docs/CONTRACT.md. Every CSS selector scoped #06-empowerment.
- * Verified Q14 values from segments.json meta.metricsTotals.brandAsks.
+ * Verified Q14 values from segments.json meta.metricsTotals.brandAsks
+ * (Stretch my money further 38.8 · Reduce stress 27.7 · Save me time 24).
  *
  * @param {HTMLElement} rootEl  the <section class="journey-step" id="06-empowerment">
  * @param {{survey:object|null, segments:object|null, tgi:object|null,
@@ -41,73 +40,26 @@ import {
   prefersReducedMotion,
 } from '../lib/experiential.js';
 
-const ASSET_BASE = 'assets/deck/';
+/* ───────────────────── PRELUDE — the pivot wipe ────────────────────────── */
 
-/* ───────────────────────── BEAT 1 — the pivot wipe ─────────────────────── */
-
-const PIVOT = Object.freeze({
-  before: {
-    tag: 'Survival mode',
-    lead: 'The old model',
-    body: 'The consumer as a passive, bruised victim — retracting, freezing, waiting to be saved.',
-    art: 'bear-world-coil.png',
-  },
-  after: {
-    tag: 'Active agency',
-    lead: 'The true data',
-    body: 'Resourceful, fiercely independent, stepping up to fix the systems themselves.',
-    art: 'bear-world-sphere.png',
-  },
-});
-
-const PIVOT_START = 18;   // slider starts mostly on "survival"
-const PIVOT_SNAP = 50;    // crossover point for which side's copy shows
+const PIVOT_START = 14;   // strip starts mostly on "survival"
+const PIVOT_SNAP = 50;    // crossover point for which word shows
 
 /**
- * Build the reframe. The stage holds two cross-fading panels; the readout shows
- * exactly ONE side's copy (the other is clipped out — never stacked). A range
- * input drives both. Returns { slider, apply } so scrollScene can prime it.
+ * Wire the thin pivot strip. Returns { slider, apply } so scrollScene can prime
+ * it. Drives a single CSS var --pv 0..1 (fill width + which word is clipped).
  */
 const buildPivot = (mount) => {
-  mount.innerHTML = `
-    <div class="emp-pv-stage" data-side="before">
-      <img class="emp-pv-art emp-pv-art--before" src="${ASSET_BASE}${PIVOT.before.art}"
-           alt="" aria-hidden="true" draggable="false" />
-      <img class="emp-pv-art emp-pv-art--after" src="${ASSET_BASE}${PIVOT.after.art}"
-           alt="" aria-hidden="true" draggable="false" />
-    </div>
-    <div class="emp-pv-readout" data-side="before" aria-live="polite">
-      <div class="emp-pv-side emp-pv-side--before">
-        <span class="emp-pv-tag emp-pv-tag--before">${PIVOT.before.tag}</span>
-        <span class="emp-pv-lead">${PIVOT.before.lead}</span>
-        <p class="emp-pv-body">${PIVOT.before.body}</p>
-      </div>
-      <div class="emp-pv-side emp-pv-side--after">
-        <span class="emp-pv-tag emp-pv-tag--after">${PIVOT.after.tag}</span>
-        <span class="emp-pv-lead">${PIVOT.after.lead}</span>
-        <p class="emp-pv-body">${PIVOT.after.body}</p>
-      </div>
-    </div>
-    <label class="emp-pv-control">
-      <span class="emp-pv-control-text">Make the turn</span>
-      <input type="range" class="emp-pv-slider" min="0" max="100" value="${PIVOT_START}"
-             aria-label="Reveal the active-agency reading of the data" />
-    </label>`;
-
-  const stage = mount.querySelector('.emp-pv-stage');
-  const readout = mount.querySelector('.emp-pv-readout');
-  const artBefore = mount.querySelector('.emp-pv-art--before');
-  const artAfter = mount.querySelector('.emp-pv-art--after');
-  const slider = mount.querySelector('.emp-pv-slider');
+  const slider = mount.querySelector('.emp-pivot-slider');
+  const fill = mount.querySelector('[data-emp-pivot-fill]');
+  const readout = mount.querySelector('.emp-pivot-readout');
+  if (!slider || !fill || !readout) return null;
 
   const apply = (pct) => {
     const f = Math.max(0, Math.min(1, pct / 100));
-    artAfter.style.opacity = String(f);
-    artBefore.style.opacity = String(1 - f);
-    const side = pct >= PIVOT_SNAP ? 'after' : 'before';
-    stage.dataset.side = side;
-    readout.dataset.side = side;       // CSS clips the off side — one set of copy
     mount.style.setProperty('--pv', f.toFixed(3));
+    fill.style.width = `${(f * 100).toFixed(2)}%`;
+    readout.dataset.side = pct >= PIVOT_SNAP ? 'after' : 'before';
   };
 
   slider.addEventListener('input', () => apply(Number(slider.value)));
@@ -115,36 +67,19 @@ const buildPivot = (mount) => {
   return { slider, apply };
 };
 
-/* ───────────────────────── BEAT 2 — the premium ───────────────────────── */
+/* ──────────── THE MARQUEE — the tactile three-needs venn ────────────────── */
 
-// Verified Q14 brand-asks (national totals). Money is the loud ask; time +
-// stress sit just behind — the premium the deck argues brands undervalue.
-const PREMIUM_KEYS = Object.freeze({
-  money: 'Stretch my money further',
-  stress: 'Reduce stress',
-  time: 'Save me time',
-});
-
-const fillPremium = (rootEl, brandAsks) => {
-  if (!brandAsks) return;
-  rootEl.querySelectorAll('[data-emp-stat]').forEach((el) => {
-    const v = brandAsks[PREMIUM_KEYS[el.dataset.empStat]];
-    if (typeof v === 'number') el.setAttribute('data-count-to', String(v));
-  });
-};
-
-/* ──────────────── BEAT 3 — the marquee: tactile three-needs venn ─────────── */
-
+// Verified Q14 brand-asks (national totals), inline at each need.
 const NEED_KEYS = Object.freeze({
   money: 'Stretch my money further',
   time: 'Save me time',
   stress: 'Reduce stress',
 });
 
-// Three CLEARLY DISTINCT fills that all read against the mustard ground — NO
+// Three CLEARLY DISTINCT fills that all read against the warm ground — NO
 // mustard-on-mustard. Money (the loud ask) takes deep navy; time + stress (the
 // premium asks) take royal-blue + orange, so all three stay legible apart and
-// resolve to a deep navy core. Each disc also carries a cream ink ring (CSS).
+// resolve to a deep navy core under multiply.
 const NEED_META = Object.freeze({
   money: { label: 'Save me money', short: 'money', sub: 'the obvious ask', token: '--soi-navy', fallback: '#0A1A5C' },
   time: { label: 'Save me time', short: 'time', sub: 'the premium ask', token: '--soi-blue', fallback: '#0B3DB4' },
@@ -160,11 +95,10 @@ const NEED_LAYOUT = [
 
 // Geometry as fractions of the stage's shorter side (responsive).
 const VENN = Object.freeze({
-  diamFrac: 0.40,    // circle diameter
-  spreadFrac: 0.42,  // home distance of each centre from stage centre — held
+  diamFrac: 0.42,    // circle diameter
+  spreadFrac: 0.40,  // home distance of each centre from stage centre — held
                      // WIDE so the drag-to-overlap journey is a real, felt move
-                     // (they start clearly apart, not pre-resolved)
-  lockFrac: 0.082,   // resolved (overlapping) distance from centre
+  lockFrac: 0.084,   // resolved (overlapping) distance from centre
   metFrac: 0.16,     // centre-distance under which a circle counts as "met"
 });
 
@@ -191,13 +125,11 @@ const buildVenn = (mount, brandAsks, onConverged) => {
 
   mount.innerHTML = `
     <div class="emp-tv-stage" role="group"
-         aria-label="Drag save me money, save me time and save me stress together until they overlap on empowerment">
-      <div class="emp-tv-field" data-emp-tv-field>
+         aria-label="Drag save me money, save me time and save me stress together until they meet on empowerment">
+      <div class="emp-tv-field" data-emp-tv-field data-youdot-anchor>
         <div class="emp-tv-overlap" aria-hidden="true"></div>
         <div class="emp-tv-centre" aria-hidden="true">
-          <span class="emp-tv-centre-lbl">They want</span>
           <span class="emp-tv-centre-word">empowerment</span>
-          <span class="emp-tv-centre-sub">tools, not hand-holding</span>
         </div>
       </div>
       <p class="emp-tv-hint" data-emp-tv-hint aria-live="polite">Drag the three circles together</p>
@@ -211,7 +143,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   const hint = mount.querySelector('[data-emp-tv-hint]');
   const legend = mount.querySelector('.emp-tv-legend');
 
-  // Live geometry in px, computed ONCE per render from the field box.
+  // Live geometry in px, computed per render from the field box.
   const geom = () => {
     const r = field.getBoundingClientRect();
     const short = Math.min(r.width, r.height);
@@ -227,8 +159,8 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     };
   };
 
-  // The three need circles — absolutely positioned HTML; tactile transforms
-  // them in real px on top of their CSS home left/top.
+  // The three need circles — absolutely positioned; tactile transforms them in
+  // real px on top of their CSS home left/top.
   const needs = NEED_LAYOUT.map(({ id, ang }) => {
     const el = document.createElement('div');
     el.className = 'emp-tv-need';
@@ -239,7 +171,8 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     return { id, el, dir: dirXY(ang), homeX: 0, homeY: 0 };
   });
 
-  // Legend rows — backgroundless, focusable; also the keyboard path.
+  // Legend rows — backgroundless, focusable; the keyboard path AND the inline
+  // data reality (each verified Q14 value reads at its need).
   const legRows = needs.map(({ id }) => {
     const row = document.createElement('div');
     row.className = 'emp-tv-leg';
@@ -252,8 +185,8 @@ const buildVenn = (mount, brandAsks, onConverged) => {
         ? `data-count-to="${v}" data-count-suffix="%" data-count-decimals="1"`
         : '';
     row.innerHTML =
-      `<span class="emp-tv-leg-name">${NEED_META[id].label}</span>` +
       `<span class="emp-tv-leg-n num" ${numAttrs}>0</span>` +
+      `<span class="emp-tv-leg-name">${NEED_META[id].label}</span>` +
       `<span class="emp-tv-leg-sub">${NEED_META[id].sub}</span>`;
     legend.appendChild(row);
     return { id, row };
@@ -263,7 +196,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   const drags = new Map();
   let converged = false;
 
-  // Place each circle's HOME (the wide triangle) and size it; tracks resize.
   const placeHome = () => {
     const g = geom();
     needs.forEach((n) => {
@@ -276,8 +208,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     });
   };
 
-  // Resolved target offset (relative to home) so a circle sits on the tight
-  // triangle around the centre — a shared core, not a single stack.
+  // Resolved target offset so a circle sits on the tight triangle around centre.
   const resolvedOffset = (n, g) => ({
     dx: g.cx + n.dir.x * g.lock - n.homeX,
     dy: g.cy + n.dir.y * g.lock - n.homeY,
@@ -294,13 +225,13 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     const meanDist = dists.reduce((a, b) => a + b, 0) / dists.length;
     const t = Math.max(0, Math.min(1, 1 - meanDist / g.spread));
 
-    const od = t * g.diam * 0.9;
+    const od = t * g.diam * 0.95;
     overlap.style.width = `${od}px`;
     overlap.style.height = `${od}px`;
-    overlap.style.opacity = (0.08 + t * 0.5).toFixed(3);
+    overlap.style.opacity = (0.08 + t * 0.55).toFixed(3);
     centre.style.setProperty('--tv', t.toFixed(3));
-    // Glow blooms only in the back half of the journey so it reads as a reward,
-    // not an ambient haze — eased from 0 at t=0.45 to full at t=1.
+    // Glow blooms only in the back half so it reads as a reward, not an ambient
+    // haze — eased from 0 at t=0.45 to full at t=1.
     field.style.setProperty('--tvg', Math.max(0, (t - 0.45) / 0.55).toFixed(3));
     stage.classList.toggle('is-converging', t > 0.15);
 
@@ -309,8 +240,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       converged = true;
       stage.classList.add('is-converged');
       centre.classList.add('is-on');
-      // One-shot reward pulse on the resolved core (CSS animates the halo; the
-      // class is re-armed by a reflow so a resize re-settle can replay it).
       stage.classList.remove('is-pulse');
       void stage.offsetWidth;
       stage.classList.add('is-pulse');
@@ -320,7 +249,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     }
   };
 
-  // Settle all three onto the resolved triangle and hold there.
   const lockToCentre = () => {
     const g = geom();
     needs.forEach((n) => {
@@ -339,8 +267,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     drags.get(id).setPosition(dx, dy, { animate: true });
   };
 
-  // Reduced motion: snap every circle onto the resolved triangle immediately
-  // (no drag required) so the overlap reads at rest.
+  // Reduced motion: snap every circle onto the resolved triangle immediately.
   const snapResolved = () => {
     const g = geom();
     needs.forEach((n) => {
@@ -363,7 +290,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       springOpts: { stiffness: 170, bounce: 0.28 },
       momentum: 0,
       keyboardStep: 22,
-      // Keep each circle centre inside the field.
       bounds: ({ x, y }) => {
         const g = geom();
         const half = g.diam / 2;
@@ -427,19 +353,15 @@ const buildVenn = (mount, brandAsks, onConverged) => {
 
 export default function init(rootEl, data) {
   const root = rootEl.querySelector('[data-emp-root]') || rootEl;
-  const pivotMount = rootEl.querySelector('[data-emp-pivot-mount]');
-  const pivotSection = rootEl.querySelector('[data-emp-pivot]');
+  const pivotMount = rootEl.querySelector('[data-emp-pivot]');
   const vennMount = rootEl.querySelector('[data-emp-venn]');
   const brandAsks = data?.segments?.meta?.metricsTotals?.brandAsks ?? null;
   const journey = data?.journey ?? null;
 
-  // BEAT 2 first (pure data injection, no DOM build).
-  fillPremium(rootEl, brandAsks);
-
-  // BEAT 1 — pivot wipe (ungated).
+  // PRELUDE — pivot wipe (ungated).
   const pivot = pivotMount ? buildPivot(pivotMount) : null;
 
-  // BEAT 3 — marquee venn (advisory gate via journey.ready()).
+  // THE MARQUEE — venn (advisory gate via journey.ready()).
   let unlocked = false;
   const unlock = () => {
     if (unlocked) return;
@@ -451,8 +373,7 @@ export default function init(rootEl, data) {
   if (vennMount) {
     venn = buildVenn(vennMount, brandAsks, unlock);
     if (journey) journey.gate();
-    // Fail soft: if the venn could not build (no data), never trap the visitor.
-    if (!brandAsks) unlock();
+    if (!brandAsks) unlock(); // fail soft: never trap the visitor
   }
 
   observeReveals(rootEl);
@@ -461,20 +382,20 @@ export default function init(rootEl, data) {
   // Re-assemble headlines on every arrival (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
-  // Experiential motion.
+  // Experiential motion — everything but the marquee stays quiet.
   const cleanups = [];
   cleanups.push(chapterTransition(root));
-  cleanups.push(observeParallax(root, { maxShiftPx: 44 }));
+  cleanups.push(observeParallax(root, { maxShiftPx: 40 }));
 
   // Prime the pivot wipe as the section scrolls in — until the visitor touches
-  // it, scroll progress nudges the slider from survival toward agency.
-  if (pivot && pivotSection && !prefersReducedMotion()) {
+  // it, scroll progress nudges the strip from survival toward agency.
+  if (pivot && pivotMount && !prefersReducedMotion()) {
     let touched = false;
     const markTouched = () => { touched = true; };
     pivot.slider.addEventListener('pointerdown', markTouched);
     pivot.slider.addEventListener('keydown', markTouched);
     cleanups.push(
-      scrollScene(pivotSection, [], {
+      scrollScene(pivotMount, [], {
         onProgress: (p) => {
           if (touched) return;
           const t = Math.max(0, Math.min(1, (p - 0.2) / 0.5));
@@ -486,8 +407,7 @@ export default function init(rootEl, data) {
     );
   }
 
-  // Teardown handle (no teardown event is dispatched by the shell, but expose
-  // it for safety; steps stay mounted so this is rarely needed).
+  // Teardown handle (steps stay mounted; expose for safety).
   rootEl._empCleanup = () => {
     cleanups.forEach((fn) => fn && fn());
     if (venn) venn.destroy();

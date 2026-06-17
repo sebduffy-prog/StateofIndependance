@@ -31,13 +31,11 @@ const MAP_SRC = 'assets/deck/uk-map.svg';
 const MAP_W = 823;   // uk-map.svg viewBox width
 const MAP_H = 1280;  // uk-map.svg viewBox height
 
-const FIELD_DOTS = 180;        // ambient respondents — lively, not a crowd-crush
+const FIELD_DOTS = 200;        // ambient respondents — the nation, behind the country
 const MARKER_STAGGER_MS = 120; // cities light in sequence (the "connecting" build)
 const CONVERGE_DELAY_MS = 420; // scatter holds, then springs onto the country
-const HERO_COUNT_MS = 1100;    // the 1,504 count-up duration (eased)
 const IDLE_FIRST_MS = 2600;    // map breathes alone before the first auto-open
 const IDLE_CYCLE_MS = 3400;    // gap between idle auto-opened cities
-const FMT = new Intl.NumberFormat('en-GB'); // locale grouping → "1,504", never "1504"
 
 const readToken = (name, fallback) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
@@ -211,28 +209,6 @@ const renderDiary = (diaryEl, city) => {
 };
 
 /**
- * Count the 1,504 hero up with LOCALE GROUPING so it always settles to the
- * comma'd "1,504" (the shared data-arrival-count formatter drops the comma).
- * Eased, tabular, reduced-motion-safe. Re-runnable on every chapter arrival.
- */
-const countHero = (el, reduced) => {
-  const target = Number(el.dataset.to) || 0;
-  if (reduced) {
-    el.textContent = FMT.format(target);
-    return;
-  }
-  const start = performance.now();
-  const tick = (now) => {
-    const t = Math.min((now - start) / HERO_COUNT_MS, 1);
-    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-    el.textContent = FMT.format(Math.round(target * eased));
-    if (t < 1) requestAnimationFrame(tick);
-    else el.textContent = FMT.format(target);
-  };
-  requestAnimationFrame(tick);
-};
-
-/**
  * Tactile pin-drop: the opened marker's dot springs in with a little weight —
  * a memory surfacing to the top. Pure transform (translateY + scale), so it
  * never reflows. No-op under reduced motion. One spring per open.
@@ -261,13 +237,11 @@ export default function init(rootEl, data) {
   const diaryEl = rootEl.querySelector('[data-research-diary]');
   const mapEl = rootEl.querySelector('[data-research-map]');
   const fieldEl = rootEl.querySelector('[data-research-field]');
-  const heroEl = rootEl.querySelector('[data-research-hero-count]');
 
-  // Re-assemble the entrance on every arrival (idempotent); the 1,504 hero
-  // counts up with its comma each time the chapter arrives.
+  // Re-assemble the entrance on every arrival (idempotent); the inline 1,504
+  // counts up via its data-arrival-count attribute inside arrival().
   rootEl.addEventListener('chapter:arrive', (e) => {
     arrival(rootEl, e.detail || {});
-    if (heroEl) countHero(heroEl, reduced);
   });
 
   observeReveals(rootEl);

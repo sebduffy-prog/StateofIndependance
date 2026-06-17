@@ -1,223 +1,65 @@
 <div class="chapter-inner">
-  <!-- ── Cinematic close (cream-on-navy, full-bleed, fills the screen) ──
-       The journey's FINAL, narrative step (no gate — it is the last step, so
-       Next reads "Finished" and is disabled; gating would have nothing to
-       unlock to). It DOES, however, play a single orchestrated CLOSE
-       SEQUENCE on chapter arrival (js drives it), so the ending ARRIVES the
-       way Blue Marine / Moooi do rather than appearing pre-built:
+  <!-- ── 09 · OUTRO — the nation disperses; one line remains ───────────────
+       ART-DIRECTION §7: "the nation disperses; one line remains. Silence and
+       weight — the Martin Lewis quote assembles, the you-dot leaves, a
+       grounded back-cover." ONE focal point: the Martin Lewis line. We cut
+       everything that competed with it (the old screen carried a headline
+       lockup, a standfirst, a figure mark, an Institutions▸▸▸Individuals
+       marquee, a maze GIF, a five-move recap with a progress counter, and a
+       CTA block — a collage, not a close). What remains is a single display
+       moment on a vast navy ground, the nation (the dotField, carrying the
+       you-dot) dispersing upward behind it, then a grounded warm back-cover.
 
-         beat 1 — INSTITUTIONS ▸▸▸ INDIVIDUALS assembles: the word
-                  "Institutions" lands, the arrows sweep rightward in
-                  cascade (power flowing), "Individuals" settles, and a
-                  release of cream dots crosses into the nation field.
-         beat 2 — the Martin Lewis line DECRYPTS into place (text-scramble),
-                  attribution last.
-         beat 3 — the persistent you-dot DISPERSES with the nation as the
-                  dotField rises and releases upward.
+       Backgroundless throughout: no card/box/highlight fill behind any copy;
+       emphasis is colour + weight only; every decorative layer sits BEHIND
+       via z-index 0 + pointer-events:none and never occludes the line. -->
 
-       Navy ground; a deck bear-world motif ("doors" = choices / opting out)
-       drifts low-opacity behind the copy as the chapter's brand-world ground
-       (deck §3). Every decorative layer sits BEHIND via z-index 0 +
-       pointer-events:none and never occludes copy. NO blocks behind any text —
-       emphasis is colour/weight only; copy reads on the ground. -->
+  <!-- ── The close: one line on the open navy ground ───────────────────── -->
   <div class="outro-dark si-dark" data-outro-close>
-    <!-- Deck bear-world motif — the chapter's brand-world ground (parallax). -->
-    <img
-      class="outro-world"
-      src="assets/deck/bear-world-doors.png"
-      alt=""
-      aria-hidden="true"
-      data-parallax="0.16"
-      loading="lazy" decoding="async"
-    />
-    <!-- Decorative orbit rings sweeping in from the right (behind copy). -->
-    <div class="outro-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.08"></div>
-    <!-- Paper-coloured dotField dispersing upward — the "nation released". -->
+    <!-- The nation, dispersing. A field of cream dots rises and releases off
+         the top; the persistent you-dot is among them and leaves with it.
+         THE ONE HERO MOTION of this screen. -->
     <div class="outro-dots" data-outro-dots aria-hidden="true"></div>
 
-    <div class="outro-frame">
-      <!-- Title lockup opener (deck §3): the chapter headline in Poppins Black,
-           huge, deck-style — recreates the report-cover title treatment.
-           Headline lines assemble line-by-line on arrival ([data-arrival]). -->
-      <header class="outro-head reveal" data-enter>
-        <p class="vccp-eyebrow outro-eyebrow" data-arrival>The Challenger Series &middot; VCCP</p>
-        <h2 class="outro-title si-display si-display--black">
-          <span class="outro-title-line" data-arrival>Hand them</span>
-          <span class="outro-title-line" data-arrival>the <span class="hl">tools</span></span>
-        </h2>
-        <p class="outro-standfirst si-measure" data-arrival>
-          Stop trying to lead the consumer. Your job is to equip them to lead
-          themselves. Five moves, one architecture, a nation ready to act.
-        </p>
-        <img
-          class="outro-head-figure"
-          src="assets/deck/figure-silhouette.png"
-          alt=""
-          aria-hidden="true"
-          data-parallax="-0.1"
-          loading="lazy" decoding="async"
-        />
-      </header>
+    <!-- A single thin orbit ring — the connective signature, ambient, low. -->
+    <div class="outro-orbit si-orbit" aria-hidden="true" data-parallax="0.06"></div>
 
-      <!-- ── MARQUEE BEAT · Institutions ▸▸▸ Individuals ──────────────────
-           The thesis resolved in one closing image (deck slide 75 / outro):
-           power flows from the institution side to the field of individuals.
-           Full-width, on the ground, no box. JS reveals it as the FIRST beat
-           of the close sequence; reduced motion rests it fully assembled. -->
-      <div class="outro-resolve" data-outro-resolve aria-label="Power flows from institutions to individuals">
-        <span class="outro-resolve-word outro-resolve-from" data-resolve-from>Institutions</span>
-        <span class="outro-resolve-flow" aria-hidden="true" data-resolve-flow>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-        </span>
-        <!-- The you-dot lands HERE — power resolves to the individual. The
-             persistent marker eases onto "Individuals", rests as the close
-             plays, then disperses with the nation field (js beat 3). -->
-        <span class="outro-resolve-word outro-resolve-to hl" data-resolve-to data-youdot-anchor>Individuals</span>
-      </div>
+    <!-- The focal point: the Martin Lewis line, hung on a left axis (editorial,
+         asymmetric — never a centred stack). It assembles word-by-word as the
+         marquee plays; the attribution settles last. -->
+    <figure class="outro-quote" data-outro-quote>
+      <p class="vccp-eyebrow outro-kicker" data-outro-kicker>The state of independence</p>
+      <blockquote class="outro-quote-text si-display si-display--black" data-outro-line>They do not want brands to hold their hands. They want brands to hand them the <span class="hl">tools</span>.</blockquote>
+      <figcaption class="outro-quote-cite" data-outro-cite>Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
+    </figure>
 
-      <!-- Hero band: the quote (left) + the motion maze logo (right) read as
-           one composed lockup, deck-style. Two columns => zero overlap. -->
-      <div class="outro-hero" data-enter>
-        <!-- The hero quote, given deck hanging-quote gravitas (Poppins Black).
-             The quote text DECRYPTS into place on the close sequence's second
-             beat (data-resolve-quote); attribution follows. -->
-        <figure class="outro-quote reveal">
-          <blockquote class="outro-quote-text si-display si-display--black" data-resolve-quote>They do not want brands to hold their hands. They want brands to hand them the tools.</blockquote>
-          <figcaption class="outro-quote-cite" data-resolve-cite>Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
-        </figure>
-
-        <!-- The signature motion maze logo — the State of Independence brand
-             world animation (deck §3). Decorative closing motif; PNG static
-             fallback is swapped in for reduced motion / no-gif. -->
-        <figure class="outro-maze reveal" aria-hidden="true" data-parallax="-0.12">
-          <img
-            class="outro-maze-img"
-            src="assets/deck/maze-hero.gif"
-            alt=""
-            width="800" height="800"
-            loading="lazy" decoding="async"
-          />
-        </figure>
-      </div>
-
-      <!-- The five moves as an interactive index — each row staggers in on
-           step entry and expands its one-line lesson on hover/focus. -->
-      <nav class="outro-recap" aria-label="The five moves, jump to the moves chapter" data-enter>
-        <p class="outro-recap-label">
-          The five moves
-          <!-- Counts up 0 → 5 as the rows land in cascade; the line lights amber
-               on the fifth — the "toolkit complete" finish, backgroundless. -->
-          <span class="outro-recap-progress" data-recap-progress aria-hidden="true"><span class="outro-recap-progress-num num" data-recap-count>0</span> / 5 equipped</span>
-        </p>
-        <ol class="outro-recap-list" data-recap>
-          <li class="outro-recap-item">
-            <a class="outro-recap-link" href="#07-moves">
-              <span class="outro-recap-num num">01</span>
-              <span class="outro-recap-body">
-                <span class="outro-recap-text si-display si-display--sm">Unplug them from the grid</span>
-                <span class="outro-recap-lesson">Help customers lower living costs and rely less on broken systems.</span>
-              </span>
-            </a>
-          </li>
-          <li class="outro-recap-item">
-            <a class="outro-recap-link" href="#07-moves">
-              <span class="outro-recap-num num">02</span>
-              <span class="outro-recap-body">
-                <span class="outro-recap-text si-display si-display--sm">Be the trusted antidote</span>
-                <span class="outro-recap-lesson">Be the honest, transparent alternative when people feel let down.</span>
-              </span>
-            </a>
-          </li>
-          <li class="outro-recap-item">
-            <a class="outro-recap-link" href="#07-moves">
-              <span class="outro-recap-num num">03</span>
-              <span class="outro-recap-body">
-                <span class="outro-recap-text si-display si-display--sm">Ride the social self-help wave</span>
-                <span class="outro-recap-lesson">Exist in the self-help heartlands where context is king.</span>
-              </span>
-            </a>
-          </li>
-          <li class="outro-recap-item">
-            <a class="outro-recap-link" href="#07-moves">
-              <span class="outro-recap-num num">04</span>
-              <span class="outro-recap-body">
-                <span class="outro-recap-text si-display si-display--sm">Kill the mental load</span>
-                <span class="outro-recap-lesson">Treat time as the currency and reduce the cognitive overload.</span>
-              </span>
-            </a>
-          </li>
-          <li class="outro-recap-item">
-            <a class="outro-recap-link" href="#07-moves">
-              <span class="outro-recap-num num">05</span>
-              <span class="outro-recap-body">
-                <span class="outro-recap-text si-display si-display--sm">Boost good behaviours</span>
-                <span class="outro-recap-lesson">Gamify goals, form habits, reward what matters.</span>
-              </span>
-            </a>
-          </li>
-        </ol>
-      </nav>
-
-      <!-- Credits + CTA, flowing on the ground (no bordered boxes). -->
-      <div class="outro-foot" data-enter>
-        <section class="outro-credits reveal" aria-label="Team credits">
-          <p class="outro-credits-label">Built by</p>
-          <ul class="outro-credits-list">
-            <li>
-              <span class="outro-credit-name">Michael Lee</span>
-              <span class="outro-credit-role">Chief Strategy Officer</span>
-            </li>
-            <li>
-              <span class="outro-credit-name">Stefan Siedentopf</span>
-              <span class="outro-credit-role">Deputy CSO</span>
-            </li>
-            <li>
-              <span class="outro-credit-name">Jenny Nichols</span>
-              <span class="outro-credit-role">Deputy CSO</span>
-            </li>
-            <li>
-              <span class="outro-credit-name">Will Parrish</span>
-              <span class="outro-credit-role">Chief Strategy Officer, VCCP Media</span>
-            </li>
-            <li>
-              <span class="outro-credit-name">Ellie Gauci</span>
-              <span class="outro-credit-role">Head of Strategy, CRM, Loyalty &amp; Data</span>
-            </li>
-          </ul>
-        </section>
-
-        <aside class="outro-cta reveal" aria-label="Making the most of the data">
-          <p class="outro-cta-eyebrow">Making the most of the data</p>
-          <ul class="outro-cta-list">
-            <li>24 hours of access to the dashboard</li>
-            <li>Custom report benefits</li>
-            <li>Get in touch</li>
-          </ul>
-        </aside>
-      </div>
-    </div>
+    <!-- The one mark the you-dot rests on before it disperses. Invisible
+         anchor at the line's end — the visitor's thread arrives, then leaves
+         with the nation (js beat: disperse). -->
+    <span class="outro-anchor" data-youdot-anchor aria-hidden="true"></span>
   </div>
 
-  <!-- ── Grounded warm-gradient back-cover (the bear stands flush) ────
-       Mustard→orange→coral gradient ground. The girl-and-bear stands flush on
-       the floor at the right (its own grid column, parallax-free so feet stay
-       planted); the wordmark + copyright sit in a clear column at the left and
-       never overlap the figure. Orbit seed dots add the world motif. -->
+  <!-- ── Grounded warm back-cover — the report closes, the bear stands ────
+       Mustard→orange→coral ground. Asymmetric two-column: the wordmark +
+       copyright + quiet credits hang on the left axis; the girl-and-bear
+       stands flush on the floor in its own column (zero overlap). -->
   <div class="outro-backcover si-ground-warm" data-outro-backcover>
     <div class="outro-backcover-orbit si-orbit" aria-hidden="true"></div>
     <span class="si-seed outro-seed-a" aria-hidden="true"></span>
     <span class="si-seed outro-seed-b" aria-hidden="true"></span>
 
-    <div class="outro-backcover-copy" data-enter>
+    <div class="outro-backcover-copy">
       <p class="outro-backcover-series si-display si-display--black">The Challenger<br />Series</p>
-      <p class="outro-backcover-org">VCCP</p>
-      <p class="outro-backcover-copyright num">&copy; VCCP Media 2026</p>
+      <p class="outro-backcover-org">VCCP &middot; <span class="num">&copy; VCCP Media 2026</span></p>
+
+      <!-- Credits, kept quiet — supporting type on the ground, never a block. -->
+      <p class="outro-credits-label">Built by</p>
+      <p class="outro-credits-line">
+        Michael Lee, Stefan Siedentopf, Jenny Nichols, Will Parrish &amp;
+        Ellie Gauci &middot; VCCP &times; Watermelon Research
+      </p>
     </div>
 
-    <!-- The girl-and-bear stands flush on the gradient floor: big, grounded,
-         in its own column so it cannot overlap the wordmark/copyright.
-         Pre-cropped to content bbox, baked to warm cream — feet flush, no
-         plate, no mask/aspect mismatch. Aspect 2817×1620. -->
     <img
       class="outro-backcover-bear si-ground"
       src="assets/brand/Girl_and_Bear_cream.png"

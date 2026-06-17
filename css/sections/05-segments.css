@@ -1,247 +1,274 @@
 /* ============================================================
-   05-segments.css — THE SHOWPIECE. "Britain in four segments."
+   05-segments.css — THE SHOWPIECE. "Britain resolves into four."
    Scope: every selector under #\30 5-segments (escaped id; \30  = "0").
+
+   ONE focal point: the cinematic resolve (the dot-field compass). The
+   headline hangs top-left over it; four quiet camp labels live in the
+   corners; the chosen camp's profile is the single supporting beat. The
+   quiz ("and you?") and the network ("what links them") are quieter acts
+   below, deliberately separated by large negative space.
+
    Warm gradient ground, navy marks/text, thin orbit motif, per-segment
-   brand accents shared with segment-graph. Backgroundless, square
-   corners, NO underline / NO skew, tabular nums, contrast-safe.
+   accents shared with segment-graph. Backgroundless, square corners,
+   NO underline / NO skew, tabular nums, contrast-safe. One easing system.
    ============================================================ */
 
-/* The whole chapter rides a warm gradient ground that flows section to
-   section — no stacked panels, no white boxes. */
 #\30 5-segments {
   background: var(--ground-warm);
   color: var(--on-warm);
+  --sg5-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 #\30 5-segments .sg5-world {
   position: relative;
   isolation: isolate;
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: clamp(3.5rem, 6vh, 6rem) clamp(20px, 5vw, 72px)
+  padding: clamp(3rem, 6vh, 5.5rem) clamp(20px, 5vw, 80px)
            calc(var(--journey-controls-h) + clamp(2.5rem, 5vh, 4rem));
   display: flex;
   flex-direction: column;
-  gap: clamp(3.5rem, 7vh, 6.5rem);
+  /* Large jumps between the three acts; tight within each (§2). */
+  gap: clamp(5rem, 11vh, 9rem);
 }
 
 /* ── Decorative orbit world (behind content, never carries meaning) ── */
 #\30 5-segments .sg5-orbit {
   position: absolute;
-  inset: -10% -10% auto -10%;
+  inset: -12% -10% auto -10%;
   height: 130%;
   z-index: 0;
+  opacity: 0.8;
   background:
-    radial-gradient(circle at 76% 26%,
+    radial-gradient(circle at 78% 22%,
       transparent 0,                       transparent calc(15% - 1px),
       var(--soi-orbit) 15%,                transparent calc(15% + 1px),
-      transparent calc(26% - 1px),
-      var(--soi-orbit) 26%,                transparent calc(26% + 1px),
-      transparent calc(38% - 1px),
-      var(--soi-orbit-strong) 38%,         transparent calc(38% + 1px),
+      transparent calc(27% - 1px),
+      var(--soi-orbit) 27%,                transparent calc(27% + 1px),
+      transparent calc(40% - 1px),
+      var(--soi-orbit-strong) 40%,         transparent calc(40% + 1px),
       transparent 100%);
-  transform-origin: 76% 26%;
+  transform-origin: 78% 22%;
 }
 #\30 5-segments .sg5-seed { z-index: 0; }
-#\30 5-segments .sg5-seed--a { top: 18%; right: 20%; }
-#\30 5-segments .sg5-seed--b { top: 31%; right: 38%; }
-#\30 5-segments .sg5-seed--c { top: 9%;  right: 8%;  }
+#\30 5-segments .sg5-seed--a { top: 14%; right: 16%; }
+#\30 5-segments .sg5-seed--b { top: 30%; right: 40%; }
 
 #\30 5-segments .sg5-world > * { position: relative; z-index: 1; }
 
-/* ── Opener ──────────────────────────────────────────────────── */
-#\30 5-segments .sg5-head { display: grid; gap: var(--space-3); }
+/* ============================================================
+   THE RESOLVE — the one focal point.
+   Asymmetric editorial composition: headline hangs top-left, the
+   compass stage fills the screen below it, profile resolves under that.
+   ============================================================ */
+#\30 5-segments .sg5-resolve {
+  display: grid;
+  gap: clamp(2.25rem, 5vh, 4rem);
+}
+
+/* ── The opener — dramatic display, hung on the left axis ── */
+#\30 5-segments .sg5-head {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 56ch;
+}
 #\30 5-segments .sg5-headline {
-  font-size: clamp(2.9rem, 7vw, 6.4rem);
-  line-height: 0.92;
+  /* The ONE display moment — huge, nothing in the muddy middle. */
+  font-size: clamp(3.4rem, 8.5vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
   color: var(--soi-navy);
   margin: 0;
 }
-#\30 5-segments .sg5-headline span { display: inline; }
-#\30 5-segments .sg5-headline .hl { color: var(--soi-navy); }
+#\30 5-segments .sg5-headline span { display: block; }
+/* The headline is all navy gravity. The screen's ONE accent moment is the
+   live teal in the resolve (the Hustlers cluster + the orbit ring) — never a
+   teal-on-mustard text contrast risk. */
+#\30 5-segments .sg5-headline-em { color: var(--soi-navy); }
 #\30 5-segments .sg5-standfirst {
   font-size: var(--t-md);
   line-height: 1.5;
+  font-weight: 500;
   color: var(--soi-navy);
   margin: 0;
 }
 #\30 5-segments .sg5-standfirst strong { font-weight: 700; }
 
-/* ── Section ledes (shared) ──────────────────────────────────── */
-#\30 5-segments .sg5-section-lede { display: grid; gap: var(--space-1); max-width: 64ch; }
-#\30 5-segments .sg5-section-copy {
-  font-size: var(--t-md);
-  line-height: 1.5;
-  color: var(--soi-navy);
-  margin: 0;
-}
-#\30 5-segments .sg5-cue {
-  margin: 6px 0 0;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--soi-navy);
-  opacity: 0.78;
-}
-
-#\30 5-segments .sg5-compass-block,
-#\30 5-segments .sg5-network-block,
-#\30 5-segments .sg5-quiz-block {
-  display: grid;
-  gap: clamp(1.5rem, 3vh, 2.5rem);
-}
-
-/* ============================================================
-   1 · THE AGENCY COMPASS (the marquee)
-   A square 2×2 stage: dotField canvas behind four quadrant buttons,
-   axis labels on the four edges, a thin navy cross dividing it.
-   Backgroundless — only the faint cross + axis labels structure it.
-   ============================================================ */
-#\30 5-segments .sg5-compass {
+/* ── The compass stage — the hero. Near-full-bleed square; the dot-field
+   IS the data. Backgroundless: only the faint cross + axis words + corner
+   labels structure it. ── */
+#\30 5-segments .sg5-stage {
   position: relative;
-  width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
+  width: min(880px, 100%);
+  justify-self: center;
   aspect-ratio: 1 / 1;
-  padding: clamp(34px, 5vw, 56px); /* room for the edge axis labels */
+  padding: clamp(40px, 5.5vw, 72px); /* room for edge axis words + corner labels */
 }
 
-/* Axis labels — navy, uppercase, on the four edges. Never on an orbit line. */
+/* Axis words — quiet editorial annotations on the four edges. Never on an
+   orbit line; never competing with the headline. */
 #\30 5-segments .sg5-axis {
   position: absolute;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--soi-navy);
+  opacity: 0.62;
   white-space: nowrap;
 }
-#\30 5-segments .sg5-axis--top    { top: 6px;    left: 50%; transform: translateX(-50%); }
-#\30 5-segments .sg5-axis--bottom { bottom: 6px; left: 50%; transform: translateX(-50%); }
-#\30 5-segments .sg5-axis--left   { left: 4px;  top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; }
-#\30 5-segments .sg5-axis--right  { right: 4px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; }
+#\30 5-segments .sg5-axis--top    { top: 4px;    left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg5-axis--bottom { bottom: 4px; left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg5-axis--left   { left: 2px;  top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; }
+#\30 5-segments .sg5-axis--right  { right: 2px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; }
 
 /* The thin navy cross (the 2×2 divider). Faint — structure, not a box. */
 #\30 5-segments .sg5-cross {
   position: absolute;
-  background: rgba(10, 26, 92, 0.22);
+  background: rgba(10, 26, 92, 0.18);
   pointer-events: none;
 }
 #\30 5-segments .sg5-cross--v {
-  top: clamp(34px, 5vw, 56px); bottom: clamp(34px, 5vw, 56px);
-  left: 50%; width: 1.5px; transform: translateX(-50%);
+  top: clamp(40px, 5.5vw, 72px); bottom: clamp(40px, 5.5vw, 72px);
+  left: 50%; width: 1px; transform: translateX(-50%);
 }
 #\30 5-segments .sg5-cross--h {
-  left: clamp(34px, 5vw, 56px); right: clamp(34px, 5vw, 56px);
-  top: 50%; height: 1.5px; transform: translateY(-50%);
+  left: clamp(40px, 5.5vw, 72px); right: clamp(40px, 5.5vw, 72px);
+  top: 50%; height: 1px; transform: translateY(-50%);
 }
 
-/* The canvas field fills the inner stage, behind the buttons. */
+/* The canvas field fills the inner stage — the hero surface. */
 #\30 5-segments .sg5-field {
   position: absolute;
-  inset: clamp(34px, 5vw, 56px);
+  inset: clamp(40px, 5.5vw, 72px);
   z-index: 0;
 }
 
-/* Four quadrant buttons over the field — a 2×2 grid filling the inner stage.
-   Backgroundless at rest; the active one gets a faint mat + its accent edge. */
-#\30 5-segments .sg5-quadrants {
+/* Four camp labels, one per corner of the stage — editorial, NOT chunky
+   tiles. They hang at the outer corner of each quadrant so they never sit
+   over the dots. Backgroundless at rest. */
+#\30 5-segments .sg5-camps {
   position: absolute;
-  inset: clamp(34px, 5vw, 56px);
+  inset: clamp(40px, 5.5vw, 72px);
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: clamp(8px, 1.4vw, 16px);
+  pointer-events: none; /* the labels re-enable it */
 }
-/* Place each quadrant in its compass cell (matches the QUADRANTS rects). */
-#\30 5-segments .sg5-quad--hustlers   { grid-area: 1 / 1; } /* pessimistic + proactive (top-left)  */
-#\30 5-segments .sg5-quad--architects { grid-area: 1 / 2; } /* optimistic + proactive (top-right)  */
-#\30 5-segments .sg5-quad--retreaters { grid-area: 2 / 1; } /* pessimistic + passive (bottom-left) */
-#\30 5-segments .sg5-quad--coasters   { grid-area: 2 / 2; } /* optimistic + passive (bottom-right) */
-
-#\30 5-segments .sg5-quad {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 2px;
-  padding: clamp(10px, 1.4vw, 16px);
-  border: 1px solid transparent;
+#\30 5-segments .sg5-camp {
+  position: absolute;
+  pointer-events: auto;
+  display: grid;
+  gap: 1px;
+  max-width: 42%;
+  padding: 8px 10px;
+  border: 0;
   background: transparent;
   color: var(--soi-navy);
-  text-align: left;
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+  transition: opacity 0.18s var(--sg5-ease), transform 0.18s var(--sg5-ease);
 }
-#\30 5-segments .sg5-quad:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(10, 26, 92, 0.22);
-}
-#\30 5-segments .sg5-quad:focus-visible {
+#\30 5-segments .sg5-camp--tl { top: 0;    left: 0;  text-align: left;  justify-items: start; }
+#\30 5-segments .sg5-camp--tr { top: 0;    right: 0; text-align: right; justify-items: end; }
+#\30 5-segments .sg5-camp--bl { bottom: 0; left: 0;  text-align: left;  justify-items: start; }
+#\30 5-segments .sg5-camp--br { bottom: 0; right: 0; text-align: right; justify-items: end; }
+
+#\30 5-segments .sg5-camp:hover { transform: translateY(-2px); }
+#\30 5-segments .sg5-camp:focus-visible {
   outline: 2px solid var(--soi-navy);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
-#\30 5-segments .sg5-quad.is-active {
-  background: rgba(255, 255, 255, 0.32);
-  border-color: var(--soi-navy);
-}
-#\30 5-segments .sg5-quad-share {
-  font-size: clamp(1.7rem, 3.4vw, 2.7rem);
+/* When a camp is chosen, the rest fade back — one focal point at a time. */
+#\30 5-segments .sg5-stage.is-chosen .sg5-camp { opacity: 0.4; }
+#\30 5-segments .sg5-stage.is-chosen .sg5-camp.is-active { opacity: 1; }
+
+#\30 5-segments .sg5-camp-share {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.9;
+  line-height: 0.86;
+  color: var(--sg5-accent, var(--soi-navy));
+}
+#\30 5-segments .sg5-camp-pct { font-size: 0.46em; font-weight: 800; }
+#\30 5-segments .sg5-camp-name {
+  margin-top: 3px;
+  font-size: clamp(0.92rem, 1.3vw, 1.1rem);
+  font-weight: 800;
+  line-height: 1.04;
   color: var(--soi-navy);
 }
-#\30 5-segments .sg5-quad-name {
-  font-size: 0.94rem;
-  font-weight: 800;
-  line-height: 1.05;
-}
-#\30 5-segments .sg5-quad-trio {
-  font-size: 0.72rem;
+#\30 5-segments .sg5-camp-trio {
+  font-size: 0.74rem;
   font-weight: 500;
   line-height: 1.2;
   color: var(--soi-navy);
-  opacity: 0.78;
+  opacity: 0.74;
 }
 
-/* A small accent tick per quadrant, top-left, in its brand colour. */
-#\30 5-segments .sg5-quad::before {
-  content: "";
-  align-self: flex-start;
-  width: 22px; height: 4px;
-  margin-bottom: auto;
-  background: var(--sg5-accent, var(--soi-navy));
-}
+/* Per-segment accent (drives the big share number + you-dot). */
 #\30 5-segments .sg5-accent-architects { --sg5-accent: var(--mustard, #FFC931); }
 #\30 5-segments .sg5-accent-hustlers   { --sg5-accent: var(--teal-deep, #00BCA5); }
 #\30 5-segments .sg5-accent-coasters   { --sg5-accent: var(--soi-orange, #FD8D20); }
 #\30 5-segments .sg5-accent-retreaters { --sg5-accent: var(--soi-navy, #0A1A5C); }
 
-/* ── The chosen quadrant's profile (backgroundless) ──────────── */
+/* The soft "try it" cue, centred on the cross — the gentle gate hint. */
+#\30 5-segments .sg5-cue {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--soi-navy);
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.6s var(--sg5-ease);
+}
+/* The cue fades in only once the dots have resolved (so it reads as a prompt,
+   not a label fighting the scatter). */
+#\30 5-segments .sg5-stage.is-resolved .sg5-cue { opacity: 0.72; }
+#\30 5-segments .sg5-stage.is-chosen   .sg5-cue { opacity: 0; }
+
+/* ── The chosen camp's profile — the one supporting moment (backgroundless) ── */
 #\30 5-segments .sg5-profile { min-height: 0; }
+#\30 5-segments .sg5-profile:empty { display: none; }
 #\30 5-segments .sg5-profile-card {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   border-top: 3px solid var(--sg5-accent, var(--soi-navy));
   padding-top: var(--space-3);
+  animation: sg5-rise 0.6s var(--sg5-ease) both;
+}
+@keyframes sg5-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
 }
 #\30 5-segments .sg5-profile-head {
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2vw, 24px);
+  gap: clamp(16px, 2.4vw, 28px);
 }
 #\30 5-segments .sg5-profile-share {
-  font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(3rem, 6.5vw, 5.4rem);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.86;
-  color: var(--soi-navy);
+  line-height: 0.82;
+  color: var(--sg5-accent, var(--soi-navy));
 }
+#\30 5-segments .sg5-profile-pct { font-size: 0.4em; font-weight: 800; }
 #\30 5-segments .sg5-profile-name {
-  font-size: var(--t-lg);
+  font-size: var(--t-sub);
   font-weight: 800;
+  letter-spacing: -0.01em;
   margin: 0;
   color: var(--soi-navy);
 }
@@ -251,15 +278,15 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--soi-navy);
-  opacity: 0.82;
+  opacity: 0.78;
 }
 #\30 5-segments .sg5-profile-quote {
   margin: 0;
-  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
   font-weight: 500;
-  line-height: 1.34;
+  line-height: 1.28;
   color: var(--soi-navy);
-  max-width: 40ch;
+  max-width: 24ch;
 }
 #\30 5-segments .sg5-profile-quote::before { content: "\201C"; }
 #\30 5-segments .sg5-profile-quote::after  { content: "\201D"; }
@@ -272,11 +299,11 @@
 #\30 5-segments .sg5-profile-facts dt {
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--soi-navy);
-  opacity: 0.62;
-  margin-bottom: 4px;
+  opacity: 0.6;
+  margin-bottom: 5px;
 }
 #\30 5-segments .sg5-profile-facts dd {
   margin: 0;
@@ -287,22 +314,113 @@
 #\30 5-segments .sg5-profile-charts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: clamp(1.5rem, 3vw, 3rem);
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
 }
 #\30 5-segments .sg5-profile-chart { gap: 10px; }
 #\30 5-segments .sg5-profile-cap {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--soi-navy);
-  opacity: 0.66;
+  opacity: 0.62;
   margin: 0;
 }
 
 /* ============================================================
-   2 · THE LIVING NETWORK (segment-graph.js hooks, styled in-scope)
+   ACT TWO — "And you?" (the quiz). Quiet by design.
    ============================================================ */
+#\30 5-segments .sg5-find { display: grid; gap: var(--space-2); }
+#\30 5-segments .sg5-find-copy {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--soi-navy);
+  margin: 0 0 var(--space-2);
+}
+#\30 5-segments .sg5-quiz-stage { display: grid; gap: clamp(1.5rem, 3vh, 2.5rem); }
+#\30 5-segments .quiz { max-width: 56ch; display: grid; gap: var(--space-3); }
+#\30 5-segments .quiz-progress {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.6;
+}
+#\30 5-segments .quiz-card { display: grid; gap: var(--space-3); min-height: 150px; }
+#\30 5-segments .quiz-statement {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.16;
+  color: var(--soi-navy);
+}
+#\30 5-segments .quiz-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+#\30 5-segments .quiz-actions .vccp-btn { min-width: 150px; text-align: center; }
+
+/* The result card — backgroundless, accent top edge, dramatic name. */
+#\30 5-segments .sg5-quiz-result { max-width: 56ch; }
+#\30 5-segments .sg5-result-card {
+  display: grid;
+  gap: 8px;
+  border-top: 3px solid var(--sg5-accent, var(--soi-navy));
+  padding-top: var(--space-3);
+  animation: sg5-rise 0.6s var(--sg5-ease) both;
+}
+#\30 5-segments .sg5-result-eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soi-navy);
+  opacity: 0.6;
+}
+#\30 5-segments .sg5-result-name {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.6vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--sg5-accent, var(--soi-navy));
+}
+#\30 5-segments .sg5-result-trio {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--soi-navy);
+  opacity: 0.82;
+}
+#\30 5-segments .sg5-result-share {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--soi-navy);
+}
+#\30 5-segments .sg5-result-quote {
+  margin: 8px 0 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.34;
+  color: var(--soi-navy);
+  max-width: 38ch;
+}
+#\30 5-segments .sg5-result-quote::before { content: "\201C"; }
+#\30 5-segments .sg5-result-quote::after  { content: "\201D"; }
+#\30 5-segments .sg5-result-again { justify-self: start; margin-top: 12px; }
+
+/* ============================================================
+   EXPLORE DEEPER — "What links them" (segment-graph hooks). Supporting.
+   ============================================================ */
+#\30 5-segments .sg5-network { display: grid; gap: var(--space-2); }
+#\30 5-segments .sg5-network-copy {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--soi-navy);
+  margin: 0 0 var(--space-3);
+}
 #\30 5-segments .sg5-graph { width: 100%; }
 #\30 5-segments .sg-wrap { display: grid; gap: var(--space-3); }
 #\30 5-segments .sg-stage {
@@ -326,7 +444,7 @@
   stroke: var(--soi-navy);
   stroke-opacity: 0.16;
   stroke-width: 1.25;
-  transition: stroke-opacity 0.2s ease, stroke-width 0.2s ease;
+  transition: stroke-opacity 0.2s var(--sg5-ease), stroke-width 0.2s var(--sg5-ease);
 }
 #\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: 0.05; }
 #\30 5-segments .sg-edge.is-on { stroke-opacity: 0.82; stroke-width: 2; }
@@ -334,7 +452,7 @@
 #\30 5-segments .sg-hub,
 #\30 5-segments .sg-attr { cursor: pointer; }
 #\30 5-segments .sg-hub .sg-dot,
-#\30 5-segments .sg-attr .sg-dot { transition: opacity 0.2s ease; }
+#\30 5-segments .sg-attr .sg-dot { transition: opacity 0.2s var(--sg5-ease); }
 #\30 5-segments .sg-hub:focus-visible .sg-dot,
 #\30 5-segments .sg-attr:focus-visible .sg-dot {
   stroke: var(--soi-navy);
@@ -344,8 +462,7 @@
 #\30 5-segments .sg-svg.is-focus .is-on  { opacity: 1; }
 
 /* Node labels — navy on warm, with a soft page-coloured halo so text never
-   sits low-contrast on a hub or orbit line. The lib sets per-node fill; we
-   override to the warm-ground safe navy. */
+   sits low-contrast on a hub or orbit line. */
 #\30 5-segments .sg-label {
   font-family: var(--font-sans);
   font-size: 12.5px;
@@ -378,15 +495,16 @@
 #\30 5-segments .sg-panel .sg-tag {
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--soi-navy);
   opacity: 0.66;
 }
 #\30 5-segments .sg-panel h4 {
   margin: 0;
-  font-size: var(--t-lg);
+  font-size: var(--t-sub);
   font-weight: 800;
+  letter-spacing: -0.01em;
   color: var(--soi-navy);
 }
 #\30 5-segments .sg-panel .sg-desc {
@@ -436,7 +554,7 @@
   background: transparent;
   color: var(--soi-navy);
   cursor: pointer;
-  transition: background 0.16s ease, border-color 0.16s ease;
+  transition: background 0.16s var(--sg5-ease), border-color 0.16s var(--sg5-ease);
 }
 #\30 5-segments .sg-fallback button:hover,
 #\30 5-segments .sg-fallback button:focus-visible {
@@ -445,104 +563,30 @@
   outline: none;
 }
 
-/* ============================================================
-   3 · WHICH BRITAIN ARE YOU? (interactions.quiz hooks + result)
-   ============================================================ */
-#\30 5-segments .sg5-quiz-stage {
-  display: grid;
-  gap: clamp(1.5rem, 3vh, 2.5rem);
-}
-#\30 5-segments .quiz { max-width: 56ch; display: grid; gap: var(--space-3); }
-#\30 5-segments .quiz-progress {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.66;
-}
-#\30 5-segments .quiz-card { display: grid; gap: var(--space-3); min-height: 132px; }
-#\30 5-segments .quiz-statement {
-  margin: 0;
-  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--soi-navy);
-}
-#\30 5-segments .quiz-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
-#\30 5-segments .quiz-actions .vccp-btn { min-width: 150px; text-align: center; }
-
-/* The result card — backgroundless, accent top edge, big name. */
-#\30 5-segments .sg5-quiz-result { max-width: 56ch; }
-#\30 5-segments .sg5-result-card {
-  display: grid;
-  gap: 10px;
-  border-top: 3px solid var(--sg5-accent, var(--soi-navy));
-  padding-top: var(--space-3);
-}
-#\30 5-segments .sg5-result-eyebrow {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.66;
-}
-#\30 5-segments .sg5-result-name {
-  margin: 0;
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 0.94;
-  color: var(--soi-navy);
-}
-#\30 5-segments .sg5-result-trio {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--soi-navy);
-  opacity: 0.84;
-}
-#\30 5-segments .sg5-result-share {
-  margin: 2px 0 0;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--soi-navy);
-}
-#\30 5-segments .sg5-result-quote {
-  margin: 6px 0 0;
-  font-size: clamp(1.15rem, 1.9vw, 1.5rem);
-  font-weight: 500;
-  line-height: 1.36;
-  color: var(--soi-navy);
-  max-width: 40ch;
-}
-#\30 5-segments .sg5-result-quote::before { content: "\201C"; }
-#\30 5-segments .sg5-result-quote::after  { content: "\201D"; }
-#\30 5-segments .sg5-result-again { justify-self: start; margin-top: 10px; }
-
 /* ── Footnote (visible methodology note) ─────────────────────── */
 #\30 5-segments .sg5-footnote {
   margin: 0;
   font-size: 0.74rem;
   line-height: 1.5;
   color: var(--soi-navy);
-  opacity: 0.62;
+  opacity: 0.58;
   max-width: 70ch;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  #\30 5-segments .sg5-compass { max-width: 100%; padding: 28px; }
+  #\30 5-segments .sg5-stage { max-width: 100%; padding: 34px; }
   #\30 5-segments .sg5-field,
-  #\30 5-segments .sg5-quadrants { inset: 28px; }
-  #\30 5-segments .sg5-cross--v { top: 28px; bottom: 28px; }
-  #\30 5-segments .sg5-cross--h { left: 28px; right: 28px; }
+  #\30 5-segments .sg5-camps { inset: 34px; }
+  #\30 5-segments .sg5-cross--v { top: 34px; bottom: 34px; }
+  #\30 5-segments .sg5-cross--h { left: 34px; right: 34px; }
+  #\30 5-segments .sg5-camp { max-width: 46%; }
   #\30 5-segments .quiz-actions .vccp-btn { flex: 1 1 auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   #\30 5-segments .sg5-orbit { animation: none; }
+  #\30 5-segments .sg5-profile-card,
+  #\30 5-segments .sg5-result-card { animation: none; }
+  #\30 5-segments .sg5-cue { transition: none; }
 }

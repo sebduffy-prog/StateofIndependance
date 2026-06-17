@@ -1,25 +1,23 @@
 /**
- * 01-cover — the hero. Warm gradient ground, the maze motion logo with a live
- * teal orbit ring, an ambient navy respondent dot-field, the assembling
- * wordmark, and the tactile "trace the maze" reward where the "you" dot is born.
+ * 01-cover — the hero. The signature maze illustration (its own orbit ring, the
+ * navy bear, the figure at the maze mouth) is the focal point, used once, big,
+ * on a vast warm field. The one hero motion is the marquee: the cream "you" dot
+ * is born at the maze mouth and the visitor traces it into the maze's heart.
  *
  * Composes existing primitives only (does not reinvent them):
- *   - dotField        (charts.js)        ambient 1,504 field + the cream "you" dot
  *   - draggable       (tactile.js)       the trace handle, snapped to the SVG path
- *   - arrival         (experiential.js)  assembling entrance + count-up (ritual 1st)
+ *   - arrival         (experiential.js)  assembling entrance + scramble (ritual 1st)
  *   - magneticButton  (experiential.js)  the Begin cue leans to the cursor
  *
  * Soft gating: journey.gate() lights the gentle "try it" hint; finishing the
  * trace calls journey.ready() to clear it. Next is NEVER blocked by this.
  */
 
-import { dotField } from '../lib/charts.js';
 import { draggable } from '../lib/tactile.js';
 import { arrival, magneticButton, prefersReducedMotion } from '../lib/experiential.js';
 
-const FIELD_DOTS = 150;     // ambient respondents (a calm field, not a crowd)
 const PATH_SAMPLES = 220;   // resolution for the nearest-point snap
-const COMPLETE_AT = 0.94;   // trace progress that counts as "arrived"
+const COMPLETE_AT = 0.92;   // trace progress that counts as "arrived"
 
 /**
  * @param {HTMLElement} rootEl  the <section class="journey-step" id="01-cover">
@@ -30,20 +28,6 @@ export default function init(rootEl, data) {
   const { journey } = data || {};
   const reduced = prefersReducedMotion();
   const cleanups = [];
-
-  /* ── ambient respondent dot-field (the 1,504) ───────────────────── */
-  const fieldEl = rootEl.querySelector('[data-cover-dots]');
-  let field = null;
-  if (fieldEl) {
-    field = dotField(fieldEl, {
-      count: FIELD_DOTS,
-      dotRadius: 2.4,
-      ariaLabel: 'A field of the 1,504 people surveyed across Britain',
-    });
-    field.formation([], { spring: 0.012, jostle: 0.5 }); // calm drifting cloud
-    field.drift(0.5);
-    field.highlight(0, getCssColour(rootEl, '--soi-cream', '#EEE9DD')); // the "you" dot
-  }
 
   /* ── reduced-motion poster swap for the maze ────────────────────── */
   const maze = rootEl.querySelector('[data-cover-maze]');
@@ -59,8 +43,8 @@ export default function init(rootEl, data) {
     cue.addEventListener('click', advanceJourney);
   }
 
-  /* ── the assembling entrance (re-run idempotently per arrival) + the
-       one-time "you" dot birth bloom ─────────────────────────────────── */
+  /* ── the assembling entrance (idempotent per arrival) + the one-time
+       "you" dot birth bloom at the maze mouth ───────────────────────── */
   rootEl.addEventListener('chapter:arrive', (e) => {
     arrival(rootEl, e && e.detail ? e.detail : {});
     if (!reduced) {
@@ -72,16 +56,13 @@ export default function init(rootEl, data) {
     }
   });
 
-  /* ── the trace-the-maze tactile reward ──────────────────────────── */
+  /* ── the trace-into-the-maze tactile reward (the marquee) ────────── */
   wireTrace(rootEl, journey, reduced, cleanups);
 
   /* ── tidy if the step is ever fully torn down ────────────────────── */
   rootEl.addEventListener(
     'chapter:destroy',
-    () => {
-      if (field) field.destroy();
-      cleanups.forEach((fn) => typeof fn === 'function' && fn());
-    },
+    () => cleanups.forEach((fn) => typeof fn === 'function' && fn()),
     { once: true },
   );
 }
@@ -90,19 +71,15 @@ export default function init(rootEl, data) {
 
 /**
  * Wire the draggable "you" dot to follow the SVG guide path: the handle snaps
- * to the nearest point on the path, the ink draws in to match progress, the
- * orbit ring tightens via the --trace custom property, and on reaching the
- * centre the copy + Begin cue settle. Keyboard arrows nudge the handle
- * (draggable ships the keyboard path); reaching the end completes it.
+ * to the nearest point on the path, the ink draws in to match progress, and on
+ * reaching the maze's heart the trail completes and the Begin cue wakes.
+ * Keyboard arrows nudge the handle (draggable ships the keyboard path).
  */
 function wireTrace(rootEl, journey, reduced, cleanups) {
   const stage = rootEl.querySelector('[data-cover-stage]');
   const guide = rootEl.querySelector('[data-cover-path]');
   const ink = rootEl.querySelector('[data-cover-ink]');
   const handle = rootEl.querySelector('[data-cover-handle]');
-  const prompt = rootEl.querySelector('[data-cover-prompt]');
-  const promptLabel = rootEl.querySelector('[data-cover-prompt-label]');
-  const youCopy = rootEl.querySelector('[data-cover-you]');
   const cue = rootEl.querySelector('[data-cover-cue]');
   if (!stage || !guide || !ink || !handle) return;
 
@@ -113,17 +90,17 @@ function wireTrace(rootEl, journey, reduced, cleanups) {
   ink.style.strokeDasharray = String(pathLen);
   ink.style.strokeDashoffset = String(pathLen);
 
-  // Sample the path once in the SVG's own 600x600 user space.
+  // Sample the path once in the SVG's own 800×800 user space.
   const samples = samplePath(guide, pathLen, PATH_SAMPLES);
 
-  // Map an SVG user-space point to a pixel offset within the stage (the SVG
-  // uses preserveAspectRatio xMidYMid meet → letterboxed into a centred square).
+  // Map an SVG user-space point to a pixel offset within the stage (the SVG and
+  // the square image both use xMidYMid meet → letterboxed into a centred square).
   const userToStagePx = (ux, uy) => {
     const rect = stage.getBoundingClientRect();
     const size = Math.min(rect.width, rect.height);
     const offX = (rect.width - size) / 2;
     const offY = (rect.height - size) / 2;
-    return { x: offX + (ux / 600) * size, y: offY + (uy / 600) * size };
+    return { x: offX + (ux / 800) * size, y: offY + (uy / 800) * size };
   };
   const originPx = () => userToStagePx(samples[0].x, samples[0].y);
 
@@ -131,20 +108,11 @@ function wireTrace(rootEl, journey, reduced, cleanups) {
   const setProgress = (t) => {
     ink.style.strokeDashoffset = String(pathLen * (1 - t));
     stage.style.setProperty('--trace', t.toFixed(3));
-    if (prompt) prompt.style.setProperty('--trace', t.toFixed(3));
     if (!completed && t >= COMPLETE_AT) {
       completed = true;
       handle.classList.add('is-home');
-      handle.setAttribute(
-        'aria-label',
-        'You traced a path through the maze — you have control',
-      );
-      if (stage) stage.classList.add('is-traced');
-      if (youCopy) youCopy.classList.add('is-home');
-      // Resolve the quiet control gauge from instruction to confirmation;
-      // the respondent count in the marker is left intact (it already settled).
-      if (promptLabel) promptLabel.textContent = 'You have control';
-      // The first commit wakes the Begin CTA with a soft pulse (CSS keyframe).
+      handle.setAttribute('aria-label', 'You traced a path into the maze — you have control');
+      stage.classList.add('is-traced');
       if (cue) {
         cue.classList.add('is-awake');
         if (!reduced) {
@@ -177,8 +145,8 @@ function wireTrace(rootEl, journey, reduced, cleanups) {
     return { x: target.x - origin.x, y: target.y - origin.y };
   };
 
-  // Anchor the handle's resting origin to the path's start so the transform-
-  // based drag offsets line up with the snapped samples. Re-run on resize.
+  // Anchor the handle's resting origin to the path's start (the maze mouth) so
+  // the transform-based drag offsets line up with the snapped samples.
   const placeHandle = () => {
     const o = originPx();
     handle.style.left = `${o.x}px`;
@@ -193,7 +161,7 @@ function wireTrace(rootEl, journey, reduced, cleanups) {
   const handles = draggable(handle, {
     spring: false,        // stay on the path where released
     momentum: 0,          // no fling — the path is the constraint
-    keyboardStep: 22,
+    keyboardStep: 24,
     bounds: snap,         // every move is projected onto the path
   });
   cleanups.push(() => handles.destroy());
@@ -218,10 +186,4 @@ function samplePath(pathEl, length, count) {
     out.push({ x: p.x, y: p.y });
   }
   return out;
-}
-
-/** Read a CSS custom property off an element, with a literal fallback. */
-function getCssColour(el, varName, fallback) {
-  const v = getComputedStyle(el).getPropertyValue(varName).trim();
-  return v || fallback;
 }

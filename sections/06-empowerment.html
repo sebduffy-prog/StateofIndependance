@@ -1,97 +1,65 @@
-<!-- Chapter 06 — the empowerment architecture. Clean rebuild.
-     One continuous warm bear-figure world, backgroundless throughout: every
-     headline, stat and label sits on the gradient ground with COLOUR + WEIGHT
-     emphasis only (no white boxes, no scrim plates, no pills behind text).
-     Three orchestrated beats:
-       1. THE PIVOT WIPE (ungated, cinematic) — survival mode -> active agency.
-          A reframe slider clips the world + copy so only ONE side ever shows
-          (no stacked text); cross-fading deck bear-world panels (coil/sphere).
-       2. THE PREMIUM (count-ups) — three verified Q14 asks float on the ground;
-          money is the loud ask, time + stress the premium ones brands undervalue.
-       3. THE MARQUEE (gated) — tactile three-needs venn: drag money / time /
-          stress together, the shared overlap grows and "empowerment" assembles.
-          The "you" dot lands here.
-     Headlines assemble via arrival(). Square corners, AA contrast, reduced-
-     motion safe, keyboard paths. Single .chapter-inner root per the contract. -->
+<!-- Chapter 06 — the empowerment architecture.
+     THE ONE MEMORABLE THING (per ART-DIRECTION §7): three needs you pull
+     together until they meet on empowerment. Tactile, elemental, lots of space.
+
+     Composition is deliberately ONE focal point — the marquee venn. Everything
+     else is a quiet prelude that leads the eye to it:
+       · A short asymmetric hero line that hangs on the left axis. One display
+         moment per screen (Poppins 900); the standfirst is the small thing.
+       · The pivot wipe is a thin cinematic line — survival mode wipes to active
+         agency on one strip. It frames WHY the screen exists; it does not
+         compete (no cross-fading art, no dual copy stacks, no second display).
+       · The venn IS the screen: three flat brand circles (money / time / stress)
+         held wide apart on the open ground; the visitor DRAGS them together and
+         the word "empowerment" assembles in the shared core. The three verified
+         Q14 values read inline at each need — data as a reality, not a chart.
+         The "you" dot lands on the resolved core.
+
+     Backgroundless throughout: every line, circle and number sits on the warm
+     gradient ground with COLOUR + WEIGHT emphasis only — no white boxes, no
+     scrim plates, no pills. Square corners, AA contrast, tabular nums, no
+     underline, no skew. Reduced-motion safe, keyboard paths. Single root. -->
 <div class="chapter-inner emp-root on-warm" data-emp-root>
 
-  <!-- decorative orbit motif (behind everything; carries no meaning) -->
-  <div class="emp-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.05"></div>
+  <!-- Decorative orbit — the connective signature, behind everything, no meaning. -->
+  <div class="emp-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.04"></div>
 
-  <!-- Image-title lockup: deck figure glyph + huge Poppins-Black title -->
+  <!-- HERO — one display moment, hangs left, generous space. The standfirst is
+       the deliberately small thing (dramatic hierarchy, nothing muddy-middle). -->
   <header class="emp-head">
-    <!-- Decorative figure: a navy box clipped to the deck silhouette via CSS
-         mask (the source PNG is solid black, so we tint it on-brand to navy
-         rather than render harsh black-on-mustard). -->
-    <span class="emp-head-glyph" aria-hidden="true" data-parallax="0.1"></span>
-    <div class="emp-head-copy">
-      <p class="vccp-eyebrow emp-eyebrow" data-arrival>The empowerment architecture</p>
-      <h2 class="si-display si-display--lg emp-title" data-arrival>
-        One need unifies<br>them all: <em class="hl">control</em>
-      </h2>
-      <p class="emp-standfirst si-measure" data-arrival>
-        Money is the obvious ask. But saving people time and stress holds far more
-        premium value than brands realise.
-      </p>
-      <p class="emp-scrollcue" data-arrival aria-hidden="true">
-        <span class="emp-scrollcue-txt">Make the turn, then bring the three needs together</span>
-        <span class="emp-scrollcue-arrow"></span>
-      </p>
+    <p class="vccp-eyebrow emp-eyebrow" data-arrival>The empowerment architecture</p>
+    <h2 class="si-display si-display--lg emp-title" data-arrival>
+      One need unifies<br>them all
+    </h2>
+    <p class="emp-standfirst si-measure" data-arrival>
+      Money is the obvious ask. Saving people time and stress holds far more
+      premium value than brands realise. Pull the three together.
+    </p>
+
+    <!-- The pivot wipe — a single thin strip, not a beat. Survival mode wipes
+         to active agency as the visitor scrubs it. One line of copy at a time
+         (the off side is clipped, never stacked). -->
+    <div class="emp-pivot" data-emp-pivot data-arrival>
+      <span class="emp-pivot-readout" data-side="before" aria-live="polite">
+        <span class="emp-pivot-word emp-pivot-word--before">Survival mode</span>
+        <span class="emp-pivot-word emp-pivot-word--after">Active agency</span>
+      </span>
+      <span class="emp-pivot-track" data-emp-pivot-track>
+        <span class="emp-pivot-fill" data-emp-pivot-fill aria-hidden="true"></span>
+        <input type="range" class="emp-pivot-slider" min="0" max="100" value="14"
+               aria-label="Scrub from survival mode to active agency" />
+      </span>
     </div>
   </header>
 
-  <!-- BEAT 1 — THE PIVOT WIPE (ungated, cinematic). The reframe clips so only
-       one side ever shows: drag from survival mode to active agency. -->
-  <section class="emp-pivot" aria-labelledby="emp-pivot-title" data-emp-pivot>
-    <div class="emp-pivot-lede">
-      <h3 class="si-display si-display--sm emp-pivot-title" id="emp-pivot-title" data-arrival>
-        Survival mode to active <em class="hl">agency</em>
-      </h3>
-      <p class="emp-pivot-intro si-measure" data-arrival>
-        Britain is not a passive, bruised victim waiting to be saved. The true data
-        forces a more optimistic reading. Make the turn.
-      </p>
-    </div>
-    <div class="emp-pivot-mount" data-emp-pivot-mount></div>
-  </section>
-
-  <!-- BEAT 2 — THE PREMIUM. Three verified Q14 asks count up on the ground.
-       Values injected from data (data-count-to set in JS). -->
-  <section class="emp-premium" aria-label="What Britain asks of brands, the premium most undervalue">
-    <p class="emp-premium-kicker" data-arrival>The premium most brands leave on the table</p>
-    <div class="emp-premium-row" data-stagger="120">
-      <div class="emp-premium-stat reveal emp-premium-stat--loud">
-        <span class="emp-premium-n num" data-emp-stat="money" data-count-suffix="%" data-count-decimals="1">0</span>
-        <span class="emp-premium-lbl">stretch my <strong>money</strong></span>
-        <span class="emp-premium-tag">the obvious ask</span>
-      </div>
-      <div class="emp-premium-stat reveal">
-        <span class="emp-premium-n num" data-emp-stat="stress" data-count-suffix="%" data-count-decimals="1">0</span>
-        <span class="emp-premium-lbl">reduce my <strong>stress</strong></span>
-        <span class="emp-premium-tag emp-premium-tag--premium">the premium ask</span>
-      </div>
-      <div class="emp-premium-stat reveal">
-        <span class="emp-premium-n num" data-emp-stat="time" data-count-suffix="%" data-count-decimals="1">0</span>
-        <span class="emp-premium-lbl">save me <strong>time</strong></span>
-        <span class="emp-premium-tag emp-premium-tag--premium">the premium ask</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- BEAT 3 — THE MARQUEE: tactile three-needs venn. Drag money / time /
-       stress together; the overlap grows and "empowerment" assembles. The
-       "you" dot anchors here. Backgroundless — circles + word on the world. -->
+  <!-- THE MARQUEE — the focal point. Three needs converge on empowerment.
+       The venn stage + inline-valued legend are built in JS into this mount.
+       The "you" dot anchors on the resolved core. -->
   <section class="emp-venn" aria-labelledby="emp-venn-title">
-    <div class="emp-venn-lede">
-      <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title" data-arrival>
-        Three needs, one <em class="hl">overlap</em>
-      </h3>
-      <p class="emp-venn-intro si-measure" data-arrival>
-        Save me money, save me time, save me stress. Drag the three together —
-        they all resolve to one thing.
-      </p>
-    </div>
-    <div class="emp-venn-mount" data-emp-venn data-youdot-anchor></div>
+    <h3 class="si-display si-display--sm emp-venn-title" id="emp-venn-title" data-arrival>
+      Bring the three together
+    </h3>
+    <div class="emp-venn-mount" data-emp-venn></div>
   </section>
 
 </div>

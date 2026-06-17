@@ -1,990 +1,430 @@
-/* Chapter 07 — moves (V5: TOP-TIER experiential, backgroundless).
-   Five signature moves as a FLOWING rhythm of full-bleed grounds that
-   alternate warm mustard→orange gradient and deep navy, each carrying a deck
-   bear-world motif drifting behind the copy. A giant stage numeral breathes
-   beside the inlined deck thin-line icon and a Poppins Black uppercase title;
-   the lesson, beats, quotes and ad-mockup evidence flow ON THE GROUND with a
-   sticky less→more flip card alongside.
+/* Chapter 07 — moves. THE REEL.
+   One cinematic stage on the deep navy ground: the five signature moves as a
+   film reel. Exactly ONE frame in focus at a time — the focal point. The hero
+   motion is the reel travelling sideways as each tool is picked up; everything
+   else is quiet. Backgroundless: no card fills, no white mats; emphasis is
+   COLOUR + WEIGHT only. Amber is the single accent. Square corners, Poppins,
+   tabular nums. Every selector scoped to #\30 7-moves so nothing leaks. */
 
-   NO BLOCKS BEHIND TEXT (client, non-negotiable): brand examples, flip rows
-   and build-up beats carry emphasis by COLOUR + WEIGHT only — no pills, no
-   card fills, no outlined boxes behind copy. Charts/graph/venn were already
-   backgroundless; now text too. Ad-mockup evidence is an IMAGE (not text), so
-   a thin currentColor frame is allowed; never a white mat.
-
-   EXPERIENTIAL: each band eases up + in on --enter (chapterTransition); deck
-   world panels + the maze + evidence drift via [data-parallax]; flip-card rows
-   stage in on scroll (.is-shown). All pure transform/opacity → never clips,
-   reduced-motion safe.
-
-   Every selector is scoped to #\30 7-moves so styles never leak. */
-
-/* Contain the negatively-margined full-bleed bands so they never add page
-   horizontal scroll (the bands bleed past the padded chapter column). */
 #\30 7-moves { overflow-x: clip; }
 
-/* ─── JOURNEY: full-screen immersive, no dead band ───────────────────
-   In the guided journey there is no top bar; this step is a full-viewport
-   stage. The shell's bands carry the gradient grounds, so pull the first
-   band up to the very top edge and the last band down to the bottom edge —
-   cancelling the chapter's flex padding so the ground fills the page rather
-   than leaving the page background showing as a dead band above/below. */
-#\30 7-moves.chapter { align-items: stretch; }
+/* Full-viewport single stage. The navy ground is carried by the SECTION itself
+   (the journey shell mounts us as <section class="journey-step" id="07-moves">)
+   so it fills the page edge-to-edge — no cream band. The shell is the editorial
+   content column inside it. */
+#\30 7-moves {
+  align-items: stretch;
+  background: var(--soi-navy);
+  color: var(--on-navy);
+  padding: clamp(36px, 5vh, 72px) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(20px, 3vh, 36px));
+  overflow: hidden;
+}
+#\30 7-moves > .mv-shell {
+  max-width: 1320px;
+  margin: 0 auto;
+}
 #\30 7-moves .mv-shell {
-  width: 100%;
-  margin-top: calc(-1 * clamp(5rem, 8vh, 9rem));
-  margin-bottom: calc(-1 * clamp(5rem, 8vh, 9rem));
-}
-/* Marry the first/last band's vertical padding back so the ground still
-   breathes once it reaches the page edge. */
-#\30 7-moves .mv-shell > .mv-hero:first-child {
-  padding-top: clamp(64px, 9vw, 132px);
-}
-#\30 7-moves .mv-shell > .mv-toolkit:last-child {
-  padding-bottom: clamp(64px, 9vw, 132px);
-}
-
-/* ─── Full-bleed flow: grounds run edge-to-edge, no bordered boxes ─── */
-#\30 7-moves .mv-hero,
-#\30 7-moves .mv-move,
-#\30 7-moves .mv-toolkit {
   position: relative;
   isolation: isolate;
-  overflow: clip; /* contain drifting world panels without clipping copy flow */
-  /* bleed past the text column so each ground reads as a band of the page */
-  margin-left: calc(-1 * clamp(24px, 6vw, 96px));
-  margin-right: calc(-1 * clamp(24px, 6vw, 96px));
-  padding: clamp(64px, 9vw, 132px) clamp(24px, 6vw, 96px);
-}
-
-/* Each move band earns its space: fill the viewport, no dead bands. */
-#\30 7-moves .mv-move {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-/* ─── Experiential entrance: ease the band up + in on --enter (0→1 from
-   chapterTransition). Pure transform/opacity — never clips text. ─── */
-#\30 7-moves .mv-hero,
-#\30 7-moves .mv-move,
-#\30 7-moves .mv-toolkit {
-  --enter: 1;
-}
-#\30 7-moves .mv-hero-grid,
-#\30 7-moves .mv-contents,
-#\30 7-moves .mv-move-head,
-#\30 7-moves .mv-grid,
-#\30 7-moves .mv-toolkit-inner {
-  opacity: calc(0.4 + 0.6 * var(--enter));
-  transform: translate3d(0, calc((1 - var(--enter)) * 30px), 0);
-  transition: opacity .45s ease, transform .45s ease;
-}
-
-/* ─── Deck bear-world panel: drifts behind the copy as the chapter motif ──
-   Backgroundless-friendly flat-gradient render; sits low-opacity at the band
-   edge, never occludes UI (z-index:0, pointer-events:none). */
-#\30 7-moves .mv-world {
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  top: 50%;
-  right: clamp(-120px, -4vw, -40px);
-  width: clamp(360px, 42vw, 760px);
-  height: auto;
-  transform: translateY(-50%);
-  mix-blend-mode: multiply;
-  opacity: 0.5;
-}
-#\30 7-moves .mv-move--navy .mv-world {
-  mix-blend-mode: screen;
-  opacity: 0.34;
-}
-/* keep all real content above the motif */
-#\30 7-moves .mv-hero > *:not(.si-orbit):not(.si-seed):not(.mv-world),
-#\30 7-moves .mv-move > *:not(.si-orbit):not(.si-seed):not(.mv-world):not(.mv-frame),
-#\30 7-moves .mv-toolkit > *:not(.si-orbit):not(.si-seed) {
-  position: relative;
-  z-index: 1;
-}
-
-/* ─── Hero ───────────────────────────────────────────────── */
-#\30 7-moves .mv-hero {
-  padding-top: clamp(56px, 7vw, 96px);
-  padding-bottom: clamp(72px, 9vw, 132px);
-}
-#\30 7-moves .mv-hero-grid {
+  width: 100%;
+  /* fill the space the chapter gives us; content-driven so nothing is clipped */
+  min-height: calc(100svh - var(--journey-controls-h) - clamp(56px, 8vh, 108px));
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  align-items: center;
-  gap: clamp(32px, 5vw, 80px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  row-gap: clamp(14px, 2vh, 26px);
+  color: var(--on-navy);
 }
-#\30 7-moves .mv-hero-inner {
-  max-width: 60ch;
-}
-#\30 7-moves .mv-headline { margin: 0; font-size: clamp(2.8rem, 7.6vw, 6rem); }
-#\30 7-moves .mv-standfirst {
-  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-  line-height: 1.5;
-  margin: clamp(14px, 2vw, 22px) 0 0;
-  color: var(--on-warm);
-  max-width: 58ch;
-}
-#\30 7-moves .mv-seed-a { top: 16%; left: 38%; }
-#\30 7-moves .mv-seed-b { bottom: 22%; left: 12%; }
+/* the shell's own si-dark fill is redundant now the section carries it */
+#\30 7-moves .mv-shell.si-dark { background: none; }
+/* keep real content above the ambient orbit/seed motif */
+#\30 7-moves .mv-shell > *:not(.si-orbit):not(.si-seed) { position: relative; z-index: 1; }
+#\30 7-moves .si-seed.mv-seed-a { top: 12%; right: 9%; left: auto; }
 
-/* ─── Filmstrip hint (hero): five film cells + a one-line promise ──────
-   Sets the "this is a reel of five frames" frame of mind. Backgroundless:
-   the cells are thin currentColor outlines, the first one carries the
-   persistent you-dot anchor. */
-#\30 7-moves .mv-filmstrip-hint {
+/* ─── Head: a quiet section kicker on the left axis. NOT the display moment —
+   the active move's title is the one hero line per screen (AD §1). So this is
+   deliberately small: an eyebrow + a modest sub-head, holding context. ─── */
+#\30 7-moves .mv-head {
   display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.6vw, 20px);
-  margin: clamp(20px, 2.6vw, 32px) 0 0;
-  font-size: 0.86rem;
-  letter-spacing: 0.01em;
-  font-weight: 700;
-  color: rgba(10, 26, 92, 0.72);
+  align-items: baseline;
+  gap: clamp(12px, 1.6vw, 22px);
+  flex-wrap: wrap;
 }
-#\30 7-moves .mv-filmstrip-hint-frames {
-  display: inline-flex;
-  gap: 4px;
-  padding: 3px;
-  border: 1.5px solid rgba(10, 26, 92, 0.3);
+#\30 7-moves .mv-headline {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
 }
-#\30 7-moves .mv-filmstrip-cell {
-  width: clamp(12px, 1.4vw, 18px);
-  height: clamp(16px, 1.9vw, 24px);
-  border: 1.5px solid rgba(10, 26, 92, 0.3);
-}
+#\30 7-moves .mv-headline .hl { color: var(--soi-amber); }
 
-/* ─── Scroll cue (hero): make the "the handover is the last frame" intent
-   unmissable so nobody hits a locked-feeling Next without reaching the
-   marquee. Backgroundless — a thin navy rule + a gently-bobbing label. */
-#\30 7-moves .mv-scroll-cue {
+/* ─── The reel: a clipped viewport; the track holds the five frames side by
+   side and slides. The active frame is centred and full size. ─── */
+#\30 7-moves .mv-reel {
+  position: relative;
+  overflow: clip;
+  align-self: stretch;
+  min-height: 0;
+}
+#\30 7-moves .mv-reel-track {
   display: flex;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 16px);
-  margin: clamp(16px, 2vw, 26px) 0 0;
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: rgba(10, 26, 92, 0.78);
-}
-#\30 7-moves .mv-scroll-cue-rule {
-  width: clamp(28px, 4vw, 56px);
-  height: 2px;
-  background: var(--soi-navy);
-  opacity: 0.55;
-}
-#\30 7-moves .mv-scroll-cue-text { line-height: 1.2; }
-#\30 7-moves .mv-scroll-cue::after {
-  content: "↓";
-  font-size: 1.05rem;
-  line-height: 1;
-  color: var(--soi-orange);
+  height: 100%;
+  will-change: transform;
 }
 @media (prefers-reduced-motion: no-preference) {
-  #\30 7-moves .mv-scroll-cue::after { animation: mv-cue-bob 1.8s ease-in-out infinite; }
-}
-@keyframes mv-cue-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
+  #\30 7-moves .mv-reel-track {
+    transition: transform 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
 }
 
-/* ─── Filmstrip frame counter (per move band) — sprocket lockup ────────
-   A quiet "Frame 0n of 05" pinned top-left of each frame: the reel cadence,
-   no box, tabular numeral. */
+/* ─── A frame: full-width slide in the track. Asymmetric editorial split —
+   title + lesson + carried form on the left, the shift + the pickup tool on
+   the right. Inactive frames recede (quiet, dimmed, non-interactive). ─── */
 #\30 7-moves .mv-frame {
-  position: absolute;
-  top: clamp(20px, 3vw, 40px);
-  left: clamp(24px, 6vw, 96px);
-  z-index: 2;
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas:
+    "no     no"
+    "head   pickup"
+    "body   shift";
+  column-gap: clamp(40px, 6vw, 110px);
+  row-gap: clamp(14px, 2.2vh, 26px);
+  align-content: center;
+  padding: clamp(6px, 1.4vh, 18px) 0;
+  opacity: 0.16;
+  transition: opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#\30 7-moves .mv-frame.is-active { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  #\30 7-moves .mv-frame { transition: none; }
+}
+
+/* Frame number — quiet film-edge index, tabular, top-left of the frame. */
+#\30 7-moves .mv-frame-no {
+  grid-area: no;
   display: flex;
   align-items: baseline;
   gap: 0.5em;
   margin: 0;
-  font-size: clamp(0.72rem, 0.9vw, 0.84rem);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
   font-weight: 800;
+  letter-spacing: 0.16em;
   font-variant-numeric: tabular-nums;
 }
-#\30 7-moves .mv-frame-no { color: inherit; }
-#\30 7-moves .mv-frame-of { opacity: 0.55; }
-#\30 7-moves .mv-move--warm .mv-frame { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .mv-frame { color: var(--soi-amber); }
-/* leading sprocket dash so it reads as film edge, not a page number */
-#\30 7-moves .mv-frame::before {
-  content: "";
-  width: clamp(16px, 2vw, 28px);
-  height: 2px;
-  align-self: center;
-  background: currentColor;
-  opacity: 0.7;
-}
-
-/* Hero maze — the State of Independence signature world animation. */
-#\30 7-moves .mv-hero-maze {
-  margin: 0;
-  position: relative;
-  width: 100%;
-  max-width: 460px;
-  justify-self: end;
-  aspect-ratio: 1 / 1;
-}
-#\30 7-moves .mv-hero-maze img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-#\30 7-moves .mv-hero-maze-still { display: none; }
-@media (prefers-reduced-motion: reduce) {
-  #\30 7-moves .mv-hero-maze-anim { display: none; }
-  #\30 7-moves .mv-hero-maze-still { display: block; }
-}
-
-/* ─── Hero contents lockup: five icon + title rows (the deck index) ─── */
-#\30 7-moves .mv-contents {
-  list-style: none;
-  margin: clamp(36px, 5vw, 64px) 0 0;
-  padding: 0;
-  display: grid;
-  gap: clamp(4px, 1vw, 12px);
-}
-#\30 7-moves .mv-contents-item {
-  display: grid;
-  grid-template-columns: clamp(40px, 4vw, 56px) clamp(40px, 4vw, 56px) 1fr;
-  align-items: center;
-  gap: clamp(14px, 2vw, 26px);
-  padding: clamp(12px, 1.6vw, 20px) 0;
-  border-top: 1.5px solid rgba(10, 26, 92, 0.18);
-  color: var(--soi-navy);
-  transition: padding-left 200ms ease, color 200ms ease;
-}
-#\30 7-moves .mv-contents-item:last-child { border-bottom: 1.5px solid rgba(10, 26, 92, 0.18); }
-#\30 7-moves .mv-contents-item:hover { padding-left: clamp(8px, 1.4vw, 18px); color: var(--soi-orange); }
-#\30 7-moves .mv-contents-icon {
-  width: 100%;
-  height: auto;
-  color: inherit;
-}
-#\30 7-moves .mv-contents-no {
-  font-weight: 800;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  color: rgba(10, 26, 92, 0.55);
-}
-#\30 7-moves .mv-contents-label {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-  font-size: clamp(1.05rem, 2.4vw, 1.85rem);
-  color: inherit;
-}
-
-/* ─── Move head: GIANT stage numeral + INLINED ICON + display title ─
-   The thin-line deck icon sits above the heavy uppercase title, with the
-   giant stage numeral to the left. The SVG is inlined so stroke=currentColor
-   tints per ground (navy on warm, cream on navy) — no white box behind it. */
-#\30 7-moves .mv-move-head {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  column-gap: clamp(24px, 3.4vw, 56px);
-  margin-bottom: clamp(36px, 4.4vw, 64px);
-}
-#\30 7-moves .mv-stage {
-  grid-row: 1 / span 2;
-  font-weight: 900;
-  font-size: clamp(6rem, 15vw, 14rem);
-  line-height: 0.78;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
-}
-/* On warm: hollow navy-cut numeral that reads as part of the world. */
-#\30 7-moves .mv-move--warm .mv-stage {
-  color: transparent;
-  -webkit-text-stroke: 2.5px var(--soi-navy);
-  text-stroke: 2.5px var(--soi-navy);
-  opacity: 0.9;
-}
-/* On navy: solid amber numeral against the cream copy. */
-#\30 7-moves .mv-move--navy .mv-stage {
+#\30 7-moves .mv-frame-no-num {
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
   color: var(--soi-amber);
 }
-
-/* ─── Icon: deck thin-line glyph, currentColor-tinted, no box ─── */
-#\30 7-moves .mv-icon {
-  display: block;
-  width: clamp(56px, 6vw, 84px);
-  height: clamp(56px, 6vw, 84px);
-  margin: 0 0 clamp(12px, 1.6vw, 20px);
+#\30 7-moves .mv-frame-no-of {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.5;
 }
-#\30 7-moves .mv-move--warm .mv-icon { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .mv-icon { color: var(--soi-cream); }
 
+/* ─── Frame head: deck icon over the Poppins-900 display title (the focal). */
+#\30 7-moves .mv-frame-head { grid-area: head; min-width: 0; align-self: end; }
+#\30 7-moves .mv-frame-icon {
+  display: block;
+  width: clamp(46px, 4.4vw, 66px);
+  height: clamp(46px, 4.4vw, 66px);
+  margin: 0 0 clamp(12px, 1.6vh, 20px);
+  color: var(--soi-cream);
+}
+#\30 7-moves .mv-frame-icon svg { display: block; width: 100%; height: 100%; }
 #\30 7-moves .mv-title {
   margin: 0;
-  font-size: clamp(2.6rem, 5.8vw, 4.8rem);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  color: inherit;
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--on-navy);
   overflow-wrap: break-word;
 }
-/* The deck drops the emphasis phrase to its own heavier line. */
-#\30 7-moves .mv-title-key { display: block; }
-#\30 7-moves .mv-move--warm .mv-title-key { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .mv-title-key { color: var(--soi-amber); }
+#\30 7-moves .mv-title-key { display: block; color: var(--soi-amber); }
 
-/* ─── Flowing two-column grid (copy ◂▸ flip card) ────────── */
-#\30 7-moves .mv-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(36px, 5vw, 80px);
-  align-items: start;
-}
-#\30 7-moves .mv-main {
+/* ─── Frame body (left column under the head): lesson + the one carried form.
+   Dramatic gap from the title above; tight within the body. ─── */
+#\30 7-moves .mv-frame-body {
+  grid-area: body;
   display: flex;
   flex-direction: column;
-  gap: clamp(22px, 2.6vw, 36px);
+  gap: clamp(16px, 2.2vh, 30px);
   min-width: 0;
+  align-self: start;
 }
-
-/* ─── Lesson (lead line) ─────────────────────────────────── */
 #\30 7-moves .mv-lesson {
-  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
-  line-height: 1.32;
-  font-weight: 700;
   margin: 0;
-  color: inherit;
-  max-width: 46ch;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  line-height: 1.4;
+  font-weight: 500;
+  max-width: 42ch;
+  color: var(--on-navy);
 }
 
-/* ─── Key copy line (move 03) — quieter than lesson, still legible ── */
-#\30 7-moves .mv-keyline {
-  font-size: clamp(1.02rem, 1.5vw, 1.22rem);
-  line-height: 1.5;
-  margin: 0;
-  max-width: 50ch;
-  color: inherit;
-  opacity: 0.92;
-}
-
-/* ─── Build-up beats ("at the mercy of" / "death to") ──────
-   NO boxes: emphasis by weight + colour + a leading rule glyph only. */
-#\30 7-moves .mv-beats {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(10px, 1.4vw, 18px) clamp(20px, 2.6vw, 36px);
-}
-#\30 7-moves .mv-beats li {
-  font-weight: 800;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  display: flex;
-  align-items: baseline;
-  gap: 0.5em;
-}
-#\30 7-moves .mv-beats li::before {
-  content: "";
-  flex: 0 0 auto;
-  width: clamp(14px, 1.6vw, 22px);
-  height: 2px;
-  align-self: center;
-  background: currentColor;
-}
-#\30 7-moves .mv-move--warm .mv-beats li { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .mv-beats li { color: var(--on-navy); }
-#\30 7-moves .mv-move--navy .mv-beats--death li { color: var(--soi-amber); }
-
-/* ─── Hero stat (move 01) — borderless, space does the work ── */
-#\30 7-moves .mv-stat {
+/* The single carried supporting form — a stat moment OR a quote, never both. */
+#\30 7-moves .mv-carried { margin: 0; }
+#\30 7-moves .mv-carried--stat {
   display: flex;
   align-items: baseline;
   gap: clamp(16px, 2vw, 28px);
-  margin: 0;
 }
 #\30 7-moves .mv-stat-value {
-  font-size: clamp(3.6rem, 8.4vw, 6.4rem);
+  flex: 0 0 auto;
+  font-size: clamp(3rem, 5.6vw, 4.6rem);
   font-weight: 900;
   line-height: 0.82;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
-  color: var(--soi-navy);
-  flex: 0 0 auto;
-}
-#\30 7-moves .mv-stat-line {
-  font-size: clamp(1rem, 1.3vw, 1.14rem);
-  line-height: 1.42;
-  max-width: 30ch;
-  color: var(--on-warm);
-}
-
-/* ─── Sandwich-generation mini stats (move 04, on navy) ──── */
-#\30 7-moves .mv-stat-row {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(22px, 2.8vw, 40px) clamp(28px, 3.2vw, 48px);
-}
-#\30 7-moves .mv-stat-row li { margin: 0; min-width: 0; }
-#\30 7-moves .mv-mini-value {
-  display: block;
-  font-size: clamp(2.8rem, 5.2vw, 3.8rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  margin-bottom: 8px;
-  font-variant-numeric: tabular-nums;
   color: var(--soi-amber);
 }
-#\30 7-moves .mv-mini-label {
-  display: block;
-  font-size: 0.95rem;
+#\30 7-moves .mv-stat-line {
+  font-size: clamp(0.96rem, 1.2vw, 1.1rem);
   line-height: 1.4;
+  max-width: 28ch;
   color: var(--on-navy);
-  opacity: 0.92;
-  max-width: 24ch;
+  opacity: 0.9;
+}
+#\30 7-moves .mv-carried--quote {
+  position: relative;
+  padding-left: clamp(20px, 2.4vw, 36px);
+  max-width: 46ch;
+}
+#\30 7-moves .mv-carried--quote::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.06em;
+  top: -0.12em;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 1;
+  color: rgba(251, 193, 0, 0.5);
+}
+#\30 7-moves .mv-quote-body {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.4vw, 1.24rem);
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--on-navy);
+}
+#\30 7-moves .mv-quote-cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgba(238, 233, 221, 0.6);
 }
 
-/* ─── Brand examples — COLOUR + WEIGHT only, no pill blocks ──
-   Label is an uppercase micro-eyebrow; brand names are heavy and tinted,
-   separated by a thin currentColor divider — no background fill anywhere. */
-#\30 7-moves .mv-brands {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: clamp(10px, 1.4vw, 18px) clamp(16px, 2vw, 26px);
-  margin: 0;
+/* ─── Shift ledger (right column): the move's dependence→agency reality, a
+   quiet static list. Backgroundless: thin rules + colour/weight only. Less is
+   struck-through and de-emphasised; more lands in amber. No competing widget —
+   the one interaction on this screen is picking up the tool. ─── */
+#\30 7-moves .mv-shift {
+  grid-area: shift;
+  align-self: start;
+  min-width: 0;
 }
-#\30 7-moves .mv-brands-label {
-  flex: 0 0 100%;
+#\30 7-moves .mv-shift-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 14px;
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 800;
+  opacity: 0.6;
+}
+#\30 7-moves .mv-shift-head span:last-child { text-align: right; }
+#\30 7-moves .mv-shift-list { list-style: none; margin: 0; padding: 0; }
+#\30 7-moves .mv-shift-list li {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(11px, 1.5vh, 18px) 0;
+  font-size: clamp(0.98rem, 1.25vw, 1.18rem);
+  font-weight: 700;
+  border-top: 1.5px solid rgba(238, 233, 221, 0.2);
+}
+#\30 7-moves .mv-shift-list li:last-child { border-bottom: 1.5px solid rgba(238, 233, 221, 0.2); }
+#\30 7-moves .mv-shift-less {
+  font-weight: 600;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  color: rgba(238, 233, 221, 0.46);
+}
+#\30 7-moves .mv-shift-arrow { font-weight: 800; opacity: 0.5; }
+#\30 7-moves .mv-shift-more {
+  text-align: right;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--soi-amber);
+}
+
+/* ─── The pickup tool: the draggable object (the marquee interaction). Lives
+   bottom-right of the frame; a thin amber square that lifts on grab and drops
+   into the belt. Backgroundless — the contact shadow (tactile.js) gives weight.
+   Only the ACTIVE frame's tool is visible/reachable. ─── */
+#\30 7-moves .mv-pickup {
+  grid-area: pickup;
+  align-self: end;
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+#\30 7-moves .mv-frame:not(.is-active) .mv-pickup { visibility: hidden; }
+#\30 7-moves .mv-tool {
+  display: grid;
+  place-items: center;
+  width: clamp(82px, 8vw, 116px);
+  height: clamp(82px, 8vw, 116px);
+  padding: 0;
+  border: 2px solid var(--soi-amber);
+  background: none;
+  color: var(--soi-amber);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#\30 7-moves .mv-tool-icon { display: block; width: 58%; height: 58%; }
+#\30 7-moves .mv-tool-icon svg { display: block; width: 100%; height: 100%; }
+#\30 7-moves .mv-tool.is-dragging { cursor: grabbing; color: var(--soi-gold); border-color: var(--soi-gold); }
+#\30 7-moves .mv-tool:focus-visible { outline: 2px solid var(--soi-gold); outline-offset: 4px; }
+#\30 7-moves .mv-tool:disabled { cursor: default; }
+#\30 7-moves .mv-pickup-hint {
   font-size: 0.74rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 800;
-  opacity: 0.7;
-  margin: 0 0 2px;
+  color: var(--soi-amber);
+  opacity: 0.82;
 }
-#\30 7-moves .mv-brand-chip {
-  font-weight: 900;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  position: relative;
+/* gentle one-shot nudge to signal "this is draggable" — quiet, accent only */
+@media (prefers-reduced-motion: no-preference) {
+  #\30 7-moves .mv-frame.is-active .mv-tool {
+    animation: mv-tool-beckon 2.6s ease-in-out infinite;
+  }
+  #\30 7-moves .mv-frame.is-active.is-reaching .mv-tool,
+  #\30 7-moves .mv-frame.is-active .mv-tool.is-dragging { animation: none; }
 }
-#\30 7-moves .mv-brand-chip:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: calc(-1 * clamp(8px, 1vw, 13px));
-  top: 12%;
-  bottom: 12%;
-  width: 1.5px;
-  background: currentColor;
-  opacity: 0.32;
+@keyframes mv-tool-beckon {
+  0%, 72%, 100% { transform: translate3d(0, 0, 0) scale(var(--tactile-scale, 1)); }
+  82% { transform: translate3d(0, 7px, 0) scale(var(--tactile-scale, 1)); }
 }
-#\30 7-moves .mv-move--warm .mv-brand-chip { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .mv-brand-chip { color: var(--soi-amber); }
+/* As the tool nears the belt, the hint flips to the handover word. */
+#\30 7-moves .mv-frame.is-reaching .mv-pickup-hint { color: var(--soi-gold); }
 
-/* ─── Media from→to table (move 03) — backgroundless rule rows ── */
-#\30 7-moves .mv-media-table { margin: 0; max-width: 46ch; }
-#\30 7-moves .mv-media-head {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.84rem;
-  margin: 0 0 10px;
-  color: var(--soi-navy);
-}
-#\30 7-moves .mv-media-head span { color: var(--soi-orange); }
-#\30 7-moves .mv-media-table ul { list-style: none; margin: 0; padding: 0; }
-#\30 7-moves .mv-media-table li {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+/* ─── The toolbelt: five slots that fill amber as each move is handed over.
+   Horizontal, quiet, anchors the you-dot. Backgroundless. ─── */
+#\30 7-moves .mv-belt {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1.5px solid rgba(10, 26, 92, 0.18);
-  font-size: clamp(0.88rem, 1.1vw, 1rem);
+  gap: clamp(20px, 3vw, 44px);
+  padding-top: clamp(14px, 2vh, 24px);
+  border-top: 1.5px solid rgba(238, 233, 221, 0.18);
 }
-#\30 7-moves .mv-media-table li:last-child { border-bottom: 1.5px solid rgba(10, 26, 92, 0.18); }
-#\30 7-moves .mv-media-from {
-  font-weight: 600;
-  color: rgba(10, 26, 92, 0.55);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-}
-#\30 7-moves .mv-media-arrow { font-weight: 800; color: var(--soi-orange); }
-#\30 7-moves .mv-media-to {
-  font-weight: 800;
-  text-align: right;
-  color: var(--soi-navy);
-}
-
-/* ─── Quotes (hanging-quote register from vccp.css) ──────── */
-#\30 7-moves .mv-quote { margin: 0; max-width: 52ch; }
-#\30 7-moves .mv-quote .si-quote-body {
-  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-  line-height: 1.5;
-  font-style: italic;
-  color: inherit;
-}
-#\30 7-moves .mv-move--warm .si-quote-cite { color: rgba(10,26,92,0.6); }
-
-/* ─── Evidence ad-mockup (§4) — IMAGE, thin currentColor frame, no mat ──
-   Override the shared white mat + drop-shadow; the mockup reads as evidence
-   on the ground, square-cornered. Image only — not text — so a frame is fine. */
-#\30 7-moves .mv-evidence {
+#\30 7-moves .mv-belt-label {
   margin: 0;
-  max-width: 460px;
-  width: 100%;
-  background: none;
-  padding: 6px;
-  box-shadow: none;
-}
-#\30 7-moves .mv-move--warm .mv-evidence { border: 2px solid rgba(10, 26, 92, 0.55); }
-#\30 7-moves .mv-move--navy .mv-evidence { border: 2px solid rgba(238, 233, 221, 0.45); }
-#\30 7-moves .mv-evidence img { display: block; width: 100%; height: auto; }
-
-/* ─── Shift card (less→more flip table) — NO card fills, ON the ground ──
-   Brief: no blocks behind text. Rows separate by a thin rule + space and
-   commit to the amber "more" answer via COLOUR + WEIGHT only on flip. */
-#\30 7-moves .mv-shift {
-  position: sticky;
-  top: 32px;
-}
-#\30 7-moves .mv-shift-title {
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  margin: 0 0 6px;
-  color: inherit;
-}
-#\30 7-moves .mv-flip-caption {
-  font-size: 0.86rem;
-  letter-spacing: 0.01em;
-  line-height: 1.4;
-  opacity: 0.78;
-  margin: 0 0 18px;
-  color: inherit;
-  max-width: 34ch;
-}
-
-/* the helper builds .flip-rows > .flip-head + .flip-row buttons */
-#\30 7-moves .flip-rows {
-  display: flex;
-  flex-direction: column;
-}
-#\30 7-moves .flip-head {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 14px;
-  font-size: 0.76rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 800;
-  opacity: 0.8;
-  padding: 0 0 10px;
-  color: inherit;
-}
-#\30 7-moves .flip-head span:last-child { text-align: right; }
-
-#\30 7-moves .flip-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  text-align: left;
-  font: inherit;
-  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
-  font-weight: 700;
-  cursor: pointer;
-  padding: clamp(16px, 1.8vw, 22px) 0;
-  background: none;
-  border: none;
-  border-top: 1.5px solid currentColor;
-  color: inherit;
-  /* staged reveal (scrollScene .is-shown): pure transform/opacity */
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity .4s ease, transform .4s ease, color .2s ease;
-}
-#\30 7-moves .flip-row.is-shown { opacity: 1; transform: none; }
-#\30 7-moves .flip-rows .flip-row:last-child { border-bottom: 1.5px solid currentColor; }
-#\30 7-moves .mv-move--warm .flip-row { border-color: rgba(10, 26, 92, 0.22); }
-#\30 7-moves .mv-move--navy .flip-row { border-color: rgba(238, 233, 221, 0.22); }
-
-#\30 7-moves .flip-row:focus-visible {
-  outline: 2px solid var(--soi-amber);
-  outline-offset: 3px;
-}
-
-/* "less" state — de-emphasised, struck through (legible on both grounds) */
-#\30 7-moves .flip-less {
-  font-weight: 600;
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-  transition: color .2s ease;
-}
-#\30 7-moves .mv-move--warm .flip-less { color: rgba(10, 26, 92, 0.55); }
-#\30 7-moves .mv-move--navy .flip-less { color: rgba(238, 233, 221, 0.55); }
-#\30 7-moves .flip-arrow {
-  font-weight: 800;
-  opacity: 0.5;
-  transition: transform .2s ease, opacity .2s ease;
-}
-
-/* "more" state — hidden until flipped */
-#\30 7-moves .flip-more {
-  text-align: right;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  opacity: 0;
-  transition: opacity 220ms ease, color .2s ease;
-}
-#\30 7-moves .mv-move--warm .flip-more { color: var(--soi-navy); }
-#\30 7-moves .mv-move--navy .flip-more { color: var(--soi-amber); }
-
-/* flipped: COLOUR + WEIGHT commit (no background block) */
-#\30 7-moves .flip-row.is-flipped .flip-less { opacity: 0.35; }
-#\30 7-moves .flip-row.is-flipped .flip-arrow { opacity: 1; transform: translateX(4px); }
-#\30 7-moves .flip-row.is-flipped .flip-more { opacity: 1; }
-#\30 7-moves .mv-move--warm .flip-row.is-flipped { color: var(--soi-orange); }
-#\30 7-moves .mv-move--navy .flip-row.is-flipped { color: var(--soi-amber); }
-
-/* ═══════════════════════════════════════════════════════════════════
-   CLOSING TOOLKIT — the marquee interaction. "Hand them the tools."
-   The five moves become physical tool-objects on a pegboard; the visitor
-   picks each up (tactile.js draggable) and passes it to the open hand/tray.
-   Backgroundless: tools carry weight via the contact shadow only (filter
-   drop-shadow from tactile.js) — no card fills, no white mats. Square
-   corners, Poppins, tabular nums.
-   ═══════════════════════════════════════════════════════════════════ */
-#\30 7-moves .mv-toolkit {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-/* Toolkit ground is the clean navy si-dark with the brand orbit motif (no
-   busy photo behind interactive tools — aggressive negative space). The
-   orbit seeds sit low so the copy + tools own the screen. */
-#\30 7-moves .mv-toolkit .si-seed.mv-seed-a { top: 14%; right: 16%; left: auto; }
-#\30 7-moves .mv-toolkit .si-seed.mv-seed-b { bottom: 18%; left: 10%; }
-#\30 7-moves .mv-toolkit-inner {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(28px, 4vw, 52px);
-}
-#\30 7-moves .mv-toolkit-head { max-width: 60ch; }
-#\30 7-moves .mv-toolkit-title {
-  margin: clamp(8px, 1.4vw, 16px) 0 clamp(14px, 1.8vw, 22px);
-  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
-  line-height: 0.96;
-  letter-spacing: -0.02em;
-}
-#\30 7-moves .mv-toolkit-title .mv-title-key { color: var(--soi-amber); }
-#\30 7-moves .mv-toolkit-lede {
-  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
-  line-height: 1.5;
-  max-width: 50ch;
-  margin: 0;
-  color: var(--on-navy);
-  opacity: 0.92;
-}
-#\30 7-moves .mv-toolkit-progress {
+  flex: 0 0 auto;
   display: flex;
   align-items: baseline;
-  gap: 0.5em;
-  margin: clamp(16px, 2vw, 24px) 0 0;
   font-weight: 700;
 }
-#\30 7-moves .mv-toolkit-count {
-  display: inline-block;
-  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+#\30 7-moves .mv-belt-count {
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
   font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   color: var(--soi-amber);
-  transform-origin: left center;
 }
-/* Each landing pops the count so the tally is felt, not silently swapped. */
-#\30 7-moves .mv-toolkit-count.is-pop { animation: mv-count-pop 420ms cubic-bezier(0.22, 1, 0.36, 1); }
-@keyframes mv-count-pop {
-  0% { transform: scale(1); }
-  38% { transform: scale(1.34); }
-  100% { transform: scale(1); }
+#\30 7-moves .mv-belt-of {
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  color: rgba(238, 233, 221, 0.66);
 }
-#\30 7-moves .mv-toolkit-count-of {
-  font-size: clamp(0.92rem, 1.2vw, 1.06rem);
-  letter-spacing: 0.02em;
-  color: var(--on-navy);
-  opacity: 0.78;
-}
-
-/* ─── Stage: pegboard (the tools at rest) ▸ the hand/tray ─────────── */
-#\30 7-moves .mv-toolkit-stage {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(220px, 0.85fr);
-  align-items: stretch;
-  gap: clamp(24px, 4vw, 64px);
-}
-
-/* Pegboard: five draggable tools, generous space, no fills. */
-#\30 7-moves .mv-pegboard {
+#\30 7-moves .mv-belt-slots {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: clamp(16px, 2.2vw, 32px);
-  align-content: start;
-}
-
-/* A tool-object: icon + number handle above its title. The handle is what
-   lifts/casts the contact shadow; tactile.js owns transform + filter. */
-#\30 7-moves .mv-tool {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(8px, 1vw, 14px);
-  text-align: center;
-  cursor: grab;
-  /* never select text while dragging the toy */
-  user-select: none;
-  -webkit-user-select: none;
-  outline: none;
+  gap: clamp(12px, 1.6vw, 22px);
 }
-#\30 7-moves .mv-tool-grip {
+#\30 7-moves .mv-belt-slot {
   display: grid;
   place-items: center;
-  position: relative;
-  width: clamp(92px, 10vw, 132px);
-  height: clamp(92px, 10vw, 132px);
-  /* thin currentColor frame reads as the tool's body, square corners */
-  border: 2px solid var(--soi-amber);
-  color: var(--soi-amber);
+  width: clamp(40px, 4vw, 56px);
+  height: clamp(40px, 4vw, 56px);
+  border: 1.5px solid rgba(238, 233, 221, 0.26);
+  color: rgba(238, 233, 221, 0.32);
 }
-#\30 7-moves .mv-tool-no {
-  position: absolute;
-  top: 6px;
-  left: 8px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
-}
-#\30 7-moves .mv-tool-icon {
-  display: block;
-  width: 56%;
-  height: 56%;
-}
-#\30 7-moves .mv-tool-icon svg { display: block; width: 100%; height: 100%; }
-#\30 7-moves .mv-tool-label {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.12;
-  font-size: clamp(0.86rem, 1.1vw, 1rem);
-  color: var(--on-navy);
-  max-width: 18ch;
-}
-
-/* Grabbed / dragging affordance (tactile.js toggles .is-dragging + .is-lifted
-   on the host element). Brighten the body, signal "in hand". */
-#\30 7-moves .mv-tool.is-dragging { cursor: grabbing; z-index: 5; }
-#\30 7-moves .mv-tool.is-dragging .mv-tool-grip { border-color: var(--soi-gold); color: var(--soi-gold); }
-
-/* In flight to the tray: rides above everything and glows like a grabbed tool
-   so the hand-over arc reads as one continuous physical move. */
-#\30 7-moves .mv-tool.is-delivering { z-index: 6; pointer-events: none; }
-#\30 7-moves .mv-tool.is-delivering .mv-tool-grip { border-color: var(--soi-gold); color: var(--soi-gold); }
-
-/* Keyboard focus: clear ring on the whole tool. */
-#\30 7-moves .mv-tool:focus-visible .mv-tool-grip {
-  outline: 2px solid var(--soi-gold);
-  outline-offset: 4px;
-}
-
-/* Handed over: the tool commits — fades from the pegboard to "in their hands",
-   confirmed by colour + a tick. Pure opacity/transform → reduced-motion safe. */
-#\30 7-moves .mv-tool.is-handed {
-  cursor: default;
-  opacity: 0.42;
-  pointer-events: none;
-}
-#\30 7-moves .mv-tool.is-handed .mv-tool-grip {
-  border-color: rgba(238, 233, 221, 0.4);
-  color: rgba(238, 233, 221, 0.6);
-}
-#\30 7-moves .mv-tool.is-handed .mv-tool-grip::after {
-  content: "✓";
-  position: absolute;
-  right: 6px;
-  bottom: 4px;
-  font-size: 0.9rem;
-  font-weight: 900;
-  color: var(--soi-amber);
-  opacity: 0.9;
-}
-#\30 7-moves .mv-tool.is-handed .mv-tool-label {
-  color: rgba(238, 233, 221, 0.55);
-  text-decoration: none;
-}
-
-/* The hand / tray: an open dashed zone the tools are handed into. The label
-   inverts to amber once all five are in (set on the section root). */
-#\30 7-moves .mv-tray {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  min-height: clamp(180px, 24vw, 300px);
-  padding: clamp(20px, 3vw, 36px);
-  border: 2px dashed rgba(238, 233, 221, 0.34);
-  color: var(--on-navy);
-}
-#\30 7-moves .mv-tray-rule {
-  width: clamp(40px, 6vw, 72px);
-  height: 2px;
-  background: currentColor;
-  opacity: 0.5;
-}
-#\30 7-moves .mv-tray-label {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.8rem;
-  opacity: 0.78;
-}
-/* Tray tally — one pip per tool, lights amber as each lands. Backgroundless. */
-#\30 7-moves .mv-tray-tally {
-  display: inline-flex;
-  gap: clamp(8px, 1vw, 12px);
-  margin-top: 4px;
-}
-#\30 7-moves .mv-tray-pip {
-  width: clamp(10px, 1.2vw, 14px);
-  height: clamp(10px, 1.2vw, 14px);
-  border: 2px solid rgba(238, 233, 221, 0.4);
-}
-#\30 7-moves .mv-tray-pip.is-lit {
-  background: var(--soi-amber);
+#\30 7-moves .mv-belt-icon { display: block; width: 60%; height: 60%; }
+#\30 7-moves .mv-belt-icon svg { display: block; width: 100%; height: 100%; }
+#\30 7-moves .mv-belt-slot.is-filled {
   border-color: var(--soi-amber);
+  color: var(--soi-amber);
 }
 @media (prefers-reduced-motion: no-preference) {
-  #\30 7-moves .mv-tray-pip { transition: background .3s ease, border-color .3s ease; }
-}
-#\30 7-moves.is-toolkit-complete .mv-tray {
-  border-color: var(--soi-amber);
-  border-style: solid;
-  color: var(--soi-amber);
-}
-#\30 7-moves.is-toolkit-complete .mv-tray-label { opacity: 1; }
-@media (prefers-reduced-motion: no-preference) {
-  #\30 7-moves .mv-tray { transition: border-color .35s ease, color .35s ease; }
+  #\30 7-moves .mv-belt-slot { transition: border-color .35s ease, color .35s ease; }
 }
 
-/* ─── Completion payoff — the reel's final frame resolves. Hidden until all
-   five are handed over, then assembles in. No box; colour + weight + a tick. */
-#\30 7-moves .mv-toolkit-done {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.6vw, 20px);
+/* ─── Payoff line — revealed only once all five are picked up. ─── */
+#\30 7-moves .mv-payoff {
   margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
   font-weight: 900;
-  letter-spacing: -0.01em;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  color: var(--soi-amber);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--on-navy);
+  max-width: 30ch;
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(12px);
   pointer-events: none;
 }
-#\30 7-moves .mv-toolkit-done-mark {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: clamp(34px, 3.4vw, 46px);
-  height: clamp(34px, 3.4vw, 46px);
-  border: 2px solid var(--soi-amber);
-  font-size: 1.1rem;
-  transform: scale(0.6);
-}
-#\30 7-moves .mv-toolkit-done-mark::before { content: "✓"; line-height: 1; }
-#\30 7-moves .mv-toolkit-done-text { line-height: 1.15; max-width: 30ch; }
-#\30 7-moves.is-toolkit-complete .mv-toolkit-done {
-  opacity: 1;
-  transform: none;
-}
-#\30 7-moves.is-toolkit-complete .mv-toolkit-done-mark { transform: scale(1); }
+#\30 7-moves.is-complete .mv-payoff { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: no-preference) {
-  #\30 7-moves .mv-toolkit-done {
-    transition: opacity .5s ease .1s, transform .5s ease .1s;
-  }
-  #\30 7-moves .mv-toolkit-done-mark {
-    transition: transform .5s cubic-bezier(0.34, 1.56, 0.64, 1) .2s;
-  }
+  #\30 7-moves .mv-payoff { transition: opacity .6s cubic-bezier(0.2,0.8,0.2,1), transform .6s cubic-bezier(0.2,0.8,0.2,1); }
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
-@media (max-width: 1000px) {
-  #\30 7-moves .mv-world { width: clamp(280px, 50vw, 460px); opacity: 0.32; }
-  #\30 7-moves .mv-move--navy .mv-world { opacity: 0.24; }
-}
 @media (max-width: 900px) {
-  #\30 7-moves .mv-move { min-height: 0; }
-  #\30 7-moves .mv-hero-grid { grid-template-columns: 1fr; }
-  #\30 7-moves .mv-hero-maze { justify-self: start; max-width: 340px; }
-  #\30 7-moves .mv-grid { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
-  #\30 7-moves .mv-shift { position: static; }
-  #\30 7-moves .mv-evidence { max-width: 100%; }
-  #\30 7-moves .mv-media-table { max-width: 100%; }
-  /* Toolkit: tray drops below the pegboard, full width. */
-  #\30 7-moves .mv-toolkit { min-height: 0; }
-  #\30 7-moves .mv-toolkit-stage { grid-template-columns: 1fr; }
-  #\30 7-moves .mv-tray { min-height: clamp(140px, 30vw, 200px); }
-}
-@media (max-width: 600px) {
-  #\30 7-moves .mv-move-head {
-    grid-template-columns: 1fr;
-    row-gap: 10px;
+  #\30 7-moves .mv-shell {
+    min-height: 0;
+    grid-template-rows: auto auto auto;
+    row-gap: clamp(20px, 4vh, 32px);
   }
-  #\30 7-moves .mv-stage { grid-row: auto; }
-  #\30 7-moves .mv-icon { margin-bottom: 4px; }
-  #\30 7-moves .mv-stat-row { grid-template-columns: 1fr; }
-  #\30 7-moves .mv-stat { flex-direction: column; gap: 8px; }
-  #\30 7-moves .mv-contents-item { grid-template-columns: 34px 34px 1fr; gap: 12px; }
+  #\30 7-moves .mv-reel { min-height: clamp(520px, 78vh, 720px); }
+  #\30 7-moves .mv-frame {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "no"
+      "head"
+      "body"
+      "shift"
+      "pickup";
+    row-gap: clamp(16px, 3vh, 26px);
+    align-content: start;
+  }
+  #\30 7-moves .mv-frame-head { align-self: start; }
+  #\30 7-moves .mv-pickup {
+    flex-direction: row;
+    align-self: start;
+    justify-self: start;
+    gap: 16px;
+  }
+  #\30 7-moves .mv-belt { flex-wrap: wrap; gap: 16px 24px; }
 }
-
-/* Reduced motion: libs short-circuit; drop our transitions + show rows. */
-@media (prefers-reduced-motion: reduce) {
-  #\30 7-moves .flip-row,
-  #\30 7-moves .flip-more,
-  #\30 7-moves .flip-arrow,
-  #\30 7-moves .mv-hero-grid,
-  #\30 7-moves .mv-contents,
-  #\30 7-moves .mv-move-head,
-  #\30 7-moves .mv-grid,
-  #\30 7-moves .mv-toolkit-inner { transition: none; }
-  #\30 7-moves .flip-row { opacity: 1; transform: none; }
+@media (max-width: 560px) {
+  #\30 7-moves .mv-stat-value { font-size: clamp(2.8rem, 14vw, 3.6rem); }
+  #\30 7-moves .mv-carried--stat { flex-direction: column; gap: 10px; }
 }

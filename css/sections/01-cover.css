@@ -1,8 +1,10 @@
 /* ============================================================
    01-cover — scoped to #\30 1-cover (the journey-step section).
-   Warm gradient hero, assembling wordmark, maze motion logo + live
-   teal orbit ring, ambient navy dot-field, trace-the-maze reward.
-   Backgroundless, square corners, no underline, navy-on-warm, AA.
+   The one memorable thing: the maze + orbit + the you-dot born.
+   The signature maze illustration is the focal point, used once, big,
+   on a vast warm field. The wordmark hangs on a left axis in enormous
+   negative space. One accent (the teal you-dot). One hero motion (the
+   trace). Backgroundless, square corners, no underline, navy-on-warm, AA.
    ============================================================ */
 
 /* The section IS the warm gradient ground, full-bleed (no top nav). */
@@ -19,74 +21,58 @@
   min-height: 100svh;
 }
 
-/* ── the hero canvas: copy left, maze stage right, centred ───────── */
-#\30 1-cover .cover-hero {
+/* ── the hero: copy on a left axis, the maze large to the right ──────
+   Asymmetric editorial split — the copy holds a left column with real
+   air above and below; the maze takes the larger right field. Not a
+   centred stack. The big jump between the two is the breathing room. */
+#\30 1-cover .cover {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
-  gap: clamp(24px, 5vw, 80px);
-  padding: clamp(3rem, 7vh, 7rem) clamp(24px, 6vw, 96px)
+  gap: clamp(32px, 5vw, 88px);
+  padding: clamp(3rem, 8vh, 8rem) clamp(24px, 6vw, 96px)
            calc(var(--journey-controls-h, 72px) + clamp(2.4rem, 7vh, 5.5rem));
   overflow: hidden;
 }
 
-/* ── ambient respondent dot-field — behind everything ────────────── */
-#\30 1-cover .cover-field {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-#\30 1-cover .cover-copy,
-#\30 1-cover .cover-stage {
+/* ── left column: the wordmark, hung on the left axis ────────────────
+   Tight within the group (eyebrow→title→standfirst), then a large jump
+   to the Begin cue. Dramatic type hierarchy: one huge display moment. */
+#\30 1-cover .cover-copy {
   position: relative;
   z-index: 2;
-}
-
-/* ── left column: the wordmark ───────────────────────────────────── */
-#\30 1-cover .cover-copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(14px, 2.4vh, 26px);
+  gap: clamp(14px, 2.2vh, 22px);
 }
 
 #\30 1-cover .cover-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
+  margin: 0 0 clamp(6px, 1.4vh, 14px);
   color: var(--soi-navy);
-  opacity: 0.88;
-}
-#\30 1-cover .cover-kicker-glyph {
-  display: block;
-  width: auto;
-  height: 1.7em;
-  /* tint the black silhouette to navy so it sits in the world */
-  opacity: 0.9;
+  opacity: 0.78;
 }
 
 #\30 1-cover .cover-wordmark {
   margin: 0;
   font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.035em;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
   text-transform: none;
-  font-size: clamp(3.1rem, 8.4vw, 7.4rem);
+  /* the one display moment — enormous, dramatic. Sized so the longest line
+     ("independence", 12ch) never clips inside the left column at any width. */
+  font-size: clamp(3rem, 7.4vw, 6.4rem);
   color: var(--soi-navy);
 }
 #\30 1-cover .cover-line { display: block; }
 
-/* The wordmark is focused programmatically for SR/keyboard orientation on
-   arrival — it must NOT paint the browser's blue focus ring (that read as a
-   stray outlined box over the headline). Keyboard nav never lands here, so a
-   keyboard-only focus-visible ring is unnecessary; suppress the outline. */
+/* The wordmark is focused programmatically (main.js moves focus to the step
+   heading for SR/keyboard orientation). It must NOT paint the browser's focus
+   ring — that read as a stray outlined box over the headline. Keyboard nav
+   never lands here, so suppress the outline. */
 #\30 1-cover .cover-wordmark:focus { outline: none; }
 
 /* Emphasis = colour + weight only. No box, no underline, no skew. */
@@ -95,31 +81,36 @@
   font-weight: 900;
 }
 
+/* One short standfirst, well below the display in scale — nothing in
+   the muddy middle. Held to a tight measure, never full width. */
 #\30 1-cover .cover-standfirst {
-  margin: 0;
-  max-width: 46ch;
-  font-size: clamp(1.02rem, 1.5vw, 1.32rem);
+  margin: clamp(8px, 1.6vh, 18px) 0 0;
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   line-height: 1.5;
   font-weight: 500;
   color: var(--soi-navy);
+  opacity: 0.92;
 }
 
-/* ── Begin cue — a magnetic navy button, square, no underline ────── */
+/* ── Begin cue — a magnetic navy button, square, no underline ────────
+   A large jump of space sits above it (the deliberate rhythm). */
 #\30 1-cover .cover-cue {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-top: clamp(4px, 1.2vh, 12px);
-  padding: 0.85em 1.5em;
+  margin-top: clamp(20px, 4.5vh, 52px);
+  padding: 0.95em 1.7em;
   border: none;
   background: var(--soi-navy);
   color: var(--soi-cream);
   font-family: inherit;
-  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: background-color 220ms ease, box-shadow 260ms ease;
+  transition: background-color 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
 }
 #\30 1-cover .cover-cue:hover { background: var(--soi-blue); }
@@ -127,13 +118,13 @@
   outline: 3px solid var(--soi-navy);
   outline-offset: 4px;
 }
+/* Quiet until the trace completes; then it wakes with a single teal ring. */
 #\30 1-cover .cover-cue.is-awake {
   box-shadow: 0 0 0 3px var(--soi-teal), 0 10px 26px rgba(10, 26, 92, 0.28);
 }
-/* The first commit (finishing the trace) wakes the CTA with one soft pulse — a
-   single ring that blooms out from the teal halo, then settles. JS toggles
-   .is-pulsing on completion; the animation runs once. */
-#\30 1-cover .cover-cue.is-pulsing { animation: cover-cue-commit 760ms cubic-bezier(0.22, 1, 0.36, 1) 1; }
+#\30 1-cover .cover-cue.is-pulsing {
+  animation: cover-cue-commit 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
+}
 @keyframes cover-cue-commit {
   0%   { box-shadow: 0 0 0 0 rgba(43, 183, 232, 0.55), 0 10px 26px rgba(10, 26, 92, 0.28); }
   60%  { box-shadow: 0 0 0 12px rgba(43, 183, 232, 0),   0 10px 26px rgba(10, 26, 92, 0.28); }
@@ -145,101 +136,35 @@
   border-top: 2px solid currentColor;
   border-right: 2px solid currentColor;
   transform: rotate(45deg);
-  transition: transform 200ms ease;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 1-cover .cover-cue:hover .cover-cue-arrow { transform: rotate(45deg) translate(2px, -2px); }
 
-/* The "you" line — low emphasis until the trace completes. */
-#\30 1-cover .cover-you {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: clamp(4px, 1vh, 10px) 0 0;
-  font-size: clamp(0.84rem, 1vw, 0.98rem);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--soi-navy);
-  opacity: 0.7;
-  transition: opacity 360ms ease;
-}
-#\30 1-cover .cover-you.is-home { opacity: 1; }
-#\30 1-cover .cover-you-num { font-variant-numeric: tabular-nums; font-weight: 700; }
-#\30 1-cover .cover-you-mark {
-  width: 11px;
-  height: 11px;
-  flex: 0 0 auto;
-  background: var(--soi-cream);
-  border: 1.5px solid var(--soi-navy);
-  box-shadow: 0 1px 3px rgba(10, 26, 92, 0.22);
-}
-
-/* ── right column: the maze stage ────────────────────────────────── */
+/* ── right column: the maze logo-moment, big ─────────────────────────
+   The illustration is the focal point. It already carries the orbit
+   ring, the bear and the figure — no second ring is drawn over it. */
 #\30 1-cover .cover-stage {
   --trace: 0;
+  position: relative;
+  z-index: 2;
   align-self: center;
   justify-self: center;
   width: 100%;
-  max-width: min(46vw, 560px);
+  max-width: min(52vw, 680px);
   aspect-ratio: 1 / 1;
+  margin: 0;
 }
-
-/* The maze motion logo floats on the ground — single contact-shadow device. */
 #\30 1-cover .cover-maze {
   position: absolute;
-  inset: 6%;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-}
-#\30 1-cover .cover-maze-img {
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 18px 34px rgba(10, 26, 92, 0.22));
-  /* a slow embodied bob so the marquee breathes on arrival rather than sitting
-     inert — the figure is forever finding its way out. Reduced-motion kills it. */
-  animation: cover-maze-float 9s ease-in-out infinite;
-  will-change: transform;
-}
-@keyframes cover-maze-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-1.4%) rotate(0.4deg); }
+  /* a single soft contact shadow grounds the illustration on the field */
+  filter: drop-shadow(0 24px 48px rgba(10, 26, 92, 0.18));
 }
 
-/* Live teal orbit ring sweeping the maze — the single bright accent.
-   Two ellipses: a faint full ring + a brighter ring that tightens on trace. */
-#\30 1-cover .cover-orbit {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  transform-origin: 50% 50%;
-  /* The ring sweeps continuously and ACCELERATES as the trace advances — taking
-     control speeds the world up. 26s at rest → ~11s once traced. */
-  animation: cover-orbit-spin calc(26s - 15s * var(--trace, 0)) linear infinite;
-}
-#\30 1-cover .cover-orbit-ring {
-  fill: none;
-  stroke: var(--soi-teal);
-  stroke-width: 2;
-  opacity: calc(0.55 + 0.4 * var(--trace, 0));
-}
-#\30 1-cover .cover-orbit-ring--faint {
-  stroke: var(--soi-orbit-strong);
-  opacity: 0.6;
-}
-#\30 1-cover .cover-orbit-bead {
-  fill: var(--soi-teal);
-  transform: translate(300px, 300px) rotate(-22deg) translate(268px, 0);
-  /* the bead brightens + grows a soft glow as control is taken */
-  filter: drop-shadow(0 0 calc(2px + 8px * var(--trace, 0)) var(--soi-teal));
-  transition: filter 200ms ease;
-}
-@keyframes cover-orbit-spin { to { transform: rotate(360deg); } }
-
-/* ── trace overlay: guide + ink + goal ───────────────────────────── */
+/* ── trace overlay: guide + ink + goal (illustration's own 800-space) ─ */
 #\30 1-cover .cover-trace {
   position: absolute;
   inset: 0;
@@ -252,24 +177,24 @@
 #\30 1-cover .cover-trace-guide {
   fill: none;
   stroke: var(--soi-navy);
-  stroke-width: 2.5;
+  stroke-width: 3;
   stroke-linecap: round;
-  stroke-dasharray: 1 9;
-  opacity: 0.32;
+  stroke-dasharray: 1 11;
+  opacity: 0.28;
 }
 #\30 1-cover .cover-trace-ink {
   fill: none;
   stroke: var(--soi-navy);
-  stroke-width: 4;
+  stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 #\30 1-cover .cover-trace-goal {
   fill: none;
   stroke: var(--soi-navy);
-  stroke-width: 2;
-  opacity: 0.5;
-  animation: cover-goal-pulse 2.4s ease-out infinite;
+  stroke-width: 2.5;
+  opacity: 0.45;
+  animation: cover-goal-pulse 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
 }
 #\30 1-cover .cover-stage.is-traced .cover-trace-goal {
   animation: none;
@@ -278,17 +203,17 @@
   opacity: 1;
 }
 @keyframes cover-goal-pulse {
-  0%, 100% { r: 6; opacity: 0.5; }
-  50%      { r: 9; opacity: 0.85; }
+  0%, 100% { r: 7;  opacity: 0.45; }
+  50%      { r: 11; opacity: 0.8; }
 }
 
-/* ── the draggable cream "you" dot handle ────────────────────────── */
+/* ── the cream "you" dot — born at the maze mouth, the one accent ──── */
 #\30 1-cover .cover-handle {
   position: absolute;
   z-index: 4;
-  width: 32px;
-  height: 32px;
-  margin: -16px 0 0 -16px; /* centre on its left/top origin */
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px; /* centre on its left/top origin */
   padding: 0;
   border: none;
   background: none;
@@ -303,82 +228,51 @@
 }
 #\30 1-cover .cover-handle-dot {
   grid-area: 1 / 1;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   background: var(--soi-cream);
   border: 2px solid var(--soi-navy);
-  box-shadow: 0 2px 6px rgba(10, 26, 92, 0.28);
-  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 220ms ease;
+  box-shadow: 0 2px 7px rgba(10, 26, 92, 0.3);
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              background-color 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 /* a quiet pulsing halo invites the touch before it moves */
 #\30 1-cover .cover-handle-halo {
   grid-area: 1 / 1;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 2px solid var(--soi-navy);
   opacity: 0.5;
   pointer-events: none;
-  animation: cover-handle-pulse 2.2s ease-out infinite;
+  animation: cover-handle-pulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
 }
 #\30 1-cover .cover-handle.is-home .cover-handle-halo,
 #\30 1-cover .cover-handle.is-dragging .cover-handle-halo { display: none; }
 #\30 1-cover .cover-handle:hover .cover-handle-dot,
-#\30 1-cover .cover-handle.is-dragging .cover-handle-dot { transform: scale(1.12); }
+#\30 1-cover .cover-handle.is-dragging .cover-handle-dot { transform: scale(1.14); }
 #\30 1-cover .cover-handle.is-home .cover-handle-dot { background: var(--soi-teal); }
 @keyframes cover-handle-pulse {
   0%   { transform: scale(1);   opacity: 0.5; }
-  70%  { transform: scale(2.4); opacity: 0; }
-  100% { transform: scale(2.4); opacity: 0; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
 
-/* ── quiet control gauge: a thin rail that fills with --trace ────── */
-#\30 1-cover .cover-prompt {
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  bottom: -2.6rem;
-  z-index: 3;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: none;
-}
-#\30 1-cover .cover-prompt-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--soi-navy);
-  opacity: 0.66;
-  text-align: center;
-}
-/* a thin rail whose ink fill grows left-to-right with --trace */
-#\30 1-cover .cover-prompt::after {
-  content: "";
-  height: 3px;
-  background:
-    linear-gradient(to right, var(--soi-navy) 0 100%) left / calc(100% * var(--trace, 0)) 100% no-repeat,
-    rgba(10, 26, 92, 0.16);
-  transition: background-size 120ms linear;
-}
-
-/* ── arrival entrance: assembling lines (idempotent, restartable) ── */
+/* ── arrival entrance: assembling lines (idempotent, restartable) ──── */
 #\30 1-cover [data-arrival] {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(16px);
 }
 #\30 1-cover [data-arrival].is-arrived {
   opacity: 1;
   transform: none;
-  transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 720ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-delay: var(--arrival-delay, 0ms);
 }
 
 /* ── responsive: stack on narrow / short screens ─────────────────── */
 @media (max-width: 900px) {
-  #\30 1-cover .cover-hero {
+  #\30 1-cover .cover {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     gap: clamp(28px, 6vh, 56px);
@@ -386,18 +280,15 @@
   }
   #\30 1-cover .cover-stage {
     order: -1;
-    max-width: min(70vw, 400px);
+    max-width: min(74vw, 460px);
   }
-  #\30 1-cover .cover-standfirst { max-width: 60ch; }
+  #\30 1-cover .cover-standfirst { max-width: 48ch; }
 }
 
 /* ── reduced-motion: kill ambient motion, keep state legible ─────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-orbit,
-  #\30 1-cover .cover-maze-img,
   #\30 1-cover .cover-cue.is-pulsing,
   #\30 1-cover .cover-handle-halo,
   #\30 1-cover .cover-trace-goal { animation: none; }
-  #\30 1-cover .cover-maze-img { transform: none; }
   #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }

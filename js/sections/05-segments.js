@@ -1,31 +1,34 @@
 /**
  * Chapter 05 — segments. THE SHOWPIECE.
  *
- * Three ways into the four Britains, every one composed from js/lib
- * primitives (never reinvented):
+ * THE ONE MEMORABLE THING: the nation resolves into four, and you find
+ * yourself among them. The cinematic resolve is the hero; everything else
+ * supports it. Composed entirely from js/lib primitives (never reinvented).
  *
- *   1. THE AGENCY COMPASS (the marquee). A backgroundless canvas dotField
- *      scatters, then clusterPoints resolves the dots into four jittered
- *      clusters whose sizes track the canonical deck shares (17/28/27/28).
- *      Four real quadrant buttons sit over the field; choosing one lands a
- *      backgroundless profile beneath — heroQuote + a lollipop of the
- *      segment's stand-out behaviours + a dotPlot of its brand asks. This is
- *      the gated beat: gate() shows the soft "try it" hint, ready() clears it
- *      on the first pick. Next is never blocked.
+ *   1. THE RESOLVE (the hero / marquee). A near-full-bleed dotField of 100
+ *      dots — one per percentage point of Britain — scatters, holds a beat,
+ *      then resolves into four jittered clusters sized to the canonical deck
+ *      shares (17/28/27/28), each in its segment accent. Four quiet camp
+ *      labels hang over their quadrant; choosing one lands a backgroundless
+ *      profile beneath (heroQuote + a lollipop of stand-out behaviours + a
+ *      dotPlot of brand asks) and brightens its cluster. This is the gated
+ *      beat: gate() shows the soft hint, ready() clears it on first pick.
  *
- *   2. THE LIVING NETWORK. segmentGraph(segments) — the circular
- *      force-physics network of segment hubs + shared attribute satellites.
+ *   2. FIND YOURSELF (act two, quieter). interactions.quiz over
+ *      segments.quiz.questions; the accumulated x/y maps to a quadrant via
+ *      quadrantToSegment, naming your camp, lighting it on the compass,
+ *      selecting its hub in the network, and easing the persistent you-dot
+ *      onto your camp.
  *
- *   3. WHICH BRITAIN ARE YOU? interactions.quiz over segments.quiz.questions;
- *      the accumulated x/y maps to a quadrant via quadrantToSegment, the
- *      result names the segment, lights its quadrant, selects its graph hub,
- *      and moves the persistent you-dot anchor onto "your" Britain.
+ *   3. WHAT LINKS THEM (supporting layer). segmentGraph(segments) — the
+ *      circular force-physics network of segment hubs + shared attributes.
  *
- * Design world: warm gradient ground, navy marks/text, thin orbit motif,
- * per-segment brand accents shared with segment-graph. Backgroundless, square
- * corners, no underline/skew, tabular nums, reduced-motion safe, keyboard
- * paths throughout. The dotField canvas and the graph rAF are destroy()-ed
- * when the step leaves (the section is hidden).
+ * Design world: warm gradient ground, navy marks/text (one high-contrast
+ * crowd — never mustard-on-mustard), thin orbit motif; the network's hubs
+ * carry the per-segment brand accents. Backgroundless, square
+ * corners, no underline/skew, tabular nums. One easing system; the resolve
+ * is the single hero motion. Reduced-motion safe, keyboard throughout. The
+ * dotField canvas + graph rAF are destroy()-ed when the step leaves.
  *
  * @param {HTMLElement} rootEl  <section class="journey-step" id="05-segments">
  * @param {{segments: object|null, journey: {gate():void, ready():void}}} data
@@ -43,27 +46,24 @@ const DECK_SHARES = { architects: 17, hustlers: 28, coasters: 27, retreaters: 28
 /** One dot per percentage point of Britain (17+28+27+28 = 100). */
 const DOT_COUNT = 100;
 
-/** Per-segment brand accent CSS vars (shared with segment-graph hubs). */
-const SEG_ACCENT_VAR = {
-  architects: '--mustard',
-  hustlers: '--teal-deep',
-  coasters: '--mustard-dark',
-  retreaters: '--soi-navy',
-};
+/** Soft-scatter beat (ms) before the resolve settles, so it is seen. */
+const SCATTER_HOLD_MS = 560;
 
 const cssVar = (name, fallback) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 /**
- * The four quadrants of the agency compass, as 0..1 rects on the field
- * (top-left origin). Proactive (high agency) is the TOP row; optimistic is the
- * RIGHT column — matching the deck's PESSIMISTIC↔OPTIMISTIC × PASSIVE↔PROACTIVE.
+ * The four quadrants as 0..1 rects on the field (top-left origin), and the
+ * label's anchor inside that rect. Proactive (high agency) is the TOP row;
+ * optimistic is the RIGHT column — matching PESSIMISTIC↔OPTIMISTIC ×
+ * PASSIVE↔PROACTIVE. Clusters sit inset from the cross; labels hug the
+ * outer corner so they never sit over the dots.
  */
 const QUADRANTS = [
-  { id: 'architects', rect: { x: 0.53, y: 0.05, w: 0.42, h: 0.42 } }, // optimistic + proactive
-  { id: 'hustlers',   rect: { x: 0.05, y: 0.05, w: 0.42, h: 0.42 } }, // pessimistic + proactive
-  { id: 'coasters',   rect: { x: 0.53, y: 0.53, w: 0.42, h: 0.42 } }, // optimistic + passive
-  { id: 'retreaters', rect: { x: 0.05, y: 0.53, w: 0.42, h: 0.42 } }, // pessimistic + passive
+  { id: 'architects', rect: { x: 0.55, y: 0.07, w: 0.38, h: 0.36 }, corner: 'tr' },
+  { id: 'hustlers',   rect: { x: 0.07, y: 0.07, w: 0.38, h: 0.36 }, corner: 'tl' },
+  { id: 'coasters',   rect: { x: 0.55, y: 0.57, w: 0.38, h: 0.36 }, corner: 'br' },
+  { id: 'retreaters', rect: { x: 0.07, y: 0.57, w: 0.38, h: 0.36 }, corner: 'bl' },
 ];
 
 const esc = (s) =>
@@ -81,14 +81,24 @@ const scoreToSegment = (x, y, scoring) => {
   return scoring.quadrantToSegment[`${outlook}+${agency}`];
 };
 
-/** Build the dot targets: each segment owns a cluster sized by its deck share. */
-const buildFormation = (accents) => {
+/**
+ * Build the dot targets: each segment owns a cluster sized by its deck share.
+ * All dots are navy — one nation, one high-contrast crowd on the warm ground
+ * (per-segment accent dots would be mustard-on-mustard / low-contrast). The
+ * four camps are read by their SPATIAL position in the quadrants; identity is
+ * carried by the corner labels and the chosen-camp brightening.
+ */
+const buildFormation = (navy) => {
   const targets = [];
+  const owners = []; // each dot's owning segment, so we can brighten a camp
   QUADRANTS.forEach((q) => {
     const pts = clusterPoints(DECK_SHARES[q.id], q.rect);
-    pts.forEach((p) => targets.push({ x: p.x, y: p.y, colour: accents[q.id] }));
+    pts.forEach((p) => {
+      targets.push({ x: p.x, y: p.y, colour: navy });
+      owners.push(q.id);
+    });
   });
-  return targets;
+  return { targets, owners };
 };
 
 /** Stand-out behaviours for a segment's profile lollipop (its over-indexers). */
@@ -100,10 +110,10 @@ const standoutBehaviours = (seg) => {
     if (!family) return;
     Object.entries(family).forEach(([label, m]) => rows.push({ label, pct: m.pct, index: m.index }));
   });
-  // Most distinctive first (largest index vs national average), then top six.
+  // Most distinctive first (largest index vs national average), then top five.
   return rows
     .sort((a, b) => b.index - a.index)
-    .slice(0, 6)
+    .slice(0, 5)
     .map(({ label, pct }) => ({ label, pct }));
 };
 
@@ -119,14 +129,14 @@ const topBrandAsks = (seg) => {
 
 /**
  * Render a chosen segment's profile into the host — backgroundless, navy on
- * warm. heroQuote + a lollipop of stand-out behaviours + a dotPlot of brand
- * asks. Square corners, no boxes, no underline.
+ * warm. heroQuote leads (the human moment), then who/money/AI, then the two
+ * supporting charts. Square corners, no boxes, no underline.
  */
 const renderProfile = (host, seg) => {
   host.innerHTML = `
     <article class="sg5-profile-card sg5-accent-${esc(seg.id)}">
       <header class="sg5-profile-head">
-        <span class="sg5-profile-share num">${esc(seg.sharePct)}%</span>
+        <span class="sg5-profile-share num">${esc(seg.sharePct)}<span class="sg5-profile-pct">%</span></span>
         <div class="sg5-profile-id">
           <h3 class="sg5-profile-name">${esc(seg.name)}</h3>
           <p class="sg5-profile-trio">${esc(seg.threeWordDescriptor)}</p>
@@ -174,84 +184,120 @@ export default function init(rootEl, data) {
 
   const segments = segData.segments;
   const segMap = new Map(segments.map((s) => [s.id, s]));
-  const accents = {};
-  Object.entries(SEG_ACCENT_VAR).forEach(([id, v]) => { accents[id] = cssVar(v, '#FFC931'); });
 
   // Re-assemble the entrance on every arrival (idempotent). `hasArrived`
   // gates teardown so the initial mount (section starts hidden) and the
-  // shell re-asserting hidden=true on every navigation never wrongly tear
-  // the canvas/graph down before the step has ever been shown.
+  // shell re-asserting hidden=true never tear the canvas/graph down before
+  // the step has ever been shown.
   let hasArrived = false;
   rootEl.addEventListener('chapter:arrive', (e) => {
     hasArrived = true;
     arrival(rootEl, e.detail || {});
+    // The canvas + force-graph are built while the section is hidden
+    // (display:none → 0×0), so their backing stores measure 1×1. When the
+    // step is first shown, nudge a re-measure so the dot-field fills its
+    // stage. rAF lets layout settle before the lib re-reads getBoundingRect.
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
   });
 
   observeReveals(rootEl);
   observeCounters(rootEl);
-  const cleanupParallax = observeParallax(rootEl, { maxShiftPx: 40 });
+  const cleanupParallax = observeParallax(rootEl, { maxShiftPx: 36 });
 
-  // Soft gating: the compass is the one gated beat. gate() shows the hint;
-  // ready() clears it once a quadrant is chosen. Next never blocks either way.
+  // The shell advances the journey on a global Enter keydown (js/main.js)
+  // unless defaultPrevented. So Enter/Space on any button INSIDE this step
+  // must activate that button and NOT leak up to navigate. Capture-phase
+  // handler: if a button is focused, stop the global nav and click it.
+  rootEl.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+    const btn = event.target instanceof Element ? event.target.closest('button') : null;
+    if (!btn || !rootEl.contains(btn)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    btn.click();
+  }, true);
+
+  // Soft gating: the resolve is the one gated beat. gate() shows the hint;
+  // ready() clears it once a camp is chosen. Next never blocks either way.
   if (journey) journey.gate();
 
-  // ── 1. THE AGENCY COMPASS ────────────────────────────────────────────
+  // ── 1. THE RESOLVE (hero) ────────────────────────────────────────────
   const fieldHost = rootEl.querySelector('[data-compass-field]');
-  const quadHost = rootEl.querySelector('[data-compass-quadrants]');
+  const campHost = rootEl.querySelector('[data-compass-camps]');
   const profileHost = rootEl.querySelector('[data-compass-profile]');
   const compassCue = rootEl.querySelector('[data-compass-cue]');
+  const stageEl = rootEl.querySelector('[data-compass]');
   let field = null;
+  let owners = [];
   let readyFired = false;
 
-  const selectQuadrant = (id, fromQuiz = false) => {
+  const selectCamp = (id, fromQuiz = false) => {
     const seg = segMap.get(id);
     if (!seg || !profileHost) return;
-    if (quadHost) {
-      quadHost.querySelectorAll('.sg5-quad').forEach((b) => {
+    if (campHost) {
+      campHost.querySelectorAll('.sg5-camp').forEach((b) => {
         const on = b.dataset.id === id;
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-pressed', String(on));
       });
     }
+    if (stageEl) stageEl.classList.add('is-chosen');
+    // Light the chosen camp's cluster; fade the rest of the nation.
+    if (field && field.lightCamp) field.lightCamp(id);
     renderProfile(profileHost, seg);
     if (!readyFired) {
       readyFired = true;
-      if (compassCue) compassCue.textContent = 'Pick another quadrant to compare, or scroll on.';
+      if (compassCue) compassCue.textContent = 'Pick another camp to compare, or scroll on.';
       if (journey && !fromQuiz) journey.ready();
     }
   };
 
-  // Four quadrant buttons over the field.
-  if (quadHost) {
+  // Four quiet camp labels over the field — editorial, not chunky tiles.
+  if (campHost) {
     QUADRANTS.forEach((q) => {
       const seg = segMap.get(q.id);
       if (!seg) return;
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `sg5-quad sg5-quad--${q.id} sg5-accent-${q.id}`;
+      btn.className = `sg5-camp sg5-camp--${q.id} sg5-camp--${q.corner} sg5-accent-${q.id}`;
       btn.dataset.id = q.id;
       btn.setAttribute('aria-pressed', 'false');
       btn.innerHTML = `
-        <span class="sg5-quad-share num">${seg.sharePct}%</span>
-        <span class="sg5-quad-name">${esc(seg.name)}</span>
-        <span class="sg5-quad-trio">${esc(seg.threeWordDescriptor)}</span>`;
-      btn.addEventListener('click', () => selectQuadrant(q.id));
-      quadHost.append(btn);
+        <span class="sg5-camp-share num">${seg.sharePct}<span class="sg5-camp-pct">%</span></span>
+        <span class="sg5-camp-name">${esc(seg.name)}</span>
+        <span class="sg5-camp-trio">${esc(seg.threeWordDescriptor)}</span>`;
+      btn.addEventListener('click', () => selectCamp(q.id));
+      campHost.append(btn);
     });
   }
 
-  // The dot-field: scatter, then resolve into the four clusters once the
-  // compass scrolls into view (so the resolve is seen, not missed).
+  // The dot-field: scatter, hold a beat, then resolve into the four clusters
+  // when the stage scrolls into view (so the resolve is seen, not missed).
   if (fieldHost) {
     field = dotField(fieldHost, {
       count: DOT_COUNT,
-      dotRadius: 3,
+      dotRadius: 3.4,
       ariaLabel: 'One hundred dots resolving into four segments of Britain.',
     });
-    const targets = buildFormation(accents);
-    const resolve = () => {
-      field.formation(targets, { spring: 0.02, jostle: 0.00006 });
+    const navy = cssVar('--soi-navy', '#0A1A5C');
+    const built = buildFormation(navy);
+    owners = built.owners;
+    const baseTargets = built.targets;
+    // Light a camp: keep its cluster solid navy, fade the rest to a faint
+    // navy tint. Re-issues the whole formation (cheap at n=100, no lib edit).
+    field.lightCamp = (id) => {
+      const repaint = baseTargets.map((t, idx) => ({
+        x: t.x, y: t.y,
+        colour: owners[idx] === id ? navy : 'rgba(10,26,92,0.20)',
+      }));
+      field.formation(repaint, { spring: 0.05, jostle: 0.00006 });
       field.drift(prefersReducedMotion() ? 0 : 0.6);
+    };
+
+    const resolve = () => {
+      field.formation(baseTargets, { spring: 0.045, jostle: 0.00006 });
+      field.drift(prefersReducedMotion() ? 0 : 0.6);
+      if (stageEl) stageEl.classList.add('is-resolved');
     };
     if (prefersReducedMotion()) {
       resolve();
@@ -259,35 +305,25 @@ export default function init(rootEl, data) {
       const io = new IntersectionObserver((entries, obs) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          window.setTimeout(resolve, 420); // brief scatter beat, then settle
+          window.setTimeout(resolve, SCATTER_HOLD_MS); // scatter beat, then settle
           obs.disconnect();
         });
-      }, { threshold: 0.4 });
+      }, { threshold: 0.35 });
       io.observe(fieldHost);
     }
   }
 
-  // ── 2. THE LIVING NETWORK ────────────────────────────────────────────
-  const graphHost = rootEl.querySelector('[data-segment-graph]');
-  let graph = null;
-  if (graphHost) {
-    graph = segmentGraph(graphHost, {
-      segments,
-      ariaLabel: 'The four segments and the interests, channels and attitudes that link them.',
-    });
-  }
-
-  // ── 3. WHICH BRITAIN ARE YOU? ────────────────────────────────────────
+  // ── 2. FIND YOURSELF (act two) ───────────────────────────────────────
   const quizHost = rootEl.querySelector('[data-quiz-host]');
   const quizResult = rootEl.querySelector('[data-quiz-result]');
   const quizCopy = segData.quiz;
   let quizInstance = null;
 
-  // Move the persistent you-dot anchor onto the winning quadrant button so the
-  // shell's global dot eases over to "your" Britain.
+  // Ease the persistent you-dot onto the winning camp label so the shell's
+  // global dot travels to "your" Britain.
   const anchorYouDot = (id) => {
-    if (!quadHost) return;
-    const winning = quadHost.querySelector(`.sg5-quad[data-id="${id}"]`);
+    if (!campHost) return;
+    const winning = campHost.querySelector(`.sg5-camp[data-id="${id}"]`);
     const prevAnchor = rootEl.querySelector('[data-youdot-anchor]');
     if (prevAnchor) prevAnchor.removeAttribute('data-youdot-anchor');
     if (winning) winning.setAttribute('data-youdot-anchor', '');
@@ -301,14 +337,14 @@ export default function init(rootEl, data) {
     quizResult.hidden = false;
     quizResult.innerHTML = `
       <div class="sg5-result-card sg5-accent-${esc(id)}">
-        <p class="sg5-result-eyebrow">You are</p>
+        <p class="sg5-result-eyebrow">You are among the</p>
         <h3 class="sg5-result-name">${esc(seg.name)}</h3>
         <p class="sg5-result-trio">${esc(seg.threeWordDescriptor)}</p>
         <p class="sg5-result-share num">${esc(seg.sharePct)}% of Britain share your camp</p>
         <blockquote class="sg5-result-quote">${esc(seg.heroQuote)}</blockquote>
         <button type="button" class="vccp-btn vccp-btn-quiet sg5-result-again">Take it again</button>
       </div>`;
-    selectQuadrant(id, true);
+    selectCamp(id, true);
     anchorYouDot(id);
     if (graph) graph.selectSegment(id);
     const again = quizResult.querySelector('.sg5-result-again');
@@ -318,8 +354,8 @@ export default function init(rootEl, data) {
         quizResult.innerHTML = '';
         if (quizHost) quizHost.hidden = false;
         if (quizInstance) quizInstance.reset();
-        const again2 = quizHost && quizHost.querySelector('button');
-        if (again2) again2.focus({ preventScroll: true });
+        const firstBtn = quizHost && quizHost.querySelector('button');
+        if (firstBtn) firstBtn.focus({ preventScroll: true });
       });
     }
     if (quizHost) quizHost.hidden = true;
@@ -332,9 +368,17 @@ export default function init(rootEl, data) {
     });
   }
 
+  // ── 3. WHAT LINKS THEM (supporting layer) ────────────────────────────
+  const graphHost = rootEl.querySelector('[data-segment-graph]');
+  let graph = null;
+  if (graphHost) {
+    graph = segmentGraph(graphHost, {
+      segments,
+      ariaLabel: 'The four segments and the interests, channels and attitudes that link them.',
+    });
+  }
+
   // ── Teardown: kill the canvas sim + graph rAF + scroll work on step-leave.
-  // main.js toggles `hidden` on the section to navigate; watch for it so the
-  // single visible-step canvas/sim budget is respected.
   let torndown = false;
   const teardown = () => {
     if (torndown) return;

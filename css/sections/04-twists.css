@@ -1,49 +1,50 @@
 /* ============================================================
    Chapter 04 — twists.  All selectors scoped to #\30 4-twists.
-   Three twists, one EARNED DARK moment (navy velvet) for the trust
-   paradox. Backgroundless throughout (charts float on grounds,
-   faint tint tracks only). Warm grounds = navy ink; dark ground =
-   cream. Square corners, no underline, tabular nums. Each twist is a
-   full-bleed band that fills the screen with generous rhythm.
+   The art-direction north star (§7): drag the trust ladder; the holiday
+   physically resists. ONE twist commands the screen at a time; navy
+   gravity for the paradox. Each twist is a full-bleed band with ONE focal
+   point — asymmetric, editorial, generous negative space. Backgroundless
+   (the ladder/tug/tactile float on the ground, faint-tint tracks only).
+   Warm grounds = navy ink; the trust band = navy velvet, cream on navy.
+   Square corners, no underline, tabular nums, one easing system.
    ============================================================ */
 
-/* The chapter mounts as a flex-centred .chapter; let the inner column
-   own a vertical flow with generous space and run band grounds full-width. */
+/* The chapter is a vertical flow of full-bleed bands with large jumps
+   between groups (§2: tight within, large between). */
 #\30 4-twists .tw-world {
   display: flex;
   flex-direction: column;
-  gap: clamp(3.5rem, 7vh, 7rem);
+  gap: clamp(4rem, 9vh, 9rem);
 }
 
-/* ── Opener ─────────────────────────────────────────────── */
-#\30 4-twists .tw-head {
-  max-width: 1000px;
-}
+/* ── Opener — left-axis editorial, ONE display moment ───── */
+#\30 4-twists .tw-head { max-width: 60ch; }
 #\30 4-twists .tw-headline {
-  font-size: clamp(3rem, 7vw, 6.4rem);
-  line-height: 0.94;
-  margin: 0 0 clamp(1.2rem, 2.5vh, 2rem);
+  font-size: clamp(3.25rem, 8vw, 7rem);
+  line-height: 0.92;
+  margin: 0 0 clamp(1.6rem, 3vh, 2.4rem);
 }
 #\30 4-twists .tw-standfirst {
   font-size: var(--t-md);
   line-height: 1.5;
   font-weight: 500;
-  margin: 0 0 clamp(1.6rem, 3vh, 2.4rem);
+  margin: 0 0 clamp(2rem, 4vh, 3rem);
   color: var(--soi-navy);
 }
+/* The three twists — a quiet left-axis index, never competing cards. */
 #\30 4-twists .tw-toc {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 10px;
-  max-width: 60ch;
+  gap: var(--space-1);
+  max-width: 52ch;
 }
 #\30 4-twists .tw-toc li {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  font-weight: 500;
+  gap: 16px;
+  font-weight: 600;
   color: var(--soi-navy);
   font-size: var(--t-sm);
 }
@@ -53,38 +54,35 @@
   letter-spacing: -0.02em;
   color: var(--soi-orange);
   flex: 0 0 auto;
-  min-width: 2ch;
+  min-width: 2.4ch;
 }
 
 /* ── Shared twist band scaffold ─────────────────────────── */
 #\30 4-twists .tw-twist {
   position: relative;
   isolation: isolate;
-  /* Full-bleed: pull each band out to the viewport edges past the
-     chapter's horizontal padding, then re-pad inside. */
+  /* Full-bleed: pull each band out to the viewport edges past the chapter's
+     horizontal padding, then re-pad inside. Nothing but the ground touches
+     the edge; content holds within a real inner margin. */
   margin-inline: calc(50% - 50vw);
-  padding: clamp(3.5rem, 8vh, 7rem) clamp(20px, 5vw, 88px);
+  padding: clamp(3.5rem, 9vh, 8rem) var(--margin-page);
   overflow: hidden;
 }
 #\30 4-twists .tw-twist--warm {
   background: var(--ground-warm);
   color: var(--on-warm);
 }
-#\30 4-twists .tw-twist--dark {
-  color: var(--on-navy);
-}
+#\30 4-twists .tw-twist--trust { color: var(--on-navy); }
 #\30 4-twists .tw-twist > * { position: relative; z-index: 1; }
 
-#\30 4-twists .tw-twist-head {
-  max-width: 1240px;
-  margin: 0 auto clamp(2rem, 4vh, 3rem);
-}
+/* Section eyebrow + title — dramatic hierarchy, nothing in the muddy
+   middle. The title is the sub-head; the stat/ladder is the display moment. */
 #\30 4-twists .tw-twist-title {
   font-weight: 800;
-  font-size: clamp(1.9rem, 3.4vw, 3.1rem);
-  line-height: 1.08;
+  font-size: clamp(2rem, 3.6vw, 3.2rem);
+  line-height: 1.06;
   letter-spacing: -0.02em;
-  margin: 0 0 0.5em;
+  margin: 0.4em 0 0.6em;
 }
 #\30 4-twists .tw-twist-lede {
   font-size: var(--t-md);
@@ -92,30 +90,34 @@
   font-weight: 500;
   margin: 0;
 }
-#\30 4-twists .tw-twist--dark .tw-twist-lede { color: rgba(238, 233, 221, 0.86); }
+#\30 4-twists .tw-twist--trust .tw-twist-lede { color: rgba(238, 233, 221, 0.86); }
 #\30 4-twists .tw-twist--warm .tw-twist-lede { color: var(--soi-navy); }
 
-/* Decorative orbit overlay inside the dark band — low-opacity, behind. */
-#\30 4-twists .tw-orbit-dark { z-index: 0; opacity: 0.5; }
+/* Decorative orbit inside the trust band — ambient geometry, behind. */
+#\30 4-twists .tw-orbit-dark { z-index: 0; opacity: 0.42; }
 
 /* ============================================================
-   Twist 01 — trust paradox (dark)
+   Twist 01 — trust ladder (the marquee, navy velvet)
    ============================================================ */
-#\30 4-twists .tw-trust-grid {
-  max-width: 1240px;
+#\30 4-twists .tw-trust-layout {
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
+  /* Asymmetric: the narrative hangs on the left axis, the ladder commands
+     the right. The ladder is the focal point. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
 }
+#\30 4-twists .tw-trust-intro { max-width: 56ch; }
 
-/* dragRank list — cream tiles outlined on the dark ground, no white box. */
+/* The ladder — cream tiles outlined on the velvet ground, no white box. */
 #\30 4-twists .tw-rank .rank-help {
   font-size: var(--t-sm);
   line-height: 1.5;
   color: rgba(238, 233, 221, 0.78);
   margin: 0 0 var(--space-2);
+  max-width: 46ch;
 }
 #\30 4-twists .tw-rank .rank-list {
   list-style: none;
@@ -127,13 +129,15 @@
 #\30 4-twists .tw-rank .rank-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 13px 16px;
+  gap: 16px;
+  padding: 15px 18px;
   border: 1px solid rgba(238, 233, 221, 0.4);
   background: rgba(238, 233, 221, 0.06);
   color: var(--soi-cream);
   cursor: grab;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+  transition: border-color var(--dur-micro) var(--ease-entrance),
+              background var(--dur-micro) var(--ease-entrance),
+              transform var(--dur-micro) var(--ease-entrance);
 }
 #\30 4-twists .tw-rank .rank-item:hover,
 #\30 4-twists .tw-rank .rank-item:focus-visible {
@@ -163,143 +167,110 @@
 }
 #\30 4-twists .tw-rank .rank-submit { margin-top: 4px; }
 
-/* The revealed aside — spread + paradox. Lifts in on reveal. */
-#\30 4-twists .tw-trust-aside {
+/* The reveal — ONE editorial reality. Lifts in once. */
+#\30 4-twists .tw-trust-reveal {
+  margin-top: clamp(2rem, 4vh, 3rem);
   display: grid;
-  gap: clamp(1.4rem, 3vh, 2.2rem);
+  gap: var(--space-2);
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: opacity var(--dur-reveal) var(--ease-entrance),
+              transform var(--dur-reveal) var(--ease-entrance);
 }
-#\30 4-twists .tw-trust-aside.is-live { opacity: 1; transform: none; }
+#\30 4-twists .tw-trust-reveal.is-live { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  #\30 4-twists .tw-trust-aside { transition: none; }
+  #\30 4-twists .tw-trust-reveal { transition: none; }
 }
 
 #\30 4-twists .tw-spread-cap {
   font-size: var(--t-xs);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
   color: rgba(238, 233, 221, 0.72);
-  margin: 0 0 10px;
+  margin: 0;
 }
 #\30 4-twists .tw-spread-line {
   display: flex;
-  align-items: center;
-  gap: clamp(14px, 2.5vw, 32px);
+  align-items: flex-start;
+  gap: clamp(16px, 3vw, 40px);
   margin: 0;
   flex-wrap: wrap;
 }
-#\30 4-twists .tw-spread-hi,
-#\30 4-twists .tw-spread-lo {
+#\30 4-twists .tw-spread-end {
   display: flex;
   flex-direction: column;
   line-height: 1;
 }
-#\30 4-twists .tw-spread-hi .num,
-#\30 4-twists .tw-spread-lo .num {
+#\30 4-twists .tw-spread-end .num {
   font-weight: 900;
   letter-spacing: -0.03em;
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(3.2rem, 7vw, 5.6rem);
   font-variant-numeric: tabular-nums;
 }
-#\30 4-twists .tw-spread-hi .num { color: var(--soi-amber); }
-#\30 4-twists .tw-spread-lo .num { color: var(--soi-cream); }
+#\30 4-twists .tw-spread-end--hi .num { color: var(--soi-amber); }
+#\30 4-twists .tw-spread-end--lo .num { color: var(--soi-cream); }
 #\30 4-twists .tw-spread-who {
   font-size: var(--t-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   font-weight: 600;
-  color: rgba(238, 233, 221, 0.78);
-  margin-top: 8px;
+  color: rgba(238, 233, 221, 0.8);
+  margin-top: 12px;
 }
 #\30 4-twists .tw-spread-arrow {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 300;
-  color: rgba(238, 233, 221, 0.6);
+  color: rgba(238, 233, 221, 0.55);
   line-height: 1;
+  align-self: center;
 }
-
-/* The paradox: gauge + flip side by side. */
-#\30 4-twists .tw-paradox {
-  display: grid;
-  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-  gap: clamp(16px, 2.5vw, 36px);
-  align-items: center;
-}
-#\30 4-twists .tw-gauge { align-items: center; }
-#\30 4-twists .tw-gauge svg { max-width: 280px; }
-#\30 4-twists .tw-paradox-cap {
-  font-size: var(--t-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--soi-amber);
-  margin: 0 0 10px;
-}
-#\30 4-twists .tw-paradox-note {
+#\30 4-twists .tw-paradox-line {
   font-size: var(--t-sm);
-  color: rgba(238, 233, 221, 0.72);
-  margin: 10px 0 0;
-}
-
-/* flipReveal on dark — cream outlined rows, amber accents. */
-#\30 4-twists .tw-flip .flip-head {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: rgba(238, 233, 221, 0.6);
-  margin-bottom: 8px;
-}
-#\30 4-twists .tw-flip .flip-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 14px;
-  align-items: center;
-  width: 100%;
-  text-align: left;
-  padding: 14px 16px;
-  border: 1px solid rgba(238, 233, 221, 0.4);
-  background: rgba(238, 233, 221, 0.06);
-  color: var(--soi-cream);
-  cursor: pointer;
-  font: inherit;
+  line-height: 1.55;
   font-weight: 500;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  color: rgba(238, 233, 221, 0.86);
+  max-width: 54ch;
+  margin: 0;
 }
-#\30 4-twists .tw-flip .flip-row:hover,
-#\30 4-twists .tw-flip .flip-row:focus-visible {
-  border-color: var(--soi-amber);
-  background: rgba(238, 233, 221, 0.12);
-  outline: none;
-}
-#\30 4-twists .tw-flip .flip-arrow { color: var(--soi-amber); font-weight: 700; }
-#\30 4-twists .tw-flip .flip-more { color: var(--soi-amber); font-weight: 600; }
-/* Show the relevant face per state — keep both readable, never overlap. */
-#\30 4-twists .tw-flip .flip-row:not(.is-flipped) .flip-more { opacity: 0.45; }
-#\30 4-twists .tw-flip .flip-row.is-flipped .flip-less { opacity: 0.45; }
+#\30 4-twists .tw-paradox-line .num { color: var(--soi-amber); font-weight: 700; }
 
 /* ============================================================
-   Twist 02 — ring-fence the holiday (warm)
+   Twist 02 — ring-fence the holiday (warm, tactile focal point)
    ============================================================ */
-#\30 4-twists .tw-joy-grid {
-  max-width: 1240px;
+#\30 4-twists .tw-joy-layout {
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(40px, 6vw, 96px);
   align-items: center;
+}
+#\30 4-twists .tw-joy-intro { max-width: 50ch; }
+
+/* The stat is the display moment beside the tactile hero. */
+#\30 4-twists .tw-joy-stat-line {
+  display: grid;
+  gap: var(--space-1);
+  margin: clamp(1.6rem, 3vh, 2.4rem) 0 0;
+}
+#\30 4-twists .tw-joy-big {
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.86;
+  color: var(--soi-navy);
+}
+#\30 4-twists .tw-joy-stat-sub {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--soi-navy);
+  max-width: 40ch;
 }
 
 /* The tactile stage — backgroundless; tiles carry the contrast. */
-#\30 4-twists .tw-joy-stage { gap: var(--space-3); }
+#\30 4-twists .tw-joy-stage { margin: 0; display: grid; gap: var(--space-3); }
 #\30 4-twists .tw-joy-field {
   position: relative;
-  min-height: clamp(280px, 38vh, 380px);
+  min-height: clamp(300px, 42vh, 420px);
   display: grid;
   place-items: center;
 }
@@ -309,7 +280,7 @@
   position: absolute;
   font: 600 var(--t-sm)/1 var(--font-sans);
   letter-spacing: 0.01em;
-  padding: 12px 18px;
+  padding: 13px 20px;
   border: 1px solid var(--soi-navy);
   cursor: grab;
   user-select: none;
@@ -323,10 +294,10 @@
   background: var(--soi-cream-warm);
   color: var(--soi-navy);
 }
-#\30 4-twists .tw-joy-tile--a { top: 8%;  left: 10%; }
-#\30 4-twists .tw-joy-tile--b { top: 18%; right: 6%; }
-#\30 4-twists .tw-joy-tile--c { bottom: 14%; left: 6%; }
-#\30 4-twists .tw-joy-tile--d { bottom: 8%; right: 12%; }
+#\30 4-twists .tw-joy-tile--a { top: 6%;  left: 8%; }
+#\30 4-twists .tw-joy-tile--b { top: 16%; right: 4%; }
+#\30 4-twists .tw-joy-tile--c { bottom: 12%; left: 4%; }
+#\30 4-twists .tw-joy-tile--d { bottom: 6%; right: 10%; }
 @media (prefers-reduced-motion: no-preference) {
   #\30 4-twists .tw-joy-tile--flex {
     animation: tw-wobble 3.4s ease-in-out infinite;
@@ -339,13 +310,15 @@
   50%      { rotate: 2deg; }
 }
 
-/* The fence + holiday — centred, ring-fenced. */
+/* The fence + holiday — centred, ring-fenced. The focal point. */
 #\30 4-twists .tw-joy-fence {
   position: relative;
   display: grid;
   place-items: center;
-  padding: 22px;
+  padding: 26px;
   border: 2px dashed var(--soi-navy);
+  transition: border-color var(--dur-reveal) var(--ease-entrance),
+              box-shadow var(--dur-reveal) var(--ease-entrance);
 }
 #\30 4-twists .tw-joy-tile--holiday {
   position: static;
@@ -355,7 +328,7 @@
   background: var(--soi-navy);
   color: var(--soi-cream);
   font-size: var(--t-md);
-  padding: 16px 26px;
+  padding: 18px 30px;
   cursor: grab;
 }
 #\30 4-twists .tw-joy-tile--holiday.is-strained { cursor: grabbing; }
@@ -365,11 +338,15 @@
   border-color: var(--soi-amber);
   box-shadow: 0 0 0 4px rgba(251, 193, 0, 0.18);
 }
+@media (prefers-reduced-motion: reduce) {
+  #\30 4-twists .tw-joy-fence { transition: none; }
+}
 
 #\30 4-twists .tw-joy-key {
   display: grid;
   gap: 8px;
   margin: 0;
+  justify-content: center;
 }
 #\30 4-twists .tw-joy-key-row {
   display: flex;
@@ -387,69 +364,65 @@
 #\30 4-twists .tw-key-swatch--fenced { background: var(--soi-navy); }
 #\30 4-twists .tw-key-swatch--flex   { background: var(--soi-cream-warm); }
 
-/* The stat column. */
-#\30 4-twists .tw-joy-stat { display: grid; gap: var(--space-2); }
-#\30 4-twists .tw-joy-big {
-  font-size: clamp(4rem, 9vw, 8.4rem);
-  line-height: 0.86;
-  color: var(--soi-navy);
-}
-#\30 4-twists .tw-joy-sentence {
-  font-size: var(--t-md);
-  line-height: 1.5;
-  font-weight: 500;
-  color: var(--soi-navy);
-  max-width: 40ch;
-  margin: 0;
-}
-#\30 4-twists .tw-joy-strip { margin-top: var(--space-2); }
-#\30 4-twists .tw-joy-strip-cap,
-#\30 4-twists .tw-ai-tug-cap,
-#\30 4-twists .tw-ai-tasks-cap {
-  font-size: var(--t-xs);
-  letter-spacing: 0.04em;
-  font-weight: 600;
-  color: var(--soi-navy);
-  margin: 0;
-}
-
 /* ============================================================
-   Twist 03 — AI on tap (warm)
+   Twist 03 — AI on tap (warm, tug-of-war focal point)
    ============================================================ */
-#\30 4-twists .tw-ai-grid {
-  max-width: 1240px;
+#\30 4-twists .tw-ai-layout {
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(40px, 6vw, 96px);
   align-items: center;
 }
-#\30 4-twists .tw-ai-left { display: grid; gap: clamp(1.4rem, 3vh, 2.2rem); }
+#\30 4-twists .tw-ai-intro { max-width: 52ch; }
 
+/* The quote is the quiet supporting note — hanging mark on dark velvet? No,
+   warm ground here, navy body. */
+#\30 4-twists .tw-ai-quote { margin: clamp(1.6rem, 3vh, 2.4rem) 0 0; }
+#\30 4-twists .tw-ai-quote .si-quote-body {
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--soi-navy);
+}
+
+/* The tug — the focal point. */
+#\30 4-twists .tw-ai-stage { margin: 0; display: grid; gap: var(--space-3); }
 #\30 4-twists .tw-ai-toggle-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 #\30 4-twists .tw-ai-toggle-cue {
   font-size: var(--t-xs);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--soi-navy);
 }
+#\30 4-twists .tw-ai-tug-cap {
+  font-size: var(--t-sm);
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: var(--soi-navy);
+  margin: 0;
+  max-width: 44ch;
+}
+#\30 4-twists .tw-ai-tug svg { width: 100%; height: auto; }
 
 /* pillGroup — square chips (no radius), navy on warm. */
 #\30 4-twists .pillgroup { display: inline-flex; gap: 8px; }
 #\30 4-twists .pillgroup-chip {
   font: 600 var(--t-sm)/1 var(--font-sans);
-  padding: 10px 18px;
+  padding: 11px 20px;
   border: 1px solid var(--soi-navy);
   background: transparent;
   color: var(--soi-navy);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--dur-micro) var(--ease-entrance),
+              color var(--dur-micro) var(--ease-entrance);
 }
 #\30 4-twists .pillgroup-chip.is-active {
   background: var(--soi-navy);
@@ -457,31 +430,21 @@
 }
 #\30 4-twists .pillgroup-chip:focus-visible { outline: 2px solid var(--soi-navy); outline-offset: 2px; }
 
-#\30 4-twists .tw-ai-tug svg,
-#\30 4-twists .tw-ai-tasks svg { width: 100%; height: auto; }
-
-/* The closing quote — hanging mark on warm; navy body. */
-#\30 4-twists .tw-ai-quote { margin: 0; align-self: center; }
-#\30 4-twists .tw-ai-quote-body {
-  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
-  line-height: 1.45;
-  font-weight: 500;
-  color: var(--soi-navy);
-}
-
 /* ============================================================
-   Responsive
+   Responsive — stack to single column; keep the focal point central.
    ============================================================ */
 @media (max-width: 900px) {
-  #\30 4-twists .tw-trust-grid,
-  #\30 4-twists .tw-joy-grid,
-  #\30 4-twists .tw-ai-grid {
+  #\30 4-twists .tw-trust-layout,
+  #\30 4-twists .tw-joy-layout,
+  #\30 4-twists .tw-ai-layout {
     grid-template-columns: 1fr;
+    align-items: start;
   }
-  #\30 4-twists .tw-paradox { grid-template-columns: 1fr; gap: 18px; }
-  #\30 4-twists .tw-gauge { justify-self: center; }
+  /* On stacked layouts the intro leads, the focal point follows. */
+  #\30 4-twists .tw-joy-stage { order: 2; }
 }
 @media (max-width: 600px) {
   #\30 4-twists .tw-joy-field { min-height: 320px; }
-  #\30 4-twists .tw-spread-line { gap: 12px; }
+  #\30 4-twists .tw-spread-line { gap: 14px; }
+  #\30 4-twists .tw-spread-arrow { display: none; }
 }

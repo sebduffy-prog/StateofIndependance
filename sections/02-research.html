@@ -1,12 +1,10 @@
 <div class="chapter-inner research">
 
-  <!-- decorative orbit, far behind everything; never carries meaning -->
-  <div class="si-orbit research-orbit research-orbit--spin" aria-hidden="true"></div>
-
   <div class="research-grid">
 
-    <!-- LEFT — the method, assembling on arrival. No boxes behind any text. -->
-    <div class="research-method">
+    <!-- LEFT AXIS — quiet editorial rail. One display line, then small
+         supporting facts. Never a second focal point: the map is the hero. -->
+    <aside class="research-rail">
       <p class="vccp-eyebrow" data-arrival>The method</p>
 
       <h2 class="research-headline">
@@ -16,56 +14,48 @@
       </h2>
 
       <p class="research-standfirst si-measure" data-arrival>
-        A nationally representative survey, paired with week-long video diaries
-        across eight cities. Numbers for the <strong>what</strong>,
-        real lives for the <strong>why</strong>.
+        A nationally representative survey of
+        <span class="num" data-arrival-count data-to="1504">1,504</span>
+        UK adults, paired with week-long video diaries across eight cities.
+        Numbers for the <strong>what</strong>, real lives for the
+        <strong>why</strong>.
       </p>
 
-      <!-- four facts. 1,504 is the hero; the you-dot lands on it. -->
-      <dl class="research-counts">
-        <div class="research-count research-count--hero" data-arrival data-youdot-anchor>
-          <dt class="research-count-value num"
-              data-research-hero-count data-to="1504">1,504</dt>
-          <dd class="research-count-label">human respondents · nationally representative · UK&nbsp;adults&nbsp;18+</dd>
+      <!-- The facts, as a single quiet caption line — supporting, not shouting. -->
+      <dl class="research-facts" data-arrival data-stagger>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k num">8</dt>
+          <dd class="research-fact-v">cities filmed</dd>
         </div>
-        <div class="research-count" data-arrival>
-          <dt class="research-count-value num"
-              data-arrival-count data-to="8">8</dt>
-          <dd class="research-count-label">cities for the qualitative research</dd>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k num">1<span class="research-fact-unit">wk</span></dt>
+          <dd class="research-fact-v">diaries per home</dd>
         </div>
-        <div class="research-count" data-arrival>
-          <dt class="research-count-value num">1<span class="research-count-unit">&nbsp;week</span></dt>
-          <dd class="research-count-label">of video diaries per home, filmed&nbsp;early&nbsp;June</dd>
-        </div>
-        <div class="research-count" data-arrival>
-          <dt class="research-count-value research-count-value--text">mid&#8209;May<span class="research-count-unit">&nbsp;2026</span></dt>
-          <dd class="research-count-label">the quantitative fieldwork window</dd>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k research-fact-k--text">May&nbsp;&rsquo;26</dt>
+          <dd class="research-fact-v">fieldwork window</dd>
         </div>
       </dl>
 
+      <!-- The opened city's diary surfaces here, beneath the rail. -->
+      <div class="research-diary" data-research-diary aria-live="polite"></div>
+
       <p class="research-credit" data-arrival>
-        In partnership with <strong>VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research</strong>
+        VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research
       </p>
-    </div>
+    </aside>
 
-    <!-- RIGHT — the connecting ritual: respondent dots converge onto the navy
-         UK silhouette, eight cities light, open one for its verbatim diary. -->
-    <div class="research-stage">
-      <div class="research-stage-head" data-arrival>
-        <p class="research-stage-eyebrow">Eight cities, in their own words</p>
-        <p class="research-stage-status num" data-research-status aria-live="polite">Connecting&hellip;</p>
-      </div>
-
+    <!-- HERO — the UK, alone and large. Respondent dots converge onto the
+         country; eight cities light; tap one to surface its diary. -->
+    <div class="research-stage" data-youdot-anchor>
+      <p class="research-status num" data-research-status aria-live="polite">Connecting&hellip;</p>
       <div class="research-map-wrap">
         <div class="research-field" data-research-field aria-hidden="true"></div>
         <div class="research-map" data-research-map></div>
       </div>
-
       <p class="research-hint" data-research-hint>
-        Open a city &mdash; tap a marker or use the arrow keys &mdash; to surface its diary.
+        Tap a city &mdash; or arrow-key the map &mdash; to surface its diary.
       </p>
-
-      <div class="research-diary" data-research-diary aria-live="polite"></div>
     </div>
 
   </div>
