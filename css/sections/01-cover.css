@@ -44,9 +44,13 @@
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  /* The copy holds the left axis; the maze takes a slightly NARROWER right
+     column so it is pushed firmly to the right and cannot drift back into the
+     title. A generous, never-collapsing column gap is the guaranteed clear
+     channel between the two — they never overlap at any common width. */
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
-  gap: clamp(24px, 3vw, 64px);
+  gap: clamp(40px, 5vw, 96px);
   padding: clamp(2.4rem, 7vh, 6rem) clamp(28px, 6vw, 104px)
            calc(var(--journey-controls-h, 72px) + clamp(3.4rem, 9vh, 7rem));
   overflow: hidden;
@@ -120,7 +124,9 @@
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  max-width: 30ch;
+  /* Hold the copy block to its own measure inside the left column so the huge
+     display title and the standfirst never stretch toward the maze. */
+  max-width: min(100%, 30ch);
 }
 
 /* the brand signature — the Challenger-Series lockup at hero scale, black
@@ -154,10 +160,14 @@
   letter-spacing: -0.035em;
   text-transform: none;
   /* the one display moment — enormous, dramatic. Sized so the longest line
-     ("Independence", 12ch) never clips inside the left column at any width.
-     Pushed larger than default for proper hero scale on the cover. */
-  font-size: clamp(3.8rem, 8.8vw, 7.8rem);
+     ("Independence", 12ch) stays WITHIN the left column at any width and never
+     reaches across the gap toward the maze. The viewport term is the governing
+     one so the title shrinks with the column on mid widths. */
+  font-size: clamp(3.4rem, 7.4vw, 7rem);
   color: var(--ink);
+  /* never let a long line spill past the copy column toward the maze */
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 #\30 1-cover .cover-line { display: block; }
 
@@ -244,13 +254,14 @@
    The illustration is the focal point. It already carries the orbit
    ring, the bear and the figure — no second ring is drawn over it. */
 #\30 1-cover .cover-stage {
-  --trace: 0;
   position: relative;
   z-index: 2;
   align-self: center;
-  justify-self: center;
+  /* Anchor the maze to the RIGHT edge of its column so it is pushed clear of
+     the title across the gap — it can never drift left into the headline. */
+  justify-self: end;
   width: 100%;
-  max-width: min(48vw, 660px);
+  max-width: min(42vw, 620px);
   aspect-ratio: 1 / 1;
   margin: 0;
   /* a gentle ambient float — the maze sits and breathes on the field */
@@ -270,101 +281,10 @@
   filter: drop-shadow(0 30px 60px rgba(4, 22, 84, 0.22));
 }
 
-/* ── trace overlay: guide + ink + goal (illustration's own 800-space) ─ */
-#\30 1-cover .cover-trace {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-#\30 1-cover .cover-trace-guide {
-  fill: none;
-  stroke: var(--navy);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 1 11;
-  opacity: 0.28;
-}
-#\30 1-cover .cover-trace-ink {
-  fill: none;
-  stroke: var(--navy);
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-#\30 1-cover .cover-trace-goal {
-  fill: none;
-  stroke: var(--navy);
-  stroke-width: 2.5;
-  opacity: 0.45;
-  animation: cover-goal-pulse 2.6s var(--ease-entrance) infinite;
-}
-/* arrival = the goal becomes the single yellow accent moment */
-#\30 1-cover .cover-stage.is-traced .cover-trace-goal {
-  animation: none;
-  fill: var(--yellow);
-  stroke: var(--yellow);
-  opacity: 1;
-}
-@keyframes cover-goal-pulse {
-  0%, 100% { r: 7;  opacity: 0.45; }
-  50%      { r: 11; opacity: 0.8; }
-}
-
-/* ── the cream "you" dot — born at the maze mouth, the one accent ──── */
-#\30 1-cover .cover-handle {
-  position: absolute;
-  z-index: 4;
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px; /* centre on its left/top origin */
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: none;
-  cursor: grab;
-  display: grid;
-  place-items: center;
-  -webkit-tap-highlight-color: transparent;
-}
-#\30 1-cover .cover-handle:focus-visible {
-  outline: 2.5px solid var(--navy);
-  outline-offset: 4px;
-}
-#\30 1-cover .cover-handle-dot {
-  grid-area: 1 / 1;
-  width: 20px;
-  height: 20px;
-  background: var(--cream);
-  border: 2px solid var(--navy);
-  box-shadow: 0 2px 7px rgba(4, 22, 84, 0.3);
-  transition: transform 180ms var(--ease-entrance),
-              background-color 220ms var(--ease-entrance);
-}
-/* a quiet pulsing halo invites the touch before it moves */
-#\30 1-cover .cover-handle-halo {
-  grid-area: 1 / 1;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--navy);
-  opacity: 0.5;
-  pointer-events: none;
-  animation: cover-handle-pulse 2.4s var(--ease-entrance) infinite;
-}
-#\30 1-cover .cover-handle.is-home .cover-handle-halo,
-#\30 1-cover .cover-handle.is-dragging .cover-handle-halo { display: none; }
-#\30 1-cover .cover-handle:hover .cover-handle-dot,
-#\30 1-cover .cover-handle.is-dragging .cover-handle-dot { transform: scale(1.14); }
-/* arrival = the you-dot takes the single yellow accent */
-#\30 1-cover .cover-handle.is-home .cover-handle-dot { background: var(--yellow); }
-@keyframes cover-handle-pulse {
-  0%   { transform: scale(1);   opacity: 0.5; }
-  70%  { transform: scale(2.6); opacity: 0; }
-  100% { transform: scale(2.6); opacity: 0; }
-}
+/* NOTE: the maze trace overlay (guide/ink/goal) and the draggable "you" dot
+   handle have been removed. The interactive trace affordance read as a stray
+   box + path over the logo; the journey navigates by scroll, so the maze is now
+   a clean, inert brand moment with no overlay drawn on it. */
 
 /* ── arrival entrance: assembling lines (idempotent, restartable) ──── */
 #\30 1-cover [data-arrival] {
@@ -402,17 +322,8 @@
 /* ── reduced-motion: kill ambient motion, keep state legible ─────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 1-cover .cover-cue.is-pulsing,
-  #\30 1-cover .cover-handle-halo,
-  #\30 1-cover .cover-trace-goal,
   #\30 1-cover .cover-bloom,
   #\30 1-cover .cover-rings-drift,
   #\30 1-cover .cover-stage { animation: none; }
   #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }
-
-/* Colleague feedback: "is the box over the girl where people should click?"
-   The maze-trace handle + trail are vestigial now that the journey navigates by
-   scroll and the persistent you-dot is retired. Hide them so the maze hero reads
-   clean (the figure inside the GIF stays). */
-#\30 1-cover .cover-handle,
-#\30 1-cover .cover-trace { display: none !important; }

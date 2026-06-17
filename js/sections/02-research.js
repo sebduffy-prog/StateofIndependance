@@ -72,21 +72,21 @@ const CITIES = [
     id: 'bury', name: 'Bury',
     // NW England, just NE of Wigan (north of Manchester).
     fx: 0.5600, fy: 0.6160, side: 'right',
-    quote: "I would say that it is more of an empowering feeling being able to do things yourself, to fix things yourself, to seek out answers yourself.",
+    quote: "It is more of an empowering feeling, being able to do things yourself, to fix things yourself.",
     who: 'Bury, 39, Hustler',
   },
   {
     id: 'cardiff', name: 'Cardiff',
     // South Wales, west side of the Bristol Channel.
     fx: 0.3600, fy: 0.8120, side: 'left',
-    quote: "I do use ChatGPT all the time and find it really quite helpful when I do have problems… I do feel more empowered now with everything at my fingertips and I feel as if I’ve got more free time because of that.",
+    quote: "I use ChatGPT all the time. I feel more empowered now, with everything at my fingertips.",
     who: 'Wales, 68, Architects',
   },
   {
     id: 'bristol', name: 'Bristol',
     // SW England, east across the Severn from Cardiff.
     fx: 0.4300, fy: 0.8120, side: 'right',
-    quote: "I particularly like all the apps, the shopping apps and anything new that comes into the shops, the loyalty apps. And, if we do want to purchase anything, it’s very easy to go in and just cost the price all across everywhere.",
+    quote: "I particularly like all the apps, the shopping apps and the loyalty apps. It is very easy to cost the price everywhere.",
     who: 'Bristol, 61, Coaster',
   },
   {
@@ -100,14 +100,14 @@ const CITIES = [
     id: 'london', name: 'London',
     // The south-east.
     fx: 0.6280, fy: 0.8180, side: 'right',
-    quote: "If I could get some sort of app that would kind of help me or prompt me to do certain things that I should do because even if it’s sort of like twenty minutes, fifteen minutes aside, sometimes it becomes, I know it sounds silly, but really overwhelming.",
+    quote: "If I could get an app to prompt me to do certain things, even fifteen minutes aside. Sometimes it becomes really overwhelming.",
     who: 'London, 42, Retreater',
   },
   {
     id: 'southampton', name: 'Southampton',
     // South coast, central.
     fx: 0.5200, fy: 0.8720, side: 'left',
-    quote: "I now have a lot less trust in institutions such as the government and politicians, local councils, than I did a few years ago… there’s just scandal after scandal. You know, they’re in it for themselves.",
+    quote: "I now have a lot less trust in institutions than I did a few years ago. There is just scandal after scandal.",
     who: 'Southampton, 63, Architects',
   },
 ];
