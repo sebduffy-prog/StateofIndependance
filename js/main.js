@@ -99,10 +99,10 @@ const TRANSITION_DURATION_DEFAULT_MS = 1200;
  *   ZERO translateX / translateY between stages — motion is purely on Z.
  *   (The constant -50%/-50% in the transform is the centering offset for
  *   top:50%;left:50% positioning; it never changes and is NOT a slide.) */
-const STAGE_Z_LEAVE = 620;   // px: leaving stage flies this far TOWARD camera (+Z)
-const STAGE_Z_DEEP  = 1400;  // px: arriving stage starts this far BEHIND the camera (−Z)
-const STAGE_SCALE_LEAVE = 1.85; // scale of leaving stage at full fly-through (past the frame)
-const STAGE_SCALE_FAR   = 0.40; // scale of arriving stage at its farthest depth
+const STAGE_Z_LEAVE = 1000;  // px: leaving stage flies this far TOWARD + PAST the camera (+Z)
+const STAGE_Z_DEEP  = 1700;  // px: arriving stage starts this far BEHIND the camera (−Z)
+const STAGE_SCALE_LEAVE = 3.4;  // leaving stage blows up huge and engulfs the frame — you fly THROUGH it
+const STAGE_SCALE_FAR   = 0.26; // arriving stage starts tiny + deep, then rushes forward to full
 const STAGE_BLUR_MAX = 4;    // px blur on a fully-receded/approaching stage (kept low to avoid filter jank)
 /** Stages further than this many steps from focus are not rendered (perf). */
 const RENDER_WINDOW = 2;
@@ -303,39 +303,41 @@ const makeProfile = (cfg) => {
  */
 const TRANSITIONS = {
   flythrough: makeProfile({
+    // The leaving stage accelerates TOWARD + PAST the camera (easeIn), blowing up
+    // huge and staying opaque until it engulfs the frame — you fly THROUGH it —
+    // while the next rushes forward from deep space. fadeLeave ~1 = fades exactly
+    // as it passes, never an early cross-fade (which read as a slide).
     zLeave: STAGE_Z_LEAVE, zDeep: STAGE_Z_DEEP,
     scaleLeave: STAGE_SCALE_LEAVE, scaleFar: STAGE_SCALE_FAR,
-    blur: STAGE_BLUR_MAX, fadeLeave: 1.6, fadeArrive: 1.4,
-    ease: spatialEases.outQuad, rotZ: 0, rotX: 0,
-    durationMs: 1100,
+    blur: STAGE_BLUR_MAX, fadeLeave: 1.0, fadeArrive: 1.2,
+    ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
+    durationMs: 1150,
   }),
   'dissolve-through': makeProfile({
-    // Strengthened from a soft blur-fade into a true depth pass-through so it no
-    // longer reads as a flat cross-dissolve / slide.
-    zLeave: 640, zDeep: 1450,
-    scaleLeave: 1.72, scaleFar: 0.40,
-    blur: 5, fadeLeave: 1.2, fadeArrive: 1.05,
+    zLeave: 980, zDeep: 1600,
+    scaleLeave: 3.0, scaleFar: 0.30,
+    blur: 5, fadeLeave: 1.0, fadeArrive: 1.15,
     ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
-    durationMs: 1400,
+    durationMs: 1350,
   }),
   'zoom-resolve': makeProfile({
-    zLeave: 980, zDeep: 2200,
-    scaleLeave: 2.7, scaleFar: 0.20, // dramatic deep zoom
-    blur: 6, fadeLeave: 1.7, fadeArrive: 1.3,
+    zLeave: 1100, zDeep: 2300,
+    scaleLeave: 3.8, scaleFar: 0.18, // dramatic deep zoom — punches through
+    blur: 6, fadeLeave: 1.0, fadeArrive: 1.3,
     ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
-    durationMs: 1600,
+    durationMs: 1500,
   }),
   'orbit-tilt': makeProfile({
-    zLeave: 660, zDeep: 1400,
-    scaleLeave: 1.78, scaleFar: 0.42,
-    blur: 5, fadeLeave: 1.5, fadeArrive: 1.35,
-    ease: spatialEases.outBack, rotZ: 8, rotX: 5, // swirl, overshoots to flat
-    durationMs: 1400,
+    zLeave: 1000, zDeep: 1550,
+    scaleLeave: 3.1, scaleFar: 0.30,
+    blur: 5, fadeLeave: 1.0, fadeArrive: 1.3,
+    ease: spatialEases.outBack, rotZ: 7, rotX: 4, // swirl, overshoots to flat
+    durationMs: 1350,
   }),
   disperse: makeProfile({
-    zLeave: 1200, zDeep: 1650,
-    scaleLeave: 3.3, scaleFar: 0.5, // stage scatters apart into depth
-    blur: 9, fadeLeave: 2.3, fadeArrive: 1.2, // scatter-fade
+    zLeave: 1300, zDeep: 1700,
+    scaleLeave: 3.6, scaleFar: 0.5, // stage scatters apart into depth
+    blur: 9, fadeLeave: 1.6, fadeArrive: 1.2, // scatter-fade
     ease: spatialEases.inExpo, rotZ: 0, rotX: 0,
     durationMs: 1500,
   }),

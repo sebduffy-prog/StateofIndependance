@@ -202,6 +202,12 @@ const drawWaffleAll = (host, metric, items) => {
       value: item.pct,
       total: 100,
       accent: 'navy',
+      // Tighter cells than the default (26/6): the small-multiple grid must
+      // stay compact so the whole tile field fits the chart band height-wise
+      // (the SVG scales to its host, but a smaller intrinsic aspect keeps the
+      // captions legible without the tiles ballooning).
+      square: 16,
+      gap: 3,
       ariaLabel: `${item.label}: ${Math.round(item.pct)} in 100`,
     });
     grid.setValue(item.pct);

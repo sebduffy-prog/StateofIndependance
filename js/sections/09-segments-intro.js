@@ -93,15 +93,17 @@ export default function init(rootEl, data) {
     ariaLabel: 'One hundred squares resolving into four segment clusters',
   });
 
-  // Diffuse cloud until the resolve fires (cinematic on-arrival).
-  field.drift(0.6);
+  // Diffuse, wide-scattered cloud until the resolve fires — so the dots have a
+  // clear distance to FLY IN across as the stage arrives.
+  field.drift(1.0);
 
   let resolved = false;
   resolveField = () => {
     if (resolved) return;
     resolved = true;
-    // A gentle spring so the four clusters glide (not snap) into formation.
-    field.formation(targets, { spring: 0.018, jostle: 0.00004 });
+    // Slower spring = a visible fly-in: the four clusters travel in from the
+    // scattered cloud and settle into formation (not an instant snap).
+    field.formation(targets, { spring: 0.012, jostle: 0.00004 });
   };
   // Reduced motion: the field jump-cuts to the formation immediately.
   if (prefersReducedMotion()) resolveField();

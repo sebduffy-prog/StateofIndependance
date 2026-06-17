@@ -168,8 +168,13 @@
 #\31 4-graphrag .gk-shared { background: #80E8E3; }
 #\31 4-graphrag .gk-unique { background: #FBE3B0; }
 
+/* Interaction hint drops to the FOOT of the rail (margin-top:auto) so the empty
+   space pools at the bottom — the read-out then sits high, right under the
+   legend, never stranded near the floor. */
 #\31 4-graphrag .graphrag-hint {
   margin: 0;
+  margin-top: auto;
+  padding-top: clamp(10px, 1.6vh, 18px);
   color: rgba(240, 237, 231, 0.5);
   font-size: 0.78rem;
   line-height: 1.4;
@@ -280,16 +285,19 @@
 #\31 4-graphrag .sg-attr:focus-visible .sg-dot { stroke: var(--yellow, #F0CB08); stroke-width: 2.5; }
 
 /* ── Read-out rail — the profile/owners panel lives in the LEFT column ─────
-   It is mounted here (data-graphrag-panel) by segment-graph.js, so it can
-   never overlap the graph zone on the right. It fills the rail's remaining
-   height and gets a faint top rule to set it apart from the legend/hint. */
+   It is mounted here (data-graphrag-panel) by segment-graph.js, directly under
+   the legend, so it reads high in the rail and never overlaps the graph zone.
+   It takes only the height it needs (flex:0 1 auto) and scrolls internally if a
+   long profile would otherwise crowd the rail — it never stretches to the floor
+   or pushes other content around. A faint top rule sets it apart from the
+   legend above it. */
 #\31 4-graphrag .graphrag-readout {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
   margin-top: clamp(6px, 1.2vh, 14px);
   padding-top: clamp(12px, 1.8vh, 20px);
   border-top: 1px solid rgba(240, 237, 231, 0.14);
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* Railed variant: static in the rail (not absolutely floated over the graph). */

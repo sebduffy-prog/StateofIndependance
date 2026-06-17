@@ -537,6 +537,17 @@
   height: auto;
 }
 
+/* Score-gauge focal accent (client note): recolour ONLY the progress arc
+   fill to yellow so the 6.4 NHS trust score reads as the focal accent.
+   The radialGauge() factory (js/lib/charts.js, called with onNavy:true)
+   renders two arc paths — a faint full-semicircle track that carries an
+   opacity attribute, then the progress fill arc that does NOT. We target
+   the fill arc via :not([opacity]) so the track stays faint and the cream
+   value numerals (which sit on navy ground) remain legible. */
+#\30 6-twist-trust .tt-paradox__gauge svg path:not([opacity]) {
+  stroke: var(--yellow, #F0CB08);
+}
+
 #\30 6-twist-trust .tt-paradox__copy {
   display: flex;
   flex-direction: column;

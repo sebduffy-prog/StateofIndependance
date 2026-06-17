@@ -1,12 +1,14 @@
-<!-- Chapter 07 — Twist two: PROTECTED JOY.
+<!-- Chapter 07 — Twist two: PROTECTED JOY (the lipstick effect).
      Full-bleed warm-gradient pivot. Two-column composition.
-     LEFT: 40% hero stat towers as the focal anchor.
-     RIGHT: tactile budget — tap the scissors to cut each line.
-            Flexible spends stay cut. The holiday SPRINGS BACK.
+     LEFT: 40% hero stat — the focal anchor.
+     RIGHT: ONE clear lever, "Tighten the budget". Dragging it tighter cuts
+            every flexible spend in order of vulnerability — but the HOLIDAY
+            line resists: it stays full, locks, and glows ring-fenced.
+            The mechanic IS the message: everything else goes, the holiday holds.
      Brand-world: BRAND-WORLD-FINAL.md §7 "04 — Twists".
      Data: data/survey.json protectedSpend (Q5; holidays 39.6%).
-     Character→title reveal on chapter:arrive. Backgroundless on warm ground.
-     Square corners. No underline. No parallelogram. AA contrast. No console.log. -->
+     Character->title reveal on chapter:arrive. Square corners. No underline.
+     No em dashes. AA contrast. Reduced-motion safe. No console.log. -->
 <div class="chapter-inner twist-joy-root" data-twist-joy-root>
 
   <!-- Decorative orbit — connective tissue, behind everything -->
@@ -28,16 +30,11 @@
       <em class="twist-joy-accent">holiday</em>
     </h2>
     <p class="twist-joy-sub" data-arrival>
-      Budget cuts stop at the departure gate.
-      2 in 5 Britons ring-fence their holiday:
-      not a luxury, a wellbeing line item.
-    </p>
-    <p class="twist-joy-instruction" data-arrival>
-      Press <span class="twist-joy-scissors-icon" aria-hidden="true">✂</span> to cut each line
+      The lipstick effect, made literal. When money gets tight, Britain trims
+      almost everything. The holiday is the one line it ring-fences.
     </p>
 
-    <!-- Lower-left anchor: ring-fence motif, fills the composition.
-         You-dot rests here — a calm deliberate spot away from interactive rows. -->
+    <!-- Lower-left anchor: ring-fence motif. You-dot rests here. -->
     <div class="twist-joy-anchor-block" data-arrival data-youdot-anchor aria-hidden="true">
       <span class="twist-joy-anchor-label">ring-fenced</span>
       <span class="twist-joy-anchor-bar"></span>
@@ -45,15 +42,38 @@
     </div>
   </div>
 
-  <!-- RIGHT COLUMN — tactile marquee interaction -->
-  <section class="twist-joy-stage" aria-label="Cut the budget interaction">
+  <!-- RIGHT COLUMN — the single-lever budget interaction -->
+  <section class="twist-joy-stage" aria-label="Tighten the budget interaction">
     <p class="vccp-eyebrow twist-joy-stage-kicker" data-arrival>
-      Your budget under the knife
+      Tighten the household budget
     </p>
+
+    <!-- The lever. A real range input: drag, click, or arrow-key it. -->
+    <div class="twist-joy-lever" data-arrival>
+      <label class="twist-joy-lever-label" for="twist-joy-tighten">
+        Drag to tighten spending
+      </label>
+      <div class="twist-joy-lever-track">
+        <span class="twist-joy-lever-end twist-joy-lever-end--left" aria-hidden="true">Comfortable</span>
+        <input class="twist-joy-lever-input"
+               id="twist-joy-tighten"
+               type="range"
+               min="0" max="100" step="1" value="0"
+               data-twist-joy-lever
+               aria-label="Tighten the budget. Higher cuts more spending."
+               aria-describedby="twist-joy-readout" />
+        <span class="twist-joy-lever-end twist-joy-lever-end--right" aria-hidden="true">Tight</span>
+      </div>
+    </div>
+
+    <!-- The spend lines. Built by JS from verified Q5 data. -->
     <div class="twist-joy-budget" data-twist-joy-budget></div>
-    <p class="twist-joy-hint" data-twist-joy-hint aria-live="polite">
-      Tap <span aria-hidden="true">✂</span> to cut a line
+
+    <!-- Live readout: how much has been cut vs held. -->
+    <p class="twist-joy-readout" id="twist-joy-readout" data-twist-joy-readout aria-live="polite">
+      Nothing cut yet. Tighten the budget and watch what survives.
     </p>
+
     <p class="twist-joy-data-note" data-arrival>
       Q5 · % of 1,504 UK adults ring-fencing each non-essential
     </p>

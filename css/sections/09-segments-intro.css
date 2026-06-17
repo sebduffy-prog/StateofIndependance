@@ -32,9 +32,9 @@
    floating block of dead space above the title. */
 #\30 9-segments-intro .segments-intro-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 32vw) 1fr;
+  grid-template-columns: minmax(230px, 25vw) 1fr;
   align-items: center;
-  gap: clamp(28px, 4vw, 72px);
+  gap: clamp(20px, 2.6vw, 44px);
   width: 100%;
   height: 100%;
 }
@@ -143,7 +143,7 @@
 
 #\30 9-segments-intro .segments-intro-compass {
   position: relative;
-  width: min(88vh, 100%);
+  width: min(96vh, 100%);
   aspect-ratio: 1 / 1;
 }
 

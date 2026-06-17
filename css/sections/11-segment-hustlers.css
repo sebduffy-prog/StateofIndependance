@@ -186,7 +186,7 @@
    full-width so the index chart reads as a confident focal element. */
 #\31 1-segment-hustlers .segment-hustlers-chart {
   width: 100%;
-  min-height: clamp(250px, 40vh, 400px);
+  min-height: clamp(330px, 50vh, 470px);
 }
 #\31 1-segment-hustlers .segment-hustlers-chart svg {
   display: block;
@@ -213,34 +213,44 @@
   flex: none;
 }
 
-/* Signature over-index callout — fills the lower-right so no quadrant is void. */
-#\31 1-segment-hustlers .segment-hustlers-sig {
+/* ── TGI fingerprint cloud — fills the lower-right so no quadrant is void.
+   Quiet navy-on-cream tags, square corners, text only (no index numbers). */
+#\31 1-segment-hustlers .segment-fingerprint {
+  margin-top: clamp(10px, 1.6vh, 20px);
   display: flex;
-  align-items: baseline;
-  gap: clamp(10px, 1.2vw, 16px);
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 14px);
   border-top: 1px solid rgba(4, 22, 84, 0.1);
-  padding-top: clamp(8px, 1.0vh, 12px);
-  margin-top: auto;
+  padding-top: clamp(10px, 1.4vh, 16px);
 }
-#\31 1-segment-hustlers .segment-hustlers-sig-index {
-  flex: none;
-  font-family: var(--font-sans);
-  font-weight: 900;
-  font-size: clamp(2.4rem, 3.8vw, 3.6rem);
-  letter-spacing: -0.04em;
-  line-height: 0.9;
-  color: var(--navy, #041654);
-  font-variant-numeric: tabular-nums;
-}
-#\31 1-segment-hustlers .segment-hustlers-sig-text {
-  font-size: clamp(0.88rem, 1.1vw, 1.04rem);
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--ink-soft, #1A1A1A);
-}
-#\31 1-segment-hustlers .segment-hustlers-sig-text strong {
+#\31 1-segment-hustlers .segment-fingerprint-label {
+  margin: 0;
+  font-size: 0.62rem;
   font-weight: 700;
-  color: var(--ink, #000);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+}
+#\31 1-segment-hustlers .segment-fingerprint-cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.7vw, 10px);
+}
+#\31 1-segment-hustlers .segment-fingerprint-tag {
+  display: inline-block;
+  padding: 5px 11px;
+  border: 1px solid rgba(4, 22, 84, 0.22);
+  background: rgba(4, 22, 84, 0.04);
+  border-radius: 0;
+  font-size: clamp(0.72rem, 0.92vw, 0.84rem);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  color: var(--navy);
 }
 
 /* ── Square pillGroup: no radius, navy active (FEEDBACK-V4) ───────── */
