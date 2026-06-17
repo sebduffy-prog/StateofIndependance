@@ -1,60 +1,83 @@
 /* ============================================================
    Chapter 04 — twists.  All selectors scoped to #\30 4-twists.
-   The art-direction north star (§7): drag the trust ladder; the holiday
-   physically resists. ONE twist commands the screen at a time; navy
-   gravity for the paradox. Each twist is a full-bleed band with ONE focal
-   point — asymmetric, editorial, generous negative space. Backgroundless
-   (the ladder/tug/tactile float on the ground, faint-tint tracks only).
-   Warm grounds = navy ink; the trust band = navy velvet, cream on navy.
-   Square corners, no underline, tabular nums, one easing system.
+   THE AUTHORITATIVE BRAND WORLD (BWF §7 — twists): the earned punctuation.
+   The opener reads on the cream editorial ground in the book-cover voice
+   (bold-black Poppins, an italic accent word). Twist 01 is the marquee
+   navy world-moment (cream type on navy, the YELLOW accent) — the trust
+   ladder is the focal point. Twists 02 + 03 sit on the warm gradient ground
+   and house their content in the EDITORIAL BOOK-COVER CARD: cream, square
+   corners, a flat navy+yellow icon top field, the tiny Challenger-Series
+   lockup mark top-right, a BOLD BLACK title low-left, ONE lift device. The
+   data (ladder / tug / tactile) floats backgroundless beside the card.
+   Square corners, no underline, no parallelogram, tabular nums, one easing.
    ============================================================ */
 
-/* The chapter is a vertical flow of full-bleed bands with large jumps
-   between groups (§2: tight within, large between). */
+/* Vertical flow of full-bleed bands; large jumps between groups (AD §2). */
 #\30 4-twists .tw-world {
   display: flex;
   flex-direction: column;
   gap: clamp(4rem, 9vh, 9rem);
 }
 
-/* ── Opener — left-axis editorial, ONE display moment ───── */
-#\30 4-twists .tw-head { max-width: 60ch; }
+/* ── Opener — cream editorial register, ONE display moment ───── */
+#\30 4-twists .tw-head {
+  position: relative;
+  max-width: 62ch;
+  padding-top: clamp(8px, 2vw, 16px);
+}
+/* The tiny brand stamp, top-right of the opener (the book-cover position). */
+#\30 4-twists .tw-head-mark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 26px;
+}
 #\30 4-twists .tw-headline {
   font-size: clamp(3.25rem, 8vw, 7rem);
   line-height: 0.92;
   margin: 0 0 clamp(1.6rem, 3vh, 2.4rem);
+  color: var(--ink);
 }
 #\30 4-twists .tw-standfirst {
   font-size: var(--t-md);
   line-height: 1.5;
   font-weight: 500;
   margin: 0 0 clamp(2rem, 4vh, 3rem);
-  color: var(--soi-navy);
+  color: var(--ink-soft);
 }
-/* The three twists — a quiet left-axis index, never competing cards. */
+/* The three twists — a quiet navy+yellow numbered index, never cards. */
 #\30 4-twists .tw-toc {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--space-1);
+  gap: var(--space-2);
   max-width: 52ch;
 }
 #\30 4-twists .tw-toc li {
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 18px;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--ink);
   font-size: var(--t-sm);
 }
 #\30 4-twists .tw-toc-num {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
-  color: var(--soi-orange);
+  color: var(--navy);
   flex: 0 0 auto;
   min-width: 2.4ch;
+}
+/* The single yellow accent: the index markers wear a thin yellow seat. */
+#\30 4-twists .tw-toc li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--yellow);
+  align-self: center;
+  flex: 0 0 auto;
 }
 
 /* ── Shared twist band scaffold ─────────────────────────── */
@@ -72,32 +95,52 @@
   background: var(--ground-warm);
   color: var(--on-warm);
 }
-#\30 4-twists .tw-twist--trust { color: var(--on-navy); }
-#\30 4-twists .tw-twist > * { position: relative; z-index: 1; }
+#\30 4-twists .tw-twist--trust {
+  background: var(--ground-navy);
+  color: var(--on-navy);
+}
 
-/* Section eyebrow + title — dramatic hierarchy, nothing in the muddy
-   middle. The title is the sub-head; the stat/ladder is the display moment. */
+/* The book-cover EDITORIAL CARD (the house component) wrapping the warm
+   twists' narrative. Cream, square, ONE lift device (the soft self-shadow). */
+#\30 4-twists .tw-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  color: var(--ink-soft);
+  border-radius: 0;
+  padding: clamp(28px, 3vw, 48px);
+  box-shadow: 0 14px 38px rgba(4, 22, 84, 0.08);
+}
+/* The flat navy+yellow icon sits in the upper field with generous space. */
+#\30 4-twists .tw-card-icon {
+  width: clamp(56px, 6vw, 84px);
+  height: auto;
+  margin: 0 0 clamp(1.4rem, 3vh, 2.2rem);
+}
+
+/* Section title — the book-cover voice. On warm cards it is BOLD BLACK; in
+   the navy marquee it inherits cream. Dramatic hierarchy, nothing muddy. */
 #\30 4-twists .tw-twist-title {
   font-weight: 800;
   font-size: clamp(2rem, 3.6vw, 3.2rem);
   line-height: 1.06;
   letter-spacing: -0.02em;
-  margin: 0.4em 0 0.6em;
+  margin: 0.3em 0 0.55em;
+  color: var(--ink);
 }
+#\30 4-twists .tw-twist--trust .tw-twist-title { color: var(--cream); }
 #\30 4-twists .tw-twist-lede {
   font-size: var(--t-md);
   line-height: 1.55;
   font-weight: 500;
   margin: 0;
+  color: var(--ink-soft);
 }
-#\30 4-twists .tw-twist--trust .tw-twist-lede { color: rgba(238, 233, 221, 0.86); }
-#\30 4-twists .tw-twist--warm .tw-twist-lede { color: var(--soi-navy); }
-
-/* Decorative orbit inside the trust band — ambient geometry, behind. */
-#\30 4-twists .tw-orbit-dark { z-index: 0; opacity: 0.42; }
+#\30 4-twists .tw-twist--trust .tw-twist-lede { color: rgba(240, 237, 231, 0.86); }
 
 /* ============================================================
-   Twist 01 — trust ladder (the marquee, navy velvet)
+   Twist 01 — trust ladder (the marquee, navy world-moment)
    ============================================================ */
 #\30 4-twists .tw-trust-layout {
   max-width: 1280px;
@@ -111,11 +154,11 @@
 }
 #\30 4-twists .tw-trust-intro { max-width: 56ch; }
 
-/* The ladder — cream tiles outlined on the velvet ground, no white box. */
+/* The ladder — cream tiles outlined on the navy ground, no white box. */
 #\30 4-twists .tw-rank .rank-help {
   font-size: var(--t-sm);
   line-height: 1.5;
-  color: rgba(238, 233, 221, 0.78);
+  color: rgba(240, 237, 231, 0.78);
   margin: 0 0 var(--space-2);
   max-width: 46ch;
 }
@@ -131,9 +174,9 @@
   align-items: center;
   gap: 16px;
   padding: 15px 18px;
-  border: 1px solid rgba(238, 233, 221, 0.4);
-  background: rgba(238, 233, 221, 0.06);
-  color: var(--soi-cream);
+  border: 1px solid rgba(240, 237, 231, 0.32);
+  background: rgba(240, 237, 231, 0.06);
+  color: var(--cream);
   cursor: grab;
   transition: border-color var(--dur-micro) var(--ease-entrance),
               background var(--dur-micro) var(--ease-entrance),
@@ -141,24 +184,24 @@
 }
 #\30 4-twists .tw-rank .rank-item:hover,
 #\30 4-twists .tw-rank .rank-item:focus-visible {
-  border-color: var(--soi-amber);
-  background: rgba(238, 233, 221, 0.12);
+  border-color: var(--yellow);
+  background: rgba(240, 237, 231, 0.12);
   outline: none;
 }
 #\30 4-twists .tw-rank .rank-item.is-dragging {
   opacity: 0.7;
-  border-color: var(--soi-amber);
+  border-color: var(--yellow);
   transform: scale(1.02);
 }
 #\30 4-twists .tw-rank .rank-pos {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--soi-amber);
+  color: var(--yellow);
   min-width: 1.4ch;
   text-align: center;
 }
 #\30 4-twists .tw-rank .rank-label { flex: 1 1 auto; font-weight: 600; }
-#\30 4-twists .tw-rank .rank-grip { color: rgba(238, 233, 221, 0.5); cursor: grab; }
+#\30 4-twists .tw-rank .rank-grip { color: rgba(240, 237, 231, 0.5); cursor: grab; }
 #\30 4-twists .tw-rank .rank-delta {
   font-size: 0.74rem;
   font-weight: 700;
@@ -166,6 +209,12 @@
   text-transform: uppercase;
 }
 #\30 4-twists .tw-rank .rank-submit { margin-top: 4px; }
+/* The submit button on the navy ground: the yellow accent. */
+#\30 4-twists .tw-rank .rank-submit.vccp-btn {
+  background: var(--yellow);
+  color: var(--navy);
+  border-color: var(--yellow);
+}
 
 /* The reveal — ONE editorial reality. Lifts in once. */
 #\30 4-twists .tw-trust-reveal {
@@ -187,7 +236,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(238, 233, 221, 0.72);
+  color: rgba(240, 237, 231, 0.72);
   margin: 0;
 }
 #\30 4-twists .tw-spread-line {
@@ -208,19 +257,20 @@
   font-size: clamp(3.2rem, 7vw, 5.6rem);
   font-variant-numeric: tabular-nums;
 }
-#\30 4-twists .tw-spread-end--hi .num { color: var(--soi-amber); }
-#\30 4-twists .tw-spread-end--lo .num { color: var(--soi-cream); }
+/* High end = the yellow accent; low end = cream. The single accent per screen. */
+#\30 4-twists .tw-spread-end--hi .num { color: var(--yellow); }
+#\30 4-twists .tw-spread-end--lo .num { color: var(--cream); }
 #\30 4-twists .tw-spread-who {
   font-size: var(--t-xs);
   letter-spacing: 0.06em;
   font-weight: 600;
-  color: rgba(238, 233, 221, 0.8);
+  color: rgba(240, 237, 231, 0.8);
   margin-top: 12px;
 }
 #\30 4-twists .tw-spread-arrow {
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 300;
-  color: rgba(238, 233, 221, 0.55);
+  color: rgba(240, 237, 231, 0.55);
   line-height: 1;
   align-self: center;
 }
@@ -228,14 +278,14 @@
   font-size: var(--t-sm);
   line-height: 1.55;
   font-weight: 500;
-  color: rgba(238, 233, 221, 0.86);
+  color: rgba(240, 237, 231, 0.86);
   max-width: 54ch;
   margin: 0;
 }
-#\30 4-twists .tw-paradox-line .num { color: var(--soi-amber); font-weight: 700; }
+#\30 4-twists .tw-paradox-line .num { color: var(--yellow); font-weight: 700; }
 
 /* ============================================================
-   Twist 02 — ring-fence the holiday (warm, tactile focal point)
+   Twist 02 — ring-fence the holiday (warm; book-cover card + tactile focal)
    ============================================================ */
 #\30 4-twists .tw-joy-layout {
   max-width: 1280px;
@@ -245,9 +295,11 @@
   gap: clamp(40px, 6vw, 96px);
   align-items: center;
 }
-#\30 4-twists .tw-joy-intro { max-width: 50ch; }
+#\30 4-twists .tw-joy-intro { max-width: 52ch; }
+/* The title is anchored low; the icon + eyebrow sit above it (book cover). */
+#\30 4-twists .tw-joy-intro .soi-card__title { margin-top: 0; }
 
-/* The stat is the display moment beside the tactile hero. */
+/* The stat is the display moment inside the card. */
 #\30 4-twists .tw-joy-stat-line {
   display: grid;
   gap: var(--space-1);
@@ -256,17 +308,17 @@
 #\30 4-twists .tw-joy-big {
   font-size: clamp(4rem, 9vw, 8rem);
   line-height: 0.86;
-  color: var(--soi-navy);
+  color: var(--navy);
 }
 #\30 4-twists .tw-joy-stat-sub {
   font-size: var(--t-sm);
   line-height: 1.5;
   font-weight: 500;
-  color: var(--soi-navy);
+  color: var(--ink-soft);
   max-width: 40ch;
 }
 
-/* The tactile stage — backgroundless; tiles carry the contrast. */
+/* The tactile stage — backgroundless; the tiles carry the contrast. */
 #\30 4-twists .tw-joy-stage { margin: 0; display: grid; gap: var(--space-3); }
 #\30 4-twists .tw-joy-field {
   position: relative;
@@ -275,24 +327,24 @@
   place-items: center;
 }
 
-/* Flexible-spend tiles — light cream chips that wobble + fling loose. */
+/* Flexible-spend tiles — cream chips that wobble + fling loose. */
 #\30 4-twists .tw-joy-tile {
   position: absolute;
   font: 600 var(--t-sm)/1 var(--font-sans);
   letter-spacing: 0.01em;
   padding: 13px 20px;
-  border: 1px solid var(--soi-navy);
+  border: 1px solid var(--navy);
   cursor: grab;
   user-select: none;
   white-space: nowrap;
 }
 #\30 4-twists .tw-joy-tile:focus-visible {
-  outline: 2px solid var(--soi-navy);
+  outline: 2px solid var(--navy);
   outline-offset: 3px;
 }
 #\30 4-twists .tw-joy-tile--flex {
-  background: var(--soi-cream-warm);
-  color: var(--soi-navy);
+  background: var(--cream);
+  color: var(--navy);
 }
 #\30 4-twists .tw-joy-tile--a { top: 6%;  left: 8%; }
 #\30 4-twists .tw-joy-tile--b { top: 16%; right: 4%; }
@@ -316,7 +368,7 @@
   display: grid;
   place-items: center;
   padding: 26px;
-  border: 2px dashed var(--soi-navy);
+  border: 2px dashed var(--navy);
   transition: border-color var(--dur-reveal) var(--ease-entrance),
               box-shadow var(--dur-reveal) var(--ease-entrance);
 }
@@ -325,18 +377,18 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--soi-navy);
-  color: var(--soi-cream);
+  background: var(--navy);
+  color: var(--cream);
   font-size: var(--t-md);
   padding: 18px 30px;
   cursor: grab;
 }
 #\30 4-twists .tw-joy-tile--holiday.is-strained { cursor: grabbing; }
-#\30 4-twists .tw-joy-tile-lock { color: var(--soi-amber); font-size: 0.7em; }
-/* When the visitor has wrestled it and it sprang back, the fence glows. */
+#\30 4-twists .tw-joy-tile-lock { color: var(--yellow); font-size: 0.7em; }
+/* When the visitor has wrestled it and it sprang back, the fence glows yellow. */
 #\30 4-twists .tw-joy-field.is-defended .tw-joy-fence {
-  border-color: var(--soi-amber);
-  box-shadow: 0 0 0 4px rgba(251, 193, 0, 0.18);
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(240, 203, 8, 0.22);
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 4-twists .tw-joy-fence { transition: none; }
@@ -354,18 +406,18 @@
   gap: 10px;
   font-size: var(--t-xs);
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
 }
 #\30 4-twists .tw-key-swatch {
   width: 16px; height: 16px;
   flex: 0 0 auto;
-  border: 1px solid var(--soi-navy);
+  border: 1px solid var(--navy);
 }
-#\30 4-twists .tw-key-swatch--fenced { background: var(--soi-navy); }
-#\30 4-twists .tw-key-swatch--flex   { background: var(--soi-cream-warm); }
+#\30 4-twists .tw-key-swatch--fenced { background: var(--navy); }
+#\30 4-twists .tw-key-swatch--flex   { background: var(--cream); }
 
 /* ============================================================
-   Twist 03 — AI on tap (warm, tug-of-war focal point)
+   Twist 03 — AI on tap (warm; book-cover card + tug-of-war focal point)
    ============================================================ */
 #\30 4-twists .tw-ai-layout {
   max-width: 1280px;
@@ -376,15 +428,15 @@
   align-items: center;
 }
 #\30 4-twists .tw-ai-intro { max-width: 52ch; }
+#\30 4-twists .tw-ai-intro .soi-card__title { margin-top: 0; }
 
-/* The quote is the quiet supporting note — hanging mark on dark velvet? No,
-   warm ground here, navy body. */
+/* The quote is the quiet supporting note inside the card. */
 #\30 4-twists .tw-ai-quote { margin: clamp(1.6rem, 3vh, 2.4rem) 0 0; }
 #\30 4-twists .tw-ai-quote .si-quote-body {
   font-size: clamp(1.1rem, 1.6vw, 1.4rem);
   line-height: 1.45;
   font-weight: 500;
-  color: var(--soi-navy);
+  color: var(--ink);
 }
 
 /* The tug — the focal point. */
@@ -400,13 +452,13 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
 }
 #\30 4-twists .tw-ai-tug-cap {
   font-size: var(--t-sm);
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
   margin: 0;
   max-width: 44ch;
 }
@@ -417,18 +469,18 @@
 #\30 4-twists .pillgroup-chip {
   font: 600 var(--t-sm)/1 var(--font-sans);
   padding: 11px 20px;
-  border: 1px solid var(--soi-navy);
+  border: 1px solid var(--navy);
   background: transparent;
-  color: var(--soi-navy);
+  color: var(--navy);
   cursor: pointer;
   transition: background var(--dur-micro) var(--ease-entrance),
               color var(--dur-micro) var(--ease-entrance);
 }
 #\30 4-twists .pillgroup-chip.is-active {
-  background: var(--soi-navy);
-  color: var(--soi-cream);
+  background: var(--navy);
+  color: var(--cream);
 }
-#\30 4-twists .pillgroup-chip:focus-visible { outline: 2px solid var(--soi-navy); outline-offset: 2px; }
+#\30 4-twists .pillgroup-chip:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 
 /* ============================================================
    Responsive — stack to single column; keep the focal point central.
@@ -440,11 +492,12 @@
     grid-template-columns: 1fr;
     align-items: start;
   }
-  /* On stacked layouts the intro leads, the focal point follows. */
+  /* On stacked layouts the card leads, the focal point follows. */
   #\30 4-twists .tw-joy-stage { order: 2; }
 }
 @media (max-width: 600px) {
   #\30 4-twists .tw-joy-field { min-height: 320px; }
   #\30 4-twists .tw-spread-line { gap: 14px; }
   #\30 4-twists .tw-spread-arrow { display: none; }
+  #\30 4-twists .tw-head-mark { position: static; margin: 0 0 var(--space-2); }
 }

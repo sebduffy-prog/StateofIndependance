@@ -4,13 +4,16 @@
    Chapter builders scope their own styles in css/sections/{id}.css;
    they REUSE the tokens + classes declared here and never edit this file.
 
-   The bar is docs/ART-DIRECTION.md: a £100k, art-directed, experiential
-   piece — restrained, cinematic, tactile. Warm mustard->orange GROUNDS
-   dominate; navy is gravity; cream is silhouette; ONE teal accent. Poppins,
-   dramatic type contrast, asymmetric editorial grid, one focal point per
-   screen, generous negative space, ONE easing system. Square corners.
-   NO underlines. NO blocks behind text. NO source captions. Reduced-motion
-   safe. Tabular numbers.
+   THE AUTHORITATIVE BRAND WORLD: docs/BRAND-WORLD-FINAL.md, derived from the
+   FINAL deck components in assets/brand-final/ and held to docs/ART-DIRECTION.md.
+   Warm-amber/coral gradient + cream GROUNDS dominate (60-70%); NAVY is gravity;
+   YELLOW is the single icon/accent; BLACK carries all bold titles + silhouettes.
+   POPPINS — Black/ExtraBold dramatic display, Medium/Regular body, an italic
+   accent word in the "Series" manner. The book-cover EDITORIAL CARD is the
+   house component: cream, square corners, bold-black title low-left, a flat
+   navy+yellow icon, the tiny lockup mark top-right, one soft self-shadow.
+   Square corners. NO underlines. NO parallelogram. Backgroundless data.
+   Sources hidden. Reduced-motion safe. Tabular numbers. Contrast-safe.
    ============================================================ */
 
 /* ============================================================
@@ -27,64 +30,48 @@
 @font-face { font-family:'Poppins'; font-style:italic; font-weight:600; font-display:swap; src:url('../assets/fonts/poppins-600-italic.woff2') format('woff2'); }
 
 /* ============================================================
-   TOKENS
+   TOKENS  (exact hexes — BRAND-WORLD-FINAL §1, eyedropper-sampled)
    ============================================================ */
 :root {
-  /* ── Warm grounds (the signature world, 60-70% of the piece) ── */
-  --soi-amber:   #FBC100;   /* core mustard — base of every warm ground */
-  --soi-gold:    #FCD407;   /* lightest warm tint — top of gradient */
-  --soi-orange:  #FD8D20;   /* the orange the mustard warms into */
-  --soi-coral:   #FF8F79;   /* hottest corner glow — final ~12% only */
+  /* ── Warm gradient ground (the dominant surface, 60-70%) ─── */
+  --ground-amber:  #FBC100;   /* the core — the mustard everything sits on */
+  --ground-gold:   #FFC002;   /* lightest warm tint — top of the gradient */
+  --ground-orange: #FFA764;   /* the orange the amber warms into */
+  --ground-coral:  #FF8598;   /* hottest corner glow — the far ~12% only */
 
-  /* ── Cream / silhouette tones ──────────────────────────── */
-  --soi-cream:      #EEE9DD; /* bear + figure silhouette fill; NEVER pure white on warm */
-  --soi-cream-warm: #FAE9C5; /* warmer cream variant for figures */
-  --soi-page:       #F4F1EA; /* warm off-white page ground (default light) */
+  /* ── Cream — the editorial light ground + the card fill ──── */
+  --cream:       #F0EDE7;     /* editorial ground + book-cover card fill; NEVER pure white */
+  --cream-shade: #E2E0D8;     /* card self-shadow tint / faint divider on cream */
 
-  /* ── Navy / blue (gravity: text, data, the bear) ───────── */
-  --soi-navy:        #0A1A5C; /* signature dark; ink for headlines on light */
-  --soi-blue:        #0B3DB4; /* bright royal-blue ground centre */
-  --soi-blue-deep:   #073AAC; /* darker blue stop */
-  --soi-navy-velvet: #16194A; /* deep-navy ground for quote / punctuation */
+  /* ── Navy + Yellow — the icon & accent system ─────────────── */
+  --navy:        #041654;     /* icon dark, bold-stat accent, fine furniture ink */
+  --navy-bright: #0129A4;     /* brighter blue inside the flat icons (secondary tone) */
+  --yellow:      #F0CB08;     /* the one accent — icon wedge, single highlight per screen */
 
-  /* ── Orbit lines, seeds, the ONE teal accent ───────────── */
-  --soi-orbit:        rgba(255,255,255,0.22); /* thin concentric orbit lines */
-  --soi-orbit-strong: rgba(255,255,255,0.32);
-  --soi-seed:         #FCC107; /* pale mustard seed dots on orbit lines */
-  --soi-teal:         #2BB7E8; /* THE single accent — orbit ring + ch.09 (sparing) */
-  --soi-teal-pale:    #A6E1F8;
+  /* ── Black — type & silhouettes ──────────────────────────── */
+  --ink:      #000000;        /* ALL display type + bold-black titles + silhouettes */
+  --ink-soft: #1A1A1A;        /* body copy where pure black is too hard on cream */
 
-  /* ── Data / chart series (flat — clarity over decoration) ─ */
-  --soi-azure: #1E90FF; /* AI-use series */
-  --soi-up:    #00BCA5; /* up-deltas / validated (teal, never green-red) */
-  --soi-down:  #FD8D20; /* down-deltas / warnings (orange, never red) */
-
-  /* ── Neutrals ──────────────────────────────────────────── */
-  --ink:      #0A1A5C;  /* default ink is navy, not pure black */
-  --ink-soft: #2A3258;
-  --paper:    #FFFFFF;
-
-  /* ── Signature gradients (grounds only — never on charts) ─ */
+  /* ── Signature ground gradients (grounds only — never charts) ─ */
   --ground-warm: linear-gradient(135deg,
-                   var(--soi-gold)   0%,
-                   var(--soi-amber)  42%,
-                   var(--soi-orange) 88%,
-                   var(--soi-coral)  100%);
-  --ground-blue: linear-gradient(135deg,
-                   var(--soi-blue-deep) 0%,
-                   var(--soi-blue)      55%,
-                   #194DC8              100%);
+                   var(--ground-orange) 0%,
+                   var(--ground-amber)  40%,
+                   var(--ground-gold)   70%,
+                   var(--ground-coral)  100%);
+  /* A softer warm wash for reading-leaning warm screens. */
   --ground-warm-soft: linear-gradient(180deg,
-                   var(--soi-page) 0%,
-                   #FBEAC4         60%,
-                   var(--soi-amber) 100%);
+                   var(--cream)        0%,
+                   #FBE3B0             62%,
+                   var(--ground-amber) 100%);
+  /* Full-bleed navy world moment (the earned punctuation pivot). */
+  --ground-navy: linear-gradient(135deg, #02103F 0%, var(--navy) 60%, #0A2270 100%);
 
-  /* ── Contrast-safe foregrounds per ground (§3) ─────────── */
-  --on-warm:  var(--soi-navy);  /* navy on amber */
-  --on-navy:  var(--soi-cream); /* cream on navy/blue */
-  --on-paper: var(--ink-soft);  /* ink on warm off-white */
+  /* ── Contrast-safe foregrounds per ground (the dominance rule) ─ */
+  --on-warm:  var(--ink);     /* black/navy on warm; type is never amber-on-amber */
+  --on-navy:  var(--cream);   /* cream on navy */
+  --on-cream: var(--ink-soft);/* ink on cream */
 
-  /* ── Spacing — 8px base; tight within / large between (§2) ─ */
+  /* ── Spacing — 8px base; tight within / large between (AD §2) ─ */
   --space-1:  8px;    /* within a group */
   --space-2:  16px;   /* within a group */
   --space-3:  24px;
@@ -95,13 +82,15 @@
   /* Editorial outer margin — nothing but the ground touches the edge. */
   --margin-page: clamp(24px, 5vw, 96px);
 
-  /* ── Type — exact Poppins scale (ART-DIRECTION §1) ─────── */
+  /* ── Type — exact Poppins scale (ART-DIRECTION §1, BWF §2) ─── */
   --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  /* Display: the ONE hero line per screen. Poppins 900. */
+  /* Display: the ONE hero line per screen. Poppins 900, book-cover voice. */
   --t-display: clamp(3.5rem, 8vw, 8rem);
+  /* Card / section title — the book-cover title at card scale. Poppins 800. */
+  --t-title:   clamp(1.6rem, 2.6vw, 2.4rem);
   /* Sub-head. Poppins 600. */
-  --t-sub:     clamp(1.5rem, 2.6vw, 2.4rem);
-  /* Hero stat — the number IS the headline. */
+  --t-sub:     clamp(1.4rem, 2.2vw, 2rem);
+  /* Hero stat — the number IS the headline. Poppins 900, navy, tabular. */
   --t-bignum:  clamp(4.4rem, 9.6vw, 9.6rem);
   /* Legacy aliases kept so chapter CSS that reads them still resolves. */
   --t-xl: clamp(2.8rem, 5.2vw, 5rem);
@@ -119,6 +108,23 @@
 
   /* ── Journey engine ────────────────────────────────────── */
   --journey-controls-h: 72px;
+
+  /* ── Legacy token aliases — chapter CSS + js/lib read these names.
+     Re-pointed at the authoritative palette so old references resolve to
+     the new world (no chapter edits needed). ───────────────────────── */
+  --soi-amber:      var(--ground-amber);
+  --soi-gold:       var(--ground-gold);
+  --soi-orange:     var(--ground-orange);
+  --soi-coral:      var(--ground-coral);
+  --soi-cream:      var(--cream);
+  --soi-cream-warm: #FBE3B0;            /* warmer cream for figures on warm */
+  --soi-navy:       var(--navy);
+  --soi-blue:       var(--navy-bright); /* old "bright royal" -> the icon bright blue */
+  --soi-teal:       var(--yellow);      /* the single accent is now YELLOW, not teal */
+  --soi-orbit:        rgba(4, 22, 84, 0.16);  /* orbit lines on warm/cream (navy tint) */
+  --soi-orbit-strong: rgba(4, 22, 84, 0.26);
+  --soi-seed:         var(--yellow);
+  --paper:            var(--cream);     /* never pure white on this world */
 }
 
 /* ============================================================
@@ -132,23 +138,24 @@ body {
   font-weight: 400;
   font-size: 1.0625rem;
   line-height: 1.5;
-  color: var(--ink);
-  background: var(--soi-page);
+  color: var(--ink-soft);
+  background: var(--cream);
   font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 button, input, select, textarea, optgroup { font-family: var(--font-sans); }
 img { display: block; object-fit: contain; }
-/* Tabular numerals on every figure so counters never jitter. */
 .num, [data-count-to] { font-variant-numeric: tabular-nums; }
 
-/* Headings: sub-head weight by default. The display moment is .si-display. */
+/* Headings: card-title weight by default. The display moment is .si-display. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  color: var(--ink);
   margin: 0 0 0.4em;
 }
 
@@ -157,12 +164,13 @@ a { color: inherit; text-decoration: none; }
 a:hover { text-decoration: none; }
 
 /* ============================================================
-   TYPE SCALE — dramatic contrast, nothing in the muddy middle (§1)
+   TYPE SCALE — dramatic contrast, nothing in the muddy middle (AD §1)
+   The book-cover voice: BOLD BLACK Poppins, set tight, on cream/warm.
    ============================================================ */
 
-/* Display — the ONE hero line per screen. Poppins 900.
+/* Display — the ONE hero line per screen. Poppins 900, BLACK.
    Sentence case is the default (narrative); UPPERCASE is opt-in via
-   .si-display--upper, used only for divider/move titles + the wordmark.
+   .si-display--upper (the move-divider + cover all-caps energy only).
    Section CSS that sets its own text-transform always wins. */
 .si-display {
   font-family: var(--font-sans);
@@ -170,31 +178,39 @@ a:hover { text-decoration: none; }
   font-size: var(--t-display);
   letter-spacing: -0.03em;
   line-height: 0.92;
+  color: var(--ink);
   text-transform: none;
   margin: 0;
 }
 .si-display--lg { font-size: var(--t-display); }
-.si-display--sm { font-size: var(--t-sub); font-weight: 600; letter-spacing: -0.01em; line-height: 1.05; }
+.si-display--sm { font-size: var(--t-title); font-weight: 800; letter-spacing: -0.02em; line-height: 1.0; }
 .si-display--black { font-weight: 900; letter-spacing: -0.03em; }
 .si-display--upper { text-transform: uppercase; letter-spacing: -0.01em; }
-.si-display--caseless { text-transform: none; } /* legacy alias — now a no-op vs the new default */
+.si-display--caseless { text-transform: none; } /* legacy alias — no-op vs the default */
 
-/* Hero stat — the number IS the headline. Poppins 900, tabular. */
+/* The italic accent — the "Series" gesture (replaces the parallelogram).
+   One accent word per headline, set in italic ONLY; the slant IS the accent.
+   No box, no skew, no underline, no highlight fill. May take navy. */
+.si-accent { font-style: italic; font-weight: inherit; }
+.si-accent--navy { font-style: italic; color: var(--navy); }
+
+/* Hero stat — the number IS the headline. Poppins 900, navy, tabular. */
 .si-bignum {
   font-weight: 900;
   letter-spacing: -0.03em;
   font-size: var(--t-bignum);
   line-height: 0.86;
+  color: var(--navy);
   font-variant-numeric: tabular-nums;
   margin: 0;
 }
 
-/* Sub-head utility. */
+/* Sub-head utility. Poppins 600. */
 .si-subhead {
   font-weight: 600;
   font-size: var(--t-sub);
   letter-spacing: -0.01em;
-  line-height: 1.05;
+  line-height: 1.1;
   margin: 0;
 }
 
@@ -212,22 +228,20 @@ a:hover { text-decoration: none; }
 .si-measure--tight { max-width: 52ch; }
 
 /* ── .hl — emphasis is COLOUR + WEIGHT only. No box, no underline,
-   no parallelogram, no fill behind glyphs. ──────────────────── */
+   no parallelogram, no fill behind glyphs. Navy is the default emphasis
+   on cream/warm; it flips to the yellow accent on navy grounds. ──── */
 .hl {
-  font-weight: 700;
-  color: var(--soi-orange);
+  font-weight: 800;
+  color: var(--navy);
   background: none;
   border: 0;
   text-decoration: none;
 }
-.hl-teal { color: var(--soi-teal); font-weight: 700; background: none; }
-/* On a warm ground orange clashes with the bed -> flip emphasis to navy. */
-.si-ground-warm .hl,
-.on-warm .hl { color: var(--soi-navy); }
-/* On navy/blue grounds emphasis flips to warm amber. */
-.si-ground-blue .hl,
+.hl-teal { color: var(--navy); font-weight: 800; background: none; } /* legacy alias */
+/* On navy grounds emphasis flips to the yellow accent. */
+.si-ground-navy .hl,
 .si-dark .hl,
-.on-navy .hl { color: var(--soi-amber); }
+.on-navy .hl { color: var(--yellow); }
 /* Emphasis inside a Black display heading inherits its leading. */
 .si-display .hl { line-height: inherit; }
 
@@ -238,7 +252,7 @@ a:hover { text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.7;
   margin: 0 0 var(--space-2);
 }
@@ -252,7 +266,7 @@ a:hover { text-decoration: none; }
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--soi-orange);
+  color: var(--navy);
   opacity: 0.85;
   margin-bottom: var(--space-2);
 }
@@ -275,7 +289,7 @@ a:hover { text-decoration: none; }
 }
 
 /* ============================================================
-   GROUNDS + CONTRAST UTILITIES (§3)
+   GROUNDS + CONTRAST UTILITIES (the dominance rule)
    Each ground owns a stacking context and a guaranteed-legible
    foreground. Decorative overlays sit behind real content.
    ============================================================ */
@@ -286,45 +300,70 @@ a:hover { text-decoration: none; }
   color: var(--on-warm);
 }
 .si-ground-warm--soft { background: var(--ground-warm-soft); }
-.si-ground-blue {
+/* Cream editorial ground — the reading / data register. */
+.si-ground-cream {
   position: relative;
   isolation: isolate;
-  background: var(--ground-blue);
+  background: var(--cream);
+  color: var(--on-cream);
+}
+/* Navy world moment — the earned punctuation pivot. */
+.si-ground-navy {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-navy);
   color: var(--on-navy);
 }
 .si-dark {
   position: relative;
   isolation: isolate;
-  background: var(--soi-navy);
+  background: var(--navy);
   color: var(--on-navy);
 }
-.si-dark--velvet { background: var(--soi-navy-velvet); }
+.si-dark--velvet { background: #02103F; }
+/* Legacy alias — old "blue ground" now resolves to the navy world. */
+.si-ground-blue {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-navy);
+  color: var(--on-navy);
+}
 
 /* Real content sits above decorative overlays inside any ground. */
 .si-ground-warm > *,
+.si-ground-cream > *,
+.si-ground-navy > *,
 .si-ground-blue > *,
 .si-dark > * { position: relative; z-index: 1; }
 
 /* Explicit contrast utilities — force a deliberate foreground. */
 .on-warm  { color: var(--on-warm); }
 .on-navy  { color: var(--on-navy); }
-.on-paper { color: var(--on-paper); }
+.on-paper { color: var(--on-cream); }   /* legacy alias -> ink on cream */
+.on-cream { color: var(--on-cream); }
 
-/* Headlines / eyebrows resolve to the ground's safe foreground. */
-.si-ground-warm :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
-.on-warm :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow) { color: var(--on-warm); }
+/* Headlines / eyebrows resolve to the ground's safe foreground.
+   On warm + cream the bold titles are BLACK (the book-cover voice);
+   bignums stay navy (gravity). On navy, everything goes cream. */
+.si-ground-warm  :is(h1,h2,h3,.si-display,.si-subhead),
+.si-ground-cream :is(h1,h2,h3,.si-display,.si-subhead),
+.on-warm :is(h1,h2,h3,.si-display,.si-subhead) { color: var(--ink); }
+.si-ground-warm  .vccp-eyebrow,
+.si-ground-cream .vccp-eyebrow,
+.on-warm .vccp-eyebrow { color: var(--navy); }
+.si-ground-navy :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
 .si-ground-blue :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
 .si-dark :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
 .on-navy :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow) { color: var(--on-navy); }
 /* The stage-num kicker follows the ground. */
-.si-ground-warm .vccp-stage-num,
-.on-warm .vccp-stage-num { color: var(--soi-navy); }
+.si-ground-navy .vccp-stage-num,
 .si-ground-blue .vccp-stage-num,
 .si-dark .vccp-stage-num,
-.on-navy .vccp-stage-num { color: var(--soi-amber); }
+.on-navy .vccp-stage-num { color: var(--yellow); }
 
 /* ── Orbit-motif overlay — thin concentric circles, decorative only,
-   behind content, carries no meaning, ignores the pointer (§6). ── */
+   behind content, carries no meaning, ignores the pointer (AD §6).
+   Navy-tint lines on warm/cream; the you-dot/accent carries yellow. ── */
 .si-orbit {
   position: absolute;
   inset: 0;
@@ -344,23 +383,30 @@ a:hover { text-decoration: none; }
       transparent 100%);
 }
 .si-orbit--center { background-position: center; }
+/* On navy grounds the orbit lines invert to faint cream. */
+.si-ground-navy .si-orbit,
+.si-ground-blue .si-orbit,
+.si-dark .si-orbit {
+  --soi-orbit: rgba(240, 237, 231, 0.18);
+  --soi-orbit-strong: rgba(240, 237, 231, 0.28);
+}
 @media (prefers-reduced-motion: no-preference) {
   .si-orbit--spin { animation: si-orbit-spin 160s linear infinite; transform-origin: 70% 50%; }
 }
 @keyframes si-orbit-spin { to { transform: rotate(360deg); } }
 
-/* ── Seed dots on the orbit lines (sparse, decorative) ───── */
+/* ── Seed dots on the orbit lines (sparse, decorative, the yellow accent) ─ */
 .si-seed {
   position: absolute;
   z-index: 0;
   pointer-events: none;
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--soi-seed);
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.35);
+  background: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(240, 237, 231, 0.5);
 }
 
-/* ── Cream silhouettes — read by mass, never occlude UI ──── */
+/* ── Silhouettes (bear + girl, the maze line) — read by mass ──── */
 .si-silhouette {
   position: relative;
   z-index: 0;
@@ -374,6 +420,93 @@ a:hover { text-decoration: none; }
 canvas.dot-field, [data-dotfield], .dotfield-canvas {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
 }
+
+/* ============================================================
+   THE BRAND SIGNATURE — Challenger-Series lockup placements
+   challenger-series-lockup.png is the black silhouette signature.
+   Never recolour / skew / stretch; object-fit: contain always.
+   ============================================================ */
+.si-lockup { display: block; height: auto; width: auto; object-fit: contain; }
+/* Hero scale — cover / outro sign-off (96-160px). */
+.si-lockup--hero { height: clamp(96px, 12vw, 160px); }
+/* The tiny card stamp — top-right of any editorial card (24-32px). */
+.si-lockup--mark {
+  height: 28px;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   THE EDITORIAL COMPONENT — the book-cover card (BWF §3).
+   THE HOUSE COMPONENT. Cream ground, square corners, a tiny lockup
+   mark top-right, a flat navy+yellow icon / photo in the upper field,
+   a BOLD BLACK Poppins title anchored low-left. ONE lift device only
+   (the soft self-shadow) — no border AND shadow together.
+   ============================================================ */
+.soi-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  color: var(--ink-soft);
+  border-radius: 0;                 /* square, always */
+  padding: clamp(20px, 2.4vw, 36px);
+  /* ONE lift device — the soft navy self-shadow. */
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
+}
+/* The icon / photo sits in the upper field with generous space. */
+.soi-card__media {
+  margin-bottom: var(--space-4);
+}
+/* The title is anchored low-left — push it to the foot of the card. */
+.soi-card__title {
+  margin-top: auto;
+  font-weight: 800;
+  color: var(--ink);
+  font-size: var(--t-title);
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+}
+/* The tiny Challenger-Series lockup stamp, top-right (the book-cover position). */
+.soi-card__mark {
+  position: absolute;
+  top: clamp(16px, 2vw, 28px);
+  right: clamp(16px, 2vw, 28px);
+  height: 28px;
+  width: auto;
+  opacity: 0.9;
+  z-index: 2;
+}
+/* Half-bleed photographic evidence inside the card (ch07 ad-mockups). */
+.soi-card__photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0;
+  margin-bottom: var(--space-4);
+}
+/* Alternate lift: a single navy-tint hairline INSTEAD of the shadow
+   (one frame device per card — pick this OR the shadow, never both). */
+.soi-card--hairline {
+  box-shadow: none;
+  border: 1px solid rgba(4, 22, 84, 0.14);
+}
+/* A card may also sit straight on the warm ground (its value lifts it). */
+.soi-card--flat { box-shadow: none; }
+
+/* ── Flat navy+yellow icon (BWF §6) — geometric, two-tone, no gradient,
+   no outline, no shadow. Authored SVGs / data-marks slot here; this sets
+   the colour language via currentColor + the accent custom prop. ─────── */
+.soi-icon {
+  display: inline-block;
+  width: clamp(48px, 6vw, 88px);
+  height: auto;
+  color: var(--navy);                  /* the icon body */
+  --icon-accent: var(--yellow);        /* the bright wedge */
+  --icon-bright: var(--navy-bright);   /* the inner accent figure */
+}
+.soi-icon [data-accent], .soi-icon .icon-accent { fill: var(--icon-accent); }
+.soi-icon [data-bright], .soi-icon .icon-bright { fill: var(--icon-bright); }
+.soi-icon [data-body],   .soi-icon .icon-body   { fill: currentColor; }
 
 /* ============================================================
    JOURNEY ENGINE — one full-viewport step at a time
@@ -438,10 +571,10 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   align-items: center;
   gap: clamp(12px, 2vw, 28px);
   padding: 12px clamp(16px, 3vw, 44px);
-  background: rgba(244, 241, 234, 0.92);
+  background: rgba(240, 237, 231, 0.92);   /* cream, blurred */
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(10, 26, 92, 0.12);
+  border-top: 1px solid rgba(4, 22, 84, 0.12);
 }
 .journey-controls[hidden] { display: none; }
 
@@ -460,7 +593,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.7;
 }
 /* Gentle "try it" affordance — soft gating, Next is always allowed. */
@@ -468,7 +601,8 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--soi-orange);
+  color: var(--navy);
+  opacity: 0.85;
 }
 .journey-hint[hidden] { display: none; }
 
@@ -478,30 +612,31 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   font: 600 0.95rem/1 var(--font-sans);
   letter-spacing: 0.04em;
   padding: 13px clamp(18px, 2.4vw, 30px);
-  border: 1px solid var(--soi-navy);
+  border: 1px solid var(--navy);
+  border-radius: 0;
   background: transparent;
-  color: var(--soi-navy);
+  color: var(--navy);
   cursor: pointer;
   transition: transform var(--dur-micro) var(--ease-entrance),
               box-shadow var(--dur-micro) var(--ease-entrance),
               background var(--dur-micro) var(--ease-entrance),
               opacity var(--dur-micro) var(--ease-entrance);
 }
-.journey-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 0 var(--soi-navy); }
-.journey-btn-primary { background: var(--soi-navy); color: var(--soi-cream); }
+.journey-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 0 var(--navy); }
+.journey-btn-primary { background: var(--navy); color: var(--cream); }
 .journey-btn:disabled { cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
 .journey-next:disabled {
-  background: rgba(10, 26, 92, 0.18);
-  color: rgba(10, 26, 92, 0.55);
+  background: rgba(4, 22, 84, 0.18);
+  color: rgba(4, 22, 84, 0.55);
   border-color: transparent;
 }
 @media (prefers-reduced-motion: reduce) { .journey-btn { transition: none; } }
 
-/* ── Orbit progress MERIDIAN — thin completion arc in the controls (§6) ── */
+/* ── Orbit progress MERIDIAN — thin completion arc in the controls (AD §6) ── */
 .journey-meridian { flex: 0 0 auto; display: block; }
-.journey-meridian__track { stroke: rgba(10, 26, 92, 0.16); stroke-width: 2; }
+.journey-meridian__track { stroke: rgba(4, 22, 84, 0.16); stroke-width: 2; }
 .journey-meridian__fill {
-  stroke: var(--soi-amber);
+  stroke: var(--yellow);
   stroke-width: 2.4;
   stroke-linecap: round;
   transition: stroke-dashoffset var(--dur-reveal) var(--ease-entrance);
@@ -509,19 +644,19 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 @media (prefers-reduced-motion: reduce) { .journey-meridian__fill { transition: none; } }
 
 /* Commit pulse when a gated step unlocks (transform/box-shadow only,
-   critically damped — no cartoon bounce). */
+   critically damped — no cartoon bounce). The yellow accent. */
 .journey-next.is-magnetic { will-change: transform; }
 @media (prefers-reduced-motion: no-preference) {
   .journey-next.is-committed { animation: journey-commit 0.5s var(--ease-entrance); }
 }
 @keyframes journey-commit {
-  0%   { box-shadow: 0 0 0 0 rgba(251, 193, 0, 0.55); }
-  40%  { box-shadow: 0 0 0 8px rgba(251, 193, 0, 0.18); }
-  100% { box-shadow: 0 0 0 0 rgba(251, 193, 0, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.55); }
+  40%  { box-shadow: 0 0 0 8px rgba(240, 203, 8, 0.18); }
+  100% { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0); }
 }
 
 /* ============================================================
-   CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor (§4, §6)
+   CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor (AD §4, §6)
    Transform/opacity only; reduced-motion settles to the composed state.
    ============================================================ */
 
@@ -558,42 +693,42 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   font: 600 0.95rem/1.2 var(--font-sans);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.85;
 }
 .arrival-ritual__bar {
   width: clamp(140px, 24vw, 260px);
   height: 2px;
-  background: rgba(10, 26, 92, 0.18);
+  background: rgba(4, 22, 84, 0.18);
   overflow: hidden;
 }
 .arrival-ritual__fill {
   display: block;
   height: 100%;
   width: 100%;
-  background: var(--soi-navy);
+  background: var(--navy);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 1.4s var(--ease-entrance);
 }
 .arrival-ritual.is-live .arrival-ritual__fill { transform: scaleX(1); }
 
-/* Persistent "you" marker — small mustard dot, soft glow, never catches
-   the pointer, sits below the controls (§6). */
+/* Persistent "you" marker — small YELLOW accent dot, soft glow, never
+   catches the pointer, sits below the controls (AD §6). */
 .you-dot {
   position: fixed;
   top: 0; left: 0;
   z-index: 90;
   border-radius: 50%;
-  background: var(--soi-amber);
-  box-shadow: 0 0 0 3px rgba(251, 193, 0, 0.22), 0 2px 8px rgba(10, 26, 92, 0.35);
+  background: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(240, 203, 8, 0.24), 0 2px 8px rgba(4, 22, 84, 0.35);
   pointer-events: none;
   opacity: 0;
   transition: opacity var(--dur-reveal) var(--ease-entrance);
   will-change: transform;
 }
-.you-dot.is-live { opacity: 0.92; }
-@media (prefers-reduced-motion: reduce) { .you-dot { opacity: 0.92; transition: none; } }
+.you-dot.is-live { opacity: 0.95; }
+@media (prefers-reduced-motion: reduce) { .you-dot { opacity: 0.95; transition: none; } }
 
 /* Magnetic cursor — small dot, inverts via difference blend. */
 .magnetic-cursor {
@@ -601,20 +736,19 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   top: 0; left: 0;
   z-index: 9999;
   border-radius: 50%;
-  background: var(--paper);
+  background: #FFFFFF;
   mix-blend-mode: difference;
   pointer-events: none;
   will-change: transform;
 }
 
 /* ============================================================
-   DATA — backgroundless; faint ink tracks, never white boxes (§5)
+   DATA — backgroundless; faint ink tracks, never white boxes (AD §5)
    ============================================================ */
 
 /* Box-less chart holder — charts NEVER sit in a white box. Layout ONLY:
    no background, border, shadow or radius. The chart sits directly on its
-   (often gradient) ground; the surrounding .si-ground-* / .on-* utility
-   carries contrast. */
+   ground; the surrounding .si-ground-* / .on-* utility carries contrast. */
 .chart-holder {
   display: flex;
   flex-direction: column;
@@ -627,14 +761,16 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 .chart-holder > figure { margin: 0; }
 
-/* ── Photographic evidence card — a SEPARATE register (ch07). Square mat,
-   ONE lift device, caption beneath; photo never bleeds onto a gradient. ── */
+/* ── Photographic evidence card — the book-cover evidence register (ch07).
+   Cream mat, square corners, ONE lift device, caption beneath; photo never
+   bleeds onto the warm ground without the cream mat. ──────────────────── */
 .si-evidence {
-  background: var(--paper);
+  background: var(--cream);
+  border-radius: 0;
   padding: 12px;
-  box-shadow: 0 2px 6px rgba(10,26,92,0.08), 0 18px 44px rgba(10,26,92,0.12);
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
 }
-.si-evidence img { width: 100%; height: auto; object-fit: cover; }
+.si-evidence img { width: 100%; height: auto; object-fit: cover; border-radius: 0; }
 .si-evidence-cap {
   margin: 12px 2px 2px;
   font-size: 0.78rem;
@@ -642,29 +778,31 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   color: var(--ink-soft);
 }
 
-/* ── Data card — only where genuinely a card (the deck "AI & BRAND" card).
-   Square corners, one lift device. ── */
+/* ── Data card — the cream editorial frame; the data floats inside it.
+   Square corners, one lift device, bold-black title low-left. ─────── */
 .si-datacard {
-  background: var(--paper);
+  background: var(--cream);
   border: 0;
-  box-shadow: 0 1px 2px rgba(10,26,92,0.05), 0 14px 36px rgba(10,26,92,0.08);
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
   padding: clamp(18px, 2vw, 28px);
 }
 .si-datacard-title {
-  font-weight: 700;
+  font-weight: 800;
+  color: var(--ink);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
+  letter-spacing: 0.02em;
+  line-height: 1.0;
   margin: 0 0 14px;
   padding-bottom: 12px;
-  border-bottom: 1.5px solid var(--soi-navy);
+  border-bottom: 1px solid rgba(4, 22, 84, 0.16);
 }
 
 /* ============================================================
    COMPONENTS
    ============================================================ */
 
-/* ── Hanging-quote block — the quote gets real estate (§2) ── */
+/* ── Hanging-quote block — the quote gets real estate (AD §2) ── */
 .si-quote { position: relative; padding-left: clamp(28px, 4vw, 64px); }
 .si-quote::before {
   content: "\201C";
@@ -672,12 +810,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   left: -0.06em; top: -0.18em;
   font-size: clamp(4rem, 9vw, 8rem);
   line-height: 1;
-  font-weight: 700;
-  color: var(--soi-amber);
+  font-weight: 800;
+  color: var(--yellow);
   pointer-events: none;
   z-index: 0;
 }
-.si-quote-body { position: relative; z-index: 1; font-weight: 400; line-height: 1.4; }
+.si-quote-body { position: relative; z-index: 1; font-weight: 400; line-height: 1.4; color: var(--ink); }
 .si-quote-cite {
   margin-top: var(--space-2);
   font-size: 0.78rem;
@@ -686,17 +824,23 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   color: var(--ink-soft);
 }
 .si-ground-warm .si-quote::before,
-.on-warm .si-quote::before { color: rgba(10,26,92,0.18); }
+.on-warm .si-quote::before { color: rgba(4, 22, 84, 0.2); }
+.si-ground-navy .si-quote-body,
+.si-ground-blue .si-quote-body,
+.si-dark .si-quote-body,
+.on-navy .si-quote-body { color: var(--cream); }
+.si-ground-navy .si-quote-cite,
 .si-ground-blue .si-quote-cite,
 .si-dark .si-quote-cite,
-.on-navy .si-quote-cite { color: rgba(238,233,221,0.72); }
+.on-navy .si-quote-cite { color: rgba(240, 237, 231, 0.72); }
 
-/* ── Buttons (square, no radius, no underline) ───────────── */
+/* ── Buttons (square, no radius, no underline) — yellow accent or navy ── */
 .vccp-btn {
   display: inline-block;
-  background: var(--soi-amber);
-  color: var(--soi-navy);
-  border: 1px solid var(--soi-navy);
+  background: var(--yellow);
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: 0;
   padding: 12px 18px;
   font: 600 0.95rem/1 var(--font-sans);
   letter-spacing: 0.02em;
@@ -704,12 +848,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   transition: transform var(--dur-micro) var(--ease-entrance),
               box-shadow var(--dur-micro) var(--ease-entrance);
 }
-.vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--soi-navy); }
-.vccp-btn-primary { background: var(--soi-navy); color: var(--soi-cream); }
+.vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--navy); }
+.vccp-btn-primary { background: var(--navy); color: var(--cream); }
 .vccp-btn-quiet {
   background: transparent;
-  border-color: rgba(10,26,92,0.22);
-  color: rgba(10,26,92,0.62);
+  border-color: rgba(4, 22, 84, 0.22);
+  color: rgba(4, 22, 84, 0.62);
 }
 @media (prefers-reduced-motion: reduce) { .vccp-btn { transition: none; } }
 
@@ -717,7 +861,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .vccp-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
 .vccp-table th, .vccp-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid rgba(10,26,92,0.10);
+  border-bottom: 1px solid rgba(4, 22, 84, 0.1);
   font-size: 0.95rem;
 }
 .vccp-table th {
@@ -726,12 +870,14 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--soi-navy);
+  color: var(--navy);
+  border-bottom: 1px solid var(--navy);
 }
 .vccp-table td.num, .vccp-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
-.vccp-table tbody tr:hover { background: rgba(251,193,0,0.10); }
-.vccp-delta-up   { color: var(--soi-up);   font-weight: 600; }
-.vccp-delta-down { color: var(--soi-down); font-weight: 600; }
+.vccp-table tbody tr:hover { background: rgba(240, 203, 8, 0.12); }
+/* Deltas use navy weight + the yellow accent — never red/green. */
+.vccp-delta-up   { color: var(--navy); font-weight: 700; }
+.vccp-delta-down { color: var(--ink-soft); font-weight: 700; }
 
 /* ── Reveal-on-scroll (js/lib/reveal.js) — entrance easing, reveal band ── */
 .reveal {
@@ -746,12 +892,12 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .section-error-card {
   max-width: 720px;
   margin: 0 auto;
-  border: 1px solid var(--soi-navy);
-  border-left: 3px solid var(--soi-orange);
-  background: var(--paper);
+  border: 1px solid var(--navy);
+  border-left: 3px solid var(--yellow);
+  background: var(--cream);
   padding: 28px 32px;
 }
-.section-error-card h2 { font-size: var(--t-md); font-weight: 600; margin: 0 0 8px; }
+.section-error-card h2 { font-size: var(--t-md); font-weight: 800; color: var(--ink); margin: 0 0 8px; }
 .section-error-card p { margin: 0; font-size: 0.78rem; color: var(--ink-soft); }
 .awaiting-card { max-width: 640px; margin: 0 auto; }
 
@@ -772,7 +918,7 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 
 /* ============================================================
    LAYOUT UTILITIES — asymmetric editorial grid, one focal point,
-   fill the screen, kill dead space, breathe (§2)
+   fill the screen, kill dead space, breathe (AD §2)
    ============================================================ */
 
 /* 12-col grid + spans. */

@@ -248,8 +248,8 @@ export default function init(rootEl, data) {
   observeCounters(rootEl);
 
   // ── Converging respondent field (D1) ──────────────────────────────
-  // Navy dots on the warm ground for contrast: they spring from a scatter into
-  // a country-shaped cloud — the nation "connecting".
+  // Navy dots on the cream editorial ground for contrast: they spring from a
+  // scatter into a country-shaped cloud — the nation "connecting".
   let field = null;
   if (fieldEl) {
     const navy = readToken('--soi-navy', '#0A1A5C');

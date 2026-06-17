@@ -1,34 +1,54 @@
 /* ============================================================
    02-research — scoped to #\30 2-research (the journey-step section).
 
-   THE ONE MEMORABLE THING: the UK as a real place, alone and large;
-   cities surface as memories on tap. The map is the hero — everything
-   else is a quiet editorial rail hung on the left axis.
+   THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7, per-screen note for
+   02): the CREAM editorial ground — the reading / data register. Eyebrow →
+   a BOLD BLACK Poppins title with ONE italic accent word ("listened", the
+   "Series" gesture). The UK as a real place; the map is the hero, alone.
+   Big navy tabular stats. Navy+yellow icon/accent system — markers are navy
+   with the yellow accent when live. The tiny Challenger-Series lockup mark
+   stamps the screen top-right (the book-cover position).
 
-   Asymmetric grid: a slim left axis (eyebrow · one display line · small
-   supporting facts · the opened diary · credit) and a dominant map field.
-   Dramatic hierarchy — one display headline, nothing in the muddy middle;
-   the four old competing counters are gone. One accent moment: the teal
-   city markers. One hero motion: the converge + cities lighting.
+   THE ONE MEMORABLE THING: the UK silhouette, alone and large, the nation's
+   respondent dots converging onto it; cities surface as memories on tap.
+   Everything else is a quiet editorial rail hung on the left axis.
 
-   Warm gradient ground, navy gravity, cream silhouette, Poppins.
-   Backgroundless, square corners, NO underline, navy-on-warm, AA.
+   Asymmetric grid: slim left axis | dominant map field. Dramatic hierarchy —
+   one display headline, nothing in the muddy middle. One accent moment: the
+   yellow live-city marker. One hero motion: the converge + cities lighting.
+
+   Cream ground, navy gravity, black titles, yellow accent, Poppins.
+   Backgroundless, square corners, NO underline, navy-on-cream, AA.
    ============================================================ */
 
-/* The section IS the warm gradient ground, full-bleed (no top nav). */
+/* The section IS the cream editorial ground, full-bleed (the reading register). */
 #\30 2-research {
-  background: var(--ground-warm);
-  color: var(--soi-navy);
+  background: var(--cream);
+  color: var(--ink-soft);
   padding: 0;
   isolation: isolate;
   overflow: hidden;
 }
 
 #\30 2-research .chapter-inner {
+  position: relative;
   max-width: none;
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
+}
+
+/* ── The brand signature — tiny Challenger-Series lockup stamp, top-right.
+   Black silhouette on cream; the book-cover position. Never recoloured. ── */
+#\30 2-research .research-mark {
+  position: absolute;
+  top: clamp(20px, 3.4vh, 40px);
+  right: clamp(24px, 5vw, 96px);
+  height: clamp(22px, 2.4vw, 30px);
+  width: auto;
+  opacity: 0.9;
+  z-index: 3;
+  pointer-events: none;
 }
 
 /* ── Asymmetric layout: slim rail | dominant map hero ─────────────── */
@@ -41,7 +61,7 @@
   grid-template-columns: minmax(300px, 30%) minmax(0, 1fr);
   align-items: center;
   gap: clamp(32px, 5vw, 96px);
-  padding: clamp(3rem, 7vh, 6.5rem) clamp(24px, 5vw, 96px)
+  padding: clamp(3.4rem, 8vh, 6.5rem) clamp(24px, 5vw, 96px)
            calc(var(--journey-controls-h, 72px) + clamp(2.4rem, 6vh, 5rem));
 }
 
@@ -55,57 +75,65 @@
   margin: 0 0 clamp(16px, 2vh, 22px);
 }
 
-/* The ONE display moment on this screen. */
+/* The ONE display moment on this screen — the BOLD BLACK book-cover voice.
+   Sentence case, set tight, three lines; the accent word is italic only. */
 #\30 2-research .research-headline {
-  margin: 0 0 clamp(20px, 3vh, 32px);
+  margin: 0 0 clamp(22px, 3.2vh, 34px);
   font-weight: 900;
-  line-height: 0.92;
+  line-height: 0.94;
   letter-spacing: -0.03em;
-  font-size: clamp(2.4rem, 3.6vw, 4rem);
-  color: var(--soi-navy);
+  font-size: clamp(2.5rem, 3.8vw, 4.2rem);
+  color: var(--ink);
 }
 #\30 2-research .research-headline span { display: block; }
-#\30 2-research .research-headline .hl-teal {
-  color: var(--soi-teal);
+/* The italic accent word — the "Series" gesture. The slant IS the accent:
+   no box, no skew, no underline, no fill. May take navy for a quiet lift. */
+#\30 2-research .research-headline .si-accent {
+  font-style: italic;
   font-weight: 900;
+  color: var(--navy);
   background: none;
 }
 
 #\30 2-research .research-standfirst {
-  margin: 0 0 clamp(28px, 4vh, 40px);
+  margin: 0 0 clamp(30px, 4.4vh, 44px);
   font-size: var(--t-md);
   line-height: 1.5;
   font-weight: 400;
-  color: var(--soi-navy);
+  color: var(--ink-soft);
+  max-width: 38ch;
 }
-#\30 2-research .research-standfirst strong { font-weight: 600; }
-/* The 1,504 — emphasised within the sentence, not a competing display number. */
+#\30 2-research .research-standfirst strong { font-weight: 600; color: var(--ink); }
+/* The 1,504 — emphasised within the sentence (navy gravity), not a competing
+   display number. */
 #\30 2-research .research-standfirst .num {
   font-weight: 700;
+  color: var(--navy);
   font-feature-settings: "tnum" 1;
 }
 
-/* The facts — a single quiet supporting row, never a second hero. */
+/* The facts — a single quiet supporting row, never a second hero. Big navy
+   tabular numerals (gravity); the small caption beneath in soft ink. */
 #\30 2-research .research-facts {
-  margin: 0 0 clamp(28px, 4vh, 40px);
+  margin: 0 0 clamp(30px, 4.4vh, 44px);
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(24px, 2.4vw, 40px);
+  gap: clamp(26px, 2.6vw, 44px);
 }
 #\30 2-research .research-fact { margin: 0; min-width: 0; }
 #\30 2-research .research-fact-k {
   display: block;
   margin: 0;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--soi-navy);
-  font-size: clamp(1.5rem, 2.1vw, 2rem);
+  letter-spacing: -0.03em;
+  color: var(--navy);
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
   font-feature-settings: "tnum" 1;
 }
 #\30 2-research .research-fact-k--text {
-  font-size: clamp(1.15rem, 1.5vw, 1.45rem);
-  letter-spacing: -0.01em;
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  letter-spacing: -0.02em;
 }
 #\30 2-research .research-fact-unit {
   font-size: 0.5em;
@@ -114,12 +142,15 @@
 }
 #\30 2-research .research-fact-v {
   display: block;
-  margin: 6px 0 0;
+  margin: 7px 0 0;
   max-width: 16ch;
   font-size: var(--t-xs);
   line-height: 1.35;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--ink-soft);
+  opacity: 0.78;
 }
 
 #\30 2-research .research-credit {
@@ -128,7 +159,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.6;
 }
 
@@ -151,7 +182,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.55;
   font-feature-settings: "tnum" 1;
 }
@@ -178,39 +209,42 @@
   outline: none;
 }
 #\30 2-research .research-map:focus-visible {
-  outline: 2px solid var(--soi-navy);
+  outline: 2px solid var(--navy);
   outline-offset: 8px;
 }
 
-/* The navy silhouette: backgroundless, large, the single hero form. */
+/* The navy silhouette: backgroundless, large, the single hero form, sitting
+   on the cream ground. One soft self-shadow lift. */
 #\30 2-research .research-map-svg {
   width: auto;
   height: 100%;
   max-width: 100%;
   display: block;
-  fill: var(--soi-navy);
-  opacity: 0.94;
-  filter: drop-shadow(0 24px 44px rgba(10, 26, 92, 0.24));
+  fill: var(--navy);
+  opacity: 0.96;
+  filter: drop-shadow(0 24px 44px rgba(4, 22, 84, 0.18));
 }
 
 /* The silhouette fill is decorative — it must never intercept marker clicks. */
 #\30 2-research .research-map-svg > g:not(.research-markers) { pointer-events: none; }
 
-/* ── City markers — the ONE accent moment (teal allowed here) ──────── */
+/* ── City markers — flat navy+yellow, the icon/accent system ────────
+   At rest a navy dot ringed cream; live it flips to the YELLOW accent
+   (the single accent moment). Square, clean, no gradient. ──────────── */
 #\30 2-research .research-markers { pointer-events: auto; }
 #\30 2-research .research-marker { cursor: pointer; pointer-events: auto; }
 #\30 2-research .research-marker-pulse,
 #\30 2-research .research-marker-dot { pointer-events: auto; }
 #\30 2-research .research-marker-dot {
-  fill: var(--soi-teal);
-  stroke: var(--soi-cream);
-  stroke-width: 3;
+  fill: var(--cream);
+  stroke: var(--navy);
+  stroke-width: 4;
   transition: r 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 2-research .research-marker-pulse {
   fill: none;
-  stroke: var(--soi-teal);
-  stroke-width: 2.5;
+  stroke: var(--yellow);
+  stroke-width: 3;
   opacity: 0;
 }
 #\30 2-research .research-marker-label {
@@ -218,10 +252,10 @@
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  fill: var(--soi-cream);
+  fill: var(--navy);
   paint-order: stroke;
-  stroke: var(--soi-navy);
-  stroke-width: 5;
+  stroke: var(--cream);
+  stroke-width: 6;
   stroke-linejoin: round;
   pointer-events: none;
   opacity: 0;
@@ -248,9 +282,10 @@
 
 #\30 2-research .research-marker:hover .research-marker-dot,
 #\30 2-research .research-marker.is-active .research-marker-dot { r: 18; }
+/* The live city — the yellow accent moment, ringed navy. */
 #\30 2-research .research-marker.is-active .research-marker-dot {
-  fill: var(--soi-cream);
-  stroke: var(--soi-teal);
+  fill: var(--yellow);
+  stroke: var(--navy);
 }
 @media (prefers-reduced-motion: no-preference) {
   #\30 2-research .research-marker.is-active .research-marker-pulse {
@@ -259,20 +294,20 @@
     animation: research-pulse 1.8s ease-out infinite;
   }
   @keyframes research-pulse {
-    0%   { opacity: 0.5; transform: scale(1); }
-    70%  { opacity: 0;   transform: scale(2.2); }
+    0%   { opacity: 0.55; transform: scale(1); }
+    70%  { opacity: 0;    transform: scale(2.2); }
     100% { opacity: 0; }
   }
 }
 
-/* The listening trail — faint cream thread between visited cities. */
+/* The listening trail — faint navy thread between visited cities. */
 #\30 2-research .research-trail {
   fill: none;
-  stroke: var(--soi-cream);
+  stroke: var(--navy);
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.45;
+  opacity: 0.32;
   stroke-dasharray: 2 18;
 }
 
@@ -285,11 +320,14 @@
   font-size: var(--t-xs);
   font-weight: 500;
   color: var(--ink-soft);
+  opacity: 0.78;
   transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 2-research .research-hint.is-done { opacity: 0; pointer-events: none; }
 
-/* ── The opened diary — surfaces in the rail, beneath the facts ────── */
+/* ── The opened diary — surfaces in the rail, beneath the facts ──────
+   Editorial register: a hanging quote, the yellow accent on the quote mark,
+   navy emphasis on the attribution. Backgroundless — no card behind it. ── */
 #\30 2-research .research-diary {
   min-height: clamp(120px, 18vh, 180px);
   margin: 0 0 clamp(8px, 1.5vh, 16px);
@@ -302,7 +340,7 @@
   font-size: clamp(1.05rem, 1.35vw, 1.3rem);
   line-height: 1.45;
   font-weight: 500;
-  color: var(--soi-navy);
+  color: var(--ink);
 }
 #\30 2-research .research-quote-text::before {
   content: "\201C";
@@ -312,7 +350,7 @@
   font-size: 2.2em;
   line-height: 1;
   font-weight: 900;
-  color: var(--soi-teal);
+  color: var(--yellow);
 }
 #\30 2-research .research-quote-cite {
   margin: 12px 0 0;
@@ -322,20 +360,21 @@
   text-transform: uppercase;
   font-weight: 600;
   color: var(--ink-soft);
+  opacity: 0.85;
 }
-#\30 2-research .research-quote-who { color: var(--soi-navy); font-weight: 700; }
+#\30 2-research .research-quote-who { color: var(--navy); font-weight: 700; opacity: 1; }
 #\30 2-research .research-quote-note {
   margin: 0;
   font-size: var(--t-md);
   line-height: 1.5;
   font-weight: 500;
-  color: var(--soi-navy);
+  color: var(--ink-soft);
 }
 #\30 2-research .research-quote-city {
   display: block;
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: var(--soi-navy);
+  color: var(--ink);
   margin-bottom: 4px;
 }
 
@@ -363,7 +402,7 @@
     grid-template-columns: 1fr;
     align-content: center;
     gap: clamp(28px, 5vh, 48px);
-    padding: clamp(2.5rem, 6vh, 4rem) clamp(20px, 7vw, 40px)
+    padding: clamp(3.6rem, 6vh, 4.5rem) clamp(20px, 7vw, 40px)
              calc(var(--journey-controls-h, 72px) + clamp(2rem, 5vh, 3.5rem));
   }
   #\30 2-research .research-map-wrap { min-height: clamp(320px, 46vh, 520px); }
@@ -372,5 +411,5 @@
 }
 @media (max-width: 520px) {
   #\30 2-research .research-facts { gap: 20px 28px; }
-  #\30 2-research .research-headline { font-size: clamp(2.1rem, 9vw, 3rem); }
+  #\30 2-research .research-headline { font-size: clamp(2.2rem, 9vw, 3rem); }
 }

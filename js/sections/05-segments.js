@@ -23,12 +23,16 @@
  *   3. WHAT LINKS THEM (supporting layer). segmentGraph(segments) — the
  *      circular force-physics network of segment hubs + shared attributes.
  *
- * Design world: warm gradient ground, navy marks/text (one high-contrast
- * crowd — never mustard-on-mustard), thin orbit motif; the network's hubs
- * carry the per-segment brand accents. Backgroundless, square
- * corners, no underline/skew, tabular nums. One easing system; the resolve
- * is the single hero motion. Reduced-motion safe, keyboard throughout. The
- * dotField canvas + graph rAF are destroy()-ed when the step leaves.
+ * Design world (BRAND-WORLD-FINAL §7): CREAM editorial ground — the
+ * data-reading register. The four segments resolve into book-cover CARDS
+ * (cream, square, bold-black Poppins title low-left, a flat navy+yellow icon
+ * in the upper field, the tiny Challenger-Series lockup mark top-right). The
+ * dot crowd is one NAVY nation (#041654) on cream; the chosen camp lights in
+ * navy while the rest fade to a faint navy tint. Navy+yellow accent system;
+ * yellow is the single highlight. Backgroundless data inside the cards,
+ * square corners, no underline/skew, tabular nums. One easing system; the
+ * resolve is the single hero motion. Reduced-motion safe, keyboard
+ * throughout. The dotField canvas + graph rAF are destroy()-ed on step-leave.
  *
  * @param {HTMLElement} rootEl  <section class="journey-step" id="05-segments">
  * @param {{segments: object|null, journey: {gate():void, ready():void}}} data
@@ -69,6 +73,63 @@ const QUADRANTS = [
 const esc = (s) =>
   String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/**
+ * The tiny Challenger-Series lockup stamp for a card's top-right (BWF §3).
+ * Tight inline SVG of the bear+girl+VCCP mark; black silhouette, square
+ * construction, never recoloured. Sits in `.soi-card__mark`.
+ */
+const LOCKUP_MARK = `
+  <svg class="sg5-mark" viewBox="0 0 96 40" role="img" aria-label="VCCP Challenger Series" focusable="false">
+    <g fill="currentColor">
+      <path d="M4 18c1-5 5-9 11-9 4 0 6 2 9 2 2 0 3-1 4-1 1 0 2 1 2 2 0 1-1 2-2 2-1 0-2 0-3 1 2 2 3 5 3 8H30c0-2-1-4-3-5-1 2-3 3-5 3-1 3-3 5-6 5-1 0-2-1-2-2l1-3c-4-1-7-4-8-8-1 0-2-1-2-3 0 0 1 0 2 1Z"/>
+      <rect x="3" y="29" width="32" height="2"/>
+      <rect x="40.5" y="9" width="2" height="22"/>
+      <path d="M22 12c1 0 2 1 2 3v9h-2v-9c0-1 0-2 0-3Z"/>
+    </g>
+    <g fill="currentColor" font-family="Poppins, sans-serif" font-weight="800">
+      <text x="48" y="20" font-size="10">VCCP</text>
+      <text x="48" y="33" font-size="9" font-weight="600" font-style="italic">Series</text>
+    </g>
+  </svg>`;
+
+/**
+ * Flat navy+yellow segment icons (BWF §6): a solid navy body with ONE bright
+ * yellow wedge/cut — the "open" gesture, echoing the book-cover icons. No
+ * gradients, outlines or shadow; square clean construction. Colour comes from
+ * the `.soi-icon` token system (currentColor = navy, [data-accent] = yellow).
+ * Geometry per segment carries its character (compass / arrows / leaf / shelter).
+ */
+const SEGMENT_ICONS = {
+  architects: `
+    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="4"/>
+      <path data-accent d="M32 14 38 32 32 32Z"/>
+      <path data-body d="M32 50 26 32 32 32Z"/>
+      <circle cx="32" cy="32" r="4" data-body/>
+    </svg>`,
+  hustlers: `
+    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+      <path data-body d="M10 40 28 22 38 32 54 16 54 30 50 26 38 38 28 28 14 42Z"/>
+      <path data-accent d="M44 16 54 16 54 26 50 22 46 26 42 22 48 20Z"/>
+    </svg>`,
+  coasters: `
+    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+      <path data-body d="M32 54C20 44 14 34 14 24 22 24 28 28 32 36 36 28 42 24 50 24 50 34 44 44 32 54Z"/>
+      <path data-accent d="M32 36C36 28 42 24 50 24 50 30 47 36 42 42 38 38 35 37 32 36Z"/>
+      <rect x="30" y="36" width="4" height="18" data-body/>
+    </svg>`,
+  retreaters: `
+    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+      <path data-body d="M12 30 32 12 52 30 52 34 32 18 12 34Z"/>
+      <rect x="18" y="32" width="28" height="20" data-body/>
+      <path data-accent d="M27 52 27 40 37 40 37 52Z"/>
+    </svg>`,
+};
+
+/** A flat navy+yellow segment icon wrapped in the `.soi-icon` token system. */
+const segmentIcon = (id) =>
+  `<span class="soi-icon sg5-icon">${SEGMENT_ICONS[id] || ''}</span>`;
 
 /**
  * Map a quiz x/y score to a segment id via the data's quadrantToSegment.
@@ -128,14 +189,18 @@ const topBrandAsks = (seg) => {
 };
 
 /**
- * Render a chosen segment's profile into the host — backgroundless, navy on
- * warm. heroQuote leads (the human moment), then who/money/AI, then the two
- * supporting charts. Square corners, no boxes, no underline.
+ * Render a chosen segment's profile as a BOOK-COVER card (BWF §3): cream
+ * ground, square corners, the tiny lockup stamp top-right, a flat navy+yellow
+ * segment icon beside the big share number, the bold-black name, then the
+ * human heroQuote, who/money/AI, and the two backgroundless navy-on-cream
+ * charts. ONE lift device (the soft self-shadow on `.soi-card`).
  */
 const renderProfile = (host, seg) => {
   host.innerHTML = `
-    <article class="sg5-profile-card sg5-accent-${esc(seg.id)}">
+    <article class="soi-card sg5-profile-card sg5-accent-${esc(seg.id)}">
+      <span class="soi-card__mark sg5-card-mark" aria-hidden="true">${LOCKUP_MARK}</span>
       <header class="sg5-profile-head">
+        ${segmentIcon(seg.id)}
         <span class="sg5-profile-share num">${esc(seg.sharePct)}<span class="sg5-profile-pct">%</span></span>
         <div class="sg5-profile-id">
           <h3 class="sg5-profile-name">${esc(seg.name)}</h3>
@@ -279,7 +344,7 @@ export default function init(rootEl, data) {
       dotRadius: 3.4,
       ariaLabel: 'One hundred dots resolving into four segments of Britain.',
     });
-    const navy = cssVar('--soi-navy', '#0A1A5C');
+    const navy = cssVar('--navy', '#041654');
     const built = buildFormation(navy);
     owners = built.owners;
     const baseTargets = built.targets;
@@ -288,7 +353,7 @@ export default function init(rootEl, data) {
     field.lightCamp = (id) => {
       const repaint = baseTargets.map((t, idx) => ({
         x: t.x, y: t.y,
-        colour: owners[idx] === id ? navy : 'rgba(10,26,92,0.20)',
+        colour: owners[idx] === id ? navy : 'rgba(4,22,84,0.18)',
       }));
       field.formation(repaint, { spring: 0.05, jostle: 0.00006 });
       field.drift(prefersReducedMotion() ? 0 : 0.6);
@@ -336,7 +401,9 @@ export default function init(rootEl, data) {
     if (!seg) return;
     quizResult.hidden = false;
     quizResult.innerHTML = `
-      <div class="sg5-result-card sg5-accent-${esc(id)}">
+      <div class="soi-card sg5-result-card sg5-accent-${esc(id)}">
+        <span class="soi-card__mark sg5-card-mark" aria-hidden="true">${LOCKUP_MARK}</span>
+        ${segmentIcon(id)}
         <p class="sg5-result-eyebrow">You are among the</p>
         <h3 class="sg5-result-name">${esc(seg.name)}</h3>
         <p class="sg5-result-trio">${esc(seg.threeWordDescriptor)}</p>

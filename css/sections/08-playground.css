@@ -1,33 +1,34 @@
 /* Chapter 08 — playground. ONE instrument: the data, beautifully, on demand.
    Every selector is prefixed with #\30 8-playground so nothing leaks.
 
-   THE BAR (ART-DIRECTION): one focal point — the divergence dial. A calm,
-   precise instrument on a quiet research ground (the appendix register —
-   distinct from the warm narrative chapters, light enough that navy marks +
-   ink copy stay AA-legible). Backgroundless: the chart sits transparently on
-   the ground, no white box, no gridlines.
+   THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 · "08 — Playground"):
+   a calm, precise CREAM instrument. The editorial light ground (#F0EDE7) — the
+   reading / data register; restraint is the luxury signal. NAVY is gravity (all
+   text + the chart marks, AA-legible on cream). YELLOW is the single accent — the
+   eyebrow, the live read-out unit, the orbit signature, the active control wedge.
+   BOLD BLACK Poppins carries the read-out figure (the number IS the headline) with
+   one italic accent word in the rail title. Backgroundless data: charts float on
+   the cream, no white box, no gridlines, no chart-junk.
 
    COMPOSITION: an asymmetric editorial split. A left INSTRUMENT RAIL hangs the
    eyebrow, the display-scale live read-out (the data as the hero), and the two
-   controls on a left axis; the chart is the single hero on the open ground to
-   its right. Deliberate spacing: tight within a group, large between groups.
-
-   COLOUR: navy = gravity (text + chart marks; AA on the pale ground). Teal =
-   the ONE accent — the eyebrow, the live word, the active control, the orbit
-   ring. Never a teal mark on the teal ground; never mustard-on-mustard.
+   quiet square controls on a left axis; the chart is the single hero on the open
+   cream ground to its right. The tiny Challenger-Series lockup stamps the
+   instrument top-right (the book-cover position). Deliberate spacing: tight within
+   a group, large between groups.
 
    MOTION: one hero motion — the chart morphs (tugOfWar springs / bars re-sort /
    viz crossfade) and the read-out figure counts. Everything else is quiet. */
 
-/* ─── The research ground — a quiet pale wash built from the real tokens.
-   Light enough for navy AA; a soft top-light gives depth without a box. ─── */
+/* ─── The editorial cream ground — the precise-instrument register.
+   A faint warm top-light gives depth without a box; navy stays AA on it. ─── */
 #\30 8-playground {
   background:
-    radial-gradient(130% 100% at 14% 0%, rgba(255, 255, 255, 0.45) 0%, transparent 52%),
-    linear-gradient(168deg, #DBEEEC 0%, #E7EDE6 100%);
-  color: var(--soi-navy);
-  /* faint navy ink tint — for tracks/rules, never a white box */
-  --pg-rule: rgba(10, 26, 92, 0.12);
+    radial-gradient(135% 110% at 12% -8%, rgba(255, 255, 255, 0.55) 0%, transparent 50%),
+    var(--cream);
+  color: var(--navy);
+  /* faint navy ink tint — for the orbit hairline, never a white box */
+  --pg-rule: rgba(4, 22, 84, 0.12);
 }
 
 /* Full-viewport immersive stage; top-aligned so the ground fills the screen. */
@@ -48,7 +49,8 @@
 }
 #\30 8-playground .pg-world > * { position: relative; z-index: 1; }
 
-/* The orbit signature — one thin teal ring, ambient, behind everything. */
+/* The orbit signature — one thin navy-tint ring, ambient, behind everything,
+   with a single yellow seed where the journey thread touches it (the accent). */
 #\30 8-playground .pg-orbit {
   position: absolute;
   z-index: 0;
@@ -57,7 +59,7 @@
   width: clamp(420px, 48vw, 820px);
   height: clamp(420px, 48vw, 820px);
   border-radius: 50%;
-  border: 1.5px solid rgba(43, 183, 232, 0.32);
+  border: 1.5px solid var(--pg-rule);
   pointer-events: none;
   animation: pg-orbit-spin 80s linear infinite;
 }
@@ -66,17 +68,43 @@
   position: absolute;
   inset: 16%;
   border-radius: 50%;
-  border: 1px solid var(--pg-rule);
+  border: 1px solid rgba(4, 22, 84, 0.08);
+}
+/* the single yellow seed-dot riding the orbit ring — the one accent moment */
+#\30 8-playground .pg-orbit::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(240, 237, 231, 0.6);
 }
 @keyframes pg-orbit-spin { to { transform: rotate(360deg); } }
 
 /* ─── The asymmetric split: instrument rail | chart hero ─────────────── */
 #\30 8-playground .pg-stage {
+  position: relative;
   width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
   gap: clamp(var(--space-4), 6vw, var(--space-7));
+}
+
+/* The tiny Challenger-Series lockup — the book-cover stamp, top-right of the
+   instrument. Black silhouette, never recoloured; small brand signature. */
+#\30 8-playground .pg-mark {
+  position: absolute;
+  top: clamp(-8px, -1vw, 0px);
+  right: 0;
+  height: 28px;
+  width: auto;
+  opacity: 0.9;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* ─── LEFT: the instrument rail ──────────────────────────────────────── */
@@ -87,8 +115,9 @@
 }
 #\30 8-playground .pg-eyebrow {
   margin: 0;
-  color: var(--soi-teal);
-  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.7;
+  font-weight: 600;
 }
 #\30 8-playground .pg-eyebrow[data-arrival],
 #\30 8-playground .pg-readout-num[data-arrival],
@@ -96,37 +125,39 @@
   display: block;
 }
 
-/* The display moment — tight within the read-out group, large gap to controls. */
+/* The display moment — tight within the read-out group, large gap to controls.
+   The number is the headline: Poppins 900, navy gravity, tabular. */
 #\30 8-playground .pg-readout {
   margin: var(--space-2) 0 clamp(var(--space-4), 6vh, var(--space-6)) 0;
 }
 #\30 8-playground .pg-readout-num {
   margin: 0;
-  color: var(--soi-navy);
+  color: var(--navy);
   font-weight: 900;
   font-size: clamp(4rem, 9vw, 8rem);
   line-height: 0.9;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
 }
+/* The unit is the ONE yellow accent on the figure. */
 #\30 8-playground .pg-readout-unit {
   font-size: 0.42em;
   font-weight: 800;
   letter-spacing: -0.01em;
   margin-left: 0.06em;
   vertical-align: baseline;
-  color: var(--soi-teal);
+  color: var(--yellow);
 }
 #\30 8-playground .pg-readout-line {
   margin: var(--space-1) 0 0 0;
-  color: var(--soi-navy);
+  color: var(--ink);
   font-size: clamp(1.05rem, 1.7vw, 1.4rem);
   font-weight: 600;
   line-height: 1.2;
   max-width: 30ch;
 }
 
-/* ─── Controls — square chips, navy on the pale ground; large gap above ─ */
+/* ─── Controls — square chips, navy on the cream ground; large gap above ─ */
 #\30 8-playground .pg-controls {
   display: flex;
   flex-direction: column;
@@ -138,7 +169,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.55;
   margin-bottom: var(--space-1);
 }
@@ -147,34 +178,35 @@
   flex-wrap: wrap;
   gap: 8px;
 }
-/* Rest: navy outline, no fill box (de-blocked). */
+/* Rest: navy outline, no fill box (de-blocked) — the quiet square control. */
 #\30 8-playground .pillgroup-chip {
   background: transparent;
-  color: var(--soi-navy);
-  border: 1.5px solid rgba(10, 26, 92, 0.38);
+  color: var(--navy);
+  border: 1.5px solid rgba(4, 22, 84, 0.34);
+  border-radius: 0;
   padding: 8px 13px;
   font: 600 var(--t-xs) / 1 var(--font-sans);
   letter-spacing: 0.02em;
   cursor: pointer;
   font-variant-numeric: tabular-nums;
-  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-    color 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.18s var(--ease-entrance),
+    border-color 0.18s var(--ease-entrance),
+    background 0.18s var(--ease-entrance),
+    color 0.18s var(--ease-entrance);
 }
 #\30 8-playground .pillgroup-chip:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--soi-navy);
-  background: rgba(10, 26, 92, 0.05);
+  border-color: var(--navy);
+  background: rgba(4, 22, 84, 0.05);
 }
-/* Active: solid navy, cream text — deliberate contrast. */
+/* Active: solid navy, cream text — deliberate contrast, the data-serious chip. */
 #\30 8-playground .pillgroup-chip.is-active {
-  background: var(--soi-navy);
-  color: var(--soi-cream);
-  border-color: var(--soi-navy);
+  background: var(--navy);
+  color: var(--cream);
+  border-color: var(--navy);
 }
 #\30 8-playground .pillgroup-chip:focus-visible {
-  outline: 2px solid var(--soi-navy);
+  outline: 2px solid var(--navy);
   outline-offset: 2px;
 }
 #\30 8-playground .pillgroup-chip:disabled {
@@ -188,13 +220,13 @@
   font-size: var(--t-xs);
   letter-spacing: 0.04em;
   font-weight: 600;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.6;
   min-height: 1.4em;
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── RIGHT: the single hero — the chart, box-less on the open ground ─── */
+/* ─── RIGHT: the single hero — the chart, box-less on the open cream ─── */
 #\30 8-playground .pg-instrument {
   min-width: 0;
 }
@@ -208,8 +240,8 @@
   /* the buttery, backgroundless crossfade when the viz TYPE changes */
   opacity: 1;
   transform: none;
-  transition: opacity 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.36s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.24s var(--ease-entrance),
+    transform 0.36s var(--ease-entrance);
   will-change: opacity, transform;
 }
 #\30 8-playground .pg-chart.is-fading {
@@ -232,6 +264,9 @@
   #\30 8-playground .pg-stage {
     grid-template-columns: 1fr;
     gap: var(--space-4);
+  }
+  #\30 8-playground .pg-mark {
+    top: 0;
   }
   #\30 8-playground .pg-world {
     justify-content: flex-start;

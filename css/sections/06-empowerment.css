@@ -1,14 +1,20 @@
 /* ============================================================
-   Chapter 06 — the empowerment architecture
+   Chapter 06 — the empowerment architecture  ·  THE TURN
    Scope: #\30 6-empowerment  ("\30 " = escaped digit 0 + space)
 
-   ONE focal point: the marquee venn — three needs pulled together
-   until they meet on empowerment (ART-DIRECTION §7). Everything else
-   is a quiet prelude that leads the eye to it. One continuous warm
-   gradient world, backgroundless: no white boxes, no scrim plates,
-   no pills behind text. Navy on warm, square corners, no underline,
-   no skew, tabular nums, AA contrast. One accent moment = the cream
-   "empowerment" word in the dark shared core.
+   AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "06"):
+   a full-bleed WARM GRADIENT world moment. BOLD BLACK Poppins-900 hero
+   with ONE italic accent word (the "Series" gesture). The bear/girl tall
+   silhouette stands as the agent on a right edge column; the tiny
+   Challenger-Series lockup signs top-right (book-cover stamp).
+
+   ONE focal point: the marquee venn — three needs pulled together until
+   they meet on empowerment. Everything else is a quiet prelude. One
+   continuous warm gradient world, backgroundless: no white boxes, no
+   scrim plates, no pills. Black titles + navy data on warm; square
+   corners; NO underline; NO skew; tabular nums; AA contrast. The single
+   accent moment = the YELLOW glow + cream "empowerment" word in the
+   resolved dark core.
    ============================================================ */
 
 /* ── Root: the warm ground is FULL-BLEED (§2); content held to a centred inner
@@ -19,7 +25,7 @@
   width: 100%;
   margin: 0;
   background: var(--ground-warm);
-  color: var(--soi-navy);
+  color: var(--ink);
   /* clamp() floor = real margins; auto-growing inline padding keeps the content
      column ~1240px and centred on wide screens (1fr each side of 1240px). */
   padding: clamp(2.5rem, 6vh, 5rem)
@@ -36,35 +42,73 @@
 #\30 6-empowerment .emp-orbit { z-index: 0; opacity: 0.7; }
 #\30 6-empowerment .emp-root > * { position: relative; z-index: 1; }
 
+/* ── The tall agent silhouette — the small figure stepping up to fix things.
+      A brand-signature element read by mass, anchored to the right edge,
+      behind content. Black on the warm ground. Hidden on narrow screens where
+      it would crowd the column. ── */
+#\30 6-empowerment .emp-figure {
+  position: absolute;
+  z-index: 0;
+  right: clamp(1.5rem, 4vw, 5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  height: clamp(260px, 52vh, 560px);
+  width: auto;
+  opacity: 0.16;
+  pointer-events: none;
+  /* keep it pure black silhouette per the official system */
+  filter: none;
+}
+
+/* ── The Challenger-Series lockup stamp, top-right (the book-cover position).
+      Pure black; never recoloured / skewed / stretched. ── */
+#\30 6-empowerment .emp-mark {
+  position: absolute;
+  z-index: 2;
+  top: clamp(0.25rem, 1.5vh, 1.25rem);
+  right: max(clamp(24px, 5vw, 96px), calc((100% - 1240px) / 2));
+  height: clamp(24px, 2.4vw, 32px);
+  width: auto;
+  opacity: 0.9;
+}
+
 /* ============================================================
    HERO — one display moment, hangs left, generous negative space.
+   BOLD BLACK Poppins-900 + ONE italic accent word.
    ============================================================ */
 #\30 6-empowerment .emp-head {
   display: flex;
   flex-direction: column;
-  /* tight within the group */
-  gap: 0;
+  gap: 0;                       /* tight within the group */
   max-width: 64ch;
 }
 #\30 6-empowerment .emp-eyebrow {
-  color: var(--soi-navy);
+  color: var(--navy);
   margin: 0 0 0.9rem;
 }
 #\30 6-empowerment .emp-title {
-  color: var(--soi-navy);
+  color: var(--ink);            /* the book-cover voice: BOLD BLACK */
   margin: 0 0 1.4rem;
   line-height: 0.92;
   letter-spacing: -0.03em;
 }
+/* The italic accent word — the "Series" gesture. The slant IS the accent;
+   no box, no skew, no underline, no fill. Carries navy to lift it off black. */
+#\30 6-empowerment .emp-accent {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy);
+}
 #\30 6-empowerment .emp-standfirst {
-  color: var(--soi-navy);
+  color: var(--ink-soft);
   font-size: var(--t-md);
   font-weight: 500;
   line-height: 1.5;
   margin: 0;
   max-width: 56ch;
-  opacity: 0.9;
 }
+/* Emphasis inside the standfirst — colour + weight only (navy), no underline. */
+#\30 6-empowerment .emp-standfirst .hl { color: var(--navy); font-weight: 700; }
 
 /* Arrival assemble — lines lift + fade in (idempotent; reduced-motion = instant). */
 #\30 6-empowerment [data-arrival] {
@@ -104,16 +148,18 @@
   font-size: clamp(1.05rem, 1.8vw, 1.45rem);
   letter-spacing: -0.01em;
   line-height: 1.1;
-  color: var(--soi-navy);
+  color: var(--ink);
   transition: opacity 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
               transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+/* The "after" word (active agency) carries navy — the optimistic turn. */
+#\30 6-empowerment .emp-pivot-word--after { color: var(--navy); }
 #\30 6-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--after,
 #\30 6-empowerment .emp-pivot-readout[data-side="after"] .emp-pivot-word--before {
   opacity: 0;
   transform: translateY(6px);
 }
-#\30 6-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--before { opacity: 0.62; }
+#\30 6-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--before { opacity: 0.7; }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-pivot-word { transition: none; }
 }
@@ -130,7 +176,7 @@
   left: 0; right: 0; top: 50%;
   height: 3px;
   transform: translateY(-50%);
-  background: rgba(10, 26, 92, 0.18);
+  background: rgba(4, 22, 84, 0.18);
 }
 #\30 6-empowerment .emp-pivot-fill {
   position: absolute;
@@ -138,7 +184,7 @@
   height: 3px;
   width: 14%;
   transform: translateY(-50%);
-  background: var(--soi-navy);
+  background: var(--navy);
   pointer-events: none;
 }
 #\30 6-empowerment .emp-pivot-slider {
@@ -156,20 +202,20 @@
   appearance: none;
   width: 18px;
   height: 18px;
-  background: var(--soi-navy);
+  background: var(--navy);
   border: 0;
   cursor: grab;
 }
 #\30 6-empowerment .emp-pivot-slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  background: var(--soi-navy);
+  background: var(--navy);
   border: 0;
   border-radius: 0;
   cursor: grab;
 }
 #\30 6-empowerment .emp-pivot-slider:focus-visible {
-  outline: 3px solid var(--soi-navy);
+  outline: 3px solid var(--navy);
   outline-offset: 4px;
 }
 
@@ -184,7 +230,7 @@
   gap: clamp(1.6rem, 4.5vh, 3rem);
 }
 #\30 6-empowerment .emp-venn-title {
-  color: var(--soi-navy);
+  color: var(--ink);
   margin: 0;
   line-height: 1.05;
   text-align: center;
@@ -213,8 +259,9 @@
   margin: 0 auto;
 }
 
-/* Soft radial glow blooming from the shared core as the needs converge —
-   the "they all resolve to one thing" reward (driven by --tvg 0..1). */
+/* Soft radial glow blooming from the shared core as the needs converge — the
+   "they all resolve to one thing" reward (driven by --tvg 0..1). The single
+   YELLOW accent moment of the screen, echoing the icon wedges. */
 #\30 6-empowerment .emp-tv-field::before {
   content: "";
   position: absolute;
@@ -225,9 +272,9 @@
   transform: translate(-50%, -50%) scale(calc(0.5 + var(--tvg, 0) * 0.7));
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(10, 26, 92, 0.30) 0%,
-    rgba(10, 26, 92, 0.10) 38%,
-    rgba(10, 26, 92, 0) 68%);
+    rgba(240, 203, 8, 0.42) 0%,
+    rgba(240, 203, 8, 0.16) 38%,
+    rgba(240, 203, 8, 0) 68%);
   opacity: var(--tvg, 0);
   pointer-events: none;
   z-index: 1;
@@ -246,19 +293,19 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: var(--soi-navy);
+  background: var(--navy);
   opacity: 0.08;
   pointer-events: none;
   z-index: 3;
 }
 
-/* One-shot reward pulse when the three needs fully resolve. */
+/* One-shot reward pulse when the three needs fully resolve — the yellow accent. */
 #\30 6-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap {
   animation: emp-tv-pulse 640ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 @keyframes emp-tv-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(10, 26, 92, 0.35); }
-  100% { box-shadow: 0 0 0 28px rgba(10, 26, 92, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.45); }
+  100% { box-shadow: 0 0 0 28px rgba(240, 203, 8, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap { animation: none; }
@@ -282,21 +329,21 @@
   font-size: clamp(1.5rem, 3.8vw, 2.9rem);
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--soi-cream);
+  color: var(--cream);
   transform: scale(calc(0.84 + var(--tv, 0) * 0.16));
   transition: text-shadow 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 /* On full resolution the word gains a soft cream glow — the finishing flourish. */
 #\30 6-empowerment .emp-tv-centre.is-on .emp-tv-centre-word {
-  text-shadow: 0 0 26px rgba(238, 233, 221, 0.45);
+  text-shadow: 0 0 26px rgba(240, 237, 231, 0.5);
 }
 @media (prefers-reduced-motion: reduce) {
   #\30 6-empowerment .emp-tv-centre-word { transition: none; }
 }
-/* Before the overlap is dark enough, keep the word navy for contrast. */
-#\30 6-empowerment .emp-tv-stage:not(.is-converging) .emp-tv-centre-word { color: var(--soi-navy); }
+/* Before the overlap is dark enough, keep the word black for contrast on warm. */
+#\30 6-empowerment .emp-tv-stage:not(.is-converging) .emp-tv-centre-word { color: var(--ink); }
 
-/* The draggable need circles — flat brand fill, cream label, square-safe shadow. */
+/* The draggable need circles — flat navy-system fill, cream label, multiply. */
 #\30 6-empowerment .emp-tv-need {
   position: absolute;
   border-radius: 50%;
@@ -314,12 +361,12 @@
   font-weight: 800;
   font-size: clamp(0.9rem, 1.7vw, 1.2rem);
   letter-spacing: 0.01em;
-  color: var(--soi-cream);
+  color: var(--cream);
   pointer-events: none;
   text-transform: lowercase;
 }
 #\30 6-empowerment .emp-tv-need:focus-visible {
-  outline: 3px solid var(--soi-navy);
+  outline: 3px solid var(--navy);
   outline-offset: 3px;
 }
 
@@ -327,18 +374,19 @@
   margin: 0;
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--soi-navy);
-  opacity: 0.75;
+  color: var(--navy);
+  opacity: 0.8;
   min-height: 1.4em;
   text-align: center;
 }
 #\30 6-empowerment .emp-tv-stage.is-converged .emp-tv-hint {
-  color: var(--soi-blue);
+  color: var(--navy);
   opacity: 1;
 }
 
 /* Legend — backgroundless focusable rows; keyboard path AND the inline data
-   reality (each verified Q14 value reads at its need). */
+   reality (each verified Q14 value reads at its need as a BIG navy tabular
+   number, the book-cover stat voice). */
 #\30 6-empowerment .emp-tv-legend {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -359,7 +407,7 @@
 #\30 6-empowerment .emp-tv-leg:hover,
 #\30 6-empowerment .emp-tv-leg:focus-visible { transform: translateY(-3px); }
 #\30 6-empowerment .emp-tv-leg:focus-visible {
-  outline: 3px solid var(--soi-navy);
+  outline: 3px solid var(--navy);
   outline-offset: 3px;
 }
 #\30 6-empowerment .emp-tv-leg-n {
@@ -367,24 +415,24 @@
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  color: var(--soi-navy);
+  color: var(--navy);
   font-variant-numeric: tabular-nums;
 }
 #\30 6-empowerment .emp-tv-leg-name {
   font-weight: 700;
   font-size: 0.98rem;
-  color: var(--soi-navy);
+  color: var(--ink);
 }
 #\30 6-empowerment .emp-tv-leg-sub {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.6;
 }
 #\30 6-empowerment .emp-tv-empty {
-  color: var(--soi-navy);
+  color: var(--ink);
   font-weight: 600;
   text-align: center;
 }
@@ -392,7 +440,12 @@
 /* ============================================================
    Responsive — stack; never overflow, never cut off.
    ============================================================ */
+@media (max-width: 1024px) {
+  /* The tall figure stops competing with the content column. */
+  #\30 6-empowerment .emp-figure { opacity: 0.1; right: 0.5rem; }
+}
 @media (max-width: 720px) {
+  #\30 6-empowerment .emp-figure { display: none; }
   #\30 6-empowerment .emp-pivot { grid-template-columns: 1fr; gap: 0.6rem; }
   #\30 6-empowerment .emp-tv-legend { gap: 0.9rem; }
 }

@@ -77,13 +77,13 @@ const NEED_KEYS = Object.freeze({
 });
 
 // Three CLEARLY DISTINCT fills that all read against the warm ground — NO
-// mustard-on-mustard. Money (the loud ask) takes deep navy; time + stress (the
-// premium asks) take royal-blue + orange, so all three stay legible apart and
-// resolve to a deep navy core under multiply.
+// mustard-on-mustard, all from the navy icon system. Money (the loud ask) takes
+// deep navy; time takes the brighter icon blue; stress takes the warm orange.
+// All three stay legible apart and resolve to a deep navy core under multiply.
 const NEED_META = Object.freeze({
-  money: { label: 'Save me money', short: 'money', sub: 'the obvious ask', token: '--soi-navy', fallback: '#0A1A5C' },
-  time: { label: 'Save me time', short: 'time', sub: 'the premium ask', token: '--soi-blue', fallback: '#0B3DB4' },
-  stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask', token: '--soi-orange', fallback: '#FD8D20' },
+  money: { label: 'Save me money', short: 'money', sub: 'the obvious ask', token: '--navy', fallback: '#041654' },
+  time: { label: 'Save me time', short: 'time', sub: 'the premium ask', token: '--navy-bright', fallback: '#0129A4' },
+  stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask', token: '--ground-orange', fallback: '#FFA764' },
 });
 
 // Home directions on a wide triangle: money top, time lower-left, stress lower-right.

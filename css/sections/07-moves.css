@@ -1,22 +1,22 @@
-/* Chapter 07 — moves. THE REEL.
-   One cinematic stage on the deep navy ground: the five signature moves as a
-   film reel. Exactly ONE frame in focus at a time — the focal point. The hero
-   motion is the reel travelling sideways as each tool is picked up; everything
-   else is quiet. Backgroundless: no card fills, no white mats; emphasis is
-   COLOUR + WEIGHT only. Amber is the single accent. Square corners, Poppins,
-   tabular nums. Every selector scoped to #\30 7-moves so nothing leaks. */
+/* Chapter 07 — moves. THE PAYOFF.
+   The authoritative brand world: a warm-gradient stage carrying a cinematic
+   filmstrip of the five signature moves. Exactly ONE frame in focus at a time,
+   composed as a book-cover editorial moment — a cream card (square corners,
+   bold-black ALL-CAPS title, a flat navy icon, the tiny Challenger-Series mark
+   top-right) beside its photographic evidence card and the pickup tool. The
+   hero motion is the reel travelling sideways as each tool is picked up;
+   everything else is quiet. NAVY is gravity; YELLOW is the single accent (the
+   active stage marker + seed). Square corners, Poppins, tabular nums, no
+   underlines, no parallelogram. Every selector scoped to #\30 7-moves. */
 
 #\30 7-moves { overflow-x: clip; }
 
-/* Full-viewport single stage. The navy ground is carried by the SECTION itself
-   (the journey shell mounts us as <section class="journey-step" id="07-moves">)
-   so it fills the page edge-to-edge — no cream band. The shell is the editorial
-   content column inside it. */
+/* Full-viewport single stage on the warm-gradient ground (carried by the
+   SECTION the shell mounts) so it fills edge-to-edge. The shell is the
+   editorial content column inside it. */
 #\30 7-moves {
   align-items: stretch;
-  background: var(--soi-navy);
-  color: var(--on-navy);
-  padding: clamp(36px, 5vh, 72px) var(--margin-page)
+  padding: clamp(34px, 5vh, 68px) var(--margin-page)
            calc(var(--journey-controls-h) + clamp(20px, 3vh, 36px));
   overflow: hidden;
 }
@@ -29,22 +29,19 @@
   isolation: isolate;
   width: 100%;
   /* fill the space the chapter gives us; content-driven so nothing is clipped */
-  min-height: calc(100svh - var(--journey-controls-h) - clamp(56px, 8vh, 108px));
+  min-height: calc(100svh - var(--journey-controls-h) - clamp(54px, 8vh, 104px));
   box-sizing: border-box;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   row-gap: clamp(14px, 2vh, 26px);
-  color: var(--on-navy);
 }
-/* the shell's own si-dark fill is redundant now the section carries it */
-#\30 7-moves .mv-shell.si-dark { background: none; }
-/* keep real content above the ambient orbit/seed motif */
-#\30 7-moves .mv-shell > *:not(.si-orbit):not(.si-seed) { position: relative; z-index: 1; }
-#\30 7-moves .si-seed.mv-seed-a { top: 12%; right: 9%; left: auto; }
+/* the yellow seed — the single accent dot, sat high-right of the stage */
+#\30 7-moves .si-seed.mv-seed-a { top: 8%; right: 7%; left: auto; }
 
 /* ─── Head: a quiet section kicker on the left axis. NOT the display moment —
-   the active move's title is the one hero line per screen (AD §1). So this is
-   deliberately small: an eyebrow + a modest sub-head, holding context. ─── */
+   the active move's title (on the card) is the one hero line per screen. So
+   this is deliberately small: an eyebrow + a modest sub-head, holding
+   context. The accent word "moves" takes the italic navy gesture. ─── */
 #\30 7-moves .mv-head {
   display: flex;
   align-items: baseline;
@@ -53,12 +50,10 @@
 }
 #\30 7-moves .mv-headline {
   margin: 0;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  line-height: 1.0;
+  color: var(--ink);
 }
-#\30 7-moves .mv-headline .hl { color: var(--soi-amber); }
 
 /* ─── The reel: a clipped viewport; the track holds the five frames side by
    side and slides. The active frame is centred and full size. ─── */
@@ -79,25 +74,20 @@
   }
 }
 
-/* ─── A frame: full-width slide in the track. Asymmetric editorial split —
-   title + lesson + carried form on the left, the shift + the pickup tool on
+/* ─── A frame: full-width slide in the track. A two-pane editorial split —
+   the cream book-cover card on the left, the evidence photo + pickup tool on
    the right. Inactive frames recede (quiet, dimmed, non-interactive). ─── */
 #\30 7-moves .mv-frame {
   flex: 0 0 100%;
   min-width: 0;
   height: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
-  grid-template-rows: auto auto minmax(0, 1fr);
-  grid-template-areas:
-    "no     no"
-    "head   pickup"
-    "body   shift";
-  column-gap: clamp(40px, 6vw, 110px);
-  row-gap: clamp(14px, 2.2vh, 26px);
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+  column-gap: clamp(28px, 4vw, 64px);
   align-content: center;
-  padding: clamp(6px, 1.4vh, 18px) 0;
-  opacity: 0.16;
+  align-items: stretch;
+  padding: clamp(6px, 1.2vh, 16px) 0;
+  opacity: 0.14;
   transition: opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 7-moves .mv-frame.is-active { opacity: 1; }
@@ -105,64 +95,83 @@
   #\30 7-moves .mv-frame { transition: none; }
 }
 
-/* Frame number — quiet film-edge index, tabular, top-left of the frame. */
-#\30 7-moves .mv-frame-no {
-  grid-area: no;
+/* ─── The book-cover card — the house component (BWF §3). Cream, square,
+   bold-black title, the tiny lockup mark top-right, a flat navy icon. ─── */
+#\30 7-moves .mv-card {
+  position: relative;
+  min-width: 0;
+  padding: clamp(24px, 2.8vw, 44px);
+  gap: clamp(18px, 2.4vh, 32px);
+}
+#\30 7-moves .mv-card-mark { height: 26px; }
+
+/* Card head: stage number, the flat navy icon, then the ALL-CAPS title. */
+#\30 7-moves .mv-card-head { min-width: 0; }
+#\30 7-moves .mv-stage {
   display: flex;
   align-items: baseline;
   gap: 0.5em;
-  margin: 0;
+  margin: 0 0 clamp(14px, 1.8vh, 22px);
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
 }
-#\30 7-moves .mv-frame-no-num {
-  font-size: clamp(1rem, 1.4vw, 1.3rem);
-  color: var(--soi-amber);
+#\30 7-moves .mv-stage-num {
+  position: relative;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  color: var(--ink);
+  padding-bottom: 4px;
 }
-#\30 7-moves .mv-frame-no-of {
-  font-size: 0.8rem;
+/* The single YELLOW accent moment — a clean straight tick under the live
+   stage number (no underline on type; this is a separate mark). */
+#\30 7-moves .mv-frame.is-active .mv-stage-num::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1.6em;
+  height: 3px;
+  background: var(--yellow);
+}
+#\30 7-moves .mv-stage-of {
+  font-size: 0.78rem;
   text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--navy);
   opacity: 0.5;
 }
-
-/* ─── Frame head: deck icon over the Poppins-900 display title (the focal). */
-#\30 7-moves .mv-frame-head { grid-area: head; min-width: 0; align-self: end; }
-#\30 7-moves .mv-frame-icon {
+#\30 7-moves .mv-icon {
   display: block;
-  width: clamp(46px, 4.4vw, 66px);
-  height: clamp(46px, 4.4vw, 66px);
-  margin: 0 0 clamp(12px, 1.6vh, 20px);
-  color: var(--soi-cream);
+  width: clamp(44px, 4vw, 60px);
+  height: clamp(44px, 4vw, 60px);
+  margin: 0 0 clamp(14px, 1.8vh, 22px);
+  color: var(--navy);
 }
-#\30 7-moves .mv-frame-icon svg { display: block; width: 100%; height: 100%; }
+#\30 7-moves .mv-icon svg { display: block; width: 100%; height: 100%; }
 #\30 7-moves .mv-title {
   margin: 0;
-  font-size: clamp(2.2rem, 4.6vw, 4rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  color: var(--on-navy);
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--ink);
   overflow-wrap: break-word;
 }
-#\30 7-moves .mv-title-key { display: block; color: var(--soi-amber); }
+#\30 7-moves .mv-title-key { display: block; color: var(--navy); }
 
-/* ─── Frame body (left column under the head): lesson + the one carried form.
-   Dramatic gap from the title above; tight within the body. ─── */
-#\30 7-moves .mv-frame-body {
-  grid-area: body;
+/* Card body: the lesson, the one carried form, the shift ledger. */
+#\30 7-moves .mv-card-body {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.2vh, 30px);
+  gap: clamp(16px, 2.2vh, 28px);
   min-width: 0;
-  align-self: start;
 }
 #\30 7-moves .mv-lesson {
   margin: 0;
-  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
-  line-height: 1.4;
+  font-size: clamp(1.02rem, 1.4vw, 1.28rem);
+  line-height: 1.45;
   font-weight: 500;
-  max-width: 42ch;
-  color: var(--on-navy);
+  max-width: 46ch;
+  color: var(--ink-soft);
 }
 
 /* The single carried supporting form — a stat moment OR a quote, never both. */
@@ -170,75 +179,72 @@
 #\30 7-moves .mv-carried--stat {
   display: flex;
   align-items: baseline;
-  gap: clamp(16px, 2vw, 28px);
+  gap: clamp(16px, 2vw, 26px);
 }
 #\30 7-moves .mv-stat-value {
   flex: 0 0 auto;
-  font-size: clamp(3rem, 5.6vw, 4.6rem);
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
   font-weight: 900;
   line-height: 0.82;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
-  color: var(--soi-amber);
+  color: var(--navy);
 }
 #\30 7-moves .mv-stat-line {
-  font-size: clamp(0.96rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.92rem, 1.1vw, 1.04rem);
   line-height: 1.4;
-  max-width: 28ch;
-  color: var(--on-navy);
-  opacity: 0.9;
+  max-width: 30ch;
+  color: var(--ink-soft);
 }
 #\30 7-moves .mv-carried--quote {
   position: relative;
   padding-left: clamp(20px, 2.4vw, 36px);
-  max-width: 46ch;
+  max-width: 48ch;
 }
 #\30 7-moves .mv-carried--quote::before {
   content: "\201C";
   position: absolute;
   left: -0.06em;
-  top: -0.12em;
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  top: -0.1em;
+  font-size: clamp(2.6rem, 4.2vw, 3.6rem);
   line-height: 1;
-  color: rgba(251, 193, 0, 0.5);
+  font-weight: 800;
+  color: var(--yellow);
 }
 #\30 7-moves .mv-quote-body {
   margin: 0;
-  font-size: clamp(1.02rem, 1.4vw, 1.24rem);
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
   line-height: 1.45;
-  font-style: italic;
-  color: var(--on-navy);
+  font-weight: 400;
+  color: var(--ink);
 }
 #\30 7-moves .mv-quote-cite {
   display: block;
   margin-top: 10px;
   font-style: normal;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-weight: 700;
-  color: rgba(238, 233, 221, 0.6);
+  font-weight: 600;
+  color: var(--ink-soft);
+  opacity: 0.62;
 }
 
-/* ─── Shift ledger (right column): the move's dependence→agency reality, a
-   quiet static list. Backgroundless: thin rules + colour/weight only. Less is
-   struck-through and de-emphasised; more lands in amber. No competing widget —
-   the one interaction on this screen is picking up the tool. ─── */
-#\30 7-moves .mv-shift {
-  grid-area: shift;
-  align-self: start;
-  min-width: 0;
-}
+/* ─── Shift ledger: the move's dependence->agency reality, a quiet static list
+   on the cream card. Backgroundless: thin navy-tint rules + colour/weight only.
+   Less is struck-through and de-emphasised; more lands in navy. ─── */
+#\30 7-moves .mv-shift { min-width: 0; }
 #\30 7-moves .mv-shift-head {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 14px;
-  margin: 0 0 4px;
-  font-size: 0.72rem;
+  margin: 0 0 2px;
+  font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 800;
-  opacity: 0.6;
+  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.55;
 }
 #\30 7-moves .mv-shift-head span:last-child { text-align: right; }
 #\30 7-moves .mv-shift-list { list-style: none; margin: 0; padding: 0; }
@@ -247,68 +253,103 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 14px;
-  padding: clamp(11px, 1.5vh, 18px) 0;
-  font-size: clamp(0.98rem, 1.25vw, 1.18rem);
+  padding: clamp(9px, 1.2vh, 14px) 0;
+  font-size: clamp(0.94rem, 1.15vw, 1.12rem);
   font-weight: 700;
-  border-top: 1.5px solid rgba(238, 233, 221, 0.2);
+  border-top: 1px solid rgba(4, 22, 84, 0.16);
 }
-#\30 7-moves .mv-shift-list li:last-child { border-bottom: 1.5px solid rgba(238, 233, 221, 0.2); }
+#\30 7-moves .mv-shift-list li:last-child { border-bottom: 1px solid rgba(4, 22, 84, 0.16); }
 #\30 7-moves .mv-shift-less {
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
-  color: rgba(238, 233, 221, 0.46);
+  color: rgba(26, 26, 26, 0.42);
 }
-#\30 7-moves .mv-shift-arrow { font-weight: 800; opacity: 0.5; }
+#\30 7-moves .mv-shift-arrow { font-weight: 800; color: var(--navy); opacity: 0.5; }
 #\30 7-moves .mv-shift-more {
   text-align: right;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: -0.01em;
-  color: var(--soi-amber);
+  color: var(--navy);
 }
 
-/* ─── The pickup tool: the draggable object (the marquee interaction). Lives
-   bottom-right of the frame; a thin amber square that lifts on grab and drops
-   into the belt. Backgroundless — the contact shadow (tactile.js) gives weight.
-   Only the ACTIVE frame's tool is visible/reachable. ─── */
-#\30 7-moves .mv-pickup {
-  grid-area: pickup;
-  align-self: end;
-  justify-self: end;
+/* ─── The aside column (right pane): the evidence photo card, then the pickup
+   tool. Spaced apart; the tool sits at the foot. ─── */
+#\30 7-moves .mv-aside {
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(18px, 2.4vh, 32px);
+}
+
+/* Photographic evidence as a book-cover evidence card — cream mat, square
+   corners, ONE lift device (the soft self-shadow), caption beneath. */
+#\30 7-moves .mv-evidence {
+  margin: 0;
+  background: var(--cream);
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.10);
+}
+#\30 7-moves .mv-evidence-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 38vh;
+  object-fit: cover;
+}
+#\30 7-moves .mv-evidence-cap {
+  margin: 12px 2px 2px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+/* When a move has no evidence photo, the aside is just the pickup — anchor it
+   to the foot so the composition still reads. */
+#\30 7-moves .mv-frame:not(:has(.mv-evidence)) .mv-aside { justify-content: flex-end; }
+
+/* ─── The pickup tool: the draggable object (the marquee interaction). A navy
+   square that lifts on grab and drops toward the belt. Backgroundless — the
+   contact shadow (tactile.js) gives weight. Only the ACTIVE frame's tool is
+   visible/reachable. ─── */
+#\30 7-moves .mv-pickup {
+  display: flex;
   align-items: center;
-  gap: 10px;
+  align-self: flex-end;
+  gap: clamp(14px, 1.6vw, 22px);
 }
 #\30 7-moves .mv-frame:not(.is-active) .mv-pickup { visibility: hidden; }
 #\30 7-moves .mv-tool {
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: clamp(82px, 8vw, 116px);
-  height: clamp(82px, 8vw, 116px);
+  width: clamp(78px, 7.5vw, 108px);
+  height: clamp(78px, 7.5vw, 108px);
   padding: 0;
-  border: 2px solid var(--soi-amber);
-  background: none;
-  color: var(--soi-amber);
+  border: 2px solid var(--navy);
+  background: var(--cream);
+  color: var(--navy);
   cursor: grab;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  box-shadow: 0 8px 22px rgba(4, 22, 84, 0.12);
 }
-#\30 7-moves .mv-tool-icon { display: block; width: 58%; height: 58%; }
+#\30 7-moves .mv-tool-icon { display: block; width: 56%; height: 56%; }
 #\30 7-moves .mv-tool-icon svg { display: block; width: 100%; height: 100%; }
-#\30 7-moves .mv-tool.is-dragging { cursor: grabbing; color: var(--soi-gold); border-color: var(--soi-gold); }
-#\30 7-moves .mv-tool:focus-visible { outline: 2px solid var(--soi-gold); outline-offset: 4px; }
+#\30 7-moves .mv-tool.is-dragging { cursor: grabbing; border-color: var(--navy-bright); color: var(--navy-bright); }
+#\30 7-moves .mv-tool:focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
 #\30 7-moves .mv-tool:disabled { cursor: default; }
 #\30 7-moves .mv-pickup-hint {
   font-size: 0.74rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 800;
-  color: var(--soi-amber);
-  opacity: 0.82;
+  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.8;
 }
-/* gentle one-shot nudge to signal "this is draggable" — quiet, accent only */
+/* gentle one-shot nudge to signal "this is draggable" — quiet */
 @media (prefers-reduced-motion: no-preference) {
   #\30 7-moves .mv-frame.is-active .mv-tool {
     animation: mv-tool-beckon 2.6s ease-in-out infinite;
@@ -320,17 +361,17 @@
   0%, 72%, 100% { transform: translate3d(0, 0, 0) scale(var(--tactile-scale, 1)); }
   82% { transform: translate3d(0, 7px, 0) scale(var(--tactile-scale, 1)); }
 }
-/* As the tool nears the belt, the hint flips to the handover word. */
-#\30 7-moves .mv-frame.is-reaching .mv-pickup-hint { color: var(--soi-gold); }
+/* As the tool nears the belt, the hint flips colour. */
+#\30 7-moves .mv-frame.is-reaching .mv-pickup-hint { color: var(--navy-bright); opacity: 1; }
 
-/* ─── The toolbelt: five slots that fill amber as each move is handed over.
+/* ─── The toolbelt: five slots that fill navy as each move is handed over.
    Horizontal, quiet, anchors the you-dot. Backgroundless. ─── */
 #\30 7-moves .mv-belt {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 3vw, 44px);
+  gap: clamp(18px, 2.6vw, 40px);
   padding-top: clamp(14px, 2vh, 24px);
-  border-top: 1.5px solid rgba(238, 233, 221, 0.18);
+  border-top: 1px solid rgba(4, 22, 84, 0.22);
 }
 #\30 7-moves .mv-belt-label {
   margin: 0;
@@ -338,6 +379,7 @@
   display: flex;
   align-items: baseline;
   font-weight: 700;
+  color: var(--ink);
 }
 #\30 7-moves .mv-belt-count {
   font-size: clamp(1.6rem, 2.6vw, 2.4rem);
@@ -345,47 +387,50 @@
   line-height: 1;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  color: var(--soi-amber);
+  color: var(--navy);
 }
 #\30 7-moves .mv-belt-of {
   font-size: 0.86rem;
   letter-spacing: 0.04em;
-  color: rgba(238, 233, 221, 0.66);
+  color: var(--ink-soft);
+  opacity: 0.7;
 }
 #\30 7-moves .mv-belt-slots {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: clamp(12px, 1.6vw, 22px);
+  gap: clamp(12px, 1.6vw, 20px);
 }
 #\30 7-moves .mv-belt-slot {
   display: grid;
   place-items: center;
-  width: clamp(40px, 4vw, 56px);
-  height: clamp(40px, 4vw, 56px);
-  border: 1.5px solid rgba(238, 233, 221, 0.26);
-  color: rgba(238, 233, 221, 0.32);
+  width: clamp(40px, 4vw, 54px);
+  height: clamp(40px, 4vw, 54px);
+  border: 1.5px solid rgba(4, 22, 84, 0.28);
+  color: rgba(4, 22, 84, 0.34);
 }
 #\30 7-moves .mv-belt-icon { display: block; width: 60%; height: 60%; }
 #\30 7-moves .mv-belt-icon svg { display: block; width: 100%; height: 100%; }
 #\30 7-moves .mv-belt-slot.is-filled {
-  border-color: var(--soi-amber);
-  color: var(--soi-amber);
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--cream);
 }
 @media (prefers-reduced-motion: no-preference) {
-  #\30 7-moves .mv-belt-slot { transition: border-color .35s ease, color .35s ease; }
+  #\30 7-moves .mv-belt-slot { transition: border-color .35s ease, color .35s ease, background .35s ease; }
 }
 
 /* ─── Payoff line — revealed only once all five are picked up. ─── */
 #\30 7-moves .mv-payoff {
-  margin: 0;
-  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  margin: 0 0 0 auto;
+  text-align: right;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
   font-weight: 900;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  color: var(--on-navy);
-  max-width: 30ch;
+  color: var(--ink);
+  max-width: 32ch;
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
@@ -396,35 +441,27 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   #\30 7-moves .mv-shell {
     min-height: 0;
     grid-template-rows: auto auto auto;
     row-gap: clamp(20px, 4vh, 32px);
   }
-  #\30 7-moves .mv-reel { min-height: clamp(520px, 78vh, 720px); }
+  #\30 7-moves .mv-reel { min-height: clamp(560px, 84vh, 760px); }
   #\30 7-moves .mv-frame {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto auto auto;
-    grid-template-areas:
-      "no"
-      "head"
-      "body"
-      "shift"
-      "pickup";
-    row-gap: clamp(16px, 3vh, 26px);
+    row-gap: clamp(18px, 3vh, 28px);
     align-content: start;
   }
-  #\30 7-moves .mv-frame-head { align-self: start; }
-  #\30 7-moves .mv-pickup {
-    flex-direction: row;
-    align-self: start;
-    justify-self: start;
-    gap: 16px;
-  }
+  #\30 7-moves .mv-aside { justify-content: flex-start; }
+  #\30 7-moves .mv-frame:not(:has(.mv-evidence)) .mv-aside { justify-content: flex-start; }
+  #\30 7-moves .mv-pickup { align-self: flex-start; }
+  #\30 7-moves .mv-evidence-photo { max-height: 30vh; }
   #\30 7-moves .mv-belt { flex-wrap: wrap; gap: 16px 24px; }
+  #\30 7-moves .mv-payoff { margin: 0; text-align: left; }
 }
 @media (max-width: 560px) {
-  #\30 7-moves .mv-stat-value { font-size: clamp(2.8rem, 14vw, 3.6rem); }
+  #\30 7-moves .mv-stat-value { font-size: clamp(2.6rem, 13vw, 3.4rem); }
   #\30 7-moves .mv-carried--stat { flex-direction: column; gap: 10px; }
+  #\30 7-moves .mv-title { font-size: clamp(1.6rem, 8vw, 2.2rem); }
 }

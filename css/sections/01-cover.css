@@ -1,16 +1,21 @@
 /* ============================================================
    01-cover — scoped to #\30 1-cover (the journey-step section).
-   The one memorable thing: the maze + orbit + the you-dot born.
-   The signature maze illustration is the focal point, used once, big,
-   on a vast warm field. The wordmark hangs on a left axis in enormous
-   negative space. One accent (the teal you-dot). One hero motion (the
-   trace). Backgroundless, square corners, no underline, navy-on-warm, AA.
+   THE AUTHORITATIVE BRAND WORLD. The warm-gradient ground, the
+   Challenger-Series lockup as the brand signature, a huge BOLD BLACK
+   Poppins-900 title with ONE italic accent word ("Independence"), and
+   the State of Independence MAZE logo-moment used once, big, on vast
+   negative space. The you-dot is born here (the single thread).
+
+   The italic accent replaces the old orange highlight (BWF §2): the
+   slant of the italic IS the accent — no box, no underline, no skew.
+   One accent moment per screen: the single YELLOW you-dot at trace end.
+   Backgroundless, square corners, no underline, navy/black-on-warm, AA.
    ============================================================ */
 
 /* The section IS the warm gradient ground, full-bleed (no top nav). */
 #\30 1-cover {
   background: var(--ground-warm);
-  color: var(--soi-navy);
+  color: var(--navy);
   padding: 0;
 }
 
@@ -24,13 +29,13 @@
 /* ── the hero: copy on a left axis, the maze large to the right ──────
    Asymmetric editorial split — the copy holds a left column with real
    air above and below; the maze takes the larger right field. Not a
-   centred stack. The big jump between the two is the breathing room. */
+   centred stack. The big jump between the groups is the breathing room. */
 #\30 1-cover .cover {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   align-items: center;
   gap: clamp(32px, 5vw, 88px);
   padding: clamp(3rem, 8vh, 8rem) clamp(24px, 6vw, 96px)
@@ -38,8 +43,8 @@
   overflow: hidden;
 }
 
-/* ── left column: the wordmark, hung on the left axis ────────────────
-   Tight within the group (eyebrow→title→standfirst), then a large jump
+/* ── left column: the signature, the wordmark, hung on the left axis ──
+   Tight within the group (lockup→title→standfirst), then a large jump
    to the Begin cue. Dramatic type hierarchy: one huge display moment. */
 #\30 1-cover .cover-copy {
   position: relative;
@@ -50,10 +55,11 @@
   gap: clamp(14px, 2.2vh, 22px);
 }
 
-#\30 1-cover .cover-kicker {
-  margin: 0 0 clamp(6px, 1.4vh, 14px);
-  color: var(--soi-navy);
-  opacity: 0.78;
+/* the brand signature — the Challenger-Series lockup at hero scale, black
+   silhouette, never recoloured/skewed. A clear jump of air below it to the
+   display title (the considered rhythm). */
+#\30 1-cover .cover-lockup {
+  margin: 0 0 clamp(10px, 2.4vh, 26px);
 }
 
 #\30 1-cover .cover-wordmark {
@@ -63,9 +69,9 @@
   letter-spacing: -0.03em;
   text-transform: none;
   /* the one display moment — enormous, dramatic. Sized so the longest line
-     ("independence", 12ch) never clips inside the left column at any width. */
+     ("Independence", 12ch) never clips inside the left column at any width. */
   font-size: clamp(3rem, 7.4vw, 6.4rem);
-  color: var(--soi-navy);
+  color: var(--ink);
 }
 #\30 1-cover .cover-line { display: block; }
 
@@ -75,10 +81,12 @@
    never lands here, so suppress the outline. */
 #\30 1-cover .cover-wordmark:focus { outline: none; }
 
-/* Emphasis = colour + weight only. No box, no underline, no skew. */
+/* The one accent word — italic, navy (the "Series" gesture). The slant IS
+   the accent: no box, no underline, no skew, no highlight fill (BWF §2). */
 #\30 1-cover .cover-em {
-  color: var(--soi-orange);
+  font-style: italic;
   font-weight: 900;
+  color: var(--navy);
 }
 
 /* One short standfirst, well below the display in scale — nothing in
@@ -89,7 +97,7 @@
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   line-height: 1.5;
   font-weight: 500;
-  color: var(--soi-navy);
+  color: var(--navy);
   opacity: 0.92;
 }
 
@@ -102,33 +110,34 @@
   margin-top: clamp(20px, 4.5vh, 52px);
   padding: 0.95em 1.7em;
   border: none;
-  background: var(--soi-navy);
-  color: var(--soi-cream);
+  border-radius: 0;
+  background: var(--navy);
+  color: var(--cream);
   font-family: inherit;
   font-size: clamp(0.95rem, 1.1vw, 1.08rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: background-color 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
-              box-shadow 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: background-color 220ms var(--ease-entrance),
+              box-shadow 260ms var(--ease-entrance);
   -webkit-tap-highlight-color: transparent;
 }
-#\30 1-cover .cover-cue:hover { background: var(--soi-blue); }
+#\30 1-cover .cover-cue:hover { background: var(--navy-bright); }
 #\30 1-cover .cover-cue:focus-visible {
-  outline: 3px solid var(--soi-navy);
+  outline: 3px solid var(--navy);
   outline-offset: 4px;
 }
-/* Quiet until the trace completes; then it wakes with a single teal ring. */
+/* Quiet until the trace completes; then it wakes with the single yellow ring. */
 #\30 1-cover .cover-cue.is-awake {
-  box-shadow: 0 0 0 3px var(--soi-teal), 0 10px 26px rgba(10, 26, 92, 0.28);
+  box-shadow: 0 0 0 3px var(--yellow), 0 10px 26px rgba(4, 22, 84, 0.28);
 }
 #\30 1-cover .cover-cue.is-pulsing {
-  animation: cover-cue-commit 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
+  animation: cover-cue-commit 760ms var(--ease-entrance) 1;
 }
 @keyframes cover-cue-commit {
-  0%   { box-shadow: 0 0 0 0 rgba(43, 183, 232, 0.55), 0 10px 26px rgba(10, 26, 92, 0.28); }
-  60%  { box-shadow: 0 0 0 12px rgba(43, 183, 232, 0),   0 10px 26px rgba(10, 26, 92, 0.28); }
-  100% { box-shadow: 0 0 0 3px var(--soi-teal),          0 10px 26px rgba(10, 26, 92, 0.28); }
+  0%   { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.65), 0 10px 26px rgba(4, 22, 84, 0.28); }
+  60%  { box-shadow: 0 0 0 12px rgba(240, 203, 8, 0),  0 10px 26px rgba(4, 22, 84, 0.28); }
+  100% { box-shadow: 0 0 0 3px var(--yellow),          0 10px 26px rgba(4, 22, 84, 0.28); }
 }
 #\30 1-cover .cover-cue-arrow {
   width: 9px;
@@ -136,7 +145,7 @@
   border-top: 2px solid currentColor;
   border-right: 2px solid currentColor;
   transform: rotate(45deg);
-  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 180ms var(--ease-entrance);
 }
 #\30 1-cover .cover-cue:hover .cover-cue-arrow { transform: rotate(45deg) translate(2px, -2px); }
 
@@ -161,7 +170,7 @@
   height: 100%;
   object-fit: contain;
   /* a single soft contact shadow grounds the illustration on the field */
-  filter: drop-shadow(0 24px 48px rgba(10, 26, 92, 0.18));
+  filter: drop-shadow(0 24px 48px rgba(4, 22, 84, 0.18));
 }
 
 /* ── trace overlay: guide + ink + goal (illustration's own 800-space) ─ */
@@ -176,7 +185,7 @@
 }
 #\30 1-cover .cover-trace-guide {
   fill: none;
-  stroke: var(--soi-navy);
+  stroke: var(--navy);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 1 11;
@@ -184,22 +193,23 @@
 }
 #\30 1-cover .cover-trace-ink {
   fill: none;
-  stroke: var(--soi-navy);
+  stroke: var(--navy);
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 #\30 1-cover .cover-trace-goal {
   fill: none;
-  stroke: var(--soi-navy);
+  stroke: var(--navy);
   stroke-width: 2.5;
   opacity: 0.45;
-  animation: cover-goal-pulse 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  animation: cover-goal-pulse 2.6s var(--ease-entrance) infinite;
 }
+/* arrival = the goal becomes the single yellow accent moment */
 #\30 1-cover .cover-stage.is-traced .cover-trace-goal {
   animation: none;
-  fill: var(--soi-teal);
-  stroke: var(--soi-teal);
+  fill: var(--yellow);
+  stroke: var(--yellow);
   opacity: 1;
 }
 @keyframes cover-goal-pulse {
@@ -216,6 +226,7 @@
   margin: -17px 0 0 -17px; /* centre on its left/top origin */
   padding: 0;
   border: none;
+  border-radius: 0;
   background: none;
   cursor: grab;
   display: grid;
@@ -223,34 +234,35 @@
   -webkit-tap-highlight-color: transparent;
 }
 #\30 1-cover .cover-handle:focus-visible {
-  outline: 2.5px solid var(--soi-navy);
+  outline: 2.5px solid var(--navy);
   outline-offset: 4px;
 }
 #\30 1-cover .cover-handle-dot {
   grid-area: 1 / 1;
   width: 20px;
   height: 20px;
-  background: var(--soi-cream);
-  border: 2px solid var(--soi-navy);
-  box-shadow: 0 2px 7px rgba(10, 26, 92, 0.3);
-  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-              background-color 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: var(--cream);
+  border: 2px solid var(--navy);
+  box-shadow: 0 2px 7px rgba(4, 22, 84, 0.3);
+  transition: transform 180ms var(--ease-entrance),
+              background-color 220ms var(--ease-entrance);
 }
 /* a quiet pulsing halo invites the touch before it moves */
 #\30 1-cover .cover-handle-halo {
   grid-area: 1 / 1;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--soi-navy);
+  border: 2px solid var(--navy);
   opacity: 0.5;
   pointer-events: none;
-  animation: cover-handle-pulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  animation: cover-handle-pulse 2.4s var(--ease-entrance) infinite;
 }
 #\30 1-cover .cover-handle.is-home .cover-handle-halo,
 #\30 1-cover .cover-handle.is-dragging .cover-handle-halo { display: none; }
 #\30 1-cover .cover-handle:hover .cover-handle-dot,
 #\30 1-cover .cover-handle.is-dragging .cover-handle-dot { transform: scale(1.14); }
-#\30 1-cover .cover-handle.is-home .cover-handle-dot { background: var(--soi-teal); }
+/* arrival = the you-dot takes the single yellow accent */
+#\30 1-cover .cover-handle.is-home .cover-handle-dot { background: var(--yellow); }
 @keyframes cover-handle-pulse {
   0%   { transform: scale(1);   opacity: 0.5; }
   70%  { transform: scale(2.6); opacity: 0; }
@@ -265,8 +277,8 @@
 #\30 1-cover [data-arrival].is-arrived {
   opacity: 1;
   transform: none;
-  transition: opacity 720ms cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 720ms var(--ease-entrance),
+              transform 720ms var(--ease-entrance);
   transition-delay: var(--arrival-delay, 0ms);
 }
 

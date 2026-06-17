@@ -149,7 +149,10 @@ const makeChart = (host, metric, view) => {
   const safe = view.items.length ? view.items : NO_DATA;
 
   if (metric.viz === 'bars') {
-    const chart = horizontalBars(host, { items: safe, max: metric.max, labelWidth: 220, ...common });
+    // labelWidth sized so the longest verified row label ("Comfortable, can
+    // afford luxuries") sits fully inside the chart's 0-origin viewBox and is
+    // never clipped on the left (HARD RULE: no cutoff).
+    const chart = horizontalBars(host, { items: safe, max: metric.max, labelWidth: 286, ...common });
     return { redraw: (next) => chart.update(next.items.length ? next.items : NO_DATA, { resort: true }) };
   }
 

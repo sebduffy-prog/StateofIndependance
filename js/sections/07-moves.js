@@ -1,23 +1,25 @@
 /**
- * Chapter 07 — moves. THE REEL.
+ * Chapter 07 — moves. THE PAYOFF — a cinematic filmstrip in the authoritative
+ * brand world (warm-gradient stage, book-cover editorial frames).
  *
- * One cinematic stage: the five signature moves as a film reel. Exactly one
- * frame is in focus at a time — its Poppins-900 title, deck icon, the lesson,
- * its single carried form (one stat OR one quote) and the Less→More shift. The
- * other four sit small in the strip below as the reel.
+ * One stage on the warm-gradient ground: the five signature moves as a film
+ * reel. Exactly ONE frame is in focus at a time, composed as a book-cover
+ * editorial moment — a big ALL-CAPS bold-black stage number 01-05, the
+ * bold-black Poppins title with one italic accent word (the key), the lesson,
+ * the single carried form (one stat OR one quote, never both), and the
+ * less->more shift ledger. Verified-brand moves carry a photographic ad-mockup
+ * as a book-cover evidence card. The other four sit small in the strip below.
  *
- * THE ONE MEMORABLE THING / the marquee interaction: the tools you pick up. The
- * active frame carries a draggable tool (tactile.js — real weight, lift shadow,
- * spring). Drag it down into the toolbelt, or click / press Enter, and it is
- * handed over: the belt slot lights, the count ticks, and the reel travels to
- * the next move (the ONE hero motion). Picking up all five reveals the payoff.
- * Fully keyboard operable: Tab to the active tool, Enter to pick it up.
+ * THE MARQUEE INTERACTION: the tools you pick up. The active frame carries a
+ * draggable tool (tactile.js — real weight, lift shadow, spring). Drag it down
+ * into the toolbelt, or click / press Enter, and it is handed over: the belt
+ * slot lights navy, the count ticks, and the reel travels to the next move (the
+ * ONE hero motion). Picking up all five reveals the payoff. Fully keyboard
+ * operable: Tab to the active tool, Enter to pick it up.
  *
- * Everything else is quiet (a soft arrival, the shift flip). No fabricated
- * numbers — every title, lesson, stat, quote and shift is verbatim from the
- * verified <template> source (traced to STORY.md ch.07).
- *
- * Contract: docs/CONTRACT.md.
+ * No fabricated numbers — every title, lesson, stat, quote, shift and brand
+ * example is verbatim from the verified <template> source (traced to STORY.md
+ * ch.07). Contract: docs/CONTRACT.md.
  */
 import { observeReveals } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
@@ -27,6 +29,9 @@ import { draggable } from '../lib/tactile.js';
 const TOTAL_MOVES = 5;
 // Drag distance (px, downward) past which a release counts as "handed over".
 const HANDOVER_THRESHOLD = 90;
+
+// The Challenger-Series lockup — the tiny book-cover stamp, top-right of a card.
+const LOCKUP_SRC = '../assets/brand-final/challenger-series-lockup.png';
 
 /**
  * Read the verified moves from the hidden <template> into plain objects.
@@ -52,6 +57,8 @@ const readMoves = (rootEl) => {
       statLine: li.dataset.statLine || '',
       quote: li.dataset.quote || null,
       cite: li.dataset.cite || '',
+      evidence: li.dataset.evidence || null,
+      evidenceCap: li.dataset.evidenceCap || '',
       iconHTML: svg ? svg.outerHTML : '',
       shift,
     };
@@ -59,7 +66,7 @@ const readMoves = (rootEl) => {
 };
 
 /**
- * Build one reel frame element for a move.
+ * Build one reel frame element for a move (a book-cover editorial composition).
  * @param {object} move
  * @returns {HTMLElement}
  */
@@ -86,40 +93,59 @@ const buildFrame = (move) => {
       '</blockquote>';
   }
 
-  // The shift, rendered as a quiet static dependence→agency ledger (data as a
-  // reality, not a second competing widget). Less struck-through, more in amber.
+  // The less->more shift, rendered as a quiet dependence->agency ledger on the
+  // cream card — less de-emphasised, more in navy. Data as a reality, not a
+  // second competing widget (the one interaction is picking up the tool).
   const shiftRows = move.shift
     .map(
       (row) =>
         '<li>' +
         `<span class="mv-shift-less">${row.less}</span>` +
-        '<span class="mv-shift-arrow" aria-hidden="true">→</span>' +
+        '<span class="mv-shift-arrow" aria-hidden="true">&rarr;</span>' +
         `<span class="mv-shift-more">${row.more}</span>` +
         '</li>',
     )
     .join('');
 
+  // Verified-brand moves carry a photographic ad-mockup as a book-cover
+  // evidence card (half-bleed photo, caption beneath). Visual asset only.
+  const evidence = move.evidence
+    ? '<figure class="mv-evidence">' +
+      `<img class="mv-evidence-photo" src="${move.evidence}" alt="" loading="lazy" decoding="async" />` +
+      `<figcaption class="mv-evidence-cap">${move.evidenceCap}</figcaption>` +
+      '</figure>'
+    : '';
+
   frame.innerHTML =
-    '<p class="mv-frame-no" aria-hidden="true">' +
-    `<span class="mv-frame-no-num num">0${move.num}</span><span class="mv-frame-no-of">/ 05</span></p>` +
-    '<header class="mv-frame-head">' +
-    `<span class="mv-frame-icon" aria-hidden="true">${move.iconHTML}</span>` +
-    `<h3 class="mv-title si-display si-display--black">${move.title} <span class="mv-title-key">${move.key}</span></h3>` +
+    // The cream book-cover card: stage number + title + lesson + carried form
+    // + shift, with the tiny lockup stamp top-right and a flat navy+yellow icon.
+    '<div class="mv-card soi-card">' +
+    `<img class="mv-card-mark soi-card__mark" src="${LOCKUP_SRC}" alt="" aria-hidden="true" />` +
+    '<header class="mv-card-head">' +
+    '<p class="mv-stage" aria-hidden="true">' +
+    `<span class="mv-stage-num num">0${move.num}</span><span class="mv-stage-of">/ 05</span></p>` +
+    `<span class="mv-icon soi-icon" aria-hidden="true">${move.iconHTML}</span>` +
+    `<h3 class="mv-title si-display si-display--sm si-display--upper">${move.title} <span class="mv-title-key si-accent">${move.key}</span></h3>` +
     '</header>' +
-    '<div class="mv-frame-body">' +
+    '<div class="mv-card-body">' +
     `<p class="mv-lesson">${move.lesson}</p>` +
     carried +
-    '</div>' +
     '<div class="mv-shift">' +
     '<p class="mv-shift-head"><span>Dependence</span><span>Agency</span></p>' +
     `<ul class="mv-shift-list">${shiftRows}</ul>` +
     '</div>' +
+    '</div>' +
+    '</div>' +
+    // The evidence column (photo card) OR — when absent — the pickup lives here.
+    '<div class="mv-aside">' +
+    evidence +
     // The tool: the draggable object the visitor picks up to hand the move over.
     '<div class="mv-pickup">' +
     `<button type="button" class="mv-tool" data-tool aria-label="${move.title} ${move.key}. Pick up this tool to hand it over. Move ${move.num} of ${TOTAL_MOVES}.">` +
     `<span class="mv-tool-icon" aria-hidden="true">${move.iconHTML}</span>` +
     '</button>' +
     '<span class="mv-pickup-hint" aria-hidden="true">Pick it up</span>' +
+    '</div>' +
     '</div>';
   return frame;
 };

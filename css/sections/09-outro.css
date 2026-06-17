@@ -1,14 +1,16 @@
-/* Chapter 09 — outro (ART-DIRECTION bar — the close).
-   "The nation disperses; one line remains. Silence and weight."
-   ONE focal point: the Martin Lewis line. ONE hero motion: the nation (the
-   dotField) dispersing upward, the you-dot leaving with it. Everything else
-   is quiet — a single thin orbit ring, a slow settle.
+/* Chapter 09 — outro (BRAND-WORLD-FINAL §7 — the close).
+   "Calm cream (or warm) ground. The nation disperses; one line remains. Team
+   credits grid with even spacing; the CTA as a single focal element. © VCCP
+   MEDIA 2026 furniture small and low-emphasis. Yellow as the single accent;
+   the Challenger-Series lockup signs off."
 
-   A dark navy close (cream-on-navy) holds the line on a left axis with vast
-   negative space; it flows into a grounded warm-gradient back-cover where the
-   girl-and-bear stands flush. Backgroundless throughout: no card/box/highlight
-   fill behind any copy; emphasis is colour + weight only. Square corners,
-   tabular nums, reduced-motion safe. Scoped to #\30 9-outro. */
+   ONE focal point per screen: the Martin Lewis line on the navy close; the
+   warm-gradient back-cover signs the work. ONE hero motion: the nation (the
+   dotField) dispersing upward, the you-dot leaving with it. The accent word is
+   set in italic (the "Series" gesture, no underline / no parallelogram); the
+   one yellow accent rides the highlighted word. Backgroundless throughout: no
+   card/box/highlight fill behind any copy; emphasis is colour + weight only.
+   Square corners, tabular nums, reduced-motion safe. Scoped to #\30 9-outro. */
 
 /* Both surfaces go full-bleed — break out of .chapter padding. */
 #\30 9-outro {
@@ -22,6 +24,12 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* The italic accent — the "Series" gesture (replaces the parallelogram).
+   The slant IS the accent: no box, no skew transform, no underline. */
+#\30 9-outro .outro-accent {
+  font-style: italic;
 }
 
 /* ─── The close: one line on the open navy ground ───────────────────────
@@ -65,9 +73,9 @@
   opacity: 0.4;
 }
 
-/* Commit-pulse finish — a single faint amber warmth blooms from the lower-left
+/* Commit-pulse finish — a single faint yellow warmth blooms from the lower-left
    as the close completes (.is-finished). Backgroundless: a screen-blend glow
-   behind all copy, never a box, can never occlude the line. */
+   behind all copy, never a box, can never occlude the line. The single accent. */
 #\30 9-outro .outro-dark::after {
   content: "";
   position: absolute;
@@ -76,8 +84,8 @@
   pointer-events: none;
   background: radial-gradient(
     52% 46% at 26% 56%,
-    rgba(251, 193, 0, 0.14) 0%,
-    rgba(251, 193, 0, 0.05) 40%,
+    rgba(240, 203, 8, 0.16) 0%,
+    rgba(240, 203, 8, 0.05) 40%,
     transparent 72%
   );
   mix-blend-mode: screen;
@@ -124,6 +132,9 @@
   overflow-wrap: break-word;
 }
 #\30 9-outro .outro-quote-text .hl { line-height: inherit; }
+/* The accent word: italic + the single yellow accent (vccp.css gives .si-dark
+   .hl the yellow). The italic slant is the only emphasis device — no underline. */
+#\30 9-outro .outro-quote-text .outro-accent { font-style: italic; }
 
 /* Each word assembles up into place (the meaning builds). Pure transform +
    opacity, never clips the glyphs. */
@@ -143,7 +154,7 @@
   font-size: var(--t-sm);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(238, 233, 221, 0.66);
+  color: rgba(240, 237, 231, 0.66);
   font-variant-numeric: tabular-nums;
   opacity: 0;
   transform: translate3d(0, 10px, 0);
@@ -155,7 +166,7 @@
 
 /* The line is keyboard-replayable (role=button) — a quiet focus ring, no box. */
 #\30 9-outro .outro-quote-text:focus-visible {
-  outline: 2px solid var(--soi-amber);
+  outline: 2px solid var(--yellow);
   outline-offset: 8px;
 }
 
@@ -171,79 +182,109 @@
 }
 
 /* ─── Grounded warm back-cover ───────────────────────────────────────────
-   Signature mustard→orange→coral ground. Asymmetric two-column: wordmark +
-   copyright + quiet credits on the left axis; the girl-and-bear stands flush
+   Signature warm-gradient ground. Asymmetric two-column: CTA + lockup sign-off
+   + credits grid + copyright on the left axis; the tall bear+girl stands flush
    on the floor in its own column. Two columns => zero overlap. */
 #\30 9-outro .outro-backcover {
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
-  padding: clamp(48px, 7vh, 104px) clamp(24px, 7vw, 160px) 0;
+  padding: clamp(48px, 8vh, 120px) clamp(24px, 7vw, 160px) 0;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: clamp(32px, 5vw, 88px);
-  min-height: clamp(320px, 40vh, 520px);
+  gap: clamp(32px, 5vw, 96px);
+  min-height: clamp(420px, 56vh, 680px);
   overflow: hidden;
 }
 #\30 9-outro .outro-backcover-orbit { z-index: 0; opacity: 0.6; }
-#\30 9-outro .outro-seed-a { top: 22%; right: 32%; }
-#\30 9-outro .outro-seed-b { top: 56%; right: 20%; }
+#\30 9-outro .outro-seed-a { top: 20%; right: 30%; }
+#\30 9-outro .outro-seed-b { top: 52%; right: 18%; }
 
 #\30 9-outro .outro-backcover-copy {
   position: relative;
   z-index: 1;
   align-self: end;
-  padding-bottom: clamp(44px, 7vh, 88px);
+  padding-bottom: clamp(44px, 7vh, 96px);
   display: grid;
-  gap: clamp(6px, 0.9vh, 12px);
-  max-width: 36ch;
+  gap: 0;
+  max-width: 54ch;
 }
-/* The wordmark — the back-cover's display moment, navy on warm (high contrast). */
-#\30 9-outro .outro-backcover-series {
+
+/* The CTA focal element — the one instruction, navy on warm (high contrast). */
+#\30 9-outro .outro-cta-kicker {
+  margin: 0 0 clamp(14px, 1.8vh, 22px);
+  color: var(--soi-navy);
+}
+#\30 9-outro .outro-cta {
   margin: 0;
   color: var(--soi-navy);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 0.86;
-  font-size: clamp(2.6rem, 6vw, 5.4rem);
+  max-width: 22ch;
 }
-#\30 9-outro .outro-backcover-org {
-  margin: clamp(8px, 1.2vh, 16px) 0 0;
-  font-size: var(--t-md);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--soi-navy);
-  font-variant-numeric: tabular-nums;
-}
-#\30 9-outro .outro-backcover-org .num { font-weight: 600; }
+#\30 9-outro .outro-cta .outro-accent { font-style: italic; }
 
-/* Credits, kept quiet — supporting type on the ground, never a block. */
+/* The Challenger-Series lockup signs off — black silhouette on warm, never
+   recoloured or distorted; proportional, generous clear space above. */
+#\30 9-outro .outro-lockup {
+  display: block;
+  width: clamp(220px, 26vw, 320px);
+  height: auto;
+  margin: clamp(34px, 5vh, 64px) 0 0;
+}
+
+/* Team credits — an even two-column grid, supporting type on the ground. */
 #\30 9-outro .outro-credits-label {
-  margin: clamp(28px, 4vh, 52px) 0 6px;
+  margin: clamp(30px, 4.4vh, 56px) 0 clamp(12px, 1.6vh, 18px);
   font-size: var(--t-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(10, 26, 92, 0.62);
+  color: rgba(4, 22, 84, 0.62);
 }
-#\30 9-outro .outro-credits-line {
+#\30 9-outro .outro-credits-grid {
   margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vh, 20px) clamp(28px, 4vw, 56px);
+  max-width: 52ch;
+}
+#\30 9-outro .outro-credit {
+  display: grid;
+  gap: 2px;
+}
+#\30 9-outro .outro-credit-name {
   font-size: var(--t-sm);
-  line-height: 1.5;
-  color: rgba(10, 26, 92, 0.82);
-  max-width: 46ch;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--soi-navy);
+}
+#\30 9-outro .outro-credit-role {
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: rgba(4, 22, 84, 0.7);
 }
 
-/* The illustration: large, flush to the bottom edge, in its own column so it
-   never overlaps the copy. Pre-cropped + pre-coloured cream — feet flush, no
-   plate, no mask. Decorative. Aspect 2817×1620 honoured by height:auto. */
+/* Copyright — small, low-emphasis furniture, set low. */
+#\30 9-outro .outro-backcover-org {
+  margin: clamp(28px, 4vh, 52px) 0 0;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(4, 22, 84, 0.66);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The illustration: the tall bear+girl, flush to the bottom edge, in its own
+   column so it never overlaps the copy. Black silhouette on warm (high
+   contrast). Aspect 104×585 honoured by height:auto. Decorative. */
 #\30 9-outro .outro-backcover-bear {
   position: relative;
   z-index: 1;
   align-self: end;
   display: block;
-  width: clamp(340px, 46vw, 800px);
-  height: auto;
+  width: auto;
+  height: clamp(300px, 50vh, 600px);
   margin-bottom: 0;
   pointer-events: none;
 }
@@ -255,13 +296,17 @@
     align-items: end;
     min-height: 0;
     padding-bottom: 0;
+    gap: clamp(24px, 6vw, 48px);
   }
   #\30 9-outro .outro-backcover-copy {
     padding-bottom: clamp(24px, 5vh, 44px);
     justify-self: start;
   }
+  #\30 9-outro .outro-credits-grid {
+    grid-template-columns: 1fr;
+  }
   #\30 9-outro .outro-backcover-bear {
-    width: clamp(240px, 66vw, 380px);
+    height: clamp(220px, 40vh, 360px);
     justify-self: end;
   }
   #\30 9-outro .outro-seed-a,

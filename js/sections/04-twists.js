@@ -6,13 +6,19 @@
  * time; navy gravity for the paradox. So each twist is its own focal beat,
  * composed from the shared lib primitives (never reinvented):
  *
- *   Twist 01 — THE MARQUEE. The earned dark moment (navy velvet, cream on
- *     navy). The reader drags the seven institutions into the order they THINK
- *     Britain trusts them, then it snaps to truth (Q7 confidence, NHS 52.8 ->
- *     Government 23.9). On reveal, ONE editorial reality lands: the 29-point
- *     spread (53% NHS -> 24% government) and the NHS paradox as a single line
- *     (6.42/10, the highest, yet 53% say it has declined). This is the gated
- *     beat: gate() shows the hint, ready() clears it on the reveal (soft only).
+ *   Twist 01 — THE MARQUEE. The earned navy world-moment (a single full-bleed
+ *     navy pivot, cream type on navy, the YELLOW accent). The reader drags the
+ *     seven institutions into the order they THINK Britain trusts them, then it
+ *     snaps to truth (Q7 confidence, NHS 52.8 -> Government 23.9). On reveal,
+ *     ONE editorial reality lands: the 29-point spread (53% NHS -> 24%
+ *     government) and the NHS paradox as a single line (6.42/10, the highest,
+ *     yet 53% say it has declined). This is the gated beat: gate() shows the
+ *     hint, ready() clears it on the reveal (soft only).
+ *
+ *   Twists 02 + 03 house their narrative in the EDITORIAL BOOK-COVER CARD (the
+ *     house component): cream, square corners, a flat navy+yellow icon top
+ *     field, the tiny Challenger-Series lockup mark top-right, a bold-black
+ *     title low-left. The data floats backgroundless beside the card.
  *
  *   Twist 02 — TACTILE. On the warm ground the holiday tile is ring-fenced:
  *     dragging it RESISTS (clamped to the fence) and it springs straight back,
@@ -25,7 +31,8 @@
  *     verbatim qual quote is the quiet supporting note.
  *
  * House rules: backgroundless (charts float on grounds, faint-tint tracks),
- * navy marks on warm / cream on dark, square corners, no underline, tabular
+ * navy marks on warm / cream on navy, yellow the single accent, square corners,
+ * the editorial book-cover card chrome, no underline, tabular
  * nums, reduced-motion safe (libs jump to rest), keyboard path on every
  * interaction (dragRank arrows, draggable arrows, pillGroup arrows). Sources
  * stay in data/survey.json, never rendered. No console.log.
