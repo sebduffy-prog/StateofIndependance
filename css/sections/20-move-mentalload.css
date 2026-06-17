@@ -144,6 +144,13 @@
 #\32 0-move-mentalload .mml-title::after {
   content: none;
 }
+/* Design-team title lockup (the move name set in type with its icon). */
+#\32 0-move-mentalload .mml-title-img {
+  display: block;
+  width: clamp(280px, 30vw, 460px);
+  max-width: 100%;
+  height: auto;
+}
 
 /* Italic accent word */
 #\32 0-move-mentalload .mml-accent {
@@ -443,6 +450,9 @@
   }
   #\32 0-move-mentalload .mml-title {
     font-size: clamp(2.2rem, 7.5vw, 3.4rem);
+  }
+  #\32 0-move-mentalload .mml-title-img {
+    width: clamp(220px, 64vw, 380px);
   }
   #\32 0-move-mentalload .mml-sbar {
     grid-template-columns: clamp(38px, 5vw, 56px) 1fr;

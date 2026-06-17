@@ -137,6 +137,12 @@
   outline: 0;
   --arrival-delay: 120ms;
 }
+#\32 1-move-behaviours .mb-title-img {
+  display: block;
+  width: clamp(280px, 30vw, 460px);
+  max-width: 100%;
+  height: auto;
+}
 #\32 1-move-behaviours .mb-title::before,
 #\32 1-move-behaviours .mb-title::after,
 #\32 1-move-behaviours .mb-head::before,
@@ -431,6 +437,9 @@
   }
   #\32 1-move-behaviours .mb-title {
     font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\32 1-move-behaviours .mb-title-img {
+    width: clamp(220px, 64vw, 380px);
   }
 }
 

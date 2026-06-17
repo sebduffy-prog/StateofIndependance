@@ -132,6 +132,12 @@
   border: 0;
   outline: 0;
 }
+#\31 8-move-antidote .ma-title-img {
+  display: block;
+  width: clamp(280px, 30vw, 460px);
+  max-width: 100%;
+  height: auto;
+}
 #\31 8-move-antidote .ma-title::before,
 #\31 8-move-antidote .ma-title::after,
 #\31 8-move-antidote .ma-head::before,
@@ -410,6 +416,9 @@
   }
   #\31 8-move-antidote .ma-title {
     font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\31 8-move-antidote .ma-title-img {
+    width: clamp(220px, 64vw, 380px);
   }
   #\31 8-move-antidote .ma-stat__num {
     font-size: clamp(4.2rem, 11vw, 6rem);

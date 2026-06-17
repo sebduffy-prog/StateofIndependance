@@ -102,29 +102,12 @@ const NEED_META = Object.freeze({
   stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask', token: '--ground-coral', fallback: '#FF8598' },
 });
 
-// Flat single-colour navy icons (assets/icons language), inlined so they inherit
-// currentColor and stay crisp: piggy bank / stopwatch / brain-with-pulse.
+// Real design-team need icons (dark art on the warm ground): piggy bank /
+// stopwatch / brain. Wired as <img> so the supplied PNGs render exactly.
 const ICON_SVG = Object.freeze({
-  money:
-    '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<path d="M14 36 C14 26 23 20 33 20 C45 20 52 27 52 36 C52 41 49 45 45 48 L45 52 L39 52 L38 49 C36 49.5 34 50 32 50 C30 50 28 49.5 26 49 L25 52 L19 52 L19 47 C16 44 14 40 14 36Z"/>' +
-    '<path d="M14 34 C10 34 9 38 12 40 L16 40"/>' +
-    '<path d="M33 20 L30 14 L37 17Z"/>' +
-    '<path d="M34 26 L42 26"/>' +
-    '<circle cx="38" cy="14" r="4"/>' +
-    '</svg>',
-  time:
-    '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<circle cx="32" cy="38" r="20"/>' +
-    '<path d="M32 10 L32 18 M26 10 L38 10 M48 22 L52 18"/>' +
-    '<path d="M32 38 L32 26 M32 38 L42 44"/>' +
-    '</svg>',
-  stress:
-    '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<path d="M30 14 C24 12 18 16 18 22 C13 23 12 30 16 33 C12 37 15 44 21 44 C22 49 28 51 32 48 L30 14"/>' +
-    '<path d="M34 14 C40 12 46 16 46 22 C51 23 52 30 48 33 C52 37 49 44 43 44 C42 49 36 51 34 48 L34 14"/>' +
-    '<path d="M14 56 L24 56 L28 50 L34 60 L38 56 L50 56"/>' +
-    '</svg>',
+  money: '<img class="emp-tv-stat-icon__img" src="assets/logos/need-money.png" alt="" />',
+  time: '<img class="emp-tv-stat-icon__img" src="assets/logos/need-time.png" alt="" />',
+  stress: '<img class="emp-tv-stat-icon__img" src="assets/logos/need-stress.png" alt="" />',
 });
 
 // Home directions on a wide triangle: money top, time lower-left, stress lower-right.

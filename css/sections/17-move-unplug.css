@@ -151,6 +151,14 @@
 #\31 7-move-unplug .mu-head::after {
   content: none !important;
 }
+/* Design-team title lockup (the move name set in type with its icon).
+   Left-aligned, large, reads as the title treatment. Dark art on warm ground. */
+#\31 7-move-unplug .mu-title-img {
+  display: block;
+  width: clamp(280px, 30vw, 460px);
+  max-width: 100%;
+  height: auto;
+}
 #\31 7-move-unplug .mu-accent[data-arrival-scramble] {
   border: 0;
   outline: 0;
@@ -423,6 +431,9 @@
   }
   #\31 7-move-unplug .mu-title {
     font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\31 7-move-unplug .mu-title-img {
+    width: clamp(220px, 64vw, 380px);
   }
   #\31 7-move-unplug .mu-stat__num {
     font-size: clamp(4.2rem, 11vw, 6rem);

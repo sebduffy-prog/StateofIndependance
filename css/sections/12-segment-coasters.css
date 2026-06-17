@@ -209,6 +209,13 @@
   box-sizing: border-box;
 }
 #\31 2-segment-coasters .seg-icon svg { width: 100%; height: 100%; }
+/* Real design-team logo PNG (dark art on the soft-accent tile). */
+#\31 2-segment-coasters .seg-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 #\31 2-segment-coasters .seg-icon .ic-accent {
   fill: var(--seg-accent);
   color: var(--seg-accent);

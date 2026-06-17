@@ -150,6 +150,13 @@
 #\31 9-move-selfhelp .msh-title::after {
   display: none !important;
 }
+/* Design-team title lockup (the move name set in type with its icon). */
+#\31 9-move-selfhelp .msh-title-img {
+  display: block;
+  width: clamp(280px, 30vw, 460px);
+  max-width: 100%;
+  height: auto;
+}
 
 /* WLV lesson — the slide 53 lesson line */
 #\31 9-move-selfhelp .msh-lesson {
@@ -411,6 +418,9 @@
   }
   #\31 9-move-selfhelp .msh-title {
     font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\31 9-move-selfhelp .msh-title-img {
+    width: clamp(220px, 64vw, 380px);
   }
 }
 
