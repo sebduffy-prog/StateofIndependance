@@ -1,16 +1,15 @@
 <div class="chapter-inner on-cream" id="br">
 
-  <!-- The brand signature: tiny Challenger-Series lockup, top-right
-       (the book-cover stamp position). Black silhouette on cream. -->
-  <img class="br-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
+  <!-- Tiny Challenger-Series lockup stamp, top-right (the book-cover position). -->
+  <img class="br-mark" src="assets/brand-final/challenger-series-lockup.png"
        alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <!-- ── Opener — left-anchored, compact ─────────────────────────── -->
+  <!-- ── Header — compact, left-anchored ──────────────────────────── -->
   <header class="br-head">
     <p class="vccp-eyebrow" data-arrival>The rest of the floor</p>
-    <h2 class="br-headline si-display si-display--black">
+    <h2 class="br-headline">
       <span data-arrival>Three more numbers</span>
-      <span data-arrival>everyone already <em class="si-accent" data-arrival-scramble>knows</em></span>
+      <span data-arrival>everyone already <em class="br-accent" data-arrival-scramble>knows</em></span>
     </h2>
     <p class="br-standfirst" data-arrival>
       Deal-hunting, low-grade dread, the quiet downgrade at the till.
@@ -19,9 +18,9 @@
     <div class="br-filter" data-filter aria-hidden="false"></div>
   </header>
 
-  <!-- ── THREE BASELINES, ONE COMPOSED ROW ────────────────────────
-       Lollipop / dot-plot / tugOfWar — each distinct, backgroundless,
-       tabular navy numbers, WLV captions. A pill filter focuses one. -->
+  <!-- ── THREE BASELINES — ONE COMPOSED ROW ────────────────────────
+       Varied viz per panel: lollipop / dot-plot / tug-of-war.
+       Backgroundless navy marks on cream; tabular hero numbers. -->
   <section class="br-grid" aria-label="The three remaining baselines">
 
     <!-- 1 · Deal-seeking 55% — lollipop of the money-saving moves -->
@@ -34,10 +33,10 @@
       </div>
       <div class="br-viz" data-viz-deal
            role="img" aria-label="Money-saving moves: shopped around 55%, own-label 43%, cut a sub 30%, kept a treat 25%"></div>
-      <p class="br-cap">The thrift reflex is muscle memory now — shopping around is the first move, not the last resort.</p>
+      <p class="br-cap">The thrift reflex is muscle memory — shopping around is the first move, not the last resort.</p>
     </article>
 
-    <!-- 2 · Anxiety 60% — dot-plot among the national-mood readings -->
+    <!-- 2 · Anxiety 60% — dot-plot placing dread among national-mood readings -->
     <article class="br-panel" data-panel="anxiety" aria-labelledby="br-anx-lbl">
       <div class="br-num-row">
         <p class="br-num num">
@@ -46,11 +45,11 @@
         <p class="br-lbl" id="br-anx-lbl">feel anxious about the coming months.</p>
       </div>
       <div class="br-viz" data-viz-anxiety
-           role="img" aria-label="The national mood: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%"></div>
-      <p class="br-cap">Dread sits just below carefulness — the weather the whole survey is taken in.</p>
+           role="img" aria-label="National mood: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%"></div>
+      <p class="br-cap">Dread sits just below carefulness — the ambient weather the whole survey is taken in.</p>
     </article>
 
-    <!-- 3 · Trading down 54% — tug-of-war (traded down vs held) -->
+    <!-- 3 · Trading down 54% — tug-of-war: traded down vs held the basket -->
     <article class="br-panel" data-panel="grocery" aria-labelledby="br-gro-lbl">
       <div class="br-num-row">
         <p class="br-num num">
@@ -58,7 +57,7 @@
         </p>
         <p class="br-lbl" id="br-gro-lbl">have traded down to cheaper groceries this year.</p>
       </div>
-      <div class="br-viz" data-viz-grocery
+      <div class="br-viz br-viz--tow" data-viz-grocery
            role="img" aria-label="Groceries: 54% traded down, 46% held the basket"></div>
       <p class="br-cap">More than half quietly swapped the brand for the own-label — the basket shrank without a word.</p>
     </article>

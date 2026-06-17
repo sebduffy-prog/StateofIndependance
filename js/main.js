@@ -484,7 +484,13 @@ const createJourney = (manifest) => {
     if (!section) return;
 
     sections.forEach((s, i) => s.setAttribute('aria-hidden', i === index ? 'false' : 'true'));
-    marker.anchorTo(section);
+
+    // The you-dot is connective tissue ONLY where a step declares an anchor.
+    // Steps without [data-youdot-anchor] must NOT show a dot floating in empty
+    // ground — hide it (toggle .is-live) and only anchor + reveal when present.
+    const hasAnchor = !!section.querySelector('[data-youdot-anchor]');
+    marker.el.classList.toggle('is-live', hasAnchor);
+    if (hasAnchor) marker.anchorTo(section);
 
     const ritual = index === 0 && !firstArrivalDone;
     if (ritual) firstArrivalDone = true;

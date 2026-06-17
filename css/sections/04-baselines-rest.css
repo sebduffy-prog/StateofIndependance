@@ -1,17 +1,17 @@
 /* ============================================================
-   Chapter 04 — baselines: the rest.
+   Step 04 — baselines: the rest.
    Three table-stakes baselines on one composed cream screen.
    Scoped to #04-baselines-rest via escaped #\30 4-baselines-rest.
 
    BRAND-WORLD-FINAL §7 (baselines register):
    Cream editorial ground. Bold-black Poppins title, left-anchored,
    one italic accent word. Tiny Challenger-Series lockup stamp
-   top-right. Tabular NAVY hero numbers. Three columns, each a big
-   number + one VARIED viz (lollipop / dot-plot / tug-of-war)
-   floating BACKGROUNDLESS on the cream. No white box. A quiet
-   square-chip pill filter focuses one baseline at a time (marquee).
-   Full-bleed, one viewport, no dead space. Square corners. No
-   underlines. No parallelogram. Reduced-motion safe.
+   top-right. Tabular NAVY hero numbers. Three equal columns, each
+   a big number + one VARIED viz (lollipop / dot-plot / tug-of-war)
+   floating BACKGROUNDLESS on cream. Quiet square-chip pill filter
+   focuses one baseline at a time (marquee interaction). Full-bleed,
+   one viewport, no dead space. Square corners. No underlines. No
+   parallelogram. Reduced-motion safe.
    ============================================================ */
 
 /* ── Stage ground — cream fills the full-bleed stage ──────── */
@@ -20,75 +20,78 @@
   color: var(--on-cream);
 }
 
-/* ── chapter-inner: two-row fill layout ────────────────────
-   Row 1 = compact header (auto height)
+/* ── chapter-inner: two-row layout that fills the full stage ─
+   Row 1 = compact header (sized to content)
    Row 2 = the three-column data grid (grows to fill remaining)
-   The inner gets the standard stage padding from vccp.css
-   (.journey-stage .chapter-inner) — we override gap + layout. */
+   Padding overrides the global chapter-inner defaults to keep
+   everything on one screen with no overflow.              ── */
 #\30 4-baselines-rest .chapter-inner {
   position: relative;
   isolation: isolate;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: clamp(1.2rem, 2.6vh, 2.4rem);
+  gap: clamp(1rem, 2vh, 1.8rem);
   height: 100%;
-  /* Horizontal padding already set by .journey-stage .chapter-inner;
-     vertical padding kept tight so the grid fills without overflow. */
-  padding-block: clamp(2rem, 5vh, 4rem);
+  box-sizing: border-box;
+  /* Tighter vertical padding to maximise the data rows. */
+  padding-block: clamp(1.6rem, 4vh, 3.2rem);
 }
 
-/* ── The brand signature: tiny lockup stamp, top-right ────── */
+/* ── Tiny lockup stamp — top-right, the book-cover position ─ */
 #\30 4-baselines-rest .br-mark {
   position: absolute;
-  top: clamp(18px, 3vh, 32px);
-  right: clamp(28px, 7vw, 120px);
-  height: clamp(24px, 2.6vw, 30px);
+  top: clamp(16px, 2.8vh, 28px);
+  right: clamp(24px, 7vw, 120px);
+  height: clamp(22px, 2.4vw, 28px);
   opacity: 0.85;
   z-index: 2;
   pointer-events: none;
 }
 
-/* ── Opener: compact, left-anchored ──────────────────────── */
+/* ── Header: compact, left-anchored, max two lines of headline ─ */
 #\30 4-baselines-rest .br-head {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-width: 68ch;
+  max-width: 72ch;
 }
 
 #\30 4-baselines-rest .br-head .vccp-eyebrow {
   margin-bottom: 0;
 }
 
+/* Display headline — tight, bold black, left-anchored. */
 #\30 4-baselines-rest .br-headline {
-  font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
   line-height: 0.94;
+  letter-spacing: -0.03em;
   margin: 0;
-  max-width: 22ch;
+  max-width: 24ch;
   color: var(--ink);
 }
 
 #\30 4-baselines-rest .br-headline span { display: block; }
 
-/* The one italic accent word — the "Series" gesture (BWF §2).
-   No box, no underline; the slant of the italic IS the accent. */
-#\30 4-baselines-rest .br-headline .si-accent {
-  display: inline;
+/* The one italic accent word — slant is the accent, no box/underline. */
+#\30 4-baselines-rest .br-accent {
+  font-style: italic;
   color: var(--navy);
 }
 
 #\30 4-baselines-rest .br-standfirst {
   margin: 0;
-  font-size: clamp(0.93rem, 1.1vw, 1.1rem);
+  font-size: clamp(0.88rem, 1.05vw, 1.05rem);
   font-weight: 500;
-  line-height: 1.42;
+  line-height: 1.44;
   color: var(--ink-soft);
-  max-width: 62ch;
+  max-width: 64ch;
 }
 
-/* ── Pill filter — square chips (the marquee interaction) ─── */
+/* ── Pill filter — square chips (the marquee interaction) ──── */
 #\30 4-baselines-rest .br-filter {
-  margin-top: var(--space-2);
+  margin-top: clamp(6px, 1vh, 12px);
 }
 
 #\30 4-baselines-rest .pillgroup {
@@ -103,16 +106,16 @@
   background: transparent;
   color: var(--navy);
   font-family: inherit;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  padding: 0.42em 0.88em;
+  padding: 0.36em 0.78em;
   cursor: pointer;
-  border-radius: 0;   /* square, always */
+  border-radius: 0; /* square — always */
   transition:
-    background-color 0.22s var(--ease-entrance),
-    color 0.22s var(--ease-entrance),
-    border-color 0.22s var(--ease-entrance);
+    background-color 0.2s var(--ease-entrance),
+    color            0.2s var(--ease-entrance),
+    border-color     0.2s var(--ease-entrance);
 }
 
 #\30 4-baselines-rest .pillgroup-chip:hover {
@@ -130,27 +133,28 @@
   outline-offset: 3px;
 }
 
-/* ── THREE BASELINES: one composed row that fills the grid row ─
-   Equal thirds. Data floats backgroundless on cream.            */
+/* ── THREE BASELINES: equal thirds filling the grid row ───────
+   Each panel is a flex column: number-row → viz → caption.
+   Viz grows to fill so all three rows are the same height.   ─ */
 #\30 4-baselines-rest .br-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1.4rem, 3vw, 3rem);
-  align-items: start;
-  /* Allow panels to sit at the top of the row without extra stretch. */
-  align-content: start;
+  align-items: stretch;
+  /* The youdot anchor sits outside flow. */
+  position: relative;
 }
 
 #\30 4-baselines-rest .br-panel {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.6rem, 1.2vh, 1.1rem);
-  /* A hairline divider gives editorial rhythm — one frame device only. */
+  gap: clamp(0.6rem, 1.2vh, 1rem);
+  /* A hairline left-border gives editorial rhythm — one frame device. */
   padding-inline-start: clamp(14px, 1.6vw, 24px);
   border-inline-start: 1px solid rgba(4, 22, 84, 0.15);
   transition:
-    opacity 0.32s var(--ease-entrance),
-    transform 0.32s var(--ease-entrance);
+    opacity   0.28s var(--ease-entrance),
+    transform 0.28s var(--ease-entrance);
 }
 
 #\30 4-baselines-rest .br-panel:first-of-type {
@@ -162,70 +166,79 @@
 #\30 4-baselines-rest .br-num-row {
   display: flex;
   align-items: baseline;
-  gap: clamp(10px, 1.2vw, 18px);
+  gap: clamp(8px, 1vw, 16px);
   flex-wrap: wrap;
+  flex: 0 0 auto;
 }
 
-/* The hero number — tabular navy, the "serious data" colour (BWF §1). */
+/* Hero number — tabular navy, the "serious data" colour (BWF §1). */
 #\30 4-baselines-rest .br-num {
   margin: 0;
   color: var(--navy);
+  font-family: var(--font-sans);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.86;
+  line-height: 0.88;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(3rem, 5.2vw, 5rem);
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   flex: 0 0 auto;
 }
 
 #\30 4-baselines-rest .br-lbl {
   margin: 0;
-  font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+  font-size: clamp(0.88rem, 1.05vw, 1.0rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.22;
   letter-spacing: -0.01em;
   color: var(--ink);
-  max-width: 20ch;
+  max-width: 18ch;
 }
 
-/* Backgroundless viz — chart sits directly on the cream. */
+/* Viz container — grows to fill the available column space so all
+   three columns share equal depth. Charts float backgroundless. */
 #\30 4-baselines-rest .br-viz {
+  flex: 1 1 0;
   width: 100%;
-  /* Fixed viz height keeps the three columns even and prevents overflow.
-     Enough for lollipop (4 items), dot-plot (4 items), tug-of-war. */
-  min-height: clamp(100px, 14vh, 160px);
-  max-height: clamp(120px, 16vh, 180px);
+  min-height: clamp(90px, 14vh, 180px);
+  display: flex;
+  align-items: flex-start;
 }
 
-#\30 4-baselines-rest .br-viz svg {
+/* Tug-of-war needs vertical centring in its flex container. */
+#\30 4-baselines-rest .br-viz--tow {
+  align-items: center;
+}
+
+#\30 4-baselines-rest .br-viz svg,
+#\30 4-baselines-rest .br-viz > * {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 100%;
+  flex: 1 1 auto;
 }
 
 #\30 4-baselines-rest .br-cap {
+  flex: 0 0 auto;
   margin: 0;
-  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  font-size: clamp(0.8rem, 0.92vw, 0.92rem);
   font-weight: 500;
-  line-height: 1.44;
+  line-height: 1.46;
   color: var(--ink-soft);
-  opacity: 0.82;
-  max-width: 30ch;
+  opacity: 0.80;
+  max-width: 32ch;
 }
 
-/* ── THE MARQUEE — focus one baseline; the others recede ───── */
+/* ── MARQUEE — focused panel stands forward; others recede ──── */
 #\30 4-baselines-rest .br-grid[data-focus="deal"]    .br-panel:not([data-panel="deal"]),
 #\30 4-baselines-rest .br-grid[data-focus="anxiety"] .br-panel:not([data-panel="anxiety"]),
 #\30 4-baselines-rest .br-grid[data-focus="grocery"] .br-panel:not([data-panel="grocery"]) {
-  opacity: 0.28;
+  opacity: 0.26;
 }
 
 #\30 4-baselines-rest .br-panel.is-focus {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
 }
 
-/* The you-dot anchor (no layout footprint). */
+/* You-dot anchor — no layout footprint. */
 #\30 4-baselines-rest .br-dot {
   position: absolute;
   left: 50%;
@@ -247,23 +260,27 @@
 
   #\30 4-baselines-rest .br-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.4rem, 4vh, 2.2rem);
+    gap: clamp(1.2rem, 4vh, 2rem);
   }
 
   #\30 4-baselines-rest .br-panel {
     padding-inline-start: 0;
     border-inline-start: 0;
     border-top: 1px solid rgba(4, 22, 84, 0.15);
-    padding-top: clamp(12px, 2vh, 20px);
+    padding-block-start: clamp(12px, 2vh, 20px);
   }
 
   #\30 4-baselines-rest .br-panel:first-of-type {
     border-top: 0;
-    padding-top: 0;
+    padding-block-start: 0;
+  }
+
+  #\30 4-baselines-rest .br-viz {
+    min-height: clamp(80px, 18vw, 130px);
   }
 }
 
-/* ── Reduced motion ───────────────────────────────────────── */
+/* ── Reduced motion ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 4-baselines-rest .br-panel { transition: none; }
   #\30 4-baselines-rest .br-panel.is-focus { transform: none; }

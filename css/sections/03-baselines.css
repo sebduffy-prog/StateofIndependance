@@ -9,6 +9,12 @@
    Faint navy-tint empty squares from the first frame (no void). ONE yellow
    you-square (the single accent per screen). Tabular navy numbers. Square
    corners. No underline. No parallelogram. No edge band. Full-bleed.
+
+   ANTI-VOID CONTRACT:
+   - The waffle shows all 100 faint squares immediately — RHS is never empty.
+   - A quiet crowd label anchors the RHS before and after guess.
+   - The you-square only appears after reveal (no random floating dot).
+   - The two panes balance: left claims the headline + guess, right owns the crowd.
    ============================================================ */
 
 /* ── Stage: cream ground, full-bleed one screen ───────────────── */
@@ -17,16 +23,15 @@
   color: var(--on-cream);
 }
 
-/* chapter-inner fills the section via the shell's .chapter-inner rule;
-   we add our own column rhythm on top. */
+/* chapter-inner fills the section; column rhythm on top. */
 #\30 3-baselines .chapter-inner {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  /* Generous but controlled: headline → hero → floor */
-  gap: clamp(1.5rem, 3.5vh, 3rem);
-  padding-block: clamp(2.8rem, 6vh, 5rem);
+  /* header → hero (flex-grow) → floor */
+  gap: clamp(1.2rem, 2.5vh, 2rem);
+  padding-block: clamp(2.4rem, 5.5vh, 4.5rem);
   box-sizing: border-box;
 }
 
@@ -45,9 +50,9 @@
 #\30 3-baselines .bl-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  gap: clamp(2.5rem, 6vw, 6rem);
   align-items: center;
-  flex: 1 1 0;   /* stretch between headline and floor */
+  flex: 1 1 0;   /* stretch between eyebrow-header and floor */
   min-height: 0;
 }
 
@@ -55,15 +60,14 @@
 #\30 3-baselines .bl-rail {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.2rem, 2.5vh, 2rem);
+  gap: clamp(1rem, 2vh, 1.75rem);
 }
 
-/* Eyebrow */
 #\30 3-baselines .bl-head { position: relative; }
 
 /* The one bold-black Poppins display title (book-cover voice) */
 #\30 3-baselines .bl-headline {
-  font-size: clamp(2.4rem, 4.8vw, 4.6rem);
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
   line-height: 0.94;
   margin: var(--space-2) 0 0;
   max-width: 16ch;
@@ -80,12 +84,12 @@
 #\30 3-baselines .bl-claim {
   display: grid;
   align-items: start;
-  min-height: 8rem;   /* hold height while truth is hidden */
+  min-height: 9rem;
 }
 #\30 3-baselines .bl-claim > * { grid-area: 1 / 1; }
 #\30 3-baselines .bl-claim.is-revealed .bl-guess { display: none; }
 
-/* The display navy number — dramatic top of the scale */
+/* The display navy number — dramatic scale */
 #\30 3-baselines .bl-numline { margin: 0; }
 #\30 3-baselines .bl-num {
   color: var(--navy);
@@ -167,12 +171,14 @@
   -webkit-appearance: none;
   width: 28px;
   height: 28px;
+  border-radius: 0;                    /* square, always */
   background: var(--navy);
   cursor: grab;
 }
 #\30 3-baselines .guess-range::-moz-range-thumb {
   width: 28px;
   height: 28px;
+  border-radius: 0;
   border: 0;
   background: var(--navy);
   cursor: grab;
@@ -192,23 +198,43 @@
 /* The lib's textual reveal is redundant with the display number; hide it. */
 #\30 3-baselines .guess-reveal { display: none; }
 
-/* ── RIGHT PANE: the 100-in-100 waffle crowd (THE FORM — sole focal point) ──
-   Backgroundless: the waffleGrid SVG sits directly on cream.
-   Filled = navy; empty = faint navy tint. */
+/* ── RIGHT PANE — crowd wrapper: always anchors the grid ────────── */
 #\30 3-baselines .bl-crowd {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.8rem, 1.5vh, 1.25rem);
+  gap: clamp(0.6rem, 1.2vh, 1rem);
   align-items: flex-start;
-  position: relative;   /* positioning context for the you-square overlay */
+  /* Always occupies its column — no collapse before reveal */
+  min-height: 0;
 }
 
-/* The waffleGrid SVG fills the pane width naturally (its own max-width governs).
-   We give it a gentle entrance. */
+/* Inner wrapper: positioning context for the you-square overlay */
+#\30 3-baselines .bl-crowd-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vh, 0.75rem);
+  width: 100%;
+}
+
+/* Small label above the grid — anchors the RHS before the crowd fills */
+#\30 3-baselines .bl-crowd-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.55;
+}
+
+/* ── THE WAFFLE CROWD (THE FORM — sole focal point) ──────────────
+   Backgroundless: the waffleGrid SVG sits directly on cream.
+   Filled = navy; empty = faint navy tint (the lib handles this).
+   All 100 squares visible immediately — the faint grid IS the crowd. */
 #\30 3-baselines [data-crowd-grid] {
   width: 100%;
-  animation: bl-truth-in var(--dur-reveal, 0.5s) var(--ease-entrance, ease-out) both;
 }
 /* waffleGrid appends an SVG; ensure it fills the div */
 #\30 3-baselines [data-crowd-grid] svg {
@@ -219,8 +245,8 @@
 }
 
 /* ── YOU SQUARE — the ONE accent per screen: yellow, scaled proud ──
-   Positioned absolutely over the waffleGrid SVG by JS; starts transparent
-   (faint, just present) then pops on reveal. */
+   Positioned absolutely over the waffleGrid SVG by JS.
+   Created ONLY after reveal — starts transparent, pops on .is-landed. */
 #\30 3-baselines .bl-you-square {
   background: transparent;
   transition:
@@ -235,12 +261,13 @@
   z-index: 4;
 }
 
-/* Crowd caption: count + supporting copy */
+/* Crowd caption: count + supporting copy — below the grid */
 #\30 3-baselines .bl-crowd-cap {
   display: flex;
   align-items: baseline;
   gap: 0.5ch;
   flex-wrap: wrap;
+  min-height: 2rem;   /* reserve height so layout doesn't jump on fill */
 }
 #\30 3-baselines .bl-crowd-count {
   font-size: clamp(1.8rem, 3.5vw, 3rem);
@@ -262,7 +289,7 @@
 /* ── FLOOR — one quiet tabular line; no boxes; border-top separator ── */
 #\30 3-baselines .bl-floor {
   border-top: 1px solid rgba(4, 22, 84, 0.14);
-  padding-top: clamp(1.2rem, 3vh, 2rem);
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
 }
 #\30 3-baselines .bl-floor-row {
   margin: 0;
@@ -305,7 +332,6 @@
 
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 3-baselines .bl-truth,
-  #\30 3-baselines [data-crowd-grid] { animation: none; }
-  #\30 3-baselines .bl-you-square    { transition: none; }
+  #\30 3-baselines .bl-truth    { animation: none; }
+  #\30 3-baselines .bl-you-square { transition: none; }
 }

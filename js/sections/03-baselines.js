@@ -7,7 +7,11 @@
  *
  *   THE MARQUEE · 77% careful — clickToGuess → waffleGrid crowd-of-100
  *       where the visitor's square highlights inside it. The display number
- *       rolls from guess to truth; the crowd fills.
+ *       rolls from guess to truth; the crowd fills navy; one square pops yellow.
+ *
+ *   ANTI-VOID · The waffle shows all 100 faint squares immediately.
+ *       The you-square is built and placed ONLY after reveal — no random
+ *       floating dot in an empty grid before the guess is locked.
  *
  *   The floor — 55 / 60 / 54 kept as one quiet tabular line so the crowd
  *       is the sole focal point.
@@ -31,9 +35,8 @@ const YOU_POP_DELAY = 280;    // ms after the fill wave before you pop
 
 /**
  * Overlay a single "you" square on top of the SVG waffle cell at `index`.
+ * Built ONLY after reveal — keeps the pre-reveal grid clean (no floating dot).
  * Returns a cleanup function that removes the overlay.
- * The overlay is an absolutely-positioned `<span>` that mirrors the cell
- * position; this avoids touching the shared waffleGrid SVG internals.
  * @param {SVGElement} svgEl   The waffle <svg> element
  * @param {number}     index   Cell index (0-based, row-major in a 10×10 grid)
  * @param {number}     square  Cell size (px) used when the waffle was built
@@ -41,30 +44,24 @@ const YOU_POP_DELAY = 280;    // ms after the fill wave before you pop
  * @returns {{ el: HTMLElement, land: () => void, destroy: () => void }}
  */
 const buildYouSquare = (svgEl, index, square, gap) => {
-  const cols    = 10;
-  const col     = index % cols;
-  const row     = Math.floor(index / cols);
-  const total   = cols * square + (cols - 1) * gap;
-  // fractional position (0..1) within the SVG viewBox
-  const xFrac   = (col * (square + gap)) / total;
-  const yFrac   = (row * (square + gap)) / total;
-  const wFrac   = square / total;
+  const cols   = 10;
+  const col    = index % cols;
+  const row    = Math.floor(index / cols);
+  const total  = cols * square + (cols - 1) * gap;
+  const xFrac  = (col * (square + gap)) / total;
+  const yFrac  = (row * (square + gap)) / total;
+  const wFrac  = square / total;
 
   const wrapper = svgEl.parentElement;
-  // ensure wrapper is the positioning context
   if (getComputedStyle(wrapper).position === 'static') {
     wrapper.style.position = 'relative';
   }
 
   const dot = document.createElement('span');
-  dot.className   = 'bl-you-square';
+  dot.className = 'bl-you-square';
   dot.setAttribute('data-youdot-anchor', '');
   dot.setAttribute('aria-hidden', 'true');
 
-  // Position using percentages so it scales with the SVG.
-  // The SVG fills 100% of its container width; height is auto.
-  // We cannot use simple % on top because the SVG height is intrinsic.
-  // Use a transparent overlay div that matches the SVG size.
   dot.style.cssText = `
     position: absolute;
     left:   ${(xFrac * 100).toFixed(3)}%;
@@ -75,8 +72,6 @@ const buildYouSquare = (svgEl, index, square, gap) => {
     background: transparent;
   `;
 
-  // We need top = yFrac × (SVG rendered height). Use a ResizeObserver
-  // to keep it in sync as the SVG reflows.
   const align = () => {
     const svgH = svgEl.getBoundingClientRect().height;
     if (svgH > 0) dot.style.top = `${yFrac * svgH}px`;
@@ -109,6 +104,7 @@ export default function init(rootEl, data) {
   const crowdGrid  = rootEl.querySelector('[data-crowd-grid]');
   const crowdCount = rootEl.querySelector('[data-crowd-count]');
   const crowdOf    = rootEl.querySelector('[data-crowd-of]');
+  const crowdLabel = rootEl.querySelector('[data-crowd-label]');
   const carefulNum = rootEl.querySelector('[data-careful-num]');
 
   if (!guessHost || !crowdGrid) return;
@@ -116,7 +112,8 @@ export default function init(rootEl, data) {
   const SQUARE = 26;
   const GAP    = 6;
 
-  // Build the waffle (faint empty squares from the first frame — never a void).
+  // Build the waffle immediately: all 100 faint empty squares visible from
+  // the first frame so the right pane is never a void.
   const waffle = waffleGrid(crowdGrid, {
     value: 0,
     total: 100,
@@ -127,8 +124,8 @@ export default function init(rootEl, data) {
   });
   const svgEl = waffle.el;
 
-  // Build the "you" overlay square immediately (faint until it lands).
-  const youSquare = buildYouSquare(svgEl, YOU_INDEX, SQUARE, GAP);
+  // youSquare is built ONLY on reveal — no floating dot in the empty grid.
+  let youSquare = null;
 
   clickToGuess(guessHost, {
     trueValue: CAREFUL_TRUE,
@@ -139,9 +136,16 @@ export default function init(rootEl, data) {
     onReveal: (guess) => {
       const from = Number.isFinite(guess) ? Math.round(guess) : 0;
 
-      // Swap guess cell for the truth display number (no layout jump).
+      // Swap guess cell for the truth display (no layout jump).
       if (claim) claim.classList.add('is-revealed');
       if (truth) truth.hidden = false;
+
+      // Update the crowd label now the crowd has meaning.
+      if (crowdLabel) crowdLabel.textContent = '77 in 100 are more careful. One square is you.';
+      if (crowdOf) crowdOf.textContent = 'of every 100 people you pass today — one of them is you.';
+      if (crowdCount) {
+        countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
+      }
 
       if (carefulNum) {
         carefulNum.textContent = '';
@@ -153,20 +157,17 @@ export default function init(rootEl, data) {
         });
       }
 
-      // Fill the crowd; pop the you-square after the wave settles.
+      // Fill 77 squares navy; after the wave pop the you-square yellow.
       waffle.setValue(CAREFUL_FILL, { animate: !prefersReducedMotion() });
 
+      // Build the you-square now (first time only) and pop it.
+      if (!youSquare) {
+        youSquare = buildYouSquare(svgEl, YOU_INDEX, SQUARE, GAP);
+      }
       if (prefersReducedMotion()) {
         youSquare.land();
       } else {
         window.setTimeout(() => youSquare.land(), COUNT_MS - YOU_POP_DELAY);
-      }
-
-      if (crowdOf) {
-        crowdOf.textContent = 'of every 100 people you pass today — one of them is you.';
-      }
-      if (crowdCount) {
-        countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
       }
 
       journey.ready();

@@ -802,7 +802,12 @@ html, body { height: 100%; overflow: hidden; }
   will-change: transform;
 }
 .you-dot.is-live { opacity: 0.95; }
-@media (prefers-reduced-motion: reduce) { .you-dot { opacity: 0.95; transition: none; } }
+/* Reduced motion: still gate visibility on .is-live so the dot is hidden on
+   steps with no [data-youdot-anchor] (never floating in empty ground). */
+@media (prefers-reduced-motion: reduce) {
+  .you-dot { transition: none; }
+  .you-dot.is-live { opacity: 0.95; }
+}
 
 /* Magnetic cursor — small dot, inverts via difference blend. */
 .magnetic-cursor {

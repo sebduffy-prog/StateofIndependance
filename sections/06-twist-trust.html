@@ -1,81 +1,113 @@
-<div class="chapter-inner twist-trust-root on-navy" data-twist-trust-root>
+<!-- 06-twist-trust.html — Twist one: THE TRUST PARADOX.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "04 — Twists"):
+     navy full-bleed ground. Cream-on-navy. No cream edge band.
 
-  <!-- Full-bleed orbit decoration — behind everything -->
-  <span class="twist-trust-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced halves fill the entire viewport.
+     LEFT  — eyebrow + title cluster + drag-rank 7 institutions (the marquee interaction).
+     RIGHT — pre-reveal teaser (blurred ??→??) + post-reveal truth
+             (53%→24% spread hero + NHS 6.42/10 radialGauge paradox).
+     The right column is always rendered at full height; the teaser fills the
+     void until reveal; the truth-state provides equal visual weight after.
+     No dead space. No internal scroll. One focal point per half.
 
-  <div class="twist-trust-grid">
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on every
+     headline element; arrival() wired to chapter:arrive in JS.
 
-    <!-- LEFT: eyebrow + title + standfirst + the drag-rank interaction -->
-    <section class="twist-trust-left">
-      <header class="twist-trust-head">
-        <p class="vccp-eyebrow" data-arrival>Twist one · the trust paradox</p>
-        <h2 class="twist-trust-title si-display si-display--black"
-            data-arrival data-arrival-scramble>The trust <em class="si-accent">paradox</em></h2>
-        <p class="twist-trust-stand si-measure--tight" data-arrival>
-          Seven institutions. Rank them as you think Britain does — most trusted
-          to least. Then meet the order the country actually gave.
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\30 6-twist-trust. -->
+
+<div class="chapter-inner tt-root si-ground-navy" data-tt-root>
+
+  <!-- Full-bleed orbit decoration — behind everything, connective tissue. -->
+  <span class="tt-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right. -->
+  <img class="tt-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid — left: heading + interaction / right: reveal truth -->
+  <div class="tt-grid">
+
+    <!-- LEFT COLUMN — title cluster + the drag-rank marquee interaction -->
+    <div class="tt-left">
+      <header class="tt-head">
+        <p class="vccp-eyebrow tt-eyebrow" data-arrival>Twist one · the trust paradox</p>
+        <h2 class="tt-title" data-arrival>
+          Who Britain<br><span class="si-accent tt-accent" data-arrival-scramble>trusts</span>
+        </h2>
+        <p class="tt-stand" data-arrival>
+          Seven institutions. Rank them as you think Britain does —
+          most trusted to least. Then meet the order the data gave.
         </p>
       </header>
 
-      <!-- dragRank mounts here -->
-      <div class="twist-trust-rank" data-rank aria-label="Drag-rank the seven institutions"></div>
-    </section>
+      <!-- dragRank mounts here — the marquee beat -->
+      <div class="tt-rank" data-rank aria-label="Drag to rank seven institutions by public trust"></div>
+    </div>
 
-    <!-- RIGHT: always visible — pre-reveal shows redacted question marks,
-         post-reveal snaps to the real stats + NHS gauge. -->
-    <aside class="twist-trust-right" aria-live="polite">
+    <!-- RIGHT COLUMN — always rendered; pre-reveal fills the space;
+         post-reveal snaps to the real stats. aria-live for screen readers. -->
+    <aside class="tt-right" aria-live="polite" aria-label="Trust ranking results">
 
-      <!-- Pre-reveal state: teaser that fills the canvas -->
-      <div class="twist-trust-pre" data-pre-reveal aria-hidden="false">
-        <p class="vccp-eyebrow twist-trust-pre__kicker">Britain's verdict</p>
-        <p class="twist-trust-pre__prompt">
-          Complete the ranking to reveal the real spread — and the institution
-          with high regard and falling confidence.
+      <!-- PRE-REVEAL: fills the right column while interaction is pending -->
+      <div class="tt-pre" data-pre-reveal>
+        <p class="vccp-eyebrow tt-pre__eyebrow" data-arrival>Britain's verdict</p>
+        <p class="tt-pre__headline" data-arrival>
+          Complete the ranking to reveal the real spread — and the
+          paradox at the heart of British trust.
         </p>
-        <!-- Blurred placeholder numbers that hint the reveal -->
-        <div class="twist-trust-pre__hint" aria-hidden="true">
-          <span class="twist-trust-pre__blur">??%</span>
-          <span class="twist-trust-pre__to">to</span>
-          <span class="twist-trust-pre__blur">??%</span>
+        <!-- Blurred placeholder hint — teases the two-number reveal -->
+        <div class="tt-pre__hint" aria-hidden="true" data-arrival>
+          <span class="tt-pre__num tt-pre__num--blur">??%</span>
+          <span class="tt-pre__arrow">→</span>
+          <span class="tt-pre__num tt-pre__num--blur">??%</span>
         </div>
+        <p class="tt-pre__sub" data-arrival>
+          Just one of seven institutions clears<br>half the country's confidence.
+        </p>
+        <!-- You-dot anchor lives here on the pre-reveal focal point -->
+        <span class="tt-youdot" data-youdot-anchor aria-hidden="true"></span>
       </div>
 
-      <!-- Post-reveal state: the real truth -->
-      <div class="twist-trust-truth" data-truth hidden>
-        <p class="vccp-eyebrow" data-reveal-eyebrow>What Britain said</p>
+      <!-- POST-REVEAL: the real truth; hidden until dragRank onReveal fires -->
+      <div class="tt-truth" data-truth hidden>
+        <p class="vccp-eyebrow tt-truth__eyebrow">What Britain said</p>
 
-        <!-- The 53 → 24% spread: the hero moment -->
-        <p class="twist-trust-spread" data-spread>
-          <span class="twist-trust-spread__a">
-            <span class="num twist-trust-spread__num" data-count-to="53" data-count-suffix="%">53%</span>
-          </span>
-          <span class="twist-trust-spread__to" aria-hidden="true">to</span>
-          <span class="twist-trust-spread__b">
-            <span class="num twist-trust-spread__num" data-count-to="24" data-count-suffix="%">24%</span>
-          </span>
-        </p>
-        <p class="twist-trust-spread-cap si-measure--tight">
-          Confidence runs from the NHS at the top to government at the bottom —
-          a 29-point spread, and only one institution of seven clears half the country.
+        <!-- Hero spread — 53% NHS to 24% Government -->
+        <div class="tt-spread" data-spread>
+          <div class="tt-spread__block">
+            <span class="tt-spread__num num" data-count-to="53" data-count-suffix="%">53%</span>
+            <span class="tt-spread__label">NHS</span>
+          </div>
+          <span class="tt-spread__arrow" aria-hidden="true">→</span>
+          <div class="tt-spread__block tt-spread__block--low">
+            <span class="tt-spread__num tt-spread__num--yellow num" data-count-to="24" data-count-suffix="%">24%</span>
+            <span class="tt-spread__label tt-spread__label--low">Government</span>
+          </div>
+        </div>
+        <p class="tt-spread-cap">
+          A 29-point spread. Only one institution of seven clears half
+          the country's confidence.
         </p>
 
-        <!-- NHS paradox: gauge + caption side by side -->
-        <div class="twist-trust-gauge">
-          <div class="twist-trust-gauge__viz" data-gauge></div>
-          <p class="twist-trust-gauge__cap si-measure--tight">
-            The NHS scores <strong>6.42 / 10</strong> — the most trusted
-            institution in Britain. <span class="hl">Yet 53% say its performance
-            has declined</span> over the past decade. High regard and falling
-            confidence, side by side.
-          </p>
+        <!-- NHS paradox: radialGauge + caption -->
+        <div class="tt-paradox">
+          <div class="tt-paradox__gauge" data-gauge></div>
+          <div class="tt-paradox__copy">
+            <p class="tt-paradox__stat">
+              <strong class="tt-paradox__score num">6.42<span class="tt-paradox__denom">/10</span></strong>
+            </p>
+            <p class="tt-paradox__line">
+              The NHS — Britain's most trusted institution.
+              <span class="hl">Yet 53% say its performance has declined</span>
+              over the past decade. High regard and falling confidence, side by side.
+            </p>
+          </div>
         </div>
       </div>
 
     </aside>
-
   </div>
-
-  <!-- You-dot lands near the title cluster -->
-  <span class="twist-trust-dot" data-youdot-anchor aria-hidden="true"></span>
 
 </div>

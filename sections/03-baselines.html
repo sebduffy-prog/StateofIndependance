@@ -7,7 +7,7 @@
   <!-- ── HERO ROW — left: editorial claim + interaction; right: waffle crowd ── -->
   <div class="bl-hero">
 
-    <!-- LEFT RAIL: headline, then guess/truth in the same cell (no layout jump) -->
+    <!-- LEFT RAIL: headline then guess/truth stacked in the same cell -->
     <div class="bl-rail">
       <header class="bl-head">
         <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
@@ -25,7 +25,7 @@
           <p class="bl-numline">
             <span class="bl-num num" data-careful-num aria-hidden="true">77<span class="bl-pct">%</span></span>
           </p>
-          <p class="bl-label" id="bl-claim-label">are more careful with money than they were five years ago.</p>
+          <p class="bl-label" id="bl-claim-label">are more careful with money than five years ago.</p>
           <p class="bl-sentence">
             Not a passing mood&thinsp;&mdash;&thinsp;the lens on every spend decision now.
             The baseline, not the strategy.
@@ -34,15 +34,19 @@
       </div>
     </div>
 
-    <!-- RIGHT: waffle crowd of 100. Faint empty squares from the first frame (no void).
+    <!-- RIGHT: waffle crowd of 100.
+         All 100 faint squares visible immediately — no void from first frame.
          On reveal: 77 squares fill navy; the you-square pops yellow.
-         data-youdot-anchor lives on the you-square added by JS. -->
-    <figure class="bl-crowd" data-crowd>
-      <div class="bl-crowd-grid" data-crowd-grid role="img"
-           aria-label="A crowd of a hundred: seventy-seven are more careful, one square is you."></div>
+         data-youdot-anchor is added by JS to the you-square ONLY after reveal. -->
+    <figure class="bl-crowd" data-crowd aria-label="Crowd of one hundred">
+      <div class="bl-crowd-inner">
+        <p class="bl-crowd-label" data-crowd-label>Each square = 1 in 100 UK adults</p>
+        <div class="bl-crowd-grid" data-crowd-grid role="img"
+             aria-label="A crowd of a hundred squares — guess first, then see who is more careful."></div>
+      </div>
       <figcaption class="bl-crowd-cap">
-        <span class="bl-crowd-count num" data-crowd-count aria-live="polite">0</span>
-        <span class="bl-crowd-of" data-crowd-of>in 100. Lock in your guess to fill the crowd.</span>
+        <span class="bl-crowd-count num" data-crowd-count aria-live="polite"></span>
+        <span class="bl-crowd-of" data-crowd-of>Lock in your guess to fill the crowd.</span>
       </figcaption>
     </figure>
 

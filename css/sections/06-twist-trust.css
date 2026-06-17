@@ -1,74 +1,138 @@
-/* 06-twist-trust.css — Twist one: the trust paradox. Scoped to #\30 6-twist-trust.
-   Navy ground (set by .si-ground-navy), cream-on-navy. Full-bleed two-column
-   stage: LEFT = title cluster + the drag-rank interaction; RIGHT = the reveal
-   (the 53% → 24% spread, the NHS 6.42/10 gauge, the paradox line). Square
-   corners, no underlines, no parallelogram; surfaces are faint cream tints,
-   never white boxes. Balanced — the reveal column fills the right third so no
-   dead space once the interaction completes. */
+/* 06-twist-trust.css — Twist one: the trust paradox.
+   Scoped entirely to #\30 6-twist-trust.
+   Navy full-bleed ground. Cream-on-navy palette.
+   Full-bleed, one-screen: 100vw × 100svh with overflow hidden.
+   Two-column balanced layout: LEFT = heading + drag-rank;
+   RIGHT = pre-reveal teaser or post-reveal truth stats.
+   Square corners, no underlines, no parallelogram, tabular nums.
+   Reduced-motion safe. */
 
-#\30 6-twist-trust .twist-trust-root {
+/* ── Root — fills the section shell (100vw × 100svh) ──────────────── */
+#\30 6-twist-trust .tt-root {
   position: relative;
-  display: flex;
-  align-items: center;
   width: 100%;
   height: 100%;
-  padding: clamp(28px, 5vh, 64px) clamp(28px, 6vw, 100px);
-  box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* Navy ground defined by .si-ground-navy; add a subtle directional
+     depth so the navy doesn't read flat at large sizes. */
+  background: linear-gradient(140deg, #02103F 0%, #041654 55%, #0A2270 100%);
 }
 
-#\30 6-twist-trust .twist-trust-grid {
+/* ── Orbit decoration — connective tissue, behind all content ──────── */
+#\30 6-twist-trust .tt-orbit {
+  position: absolute;
+  bottom: -26vh;
+  right: -18vw;
+  width: clamp(400px, 56vw, 860px);
+  height: clamp(400px, 56vw, 860px);
+  border-radius: 50%;
+  border: 1px solid rgba(240, 237, 231, 0.14);
+  pointer-events: none;
+  z-index: 0;
+}
+#\30 6-twist-trust .tt-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 237, 231, 0.09);
+}
+#\30 6-twist-trust .tt-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 237, 231, 0.06);
+}
+
+/* ── Brand stamp top-right ─────────────────────────────────────────── */
+#\30 6-twist-trust .tt-mark {
+  position: absolute;
+  top: clamp(16px, 2.4vh, 32px);
+  right: clamp(20px, 4vw, 60px);
+  height: 28px;
+  width: auto;
+  /* Lockup is black silhouette — invert to cream on dark ground. */
+  filter: invert(1) brightness(0.88);
+  opacity: 0.72;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Two-column grid ───────────────────────────────────────────────── */
+#\30 6-twist-trust .tt-grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
-  gap: clamp(28px, 4vw, 72px);
+  gap: clamp(24px, 4vw, 72px);
   width: 100%;
-  max-width: 1320px;
+  max-width: 1380px;
   margin-inline: auto;
+  padding: clamp(24px, 5vh, 72px) clamp(28px, 6vw, 100px);
+  box-sizing: border-box;
+  /* Ensure grid never overflows one screen */
+  max-height: 100svh;
 }
 
-/* ── LEFT column ───────────────────────────────────────────────────────── */
-#\30 6-twist-trust .twist-trust-left {
+/* ── LEFT column ───────────────────────────────────────────────────── */
+#\30 6-twist-trust .tt-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.6vh, 30px);
+  gap: clamp(14px, 2.2vh, 26px);
   min-width: 0;
 }
 
-#\30 6-twist-trust .twist-trust-head {
+#\30 6-twist-trust .tt-head {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.4vh, 16px);
-  max-width: 24ch;
+  gap: clamp(6px, 1vh, 12px);
 }
 
-#\30 6-twist-trust .twist-trust-title {
+/* Eyebrow — cream, reduced opacity for hierarchy */
+#\30 6-twist-trust .tt-eyebrow {
+  color: rgba(240, 237, 231, 0.65);
+  margin-bottom: 0;
+}
+
+/* Display title — cream on navy */
+#\30 6-twist-trust .tt-title {
   margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 5.4vw, 5rem);
+  letter-spacing: -0.03em;
   line-height: 0.94;
-  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
-}
-#\30 6-twist-trust .twist-trust-title .si-accent {
-  color: var(--yellow);
+  color: var(--cream, #F0EDE7);
 }
 
-#\30 6-twist-trust .twist-trust-stand {
+/* Italic accent word — yellow on navy for one focal pop */
+#\30 6-twist-trust .tt-accent {
+  color: var(--yellow, #F0CB08);
+}
+
+/* Standfirst — faint cream */
+#\30 6-twist-trust .tt-stand {
   margin: 0;
-  color: rgba(240, 237, 231, 0.82);
-  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-  line-height: 1.5;
+  color: rgba(240, 237, 231, 0.78);
+  font-size: clamp(0.9rem, 1.1vw, 1.06rem);
+  line-height: 1.52;
+  max-width: 46ch;
 }
 
-/* ── The drag-rank interaction (interactions.js class hooks) ───────────── */
-#\30 6-twist-trust .twist-trust-rank { min-width: 0; }
+/* ── Drag-rank interaction (class hooks from interactions.js) ──────── */
+#\30 6-twist-trust .tt-rank {
+  min-width: 0;
+}
 
 #\30 6-twist-trust .rank-help {
-  margin: 0 0 clamp(8px, 1.4vh, 14px);
-  color: rgba(240, 237, 231, 0.66);
-  font-size: 0.82rem;
+  margin: 0 0 clamp(8px, 1.2vh, 14px);
+  color: rgba(240, 237, 231, 0.55);
+  font-size: 0.8rem;
   line-height: 1.4;
-  max-width: 44ch;
+  max-width: 48ch;
 }
 
 #\30 6-twist-trust .rank-list {
@@ -77,198 +141,347 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(5px, 0.8vh, 9px);
+  gap: clamp(4px, 0.7vh, 8px);
 }
 
 #\30 6-twist-trust .rank-item {
   display: grid;
   grid-template-columns: 2ch 1fr auto auto;
   align-items: center;
-  gap: 12px;
-  padding: clamp(8px, 1.3vh, 13px) 16px;
+  gap: 10px;
+  padding: clamp(7px, 1.1vh, 12px) 14px;
   background: rgba(240, 237, 231, 0.07);
-  border: 1px solid rgba(240, 237, 231, 0.16);
+  border: 1px solid rgba(240, 237, 231, 0.14);
   border-radius: 0;
-  color: var(--cream);
+  color: var(--cream, #F0EDE7);
   cursor: grab;
-  transition: background var(--dur-micro, 160ms) ease,
-              border-color var(--dur-micro, 160ms) ease,
-              transform var(--dur-micro, 160ms) ease;
+  transition:
+    background var(--dur-micro, 180ms) ease,
+    border-color var(--dur-micro, 180ms) ease,
+    transform var(--dur-micro, 180ms) ease;
+  user-select: none;
 }
 #\30 6-twist-trust .rank-item:hover,
 #\30 6-twist-trust .rank-item:focus-visible {
-  background: rgba(240, 237, 231, 0.13);
-  border-color: rgba(240, 237, 231, 0.34);
+  background: rgba(240, 237, 231, 0.12);
+  border-color: rgba(240, 237, 231, 0.30);
   outline: none;
 }
 #\30 6-twist-trust .rank-item:focus-visible {
-  border-color: var(--yellow);
-  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.35);
+  border-color: var(--yellow, #F0CB08);
+  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.32);
 }
 #\30 6-twist-trust .rank-item.is-dragging {
-  background: rgba(240, 203, 8, 0.14);
-  border-color: var(--yellow);
-  transform: scale(1.01);
+  background: rgba(240, 203, 8, 0.12);
+  border-color: var(--yellow, #F0CB08);
+  transform: scale(1.012);
+  cursor: grabbing;
 }
 
 #\30 6-twist-trust .rank-pos {
   font-variant-numeric: tabular-nums;
   font-weight: 800;
-  color: var(--yellow);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  color: var(--yellow, #F0CB08);
   text-align: center;
 }
+
 #\30 6-twist-trust .rank-label {
   font-weight: 600;
-  font-size: clamp(0.9rem, 1vw, 1.02rem);
+  font-size: clamp(0.86rem, 0.98vw, 1rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--cream, #F0EDE7);
 }
+
 #\30 6-twist-trust .rank-grip {
-  color: rgba(240, 237, 231, 0.4);
-  font-size: 1rem;
+  color: rgba(240, 237, 231, 0.36);
+  font-size: 0.95rem;
 }
 
 #\30 6-twist-trust .rank-delta {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-#\30 6-twist-trust .rank-delta.vccp-delta-up { color: var(--yellow); }
-#\30 6-twist-trust .rank-delta.vccp-delta-down { color: rgba(240, 237, 231, 0.55); }
+/* Correct placements light up in yellow; off ones in muted cream */
+#\30 6-twist-trust .rank-delta.vccp-delta-up { color: var(--yellow, #F0CB08); }
+#\30 6-twist-trust .rank-delta.vccp-delta-down { color: rgba(240, 237, 231, 0.45); }
 
 #\30 6-twist-trust .rank-submit {
-  margin-top: clamp(10px, 1.6vh, 18px);
+  margin-top: clamp(10px, 1.4vh, 16px);
   align-self: flex-start;
+  padding: 9px 22px;
+  background: var(--yellow, #F0CB08);
+  color: var(--navy, #041654);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: opacity var(--dur-micro, 180ms) ease;
+}
+#\30 6-twist-trust .rank-submit:hover,
+#\30 6-twist-trust .rank-submit:focus-visible {
+  opacity: 0.86;
+  outline: 2px solid rgba(240, 203, 8, 0.6);
+  outline-offset: 2px;
 }
 
-/* ── RIGHT column — the reveal ─────────────────────────────────────────── */
-#\30 6-twist-trust .twist-trust-right {
+/* ── RIGHT column — pre-reveal teaser + post-reveal truth ─────────── */
+#\30 6-twist-trust .tt-right {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 2vh, 22px);
   min-width: 0;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 520ms ease, transform 520ms ease;
+  height: 100%;
+  justify-content: center;
 }
-#\30 6-twist-trust .twist-trust-right.is-shown {
-  opacity: 1;
-  transform: none;
-}
-#\30 6-twist-trust .twist-trust-right[hidden] { display: none; }
 
-#\30 6-twist-trust .twist-trust-spread {
+/* PRE-REVEAL — fills right half with a composed teaser before interaction */
+#\30 6-twist-trust .tt-pre {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 28px);
+  opacity: 1;
+  transition: opacity 280ms ease;
+  position: relative;
+}
+#\30 6-twist-trust .tt-pre.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#\30 6-twist-trust .tt-pre__eyebrow {
+  color: rgba(240, 237, 231, 0.65);
+  margin-bottom: 0;
+}
+
+#\30 6-twist-trust .tt-pre__headline {
   margin: 0;
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
+  line-height: 1.26;
+  color: var(--cream, #F0EDE7);
+  max-width: 34ch;
+}
+
+/* Blurred placeholder numbers — teases the spread reveal */
+#\30 6-twist-trust .tt-pre__hint {
   display: flex;
   align-items: baseline;
-  gap: clamp(8px, 1.4vw, 20px);
-  line-height: 0.9;
+  gap: clamp(10px, 1.4vw, 20px);
 }
-#\30 6-twist-trust .twist-trust-spread .num {
-  font-variant-numeric: tabular-nums;
+#\30 6-twist-trust .tt-pre__num {
   font-weight: 900;
+  font-size: clamp(3.2rem, 6.2vw, 5.4rem);
   letter-spacing: -0.03em;
-  font-size: clamp(3rem, 6.4vw, 5.6rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: rgba(240, 237, 231, 0.28);
+  filter: blur(7px);
+  user-select: none;
 }
-#\30 6-twist-trust .twist-trust-spread__a .num { color: var(--cream); }
-#\30 6-twist-trust .twist-trust-spread__b .num { color: var(--yellow); }
-#\30 6-twist-trust .twist-trust-spread__to {
+#\30 6-twist-trust .tt-pre__arrow {
   font-weight: 600;
-  font-size: clamp(1rem, 1.6vw, 1.5rem);
-  color: rgba(240, 237, 231, 0.6);
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  color: rgba(240, 237, 231, 0.3);
   font-style: italic;
 }
-
-#\30 6-twist-trust .twist-trust-spread-cap {
+#\30 6-twist-trust .tt-pre__sub {
   margin: 0;
-  color: rgba(240, 237, 231, 0.82);
-  font-size: clamp(0.9rem, 1vw, 1.02rem);
+  color: rgba(240, 237, 231, 0.55);
+  font-size: clamp(0.86rem, 0.96vw, 0.96rem);
   line-height: 1.5;
 }
 
-/* The paradox: gauge + its caption, on a faint cream-tint mat (no white box). */
-#\30 6-twist-trust .twist-trust-gauge {
-  display: grid;
-  grid-template-columns: minmax(180px, 230px) 1fr;
-  align-items: center;
-  gap: clamp(14px, 1.8vw, 26px);
-  padding-top: clamp(10px, 1.6vh, 18px);
-  border-top: 1px solid rgba(240, 237, 231, 0.16);
-}
-#\30 6-twist-trust .twist-trust-gauge__viz { min-width: 0; }
-#\30 6-twist-trust .twist-trust-gauge__viz svg {
-  width: 100%;
-  height: auto;
-  max-width: 230px;
-}
-#\30 6-twist-trust .twist-trust-gauge__cap {
-  margin: 0;
-  color: rgba(240, 237, 231, 0.82);
-  font-size: clamp(0.86rem, 0.95vw, 0.98rem);
-  line-height: 1.5;
-}
-#\30 6-twist-trust .twist-trust-gauge__cap strong {
-  color: var(--cream);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-}
-#\30 6-twist-trust .twist-trust-gauge__cap .hl {
-  color: var(--yellow);
-  font-weight: 700;
-  background: none;
-}
-
-/* ── Orbit motif — sits low-right behind the reveal, fills the void ──── */
-#\30 6-twist-trust .twist-trust-orbit {
+/* You-dot anchor — invisible position marker for the shell dot */
+#\30 6-twist-trust .tt-youdot {
   position: absolute;
-  bottom: -22vh;
-  right: -14vw;
-  width: clamp(360px, 46vw, 720px);
-  height: clamp(360px, 46vw, 720px);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.22));
-  pointer-events: none;
-  z-index: 0;
-}
-#\30 6-twist-trust .twist-trust-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.16));
-}
-
-/* The "you" dot anchor — invisible target near the title; the shell dot lands. */
-#\30 6-twist-trust .twist-trust-dot {
-  position: absolute;
-  top: clamp(28px, 5vh, 64px);
-  left: clamp(28px, 6vw, 100px);
+  top: 40%;
+  right: 30%;
   width: 1px;
   height: 1px;
   opacity: 0;
   pointer-events: none;
 }
 
-/* ── Narrow / short viewports: stack, keep one screen, no internal scroll ── */
-@media (max-width: 920px) {
-  #\30 6-twist-trust .twist-trust-grid {
+/* POST-REVEAL — the real truth; hidden until interaction completes */
+#\30 6-twist-trust .tt-truth {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 26px);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 540ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
+              transform 540ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+#\30 6-twist-trust .tt-truth.is-shown {
+  opacity: 1;
+  transform: none;
+}
+#\30 6-twist-trust .tt-truth[hidden] { display: none; }
+
+#\30 6-twist-trust .tt-truth__eyebrow {
+  color: rgba(240, 237, 231, 0.65);
+  margin-bottom: 0;
+}
+
+/* Hero spread — 53% → 24% side by side */
+#\30 6-twist-trust .tt-spread {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.8vw, 28px);
+}
+#\30 6-twist-trust .tt-spread__block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#\30 6-twist-trust .tt-spread__num {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: clamp(3rem, 6.2vw, 5.4rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream, #F0EDE7);
+}
+/* Government 24% — highlighted in yellow as the low-contrast reveal */
+#\30 6-twist-trust .tt-spread__num--yellow {
+  color: var(--yellow, #F0CB08);
+}
+#\30 6-twist-trust .tt-spread__label {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 231, 0.58);
+}
+#\30 6-twist-trust .tt-spread__label--low {
+  color: rgba(240, 203, 8, 0.72);
+}
+#\30 6-twist-trust .tt-spread__arrow {
+  font-weight: 600;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  color: rgba(240, 237, 231, 0.4);
+  font-style: italic;
+  align-self: center;
+  padding-bottom: 1.2rem; /* baseline-align with the number */
+}
+
+#\30 6-twist-trust .tt-spread-cap {
+  margin: 0;
+  color: rgba(240, 237, 231, 0.78);
+  font-size: clamp(0.88rem, 0.98vw, 1rem);
+  line-height: 1.5;
+  max-width: 42ch;
+}
+
+/* NHS paradox block: gauge + copy side by side on a faint cream-tint line */
+#\30 6-twist-trust .tt-paradox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 26px);
+  padding-top: clamp(12px, 1.8vh, 20px);
+  border-top: 1px solid rgba(240, 237, 231, 0.16);
+}
+
+#\30 6-twist-trust .tt-paradox__gauge {
+  width: clamp(130px, 16vw, 200px);
+  flex: 0 0 auto;
+}
+#\30 6-twist-trust .tt-paradox__gauge svg {
+  width: 100%;
+  height: auto;
+}
+
+#\30 6-twist-trust .tt-paradox__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#\30 6-twist-trust .tt-paradox__stat {
+  margin: 0;
+}
+#\30 6-twist-trust .tt-paradox__score {
+  font-weight: 900;
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream, #F0EDE7);
+  font-style: normal;
+}
+#\30 6-twist-trust .tt-paradox__denom {
+  font-size: 0.52em;
+  font-weight: 600;
+  color: rgba(240, 237, 231, 0.55);
+  letter-spacing: 0;
+}
+
+#\30 6-twist-trust .tt-paradox__line {
+  margin: 0;
+  color: rgba(240, 237, 231, 0.78);
+  font-size: clamp(0.84rem, 0.94vw, 0.96rem);
+  line-height: 1.52;
+}
+/* Emphasis on navy ground = yellow */
+#\30 6-twist-trust .tt-paradox__line .hl {
+  color: var(--yellow, #F0CB08);
+  font-weight: 700;
+  background: none;
+}
+
+/* ── Narrow / portrait: stack columns, still fits one screen ──────── */
+@media (max-width: 900px) {
+  #\30 6-twist-trust .tt-grid {
     grid-template-columns: 1fr;
-    gap: clamp(18px, 3vh, 32px);
-    align-content: center;
+    gap: clamp(16px, 2.6vh, 28px);
+    align-content: start;
+    padding: clamp(16px, 3vh, 48px) clamp(20px, 5vw, 56px);
+    overflow-y: auto;
   }
-  #\30 6-twist-trust .twist-trust-gauge {
-    grid-template-columns: 1fr;
-    justify-items: start;
+  #\30 6-twist-trust .tt-paradox {
+    grid-template-columns: auto 1fr;
+  }
+  #\30 6-twist-trust .tt-title {
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
   }
 }
 
+/* ── Short viewports: compress vertical gaps ──────────────────────── */
+@media (max-height: 680px) {
+  #\30 6-twist-trust .tt-grid {
+    padding-top: clamp(12px, 2vh, 28px);
+    padding-bottom: clamp(12px, 2vh, 28px);
+    gap: clamp(16px, 2.4vw, 40px);
+  }
+  #\30 6-twist-trust .rank-list {
+    gap: 3px;
+  }
+  #\30 6-twist-trust .rank-item {
+    padding: 6px 12px;
+  }
+}
+
+/* ── Reduced motion: kill transforms and transitions ──────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 6-twist-trust .twist-trust-right,
+  #\30 6-twist-trust .tt-truth {
+    transition: opacity 200ms ease;
+    transform: none;
+  }
   #\30 6-twist-trust .rank-item {
     transition: none;
+  }
+  #\30 6-twist-trust .tt-pre {
+    transition: opacity 140ms ease;
+  }
+  #\30 6-twist-trust .tt-pre__num {
+    filter: blur(5px);
   }
 }
