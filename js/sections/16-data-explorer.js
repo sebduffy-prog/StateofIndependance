@@ -263,11 +263,13 @@ const drawView = (host, viewId, metric, items) => {
   const axisMax = axisMaxFor(rows);
 
   if (viewId === 'bars') {
-    // Commanding bars: row height scales DOWN as the item count grows so the
-    // chart's natural aspect ratio stays tall enough to fill the hero band.
+    // Commanding HERO bars: the viewBox height is items × (barHeight + gap), so
+    // taller rows make the SVG's natural aspect ratio tall enough to fill the
+    // hero band at full width (the SVG renders at width:100%). Row height scales
+    // DOWN as the item count grows so a long list still fits the band cleanly.
     const n = rows.length;
-    const barHeight = n <= 4 ? 78 : n <= 6 ? 56 : 44;
-    const gap = n <= 4 ? 38 : n <= 6 ? 28 : 22;
+    const barHeight = n <= 4 ? 104 : n <= 6 ? 78 : 60;
+    const gap = n <= 4 ? 52 : n <= 6 ? 40 : 30;
     horizontalBars(host, {
       items: rows, max: axisMax, labelWidth: 272, barHeight, gap, ...common,
     });

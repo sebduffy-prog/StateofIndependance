@@ -343,8 +343,10 @@
   width: 100%;
   height: 100%;
   aspect-ratio: 1 / 1;
-  max-height: min(74vh, 100%);
-  max-width: min(74vh, 100%);
+  /* Leave headroom for the instruction above and the stat row beneath so the
+     whole pane fits one screen (100svh) with no clipping. */
+  max-height: min(62vh, 100%);
+  max-width: min(62vh, 100%);
   margin: 0 auto;
 }
 
@@ -492,37 +494,54 @@
   outline-offset: 3px;
 }
 
-/* ── Integrated stat labels — the verified Q14 figure AS the need's label.
-   Anchored radially outside each circle; the number IS the reading. ─────── */
+/* ── The stat row — the three verified Q14 figures read as a clean horizontal
+   row safely BENEATH the venn. Fully inside the pane: nothing can run past an
+   edge. Each tile is keyboard-focusable (the keyboard path to bring a need in)
+   and colour-keyed to its circle via a small dot. ──────────────────────────── */
+#\31 5-empowerment .emp-stat-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 2.4vw, 2.25rem);
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
 #\31 5-empowerment .emp-tv-stat {
-  position: absolute;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.05rem;
+  gap: 0.1rem;
   text-align: center;
   cursor: pointer;
-  z-index: 6;
+  min-width: 0;
+  flex: 1 1 0;
+  max-width: 12rem;
   transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Top need reads above its circle; lower needs read below — keep the number
-   clear of the converging mass either way. */
-#\31 5-empowerment .emp-tv-stat[data-pos="above"] { transform: translate(-50%, -118%); }
-#\31 5-empowerment .emp-tv-stat[data-pos="below"] { transform: translate(-50%, 18%); }
-
-#\31 5-empowerment .emp-tv-stat[data-pos="above"]:hover { transform: translate(-50%, calc(-118% - 4px)); }
-#\31 5-empowerment .emp-tv-stat[data-pos="below"]:hover { transform: translate(-50%, calc(18% - 4px)); }
+#\31 5-empowerment .emp-tv-stat:hover { transform: translateY(-3px); }
 
 #\31 5-empowerment .emp-tv-stat:focus-visible {
   outline: 3px solid var(--navy);
   outline-offset: 4px;
 }
 
+/* Colour dot keys the figure to its circle (money navy, time blue, stress coral). */
+#\31 5-empowerment .emp-tv-stat-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-bottom: 0.15rem;
+  background: var(--accent, var(--navy));
+  border-radius: 50%;
+}
+
 #\31 5-empowerment .emp-tv-stat-n {
   font-weight: 900;
-  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
   line-height: 0.92;
   letter-spacing: -0.035em;
   color: var(--navy);
@@ -531,17 +550,19 @@
 
 #\31 5-empowerment .emp-tv-stat-name {
   font-weight: 700;
-  font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
   color: var(--ink);
+  white-space: nowrap;
 }
 
 #\31 5-empowerment .emp-tv-stat-sub {
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--navy);
   opacity: 0.55;
+  white-space: nowrap;
 }
 
 #\31 5-empowerment .emp-tv-empty {
@@ -583,8 +604,10 @@
   #\31 5-empowerment .emp-pivot { max-width: 100%; }
   #\31 5-empowerment .emp-venn { height: auto; min-height: 0; }
   #\31 5-empowerment .emp-tv-field {
-    max-height: 78vw;
-    max-width: 78vw;
+    max-height: 64vw;
+    max-width: 64vw;
   }
-  #\31 5-empowerment .emp-tv-stat-n { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+  #\31 5-empowerment .emp-stat-row { gap: clamp(0.5rem, 3vw, 1.25rem); }
+  #\31 5-empowerment .emp-tv-stat-n { font-size: clamp(1.3rem, 5vw, 2rem); }
+  #\31 5-empowerment .emp-tv-stat-name { font-size: clamp(0.7rem, 2.6vw, 0.9rem); }
 }

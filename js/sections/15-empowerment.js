@@ -128,7 +128,7 @@ const dirXY = (ang) => ({
  * Build the tactile venn. Calls onConverged() once the three needs fully meet.
  * Returns { autoConverge, destroy }.
  */
-const buildVenn = (mount, brandAsks, onConverged) => {
+const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   if (!brandAsks) {
     mount.innerHTML = '<p class="emp-tv-empty">Brand-ask data is awaiting the survey file.</p>';
     return { autoConverge() {}, destroy() {} };
@@ -169,9 +169,11 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     };
   };
 
-  // Each need = a draggable circle PLUS an integrated stat label (the number is
-  // the reading). The label is a sibling, positioned to follow the circle.
+  // Each need = a draggable circle in the field PLUS a stat tile in a clean
+  // horizontal row BENEATH the venn. The figure is the reading; the row is
+  // pinned safely inside the pane so no label can ever run off-screen.
   const fmtPct = (v) => (typeof v === 'number' ? v.toFixed(1) : '—');
+  if (statRow) statRow.innerHTML = '';
   const needs = NEED_LAYOUT.map(({ id, ang }) => {
     const el = document.createElement('div');
     el.className = 'emp-tv-need';
@@ -180,7 +182,8 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     el.innerHTML = `<span class="emp-tv-need-lbl">${NEED_META[id].short}</span>`;
     field.appendChild(el);
 
-    // Integrated stat label — the verified Q14 figure, focusable (keyboard path).
+    // Stat tile — the verified Q14 figure, focusable (keyboard path). Lives in
+    // the horizontal row, never positioned at the circle's off-screen edge.
     const stat = document.createElement('div');
     stat.className = 'emp-tv-stat';
     stat.dataset.need = id;
@@ -192,10 +195,11 @@ const buildVenn = (mount, brandAsks, onConverged) => {
         ? `data-count-to="${v}" data-count-suffix="%" data-count-decimals="1"`
         : '';
     stat.innerHTML =
+      `<span class="emp-tv-stat-dot" aria-hidden="true"></span>` +
       `<span class="emp-tv-stat-n num" ${numAttrs}>${fmtPct(v)}%</span>` +
       `<span class="emp-tv-stat-name">${NEED_META[id].label}</span>` +
       `<span class="emp-tv-stat-sub">${NEED_META[id].sub}</span>`;
-    field.appendChild(stat);
+    if (statRow) statRow.appendChild(stat);
 
     return { id, el, stat, dir: dirXY(ang), homeX: 0, homeY: 0 };
   });
@@ -203,19 +207,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   const offsets = new Map(needs.map((n) => [n.id, { dx: 0, dy: 0 }]));
   const drags = new Map();
   let converged = false;
-
-  // Stat labels sit OUTSIDE each circle's home, pushed radially outward so the
-  // number never collides with the converging mass — anchored to the field edge
-  // in the circle's home direction.
-  const placeStat = (n, g) => {
-    const px = g.cx + n.dir.x * (g.spread + g.diam * 0.5);
-    const py = g.cy + n.dir.y * (g.spread + g.diam * 0.5);
-    // Money (top) reads above; the two lower needs read below their circle.
-    const above = n.dir.y < -0.5;
-    n.stat.style.left = `${px}px`;
-    n.stat.style.top = `${py}px`;
-    n.stat.dataset.pos = above ? 'above' : 'below';
-  };
 
   const placeHome = () => {
     const g = geom();
@@ -226,7 +217,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       n.homeY = g.cy + n.dir.y * g.spread;
       n.el.style.left = `${n.homeX - g.diam / 2}px`;
       n.el.style.top = `${n.homeY - g.diam / 2}px`;
-      placeStat(n, g);
     });
   };
 
@@ -468,6 +458,7 @@ export default function init(rootEl, data) {
   const root = rootEl.querySelector('[data-emp-root]') || rootEl;
   const pivotMount = rootEl.querySelector('[data-emp-pivot]');
   const vennMount = rootEl.querySelector('[data-emp-venn]');
+  const statRow = rootEl.querySelector('[data-emp-stat-row]');
   const brandAsks = data?.segments?.meta?.metricsTotals?.brandAsks ?? null;
   const journey = data?.journey ?? null;
 
@@ -484,7 +475,7 @@ export default function init(rootEl, data) {
 
   let venn = null;
   if (vennMount) {
-    venn = buildVenn(vennMount, brandAsks, unlock);
+    venn = buildVenn(vennMount, statRow, brandAsks, unlock);
     if (journey) journey.gate();
     if (!brandAsks) unlock(); // fail soft: never trap the visitor
   }
@@ -492,16 +483,38 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
+  // Teardown handles collected across the init (steps stay mounted).
+  const cleanups = [];
+
   // Re-assemble headlines AND auto-converge the venn on every arrival. The
   // circles start wide then sweep into the shared core on their own — no drag
-  // required (drag stays as an optional nudge).
+  // required (drag stays as an optional nudge). A double rAF lets the section's
+  // show + first real layout settle so the sweep runs from a measured spread.
+  const fireConverge = () => {
+    if (!venn) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => venn.autoConverge?.()));
+  };
   rootEl.addEventListener('chapter:arrive', (e) => {
     arrival(rootEl, e.detail);
-    venn?.autoConverge?.();
+    fireConverge();
   });
 
+  // Belt-and-braces scroll-in trigger: the moment the venn enters the viewport
+  // (e.g. a direct scroll into the step that does not change journey focus), the
+  // converge sweep still fires automatically. Reduced motion is already resolved
+  // at rest, so autoConverge() is a no-op there.
+  if (vennMount && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((en) => en.isIntersecting)) fireConverge();
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(vennMount);
+    cleanups.push(() => io.disconnect());
+  }
+
   // Experiential motion — everything but the centrepiece stays quiet.
-  const cleanups = [];
   cleanups.push(chapterTransition(root));
   cleanups.push(observeParallax(root, { maxShiftPx: 40 }));
 

@@ -17,14 +17,17 @@ import { arrival, magneticButton, prefersReducedMotion } from '../lib/experienti
 
 /**
  * @param {HTMLElement} rootEl  the <section class="journey-step" id="01-cover">
- * @param {{ survey:object|null, segments:object|null, tgi:object|null,
- *           journey:{ gate():void, ready():void } }} data
  */
-export default function init(rootEl, data) {
+export default function init(rootEl) {
   const reduced = prefersReducedMotion();
   const cleanups = [];
 
-  /* ── reduced-motion poster swap for the maze ────────────────────── */
+  /* ── maze poster ─────────────────────────────────────────────────
+     The maze is served as a clean still image (its only original motion was
+     the orbiting ring/ball, removed at the client's request; the gentle
+     ambient float is CSS-owned and reduced-motion safe). The poster swap is
+     kept defensively so an animated source would still fall back to its still
+     under reduced motion. */
   const maze = rootEl.querySelector('[data-cover-maze]');
   if (maze && reduced) {
     const still = maze.getAttribute('data-still');

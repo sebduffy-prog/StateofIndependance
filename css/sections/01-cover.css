@@ -251,8 +251,10 @@
 #\30 1-cover .cover-cue:hover .cover-cue-arrow { transform: rotate(45deg) translate(2px, -2px); }
 
 /* ── right column: the maze logo-moment, big ─────────────────────────
-   The illustration is the focal point. It already carries the orbit
-   ring, the bear and the figure — no second ring is drawn over it. */
+   The illustration is the focal point: the amber maze, the navy bear and
+   the figure at the entrance. The stray orbit ring and the figure's map
+   have been removed from the artwork, so nothing reads as a box or a path
+   over it — and no overlay is drawn on top. */
 #\30 1-cover .cover-stage {
   position: relative;
   z-index: 2;
