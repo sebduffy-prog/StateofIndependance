@@ -103,7 +103,7 @@ const STAGE_Z_LEAVE = 620;   // px: leaving stage flies this far TOWARD camera (
 const STAGE_Z_DEEP  = 1400;  // px: arriving stage starts this far BEHIND the camera (−Z)
 const STAGE_SCALE_LEAVE = 1.85; // scale of leaving stage at full fly-through (past the frame)
 const STAGE_SCALE_FAR   = 0.40; // scale of arriving stage at its farthest depth
-const STAGE_BLUR_MAX = 8;    // px blur on a fully-receded/approaching stage
+const STAGE_BLUR_MAX = 4;    // px blur on a fully-receded/approaching stage (kept low to avoid filter jank)
 /** Stages further than this many steps from focus are not rendered (perf). */
 const RENDER_WINDOW = 2;
 
@@ -310,30 +310,32 @@ const TRANSITIONS = {
     durationMs: 1100,
   }),
   'dissolve-through': makeProfile({
-    zLeave: 420, zDeep: 1100,
-    scaleLeave: 1.42, scaleFar: 0.56,
-    blur: 15, fadeLeave: 1.0, fadeArrive: 0.92, // long, soft fade
+    // Strengthened from a soft blur-fade into a true depth pass-through so it no
+    // longer reads as a flat cross-dissolve / slide.
+    zLeave: 640, zDeep: 1450,
+    scaleLeave: 1.72, scaleFar: 0.40,
+    blur: 5, fadeLeave: 1.2, fadeArrive: 1.05,
     ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
-    durationMs: 1500,
+    durationMs: 1400,
   }),
   'zoom-resolve': makeProfile({
     zLeave: 980, zDeep: 2200,
     scaleLeave: 2.7, scaleFar: 0.20, // dramatic deep zoom
-    blur: 11, fadeLeave: 1.7, fadeArrive: 1.3,
+    blur: 6, fadeLeave: 1.7, fadeArrive: 1.3,
     ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
     durationMs: 1600,
   }),
   'orbit-tilt': makeProfile({
     zLeave: 660, zDeep: 1400,
     scaleLeave: 1.78, scaleFar: 0.42,
-    blur: 9, fadeLeave: 1.5, fadeArrive: 1.35,
+    blur: 5, fadeLeave: 1.5, fadeArrive: 1.35,
     ease: spatialEases.outBack, rotZ: 8, rotX: 5, // swirl, overshoots to flat
     durationMs: 1400,
   }),
   disperse: makeProfile({
     zLeave: 1200, zDeep: 1650,
     scaleLeave: 3.3, scaleFar: 0.5, // stage scatters apart into depth
-    blur: 16, fadeLeave: 2.3, fadeArrive: 1.2, // violent scatter-fade
+    blur: 9, fadeLeave: 2.3, fadeArrive: 1.2, // scatter-fade
     ease: spatialEases.inExpo, rotZ: 0, rotX: 0,
     durationMs: 1500,
   }),
@@ -659,7 +661,13 @@ const createJourney = (manifest) => {
       section.style.visibility = 'visible';
       section.style.opacity = style.opacity.toFixed(3);
       section.style.transform = style.transform;
-      section.style.filter = style.blur > 0.05 ? `blur(${style.blur.toFixed(2)}px)` : 'none';
+      // Quantise blur to whole pixels: filter:blur() re-rasterises the whole
+      // (complex) stage every time its value changes, so a continuously-varying
+      // blur stutters at 60fps. Snapping to ~2px steps cuts that to a handful of
+      // rasterisations across the whole transition — the depth stays smooth.
+      const bpx = Math.round(style.blur / 2) * 2;
+      const nextFilter = bpx > 0 ? `blur(${bpx}px)` : 'none';
+      if (section.style.filter !== nextFilter) section.style.filter = nextFilter;
       section.style.zIndex = String(1000 - Math.round(Math.abs(i - progress) * 10));
       section.style.willChange = Math.abs(i - progress) < 1.2 ? 'transform, opacity, filter' : 'auto';
     }
@@ -688,8 +696,10 @@ const createJourney = (manifest) => {
       raf = 0;
       return;
     }
-    // Fire arrival once the focused stage is essentially resolved (last ~15%).
-    if (p > 0.85) dispatchArrival(target);
+    // Fire arrival only once the stage has essentially STOPPED (last ~3%), so
+    // the title scramble + count-up never animate while the stage is still
+    // flying through depth (that overlap read as a glitchy transition).
+    if (p > 0.97) dispatchArrival(target);
     raf = requestAnimationFrame(loop);
   };
 
