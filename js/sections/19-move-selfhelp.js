@@ -1,5 +1,5 @@
 /**
- * 19-move-selfhelp.js — Move 03: Help people help themselves.
+ * 19-move-selfhelp.js — Move 03: Ride the social self-help wave.
  *
  * Warm gradient ground. Black on warm. Full-bleed one screen.
  *

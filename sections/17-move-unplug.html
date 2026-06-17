@@ -1,77 +1,87 @@
 <!-- 17-move-unplug.html — Move 01: UNPLUG THEM FROM THE GRID.
-     Deck 3 title (slide 105): "01 UNPLUG THEM FROM THE GRID". Verified.
-     BRAND-WORLD-FINAL §7 "07 — Moves": warm gradient full-bleed, black on warm.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-     COMPOSITION: a giant ghost stage-numeral anchors the screen; two columns
-     fill the viewport. LEFT — eyebrow + title + lesson + quote card. RIGHT —
-     flat navy+yellow move icon on a cream tile + 34% hero stat + the less→more
-     reveal on a navy panel (the satisfying shift).
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
+     RIGHT — 34% hero stat + move-01.svg icon + flipReveal less→more interaction.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-     Square corners, AA contrast, tabular nums, NO underline, NO em dash. -->
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-<div class="chapter-inner mv-root mu-root on-warm" data-mu-root>
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\31 7-move-unplug. -->
 
-  <!-- Giant ghost numeral — the stage marker, behind everything -->
-  <span class="mv-ghostnum" aria-hidden="true">01</span>
+<div class="chapter-inner mu-root on-warm" data-mu-root>
 
-  <!-- Orbit decoration — connective signature -->
-  <span class="mv-orbit" aria-hidden="true"></span>
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="mu-orbit" aria-hidden="true"></span>
 
   <!-- Challenger-Series brand stamp, top-right -->
-  <img class="mv-mark"
+  <img class="mu-mark"
        src="assets/brand-final/challenger-series-lockup.png"
        alt="Challenger Series" />
 
-  <div class="mv-grid">
+  <!-- Two-column grid -->
+  <div class="mu-grid">
 
-    <!-- LEFT — move header + lesson + quote -->
-    <div class="mv-left">
-      <header class="mv-head">
-        <p class="vccp-eyebrow mv-eyebrow" data-arrival>
-          <span class="mv-rule" aria-hidden="true"></span>
-          Move one of five
-        </p>
-        <h2 class="mv-title" data-arrival>
-          Unplug them from<br>the <em class="mv-accent" data-arrival-scramble>grid</em>
+    <!-- LEFT COLUMN — move header + lesson + quote -->
+    <div class="mu-left">
+      <header class="mu-head">
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="mu-stage" data-arrival>
+          <span class="mu-stage__num" aria-hidden="true">01</span>
+          <span class="mu-stage__rule" aria-hidden="true"></span>
+          <span class="mu-stage__label vccp-eyebrow">Move one of five</span>
+        </div>
+        <h2 class="mu-title" data-arrival>
+          Unplug them<br>from the <em class="mu-accent" data-arrival-scramble>grid</em>
         </h2>
-        <p class="mv-lesson" data-arrival>
+        <p class="mu-lesson" data-arrival>
           Find practical, everyday ways to help your customers lower their
-          living costs and hack a broken system.
+          living costs and rely less on broken systems.
         </p>
       </header>
 
-      <blockquote class="soi-card mv-quote" data-arrival>
+      <!-- Quote card — .soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card mu-quote" data-arrival>
         <img class="soi-card__mark"
              src="assets/brand-final/challenger-series-lockup.png"
              alt="" aria-hidden="true" />
-        <p class="mv-quote__text">
+        <p class="mu-quote__text">
           "I now have a lot less trust in institutions such as the government
           and politicians, local councils. Big brands are the same. I don't
           want to give too much money to one brand."
         </p>
-        <footer class="mv-quote__attr">Southampton, 63 · Architects</footer>
+        <footer class="mu-quote__attr">Southampton, 63 · Architects</footer>
       </blockquote>
     </div>
 
-    <!-- RIGHT — icon + stat + less->more reveal -->
-    <aside class="mv-right" aria-label="Unplug interaction: less to more">
+    <!-- RIGHT COLUMN — 34% stat + icon + flipReveal -->
+    <aside class="mu-right" aria-label="Unplug interaction: less to more">
 
-      <div class="mv-stat-hero" data-arrival>
-        <span class="mv-icon" aria-hidden="true">
-          <img src="assets/moves/move-01.svg" alt="" class="mv-icon__img" />
-        </span>
-        <div class="mv-stat">
-          <span class="mv-stat__num num"
+      <!-- Stat hero -->
+      <div class="mu-stat-hero" data-arrival>
+        <!-- move-01.svg icon — navy+yellow flat language -->
+        <div class="mu-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-01.svg"
+               alt="Unplug icon"
+               class="mu-icon__img" />
+        </div>
+        <div class="mu-stat">
+          <span class="mu-stat__num num"
                 data-count-to="34" data-count-suffix="%">34%</span>
-          <span class="mv-stat__label">are already using tools to fix their own
+          <span class="mu-stat__label">are already using tools to fix their own
             practical home and financial problems</span>
         </div>
       </div>
 
-      <div class="mv-flip-panel" data-arrival>
-        <p class="mv-flip-kicker">The shift, in three moves</p>
-        <div class="mv-flip" data-flip
-             aria-label="Reveal each brand shift from less to more"></div>
+      <!-- flipReveal interaction — the designed less-to-more beat -->
+      <div class="mu-flip-panel" data-arrival>
+        <p class="mu-flip-kicker">The shift, in three moves</p>
+        <div class="mu-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift"></div>
       </div>
 
     </aside>

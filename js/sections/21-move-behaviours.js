@@ -7,9 +7,9 @@
  *   LEFT  — move header + WLV lesson + Vinted brand note + quote card
  *   RIGHT — move-05.svg medal icon + gamified flipReveal less→more interaction
  *
- * Less→More rows (deck "BOOST GOOD BEHAVIOURS" shift slide, verbatim):
+ * Less→More rows (STORY.md §07 Move 05 slide 73, verbatim):
  *   Setting tasks   → Gamifying goals
- *   Reactive        → Real time
+ *   CRM modules     → Habit forming
  *   Random rewards  → Meaningful rewards
  *
  * Gamified reward: when all three rows are flipped the reward badge pulses to
@@ -23,10 +23,10 @@
 import { arrival } from '../lib/experiential.js';
 import { flipReveal } from '../lib/interactions.js';
 
-// Less→More pairs verbatim from deck "BOOST GOOD BEHAVIOURS" shift slide
+// Less→More pairs verbatim from STORY.md §07 Move 05 slide 73
 const FLIP_ROWS = [
   { less: 'Setting tasks',  more: 'Gamifying goals' },
-  { less: 'Reactive',       more: 'Real time' },
+  { less: 'CRM modules',    more: 'Habit forming' },
   { less: 'Random rewards', more: 'Meaningful rewards' },
 ];
 

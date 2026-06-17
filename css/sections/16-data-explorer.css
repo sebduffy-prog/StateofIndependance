@@ -99,16 +99,33 @@
   to { transform: rotate(360deg) translateX(calc(var(--pg-orbit-r) * -1)) rotate(-360deg); }
 }
 
-/* ─── The console: masthead / control deck / hero stage, stacked, full-bleed
-   within the chapter-inner, filling the viewport floor-to-ceiling. ─── */
+/* ─── The console: a SIDE-BY-SIDE layout — a compact CONTROL RAIL on the left
+   (masthead figure + the three filter groups) and the CHART owning the whole
+   right band at full height. This frees the vertical room the stacked layout
+   used to lose to the 21 question chips, so the chart reads as the dominant
+   hero at laptop heights (768–900px) regardless of how many pills there are. ─ */
 #\31 6-data-explorer .pg-stage {
   position: relative;
   width: 100%;
   height: 100%;             /* fill the padded chapter-inner box */
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
-  row-gap: clamp(var(--space-2), 2.4vh, var(--space-4));
-  min-height: clamp(520px, 70vh, 820px);
+  grid-template-columns: minmax(360px, 38%) minmax(0, 1fr);
+  column-gap: clamp(var(--space-3), 3vw, var(--space-5));
+  align-items: stretch;
+  min-height: clamp(520px, 80vh, 860px);
+}
+
+/* The left rail: masthead stacked above the control deck, the whole column
+   scrollable only if it ever overflows (it should not at laptop heights). */
+#\31 6-data-explorer .pg-rail {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-2), 2.2vh, var(--space-4));
+  align-content: start;
+  overflow: auto;
+  padding-right: clamp(var(--space-2), 1.4vw, var(--space-3));
 }
 
 /* The tiny Challenger-Series lockup — the book-cover stamp, top-right. */
@@ -123,16 +140,14 @@
   pointer-events: none;
 }
 
-/* ─── MASTHEAD: the display moment ───────────────────────────────────── */
+/* ─── MASTHEAD: the display moment, stacked at the top of the rail ────── */
 #\31 6-data-explorer .pg-masthead {
   position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
-  column-gap: clamp(var(--space-3), 4vw, var(--space-5));
-  padding-right: 200px;          /* clear the lockup stamp */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-1), 1.4vh, var(--space-2));
   border-bottom: 1.5px solid var(--pg-rule);
-  padding-bottom: clamp(var(--space-2), 2.4vh, var(--space-3));
+  padding-bottom: clamp(var(--space-2), 1.8vh, var(--space-3));
 }
 #\31 6-data-explorer .pg-masthead-lead { min-width: 0; }
 #\31 6-data-explorer .pg-eyebrow {
@@ -147,12 +162,13 @@
   display: block;
 }
 
-/* The number is the headline: Poppins 900, navy gravity, tabular, display-scale. */
+/* The number is the headline: Poppins 900, navy gravity, tabular. Scaled to the
+   rail so it stays a confident display figure without crowding the controls. */
 #\31 6-data-explorer .pg-readout-num {
   margin: 0;
   color: var(--navy);
   font-weight: 900;
-  font-size: clamp(4.4rem, 11vw, 10rem);
+  font-size: clamp(3.4rem, 6.2vw, 6.4rem);
   line-height: 0.82;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
@@ -184,11 +200,11 @@
 #\31 6-data-explorer .pg-readout-line {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+  font-size: clamp(1.05rem, 1.3vw, 1.35rem);
   font-weight: 700;
   line-height: 1.16;
   letter-spacing: -0.01em;
-  max-width: 36ch;
+  max-width: 32ch;
   font-variant-numeric: tabular-nums;
 }
 #\31 6-data-explorer .pg-note {
@@ -202,17 +218,19 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── CONTROL DECK: the three driving controls as a confident toolbar ── */
+/* ─── CONTROL DECK: the three driving controls, stacked in the rail ───── */
 #\31 6-data-explorer .pg-deck {
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--space-2), 2vh, var(--space-3));
+  gap: clamp(var(--space-2), 1.8vh, var(--space-3));
 }
+/* In the narrow rail the Britain + view groups stack rather than sit side by
+   side, so each keeps its own tidy row of chips. */
 #\31 6-data-explorer .pg-deck-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(var(--space-3), 3vw, var(--space-5));
-  align-items: flex-start;
+  flex-direction: column;
+  gap: clamp(var(--space-2), 1.8vh, var(--space-3));
+  align-items: stretch;
 }
 #\31 6-data-explorer .pg-control { min-width: 0; }
 #\31 6-data-explorer .pg-control--wide { width: 100%; }
@@ -224,21 +242,24 @@
   font-weight: 700;
   color: var(--navy);
   opacity: 0.55;
-  margin-bottom: var(--space-1);
+  margin-bottom: 6px;
 }
+/* The 21 question chips pack into a tidy multi-column block so the rail stays
+   short. The Britain + view groups keep a normal wrapping row. */
 #\31 6-data-explorer .pg-pills .pillgroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px;
 }
-/* Rest: navy outline, no fill box — the quiet square control. */
+/* Rest: navy outline, no fill box — the quiet square control. Tightened
+   padding keeps all 21 question chips compact in the rail. */
 #\31 6-data-explorer .pillgroup-chip {
   background: transparent;
   color: var(--navy);
   border: 1.5px solid rgba(4, 22, 84, 0.32);
   border-radius: 0;
-  padding: 8px 14px;
-  font: 600 var(--t-xs) / 1 var(--font-sans);
+  padding: 6px 11px;
+  font: 600 var(--t-xs) / 1.05 var(--font-sans);
   letter-spacing: 0.01em;
   cursor: pointer;
   white-space: nowrap;
@@ -525,28 +546,57 @@
 }
 
 /* ─── Responsive ────────────────────────────────────────────────────── */
-@media (max-width: 760px) {
+/* Below the side-by-side comfort width the console stacks: control rail on
+   top, chart beneath with a guaranteed large min-height so it stays the hero. */
+@media (max-width: 1024px) {
   #\31 6-data-explorer .pg-world {
     justify-content: flex-start;
-    padding-block: clamp(var(--space-3), 5vh, var(--space-5));
   }
   #\31 6-data-explorer .pg-stage {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(var(--space-2), 2.4vh, var(--space-4));
     min-height: 0;
-    grid-template-rows: auto auto auto;
+  }
+  #\31 6-data-explorer .pg-rail {
+    overflow: visible;
+    padding-right: 0;
+  }
+  /* Reclaim the horizontal masthead + the wider chip rows now there is width. */
+  #\31 6-data-explorer .pg-masthead {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    column-gap: clamp(var(--space-3), 4vw, var(--space-5));
+  }
+  #\31 6-data-explorer .pg-deck-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: clamp(var(--space-3), 3vw, var(--space-5));
+    align-items: flex-start;
+  }
+  #\31 6-data-explorer .pg-chart {
+    min-height: clamp(360px, 56vh, 560px);
+    height: auto;
+  }
+  #\31 6-data-explorer .pg-chart > svg { max-height: none; }
+  #\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
+    height: clamp(360px, 56vh, 560px);
+  }
+}
+
+@media (max-width: 760px) {
+  #\31 6-data-explorer .pg-world {
+    padding-block: clamp(var(--space-3), 5vh, var(--space-5));
   }
   #\31 6-data-explorer .pg-masthead {
-    grid-template-columns: 1fr;
-    row-gap: var(--space-2);
-    padding-right: 0;
+    flex-direction: column;
     align-items: start;
   }
   #\31 6-data-explorer .pg-mark { top: 0; height: 22px; }
   #\31 6-data-explorer .pg-readout-num { font-size: clamp(3.6rem, 22vw, 6rem); }
   #\31 6-data-explorer .pg-chart {
     min-height: clamp(360px, 60vh, 520px);
-    height: auto;
   }
-  #\31 6-data-explorer .pg-chart > svg { max-height: none; }
   #\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
     height: clamp(360px, 60vh, 520px);
   }

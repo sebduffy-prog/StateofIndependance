@@ -12,13 +12,14 @@
  *   29-point trust spread — NHS 52.8% confident at top, Government 23.9% at bottom.
  *   Displayed as 29 pts (rounded from 52.8 − 23.9 = 28.9 ≈ 29).
  *
- * Less→More rows (deck "BE A TRUSTED ALTERNATIVE" shift slide, verbatim):
+ * Less→More rows (STORY.md §07 Move 02 slide 49, verbatim):
  *   Treating pain         → Diagnosing the problem
  *   Lipstick on a pig     → Backing it up
- *   Short-term hit        → Long-term trust
+ *   Opaque                → Transparent
  *
- * Lesson (deck LESSON 2, verbatim):
- *   Earn people's trust by challenging the bad habits of your category.
+ * Lesson (STORY.md §07 Move 02 slide 44, verbatim):
+ *   Earn people's trust by being the honest, transparent alternative
+ *   when they feel let down by everyone else.
  *
  * Brand examples: M&S and Boots ONLY (Nationwide removed per STRUCTURE-V2.md).
  *
@@ -35,11 +36,11 @@ import { countUp } from '../lib/counter.js';
 // NHS pctConfident 52.8 − Government pctConfident 23.9 = 28.9 → displayed as 29
 const STAT_VALUE = 29;
 
-// Less→More pairs verbatim from deck "BE A TRUSTED ALTERNATIVE" shift slide
+// Less→More pairs verbatim from STORY.md §07 Move 02 slide 49
 const FLIP_ROWS = [
   { less: 'Treating pain',      more: 'Diagnosing the problem' },
   { less: 'Lipstick on a pig',  more: 'Backing it up' },
-  { less: 'Short-term hit',     more: 'Long-term trust' },
+  { less: 'Opaque',             more: 'Transparent' },
 ];
 
 export default function init(rootEl, data) {

@@ -32,9 +32,6 @@ const TOP_N = 5;
 const INDEX_BASELINE = 100; // 100 = the UK average, the scale's anchor.
 const SCALE_HEADROOM = 1.08; // a touch of air past the longest bar.
 
-/** Sentence-case a segment id for aria labels ("architects" -> "Architects"). */
-const segName = SEGMENT_ID.charAt(0).toUpperCase() + SEGMENT_ID.slice(1);
-
 /** A short one-line explanation shown for the active lens. */
 const LENS_HINTS = {
   value: 'What this segment treats as essential, indexed against the nation.',
@@ -65,12 +62,35 @@ function topMetric(family) {
   return topMetricLow(family, 120);
 }
 
-/** Top-N over-indexing entries from a TGI array (label or statement). */
+/**
+ * Top-N rows of a family by index with NO threshold - the segment's hardest
+ * leanings even when none clear the over-index floor. Used as a graceful
+ * fallback so every segment fills the same lens set (the caption frames the
+ * bars relative to the 100 = UK-average baseline either way).
+ */
+function topMetricAny(family) {
+  return Object.entries(family || {})
+    .map(([label, v]) => ({ label, pct: v.index }))
+    .filter((row) => typeof row.pct === 'number')
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, TOP_N);
+}
+
+/**
+ * Top-N TGI lifestyle statements by index. Prefers the clear over-indexes
+ * (>=120); if a segment has none that high (e.g. a passive, low-index
+ * segment), it falls back to that segment's HIGHEST-indexing statements so the
+ * lens still fills with its most distinctive leanings. The caption frames the
+ * bars as "where this Britain leans hardest", which is true either way.
+ */
 function topIndexedTgi(entries) {
   if (!Array.isArray(entries)) return [];
-  return entries
-    .filter((e) => e && typeof e.index === 'number' && e.index >= 120)
-    .sort((a, b) => b.index - a.index)
+  const sorted = entries
+    .filter((e) => e && typeof e.index === 'number')
+    .sort((a, b) => b.index - a.index);
+  const over = sorted.filter((e) => e.index >= 120);
+  const chosen = over.length ? over : sorted;
+  return chosen
     .slice(0, TOP_N)
     .map((e) => ({ label: tidyTag(e.label || e.statement || ''), pct: e.index }))
     .filter((e) => e.label);
@@ -201,20 +221,25 @@ function populateFingerprint(rootEl, tgiSeg) {
 }
 
 /**
- * Build the shared set of lenses from verified data. Identical across all four
- * segments: each lens is omitted only if that segment has no data for it, so
- * the COMPONENT is the same everywhere and the CONTENT differs.
+ * Build the shared set of lenses from verified data. Identical logic across
+ * all four segments, so the COMPONENT is the same everywhere and only the
+ * CONTENT differs - the four pages read as one system.
  *
- * Thresholds relax from 120 (the over-index bar) down to 100 (the average) so
- * a segment whose distinctiveness sits just above average still fills its
- * lens, while a strongly-skewed segment shows only its clear over-indexes.
+ * Each lens prefers the clear over-indexes (>=120) and relaxes toward the
+ * 100 = average baseline, falling back to a segment's hardest leanings when it
+ * over-indexes on none (e.g. a passive, trading-down segment). The chart
+ * caption frames every bar relative to the 100 baseline, so the reading stays
+ * honest whichever set is shown.
  */
 function buildLenses(seg, tgiSeg) {
   const lenses = [];
 
-  // Lens 1 - What they value: essentials over-index.
+  // Lens 1 - What they value: essentials. Prefer the over-indexes; if a
+  // trading-down segment over-indexes on none, fall back to its hardest
+  // leanings so the lens still fills.
   if (seg?.metrics?.essentials) {
-    const items = topMetricLow(seg.metrics.essentials, 110);
+    const over = topMetricLow(seg.metrics.essentials, 105);
+    const items = over.length ? over : topMetricAny(seg.metrics.essentials);
     if (items.length) lenses.push({ value: 'value', label: 'What they value', items });
   }
 

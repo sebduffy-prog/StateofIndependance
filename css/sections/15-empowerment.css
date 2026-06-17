@@ -452,16 +452,12 @@
   color: var(--ink);
 }
 
-/* Draggable need circles — tactile two-stop radial fill (a lit form, not a
-   flat disc), soft contact shadow, multiply so overlaps deepen to navy. */
+/* Need circles — FLAT solid discs (client: no 3D). Multiply blend keeps the
+   overlaps deepening to navy so the venn intersection still reads. */
 #\31 5-empowerment .emp-tv-need {
   position: absolute;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 36% 30%,
-      color-mix(in srgb, var(--accent) 78%, #ffffff 22%) 0%,
-      var(--accent) 58%,
-      color-mix(in srgb, var(--accent) 82%, #000000 18%) 100%);
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,14 +466,11 @@
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
-  box-shadow: 0 18px 40px rgba(4, 22, 84, 0.22);
-  transition: box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 #\31 5-empowerment .emp-tv-need.is-dragging {
   z-index: 5;
   cursor: grabbing;
-  box-shadow: 0 26px 60px rgba(4, 22, 84, 0.3);
 }
 
 #\31 5-empowerment .emp-tv-need-lbl {

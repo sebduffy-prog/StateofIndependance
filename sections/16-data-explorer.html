@@ -19,39 +19,46 @@
 
   <div class="chapter-inner pg-stage">
 
-    <!-- ── MASTHEAD: eyebrow + the live display figure + the read line ── -->
-    <header class="pg-masthead">
-      <div class="pg-masthead-lead">
-        <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
-        <p class="pg-readout-num" data-arrival>
-          <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
-        </p>
-      </div>
-      <div class="pg-masthead-read" data-arrival>
-        <p class="pg-readout-kicker" data-pg-readout-kicker>The leading answer</p>
-        <p class="pg-readout-line"><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
-        <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
-      </div>
-      <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
-           alt="VCCP Challenger Series" data-arrival />
-    </header>
+    <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
+         alt="VCCP Challenger Series" data-arrival />
 
-    <!-- ── CONTROL DECK: the three driving controls, full-width toolbar ── -->
-    <div class="pg-deck" data-arrival>
-      <div class="pg-control pg-control--wide">
-        <span class="pg-control-label" id="pg-metric-label">The question</span>
-        <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
-      </div>
-      <div class="pg-deck-row">
-        <div class="pg-control">
-          <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
-          <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
+    <!-- ── CONTROL RAIL: the masthead figure + the three driving controls,
+         held compact on the left so the chart owns the rest of the screen. ── -->
+    <div class="pg-rail">
+
+      <!-- MASTHEAD: eyebrow + the live display figure + the read line -->
+      <header class="pg-masthead">
+        <div class="pg-masthead-lead">
+          <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
+          <p class="pg-readout-num" data-arrival>
+            <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
+          </p>
         </div>
-        <div class="pg-control">
-          <span class="pg-control-label" id="pg-view-label">View it as</span>
-          <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
+        <div class="pg-masthead-read" data-arrival>
+          <p class="pg-readout-kicker" data-pg-readout-kicker>The leading answer</p>
+          <p class="pg-readout-line"><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
+          <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
+        </div>
+      </header>
+
+      <!-- CONTROL DECK: the three driving controls, stacked in the rail -->
+      <div class="pg-deck" data-arrival>
+        <div class="pg-control pg-control--wide">
+          <span class="pg-control-label" id="pg-metric-label">The question</span>
+          <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
+        </div>
+        <div class="pg-deck-row">
+          <div class="pg-control">
+            <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
+            <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
+          </div>
+          <div class="pg-control">
+            <span class="pg-control-label" id="pg-view-label">View it as</span>
+            <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
+          </div>
         </div>
       </div>
+
     </div>
 
     <!-- ── HERO STAGE: the single morphing chart, box-less on the cream ── -->
