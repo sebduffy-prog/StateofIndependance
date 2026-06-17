@@ -539,8 +539,9 @@
 #\31 5-empowerment .emp-tv-stat-icon svg { width: 100%; height: 100%; }
 /* Real design-team need PNG (dark art reads on the warm ground). */
 #\31 5-empowerment .emp-tv-stat-icon__img {
-  width: 100%;
-  height: 100%;
+  width: clamp(40px, 3.4vw, 52px);
+  height: auto;
+  flex: 0 0 auto;
   object-fit: contain;
   display: block;
 }

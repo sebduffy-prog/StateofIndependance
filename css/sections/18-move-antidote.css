@@ -135,7 +135,8 @@
 #\31 8-move-antidote .ma-title-img {
   display: block;
   width: clamp(280px, 30vw, 460px);
-  max-width: 100%;
+  max-width: none;
+  min-width: clamp(260px, 28vw, 440px);
   height: auto;
 }
 #\31 8-move-antidote .ma-title::before,
