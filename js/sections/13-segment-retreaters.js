@@ -97,9 +97,10 @@ function topIndexedTgi(entries) {
 }
 
 // Fingerprint cloud sizing: a tight set that always fits one screen.
-const FP_TARGET = 7;
-const FP_MAX = 8;
-const FP_MIN = 5;
+// Capped to two comfortable rows so the last tag is never below the fold.
+const FP_TARGET = 6;
+const FP_MAX = 6;
+const FP_MIN = 4;
 const FP_THRESHOLDS = [120, 110, 100];
 
 /**

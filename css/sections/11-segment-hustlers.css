@@ -42,21 +42,6 @@
            clamp(28px, 4vw, 72px);
 }
 
-/* A faint hairline seam between the two columns - keeps the data lens visually
-   distinct from the identity rail so they never read as colliding. */
-#\31 1-segment-hustlers .seg-grid::before {
-  content: "";
-  position: absolute;
-  top: clamp(64px, 12vh, 128px);
-  bottom: calc(var(--journey-controls-h, 72px) + clamp(40px, 8vh, 96px));
-  left: 50%;
-  width: 1px;
-  background: linear-gradient(to bottom,
-    transparent, rgba(4, 22, 84, 0.14) 18%, rgba(4, 22, 84, 0.14) 82%, transparent);
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* Brand stamp - top-right, book-cover position. */
 #\31 1-segment-hustlers .seg-mark {
   position: absolute;
@@ -195,7 +180,8 @@
   visibility: hidden;
 }
 
-/* RIGHT: data lens column - self-contained, flexes to fit. */
+/* RIGHT: data lens column - self-contained, flexes to fill the full height
+   so there is no lower dead space and the fingerprint always sits in view. */
 #\31 1-segment-hustlers .seg-data {
   position: relative;
   z-index: 1;
@@ -205,14 +191,14 @@
   margin: 0;
   height: 100%;
   min-height: 0;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Flat navy + segment-accent icon, top of the lens. */
 #\31 1-segment-hustlers .seg-icon {
   color: var(--navy);
-  width: clamp(38px, 3.6vw, 48px);
-  height: clamp(38px, 3.6vw, 48px);
+  width: clamp(44px, 4vw, 56px);
+  height: clamp(44px, 4vw, 56px);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -285,10 +271,12 @@
   outline-offset: -2px;
 }
 
-/* Backgroundless chart host - bars float on cream; SVG scales to width. */
+/* Backgroundless chart host - bars float on cream; SVG scales to width.
+   Grows to absorb spare height (no dead space) and shrinks under pressure
+   (the fingerprint below it always stays in view). */
 #\31 1-segment-hustlers .seg-chart {
   width: 100%;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
   display: flex;
   align-items: center;
@@ -324,10 +312,10 @@
    text only (no numbers). Capped so it always fits one screen. */
 #\31 1-segment-hustlers .seg-fingerprint {
   flex: none;
-  margin-top: clamp(6px, 1.2vh, 14px);
+  margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(7px, 1vh, 12px);
+  gap: clamp(6px, 0.9vh, 10px);
   border-top: 1px solid rgba(4, 22, 84, 0.1);
   padding-top: clamp(8px, 1.2vh, 14px);
 }
@@ -347,7 +335,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: clamp(6px, 0.7vw, 10px);
-  max-height: 4.6em;
+  /* Two comfortable rows of tags - capped to six in JS so the final row is
+     always fully visible within 100svh, never running below the fold. */
+  max-height: calc(2 * 2.1em + clamp(6px, 0.7vw, 10px));
   overflow: hidden;
 }
 #\31 1-segment-hustlers .seg-fingerprint-tag {
@@ -368,24 +358,39 @@
   box-shadow: inset 3px 0 0 0 var(--seg-accent);
 }
 
-/* Orbit ring - lower-right ambient geometry; behind everything; no pointer. */
+/* Orbit motif - an intentional concentric ring tucked into the lower-right
+   corner. Contained on-stage (no off-canvas void) with a small accent tick so
+   it frames the composition and balances the page instead of leaving dead
+   space. Behind everything; decorative; no pointer events. */
 #\31 1-segment-hustlers .seg-orbit {
   position: absolute;
-  bottom: clamp(-12vh, -7vh, -5vh);
-  right: clamp(-9vw, -6vw, -4vw);
-  width: clamp(260px, 34vw, 520px);
-  height: clamp(260px, 34vw, 520px);
+  bottom: calc(var(--journey-controls-h, 72px) + clamp(14px, 2.4vh, 28px));
+  right: clamp(20px, 4vw, 56px);
+  width: clamp(120px, 12vw, 188px);
+  height: clamp(120px, 12vw, 188px);
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.12));
+  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.14));
   pointer-events: none;
   z-index: 0;
 }
+#\31 1-segment-hustlers .seg-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.1));
+}
+/* A single accent dot riding the ring - keeps each card's colour signature. */
 #\31 1-segment-hustlers .seg-orbit::after {
   content: "";
   position: absolute;
-  inset: 18%;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.08));
+  background: var(--seg-accent);
 }
 
 /* Narrow / short viewports - stack, keep one screen. */
@@ -396,10 +401,10 @@
     row-gap: clamp(18px, 3vh, 28px);
     align-content: center;
   }
-  #\31 1-segment-hustlers .seg-grid::before { display: none; }
   #\31 1-segment-hustlers .seg-id { max-width: none; }
   #\31 1-segment-hustlers .seg-data { height: auto; }
   #\31 1-segment-hustlers .seg-fingerprint { display: none; }
+  #\31 1-segment-hustlers .seg-orbit { display: none; }
 }
 
 @media (max-height: 640px) {
