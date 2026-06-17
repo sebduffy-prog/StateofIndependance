@@ -1,61 +1,197 @@
-/* 08-twist-ai.css — WORKFLOW A branded placeholder, scoped to #\30 8-twist-ai.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 08-twist-ai.css — Twist three: AI ON TAP. Scoped to #\30 8-twist-ai.
+   Full-bleed warm-gradient pivot. Balanced two-column composition: a left hero
+   cluster (eyebrow → bold-black title → standfirst → the two distinct headline
+   stats) counter-weighted by the marquee substitution strip on the right. No
+   dead third, no edge band, no white box — every number and bar floats on the
+   warm ground with colour + weight only. Square corners, no underline, no skew. */
 
 #\30 8-twist-ai .twist-ai-root {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 88px);
   width: 100%;
   height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  padding: clamp(48px, 7vh, 96px) clamp(28px, 6vw, 110px);
 }
 
-#\30 8-twist-ai .twist-ai-head {
-  max-width: 22ch;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
-}
-
-#\30 8-twist-ai .twist-ai-title {
-  margin: 0;
-  line-height: 0.96;
-}
-
-#\30 8-twist-ai .twist-ai-note {
-  margin: 0;
-  max-width: 34ch;
-  opacity: 0.72;
-}
-
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
+/* ── Orbit + brand stamp furniture ─────────────────────────────────────── */
 #\30 8-twist-ai .twist-ai-orbit {
   position: absolute;
   top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
+  right: clamp(-22vw, -10vw, -4vw);
+  width: clamp(360px, 50vw, 720px);
+  height: clamp(360px, 50vw, 720px);
   transform: translateY(-50%);
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
+  border: 1px solid var(--soi-orbit, rgba(255, 255, 255, 0.22));
   pointer-events: none;
+  z-index: 0;
 }
 #\30 8-twist-ai .twist-ai-orbit::after {
   content: "";
   position: absolute;
-  inset: 16%;
+  inset: 18%;
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+  border: 1px solid var(--soi-orbit, rgba(255, 255, 255, 0.16));
 }
 
-#\30 8-twist-ai .twist-ai-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+#\30 8-twist-ai .twist-ai-mark {
+  position: absolute;
+  top: clamp(20px, 3vh, 36px);
+  right: clamp(22px, 3vw, 44px);
+  height: clamp(26px, 2.4vw, 34px);
+  opacity: 0.9;
+  z-index: 3;
+}
+
+/* ── Hero cluster (left) ───────────────────────────────────────────────── */
+#\30 8-twist-ai .twist-ai-head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vh, 22px);
+  max-width: 30ch;
+}
+#\30 8-twist-ai .twist-ai-title {
+  margin: 0;
+  line-height: 0.92;
+}
+#\30 8-twist-ai .twist-ai-accent {
+  color: var(--navy);
+}
+#\30 8-twist-ai .twist-ai-standfirst {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 42ch;
+}
+
+/* The two headline numbers — held APART so 58% (any task) and 37% (high-stakes)
+   read as two distinct facts, never conflated. Backgroundless: colour + weight
+   only, one yellow seal marks the high-stakes figure as the single accent. */
+#\30 8-twist-ai .twist-ai-stats {
+  margin: clamp(8px, 1.4vh, 16px) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vh, 20px);
+}
+#\30 8-twist-ai .twist-ai-stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: clamp(12px, 1.4vw, 18px);
+  padding-left: clamp(12px, 1vw, 16px);
+  border-left: 4px solid rgba(4, 22, 84, 0.22);
+}
+#\30 8-twist-ai .twist-ai-stat--accent {
+  border-left-color: var(--yellow, #f0cb08);
+}
+#\30 8-twist-ai .twist-ai-stat-num {
+  font-weight: 900;
+  font-size: clamp(2.6rem, 4vw, 3.4rem);
+  line-height: 0.9;
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+#\30 8-twist-ai .twist-ai-stat-label {
+  font-weight: 600;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  line-height: 1.3;
+  color: var(--navy);
+  opacity: 0.82;
+  max-width: 22ch;
+}
+
+/* ── The marquee substitution strip (right) ────────────────────────────── */
+#\30 8-twist-ai .twist-ai-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 24px);
+  justify-self: center;
+  width: min(100%, 560px);
+}
+#\30 8-twist-ai .twist-ai-stage-title {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* Square pill picker (interactions.js pillGroup). Square chips, navy on cream
+   when active — the precise instrument register. */
+#\30 8-twist-ai .twist-ai-picker .pillgroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1vw, 12px);
+}
+#\30 8-twist-ai .twist-ai-picker .pillgroup-chip {
+  appearance: none;
+  border: 1px solid rgba(4, 22, 84, 0.3);
+  border-radius: 0;
+  background: transparent;
+  color: var(--navy);
+  font: inherit;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  letter-spacing: -0.01em;
+  padding: clamp(8px, 1.1vh, 12px) clamp(14px, 1.8vw, 22px);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+#\30 8-twist-ai .twist-ai-picker .pillgroup-chip:hover {
+  border-color: var(--navy);
+}
+#\30 8-twist-ai .twist-ai-picker .pillgroup-chip:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--navy);
+}
+#\30 8-twist-ai .twist-ai-picker .pillgroup-chip.is-active {
+  background: var(--navy);
+  color: var(--cream, #f0ede7);
+  border-color: var(--navy);
+}
+
+/* The tug-of-war floats directly on the ground (the chart is backgroundless). */
+#\30 8-twist-ai .twist-ai-strip {
+  width: 100%;
+}
+
+#\30 8-twist-ai .twist-ai-readout,
+#\30 8-twist-ai .twist-ai-empty {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--navy);
+  opacity: 0.86;
+  max-width: 46ch;
+}
+
+/* ── Responsive — collapse to a single stacked column on narrow viewports.
+   Stays one screen: the hero shrinks, the strip carries the focal weight. ── */
+@media (max-width: 860px) {
+  #\30 8-twist-ai .twist-ai-root {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 4vh, 36px);
+    align-content: center;
+    padding: clamp(40px, 6vh, 72px) clamp(22px, 7vw, 48px);
+  }
+  #\30 8-twist-ai .twist-ai-head {
+    max-width: none;
+  }
+  #\30 8-twist-ai .twist-ai-stage {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+
+/* ── Reduced motion — no idle motion; the libs jump-cut their own animation. */
+@media (prefers-reduced-motion: reduce) {
+  #\30 8-twist-ai .twist-ai-picker .pillgroup-chip {
+    transition: none;
+  }
 }

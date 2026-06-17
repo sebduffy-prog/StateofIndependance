@@ -66,10 +66,26 @@ const PROGRESS_EASE = 0.12;
 /** Below this gap we snap progress to the target (kills sub-pixel drift). */
 const SNAP_EPSILON = 0.0008;
 
-/** Z-axis stage geometry — the depth a stage travels through. */
-const STAGE_DEPTH = 1200; // px: far plane (next stage starts here, leaving stage flies to here)
-const STAGE_SCALE_FAR = 0.62; // scale of a stage one step away in depth
-const STAGE_BLUR_MAX = 7; // px blur on a fully-receded/approaching stage
+/** Z-axis stage geometry — TRUE FLY-THROUGH model (Z-AXIS-JOURNEY.md §1).
+ *
+ *   LEAVING (current stage, d<0 as progress advances past it):
+ *     translateZ 0 → +STAGE_Z_LEAVE  (comes TOWARD the camera)
+ *     scale       1 → STAGE_SCALE_LEAVE  (grows past the frame — you fly THROUGH it)
+ *     blur + fade out
+ *
+ *   ARRIVING (next stage, d>0, waiting in depth):
+ *     translateZ -STAGE_Z_DEEP → 0  (emerges from deep space)
+ *     scale      STAGE_SCALE_FAR → 1  (tiny in the distance, grows to fill)
+ *     sharpens + fades in
+ *
+ *   ZERO translateX / translateY between stages — motion is purely on Z.
+ *   (The constant -50%/-50% in the transform is the centering offset for
+ *   top:50%;left:50% positioning; it never changes and is NOT a slide.) */
+const STAGE_Z_LEAVE = 620;   // px: leaving stage flies this far TOWARD camera (+Z)
+const STAGE_Z_DEEP  = 1400;  // px: arriving stage starts this far BEHIND the camera (−Z)
+const STAGE_SCALE_LEAVE = 1.85; // scale of leaving stage at full fly-through (past the frame)
+const STAGE_SCALE_FAR   = 0.40; // scale of arriving stage at its farthest depth
+const STAGE_BLUR_MAX = 8;    // px blur on a fully-receded/approaching stage
 /** Stages further than this many steps from focus are not rendered (perf). */
 const RENDER_WINDOW = 2;
 
@@ -146,13 +162,29 @@ const loadData = async () => {
 
 /**
  * Pure function: a stage's distance from current progress → its 3D transform,
- * opacity and blur. `d = stageIndex - progress`:
- *   d ≈ 0  → focus: z=0, scale 1, crisp, opaque.
- *   d > 0  → ahead, waiting in depth: pushed far (−z), scaled down, blurred, faded.
- *   d < 0  → left behind, flying past the viewer: pulled toward/past camera
- *            (+z then receding), scaled, blurred, faded out.
- * Reduced motion: no z / no blur — opacity cross-fade only.
- * @param {number} d
+ * opacity and blur. `d = stageIndex - progress`.
+ *
+ * TRUE FLY-THROUGH model (Z-AXIS-JOURNEY.md §1):
+ *
+ *   d ≈ 0   → FOCUS: translateZ(0) scale(1), crisp, opaque. Full screen.
+ *
+ *   d < 0   → LEAVING (you are flying THROUGH it, it expands past the frame):
+ *               translateZ: 0 → +STAGE_Z_LEAVE  (comes TOWARD the camera)
+ *               scale:      1 → STAGE_SCALE_LEAVE  (blows past the viewport edge)
+ *               opacity + blur increase with |d| — fades as you fly through.
+ *
+ *   d > 0   → ARRIVING (waiting in deep space, grows as it approaches):
+ *               translateZ: −STAGE_Z_DEEP → 0  (tiny far away, fills screen)
+ *               scale:      STAGE_SCALE_FAR → 1  (tiny in the distance → full)
+ *               opacity + blur decrease with d — sharpens on approach.
+ *
+ * ZERO translateX / translateY between stages: the -50%/-50% offset is the
+ * static centering fix for top:50%;left:50% positioning and never changes.
+ * Motion is PURELY on the Z axis + scale + blur + opacity.
+ *
+ * Reduced motion: no z-fly / no blur — plain opacity cross-fade only.
+ *
+ * @param {number} d   stageIndex − progress
  * @param {boolean} reduced
  * @returns {{transform:string, opacity:number, blur:number, visible:boolean}}
  */
@@ -161,18 +193,31 @@ const stageStyleFor = (d, reduced) => {
   const visible = ad <= RENDER_WINDOW;
 
   if (reduced) {
-    // Cross-fade: the focused stage is opaque, neighbours fade fast.
+    // Cross-fade only: focused stage opaque, neighbours fade fast.
     const opacity = ad >= 1 ? 0 : 1 - ad;
-    return { transform: 'translateZ(0)', opacity, blur: 0, visible };
+    return { transform: 'translate3d(-50%, -50%, 0)', opacity, blur: 0, visible };
   }
 
-  // Depth eased by distance. Ahead recedes into −z; behind flies toward +z.
-  const eased = 1 - Math.pow(1 - clamp(ad, 0, 1), 2); // easeOutQuad on |d|∈[0,1]
-  const sign = d >= 0 ? -1 : 1; // ahead → into depth; behind → toward camera/past
-  const z = sign * STAGE_DEPTH * eased * (0.7 + 0.3 * clamp(ad, 0, RENDER_WINDOW));
-  const scale = 1 - (1 - STAGE_SCALE_FAR) * eased;
-  const opacity = clamp(1 - ad * ad * 0.85, 0, 1);
-  const blur = STAGE_BLUR_MAX * eased;
+  // easeOutQuad on |d| clamped 0→1 (smooth start from focus, quick departure)
+  const t = 1 - Math.pow(1 - clamp(ad, 0, 1), 2);
+
+  let z, scale, opacity, blur;
+
+  if (d <= 0) {
+    // ── LEAVING: stage comes TOWARD the camera as you fly through it ──────
+    // d goes 0 → negative; t goes 0 → 1 as |d| grows.
+    z     = STAGE_Z_LEAVE * t;                        // +Z: flies at the lens
+    scale = 1 + (STAGE_SCALE_LEAVE - 1) * t;          // grows past the frame
+    opacity = clamp(1 - ad * 1.6, 0, 1);             // fades fast (gone by ~d=-0.6)
+    blur  = STAGE_BLUR_MAX * t;
+  } else {
+    // ── ARRIVING: stage emerges from deep negative Z ───────────────────────
+    // d goes from RENDER_WINDOW → 0; t goes 1 → 0 as d shrinks.
+    z     = -STAGE_Z_DEEP * t;                        // −Z: far away, travels forward
+    scale = STAGE_SCALE_FAR + (1 - STAGE_SCALE_FAR) * (1 - t); // small → full
+    opacity = clamp(1 - d * 1.4, 0, 1);              // fades in as it approaches
+    blur  = STAGE_BLUR_MAX * t;
+  }
 
   return {
     transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${scale.toFixed(4)})`,

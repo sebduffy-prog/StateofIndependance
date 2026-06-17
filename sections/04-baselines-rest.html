@@ -1,17 +1,57 @@
-<div class="chapter-inner stage-placeholder baselines-rest-root on-cream" data-baselines-rest-root>
+<div class="chapter-inner on-cream" id="br">
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="baselines-rest-orbit si-orbit" aria-hidden="true"></span>
+  <!-- The brand signature: the tiny Challenger-Series lockup, top-right
+       (the book-cover stamp position). Black silhouette on cream. -->
+  <img class="br-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
+       alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <header class="baselines-rest-head">
-    <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
-    <h2 class="baselines-rest-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Baselines: the rest</h2>
-    <p class="baselines-rest-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
+  <!-- ── Opener — hangs on the left axis ─────────────────────── -->
+  <header class="br-head">
+    <p class="vccp-eyebrow" data-arrival>The rest of the floor</p>
+    <h2 class="br-headline si-display si-display--black">
+      <span data-arrival>Three more numbers</span>
+      <span data-arrival>everyone already <em class="si-accent" data-arrival-scramble>knows</em></span>
+    </h2>
+    <p class="br-standfirst si-measure--tight" data-arrival>
+      Deal-hunting, low-grade dread, the quiet downgrade at the till. Read each one
+      in turn &mdash; the squeeze is the table the country eats at, not the meal.
     </p>
+    <div class="br-filter" data-filter aria-hidden="false"></div>
   </header>
 
-  <span class="baselines-rest-dot" data-youdot-anchor aria-hidden="true"></span>
+  <!-- ── THREE BASELINES, ONE COMPOSED ROW ────────────────────
+       Each column: a big navy tabular number, ONE varied viz
+       (lollipop / dotPlot / proportion), and a WLV caption.
+       Backgroundless data on cream. The filter above focuses one. -->
+  <section class="br-grid" aria-label="The three remaining baselines">
+
+    <!-- 1 · Deal-seeking — lollipop of the money-saving moves -->
+    <article class="br-panel" data-panel="deal" aria-labelledby="br-deal-lbl">
+      <p class="br-num num"><span data-count-to="55" data-count-suffix="%">55%</span></p>
+      <p class="br-lbl" id="br-deal-lbl">have hunted out deals and shopped around in the last three months.</p>
+      <div class="br-viz" data-viz-deal
+           role="img" aria-label="Money-saving moves of the last three months: shopped around 55%, switched to own-label 43%, dropped a subscription 30%, protected a treat 25%."></div>
+      <p class="br-cap si-measure--tight">The thrift reflex is now muscle memory &mdash; shopping around is the first move, not the last resort.</p>
+    </article>
+
+    <!-- 2 · Anxiety — dot plot placing it among the mood readings -->
+    <article class="br-panel" data-panel="anxiety" aria-labelledby="br-anx-lbl">
+      <p class="br-num num"><span data-count-to="60" data-count-suffix="%">60%</span></p>
+      <p class="br-lbl" id="br-anx-lbl">feel anxious about the coming months.</p>
+      <div class="br-viz" data-viz-anxiety
+           role="img" aria-label="The national mood: careful with money 77%, anxious 60%, emotionally exhausted 55%, more self-reliant 54%."></div>
+      <p class="br-cap si-measure--tight">Dread sits just below carefulness &mdash; the weather the whole survey is taken in.</p>
+    </article>
+
+    <!-- 3 · Trading down groceries — proportion split -->
+    <article class="br-panel" data-panel="grocery" aria-labelledby="br-gro-lbl">
+      <p class="br-num num"><span data-count-to="54" data-count-suffix="%">54%</span></p>
+      <p class="br-lbl" id="br-gro-lbl">have traded down to cheaper groceries this year.</p>
+      <div class="br-viz" data-viz-grocery
+           role="img" aria-label="Of every hundred shoppers, 54 have traded down on groceries and 46 have held their basket."></div>
+      <p class="br-cap si-measure--tight">More than half quietly swapped the brand for the own-label &mdash; the basket shrank without a word.</p>
+    </article>
+
+    <span class="br-dot" data-youdot-anchor aria-hidden="true"></span>
+  </section>
 </div>

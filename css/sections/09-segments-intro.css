@@ -1,61 +1,244 @@
-/* 09-segments-intro.css — WORKFLOW A branded placeholder, scoped to #\30 9-segments-intro.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 09-segments-intro.css — the agency-compass resolve, scoped to #\30 9-segments-intro.
+   Cream editorial ground. A slim left rail (eyebrow -> bold-black title with
+   one italic accent -> standfirst -> four-segment legend) counter-weights the
+   HERO 2x2 compass on the right, where 100 navy squares resolve into four
+   quadrant clusters sized 17/28/27/28. Full-bleed, balanced, backgroundless.
+   Brand world: BWF §3 (book-cover voice), navy + yellow as the only accents. */
 
-#\30 9-segments-intro .segments-intro-root {
+#\30 9-segments-intro .segments-intro {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
   width: 100%;
   height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  display: flex;
+  align-items: center;
+  padding-inline: clamp(28px, 6vw, 110px);
+  padding-block: clamp(28px, 6vh, 72px);
 }
 
-#\30 9-segments-intro .segments-intro-head {
-  max-width: 22ch;
+/* The tiny Challenger-Series stamp, top-right (book-cover position). */
+#\30 9-segments-intro .segments-intro-mark {
+  position: absolute;
+  top: clamp(20px, 3.4vh, 40px);
+  right: clamp(24px, 5vw, 96px);
+  height: clamp(22px, 2.4vw, 30px);
+  width: auto;
+  opacity: 0.9;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Asymmetric layout: slim rail | dominant compass hero. */
+#\30 9-segments-intro .segments-intro-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 30vw) 1fr;
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+/* ── Left rail ─────────────────────────────────────────────────────── */
+#\30 9-segments-intro .segments-intro-rail {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
+  gap: clamp(12px, 1.8vh, 22px);
+  min-width: 0;
 }
 
 #\30 9-segments-intro .segments-intro-title {
   margin: 0;
-  line-height: 0.96;
+  line-height: 0.98;
 }
 
-#\30 9-segments-intro .segments-intro-note {
+#\30 9-segments-intro .segments-intro-standfirst {
   margin: 0;
-  max-width: 34ch;
-  opacity: 0.72;
+  color: var(--ink-soft);
+  opacity: 0.86;
+  font-size: clamp(0.95rem, 1.05vw, 1.08rem);
+  line-height: 1.5;
 }
 
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
-#\30 9-segments-intro .segments-intro-orbit {
+/* The legend — four segments as a 2x2 grid echoing the compass quadrants. */
+#\30 9-segments-intro .segments-intro-legend {
+  list-style: none;
+  margin: clamp(4px, 1vh, 10px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 1vw, 14px);
+}
+
+#\30 9-segments-intro .segments-intro-leg {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: clamp(8px, 0.8vw, 12px);
+  cursor: default;
+  outline: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+#\30 9-segments-intro .segments-intro-leg:hover,
+#\30 9-segments-intro .segments-intro-leg:focus-visible {
+  background: var(--cream-shade);
+  transform: translateY(-1px);
+}
+#\30 9-segments-intro .segments-intro-leg:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--navy);
+}
+
+#\30 9-segments-intro .segments-intro-leg-swatch {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  margin-top: 3px;
+  background: var(--navy);
+}
+/* Distinct navy-family swatches keep the four readable without leaving the
+   navy + yellow world; yellow is reserved for the active glow. */
+#\30 9-segments-intro .segments-intro-leg--architects .segments-intro-leg-swatch { background: var(--navy); }
+#\30 9-segments-intro .segments-intro-leg--hustlers   .segments-intro-leg-swatch { background: var(--navy-bright); }
+#\30 9-segments-intro .segments-intro-leg--coasters   .segments-intro-leg-swatch { background: #3A5BD0; }
+#\30 9-segments-intro .segments-intro-leg--retreaters .segments-intro-leg-swatch { background: #6E80C0; }
+
+#\30 9-segments-intro .segments-intro-leg-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+#\30 9-segments-intro .segments-intro-leg-name {
+  font-weight: 800;
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.05;
+}
+#\30 9-segments-intro .segments-intro-leg-share {
+  margin-left: 6px;
+  color: var(--navy);
+  font-weight: 800;
+}
+#\30 9-segments-intro .segments-intro-leg-desc {
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  opacity: 0.7;
+  line-height: 1.2;
+}
+
+/* ── Hero: the 2x2 compass ─────────────────────────────────────────── */
+#\30 9-segments-intro .segments-intro-stage {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.4vh, 18px);
+  min-width: 0;
+}
+
+#\30 9-segments-intro .segments-intro-compass {
+  position: relative;
+  width: min(56vh, 100%, 620px);
+  aspect-ratio: 1 / 1;
+}
+
+/* Field needs an explicit box (dotField requirement) — fills the compass. */
+#\30 9-segments-intro .segments-intro-field {
   position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
+  inset: 0;
+  z-index: 1;
+}
+
+/* Axis lines — faint ink tint crossing at centre (never a white box). */
+#\30 9-segments-intro .segments-intro-axis {
+  position: absolute;
+  background: rgba(4, 22, 84, 0.18);
+  z-index: 2;
   pointer-events: none;
 }
-#\30 9-segments-intro .segments-intro-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+#\30 9-segments-intro .segments-intro-axis--x {
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  transform: translateY(-0.5px);
+}
+#\30 9-segments-intro .segments-intro-axis--y {
+  top: 0; bottom: 0; left: 50%;
+  width: 1px;
+  transform: translateX(-0.5px);
 }
 
+/* Axis end-caps — the dimension labels, navy, small caps register. */
+#\30 9-segments-intro .segments-intro-axis-cap {
+  position: absolute;
+  z-index: 2;
+  color: var(--navy);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  pointer-events: none;
+  white-space: nowrap;
+}
+#\30 9-segments-intro .segments-intro-axis-cap--left   { left: 0;  top: 50%; transform: translateY(-150%); }
+#\30 9-segments-intro .segments-intro-axis-cap--right  { right: 0; top: 50%; transform: translateY(-150%); text-align: right; }
+#\30 9-segments-intro .segments-intro-axis-cap--top    { top: 0;   left: 50%; transform: translateX(10px); }
+#\30 9-segments-intro .segments-intro-axis-cap--bottom { bottom: 0; left: 50%; transform: translateX(10px); }
+
+/* Quadrant labels — segment name + share, anchored in each cell corner. */
+#\30 9-segments-intro .segments-intro-quads { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+#\30 9-segments-intro .segments-intro-quad {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: 42%;
+}
+#\30 9-segments-intro .segments-intro-quad-share {
+  font-weight: 900;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--navy);
+}
+#\30 9-segments-intro .segments-intro-quad-name {
+  font-weight: 700;
+  font-size: clamp(0.72rem, 0.95vw, 0.9rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+/* Each label hugs the OUTER corner of its quadrant so it never collides with
+   the dots or the centre cross. */
+#\30 9-segments-intro .segments-intro-quad--hustlers   { top: 6%;  left: 5%; }
+#\30 9-segments-intro .segments-intro-quad--architects { top: 6%;  right: 5%; align-items: flex-end; text-align: right; }
+#\30 9-segments-intro .segments-intro-quad--retreaters { bottom: 6%; left: 5%; }
+#\30 9-segments-intro .segments-intro-quad--coasters   { bottom: 6%; right: 5%; align-items: flex-end; text-align: right; }
+
+/* The persistent "you" dot lands dead centre of the compass. */
 #\30 9-segments-intro .segments-intro-dot {
-  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+#\30 9-segments-intro .segments-intro-cap {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  opacity: 0.66;
+  text-align: center;
+}
+
+/* ── Narrow viewports: stack rail above the compass, keep it on-screen. ── */
+@media (max-width: 860px) {
+  #\30 9-segments-intro .segments-intro-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 3vh, 28px);
+  }
+  #\30 9-segments-intro .segments-intro-compass { width: min(70vw, 52vh); }
+  #\30 9-segments-intro .segments-intro-axis-cap { font-size: 0.6rem; }
 }

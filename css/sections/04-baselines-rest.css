@@ -1,61 +1,221 @@
-/* 04-baselines-rest.css — WORKFLOW A branded placeholder, scoped to #\30 4-baselines-rest.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* ============================================================
+   Chapter 04 — baselines: the rest. The other table-stakes
+   baselines on one composed cream screen. Scoped to
+   #04-baselines-rest via the escaped #\30 4-baselines-rest prefix.
 
-#\30 4-baselines-rest .baselines-rest-root {
+   THE AUTHORITATIVE BRAND WORLD (BWF §7, baselines register):
+   the editorial CREAM reading ground. Bold-black Poppins title
+   low-left with one italic accent word, the tiny Challenger-Series
+   lockup stamp top-right (book-cover position), tabular NAVY hero
+   numbers. Three columns, each a big number + ONE varied viz
+   (lollipop / dotPlot / proportion) floating BACKGROUNDLESS on the
+   cream — never a white box. A quiet square pill filter focuses one
+   baseline at a time (the marquee). ONE focal point per state, no
+   dead space, square corners, no underline, no parallelogram.
+   ============================================================ */
+
+#\30 4-baselines-rest.journey-step {
+  background: var(--cream);
+  color: var(--on-cream);
+}
+
+#\30 4-baselines-rest .chapter-inner {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
-  width: 100%;
+  gap: clamp(1.6rem, 4vh, 3rem);
   height: 100%;
+  padding-block: clamp(2.4rem, 6vh, 4.5rem);
   padding-inline: clamp(28px, 7vw, 120px);
 }
 
-#\30 4-baselines-rest .baselines-rest-head {
-  max-width: 22ch;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
-}
-
-#\30 4-baselines-rest .baselines-rest-title {
-  margin: 0;
-  line-height: 0.96;
-}
-
-#\30 4-baselines-rest .baselines-rest-note {
-  margin: 0;
-  max-width: 34ch;
-  opacity: 0.72;
-}
-
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
-#\30 4-baselines-rest .baselines-rest-orbit {
+/* ── The brand signature: tiny lockup stamp, top-right ─────────── */
+#\30 4-baselines-rest .br-mark {
   position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
+  top: clamp(18px, 3vh, 34px);
+  right: clamp(28px, 7vw, 120px);
+  height: clamp(26px, 3vw, 34px);
+  opacity: 0.85;
+  z-index: 2;
   pointer-events: none;
 }
-#\30 4-baselines-rest .baselines-rest-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+
+#\30 4-baselines-rest .br-head,
+#\30 4-baselines-rest .br-grid { position: relative; z-index: 1; }
+
+/* ── Opener — hangs on the left axis (editorial, not centred) ──── */
+#\30 4-baselines-rest .br-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 60ch;
+}
+#\30 4-baselines-rest .br-headline {
+  font-size: clamp(2rem, 4.6vw, 4rem);
+  line-height: 0.94;
+  margin: var(--space-1) 0 0;
+  max-width: 18ch;
+  color: var(--ink);
+}
+#\30 4-baselines-rest .br-headline span { display: block; }
+/* The one italic accent word — the "Series" gesture (BWF §2). No box,
+   no underline; the slant of the italic IS the accent. */
+#\30 4-baselines-rest .br-headline .si-accent {
+  display: inline;
+  color: var(--navy);
+}
+#\30 4-baselines-rest .br-standfirst {
+  margin: 0;
+  font-size: var(--t-md);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink-soft);
 }
 
-#\30 4-baselines-rest .baselines-rest-dot {
-  display: inline-block;
+/* ── The pill filter — quiet SQUARE controls (the marquee) ─────── */
+#\30 4-baselines-rest .br-filter { margin-top: var(--space-1); }
+#\30 4-baselines-rest .pillgroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.7vw, 10px);
+}
+#\30 4-baselines-rest .pillgroup-chip {
+  appearance: none;
+  border: 1px solid rgba(4, 22, 84, 0.28);
+  background: transparent;
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.5em 0.95em;
+  cursor: pointer;
+  border-radius: 0;                 /* square, always */
+  transition: background-color 0.22s var(--ease-entrance),
+              color 0.22s var(--ease-entrance),
+              border-color 0.22s var(--ease-entrance);
+}
+#\30 4-baselines-rest .pillgroup-chip:hover { border-color: var(--navy); }
+#\30 4-baselines-rest .pillgroup-chip.is-active {
+  background: var(--navy);
+  color: var(--cream);
+  border-color: var(--navy);
+}
+#\30 4-baselines-rest .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+
+/* ── THREE BASELINES, ONE COMPOSED ROW ─────────────────────────
+   Backgroundless data on cream; equal thirds; aligned baselines. */
+#\30 4-baselines-rest .br-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.6rem, 3.4vw, 3.4rem);
+  align-items: start;
+}
+
+#\30 4-baselines-rest .br-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* a hairline divider gives editorial rhythm without a white box */
+  padding-inline-start: clamp(14px, 1.6vw, 26px);
+  border-inline-start: 1px solid rgba(4, 22, 84, 0.16);
+  transition: opacity 0.32s var(--ease-entrance),
+              transform 0.32s var(--ease-entrance);
+}
+#\30 4-baselines-rest .br-panel:first-of-type {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+/* The hero number — tabular navy, the "serious data" colour (BWF §1). */
+#\30 4-baselines-rest .br-num {
+  margin: 0;
+  color: var(--navy);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+}
+#\30 4-baselines-rest .br-lbl {
+  margin: 0;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 24ch;
+}
+#\30 4-baselines-rest .br-cap {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  opacity: 0.85;
+  max-width: 30ch;
+}
+
+/* Backgroundless viz — the chart sits directly on the cream. */
+#\30 4-baselines-rest .br-viz {
+  width: 100%;
+  margin-block: var(--space-1);
+}
+#\30 4-baselines-rest .br-viz svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── THE MARQUEE — focus one baseline; the others recede ──────── */
+#\30 4-baselines-rest .br-grid[data-focus="deal"] .br-panel:not([data-panel="deal"]),
+#\30 4-baselines-rest .br-grid[data-focus="anxiety"] .br-panel:not([data-panel="anxiety"]),
+#\30 4-baselines-rest .br-grid[data-focus="grocery"] .br-panel:not([data-panel="grocery"]) {
+  opacity: 0.32;
+}
+#\30 4-baselines-rest .br-panel.is-focus {
+  transform: translateY(-2px);
+}
+
+/* The you-dot rests on the row (no layout footprint). */
+#\30 4-baselines-rest .br-dot {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
   width: 12px;
   height: 12px;
+  transform: translateX(-50%);
   border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+  background: var(--yellow);
+  pointer-events: none;
+}
+
+/* ── Responsive: stack the three on narrow screens ────────────── */
+@media (max-width: 900px) {
+  #\30 4-baselines-rest .chapter-inner { justify-content: flex-start; }
+  #\30 4-baselines-rest .br-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.6rem, 4vh, 2.4rem);
+  }
+  #\30 4-baselines-rest .br-panel {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+    border-top: 1px solid rgba(4, 22, 84, 0.16);
+    padding-top: var(--space-3);
+  }
+  #\30 4-baselines-rest .br-panel:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 4-baselines-rest .br-panel { transition: none; }
+  #\30 4-baselines-rest .br-panel.is-focus { transform: none; }
 }

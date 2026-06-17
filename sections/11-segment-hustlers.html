@@ -1,17 +1,85 @@
-<div class="chapter-inner stage-placeholder segment-hustlers-root on-cream" data-segment-hustlers-root>
+<div class="chapter-inner segment-hustlers on-cream" data-segment-hustlers-root>
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="segment-hustlers-orbit si-orbit" aria-hidden="true"></span>
+  <!-- The brand signature stamp — tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="segment-hustlers-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
 
-  <header class="segment-hustlers-head">
-    <p class="vccp-eyebrow" data-arrival>Segment two of four</p>
-    <h2 class="segment-hustlers-title si-display si-display--black"
-        data-arrival data-arrival-scramble>The Hustlers</h2>
-    <p class="segment-hustlers-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+  <div class="segment-hustlers-grid">
 
-  <span class="segment-hustlers-dot" data-youdot-anchor aria-hidden="true"></span>
+    <!-- LEFT — the book-cover identity card. Eyebrow -> bold-black display
+         title with one italic accent word, the three-word descriptor, the
+         hero quote, then the two facts that anchor the profile. -->
+    <aside class="segment-hustlers-id">
+
+      <p class="vccp-eyebrow" data-arrival>Segment two of four</p>
+
+      <h2 class="segment-hustlers-title si-display si-display--sm">
+        <span data-arrival>The</span>
+        <span class="si-accent" data-arrival data-arrival-scramble>Hustlers</span>
+      </h2>
+
+      <p class="segment-hustlers-descriptor" data-arrival>
+        Self-sufficient. Savvy. Sceptical.
+      </p>
+
+      <blockquote class="segment-hustlers-quote" data-arrival>
+        &ldquo;My trust has worsened over time &mdash; but with AI I feel
+        empowered to take control and help myself.&rdquo;
+      </blockquote>
+
+      <dl class="segment-hustlers-facts" data-arrival>
+        <div class="segment-hustlers-fact">
+          <dt>Who</dt>
+          <dd>25&ndash;54 core. <span class="num">62%</span> are 25&ndash;54.</dd>
+        </div>
+        <div class="segment-hustlers-fact">
+          <dt>Money</dt>
+          <dd>Middle-income families &mdash; and the most likely to call
+            themselves comfortable.</dd>
+        </div>
+      </dl>
+
+      <!-- The persistent "you" dot lands on the share figure — the headline
+           number for this Britain. -->
+      <p class="segment-hustlers-share" data-arrival>
+        <span class="segment-hustlers-share-num si-bignum"
+              data-arrival-count data-to="28" data-suffix="%">28%</span>
+        <span class="segment-hustlers-share-cap">of Britain &mdash; the
+          largest proactive Britain, and the AI vanguard.</span>
+        <span class="segment-hustlers-dot" data-youdot-anchor aria-hidden="true"></span>
+      </p>
+
+    </aside>
+
+    <!-- RIGHT — the data lens. One backgroundless index chart on cream; a
+         square pill control swaps the lens (the marquee interaction). Each
+         bar is an INDEX vs the UK average (100 = average). -->
+    <figure class="segment-hustlers-data">
+
+      <figcaption class="segment-hustlers-data-head">
+        <p class="vccp-eyebrow">The signature of the segment</p>
+        <h3 class="segment-hustlers-data-title si-subhead">
+          Where the Hustlers over-index against Britain
+        </h3>
+      </figcaption>
+
+      <!-- Square pill control — three lenses on the same audience. -->
+      <div class="segment-hustlers-lens" data-segment-hustlers-lens
+           aria-label="Choose a lens on the Hustlers"></div>
+
+      <!-- The index chart is mounted here by JS; redrawn on lens change. -->
+      <div class="segment-hustlers-chart" data-segment-hustlers-chart
+           aria-live="polite"></div>
+
+      <p class="segment-hustlers-baseline" aria-hidden="true">
+        <span class="segment-hustlers-baseline-key"></span>
+        <span class="num">100</span> = the UK average. Longer bars are where
+        this Britain leans hardest.
+      </p>
+
+    </figure>
+
+  </div>
 </div>

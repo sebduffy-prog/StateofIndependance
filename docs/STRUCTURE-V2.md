@@ -6,6 +6,12 @@ deck design components (assets/brand-final/ per BRAND-WORLD-FINAL.md), a sexy de
 between steps, the character→title reveal, and an interaction. WLV-voice copy (SEBSKILLS
 strategy/WLV). Verified data only.
 
+## Content + transition notes (2026-06-17 review)
+- REMOVE the **Nationwide** case study/example from the trusted-antidote move (keep M&S / Boots).
+- Transitions must be a true **fly-THROUGH depth** (Z + scale + blur only, zero X/Y) — they currently
+  read as slides. See Z-AXIS-JOURNEY.md §1.
+- Maximise the experiential feel; every step fits one page, no overlaps, no white space.
+
 ## Global fixes (apply everywhere)
 - FULL-BLEED: ground fills 100vw×100vh, no cream/page band on right/bottom (current bug). No
   "page grid"/orbit artifact left floating in empty space.

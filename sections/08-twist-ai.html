@@ -1,17 +1,70 @@
-<div class="chapter-inner stage-placeholder twist-ai-root on-warm" data-twist-ai-root>
+<!-- Chapter 08 — Twist three: AI ON TAP. The earned punctuation, continued.
+     AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "04 — Twists"):
+     a full-bleed WARM GRADIENT pivot. One focal point — the human-vs-AI
+     tug-of-war the visitor is steering across the high-stakes professions.
+     The tiny Challenger-Series lockup signs top-right.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="twist-ai-orbit si-orbit" aria-hidden="true"></span>
+     THE ONE MEMORABLE THING: a human-vs-AI substitution strip. Pick a
+     high-stakes profession (finance / health / legal) and a tug-of-war SPRINGS
+     to the true split — the share of Britain who now reach for AI instead of
+     a human professional for that very task. Expertise that once sat behind a
+     desk and a fee now sits in a pocket. Verified Q11 only; the two headline
+     numbers (58% any task / 37% high-stakes) are kept rigorously DISTINCT.
 
+     BOLD BLACK Poppins-900 hero line with ONE italic accent word. Backgroundless
+     — every line and number sits on the warm ground with COLOUR + WEIGHT only.
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root. Every CSS selector scoped to #\30 8-twist-ai. -->
+<div class="chapter-inner twist-ai-root on-warm" data-twist-ai-root>
+
+  <!-- Decorative orbit — the connective signature, behind everything. -->
+  <span class="twist-ai-orbit si-orbit" aria-hidden="true" data-parallax="0.05"></span>
+
+  <!-- The Challenger-Series brand stamp, top-right (the book-cover position). -->
+  <img class="twist-ai-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- HERO — one display moment, hangs left, generous space. Two headline
+       numbers held APART: 58% used AI for any task; 37% for the high-stakes
+       calls. One italic accent word. -->
   <header class="twist-ai-head">
     <p class="vccp-eyebrow" data-arrival>Twist three</p>
-    <h2 class="twist-ai-title si-display si-display--black"
-        data-arrival data-arrival-scramble>AI on tap</h2>
-    <p class="twist-ai-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
+    <h2 class="twist-ai-title si-display si-display--black" data-arrival>
+      AI on <span class="si-accent twist-ai-accent">tap</span>
+    </h2>
+    <p class="twist-ai-standfirst si-measure--tight" data-arrival>
+      Expertise once sat behind a desk and a fee. Now it sits in a pocket.
+      Nearly six in ten have asked a machine to do a job they&rsquo;d once have
+      paid a professional for &mdash; and a hard core trust it with the calls
+      that really matter.
     </p>
+
+    <!-- The two headline stats, side by side, never conflated. -->
+    <dl class="twist-ai-stats" data-arrival>
+      <div class="twist-ai-stat">
+        <dd class="twist-ai-stat-num num"
+            data-arrival-count data-to="58.4" data-decimals="0" data-suffix="%">0%</dd>
+        <dt class="twist-ai-stat-label">used AI instead of a human, for any task</dt>
+      </div>
+      <div class="twist-ai-stat twist-ai-stat--accent">
+        <dd class="twist-ai-stat-num num"
+            data-arrival-count data-to="37.4" data-decimals="0" data-suffix="%">0%</dd>
+        <dt class="twist-ai-stat-label">for the high-stakes calls: finance, health, legal</dt>
+      </div>
+    </dl>
   </header>
 
-  <span class="twist-ai-dot" data-youdot-anchor aria-hidden="true"></span>
+  <!-- THE MARQUEE — the focal point. A human-vs-AI tug-of-war across the three
+       high-stakes professions. Pick a profession; the divider springs to the
+       true Q11 split. The "you" dot anchors on the live strip. Built in JS. -->
+  <section class="twist-ai-stage" aria-labelledby="twist-ai-stage-title">
+    <h3 class="si-display si-display--sm twist-ai-stage-title" id="twist-ai-stage-title" data-arrival>
+      Who would you ask?
+    </h3>
+    <div class="twist-ai-picker" data-twist-ai-picker></div>
+    <div class="twist-ai-strip" data-twist-ai-strip data-youdot-anchor></div>
+    <p class="twist-ai-readout" data-twist-ai-readout aria-live="polite"></p>
+  </section>
+
 </div>

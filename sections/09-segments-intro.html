@@ -1,17 +1,65 @@
-<div class="chapter-inner stage-placeholder segments-intro-root on-cream" data-segments-intro-root>
+<div class="chapter-inner segments-intro on-cream">
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="segments-intro-orbit si-orbit" aria-hidden="true"></span>
+  <!-- The brand signature stamp — tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="segments-intro-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
 
-  <header class="segments-intro-head">
-    <p class="vccp-eyebrow" data-arrival>A nation, sorted</p>
-    <h2 class="segments-intro-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Britain resolves into four</h2>
-    <p class="segments-intro-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+  <div class="segments-intro-grid">
 
-  <span class="segments-intro-dot" data-youdot-anchor aria-hidden="true"></span>
+    <!-- LEFT — the editorial rail. Eyebrow -> one bold-black display line
+         with a single italic accent word, then a WLV standfirst. The
+         compass is the hero; the rail is its quiet counter-weight. -->
+    <aside class="segments-intro-rail">
+      <p class="vccp-eyebrow" data-arrival>The agency compass</p>
+
+      <h2 class="segments-intro-title si-display si-display--sm">
+        <span data-arrival>Britain</span>
+        <span class="si-accent" data-arrival data-arrival-scramble>resolves</span>
+        <span data-arrival>into four</span>
+      </h2>
+
+      <p class="segments-intro-standfirst si-measure--tight" data-arrival>
+        Plot the nation on two axes &mdash; how it feels about the future, and
+        whether it acts &mdash; and 1,504 people settle into four distinct
+        Britains. The size of each tells you who is reaching for control, and
+        who is waiting to be handed it.
+      </p>
+
+      <!-- Legend: the four segments, keyboard-focusable. Hovering / focusing
+           a card isolates its cluster on the compass. -->
+      <ul class="segments-intro-legend" data-segments-legend aria-label="The four segments">
+      </ul>
+    </aside>
+
+    <!-- HERO — the 2x2 agency compass. Dots resolve from a diffuse cloud
+         into four quadrant clusters sized 17 / 28 / 27 / 28. -->
+    <figure class="segments-intro-stage">
+      <div class="segments-intro-compass" data-segments-compass>
+
+        <!-- Axis furniture — outlook (x) and agency (y). -->
+        <span class="segments-intro-axis segments-intro-axis--x" aria-hidden="true"></span>
+        <span class="segments-intro-axis segments-intro-axis--y" aria-hidden="true"></span>
+
+        <span class="segments-intro-axis-cap segments-intro-axis-cap--left" aria-hidden="true">Pessimistic</span>
+        <span class="segments-intro-axis-cap segments-intro-axis-cap--right" aria-hidden="true">Optimistic</span>
+        <span class="segments-intro-axis-cap segments-intro-axis-cap--top" aria-hidden="true">Proactive</span>
+        <span class="segments-intro-axis-cap segments-intro-axis-cap--bottom" aria-hidden="true">Passive</span>
+
+        <!-- Resolving dot field is mounted here by JS. -->
+        <div class="segments-intro-field" data-segments-field aria-hidden="true"></div>
+
+        <!-- Quadrant labels (segment name + share) painted by JS. -->
+        <div class="segments-intro-quads" data-segments-quads aria-hidden="true"></div>
+
+        <!-- The persistent "you" dot lands at the compass centre. -->
+        <span class="segments-intro-dot" data-youdot-anchor aria-hidden="true"></span>
+      </div>
+      <figcaption class="segments-intro-cap">
+        Outlook across the bottom, agency up the side &mdash; one square per person.
+      </figcaption>
+    </figure>
+
+  </div>
 </div>

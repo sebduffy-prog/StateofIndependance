@@ -5,26 +5,18 @@
   <img class="bl-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
        alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <!-- ── Opener — hangs on the left axis ─────────────────────── -->
-  <header class="bl-head">
-    <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
-    <h2 class="bl-headline si-display si-display--black">
-      <span data-arrival>Carefulness is</span>
-      <span data-arrival>the new <em class="si-accent" data-arrival-scramble>baseline</em></span>
-    </h2>
-    <p class="bl-standfirst si-measure--tight" data-arrival>
-      The country is cost-conscious; budgets are constricted. These hallmarks of
-      the squeeze are the operational floor &mdash; table stakes, not the strategy.
-    </p>
-  </header>
+  <!-- ── LEFT RAIL — the editorial claim. Opener, then the guess gives
+       way to the display number in the SAME cell (no layout jump). ── -->
+  <div class="bl-rail">
+    <header class="bl-head">
+      <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
+      <h2 class="bl-headline si-display si-display--black">
+        <span data-arrival>Carefulness is</span>
+        <span data-arrival>the new <em class="si-accent" data-arrival-scramble>baseline</em></span>
+      </h2>
+    </header>
 
-  <!-- ── THE ONE MEMORABLE THING ──────────────────────────────
-       You guess; the truth lands as a crowd of 100 with YOUR
-       square in it. The number is display-scale; the crowd is
-       the form. The data floats backgroundless on the cream. -->
-  <section class="bl-hero" aria-labelledby="bl-claim">
-    <!-- LEFT: the claim. Before lock-in the guess lives here; after,
-         the display number IS the headline. -->
+    <!-- Both states share one cell so the guess swaps to the truth in place. -->
     <div class="bl-claim" data-claim>
       <div class="bl-guess" data-guess></div>
 
@@ -34,42 +26,40 @@
         </p>
         <p class="bl-label" id="bl-claim">are more careful with money than they were five years ago.</p>
         <p class="bl-sentence si-measure--tight">
-          Carefulness is now the default lens on every spend decision &mdash; not a
-          passing mood, the baseline.
+          Not a passing mood &mdash; the lens on every spend decision now. The
+          baseline, not the strategy.
         </p>
       </div>
     </div>
+  </div>
 
-    <!-- RIGHT: the crowd of 100. The reality the number describes. -->
-    <figure class="bl-crowd" data-crowd hidden>
-      <div class="bl-crowd-grid" data-crowd-grid role="img"
-           aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."
-           data-youdot-anchor></div>
-      <figcaption class="bl-crowd-cap">
-        <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
-        <span class="bl-crowd-of">of every 100 people you pass today &mdash; and one of them is you.</span>
-      </figcaption>
-    </figure>
-  </section>
+  <!-- ── RIGHT — the crowd of 100. Present from the start as a faint
+       navy-tint grid (no void); the truth lights it and pops YOUR
+       square. data-youdot-anchor lives on the you-square. ── -->
+  <figure class="bl-crowd" data-crowd>
+    <div class="bl-crowd-grid" data-crowd-grid role="img"
+         aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."></div>
+    <figcaption class="bl-crowd-cap">
+      <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
+      <span class="bl-crowd-of" data-crowd-of>squares wait. Lock in your guess to fill the crowd.</span>
+    </figcaption>
+  </figure>
 
-  <!-- ── The operational floor — quiet supporting evidence ────
-       The other table-stakes baselines, demoted to a single
-       restrained line so the crowd stays the sole focal point.
-       Verified data, no charts, no boxes. -->
+  <!-- ── The operational floor — one quiet supporting line across the
+       foot so the crowd stays the sole focal point. Verified data. ── -->
   <aside class="bl-floor" aria-label="The rest of the operational floor">
-    <p class="bl-floor-kicker">The rest of the floor</p>
     <dl class="bl-floor-row">
       <div class="bl-floor-fig">
         <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
-        <dd class="bl-floor-lbl">actively hunt out deals and shop around.</dd>
+        <dd class="bl-floor-lbl">hunt out deals and shop around.</dd>
       </div>
       <div class="bl-floor-fig">
         <dt class="bl-floor-num num"><span data-count-to="60" data-count-suffix="%">60%</span></dt>
-        <dd class="bl-floor-lbl">feel anxious about the next few months.</dd>
+        <dd class="bl-floor-lbl">feel anxious about the months ahead.</dd>
       </div>
       <div class="bl-floor-fig">
         <dt class="bl-floor-num num"><span data-count-to="54" data-count-suffix="%">54%</span></dt>
-        <dd class="bl-floor-lbl">are trading down to cheaper groceries.</dd>
+        <dd class="bl-floor-lbl">are trading down on the weekly shop.</dd>
       </div>
     </dl>
   </aside>

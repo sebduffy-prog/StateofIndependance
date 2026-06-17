@@ -4,13 +4,20 @@ The next evolution of the journey mechanic. Supersedes the click-Next gating wit
 **scroll-driven, z-axis (depth) transition** between full-screen stages. Cinematic, like
 flying forward through stacked planes. Build this with one workflow that maximises the transitions.
 
-## 1. The mechanic
+## 1. The mechanic — FLY THROUGH, never slide
 - Scrolling (wheel / trackpad / touch / arrow / space) drives a single **journey progress** value.
-- Stages live on a **3D stage** (`perspective` container). At any moment one stage sits at `z=0`
-  (focused, full-screen, crisp). As progress advances:
-  - the **current** stage recedes: `translateZ` goes negative, it scales down + blurs slightly + fades out (flies "past" the viewer);
-  - the **next** stage advances from depth: `translateZ` comes from far (e.g. -1200px) to 0, scaling up + sharpening + fading in.
-- It reads as moving THROUGH the content in depth, not sliding sideways or scrolling a long page.
+- Stages live on a **3D stage** (`perspective` container, ~1000–1200px). At any moment one stage sits
+  at `z=0` (focused, full-screen, crisp). As progress advances you FLY FORWARD THROUGH the content:
+  - the **current** stage comes TOWARD the camera and you pass THROUGH it: `translateZ` goes
+    **positive** (e.g. 0 → +600px), it scales **UP** past the frame, blurs and fades out — like
+    flying into and through it. (Not receding small; coming at you and through.)
+  - the **next** stage emerges from deep space: `translateZ` from far **negative** (e.g. -1400px) to
+    0, scaling up + sharpening + fading in to meet you.
+- CRITICAL — it must NOT read as a slide. **ZERO translateX / translateY** between stages; the motion
+  is purely on Z (depth) + scale + blur + opacity. You should never see a flat "square" panel sliding
+  in from a side; you should feel you are travelling forward through layers. Big perspective, strong Z
+  travel and scale so the depth is unmistakable. (Current build reads as a slide — fix to true fly-through.)
+- One stage fully resolves before the next; the pass-through is the spectacle.
 
 ## 2. Everything fits one screen — no internal scroll
 - Each stage is **exactly one viewport** (100svw × 100svh), `overflow: hidden`. Content must FIT

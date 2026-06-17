@@ -1,61 +1,274 @@
-/* 06-twist-trust.css — WORKFLOW A branded placeholder, scoped to #\30 6-twist-trust.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 06-twist-trust.css — Twist one: the trust paradox. Scoped to #\30 6-twist-trust.
+   Navy ground (set by .si-ground-navy), cream-on-navy. Full-bleed two-column
+   stage: LEFT = title cluster + the drag-rank interaction; RIGHT = the reveal
+   (the 53% → 24% spread, the NHS 6.42/10 gauge, the paradox line). Square
+   corners, no underlines, no parallelogram; surfaces are faint cream tints,
+   never white boxes. Balanced — the reveal column fills the right third so no
+   dead space once the interaction completes. */
 
 #\30 6-twist-trust .twist-trust-root {
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
+  align-items: center;
   width: 100%;
   height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  padding: clamp(28px, 5vh, 64px) clamp(28px, 6vw, 100px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#\30 6-twist-trust .twist-trust-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+/* ── LEFT column ───────────────────────────────────────────────────────── */
+#\30 6-twist-trust .twist-trust-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.6vh, 30px);
+  min-width: 0;
 }
 
 #\30 6-twist-trust .twist-trust-head {
-  max-width: 22ch;
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
+  gap: clamp(8px, 1.4vh, 16px);
+  max-width: 24ch;
 }
 
 #\30 6-twist-trust .twist-trust-title {
   margin: 0;
-  line-height: 0.96;
+  line-height: 0.94;
+  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+}
+#\30 6-twist-trust .twist-trust-title .si-accent {
+  color: var(--yellow);
 }
 
-#\30 6-twist-trust .twist-trust-note {
+#\30 6-twist-trust .twist-trust-stand {
   margin: 0;
-  max-width: 34ch;
-  opacity: 0.72;
+  color: rgba(240, 237, 231, 0.82);
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.5;
 }
 
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
+/* ── The drag-rank interaction (interactions.js class hooks) ───────────── */
+#\30 6-twist-trust .twist-trust-rank { min-width: 0; }
+
+#\30 6-twist-trust .rank-help {
+  margin: 0 0 clamp(8px, 1.4vh, 14px);
+  color: rgba(240, 237, 231, 0.66);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  max-width: 44ch;
+}
+
+#\30 6-twist-trust .rank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5px, 0.8vh, 9px);
+}
+
+#\30 6-twist-trust .rank-item {
+  display: grid;
+  grid-template-columns: 2ch 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(8px, 1.3vh, 13px) 16px;
+  background: rgba(240, 237, 231, 0.07);
+  border: 1px solid rgba(240, 237, 231, 0.16);
+  border-radius: 0;
+  color: var(--cream);
+  cursor: grab;
+  transition: background var(--dur-micro, 160ms) ease,
+              border-color var(--dur-micro, 160ms) ease,
+              transform var(--dur-micro, 160ms) ease;
+}
+#\30 6-twist-trust .rank-item:hover,
+#\30 6-twist-trust .rank-item:focus-visible {
+  background: rgba(240, 237, 231, 0.13);
+  border-color: rgba(240, 237, 231, 0.34);
+  outline: none;
+}
+#\30 6-twist-trust .rank-item:focus-visible {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.35);
+}
+#\30 6-twist-trust .rank-item.is-dragging {
+  background: rgba(240, 203, 8, 0.14);
+  border-color: var(--yellow);
+  transform: scale(1.01);
+}
+
+#\30 6-twist-trust .rank-pos {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--yellow);
+  font-size: 0.95rem;
+  text-align: center;
+}
+#\30 6-twist-trust .rank-label {
+  font-weight: 600;
+  font-size: clamp(0.9rem, 1vw, 1.02rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#\30 6-twist-trust .rank-grip {
+  color: rgba(240, 237, 231, 0.4);
+  font-size: 1rem;
+}
+
+#\30 6-twist-trust .rank-delta {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#\30 6-twist-trust .rank-delta.vccp-delta-up { color: var(--yellow); }
+#\30 6-twist-trust .rank-delta.vccp-delta-down { color: rgba(240, 237, 231, 0.55); }
+
+#\30 6-twist-trust .rank-submit {
+  margin-top: clamp(10px, 1.6vh, 18px);
+  align-self: flex-start;
+}
+
+/* ── RIGHT column — the reveal ─────────────────────────────────────────── */
+#\30 6-twist-trust .twist-trust-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 22px);
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+#\30 6-twist-trust .twist-trust-right.is-shown {
+  opacity: 1;
+  transform: none;
+}
+#\30 6-twist-trust .twist-trust-right[hidden] { display: none; }
+
+#\30 6-twist-trust .twist-trust-spread {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: clamp(8px, 1.4vw, 20px);
+  line-height: 0.9;
+}
+#\30 6-twist-trust .twist-trust-spread .num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: clamp(3rem, 6.4vw, 5.6rem);
+}
+#\30 6-twist-trust .twist-trust-spread__a .num { color: var(--cream); }
+#\30 6-twist-trust .twist-trust-spread__b .num { color: var(--yellow); }
+#\30 6-twist-trust .twist-trust-spread__to {
+  font-weight: 600;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  color: rgba(240, 237, 231, 0.6);
+  font-style: italic;
+}
+
+#\30 6-twist-trust .twist-trust-spread-cap {
+  margin: 0;
+  color: rgba(240, 237, 231, 0.82);
+  font-size: clamp(0.9rem, 1vw, 1.02rem);
+  line-height: 1.5;
+}
+
+/* The paradox: gauge + its caption, on a faint cream-tint mat (no white box). */
+#\30 6-twist-trust .twist-trust-gauge {
+  display: grid;
+  grid-template-columns: minmax(180px, 230px) 1fr;
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 26px);
+  padding-top: clamp(10px, 1.6vh, 18px);
+  border-top: 1px solid rgba(240, 237, 231, 0.16);
+}
+#\30 6-twist-trust .twist-trust-gauge__viz { min-width: 0; }
+#\30 6-twist-trust .twist-trust-gauge__viz svg {
+  width: 100%;
+  height: auto;
+  max-width: 230px;
+}
+#\30 6-twist-trust .twist-trust-gauge__cap {
+  margin: 0;
+  color: rgba(240, 237, 231, 0.82);
+  font-size: clamp(0.86rem, 0.95vw, 0.98rem);
+  line-height: 1.5;
+}
+#\30 6-twist-trust .twist-trust-gauge__cap strong {
+  color: var(--cream);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+#\30 6-twist-trust .twist-trust-gauge__cap .hl {
+  color: var(--yellow);
+  font-weight: 700;
+  background: none;
+}
+
+/* ── Orbit motif — sits low-right behind the reveal, fills the void ──── */
 #\30 6-twist-trust .twist-trust-orbit {
   position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
+  bottom: -22vh;
+  right: -14vw;
+  width: clamp(360px, 46vw, 720px);
+  height: clamp(360px, 46vw, 720px);
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
+  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.22));
   pointer-events: none;
+  z-index: 0;
 }
 #\30 6-twist-trust .twist-trust-orbit::after {
   content: "";
   position: absolute;
-  inset: 16%;
+  inset: 18%;
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.16));
 }
 
+/* The "you" dot anchor — invisible target near the title; the shell dot lands. */
 #\30 6-twist-trust .twist-trust-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+  position: absolute;
+  top: clamp(28px, 5vh, 64px);
+  left: clamp(28px, 6vw, 100px);
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Narrow / short viewports: stack, keep one screen, no internal scroll ── */
+@media (max-width: 920px) {
+  #\30 6-twist-trust .twist-trust-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(18px, 3vh, 32px);
+    align-content: center;
+  }
+  #\30 6-twist-trust .twist-trust-gauge {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\30 6-twist-trust .twist-trust-right,
+  #\30 6-twist-trust .rank-item {
+    transition: none;
+  }
 }

@@ -1,17 +1,67 @@
-<div class="chapter-inner stage-placeholder segment-coasters-root on-cream" data-segment-coasters-root>
+<div class="chapter-inner segment-coasters on-cream" data-segment-coasters-root>
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="segment-coasters-orbit si-orbit" aria-hidden="true"></span>
+  <!-- Brand signature stamp — tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="segment-coasters-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
 
-  <header class="segment-coasters-head">
-    <p class="vccp-eyebrow" data-arrival>Segment three of four</p>
-    <h2 class="segment-coasters-title si-display si-display--black"
-        data-arrival data-arrival-scramble>The Coasters</h2>
-    <p class="segment-coasters-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+  <div class="segment-coasters-grid">
 
-  <span class="segment-coasters-dot" data-youdot-anchor aria-hidden="true"></span>
+    <!-- LEFT — the editorial rail. Eyebrow -> bold-black display title with a
+         single italic accent word -> three-word descriptor -> hero quote. -->
+    <aside class="segment-coasters-rail">
+      <p class="vccp-eyebrow" data-arrival>Segment three of four &middot; 27% of Britain</p>
+
+      <h2 class="segment-coasters-title si-display si-display--black" data-arrival>
+        The <span class="si-accent" data-arrival-scramble>Coasters</span>
+      </h2>
+
+      <p class="segment-coasters-trio" data-arrival>Easygoing. Careful. Open-minded.</p>
+
+      <blockquote class="segment-coasters-quote" data-arrival>
+        <p>&ldquo;Life has improved with technology. It saves time &mdash; but it
+        really can be overwhelming sometimes.&rdquo;</p>
+        <cite>&mdash; &lsquo;Taking control&rsquo; research</cite>
+      </blockquote>
+
+      <!-- A distinctive TGI statement — the one over-index that paints the type. -->
+      <p class="segment-coasters-tgi" data-arrival data-segment-tgi></p>
+    </aside>
+
+    <!-- RIGHT — the book-cover profile card: flat navy+yellow icon, the
+         who/money/essentials/AI facts, and a togglable over-index chart. -->
+    <figure class="segment-coasters-card soi-card soi-card--hairline">
+
+      <span class="segment-coasters-icon" aria-hidden="true">
+        <!-- Flat navy+yellow "coaster" mark: a calm horizon over still water,
+             a low yellow sun easing down — the passive-optimist gesture. -->
+        <svg viewBox="0 0 64 64" role="img" aria-label="Coaster mark">
+          <circle class="ic-yellow" cx="32" cy="30" r="11"/>
+          <path class="ic-navy" d="M6 44 L58 44" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+          <path class="ic-navy" d="M12 52 L52 52" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+      </span>
+
+      <dl class="segment-coasters-facts" data-arrival>
+        <div><dt>Who</dt><dd>55+ skew &mdash; half of them are over 55</dd></div>
+        <div><dt>Money</dt><dd>Mid-to-low income &mdash; conscious, careful spenders</dd></div>
+        <div><dt>Cutting back</dt><dd>Clothing, subscriptions &amp; groceries first</dd></div>
+        <div><dt>AI</dt><dd>Happy with the easy stuff &mdash; apps, loyalty, online shopping &mdash; but they don&rsquo;t trust AI, and want brands to do it for them</dd></div>
+      </dl>
+
+      <div class="segment-coasters-data" data-arrival>
+        <div class="segment-coasters-data-head">
+          <p class="segment-coasters-data-label" data-segment-chart-label>Where they over-index vs the nation</p>
+          <div class="segment-coasters-toggle" data-segment-toggle></div>
+        </div>
+        <!-- Backgroundless over-index bars, painted by JS. -->
+        <div class="segment-coasters-chart" data-segment-chart></div>
+        <p class="segment-coasters-note">100 = the national average. Bars above it are where this Britain leans in.</p>
+      </div>
+
+      <span class="segment-coasters-dot" data-youdot-anchor aria-hidden="true"></span>
+    </figure>
+
+  </div>
 </div>

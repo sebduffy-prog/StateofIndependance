@@ -1,17 +1,67 @@
-<div class="chapter-inner stage-placeholder segment-architects-root on-cream" data-segment-architects-root>
+<div class="chapter-inner segment-architects on-cream" data-segment-architects-root>
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="segment-architects-orbit si-orbit" aria-hidden="true"></span>
+  <!-- Brand signature stamp — tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="segment-architects-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
 
-  <header class="segment-architects-head">
-    <p class="vccp-eyebrow" data-arrival>Segment one of four</p>
-    <h2 class="segment-architects-title si-display si-display--black"
-        data-arrival data-arrival-scramble>The Architects</h2>
-    <p class="segment-architects-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+  <div class="segment-architects-grid">
 
-  <span class="segment-architects-dot" data-youdot-anchor aria-hidden="true"></span>
+    <!-- LEFT — the editorial rail. Eyebrow -> bold-black display title with a
+         single italic accent word -> three-word descriptor -> hero quote. -->
+    <aside class="segment-architects-rail">
+      <p class="vccp-eyebrow" data-arrival>Segment one of four &middot; 17% of Britain</p>
+
+      <h2 class="segment-architects-title si-display si-display--black" data-arrival>
+        The <span class="si-accent" data-arrival-scramble>Architects</span>
+      </h2>
+
+      <p class="segment-architects-trio" data-arrival>Organised. Positive. In control.</p>
+
+      <blockquote class="segment-architects-quote" data-arrival>
+        <p>&ldquo;I&rsquo;ve always been super organised. I like being in control.
+        I hate having my time wasted.&rdquo;</p>
+        <cite>&mdash; Southampton, 63 &middot; &lsquo;Taking control&rsquo; research</cite>
+      </blockquote>
+
+      <!-- A distinctive TGI statement — the one over-index that paints the type. -->
+      <p class="segment-architects-tgi" data-arrival data-segment-tgi></p>
+    </aside>
+
+    <!-- RIGHT — the book-cover profile card: flat navy+yellow icon, the
+         who/money/essentials/AI facts, and a togglable over-index chart. -->
+    <figure class="segment-architects-card soi-card soi-card--hairline">
+
+      <span class="segment-architects-icon" aria-hidden="true">
+        <!-- Flat navy+yellow "architect" mark: a drafting set-square + plotted
+             point, geometric, two-tone (BWF §6). -->
+        <svg viewBox="0 0 64 64" role="img" aria-label="Architect mark">
+          <path class="ic-navy" d="M8 52 L40 8 L56 52 Z" fill="none" stroke="currentColor" stroke-width="3.4"/>
+          <path class="ic-navy" d="M18 40 L46 40" stroke="currentColor" stroke-width="3.4"/>
+          <circle class="ic-yellow" cx="40" cy="8" r="5.4"/>
+        </svg>
+      </span>
+
+      <dl class="segment-architects-facts" data-arrival>
+        <div><dt>Who</dt><dd>55+ skew, male &mdash; 42% are 55+</dd></div>
+        <div><dt>Money</dt><dd>Comfortable &mdash; 46% earn &pound;60k+ household</dd></div>
+        <div><dt>Essentials</dt><dd>Holidays &amp; eating out</dd></div>
+        <div><dt>AI</dt><dd>Embrace AI for everything &mdash; trusting their own judgement and the likes of Martin Lewis over authority</dd></div>
+      </dl>
+
+      <div class="segment-architects-data" data-arrival>
+        <div class="segment-architects-data-head">
+          <p class="segment-architects-data-label" data-segment-chart-label>Where they over-index vs the nation</p>
+          <div class="segment-architects-toggle" data-segment-toggle></div>
+        </div>
+        <!-- Backgroundless over-index bars, painted by JS. -->
+        <div class="segment-architects-chart" data-segment-chart></div>
+        <p class="segment-architects-note">Share of Architects, sorted high to low. Their TGI fingerprint runs far hotter than the nation&rsquo;s.</p>
+      </div>
+
+      <span class="segment-architects-dot" data-youdot-anchor aria-hidden="true"></span>
+    </figure>
+
+  </div>
 </div>

@@ -1,11 +1,11 @@
 /**
- * 05-twists-intro.js — WORKFLOW A branded placeholder (see docs/STRUCTURE-V2.md).
+ * 05-twists-intro.js — the twists opener (Z-AXIS depth stage).
  *
- * Renders nothing extra: the fragment already carries the on-brand-world
- * title, eyebrow and "coming in build B" note. This module only wires the
- * arrival signature (character->title reveal + cascade) so the placeholder
- * behaves like a real stage when it reaches focus. Build B replaces this with
- * the real content + marquee interaction.
+ * One full-bleed navy pivot: the bold-black title "There are *twists* in the
+ * story" + three anomaly one-liners that set up the next three stages
+ * (06 trust paradox, 07 protected joy, 08 AI on tap). Each anomaly card holds a
+ * reframe line that is revealed on hover/focus — the marquee beat. Revealing any
+ * one card clears the gate hint. All copy traces to docs/STORY.md ch04.
  *
  * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\30 5-twists-intro.
  *
@@ -15,7 +15,39 @@
  */
 import { arrival } from '../lib/experiential.js';
 
-export default function init(rootEl) {
-  // Re-play the arrival each time this stage reaches focus (idempotent).
-  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
+export default function init(rootEl, data) {
+  const journey = data && data.journey;
+
+  // Entrance: re-play the character->title reveal on every arrival (idempotent).
+  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e && e.detail));
+
+  const cards = Array.from(rootEl.querySelectorAll('[data-twist]'));
+  if (!cards.length) return;
+
+  let firstReveal = true;
+  const onReveal = (card) => {
+    card.classList.add('is-open');
+    if (firstReveal) {
+      firstReveal = false;
+      if (journey && typeof journey.ready === 'function') journey.ready();
+    }
+  };
+
+  cards.forEach((card) => {
+    // Pointer + focus both open the reframe (focus covers the keyboard path:
+    // each card is tabindex=0, so Tab reaches it and opens the same line).
+    card.addEventListener('mouseenter', () => onReveal(card));
+    card.addEventListener('focus', () => onReveal(card));
+    // Enter/Space pin it open so a keyboard user can dwell without holding focus.
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('is-pinned');
+        onReveal(card);
+      }
+    });
+  });
+
+  // Advisory hint only — Next is never trapped.
+  if (journey && typeof journey.gate === 'function') journey.gate();
 }

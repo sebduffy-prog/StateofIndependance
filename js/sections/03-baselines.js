@@ -3,11 +3,13 @@
  *
  * THE ONE MEMORABLE THING: you guess how many in every 100 are more careful
  * with money — then the truth lands as a crowd of 100 squares with YOUR own
- * square singled out among them. The number is display-scale; the crowd is the
- * form. Everything else on the screen stays quiet.
+ * square singled out among them. The crowd is present from the first frame as
+ * a faint navy-tint grid (no right-hand void); locking in your guess lights
+ * 77 of the squares and pops your yellow square. The number is display-scale;
+ * the crowd is the form. Everything else on the screen stays quiet.
  *
  *   THE MARQUEE · 77% careful — clickToGuess → a 100-in-100 crowd where the
- *       visitor's own square is born inside it. The display number is the
+ *       visitor's own square pops inside it. The display number is the
  *       headline; it rolls from the guess to the truth as the crowd fills.
  *
  *   The floor — 55 / 60 / 54 demoted to one quiet line of small tabular
@@ -34,11 +36,11 @@ const YOU_INDEX = 44;          // a lit square near the crowd's heart = "you"
 const YOU_POP_MS = 320;        // beat after your square lights, then it stands proud
 
 /**
- * Build the 100-in-100 crowd grid into `gridEl`: 100 squares, `CAREFUL_FILL`
- * of them lit, with ONE lit square singled out as the visitor. Returns
- * `run(from)` which cascades the fill and rolls the caption count from the
- * visitor's guess up to the truth. Reduced motion paints the final state
- * instantly.
+ * Build the 100-in-100 crowd grid into `gridEl` up front: 100 faint squares,
+ * with the visitor's square marked and given the journey's you-dot anchor.
+ * Returns `run(from)` which cascades the fill (CAREFUL_FILL squares lit),
+ * pops the you-square, and rolls the caption count from the guess up to the
+ * truth. Reduced motion paints the final state instantly.
  * @param {HTMLElement} gridEl
  * @param {HTMLElement|null} countEl
  * @returns {(from?: number) => void}
@@ -49,7 +51,10 @@ const buildCrowd = (gridEl, countEl) => {
   for (let i = 0; i < CROWD_TOTAL; i += 1) {
     const cell = document.createElement('span');
     cell.className = 'bl-cell';
-    if (i === YOU_INDEX) cell.classList.add('is-you');
+    if (i === YOU_INDEX) {
+      cell.classList.add('is-you');
+      cell.setAttribute('data-youdot-anchor', '');
+    }
     gridEl.append(cell);
     cells.push(cell);
   }
@@ -88,12 +93,13 @@ export default function init(rootEl, data) {
   const guessHost = rootEl.querySelector('[data-guess]');
   const claim = rootEl.querySelector('[data-claim]');
   const truth = rootEl.querySelector('[data-truth]');
-  const crowdFig = rootEl.querySelector('[data-crowd]');
   const crowdGrid = rootEl.querySelector('[data-crowd-grid]');
   const crowdCount = rootEl.querySelector('[data-crowd-count]');
+  const crowdOf = rootEl.querySelector('[data-crowd-of]');
   const carefulNum = rootEl.querySelector('[data-careful-num]');
 
-  if (guessHost && crowdFig && crowdGrid) {
+  if (guessHost && crowdGrid) {
+    // The crowd exists from the first frame — a faint grid, never a void.
     const runCrowd = buildCrowd(crowdGrid, crowdCount);
 
     clickToGuess(guessHost, {
@@ -113,8 +119,9 @@ export default function init(rootEl, data) {
           countUp(carefulNum, { from, to: CAREFUL_FILL, suffix: '%', durationMs: COUNT_MS });
         }
 
-        // The reality the number describes, born to its right.
-        crowdFig.hidden = false;
+        // The faint grid lights into the crowd; your square pops.
+        if (crowdGrid) crowdGrid.classList.add('is-lit');
+        if (crowdOf) crowdOf.textContent = 'of every 100 people you pass today — and one of them is you.';
         runCrowd(from);
         journey.ready();
       },
