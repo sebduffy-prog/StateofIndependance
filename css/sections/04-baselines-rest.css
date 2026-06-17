@@ -2,38 +2,40 @@
    Step 04 — Baselines: the rest.
    Deal-seeking / anxiety / trading-down on one composed cream screen.
 
-   Layout: two-column grid, 100vw × 100svh, full-bleed cream.
-   LEFT col (~40%): hero title + standfirst + pill filter + you-dot.
-   RIGHT col (~60%): three equal-height stacked data panels.
+   Layout (client-driven, 2026-06-17): the three big stats move UP under
+   the title as a clean stat row; the charts become the HERO and own the
+   majority of the screen, filling the laptop landscape.
 
-   No dead space. No cream edge band. No internal scroll.
-   Square corners. No underlines. No parallelogram.
-   Reduced-motion safe. Keyboard accessible.
+     LEFT col (~36%):  title → three-stat row → standfirst + pill filter.
+     RIGHT col (~64%): three large stacked data visualisations.
+
+   Full-bleed 100vw × 100svh, cream ground, zero dead space, no overlap,
+   nothing off-screen. Square corners. No underlines. No box on the title.
+   Navy + yellow. Poppins. Reduced-motion safe. Keyboard accessible.
 
    CSS scoped to #04-baselines-rest via escaped #\30 4-baselines-rest.
    ============================================================ */
 
 /* ── chapter-inner: two-column layout filling 100% of the stage ───────
-   Left ~40% carries the editorial weight; right ~60% carries data.
-   align-items: center centres both columns as a pair vertically so
-   the title cluster and the three data panels share the same midpoint.
-   Padding is the editorial outer margin (brand sheet §6).             ── */
+   The right column is the wider of the two so the charts read as the
+   hero. align-items: stretch makes both columns share the full height. ── */
 #\30 4-baselines-rest .chapter-inner {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 7fr 13fr; /* charts own the majority of the width */
   grid-template-rows: 1fr;
-  gap: clamp(1.6rem, 3vw, 3.5rem);
+  gap: clamp(1.4rem, 3vw, 3.2rem);
+  /* Override the global 1240px cap so the composition is true full-bleed
+     and the charts can use the whole laptop width — no centred dead band. */
+  max-width: none;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  /* Generous top padding frames content in the upper-centre zone.
-     Tighter RIGHT inset (4-value: top right bottom left) pulls the whole
-     composition leftward and hands the freed width to the charts so they
-     read bigger and there is no stranded gap on the right edge.         */
-  padding: clamp(2rem, 14vh, 9rem) clamp(1.5rem, 3vw, 3.5rem) clamp(1.6rem, 3vh, 2.8rem) clamp(2rem, 5.5vw, 7rem);
-  align-items: start;
+  /* Editorial outer margin. Tighter right inset hands the freed width to
+     the charts so nothing strands on the right edge. */
+  padding: clamp(1.6rem, 6vh, 4rem) clamp(1.5rem, 3vw, 3rem) clamp(1.4rem, 5vh, 3rem) clamp(2rem, 5vw, 6rem);
+  align-items: stretch;
 }
 
 /* ── Tiny lockup stamp — absolute, top-right, the book-cover position ─ */
@@ -49,20 +51,17 @@
 }
 
 /* ──────────────────────────────────────────────────────────────────────
-   LEFT COLUMN — editorial weight
+   LEFT COLUMN — title, the three stats, standfirst + filter.
+   space-between: title anchors the top, copy anchors the bottom, the
+   stat row sits in between, directly under the title.
    ────────────────────────────────────────────────────────────────────── */
-/* Left column: same explicit height as the right grid so both columns
-   share identical top and bottom edges. space-between distributes the
-   two groups: title-block anchors the top, copy-block anchors the bottom.
-   The space between them is intentional editorial breathing room.     */
 #\30 4-baselines-rest .br-left {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: clamp(1.4rem, 3vh, 2.6rem);
   position: relative;
-  align-self: start;
-  justify-content: space-between;
-  height: clamp(420px, 68svh, 620px); /* must match .br-grid height */
+  justify-content: flex-start;
+  height: 100%;
 }
 
 /* Title group: eyebrow immediately above headline. */
@@ -72,32 +71,15 @@
   gap: clamp(0.3rem, 0.6vh, 0.6rem);
 }
 
-/* Spacer: removed — no longer needed. */
-#\30 4-baselines-rest .br-left-spacer {
-  display: none;
-}
-
-/* Copy group: standfirst + filter immediately below the title. */
-#\30 4-baselines-rest .br-copy-block {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.6rem, 1.0vh, 0.9rem);
-}
-
 #\30 4-baselines-rest .vccp-eyebrow {
   margin: 0;
 }
 
-/* Display headline — Poppins 900, tight, bold black, three lines.
-   Sized so each span lands on ONE visual line at typical viewports.
-   At 1440px: 3.8vw ≈ 55px. Left col is ~487px effective.
-   "The squeeze" at 11 chars ≈ 340px — comfortably one line.
-   "is the table" at 12 chars ≈ 370px — one line.
-   "they eat at" at 11 chars ≈ 340px — one line, italic accent reads. */
+/* Display headline — Poppins 900, tight, three clean lines, italic accent. */
 #\30 4-baselines-rest .br-headline {
   font-family: var(--font-sans);
   font-weight: 900;
-  font-size: clamp(2.6rem, 3.8vw, 4.8rem);
+  font-size: clamp(2.4rem, 3.4vw, 4.2rem);
   line-height: 0.94;
   letter-spacing: -0.03em;
   margin: 0;
@@ -108,20 +90,71 @@
   display: block;
 }
 
-/* The one italic accent word — Poppins italic, navy.
-   No box, no skew, no underline. The slant IS the accent.           */
+/* The one italic accent word — Poppins italic, navy. No box, no skew. */
 #\30 4-baselines-rest .br-accent {
   font-style: italic;
   color: var(--navy);
 }
 
+/* ── The three stats, moved up under the title as a clean stat row ────
+   A vertical stack of three stat rows; each is a hero number + label.
+   The pill filter dims the two non-focused stats in sync with the
+   charts so the interaction reads on both columns. ── */
+#\30 4-baselines-rest .br-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.7rem, 1.6vh, 1.4rem);
+}
+
+#\30 4-baselines-rest .br-stat {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.7rem, 1.4vw, 1.4rem);
+  transition: opacity 0.26s var(--ease-entrance);
+}
+
+/* Hero stat number — navy, Poppins 900, tabular. */
+#\30 4-baselines-rest .br-num {
+  margin: 0;
+  color: var(--navy);
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2.8rem, 4.4vw, 5.2rem);
+  flex: 0 0 auto;
+  min-width: 2.9ch;
+}
+
+/* Descriptor label — dark, compact, sits beside the number. */
+#\30 4-baselines-rest .br-lbl {
+  margin: 0;
+  font-size: clamp(0.74rem, 0.92vw, 0.92rem);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* Copy group: standfirst + filter anchor the bottom of the left column. */
+#\30 4-baselines-rest .br-copy-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.2vh, 1rem);
+  margin-top: auto; /* push to the bottom of the flex column */
+}
+
 #\30 4-baselines-rest .br-standfirst {
   margin: 0;
-  font-size: clamp(0.88rem, 1.0vw, 1.0rem);
+  font-size: clamp(0.84rem, 0.98vw, 0.98rem);
   font-weight: 500;
-  line-height: 1.52;
+  line-height: 1.5;
   color: var(--ink-soft);
-  max-width: 42ch;
+  max-width: 40ch;
 }
 
 /* ── Pill filter — square chips, the marquee interaction ──────────── */
@@ -135,8 +168,7 @@
   gap: clamp(4px, 0.5vw, 8px);
 }
 
-/* Square chips — no border-radius (always 0) per brand rules.
-   Navy border on default; navy fill on active. No underline.        */
+/* Square chips — no border-radius (always 0) per brand rules. */
 #\30 4-baselines-rest .pillgroup-chip {
   appearance: none;
   border: 1.5px solid rgba(4, 22, 84, 0.30);
@@ -171,41 +203,29 @@
   outline-offset: 3px;
 }
 
-/* You-dot anchor — zero-size inline element within the copy block.
-   The global shell you-dot springs to this element's position.      */
-#\30 4-baselines-rest .br-youdot {
-  display: block;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
 /* ──────────────────────────────────────────────────────────────────────
-   RIGHT COLUMN — three stacked data panels
-   Three equal rows. Each row: stat cell (number + label) left of the viz.
-   The panels stretch to fill the full right column height.
-   Faint navy-tint dividers give editorial rhythm; no card chrome.
+   RIGHT COLUMN — three big visualisations, the hero.
+   Three equal rows fill the full column height. The charts (SVG width
+   100%, height auto) scale up to the column width, so the wide right
+   column makes them large and dominant. No card chrome; faint navy-tint
+   dividers give editorial rhythm.
    ────────────────────────────────────────────────────────────────────── */
-/* Right column: three equal rows sharing the same explicit height as
-   the left column (both use clamp(420px, 68svh, 620px)).
-   This ensures both columns start and end at the same vertical edges. */
 #\30 4-baselines-rest .br-grid {
   display: grid;
   grid-template-rows: repeat(3, 1fr);
-  gap: 0;
-  height: clamp(420px, 68svh, 620px);
-  align-self: start;
+  gap: clamp(0.4rem, 1.4vh, 1.2rem);
+  height: 100%;
+  min-height: 0;
 }
 
-/* Each panel: stat-cell (auto width) | viz (1fr).
-   Vertically centred within its row.
-   Divided by a faint ink hairline below (removed from the last panel). */
+/* Each panel: caption above, large viz below, filling the row. */
 #\30 4-baselines-rest .br-panel {
   display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: clamp(1.2rem, 2.2vw, 2.8rem);
-  align-items: center;
-  padding-block: clamp(1rem, 2.2vh, 1.8rem);
+  grid-template-rows: auto 1fr;
+  row-gap: clamp(0.3rem, 0.8vh, 0.7rem);
+  align-content: center;
+  min-height: 0;
+  padding-block: clamp(0.4rem, 1.4vh, 1.2rem);
   border-bottom: 1px solid rgba(4, 22, 84, 0.12);
   transition:
     opacity   0.26s var(--ease-entrance),
@@ -216,66 +236,45 @@
   border-bottom: none;
 }
 
-/* ── Stat cell: hero number stacked above its descriptor label ──── */
-#\30 4-baselines-rest .br-stat-cell {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(2px, 0.4vh, 5px);
-  align-items: flex-start;
-  /* Fixed min-width so all three panels align their stats in one column. */
-  min-width: clamp(120px, 14vw, 188px);
-  flex: 0 0 auto;
-}
-
-/* Hero stat number — navy, Poppins 900, tabular. Large — the number is
-   the visual anchor of each row and drives the panel row height.     */
-#\30 4-baselines-rest .br-num {
+/* Small caption above each chart — replaces the per-panel stat cell. */
+#\30 4-baselines-rest .br-cap {
   margin: 0;
-  color: var(--navy);
-  font-family: var(--font-sans);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 0.85;
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(3.2rem, 6vw, 7.2rem);
-}
-
-/* Descriptor label — dark, compact, sits tightly below the number. */
-#\30 4-baselines-rest .br-lbl {
-  margin: 0;
-  font-size: clamp(0.76rem, 0.88vw, 0.88rem);
+  font-size: clamp(0.72rem, 0.84vw, 0.84rem);
   font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+  letter-spacing: 0.01em;
+  color: var(--navy);
+  opacity: 0.78;
 }
 
-/* ── Viz container — fills the right cell of each panel row ────── */
+/* ── Viz container — fills the panel row; charts grow to fill width ─────
+   The SVG factories render at width:100% / height:auto, so a wide
+   container makes the marks large. A tall min-height guarantees the
+   charts dominate the screen on a laptop. ── */
 #\30 4-baselines-rest .br-viz {
   display: flex;
   align-items: center;
   width: 100%;
-  /* Explicit height so chart factories have space to render into.
-     Uses a floor that guarantees legibility at all viewport heights. */
-  min-height: clamp(64px, 9.5vh, 120px);
   height: 100%;
-  overflow: hidden;
+  min-height: clamp(96px, 16vh, 200px);
+  overflow: visible;
 }
 
-/* Charts and SVGs injected by the lib factories fill the container. */
+/* Charts and SVGs injected by the lib factories fill the container width.
+   height:auto preserves their aspect; max-height keeps them inside the row
+   so nothing overflows off-screen. */
 #\30 4-baselines-rest .br-viz svg,
 #\30 4-baselines-rest .br-viz > * {
   display: block;
   width: 100%;
-  flex: 1 1 auto;
+  height: auto;
+  max-height: 100%;
 }
 
-/* The tug-of-war strips fill the full width of the viz cell. */
 #\30 4-baselines-rest .br-viz--tow {
   align-items: center;
 }
 
-/* ── MARQUEE: focused panel stands forward; dim the others ─────── */
+/* ── MARQUEE: focused panel + stat stand forward; dim the others ─────── */
 #\30 4-baselines-rest .br-grid[data-focus="deal"]    .br-panel:not([data-panel="deal"]),
 #\30 4-baselines-rest .br-grid[data-focus="anxiety"] .br-panel:not([data-panel="anxiety"]),
 #\30 4-baselines-rest .br-grid[data-focus="grocery"] .br-panel:not([data-panel="grocery"]) {
@@ -283,25 +282,25 @@
   pointer-events: none;
 }
 
-/* The focused panel nudges slightly right — a subtle alive signal. */
-#\30 4-baselines-rest .br-panel.is-focus {
-  /* The JS currently toggles is-focus on all when value=all, so the
-     nudge only applies when a single panel is in focus (data-focus ≠ all). */
-  transform: translateX(0);
+/* The left-column stats dim in sync so the interaction reads on both sides.
+   The grid's data-focus is mirrored onto .br-left via JS (data-focus). */
+#\30 4-baselines-rest .br-left[data-focus="deal"]    .br-stat:not([data-stat="deal"]),
+#\30 4-baselines-rest .br-left[data-focus="anxiety"] .br-stat:not([data-stat="anxiety"]),
+#\30 4-baselines-rest .br-left[data-focus="grocery"] .br-stat:not([data-stat="grocery"]) {
+  opacity: 0.28;
 }
 
+/* The focused chart nudges slightly right — a subtle alive signal. */
 #\30 4-baselines-rest .br-grid[data-focus="deal"]    [data-panel="deal"],
 #\30 4-baselines-rest .br-grid[data-focus="anxiety"] [data-panel="anxiety"],
 #\30 4-baselines-rest .br-grid[data-focus="grocery"] [data-panel="grocery"] {
-  transform: translateX(5px);
+  transform: translateX(6px);
 }
 
 /* ──────────────────────────────────────────────────────────────────────
-   RESPONSIVE — single-column on narrow/portrait screens
-   The grid collapses to a vertical stack; the data panels become
-   individual rows, each with a stat+label on the left and chart right.
+   RESPONSIVE — single-column stack on narrow/portrait screens.
    ────────────────────────────────────────────────────────────────────── */
-@media (max-width: 880px) {
+@media (max-width: 980px) {
   #\30 4-baselines-rest .chapter-inner {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
@@ -311,24 +310,32 @@
     overflow-y: auto;
   }
 
+  #\30 4-baselines-rest .br-left {
+    height: auto;
+  }
+
   #\30 4-baselines-rest .br-headline {
-    font-size: clamp(2.4rem, 7.5vw, 3.6rem);
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
+  }
+
+  #\30 4-baselines-rest .br-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: clamp(0.8rem, 3vw, 1.6rem);
+  }
+
+  #\30 4-baselines-rest .br-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
   }
 
   #\30 4-baselines-rest .br-grid {
     height: auto;
   }
 
-  #\30 4-baselines-rest .br-panel {
-    padding-block: clamp(0.8rem, 2vh, 1.4rem);
-  }
-
-  #\30 4-baselines-rest .br-stat-cell {
-    min-width: clamp(80px, 22vw, 120px);
-  }
-
   #\30 4-baselines-rest .br-viz {
-    min-height: clamp(56px, 13vw, 96px);
+    min-height: clamp(80px, 22vw, 160px);
   }
 }
 
@@ -336,8 +343,9 @@
    REDUCED MOTION — jump-cut; no transform animation.
    ────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 4-baselines-rest .br-panel          { transition: none; }
-  #\30 4-baselines-rest .pillgroup-chip    { transition: none; }
+  #\30 4-baselines-rest .br-panel       { transition: none; }
+  #\30 4-baselines-rest .br-stat        { transition: none; }
+  #\30 4-baselines-rest .pillgroup-chip { transition: none; }
 
   #\30 4-baselines-rest .br-grid[data-focus="deal"]    [data-panel="deal"],
   #\30 4-baselines-rest .br-grid[data-focus="anxiety"] [data-panel="anxiety"],

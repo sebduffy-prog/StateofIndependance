@@ -150,11 +150,11 @@
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--navy);
-  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-size: clamp(1.55rem, 2.1vw, 2.05rem);
   font-feature-settings: "tnum" 1;
 }
 #\30 2-research .research-fact-k--text {
-  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
   letter-spacing: -0.02em;
 }
 #\30 2-research .research-fact-unit {
@@ -164,7 +164,7 @@
 }
 #\30 2-research .research-fact-v {
   display: block;
-  margin: 7px 0 0;
+  margin: 5px 0 0;
   max-width: 16ch;
   font-size: var(--t-xs);
   line-height: 1.35;
@@ -176,7 +176,7 @@
 }
 
 #\30 2-research .research-credit {
-  margin: clamp(20px, 3vh, 32px) 0 0;
+  margin: clamp(12px, 1.8vh, 20px) 0 0;
   font-size: var(--t-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -214,7 +214,9 @@
   position: relative;
   width: 100%;
   flex: 1 1 auto;
-  min-height: clamp(360px, 60vh, 720px);
+  /* Let the silhouette claim the bulk of the stage height so the right
+     side reads full (no big empty bands) without crowding the rail. */
+  min-height: clamp(380px, 68vh, 760px);
 }
 #\30 2-research .research-map {
   position: absolute;
@@ -346,9 +348,11 @@
    navy emphasis on the attribution. Backgroundless — no card behind it. ── */
 #\30 2-research .research-diary {
   /* Reserve a fixed slot so the rail never reflows when a diary opens —
-     but keep it modest so the whole stack stays within the viewport. */
-  min-height: clamp(104px, 15vh, 160px);
-  margin: 0 0 clamp(8px, 1.5vh, 16px);
+     kept compact so the whole rail stack stays within 100svh on short
+     (~800-900px) laptop viewports. Long quotes clamp rather than push down. */
+  min-height: clamp(84px, 11vh, 124px);
+  max-height: clamp(84px, 11vh, 124px);
+  margin: 0 0 clamp(6px, 1.2vh, 12px);
   overflow: hidden;
 }
 #\30 2-research .research-quote { margin: 0; }
@@ -356,10 +360,16 @@
   margin: 0;
   position: relative;
   padding-left: 1em;
-  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
-  line-height: 1.45;
+  font-size: clamp(0.98rem, 1.2vw, 1.16rem);
+  line-height: 1.4;
   font-weight: 500;
   color: var(--ink);
+  /* Clamp long verbatim lines so they never spill out of the reserved slot
+     (3 lines + cite fits inside the capped diary height). */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 #\30 2-research .research-quote-text::before {
   content: "\201C";
@@ -372,7 +382,7 @@
   color: var(--yellow);
 }
 #\30 2-research .research-quote-cite {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   padding-left: 1em;
   font-size: var(--t-xs);
   letter-spacing: 0.06em;
@@ -384,8 +394,8 @@
 #\30 2-research .research-quote-who { color: var(--navy); font-weight: 700; opacity: 1; }
 #\30 2-research .research-quote-note {
   margin: 0;
-  font-size: var(--t-md);
-  line-height: 1.5;
+  font-size: var(--t-sm);
+  line-height: 1.45;
   font-weight: 500;
   color: var(--ink-soft);
 }
@@ -394,7 +404,7 @@
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ink);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 /* Surfacing transition — the memory rises into place. */

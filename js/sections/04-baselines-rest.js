@@ -125,18 +125,15 @@ export default function init(rootEl, data) {
   // ── MARQUEE — pill filter: focus one baseline at a time ───────────────────
 
   const grid       = rootEl.querySelector('.br-grid');
+  const left       = rootEl.querySelector('.br-left');
   const filterHost = rootEl.querySelector('[data-filter]');
 
   if (grid && filterHost) {
+    // Mirror the focus onto BOTH columns: the grid dims the non-focused
+    // charts, the left column dims the two non-focused stats in sync.
     const applyFocus = (value) => {
       grid.dataset.focus = value;
-      PANELS.forEach((p) => {
-        const panel = grid.querySelector(`[data-panel="${p}"]`);
-        if (panel) {
-          // is-focus only when this specific panel is the active selection
-          panel.classList.toggle('is-focus', value === p);
-        }
-      });
+      if (left) left.dataset.focus = value;
     };
 
     pillGroup(filterHost, {
