@@ -1,18 +1,21 @@
 /**
- * 11-segment-hustlers.js — The Hustlers (28%) full-screen segment profile.
+ * 11-segment-hustlers.js - The Hustlers (28%) full-screen segment profile.
  *
- * Cream editorial stage. Left rail: eyebrow → bold-black "The Hustlers"
- * display title (scramble-in on arrive) → three-word descriptor → hero
- * quote → who/money/essentials/AI facts → 28% share stat.
+ * ONE SHARED TEMPLATE. This module is identical to the other three segment
+ * modules except the SEGMENT_ID constant below - same skeleton, same lenses,
+ * same chart, same interactions. Only the per-segment data and the single
+ * accent colour (set in CSS) change, so the four pages read as one system.
  *
- * Right: a backgroundless horizontal-bar index chart with a square pill
- * control that swaps the lens: "What they value" (essentials over-index)
- * / "How they think" (mindset over-index) / "What they index on" (TGI
- * lifestyle statements). Bars morph in place; the first lens-switch clears
- * the interaction hint.
+ * Cream editorial stage. Left rail: eyebrow, bold-black "The Hustlers" display
+ * title (scramble-in on arrive), three-word descriptor, hero quote,
+ * who/money/protects/AI facts, the audience share.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to
- * #\31 1-segment-hustlers.
+ * Right: a backgroundless horizontal-bar index chart (text labels, NO sizing
+ * numbers) with a square pill control swapping the lens. Bars morph in place;
+ * the first lens switch clears the advisory hint. Plus a rich TGI statement
+ * cloud (text only). Every value traces to data/segments.json + data/tgi.json.
+ *
+ * Contract: docs/CONTRACT.md.
  *
  * @param {HTMLElement} rootEl  the <section id="11-segment-hustlers">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
@@ -22,12 +25,25 @@ import { arrival } from '../lib/experiential.js';
 import { horizontalBars } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
+// THE ONLY PER-SEGMENT LINE. Everything below is shared, identical logic.
 const SEGMENT_ID = 'hustlers';
+
 const TOP_N = 5;
-// 100 = the UK average. The chart max is computed per-lens from the data so
-// bars fill the track instead of stranding right-side dead space.
-const INDEX_BASELINE = 100;
-const SCALE_HEADROOM = 1.08;
+const INDEX_BASELINE = 100; // 100 = the UK average, the scale's anchor.
+const SCALE_HEADROOM = 1.08; // a touch of air past the longest bar.
+
+/** Sentence-case a segment id for aria labels ("architects" -> "Architects"). */
+const segName = SEGMENT_ID.charAt(0).toUpperCase() + SEGMENT_ID.slice(1);
+
+/** A short one-line explanation shown for the active lens. */
+const LENS_HINTS = {
+  value: 'What this segment treats as essential, indexed against the nation.',
+  mindset: 'How they describe their own outlook and finances, versus average.',
+  control: 'The active steps they take to stay in control of their lives.',
+  brand: 'What they most want brands to do for them.',
+  tgi: 'The lifestyle attitudes they over-index on in the TGI survey.',
+  ai: 'The tasks they hand to AI instead of a human professional.',
+};
 
 /** Tight per-lens max so the longest bar nearly fills the track. */
 function lensMax(items) {
@@ -36,55 +52,28 @@ function lensMax(items) {
   return Math.ceil(raw / 10) * 10;
 }
 
-/**
- * Top-N over-indexing entries from a TGI array.
- * Entries may use either .label or .statement (handles both data files).
- */
+/** Top-N over-indexing rows from a segment metric family {label:{pct,index}}. */
+function topMetricLow(family, min) {
+  return Object.entries(family || {})
+    .map(([label, v]) => ({ label, pct: v.index }))
+    .filter((row) => typeof row.pct === 'number' && row.pct >= min)
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, TOP_N);
+}
+
+function topMetric(family) {
+  return topMetricLow(family, 120);
+}
+
+/** Top-N over-indexing entries from a TGI array (label or statement). */
 function topIndexedTgi(entries) {
   if (!Array.isArray(entries)) return [];
   return entries
     .filter((e) => e && typeof e.index === 'number' && e.index >= 120)
     .sort((a, b) => b.index - a.index)
     .slice(0, TOP_N)
-    .map((e) => ({
-      label: tidyLabel(e.label || e.statement || ''),
-      pct: e.index,
-    }))
+    .map((e) => ({ label: tidyTag(e.label || e.statement || ''), pct: e.index }))
     .filter((e) => e.label);
-}
-
-/**
- * Top-N over-indexing rows from a segment metric family {label:{pct,index}}.
- * Default threshold: 120 (≥120 = over-index per CONTRACT.md).
- */
-function topMetric(family) {
-  return topMetricLow(family, 120);
-}
-
-/**
- * Same as topMetric but with a configurable minimum index threshold.
- * Used when a family has fewer entries above 120.
- */
-function topMetricLow(family, min) {
-  return Object.entries(family || {})
-    .map(([label, v]) => ({ label, pct: v.index }))
-    .filter((row) => row.pct >= min)
-    .sort((a, b) => b.pct - a.pct)
-    .slice(0, TOP_N);
-}
-
-/**
- * Tidy a long TGI label into a shorter, legible bar label.
- * Strips surrounding quotes and trims whitespace.
- */
-function tidyLabel(label) {
-  return label
-    .replace(/^["“‘]/, '')
-    .replace(/["”’]$/, '')
-    .replace(/Apps For Smartphones & Tablets: Yes/i, 'Uses smartphone & tablet apps')
-    .replace(/At leisure centres.*$/i, 'Goes to gyms / leisure centres')
-    .replace(/\s*\(\+?\d+\/?\d*\)\s*/g, '')
-    .trim();
 }
 
 // Fingerprint cloud sizing: a tight set that always fits one screen.
@@ -95,7 +84,9 @@ const FP_THRESHOLDS = [120, 110, 100];
 
 /**
  * Tidy any TGI label (lifestyle quote OR media descriptor) into a short,
- * legible tag with no numbers.
+ * legible tag. Strips smart-quotes and trailing index notations and rewrites
+ * the long survey statements into plain audience-portrait phrases. Never
+ * contains a number.
  */
 function tidyTag(raw) {
   let s = (raw || '')
@@ -132,6 +123,8 @@ function tidyTag(raw) {
     [/Owning stocks and shares is too risky an investment for me/i, 'Shares feel too risky'],
     [/I buy clothes for comfort, not for style/i, 'Dresses for comfort, not style'],
     [/I prefer to spend a quiet evening at home than go out/i, 'Prefers a quiet night in'],
+    [/Apps For Smartphones & Tablets: Yes/i, 'Uses smartphone & tablet apps'],
+    [/At leisure centres.*$/i, 'Goes to gyms / leisure centres'],
     [/Always watches video podcasts/i, 'Watches video podcasts'],
     [/Reads a regional daily paper/i, 'Reads the regional daily'],
     [/Reads Daily Mail \(print\)/i, 'Reads the Daily Mail in print'],
@@ -189,50 +182,43 @@ function fingerprintLabels(tgiSeg) {
   return labels;
 }
 
-/** Render the fingerprint cloud (text only, no sizing numbers). */
+/** Render the fingerprint cloud (text only, NO sizing numbers). */
 function populateFingerprint(rootEl, tgiSeg) {
-  const host = rootEl.querySelector('[data-segment-fingerprint]');
+  const host = rootEl.querySelector('[data-seg-fingerprint]');
   if (!host) return;
   const labels = fingerprintLabels(tgiSeg);
   if (!labels.length) {
-    host.closest('.segment-fingerprint')?.remove();
+    host.closest('.seg-fingerprint')?.remove();
     return;
   }
   host.innerHTML = '';
   labels.forEach((text) => {
     const li = document.createElement('li');
-    li.className = 'segment-fingerprint-tag';
+    li.className = 'seg-fingerprint-tag';
     li.textContent = text;
     host.appendChild(li);
   });
 }
 
-export default function init(rootEl, data) {
-  // Arrival re-plays on every focus (idempotent).
-  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
-
-  const chartHost = rootEl.querySelector('[data-segment-hustlers-chart]');
-  const lensHost = rootEl.querySelector('[data-segment-hustlers-lens]');
-  if (!chartHost || !lensHost) return; // fail soft — markup not found
-
-  const seg =
-    data?.segments?.segments?.find((s) => s.id === SEGMENT_ID) || null;
-  const tgiSeg = data?.tgi?.segments?.[SEGMENT_ID] || null;
-
-  // Build lenses only from verified data; omit any lens with no items.
+/**
+ * Build the shared set of lenses from verified data. Identical across all four
+ * segments: each lens is omitted only if that segment has no data for it, so
+ * the COMPONENT is the same everywhere and the CONTENT differs.
+ *
+ * Thresholds relax from 120 (the over-index bar) down to 100 (the average) so
+ * a segment whose distinctiveness sits just above average still fills its
+ * lens, while a strongly-skewed segment shows only its clear over-indexes.
+ */
+function buildLenses(seg, tgiSeg) {
   const lenses = [];
 
-  // Lens 1: What they value — essentials over-index from segments.json.
-  // Use 115 as threshold to include Beauty (119) alongside the clear over-indexes.
+  // Lens 1 - What they value: essentials over-index.
   if (seg?.metrics?.essentials) {
-    const items = topMetricLow(seg.metrics.essentials, 115);
-    if (items.length) {
-      lenses.push({ value: 'value', label: 'What they value', items });
-    }
+    const items = topMetricLow(seg.metrics.essentials, 110);
+    if (items.length) lenses.push({ value: 'value', label: 'What they value', items });
   }
 
-  // Lens 2: How they see themselves — combined outlook + financial position.
-  // Threshold 100 (average) to surface the distinctive self-image of the Hustlers.
+  // Lens 2 - How they see themselves: outlook + finances over-index.
   if (seg?.metrics) {
     const combined = [
       ...topMetricLow(seg.metrics.mindsetNetAgree, 100),
@@ -246,51 +232,60 @@ export default function init(rootEl, data) {
     }
   }
 
-  // Lens 3: How they take control — proactive control behaviours over-index.
+  // Lens 3 - How they take control: proactive control behaviours over-index.
   if (seg?.metrics?.personalControlBehaviours) {
     const items = topMetricLow(seg.metrics.personalControlBehaviours, 100);
-    if (items.length) {
-      lenses.push({ value: 'control', label: 'How they take control', items });
-    }
+    if (items.length) lenses.push({ value: 'control', label: 'How they take control', items });
   }
 
-  // Lens 4: What they ask of brands — brandAsks over-index.
+  // Lens 4 - What they ask of brands: brandAsks over-index.
   if (seg?.metrics?.brandAsks) {
     const items = topMetricLow(seg.metrics.brandAsks, 100);
-    if (items.length) {
-      lenses.push({ value: 'brand', label: 'What they ask of brands', items });
-    }
+    if (items.length) lenses.push({ value: 'brand', label: 'What they ask of brands', items });
   }
 
-  // Lens 5: What they index on — TGI lifestyle statements.
+  // Lens 5 - What they index on: TGI lifestyle statements.
   if (tgiSeg?.lifestyle?.length) {
     const items = topIndexedTgi(tgiSeg.lifestyle);
-    if (items.length) {
-      lenses.push({ value: 'tgi', label: 'What they index on', items });
-    }
+    if (items.length) lenses.push({ value: 'tgi', label: 'What they index on', items });
   }
 
-  // Fallback: AI use by task if nothing else populated.
+  // Fallback - AI use by task, only if nothing else populated.
   if (!lenses.length && seg?.metrics?.aiUseByTask) {
     const items = topMetric(seg.metrics.aiUseByTask);
-    if (items.length) {
-      lenses.push({ value: 'ai', label: 'AI use', items });
-    }
+    if (items.length) lenses.push({ value: 'ai', label: 'AI use', items });
   }
+
+  return lenses;
+}
+
+export default function init(rootEl, data) {
+  // Arrival re-plays on every focus (idempotent).
+  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
+
+  const chartHost = rootEl.querySelector('[data-seg-chart]');
+  const lensHost = rootEl.querySelector('[data-seg-lens]');
+  const hintEl = rootEl.querySelector('[data-seg-lens-hint]');
+  if (!chartHost || !lensHost) return; // fail soft - markup not found
+
+  const seg = data?.segments?.segments?.find((s) => s.id === SEGMENT_ID) || null;
+  const tgiSeg = data?.tgi?.segments?.[SEGMENT_ID] || null;
 
   // Populate the rich TGI fingerprint cloud (text only, no numbers).
   populateFingerprint(rootEl, tgiSeg);
 
-  if (!lenses.length) return; // no verified data — leave the identity card visible
+  const lenses = buildLenses(seg, tgiSeg);
+  if (!lenses.length) return; // no verified data - leave the identity card visible
 
   // One reusable chart; lens changes morph bars in place.
   let bars = null;
 
   const drawLens = (value) => {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
+    if (hintEl) hintEl.textContent = LENS_HINTS[lens.value] || hintEl.textContent;
     if (!bars) {
       bars = horizontalBars(chartHost, {
-        showValues: false,  // TGI/index sizing numbers are never displayed
+        showValues: false,  // index sizing numbers are never displayed
         items: lens.items,
         max: lensMax(lens.items),
         accent: 'navy',
@@ -305,7 +300,7 @@ export default function init(rootEl, data) {
     }
   };
 
-  // Wire the marquee interaction — gate() advises the hint; first switch
+  // Wire the marquee interaction - gate() advises the hint; first switch
   // clears it. Never blocks Next.
   data?.journey?.gate?.();
   let explored = false;
@@ -313,7 +308,7 @@ export default function init(rootEl, data) {
   pillGroup(lensHost, {
     options: lenses.map((l) => ({ value: l.value, label: l.label })),
     value: lenses[0].value,
-    ariaLabel: 'Choose a lens on the Hustlers',
+    ariaLabel: `Choose a lens on the Hustlers`,
     onChange: (value) => {
       drawLens(value);
       if (!explored) {

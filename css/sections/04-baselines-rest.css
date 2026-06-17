@@ -60,7 +60,7 @@
   flex-direction: column;
   gap: clamp(1.4rem, 3vh, 2.6rem);
   position: relative;
-  justify-content: flex-start;
+  justify-content: center;   /* centre the title + stats + copy as one group */
   height: 100%;
 }
 
@@ -145,7 +145,8 @@
   display: flex;
   flex-direction: column;
   gap: clamp(0.6rem, 1.2vh, 1rem);
-  margin-top: auto; /* push to the bottom of the flex column */
+  /* No margin-top:auto — the whole left column is centred as one group so the
+     stats sit balanced, not stranded at the top with a void below. */
 }
 
 #\30 4-baselines-rest .br-standfirst {

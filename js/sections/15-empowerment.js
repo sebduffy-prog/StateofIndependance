@@ -172,7 +172,7 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   // Each need = a draggable circle in the field PLUS a stat tile in a clean
   // horizontal row BENEATH the venn. The figure is the reading; the row is
   // pinned safely inside the pane so no label can ever run off-screen.
-  const fmtPct = (v) => (typeof v === 'number' ? v.toFixed(1) : '—');
+  const fmtPct = (v) => (typeof v === 'number' ? v.toFixed(1) : 'n/a');
   if (statRow) statRow.innerHTML = '';
   const needs = NEED_LAYOUT.map(({ id, ang }) => {
     const el = document.createElement('div');
@@ -490,9 +490,15 @@ export default function init(rootEl, data) {
   // circles start wide then sweep into the shared core on their own — no drag
   // required (drag stays as an optional nudge). A double rAF lets the section's
   // show + first real layout settle so the sweep runs from a measured spread.
+  // Debounced so near-simultaneous triggers (chapter:arrive + the scroll-in
+  // observer) collapse into a single sweep instead of a visible restart.
+  let convergeRaf = 0;
   const fireConverge = () => {
     if (!venn) return;
-    requestAnimationFrame(() => requestAnimationFrame(() => venn.autoConverge?.()));
+    cancelAnimationFrame(convergeRaf);
+    convergeRaf = requestAnimationFrame(() =>
+      requestAnimationFrame(() => venn.autoConverge?.()),
+    );
   };
   rootEl.addEventListener('chapter:arrive', (e) => {
     arrival(rootEl, e.detail);
@@ -540,6 +546,7 @@ export default function init(rootEl, data) {
 
   // Teardown handle (steps stay mounted; expose for safety).
   rootEl._empCleanup = () => {
+    cancelAnimationFrame(convergeRaf);
     cleanups.forEach((fn) => fn && fn());
     if (venn) venn.destroy();
   };

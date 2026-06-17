@@ -280,6 +280,9 @@
   color: var(--navy);
   opacity: 0.85;
   max-width: 48ch;
+  /* Reserve height for the longest readout (Legal wraps to more lines) so
+     switching Health/Finance/Legal never pushes content down. */
+  min-height: 3.2em;
 }
 
 /* ── Responsive: single column on narrow viewports ──────────────────────── */

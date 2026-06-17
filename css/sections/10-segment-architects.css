@@ -1,14 +1,18 @@
-/* 10-segment-architects.css — The Architects (17%) segment profile.
-   Scoped to #\31 0-segment-architects. Cream editorial stage, full-bleed.
-   ONE screen, never scrolls, columns never overlap: a confident left
-   identity column counter-weighted by a self-contained right data column
-   (head + lens + chart + fingerprint) that flexes to fit 100svh exactly. */
+/* 10-segment-architects.css - The Architects (17%) segment profile.
+   ONE SHARED TEMPLATE. This file is byte-identical to the other three
+   segment stylesheets except the escaped id prefix and the two accent
+   variables below - the skeleton, type scale, spacing and interactions are
+   the same so the four pages read as four cards of one system.
+   Cream editorial stage, full-bleed, fits 100svh exactly, never scrolls. */
 
 #\31 0-segment-architects {
   background: var(--cream, #F0EDE7);
+  /* The single per-segment accent. Everything else is navy + yellow. */
+  --seg-accent: #FBC100;
+  --seg-accent-soft: rgba(251, 193, 0, 0.16);
 }
 
-/* ── Root wrapper — fills the stage, never overflows ──────────────── */
+/* Root wrapper - fills the stage, never overflows. */
 #\31 0-segment-architects .chapter-inner {
   position: relative;
   width: 100%;
@@ -21,8 +25,8 @@
   overflow: hidden;
 }
 
-/* ── Two-column grid — the real layout ────────────────────────────── */
-#\31 0-segment-architects .segment-architects-grid {
+/* Two-column grid - the shared layout. */
+#\31 0-segment-architects .seg-grid {
   position: relative;
   width: 100%;
   height: 100%;
@@ -38,10 +42,9 @@
            clamp(28px, 4vw, 72px);
 }
 
-/* A faint warm hairline runs the join between the two columns — keeps the
-   data lens visually distinct from the identity rail so they never read as
-   colliding, and lifts the composition with a deliberate seam. */
-#\31 0-segment-architects .segment-architects-grid::before {
+/* A faint hairline seam between the two columns - keeps the data lens visually
+   distinct from the identity rail so they never read as colliding. */
+#\31 0-segment-architects .seg-grid::before {
   content: "";
   position: absolute;
   top: clamp(64px, 12vh, 128px);
@@ -54,8 +57,8 @@
   z-index: 0;
 }
 
-/* Brand stamp — top-right, book-cover position. */
-#\31 0-segment-architects .segment-architects-mark {
+/* Brand stamp - top-right, book-cover position. */
+#\31 0-segment-architects .seg-mark {
   position: absolute;
   top: clamp(18px, 3vh, 34px);
   right: clamp(20px, 4vw, 56px);
@@ -64,8 +67,8 @@
   z-index: 3;
 }
 
-/* ── LEFT: identity column ───────────────────────────────────────── */
-#\31 0-segment-architects .segment-architects-id {
+/* LEFT: identity column. */
+#\31 0-segment-architects .seg-id {
   position: relative;
   z-index: 1;
   display: flex;
@@ -73,15 +76,12 @@
   justify-content: center;
   gap: clamp(8px, 1.6vh, 18px);
   min-height: 0;
-  max-width: 30ch;
+  max-width: 32ch;
 }
 
-#\31 0-segment-architects .vccp-eyebrow {
-  margin: 0;
-  color: var(--navy);
-}
+#\31 0-segment-architects .vccp-eyebrow { margin: 0; color: var(--navy); }
 
-#\31 0-segment-architects .segment-architects-title {
+#\31 0-segment-architects .seg-title {
   margin: 0;
   font-weight: 900;
   font-size: clamp(2.6rem, 5.6vw, 5.4rem);
@@ -91,17 +91,15 @@
   outline: none;
   border: 0;
 }
-#\31 0-segment-architects .segment-architects-title:focus,
-#\31 0-segment-architects .segment-architects-title:focus-visible {
-  outline: none;
-  border: 0;
-}
-#\31 0-segment-architects .segment-architects-title .si-accent {
+#\31 0-segment-architects .seg-title:focus,
+#\31 0-segment-architects .seg-title:focus-visible { outline: none; border: 0; }
+/* The one italic accent word takes the segment accent colour. */
+#\31 0-segment-architects .seg-title .seg-accent {
   font-style: italic;
-  color: var(--navy);
+  color: var(--seg-accent);
 }
 
-#\31 0-segment-architects .segment-architects-descriptor {
+#\31 0-segment-architects .seg-descriptor {
   margin: 0;
   font-weight: 700;
   font-size: clamp(1.02rem, 1.4vw, 1.28rem);
@@ -109,34 +107,41 @@
   color: var(--ink);
 }
 
-#\31 0-segment-architects .segment-architects-quote {
+#\31 0-segment-architects .seg-quote {
   margin: 0;
-  border-left: 3px solid var(--yellow, #F0CB08);
+  border-left: 3px solid var(--seg-accent);
   padding-left: clamp(12px, 1.2vw, 18px);
-  max-width: 34ch;
+  max-width: 36ch;
 }
-#\31 0-segment-architects .segment-architects-quote p,
-#\31 0-segment-architects .segment-architects-quote {
+#\31 0-segment-architects .seg-quote p {
+  margin: 0;
   font-size: clamp(0.94rem, 1.25vw, 1.16rem);
   font-weight: 500;
   line-height: 1.34;
   color: var(--ink-soft);
   font-style: normal;
 }
+#\31 0-segment-architects .seg-quote cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+}
 
-/* Who/Money/Essentials/AI facts: 2×2 grid, uppercase navy keys, no boxes. */
-#\31 0-segment-architects .segment-architects-facts {
+/* Who / Money / Protects / AI facts: 2x2 grid, uppercase navy keys, no boxes. */
+#\31 0-segment-architects .seg-facts {
   margin: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(8px, 1.4vh, 16px) clamp(14px, 1.8vw, 24px);
 }
-#\31 0-segment-architects .segment-architects-fact {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-#\31 0-segment-architects .segment-architects-fact dt {
+#\31 0-segment-architects .seg-fact { display: flex; flex-direction: column; gap: 2px; }
+#\31 0-segment-architects .seg-fact dt {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -144,21 +149,21 @@
   color: var(--navy);
   opacity: 0.75;
 }
-#\31 0-segment-architects .segment-architects-fact dd {
+#\31 0-segment-architects .seg-fact dd {
   margin: 0;
   font-size: clamp(0.82rem, 0.98vw, 0.94rem);
   font-weight: 500;
   line-height: 1.28;
   color: var(--ink-soft);
 }
-#\31 0-segment-architects .segment-architects-fact .num {
+#\31 0-segment-architects .seg-fact .num {
   font-weight: 800;
   color: var(--navy);
   font-variant-numeric: tabular-nums;
 }
 
-/* Hero share number — the number IS the headline. */
-#\31 0-segment-architects .segment-architects-share {
+/* Hero share number - the number IS the headline. */
+#\31 0-segment-architects .seg-share {
   margin: clamp(2px, 1vh, 10px) 0 0;
   display: flex;
   flex-wrap: wrap;
@@ -166,7 +171,7 @@
   gap: clamp(8px, 1vw, 16px);
   position: relative;
 }
-#\31 0-segment-architects .segment-architects-share-num {
+#\31 0-segment-architects .seg-share-num {
   font-weight: 900;
   font-size: clamp(3.4rem, 6.4vw, 6.4rem);
   letter-spacing: -0.04em;
@@ -174,14 +179,14 @@
   color: var(--navy);
   font-variant-numeric: tabular-nums;
 }
-#\31 0-segment-architects .segment-architects-share-cap {
+#\31 0-segment-architects .seg-share-cap {
   font-size: clamp(0.84rem, 1.05vw, 0.98rem);
   font-weight: 500;
   line-height: 1.3;
   color: var(--ink-soft);
-  max-width: 24ch;
+  max-width: 26ch;
 }
-#\31 0-segment-architects .segment-architects-dot {
+#\31 0-segment-architects .seg-dot {
   position: absolute;
   left: 0; top: 50%;
   width: 0; height: 0;
@@ -190,21 +195,21 @@
   visibility: hidden;
 }
 
-/* ── RIGHT: data lens column — self-contained, flexes to fit ─────── */
-#\31 0-segment-architects .segment-architects-data {
+/* RIGHT: data lens column - self-contained, flexes to fit. */
+#\31 0-segment-architects .seg-data {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.3vh, 16px);
+  gap: clamp(7px, 1.2vh, 14px);
   margin: 0;
   height: 100%;
   min-height: 0;
   justify-content: center;
 }
 
-/* Segment mark — navy disc with the brand yellow accent, top of the lens. */
-#\31 0-segment-architects .segment-architects-icon {
+/* Flat navy + segment-accent icon, top of the lens. */
+#\31 0-segment-architects .seg-icon {
   color: var(--navy);
   width: clamp(38px, 3.6vw, 48px);
   height: clamp(38px, 3.6vw, 48px);
@@ -212,28 +217,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(4, 22, 84, 0.06);
-  border-radius: 50%;
+  background: var(--seg-accent-soft);
+  border-radius: 0;            /* square corners - house rule */
   padding: clamp(7px, 0.8vw, 10px);
   box-sizing: border-box;
 }
-#\31 0-segment-architects .segment-architects-icon svg { width: 100%; height: 100%; }
-#\31 0-segment-architects .segment-architects-icon .ic-yellow {
-  fill: var(--yellow, #F0CB08);
-  color: var(--yellow, #F0CB08);
-  stroke: var(--yellow, #F0CB08);
+#\31 0-segment-architects .seg-icon svg { width: 100%; height: 100%; }
+#\31 0-segment-architects .seg-icon .ic-accent {
+  fill: var(--seg-accent);
+  color: var(--seg-accent);
+  stroke: var(--seg-accent);
 }
-#\31 0-segment-architects .segment-architects-icon .ic-navy { fill: var(--navy, #041654); }
+#\31 0-segment-architects .seg-icon .ic-navy { fill: var(--navy, #041654); }
 
-#\31 0-segment-architects .segment-architects-data-head {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-#\31 0-segment-architects .segment-architects-data-head .vccp-eyebrow {
-  margin: 0;
-}
-#\31 0-segment-architects .segment-architects-data-title {
+#\31 0-segment-architects .seg-data-head { display: flex; flex-direction: column; gap: 4px; }
+#\31 0-segment-architects .seg-data-head .vccp-eyebrow { margin: 0; }
+#\31 0-segment-architects .seg-data-title {
   margin: 0;
   font-weight: 800;
   font-size: clamp(1.18rem, 1.7vw, 1.6rem);
@@ -242,14 +241,25 @@
   color: var(--ink);
 }
 
-/* Square pill control (no radius — house rule). Wraps gracefully. */
-#\31 0-segment-architects .segment-architects-lens .pillgroup {
+/* One-line lens explanation under the title. */
+#\31 0-segment-architects .seg-lens-hint {
+  margin: 0;
+  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  opacity: 0.78;
+  max-width: 50ch;
+}
+
+/* Square pill control (no radius - house rule). Wraps gracefully. */
+#\31 0-segment-architects .seg-lens .pillgroup {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0;
   border: 1px solid rgba(4, 22, 84, 0.2);
 }
-#\31 0-segment-architects .segment-architects-lens .pillgroup-chip {
+#\31 0-segment-architects .seg-lens .pillgroup-chip {
   appearance: none;
   border: 0;
   background: transparent;
@@ -263,21 +273,20 @@
   border-radius: 0;
   transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms);
 }
-#\31 0-segment-architects .segment-architects-lens .pillgroup-chip + .pillgroup-chip {
+#\31 0-segment-architects .seg-lens .pillgroup-chip + .pillgroup-chip {
   border-left: 1px solid rgba(4, 22, 84, 0.2);
 }
-#\31 0-segment-architects .segment-architects-lens .pillgroup-chip.is-active {
+#\31 0-segment-architects .seg-lens .pillgroup-chip.is-active {
   background: var(--navy);
   color: var(--cream, #F0EDE7);
 }
-#\31 0-segment-architects .segment-architects-lens .pillgroup-chip:focus-visible {
-  outline: 2px solid var(--yellow, #F0CB08);
+#\31 0-segment-architects .seg-lens .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--seg-accent);
   outline-offset: -2px;
 }
 
-/* Backgroundless chart host — bars float on cream. Flexes; the SVG scales
-   to width so taller lenses never push the fingerprint off the screen. */
-#\31 0-segment-architects .segment-architects-chart {
+/* Backgroundless chart host - bars float on cream; SVG scales to width. */
+#\31 0-segment-architects .seg-chart {
   width: 100%;
   flex: 0 1 auto;
   min-height: 0;
@@ -285,15 +294,15 @@
   align-items: center;
   overflow: hidden;
 }
-#\31 0-segment-architects .segment-architects-chart svg {
+#\31 0-segment-architects .seg-chart svg {
   display: block;
   width: 100%;
   height: auto;
   max-height: 100%;
 }
 
-/* Baseline legend — faint, no box. */
-#\31 0-segment-architects .segment-architects-baseline {
+/* Baseline legend - faint, no box. */
+#\31 0-segment-architects .seg-baseline {
   margin: 0;
   font-size: 0.7rem;
   font-weight: 500;
@@ -304,16 +313,16 @@
   align-items: center;
   gap: 6px;
 }
-#\31 0-segment-architects .segment-architects-baseline-key {
+#\31 0-segment-architects .seg-baseline-key {
   display: inline-block;
   width: 18px;
   height: 2px;
   background: rgba(4, 22, 84, 0.25);
 }
 
-/* ── TGI fingerprint cloud — quiet navy-on-cream tags, square corners,
-   text only (no numbers). Capped so it always fits. ─────────────────── */
-#\31 0-segment-architects .segment-fingerprint {
+/* TGI fingerprint cloud - quiet navy-on-cream tags, square corners,
+   text only (no numbers). Capped so it always fits one screen. */
+#\31 0-segment-architects .seg-fingerprint {
   flex: none;
   margin-top: clamp(6px, 1.2vh, 14px);
   display: flex;
@@ -322,7 +331,7 @@
   border-top: 1px solid rgba(4, 22, 84, 0.1);
   padding-top: clamp(8px, 1.2vh, 14px);
 }
-#\31 0-segment-architects .segment-fingerprint-label {
+#\31 0-segment-architects .seg-fingerprint-label {
   margin: 0;
   font-size: 0.6rem;
   font-weight: 700;
@@ -331,7 +340,7 @@
   color: var(--navy);
   opacity: 0.62;
 }
-#\31 0-segment-architects .segment-fingerprint-cloud {
+#\31 0-segment-architects .seg-fingerprint-cloud {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -341,7 +350,7 @@
   max-height: 4.6em;
   overflow: hidden;
 }
-#\31 0-segment-architects .segment-fingerprint-tag {
+#\31 0-segment-architects .seg-fingerprint-tag {
   display: inline-block;
   padding: 5px 11px;
   border: 1px solid rgba(4, 22, 84, 0.22);
@@ -353,10 +362,14 @@
   line-height: 1.2;
   color: var(--navy);
 }
+/* The first tag carries a tiny accent tick so each card keeps its colour. */
+#\31 0-segment-architects .seg-fingerprint-tag:first-child {
+  border-color: var(--seg-accent);
+  box-shadow: inset 3px 0 0 0 var(--seg-accent);
+}
 
-/* Orbit ring — lower-right ambient geometry, counter-balance (Z-AXIS §6b).
-   Sits behind everything; pointer-events none. */
-#\31 0-segment-architects .segment-architects-orbit {
+/* Orbit ring - lower-right ambient geometry; behind everything; no pointer. */
+#\31 0-segment-architects .seg-orbit {
   position: absolute;
   bottom: clamp(-12vh, -7vh, -5vh);
   right: clamp(-9vw, -6vw, -4vw);
@@ -367,7 +380,7 @@
   pointer-events: none;
   z-index: 0;
 }
-#\31 0-segment-architects .segment-architects-orbit::after {
+#\31 0-segment-architects .seg-orbit::after {
   content: "";
   position: absolute;
   inset: 18%;
@@ -375,21 +388,24 @@
   border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.08));
 }
 
-/* ── Narrow / short viewports — stack, keep one screen ────────────── */
+/* Narrow / short viewports - stack, keep one screen. */
 @media (max-width: 900px) {
-  #\31 0-segment-architects .segment-architects-grid {
+  #\31 0-segment-architects .seg-grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     row-gap: clamp(18px, 3vh, 28px);
     align-content: center;
   }
-  #\31 0-segment-architects .segment-architects-grid::before { display: none; }
-  #\31 0-segment-architects .segment-architects-id { max-width: none; }
-  #\31 0-segment-architects .segment-architects-data { height: auto; }
-  #\31 0-segment-architects .segment-fingerprint { display: none; }
+  #\31 0-segment-architects .seg-grid::before { display: none; }
+  #\31 0-segment-architects .seg-id { max-width: none; }
+  #\31 0-segment-architects .seg-data { height: auto; }
+  #\31 0-segment-architects .seg-fingerprint { display: none; }
 }
 
-@media (max-height: 620px) {
-  #\31 0-segment-architects .segment-architects-quote { display: none; }
-  #\31 0-segment-architects .segment-fingerprint { display: none; }
+@media (max-height: 640px) {
+  #\31 0-segment-architects .seg-quote cite { display: none; }
+  #\31 0-segment-architects .seg-fingerprint { display: none; }
+}
+@media (max-height: 560px) {
+  #\31 0-segment-architects .seg-quote { display: none; }
 }

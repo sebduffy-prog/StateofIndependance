@@ -163,11 +163,15 @@
      ("Independence", 12ch) stays WITHIN the left column at any width and never
      reaches across the gap toward the maze. The viewport term is the governing
      one so the title shrinks with the column on mid widths. */
-  font-size: clamp(3.4rem, 7.4vw, 7rem);
+  /* Sized so "Independence" (the longest word) fits on ONE line inside the left
+     column at all widths — smaller cap than before, which was breaking the word
+     mid-way ("Indep/ende/nce") and pushing the title off the bottom. */
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
   color: var(--ink);
-  /* never let a long line spill past the copy column toward the maze */
   max-width: 100%;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
 }
 #\30 1-cover .cover-line { display: block; }
 

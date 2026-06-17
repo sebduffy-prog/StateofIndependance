@@ -946,12 +946,16 @@ const init = async () => {
 
   // Mount in manifest order, swapping data.journey to that step's own API
   // immediately before its init() runs.
-  const sections = [];
-  for (let i = 0; i < manifest.length; i += 1) {
-    data.journey = journey.makeJourneyApi(i);
-    // eslint-disable-next-line no-await-in-loop -- ordered mount is intentional
-    sections.push(await mountSection(manifest[i], data, stageRoot));
-  }
+  // Mount ALL stages in parallel (each with its own per-step journey API) so the
+  // journey goes live fast — a sequential await-loop fetched + imported all 22
+  // one-by-one, leaving a plain warm backdrop on screen for seconds on open.
+  // Stages are absolutely positioned (transform/z-index per render), so DOM
+  // append order does not affect the visual order; the array order is preserved
+  // by Promise.all.
+  const sections = await Promise.all(
+    manifest.map((entry, i) =>
+      mountSection(entry, { ...data, journey: journey.makeJourneyApi(i) }, stageRoot)),
+  );
 
   journey.setSections(sections);
   journey.start();
