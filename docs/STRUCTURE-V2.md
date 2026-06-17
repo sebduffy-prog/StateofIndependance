@@ -6,7 +6,19 @@ deck design components (assets/brand-final/ per BRAND-WORLD-FINAL.md), a sexy de
 between steps, the character→title reveal, and an interaction. WLV-voice copy (SEBSKILLS
 strategy/WLV). Verified data only.
 
+## FINAL POLISH PASS (do LAST — after all step content + cleanups land)
+- "DRAG LEFT TO CUT" interaction is RUBBISH — rework or remove it (likely the budget-cut / ring-fence
+  drag on the protected-joy twist, or wherever a drag-to-cut appears). Replace with a cleaner beat.
+- TRANSITIONS: slow them down and make them more ARTISTIC / cinematic (longer durations, refined
+  easing, more crafted depth choreography per Z-AXIS-JOURNEY.md §timing). Not abrupt.
+- Sequence: this pass runs AFTER the content build (w7662o00e) + the you-dot/step-2/map-dot cleanups.
+
 ## Content + transition notes (2026-06-17 review)
+- THE "YOU" DOT must NOT float randomly in dead space (e.g. the lone yellow dot on step 3). Engine:
+  show the you-dot ONLY on steps that provide a meaningful [data-youdot-anchor]; on steps without one
+  it is hidden (display:none / opacity 0), never parked in empty grid.
+- STEP 2 (research map): remove the scattered/ambient dots around the UK map — the navy map + its 8
+  city markers are the ONLY elements; no stray dot-field/orbit-seed clutter around it.
 - REMOVE the **Nationwide** case study/example from the trusted-antidote move (keep M&S / Boots).
 - Transitions must be a true **fly-THROUGH depth** (Z + scale + blur only, zero X/Y) — they currently
   read as slides. See Z-AXIS-JOURNEY.md §1.

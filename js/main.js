@@ -25,10 +25,18 @@
  * ─────────────────────────────────────────────────────────────────────────
  * THE STEP CONTRACT (what every section module receives + may declare)
  * ─────────────────────────────────────────────────────────────────────────
- *   • Each manifest entry: { id, title, ground?, placeholder? }.
+ *   • Each manifest entry: { id, title, ground?, transition?, placeholder? }.
  *       - ground   : "warm" | "cream" | "navy" — fills the FULL-BLEED stage
  *                    edge-to-edge (no cream page band; inner content is what
  *                    respects a max-width, never the ground).
+ *       - transition: one of the named DEPTH PROFILES (see TRANSITIONS below).
+ *                    Names the feel of flying THROUGH this stage as it is left
+ *                    (and how it arrives). All profiles are PURE DEPTH — Z +
+ *                    scale + blur + opacity (+ a small rotateZ/rotateX on the
+ *                    orbit profile), ZERO translateX/translateY, never a slide.
+ *                    Omitted → "flythrough" (the default pass-through). Under
+ *                    reduced-motion every profile degrades to an opacity
+ *                    cross-fade. Profiles are picked so consecutive steps differ.
  *       - placeholder: true → the engine renders a built-in "awaiting data"
  *                    stage (workflow-A structure); no fragment/module is fetched.
  *
@@ -90,9 +98,10 @@ const STAGE_BLUR_MAX = 8;    // px blur on a fully-receded/approaching stage
 const RENDER_WINDOW = 2;
 
 /** Input normalisation — one discrete step per gesture, never a runaway. */
-const WHEEL_THRESHOLD = 28; // accumulated |deltaY| to commit one step
-const WHEEL_COOLDOWN_MS = 620; // min time between committed wheel steps
-const TOUCH_THRESHOLD = 56; // px swipe to commit one step
+const WHEEL_THRESHOLD = 36;    // accumulated |deltaY| to commit one step
+const WHEEL_COOLDOWN_MS = 540; // min time between committed wheel steps
+const WHEEL_IDLE_MS = 90;      // gap with no wheel events = one gesture has ended
+const TOUCH_THRESHOLD = 56;    // px swipe to commit one step
 
 // ── Fetch helpers ────────────────────────────────────────────────────────────
 
@@ -158,73 +167,145 @@ const loadData = async () => {
   return Object.fromEntries(entries);
 };
 
-// ── Per-stage transform — the PURE depth function ─────────────────────────────
+// ── Per-stage transform — the PURE depth PROFILES ─────────────────────────────
 
 /**
- * Pure function: a stage's distance from current progress → its 3D transform,
- * opacity and blur. `d = stageIndex - progress`.
+ * NAMED DEPTH TRANSITION PROFILES.
  *
- * TRUE FLY-THROUGH model (Z-AXIS-JOURNEY.md §1):
+ * Each profile is a PURE function of `d = stageIndex - progress` → the stage's
+ * 3D transform, opacity and blur. d<0 = LEAVING (flying through it toward the
+ * camera); d>0 = ARRIVING (emerging from deep space). All profiles share the
+ * same skeleton — the fly-through is always the base feel — and vary only the
+ * geometry constants and (for "orbit") add a tiny rotateZ/rotateX swirl.
  *
- *   d ≈ 0   → FOCUS: translateZ(0) scale(1), crisp, opaque. Full screen.
+ * INVARIANT (client requirement): every profile is PURE DEPTH. The only
+ * translate is the static -50%/-50% centering offset (it never changes); there
+ * is ZERO inter-stage translateX/translateY — nothing ever slides in from a
+ * side. Motion lives entirely on Z + scale + blur + opacity (+ rotate on orbit).
  *
- *   d < 0   → LEAVING (you are flying THROUGH it, it expands past the frame):
- *               translateZ: 0 → +STAGE_Z_LEAVE  (comes TOWARD the camera)
- *               scale:      1 → STAGE_SCALE_LEAVE  (blows past the viewport edge)
- *               opacity + blur increase with |d| — fades as you fly through.
+ *   flythrough      default pass-through (Z-AXIS-JOURNEY.md §1 geometry).
+ *   dissolve-through softer + slower: shorter Z travel, gentle scale, LONG fade
+ *                   and heavier blur — a stage that melts into depth.
+ *   zoom-resolve    dramatic deep zoom: big +Z punch-through leaving, arrives
+ *                   from very far and very small — for the segments compass.
+ *   orbit-tilt      a subtle swirl as it recedes: the base fly-through plus a
+ *                   small rotateZ + rotateX that eases back to flat at focus.
+ *   disperse        the outro: stage scatters apart into depth — extreme +Z and
+ *                   scale on leave, very fast fade — the nation flies past.
  *
- *   d > 0   → ARRIVING (waiting in deep space, grows as it approaches):
- *               translateZ: −STAGE_Z_DEEP → 0  (tiny far away, fills screen)
- *               scale:      STAGE_SCALE_FAR → 1  (tiny in the distance → full)
- *               opacity + blur decrease with d — sharpens on approach.
+ * Reduced motion: handled by stageStyleFor before any profile runs — every
+ * profile degrades to a plain opacity cross-fade (no Z, scale, blur, rotate).
+ */
+
+/** easeOutQuad on |d| clamped 0→1: smooth start at focus, quick departure. */
+const easeDepth = (ad) => 1 - Math.pow(1 - clamp(ad, 0, 1), 2);
+
+/**
+ * Build a depth profile from tunable geometry. Keeps all five profiles DRY:
+ * they differ only by these numbers (+ an optional rotate term).
+ * @param {{zLeave:number, zDeep:number, scaleLeave:number, scaleFar:number,
+ *          blur:number, fadeLeave:number, fadeArrive:number,
+ *          rotZ?:number, rotX?:number}} cfg
+ * @returns {(d:number)=>{transform:string, opacity:number, blur:number}}
+ */
+const makeProfile = (cfg) => (d) => {
+  const ad = Math.abs(d);
+  const t = easeDepth(ad);
+  let z;
+  let scale;
+  let opacity;
+
+  if (d <= 0) {
+    // LEAVING: comes TOWARD the camera, grows past the frame, fades + blurs.
+    z = cfg.zLeave * t;
+    scale = 1 + (cfg.scaleLeave - 1) * t;
+    opacity = clamp(1 - ad * cfg.fadeLeave, 0, 1);
+  } else {
+    // ARRIVING: emerges from deep −Z, grows small→full, sharpens + fades in.
+    z = -cfg.zDeep * t;
+    scale = cfg.scaleFar + (1 - cfg.scaleFar) * (1 - t);
+    opacity = clamp(1 - d * cfg.fadeArrive, 0, 1);
+  }
+
+  let rotate = '';
+  if (cfg.rotZ || cfg.rotX) {
+    // Swirl is strongest at depth, eases to flat (0) at focus. Leaving stage
+    // swirls one way, arriving the other, for a gentle orbital hand-off.
+    const dir = d <= 0 ? 1 : -1;
+    const rz = (cfg.rotZ || 0) * t * dir;
+    const rx = (cfg.rotX || 0) * t * dir;
+    rotate = ` rotateZ(${rz.toFixed(2)}deg) rotateX(${rx.toFixed(2)}deg)`;
+  }
+
+  return {
+    transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${scale.toFixed(4)})${rotate}`,
+    opacity,
+    blur: cfg.blur * t,
+  };
+};
+
+/** The registry of named depth profiles. "flythrough" is the default/base. */
+const TRANSITIONS = {
+  flythrough: makeProfile({
+    zLeave: STAGE_Z_LEAVE, zDeep: STAGE_Z_DEEP,
+    scaleLeave: STAGE_SCALE_LEAVE, scaleFar: STAGE_SCALE_FAR,
+    blur: STAGE_BLUR_MAX, fadeLeave: 1.6, fadeArrive: 1.4,
+  }),
+  'dissolve-through': makeProfile({
+    zLeave: 420, zDeep: 1100,
+    scaleLeave: 1.45, scaleFar: 0.55,
+    blur: 13, fadeLeave: 1.05, fadeArrive: 0.95, // long, soft fade
+  }),
+  'zoom-resolve': makeProfile({
+    zLeave: 900, zDeep: 2100,
+    scaleLeave: 2.6, scaleFar: 0.22, // dramatic deep zoom
+    blur: 10, fadeLeave: 1.7, fadeArrive: 1.3,
+  }),
+  'orbit-tilt': makeProfile({
+    zLeave: 640, zDeep: 1400,
+    scaleLeave: 1.8, scaleFar: 0.42,
+    blur: 9, fadeLeave: 1.5, fadeArrive: 1.35,
+    rotZ: 7, rotX: 5, // subtle swirl, eases to flat at focus
+  }),
+  disperse: makeProfile({
+    zLeave: 1150, zDeep: 1600,
+    scaleLeave: 3.2, scaleFar: 0.5, // stage scatters apart into depth
+    blur: 14, fadeLeave: 2.4, fadeArrive: 1.2, // very fast scatter-fade
+  }),
+};
+
+const DEFAULT_TRANSITION = 'flythrough';
+
+/** Resolve a manifest transition name to a profile, falling back to default. */
+const profileFor = (name) => TRANSITIONS[name] || TRANSITIONS[DEFAULT_TRANSITION];
+
+/**
+ * Pure function: a stage's distance from progress → its 3D transform, opacity
+ * and blur, using the stage's own depth PROFILE. `d = stageIndex - progress`.
  *
- * ZERO translateX / translateY between stages: the -50%/-50% offset is the
- * static centering fix for top:50%;left:50% positioning and never changes.
- * Motion is PURELY on the Z axis + scale + blur + opacity.
+ * Which profile applies on a given pass-through is the LEAVING stage's profile
+ * (it owns the feel of being flown through); an arriving stage uses its own
+ * profile too, so the hand-off blends the two — both are pure depth so it
+ * always reads as fly-through, never a slide.
  *
- * Reduced motion: no z-fly / no blur — plain opacity cross-fade only.
+ * Reduced motion: NO z-fly / scale / blur / rotate — plain opacity cross-fade.
  *
  * @param {number} d   stageIndex − progress
+ * @param {(d:number)=>{transform:string,opacity:number,blur:number}} profile
  * @param {boolean} reduced
  * @returns {{transform:string, opacity:number, blur:number, visible:boolean}}
  */
-const stageStyleFor = (d, reduced) => {
+const stageStyleFor = (d, profile, reduced) => {
   const ad = Math.abs(d);
   const visible = ad <= RENDER_WINDOW;
 
   if (reduced) {
-    // Cross-fade only: focused stage opaque, neighbours fade fast.
     const opacity = ad >= 1 ? 0 : 1 - ad;
     return { transform: 'translate3d(-50%, -50%, 0)', opacity, blur: 0, visible };
   }
 
-  // easeOutQuad on |d| clamped 0→1 (smooth start from focus, quick departure)
-  const t = 1 - Math.pow(1 - clamp(ad, 0, 1), 2);
-
-  let z, scale, opacity, blur;
-
-  if (d <= 0) {
-    // ── LEAVING: stage comes TOWARD the camera as you fly through it ──────
-    // d goes 0 → negative; t goes 0 → 1 as |d| grows.
-    z     = STAGE_Z_LEAVE * t;                        // +Z: flies at the lens
-    scale = 1 + (STAGE_SCALE_LEAVE - 1) * t;          // grows past the frame
-    opacity = clamp(1 - ad * 1.6, 0, 1);             // fades fast (gone by ~d=-0.6)
-    blur  = STAGE_BLUR_MAX * t;
-  } else {
-    // ── ARRIVING: stage emerges from deep negative Z ───────────────────────
-    // d goes from RENDER_WINDOW → 0; t goes 1 → 0 as d shrinks.
-    z     = -STAGE_Z_DEEP * t;                        // −Z: far away, travels forward
-    scale = STAGE_SCALE_FAR + (1 - STAGE_SCALE_FAR) * (1 - t); // small → full
-    opacity = clamp(1 - d * 1.4, 0, 1);              // fades in as it approaches
-    blur  = STAGE_BLUR_MAX * t;
-  }
-
-  return {
-    transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${scale.toFixed(4)})`,
-    opacity,
-    blur,
-    visible,
-  };
+  const s = profile(d);
+  return { transform: s.transform, opacity: s.opacity, blur: s.blur, visible };
 };
 
 // ── Section mounting ──────────────────────────────────────────────────────────
@@ -340,6 +421,9 @@ const createJourney = (manifest) => {
   const stepCount = manifest.length;
   const reduced = prefersReducedMotion();
 
+  // Resolve each step's depth profile once (pure functions; reused per frame).
+  const profiles = manifest.map((entry) => profileFor(entry.transition));
+
   const indicator = document.getElementById('journeyIndicator');
   const hint = document.getElementById('journeyHint');
   const meta = document.querySelector('.journey-meta');
@@ -420,7 +504,7 @@ const createJourney = (manifest) => {
     for (let i = 0; i < stepCount; i += 1) {
       const section = sections[i];
       if (!section) continue;
-      const style = stageStyleFor(i - progress, reduced);
+      const style = stageStyleFor(i - progress, profiles[i], reduced);
       if (!style.visible) {
         if (section.style.visibility !== 'hidden') {
           section.style.visibility = 'hidden';
@@ -477,43 +561,88 @@ const createJourney = (manifest) => {
 
   // ── Input: normalise wheel / touch / keys to discrete steps ────────────────
   const bindInput = () => {
-    // WHEEL / TRACKPAD — accumulate then commit one step; cooldown stops runaway.
+    // WHEEL / TRACKPAD — ONE gesture = ONE step, deterministically.
+    //
+    // The old double-jump came from trackpad MOMENTUM: a single physical swipe
+    // emits a long tail of wheel events that can outlast a fixed cooldown, so a
+    // second step committed off the leftover momentum. The fix is a MOMENTUM
+    // LOCK: once a step commits we (1) zero the accumulator, (2) hold a cooldown,
+    // and (3) refuse to commit the NEXT step until the wheel has gone idle for
+    // WHEEL_IDLE_MS — i.e. the previous gesture has actually ended. A continuous
+    // momentum stream can never trip a second step; you must lift and swipe again.
     let wheelAccum = 0;
-    let lastWheelStep = 0;
+    let lastWheelStep = 0;   // when the last step committed
+    let lastWheelEvent = 0;  // when the last wheel event arrived (idle detection)
+    let gestureLocked = false; // true between a commit and the next idle gap
     window.addEventListener(
       'wheel',
       (e) => {
         e.preventDefault();
         const now = performance.now();
-        if (now - lastWheelStep < WHEEL_COOLDOWN_MS) return;
+        const sinceLastEvent = now - lastWheelEvent;
+        lastWheelEvent = now;
+
+        // A gap in the event stream means the previous gesture ended: release
+        // the lock and start a fresh accumulation for the new gesture.
+        if (sinceLastEvent > WHEEL_IDLE_MS) {
+          gestureLocked = false;
+          wheelAccum = 0;
+        }
+
+        // Still inside the committed gesture (momentum tail) — swallow it.
+        if (gestureLocked) {
+          wheelAccum = 0;
+          return;
+        }
+        // Cooldown guards the minimum cadence between deliberate steps.
+        if (now - lastWheelStep < WHEEL_COOLDOWN_MS) {
+          wheelAccum = 0;
+          return;
+        }
+
         wheelAccum += e.deltaY;
         if (Math.abs(wheelAccum) < WHEEL_THRESHOLD) return;
+
         if (wheelAccum > 0) goNext();
         else goBack();
+
         wheelAccum = 0;
         lastWheelStep = now;
+        gestureLocked = true; // hold until the wheel goes idle (gesture ends)
       },
       { passive: false },
     );
 
-    // TOUCH — a swipe past the threshold commits one step in that direction.
+    // TOUCH — ONE swipe = ONE step. A single touch can commit at most once
+    // (touchCommitted); it only re-arms on touchend, so dragging further within
+    // the same contact never advances a second step.
     let touchStartY = null;
+    let touchCommitted = false;
     window.addEventListener(
       'touchstart',
       (e) => {
         touchStartY = e.touches[0]?.clientY ?? null;
+        touchCommitted = false;
       },
       { passive: true },
     );
     window.addEventListener(
       'touchmove',
       (e) => {
-        if (touchStartY === null) return;
+        if (touchStartY === null || touchCommitted) return;
         const dy = touchStartY - (e.touches[0]?.clientY ?? touchStartY);
         if (Math.abs(dy) < TOUCH_THRESHOLD) return;
         if (dy > 0) goNext();
         else goBack();
+        touchCommitted = true; // one step per contact; re-arms on touchend
+      },
+      { passive: true },
+    );
+    window.addEventListener(
+      'touchend',
+      () => {
         touchStartY = null;
+        touchCommitted = false;
       },
       { passive: true },
     );
