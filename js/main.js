@@ -84,26 +84,32 @@ const HINT_DWELL_MS = 1200;
  */
 const TRANSITION_DURATION_DEFAULT_MS = 1200;
 
-/** Z-axis stage geometry — TRUE FLY-THROUGH model (Z-AXIS-JOURNEY.md §1).
+/** Z-axis stage geometry — RECEDE-AND-FADE model (Z-AXIS-JOURNEY.md §1).
+ *
+ *   The hand-off is mostly a COMPONENT FADE with a small, calm push on Z. No
+ *   stage ever comes toward the camera or grows past the frame — there are no
+ *   "boxes" flying forward. The leaving stage simply drops back along the
+ *   direction of travel and dissolves; the arriving one resolves from a touch
+ *   of depth. Mirrored by travel direction so back/forward feel symmetric.
  *
  *   LEAVING (current stage, d<0 as progress advances past it):
- *     translateZ 0 → +STAGE_Z_LEAVE  (comes TOWARD the camera)
- *     scale       1 → STAGE_SCALE_LEAVE  (grows past the frame — you fly THROUGH it)
- *     blur + fade out
+ *     translateZ 0 → -STAGE_Z_LEAVE  (RECEDES back into depth, never forward)
+ *     scale       1 → STAGE_SCALE_LEAVE  (shrinks slightly, never grows)
+ *     light blur + fade out
  *
  *   ARRIVING (next stage, d>0, waiting in depth):
- *     translateZ -STAGE_Z_DEEP → 0  (emerges from deep space)
- *     scale      STAGE_SCALE_FAR → 1  (tiny in the distance, grows to fill)
+ *     translateZ -STAGE_Z_DEEP → 0  (eases forward from a little depth)
+ *     scale      STAGE_SCALE_FAR → 1  (a touch small, settles to full)
  *     sharpens + fades in
  *
  *   ZERO translateX / translateY between stages — motion is purely on Z.
  *   (The constant -50%/-50% in the transform is the centering offset for
  *   top:50%;left:50% positioning; it never changes and is NOT a slide.) */
-const STAGE_Z_LEAVE = 1000;  // px: leaving stage flies this far TOWARD + PAST the camera (+Z)
-const STAGE_Z_DEEP  = 1700;  // px: arriving stage starts this far BEHIND the camera (−Z)
-const STAGE_SCALE_LEAVE = 3.4;  // leaving stage blows up huge and engulfs the frame — you fly THROUGH it
-const STAGE_SCALE_FAR   = 0.26; // arriving stage starts tiny + deep, then rushes forward to full
-const STAGE_BLUR_MAX = 4;    // px blur on a fully-receded/approaching stage (kept low to avoid filter jank)
+const STAGE_Z_LEAVE = 340;   // px: leaving stage RECEDES this far back into depth (−Z) — never toward the camera
+const STAGE_Z_DEEP  = 460;   // px: arriving stage starts this far back in depth (−Z) and eases forward to focus
+const STAGE_SCALE_LEAVE = 0.86; // leaving stage shrinks slightly as it recedes (never grows past the frame)
+const STAGE_SCALE_FAR   = 0.92; // arriving stage starts a touch small in depth, then settles to full
+const STAGE_BLUR_MAX = 2;    // px blur on a fully-receded/approaching stage (low — the motion is mostly a fade)
 /** Stages further than this many steps from focus are not rendered (perf). */
 const RENDER_WINDOW = 2;
 
@@ -254,9 +260,11 @@ const makeProfile = (cfg) => {
     let opacity;
 
     if (d <= 0) {
-      // LEAVING: comes TOWARD the camera, grows past the frame, fades + blurs.
-      z = cfg.zLeave * t;
-      scale = 1 + (cfg.scaleLeave - 1) * t;
+      // LEAVING: RECEDES back into depth (−Z) and shrinks slightly while it
+      // fades. It never comes toward the camera and never grows past the frame —
+      // the stage drops back along the direction of travel and dissolves.
+      z = -cfg.zLeave * t;
+      scale = 1 - (1 - cfg.scaleLeave) * t;
       opacity = clamp(1 - Math.abs(d) * cfg.fadeLeave, 0, 1);
     } else {
       // ARRIVING: emerges from deep −Z, grows small→full, sharpens + fades in.
@@ -303,43 +311,51 @@ const makeProfile = (cfg) => {
  */
 const TRANSITIONS = {
   flythrough: makeProfile({
-    // The leaving stage accelerates TOWARD + PAST the camera (easeIn), blowing up
-    // huge and staying opaque until it engulfs the frame — you fly THROUGH it —
-    // while the next rushes forward from deep space. fadeLeave ~1 = fades exactly
-    // as it passes, never an early cross-fade (which read as a slide).
+    // The default depth hand-off: the leaving stage drops gently back into depth
+    // and dissolves while the next rises from a touch of depth and resolves. The
+    // motion is mostly a component fade with a small, calm push back on Z — never
+    // a box rushing the viewer, never a slide.
     zLeave: STAGE_Z_LEAVE, zDeep: STAGE_Z_DEEP,
     scaleLeave: STAGE_SCALE_LEAVE, scaleFar: STAGE_SCALE_FAR,
-    blur: STAGE_BLUR_MAX, fadeLeave: 1.0, fadeArrive: 1.2,
-    ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
-    durationMs: 1150,
+    blur: STAGE_BLUR_MAX, fadeLeave: 1.4, fadeArrive: 1.4,
+    ease: spatialEases.outQuad, rotZ: 0, rotX: 0,
+    durationMs: 1100,
   }),
   'dissolve-through': makeProfile({
-    zLeave: 980, zDeep: 1600,
-    scaleLeave: 3.0, scaleFar: 0.30,
-    blur: 5, fadeLeave: 1.0, fadeArrive: 1.15,
+    // Softest of all: barely any depth, a long cross-dissolve — a near-pure fade.
+    zLeave: 220, zDeep: 300,
+    scaleLeave: 0.93, scaleFar: 0.96,
+    blur: 2, fadeLeave: 1.5, fadeArrive: 1.45,
     ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
-    durationMs: 1350,
+    durationMs: 1300,
   }),
   'zoom-resolve': makeProfile({
-    zLeave: 1100, zDeep: 2300,
-    scaleLeave: 3.8, scaleFar: 0.18, // dramatic deep zoom — punches through
-    blur: 6, fadeLeave: 1.0, fadeArrive: 1.3,
-    ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
-    durationMs: 1500,
+    // A deeper, more deliberate recede for the segments compass: the leaving stage
+    // drops further back and the next resolves from a little more depth. Still no
+    // forward motion — just a longer, weightier fall into depth.
+    zLeave: 460, zDeep: 600,
+    scaleLeave: 0.80, scaleFar: 0.88,
+    blur: 3, fadeLeave: 1.3, fadeArrive: 1.4,
+    ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
+    durationMs: 1400,
   }),
   'orbit-tilt': makeProfile({
-    zLeave: 1000, zDeep: 1550,
-    scaleLeave: 3.1, scaleFar: 0.30,
-    blur: 5, fadeLeave: 1.0, fadeArrive: 1.3,
-    ease: spatialEases.outBack, rotZ: 7, rotX: 4, // swirl, overshoots to flat
-    durationMs: 1350,
+    // The recede hand-off plus a whisper of rotateZ/rotX that eases back to flat —
+    // a gentle orbital settle as the stage falls back.
+    zLeave: 340, zDeep: 460,
+    scaleLeave: 0.86, scaleFar: 0.92,
+    blur: 2, fadeLeave: 1.4, fadeArrive: 1.4,
+    ease: spatialEases.outBack, rotZ: 4, rotX: 2,
+    durationMs: 1300,
   }),
   disperse: makeProfile({
-    zLeave: 1300, zDeep: 1700,
-    scaleLeave: 3.6, scaleFar: 0.5, // stage scatters apart into depth
-    blur: 9, fadeLeave: 1.6, fadeArrive: 1.2, // scatter-fade
+    // The outro: the stage falls back furthest and scatter-fades — the nation
+    // recedes into depth rather than rushing the viewer.
+    zLeave: 520, zDeep: 620,
+    scaleLeave: 0.72, scaleFar: 0.90,
+    blur: 4, fadeLeave: 1.7, fadeArrive: 1.3,
     ease: spatialEases.inExpo, rotZ: 0, rotX: 0,
-    durationMs: 1500,
+    durationMs: 1400,
   }),
 };
 
