@@ -168,13 +168,11 @@
 #\31 4-graphrag .gk-shared { background: #80E8E3; }
 #\31 4-graphrag .gk-unique { background: #FBE3B0; }
 
-/* Interaction hint drops to the FOOT of the rail (margin-top:auto) so the empty
-   space pools at the bottom — the read-out then sits high, right under the
-   legend, never stranded near the floor. */
+/* Interaction hint sits immediately under the legend (compact), so the profile
+   read-out below it stays pinned high in the rail — empty space pools at the
+   FLOOR, never between the copy and the profile. */
 #\31 4-graphrag .graphrag-hint {
   margin: 0;
-  margin-top: auto;
-  padding-top: clamp(10px, 1.6vh, 18px);
   color: rgba(240, 237, 231, 0.5);
   font-size: 0.78rem;
   line-height: 1.4;
@@ -220,7 +218,10 @@
   height: 100%;
   max-height: 84svh;
   display: block;
-  overflow: visible;
+  /* The graph owns its right-hand zone. Clip at the SVG box so a fanned-out
+     statement label can NEVER bleed left into the rail — the network stays in
+     its lane. Node centres are clamped inside the frame by the lib. */
+  overflow: hidden;
 }
 
 /* Edges — faint cream lines; the selected sub-graph brightens */
@@ -272,7 +273,7 @@
 }
 #\31 4-graphrag .sg-attr .sg-label {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 11px;
   transition: opacity 0.18s ease;
 }
 
@@ -285,22 +286,22 @@
 #\31 4-graphrag .sg-attr:focus-visible .sg-dot { stroke: var(--yellow, #F0CB08); stroke-width: 2.5; }
 
 /* ── Read-out rail — the profile/owners panel lives in the LEFT column ─────
-   It is mounted here (data-graphrag-panel) by segment-graph.js, directly under
-   the legend, so it reads high in the rail and never overlaps the graph zone.
-   It takes only the height it needs (flex:0 1 auto) and scrolls internally if a
-   long profile would otherwise crowd the rail — it never stretches to the floor
-   or pushes other content around. A faint top rule sets it apart from the
-   legend above it. */
+   It is mounted here (data-graphrag-panel) by segment-graph.js, pinned directly
+   under the title + legend + hint copy, so it reads high in the rail and never
+   overlaps the graph zone. It is a CONFIDENT panel: a translucent navy plate with
+   a yellow keyline so the active segment's profile stands out against the ground.
+   Takes only the height it needs (flex:0 1 auto) and scrolls internally if a long
+   profile would crowd the rail — it never stretches to the floor. */
 #\31 4-graphrag .graphrag-readout {
   flex: 0 1 auto;
   min-height: 0;
-  margin-top: clamp(6px, 1.2vh, 14px);
-  padding-top: clamp(12px, 1.8vh, 20px);
-  border-top: 1px solid rgba(240, 237, 231, 0.14);
+  margin-top: clamp(10px, 1.8vh, 22px);
   overflow-y: auto;
 }
 
-/* Railed variant: static in the rail (not absolutely floated over the graph). */
+/* Railed variant: a solid, high-contrast profile panel (not a floated overlay).
+   Cream type on a deeper navy plate, square corners, a yellow left keyline — a
+   confident read-out, never faint. */
 #\31 4-graphrag .sg-panel--railed {
   position: static;
   left: auto;
@@ -309,13 +310,60 @@
   max-width: none;
   pointer-events: auto;
   z-index: auto;
+  background: rgba(2, 12, 44, 0.72);
+  border-left: 4px solid var(--yellow, #F0CB08);
+  padding: clamp(16px, 2.2vh, 24px) clamp(16px, 1.6vw, 24px);
+  color: var(--cream, #F0EDE7);
 }
+/* The eyebrow tag — brighter, on its own line above the name. */
+#\31 4-graphrag .sg-panel--railed .sg-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--yellow, #F0CB08);
+  margin-bottom: 8px;
+}
+/* Segment NAME — large, black weight, full cream: the panel's anchor. */
 #\31 4-graphrag .sg-panel--railed h4 {
-  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  font-size: clamp(1.5rem, 2.2vw, 2.05rem);
+  font-weight: 900;
+  line-height: 1.0;
+  color: var(--cream, #F0EDE7);
+  margin: 0 0 8px;
 }
-#\31 4-graphrag .sg-panel--railed blockquote { font-size: 0.88rem; }
-#\31 4-graphrag .sg-panel--railed .sg-desc { font-size: 0.9rem; }
-#\31 4-graphrag .sg-panel--railed .sg-facts { font-size: 0.82rem; }
+/* Three-word descriptor — confident yellow sub-head. */
+#\31 4-graphrag .sg-panel--railed .sg-desc {
+  font-size: clamp(0.92rem, 1.1vw, 1.06rem);
+  font-weight: 700;
+  color: var(--yellow, #F0CB08);
+  margin: 0 0 10px;
+}
+/* Hero quote — clearly legible cream italic, not a faint whisper. */
+#\31 4-graphrag .sg-panel--railed blockquote {
+  font-size: clamp(0.9rem, 1.0vw, 1.0rem);
+  line-height: 1.45;
+  color: rgba(240, 237, 231, 0.92);
+}
+/* Fact grid — labels in bright yellow, values in near-full cream. */
+#\31 4-graphrag .sg-panel--railed .sg-facts {
+  font-size: clamp(0.84rem, 0.95vw, 0.94rem);
+}
+#\31 4-graphrag .sg-panel--railed .sg-facts dt {
+  font-size: 0.72rem;
+  color: var(--yellow, #F0CB08);
+}
+#\31 4-graphrag .sg-panel--railed .sg-facts dd {
+  color: rgba(240, 237, 231, 0.92);
+}
+/* Clicked-signal detail (owners list) — same confident treatment. */
+#\31 4-graphrag .sg-panel--railed .sg-shared { font-size: 0.94rem; color: #80E8E3; }
+#\31 4-graphrag .sg-panel--railed .sg-owners li {
+  font-size: 0.92rem;
+  color: rgba(240, 237, 231, 0.92);
+}
+#\31 4-graphrag .sg-panel--railed .sg-hint {
+  font-size: 0.9rem;
+  color: rgba(240, 237, 231, 0.66);
+}
 
 /* ── Detail panel — backgroundless read-out (default: floats bottom-left of
    stage; the railed variant above overrides this when mounted in the rail) ── */

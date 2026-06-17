@@ -61,6 +61,16 @@ export default function init(rootEl, data) {
   const navy = cssVar('--navy', '#041654');
   const yellow = cssVar('--yellow', '#F0CB08');
 
+  // One colour per segment, matching the legend swatches exactly so the
+  // compass clusters read as the same four colours as the rail.
+  const SEGMENT_COLOUR = {
+    architects: navy,                          // navy           #041654
+    hustlers: cssVar('--navy-bright', '#0129A4'), // navy-bright
+    coasters: '#3A5BD0',
+    retreaters: '#6E80C0',
+  };
+  const baseColourFor = (id) => SEGMENT_COLOUR[id] || navy;
+
   // Allocate dots to each quadrant proportional to its canonical share.
   // Largest remainder so the four counts sum to exactly DOT_COUNT.
   const shares = GRID_ORDER.map((id) => ({ id, share: byId.get(id)?.sharePct ?? 0 }));
@@ -78,8 +88,9 @@ export default function init(rootEl, data) {
   const ownerOf = []; // segment id per dot index
   GRID_ORDER.forEach((id) => {
     const pts = clusterPoints(countById.get(id) || 0, QUADRANTS[id]);
+    const colour = baseColourFor(id);
     pts.forEach((p) => {
-      targets.push({ x: p.x, y: p.y, colour: navy });
+      targets.push({ x: p.x, y: p.y, colour });
       ownerOf.push(id);
     });
   });
@@ -89,7 +100,9 @@ export default function init(rootEl, data) {
 
   const field = dotField(fieldHost, {
     count: DOT_COUNT,
-    dotRadius: 5,
+    // Small, crisp dots — the field is a big square, so 5px read as enormous
+    // blobs. ~2.4px reads as ~100 discrete points across four clusters.
+    dotRadius: 2.4,
     ariaLabel: 'One hundred squares resolving into four segment clusters',
   });
 
@@ -99,6 +112,11 @@ export default function init(rootEl, data) {
 
   let resolved = false;
   resolveField = () => {
+    // Re-measure the canvas against the SETTLED compass box every arrival:
+    // the field is built off-screen / mid zoom-transition, so the size
+    // captured at construction is wrong. Sizing here (after the stage has
+    // arrived at rest) is what keeps the dots crisp and correctly scaled.
+    field.resize();
     if (resolved) return;
     resolved = true;
     // Slower spring = a visible fly-in: the four clusters travel in from the
@@ -111,9 +129,9 @@ export default function init(rootEl, data) {
   // Re-tint the field to spotlight one segment's dots (others fade back).
   const DIMMED = 'rgba(4,22,84,0.16)';
   const colourFor = (owner, focusId) => {
-    if (!focusId) return navy;          // no focus -> all navy
-    if (owner === focusId) return yellow; // the chosen segment glows
-    return DIMMED;                       // the rest recede
+    if (!focusId) return baseColourFor(owner); // no focus -> each its own colour
+    if (owner === focusId) return yellow;       // the chosen segment glows
+    return DIMMED;                              // the rest recede
   };
   const spotlight = (focusId) => {
     const tinted = targets.map((t, i) => ({

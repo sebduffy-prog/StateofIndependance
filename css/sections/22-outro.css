@@ -1,14 +1,19 @@
 /* Chapter 22 — outro (BRAND-WORLD-FINAL §7 — the cinematic close).
-   Warm-gradient full-bleed ground. ONE screen. Asymmetric two-column:
-   LEFT — kicker → Institutions motif → Martin Lewis scramble → Thank you →
-          credits → copyright;
-   RIGHT — Challenger-Series lockup (mid) + tall bear/girl (floor).
+   Warm-gradient full-bleed ground. ONE screen. An asymmetric two-pane stage:
+     LEFT — kicker -> Institutions ▸▸▸▸ Individuals motif -> Martin Lewis quote
+            -> hairline rule -> huge "Thank you" sign-off -> copyright furniture;
+     RIGHT — the figure standing large + flush on the floor, the orbit gathered
+            behind it, the Challenger-Series lockup signing off quietly above.
 
-   The italic accent word ("Individuals", "tools", "you") is the "Series"
-   gesture: italic, same weight, no box, no underline, no parallelogram.
-   Black/navy type on warm ground. AA contrast throughout.
-   Square corners, tabular nums, reduced-motion safe.
-   Scoped entirely to #\32 2-outro. */
+   The composition is built as ONE focal arc: the eye lands on "Thank you" in the
+   lower-left, and the orbit carries it across to the individual on the right —
+   "Institutions to Individuals" made spatial. The orbit is the connective tissue
+   of the whole journey, here at rest around the single person it was all for.
+
+   The italic accent word ("Individuals", "tools", "you") is the "Series" gesture:
+   italic, same weight, no box, no underline, no parallelogram. Navy accent on warm.
+   Black/navy type on warm ground. AA contrast throughout. Square corners, tabular
+   nums, reduced-motion safe. Scoped entirely to #\32 2-outro. */
 
 /* ── Full-bleed ground ──────────────────────────────────────────── */
 #\32 2-outro {
@@ -27,7 +32,6 @@
   background: var(--ground-warm);
 }
 
-/* Full-bleed warm gradient on the root container */
 #\32 2-outro .ot-root {
   background: var(--ground-warm);
   width: 100%;
@@ -38,82 +42,141 @@
   overflow: hidden;
 }
 
-/* Orbit ring — ambient, behind all content */
-#\32 2-outro .ot-orbit {
+/* ── Ambient depth ──────────────────────────────────────────────── */
+/* A soft warm glow pooled in the lower-right, beneath the figure — gives the
+   corner depth instead of an empty coral band. Decorative, behind everything. */
+#\32 2-outro .ot-glow {
   position: absolute;
-  top: 50%;
-  right: -8vw;
-  width: clamp(280px, 44vw, 640px);
-  height: clamp(280px, 44vw, 640px);
-  transform: translate(0, -50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit);
+  right: -6vw;
+  bottom: -14vh;
+  width: clamp(420px, 56vw, 920px);
+  height: clamp(420px, 56vw, 920px);
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 133, 152, 0.42) 0%,
+    rgba(255, 167, 100, 0.18) 38%,
+    transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* ── Two-column grid ────────────────────────────────────────────── */
+/* ── Orbit signature — concentric rings gathered around the figure ─── */
+/* The connective tissue, here at rest. Centred low-right (the figure's heart),
+   it drifts very slowly under no-reduced-motion. Real content sits above it. */
+#\32 2-outro .ot-orbit {
+  position: absolute;
+  right: clamp(-12vw, -6vw, 0px);
+  bottom: clamp(6vh, 16vh, 22vh);
+  width: clamp(360px, 50vw, 760px);
+  height: clamp(360px, 50vw, 760px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+#\32 2-outro .ot-orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit);
+  transform: translate(-50%, -50%);
+}
+#\32 2-outro .ot-orbit-ring--1 { width: 40%;  height: 40%; }
+#\32 2-outro .ot-orbit-ring--2 { width: 68%;  height: 68%; border-color: var(--soi-orbit-strong); }
+#\32 2-outro .ot-orbit-ring--3 { width: 100%; height: 100%; }
+
+/* A single yellow seed riding the mid ring — the one accent moment, the trace
+   of the "you" dot that travelled the whole way, now coming to rest. */
+#\32 2-outro .ot-orbit-seed {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(240, 237, 231, 0.45), 0 2px 10px rgba(4, 22, 84, 0.28);
+}
+
+/* The slow ambient drift — opacity/transform only, never busy. The two inner
+   rings breathe in counterpoint; the seed gives a slow, calm pulse. */
+@media (prefers-reduced-motion: no-preference) {
+  #\32 2-outro .ot-orbit-ring--1 { animation: ot-orbit-breathe 18s ease-in-out infinite; }
+  #\32 2-outro .ot-orbit-ring--2 { animation: ot-orbit-breathe 22s ease-in-out infinite reverse; }
+  #\32 2-outro .ot-orbit-seed   { animation: ot-orbit-seed-pulse 7s ease-in-out infinite; }
+}
+@keyframes ot-orbit-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.025); }
+}
+@keyframes ot-orbit-seed-pulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.18); }
+}
+
+/* ── Two-pane stage ─────────────────────────────────────────────── */
 #\32 2-outro .ot-grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(140px, 22vw, 280px);
-  gap: clamp(32px, 5vw, 80px);
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 32vw, 460px);
+  gap: clamp(32px, 5vw, 88px);
   align-items: stretch;
   width: 100%;
   flex: 1;
   min-height: 0;
-  padding: clamp(40px, 6vh, 88px) clamp(28px, 6vw, 100px) clamp(40px, 6vh, 88px);
+  padding: clamp(40px, 6vh, 92px) clamp(28px, 6vw, 104px) 0;
 }
 
-/* ── LEFT COLUMN ────────────────────────────────────────────────── */
-/* The narrative distributes top-to-bottom to fill the column height:
-   kicker + motif group at the top, quote in the centre, Thank you + credits
-   anchored to the floor — no dead space, one balanced focal composition. */
+/* ── LEFT PANE ──────────────────────────────────────────────────── */
+/* Dramatic vertical hierarchy (AD §1, §2): the kicker + motif sit at the top,
+   the quote rests as the calm centre, and "Thank you" is the huge payoff
+   anchored to the floor. Big jumps between groups; tight within them. */
 #\32 2-outro .ot-left {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(16px, 2.4vh, 32px);
-  max-width: 58ch;
+  gap: clamp(20px, 3vh, 44px);
+  max-width: 60ch;
   min-height: 0;
+  padding-bottom: clamp(28px, 5vh, 72px);
 }
 
-/* Top group: kicker → motif */
 #\32 2-outro .ot-head {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 2vh, 24px);
+  gap: clamp(14px, 2.2vh, 26px);
 }
 
-/* Floor group: Thank you → credits, anchored to the bottom */
 #\32 2-outro .ot-foot {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.4vh, 32px);
+  gap: clamp(14px, 2vh, 26px);
 }
 
-/* Kicker — eyebrow voice, navy on warm, generous letter-spacing */
 #\32 2-outro .ot-kicker {
   color: var(--navy);
   margin: 0;
 }
 
 /* ── Institutions ▸▸▸▸ Individuals motif ─── */
+/* Set as a tight band so the two words read as one transformation, not two
+   stacked lines. The arrow is the verb. */
 #\32 2-outro .ot-motif {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: clamp(8px, 1.2vw, 18px);
-  line-height: 1.0;
+  gap: clamp(10px, 1.4vw, 22px);
+  line-height: 0.96;
 }
 
 #\32 2-outro .ot-motif-word {
   font-family: var(--font-sans);
   font-weight: 900;
-  font-size: clamp(2rem, 4.2vw, 4rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(2.1rem, 4.6vw, 4.4rem);
+  letter-spacing: -0.035em;
   color: var(--ink);
   display: inline-block;
 }
@@ -124,43 +187,58 @@
 }
 
 #\32 2-outro .ot-motif-arrow {
-  font-size: clamp(1rem, 2vw, 1.8rem);
+  font-size: clamp(1rem, 2vw, 1.7rem);
   color: var(--navy);
-  letter-spacing: -0.12em;
+  letter-spacing: -0.1em;
   display: inline-block;
-  opacity: 0.7;
+  opacity: 0.62;
+  transform: translateY(-0.12em);
 }
 
-/* ── Martin Lewis quote ─────────────────────────────────────────── */
+/* ── Martin Lewis quote — the calm centre ───────────────────────── */
+/* A hanging quote-mark gives the quote real estate (AD §2) without a box. */
 #\32 2-outro .ot-quote {
+  position: relative;
   margin: 0;
+  padding-left: clamp(26px, 3.4vw, 56px);
+}
+#\32 2-outro .ot-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.04em;
+  top: -0.28em;
+  font-size: clamp(3.4rem, 7vw, 6rem);
+  line-height: 1;
+  font-weight: 900;
+  color: rgba(4, 22, 84, 0.18);
+  pointer-events: none;
 }
 
 #\32 2-outro .ot-quote-text {
-  margin: 0 0 clamp(10px, 1.4vh, 16px);
+  margin: 0 0 clamp(12px, 1.6vh, 20px);
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.6vh, 8px);
+  gap: clamp(4px, 0.7vh, 10px);
 }
 
 #\32 2-outro .ot-qt-line {
   display: block;
   font-family: var(--font-sans);
-  font-weight: 800;
-  font-size: clamp(1.15rem, 2vw, 1.8rem);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2vw, 1.85rem);
+  letter-spacing: -0.018em;
+  line-height: 1.16;
   color: var(--ink);
 }
 
-/* The accent line: slightly larger, italic "tools" highlights the key word */
+/* The accent line: larger + heavier so the key thought lands; "tools" italic. */
 #\32 2-outro .ot-qt-line--accent {
   font-weight: 900;
-  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-size: clamp(1.35rem, 2.6vw, 2.35rem);
   color: var(--ink);
 }
 
-/* The italic accent — "Series" gesture, no underline */
+/* The italic accent — "Series" gesture, no underline. */
 #\32 2-outro .ot-accent {
   font-style: italic;
   color: var(--navy);
@@ -171,26 +249,38 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(4, 22, 84, 0.62);
+  color: rgba(4, 22, 84, 0.6);
   margin: 0;
   font-variant-numeric: tabular-nums;
 }
 
-/* ── "Thank you" — the clear, large sign-off ─── */
+/* ── Floor group ────────────────────────────────────────────────── */
+/* A thin navy hairline draws in before the sign-off — a confident underline to
+   the whole piece, square and box-less. */
+#\32 2-outro .ot-rule {
+  display: block;
+  width: clamp(56px, 8vw, 132px);
+  height: 2px;
+  background: var(--navy);
+  opacity: 0.85;
+  transform-origin: left center;
+}
+
+/* "Thank you" — the clear, large sign-off (the one display moment). */
 #\32 2-outro .ot-thankyou {
   font-family: var(--font-sans);
   font-weight: 900;
-  font-size: clamp(3rem, 7vw, 7rem);
-  letter-spacing: -0.03em;
-  line-height: 0.92;
+  font-size: clamp(3.2rem, 8vw, 7.4rem);
+  letter-spacing: -0.035em;
+  line-height: 0.9;
   color: var(--ink);
   margin: 0;
   text-transform: none;
 }
 
 /* The you-dot anchor — invisible; rests just after the "Thank you" descender,
-   a deliberate calm spot in the lower-left clear of all type and data marks.
-   The persistent marker settles here, then disperses upward with the nation. */
+   a deliberate calm spot in the lower-left. The marker settles here, then
+   disperses upward with the nation. */
 #\32 2-outro .ot-youdot-anchor {
   position: absolute;
   left: clamp(8px, 1vw, 18px);
@@ -200,156 +290,155 @@
   pointer-events: none;
 }
 
-/* ── Team credits ──────────────────────────────────────────────── */
-#\32 2-outro .ot-credits {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-#\32 2-outro .ot-credits-label {
-  margin: 0 0 clamp(10px, 1.4vh, 16px);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(4, 22, 84, 0.55);
-}
-
-#\32 2-outro .ot-credits-grid {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(10px, 1.4vh, 16px) clamp(24px, 4vw, 48px);
-  max-width: 50ch;
-}
-
-#\32 2-outro .ot-credit {
-  display: grid;
-  gap: 2px;
-}
-
-#\32 2-outro .ot-credit-name {
-  font-size: var(--t-sm);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--navy);
-}
-
-#\32 2-outro .ot-credit-role {
-  font-size: var(--t-xs);
-  line-height: 1.35;
-  color: rgba(4, 22, 84, 0.65);
-}
-
-/* Copyright — small, low-emphasis furniture */
+/* Copyright — small, low-emphasis furniture, sat just under the sign-off. */
 #\32 2-outro .ot-copyright {
-  margin: clamp(14px, 2vh, 24px) 0 0;
+  margin: clamp(8px, 1.2vh, 16px) 0 0;
   font-size: var(--t-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: rgba(4, 22, 84, 0.50);
+  color: rgba(4, 22, 84, 0.5);
   font-variant-numeric: tabular-nums;
 }
 
-/* ── RIGHT COLUMN — lockup + bear/girl ─────────────────────────── */
+/* ── RIGHT PANE — the figure + lockup ───────────────────────────── */
 #\32 2-outro .ot-right {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: clamp(24px, 4vh, 48px);
-  padding-bottom: 0;
+  justify-content: flex-start;
+  padding-top: clamp(4px, 2vh, 24px);
 }
 
-/* The Challenger-Series lockup — black silhouette on warm.
-   Never recoloured, stretched, or skewed. Proportional. */
+/* The Challenger-Series lockup — black silhouette on warm, signs off quietly
+   from the top-right. Never recoloured, stretched, or skewed. */
 #\32 2-outro .ot-lockup {
   display: block;
-  width: clamp(160px, 18vw, 240px);
+  width: clamp(180px, 20vw, 268px);
   height: auto;
   flex-shrink: 0;
-  align-self: flex-end;
 }
 
-/* The tall bear+girl silhouette — flush to the floor, full height of column.
-   Aspect ratio: 104 × 585. Black on warm. Never clipped. The negative bottom
-   margin pulls it past the grid's bottom padding so it stands on the floor. */
-#\32 2-outro .ot-bear {
-  /* Anchored to the true bottom-right of the stage so the figure always
-     stands flush on the floor regardless of grid padding. */
+/* The figure — large, the protagonist of the close, standing flush on the floor.
+   Aspect 104 x 585. Pinned to the true bottom-right of the stage so it always
+   stands on the floor regardless of grid padding. The orbit gathers behind it. */
+#\32 2-outro .ot-figure-wrap {
   position: absolute;
-  right: clamp(24px, 5vw, 80px);
+  right: clamp(20px, 4vw, 72px);
   bottom: 0;
-  margin: 0;
-  width: auto;
-  height: clamp(320px, 62vh, 680px);
+  z-index: 2;
+  display: block;
   pointer-events: none;
-  z-index: 1;
+  will-change: transform;
+}
+
+#\32 2-outro .ot-figure {
+  display: block;
+  width: auto;
+  height: clamp(380px, 74vh, 760px);
+  margin: 0;
+}
+
+/* A soft floor-shadow grounds the figure — the one lift device, an ellipse of
+   navy tint pooled at the feet, never a hard line. */
+#\32 2-outro .ot-figure-floor {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: clamp(120px, 13vw, 220px);
+  height: clamp(18px, 2vw, 30px);
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 50%,
+    rgba(4, 22, 84, 0.26) 0%,
+    rgba(4, 22, 84, 0.1) 45%,
+    transparent 72%);
+  pointer-events: none;
+}
+
+/* The figure breathes — a near-imperceptible rise/fall. Transform only. */
+@media (prefers-reduced-motion: no-preference) {
+  #\32 2-outro .ot-figure { animation: ot-figure-breathe 9s ease-in-out infinite; }
+}
+@keyframes ot-figure-breathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
 
 /* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #\32 2-outro .ot-grid {
+    grid-template-columns: minmax(0, 1fr) clamp(180px, 28vw, 320px);
+  }
+  #\32 2-outro .ot-figure { height: clamp(340px, 64vh, 620px); }
+}
+
 @media (max-width: 720px) {
   #\32 2-outro .ot-grid {
     grid-template-columns: 1fr;
     gap: 0;
-    padding-bottom: 0;
     align-items: start;
+    padding-bottom: clamp(40px, 12vh, 96px);
   }
-
-  #\32 2-outro .ot-right {
-    display: none; /* bear/girl hidden on small screens; left column owns the space */
+  #\32 2-outro .ot-right { display: none; }   /* the left column owns the space */
+  #\32 2-outro .ot-orbit {
+    right: -18vw;
+    bottom: -8vh;
+    opacity: 0.7;
   }
-
   #\32 2-outro .ot-left {
     max-width: 100%;
     padding-bottom: clamp(44px, 10vh, 80px);
   }
-
-  #\32 2-outro .ot-credits-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ── arrival() animation hooks ──────────────────────────────────── */
-/* arrival() from experiential.js cascades .is-arrived on each
-   [data-arrival] element in document order, staggered by
-   --arrival-delay. These declarations wire the visual transition. */
+/* arrival() cascades .is-arrived on each [data-arrival] in document order,
+   staggered by --arrival-delay. The hairline rule scales in horizontally; the
+   rest lift + fade. The figure + lockup arrive last. */
 #\32 2-outro [data-arrival] {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
+  transform: translate3d(0, 16px, 0);
   transition: opacity var(--dur-reveal) var(--arrival-delay, 0ms) var(--ease-entrance),
               transform var(--dur-reveal) var(--arrival-delay, 0ms) var(--ease-entrance);
   will-change: opacity, transform;
 }
-
 #\32 2-outro [data-arrival].is-arrived {
   opacity: 1;
   transform: none;
 }
 
-/* The scramble target — arrival() sets .is-arrived then scrambleIn()
-   decrypts the text into place. Start invisible; settle on is-arrived. */
+/* The hairline rule draws in from the left rather than lifting. */
+#\32 2-outro .ot-rule[data-arrival] {
+  transform: scaleX(0);
+}
+#\32 2-outro .ot-rule[data-arrival].is-arrived {
+  transform: scaleX(1);
+}
+
+/* The scramble target — arrival() sets .is-arrived then scrambleIn() decrypts. */
 #\32 2-outro [data-arrival-scramble] {
   opacity: 0;
   transform: translate3d(0, 10px, 0);
   transition: opacity 0.6s var(--arrival-delay, 0ms) var(--ease-entrance),
               transform 0.6s var(--arrival-delay, 0ms) var(--ease-entrance);
 }
-
 #\32 2-outro [data-arrival-scramble].is-arrived {
   opacity: 1;
   transform: none;
 }
 
-/* ── Reduced motion — rest fully assembled ──────────────────────── */
+/* ── Reduced motion — rest fully assembled, no ambient drift ─────── */
 @media (prefers-reduced-motion: reduce) {
   #\32 2-outro [data-arrival],
   #\32 2-outro [data-arrival-scramble] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  #\32 2-outro .ot-rule[data-arrival].is-arrived { transform: scaleX(1); }
+  #\32 2-outro .ot-orbit-ring,
+  #\32 2-outro .ot-orbit-seed,
+  #\32 2-outro .ot-figure {
+    animation: none;
   }
 }

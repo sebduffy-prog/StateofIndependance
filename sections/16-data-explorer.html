@@ -1,74 +1,65 @@
-<!-- Step 16 — The data explorer (TGI on demand). ONE instrument, the same data
-     FIVE ways, on demand.
-     THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 · "08 — Playground"):
-       • A calm, precise CREAM instrument — the editorial reading/data register.
-         Restraint is the luxury signal; the data, beautifully, on demand.
-       • ONE focal point — the explorer chart. Pick a question (or a TGI cut),
-         pick a Britain, then pick how to SEE it: bars, lollipop, dot plot,
-         waffle or venn. The same verified numbers, re-formed five ways.
-       • DRAMATIC hierarchy — one display moment: the live headline FIGURE for
-         the current cut, at display scale, in BOLD navy Poppins-900, counting as
-         you filter. The number IS the headline. Eyebrow + one line support it.
-       • ASYMMETRIC editorial split — a left instrument rail (eyebrow, live
-         read-out, the three quiet square controls) on a left axis; the chart is
-         the single hero to its right. The tiny Challenger-Series lockup stamps
-         the instrument top-right (the book-cover position).
-       • ONE accent — YELLOW on the read-out unit + the orbit seed; navy is the
-         gravity (text + chart marks, AA on cream). An italic accent word names it.
-       • ONE hero motion — the chart MORPHS / crossfades between views and the
-         figure counts. Everything else is quiet. Reduced-motion safe.
-       • Backgroundless — the chart sits transparently on the cream; no white box,
-         no gridlines, no chart-junk.
-     Every number renders from data/survey.json, data/segments.json, data/tgi.json.
-     No captions, honest labels (TGI index named in the read-out line). -->
+<!-- Step 16 — The data explorer. ONE survey, fully explorable: every question,
+     sliced by which Britain, viewed five ways. The explore-everything moment.
+
+     COMPOSITION — a confident editorial CONSOLE, not a thin rail + lonely chart.
+       • A top MASTHEAD band: the eyebrow + the live display FIGURE (the number is
+         the headline, counting on every change) on the left, the supporting read
+         line beside it, the Challenger-Series lockup stamped top-right.
+       • A full-width CONTROL DECK: three labelled clusters — THE QUESTION (every
+         survey + segment + TGI metric), WHICH BRITAIN (All / the four segments),
+         VIEW IT AS (Bars · Lollipop · Dot · Waffle · Venn). Tactile square chips.
+       • The HERO STAGE: one large panel that fills the rest of the screen; the
+         chart morphs / crossfades on every change, box-less on the cream.
+     ON BRAND — cream ground, navy gravity, ONE yellow accent (the figure unit +
+     the orbit seed + the active control wedge), Poppins, square corners,
+     tabular nums. Every number renders from data/*.json; nothing typed by hand. -->
 <div class="pg-world" data-pg-world>
   <!-- the orbit signature — a single thin ring, ambient, behind everything -->
   <span class="pg-orbit" aria-hidden="true"></span>
 
   <div class="chapter-inner pg-stage">
-    <!-- the tiny Challenger-Series lockup — the book-cover stamp, top-right -->
-    <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
-         alt="VCCP Challenger Series" data-arrival />
 
-    <!-- ── LEFT: the instrument rail (read-out + the three controls) ── -->
-    <div class="pg-rail">
-      <p class="vccp-eyebrow pg-eyebrow" data-arrival>The same data, five ways · <em class="si-accent">on demand</em></p>
-
-      <!-- The display moment: the live figure for the current cut. The number
-           is the headline; it counts in on arrival and morphs on each change. -->
-      <div class="pg-readout" data-pg-readout>
+    <!-- ── MASTHEAD: eyebrow + the live display figure + the read line ── -->
+    <header class="pg-masthead">
+      <div class="pg-masthead-lead">
+        <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
         <p class="pg-readout-num" data-arrival>
-          <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit></span>
+          <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
         </p>
-        <p class="pg-readout-line" data-arrival><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
       </div>
+      <div class="pg-masthead-read" data-arrival>
+        <p class="pg-readout-kicker" data-pg-readout-kicker>The leading answer</p>
+        <p class="pg-readout-line"><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
+        <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
+      </div>
+      <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
+           alt="VCCP Challenger Series" data-arrival />
+    </header>
 
-      <div class="pg-controls">
-        <div class="pg-control">
-          <span class="pg-control-label" id="pg-metric-label">The question</span>
-          <div data-pg-metric-pills aria-describedby="pg-metric-label"></div>
-        </div>
+    <!-- ── CONTROL DECK: the three driving controls, full-width toolbar ── -->
+    <div class="pg-deck" data-arrival>
+      <div class="pg-control pg-control--wide">
+        <span class="pg-control-label" id="pg-metric-label">The question</span>
+        <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
+      </div>
+      <div class="pg-deck-row">
         <div class="pg-control">
           <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
-          <div data-pg-segment-pills aria-describedby="pg-segment-label"></div>
+          <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
         </div>
         <div class="pg-control">
           <span class="pg-control-label" id="pg-view-label">View it as</span>
-          <div data-pg-view-pills aria-describedby="pg-view-label"></div>
+          <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
         </div>
       </div>
-
-      <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
     </div>
 
-    <!-- ── RIGHT: the single hero — the chart, box-less, on the open ground.
-         No [data-youdot-anchor]: the persistent yellow you-dot would land on the
-         chart marks (a stray dot). The orbit's own yellow seed is the single
-         deliberate accent on this step, so the persistent dot stays hidden. ── -->
+    <!-- ── HERO STAGE: the single morphing chart, box-less on the cream ── -->
     <div class="pg-instrument">
       <div class="chart-holder pg-chart-holder">
         <div class="pg-chart" data-pg-metric-chart></div>
       </div>
     </div>
+
   </div>
 </div>

@@ -3,14 +3,18 @@
  *
  * Beat sequence on every chapter:arrive (idempotent):
  *   0 — eyebrow / kicker settles (arrival cascade)
- *   1 — Institutions ▸▸▸▸ Individuals assembles (arrival cascade)
- *   2 — Martin Lewis quote line 1 arrives; line 2 scrambles in
- *   3 — "Thank you" lands
- *   4 — credits settle
+ *   1 — Institutions ▸▸▸▸ Individuals assembles word by word
+ *   2 — Martin Lewis quote settles; "tools" decrypts in (scramble)
+ *   3 — hairline rule draws; "Thank you" lands
+ *   4 — copyright + lockup settle; the figure breathes, the orbit drifts
  *   5 — you-dot disperses upward with the nation
  *
+ * The figure (the individual the story is for) is present from the first frame,
+ * grounded on the floor with a soft shadow and a slow parallax; everything else
+ * assembles around it. The orbit gathers behind it as the connective signature.
+ *
  * Under reduced-motion: arrival() jumps everything to its final state
- * immediately; the you-dot fade is instant.
+ * immediately; ambient drift is off; the you-dot fade is instant.
  *
  * Contract: docs/CONTRACT.md.
  *
@@ -21,7 +25,7 @@ import { prefersReducedMotion } from '../lib/reveal.js';
 import { arrival, scrambleIn, observeParallax } from '../lib/experiential.js';
 
 /** Delay after the last arrival() cascade before the you-dot disperses. */
-const DISPERSE_DELAY_MS = 2200;
+const DISPERSE_DELAY_MS = 2600;
 
 /**
  * Fade the persistent you-dot upward so the visitor's marker leaves with

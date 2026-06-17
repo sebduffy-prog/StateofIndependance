@@ -574,6 +574,11 @@ const createJourney = (manifest) => {
   let tweenFrom = 0;
   let tweenStart = 0;
   let tweenDur = TRANSITION_DURATION_DEFAULT_MS;
+  // Travel direction of the active tween (+1 forward, -1 back). The depth field
+  // is mirrored by this so the stage you travel TOWARD always emerges calmly
+  // from deep (both directions) — instead of the stage you return to flaring in
+  // from a huge leaving-scale, which read as a glitch when scrolling back.
+  let tweenDir = 1;
 
   // ── Advisory hint ────────────────────────────────────────────────────────
   const refreshMeta = () => {
@@ -652,7 +657,10 @@ const createJourney = (manifest) => {
     for (let i = 0; i < stepCount; i += 1) {
       const section = sections[i];
       if (!section) continue;
-      const style = stageStyleFor(i - progress, profiles[i], reduced);
+      // Mirror the depth field by travel direction so the stage you move TOWARD
+      // always emerges from deep (small→full) in BOTH directions — backward no
+      // longer flares the returning stage in from a huge leaving-scale.
+      const style = stageStyleFor((i - progress) * tweenDir, profiles[i], reduced);
       if (!style.visible) {
         if (section.style.visibility !== 'hidden') {
           section.style.visibility = 'hidden';
@@ -720,6 +728,7 @@ const createJourney = (manifest) => {
     if (next === target) return;
     target = next;
     tweenFrom = progress;
+    tweenDir = next >= tweenFrom ? 1 : -1;
     tweenStart = performance.now();
     // The MOVE's feel/duration belongs to the stage we are travelling into.
     // Reduced motion: a brief cross-fade, never a long cinematic tween.

@@ -100,10 +100,10 @@ function tidyLabel(label) {
     .trim();
 }
 
-// Fingerprint cloud sizing: aim for a rich, space-filling set.
-const FP_TARGET = 12;       // ideal number of statements
-const FP_MAX = 14;          // hard cap
-const FP_MIN = 8;           // never show fewer than this if data allows
+// Fingerprint cloud sizing: a tight set that always fits one screen.
+const FP_TARGET = 7;        // ideal number of statements
+const FP_MAX = 8;           // hard cap — never push the cloud off-page
+const FP_MIN = 5;           // never show fewer than this if data allows
 const FP_THRESHOLDS = [120, 110, 100]; // relax until we reach the target
 
 /**
@@ -278,7 +278,23 @@ export default function init(rootEl, data) {
     }
   }
 
-  // Lens 3: What they index on — TGI lifestyle statements (tgi.json).
+  // Lens 3: How they take control — proactive control behaviours over-index.
+  if (seg?.metrics?.personalControlBehaviours) {
+    const items = topMetricLow(seg.metrics.personalControlBehaviours, 100);
+    if (items.length) {
+      lenses.push({ value: 'control', label: 'How they take control', items });
+    }
+  }
+
+  // Lens 4: What they want from brands — brandAsks over-index.
+  if (seg?.metrics?.brandAsks) {
+    const items = topMetricLow(seg.metrics.brandAsks, 100);
+    if (items.length) {
+      lenses.push({ value: 'brand', label: 'What they ask of brands', items });
+    }
+  }
+
+  // Lens 5: What they index on — TGI lifestyle statements (tgi.json).
   if (tgiSeg?.lifestyle?.length) {
     const items = topIndexedTgi(tgiSeg.lifestyle);
     if (items.length) {
@@ -306,14 +322,14 @@ export default function init(rootEl, data) {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (!bars) {
       bars = horizontalBars(chartHost, {
-      showValues: false,  // TGI/index sizing numbers are never displayed
+        showValues: false,  // TGI/index sizing numbers are never displayed
         items: lens.items,
         max: lensMax(lens.items),
         accent: 'navy',
         decimals: 0,
-        barHeight: 50,
-        gap: 26,
-        labelWidth: 200,
+        barHeight: 34,
+        gap: 16,
+        labelWidth: 220,
         ariaLabel: `Architects: ${lens.label}`,
       });
     } else {

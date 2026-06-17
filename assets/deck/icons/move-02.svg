@@ -1,16 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Be the trusted antidote">
-  <!-- microscope arm + eyepiece -->
-  <path d="M22 12 L29 16"/>
-  <path d="M29 16 C24 25 24 33 28 39"/>
-  <!-- stage base -->
-  <path d="M18 46 L34 46"/>
-  <path d="M16 52 L40 52"/>
-  <path d="M24 46 L24 52"/>
-  <!-- flask -->
-  <path d="M44 14 L44 24 L52 40 a4 4 0 0 1 -4 6 L40 46 a4 4 0 0 1 -4 -6 L42 28"/>
-  <line x1="41" y1="14" x2="47" y2="14"/>
-  <!-- liquid line + bubbles -->
-  <path d="M39 38 L51 38"/>
-  <circle cx="44" cy="33" r="1.4" fill="currentColor" stroke="none"/>
-  <circle cx="48" cy="35" r="1.1" fill="currentColor" stroke="none"/>
+  <!-- shield = trust -->
+  <path d="M32 8 L52 16 V32 C52 44 43 52 32 56 C21 52 12 44 12 32 V16 Z"/>
+  <!-- check mark = the honest, proven answer -->
+  <path d="M24 31 L30 38 L42 24"/>
 </svg>

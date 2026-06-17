@@ -23,7 +23,7 @@ import { horizontalBars } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'hustlers';
-const TOP_N = 6;
+const TOP_N = 5;
 // 100 = the UK average. The chart max is computed per-lens from the data so
 // bars fill the track instead of stranding right-side dead space.
 const INDEX_BASELINE = 100;
@@ -87,10 +87,10 @@ function tidyLabel(label) {
     .trim();
 }
 
-// Fingerprint cloud sizing: aim for a rich, space-filling set.
-const FP_TARGET = 12;
-const FP_MAX = 14;
-const FP_MIN = 8;
+// Fingerprint cloud sizing: a tight set that always fits one screen.
+const FP_TARGET = 7;
+const FP_MAX = 8;
+const FP_MIN = 5;
 const FP_THRESHOLDS = [120, 110, 100];
 
 /**
@@ -246,7 +246,23 @@ export default function init(rootEl, data) {
     }
   }
 
-  // Lens 3: What they index on — TGI lifestyle statements.
+  // Lens 3: How they take control — proactive control behaviours over-index.
+  if (seg?.metrics?.personalControlBehaviours) {
+    const items = topMetricLow(seg.metrics.personalControlBehaviours, 100);
+    if (items.length) {
+      lenses.push({ value: 'control', label: 'How they take control', items });
+    }
+  }
+
+  // Lens 4: What they ask of brands — brandAsks over-index.
+  if (seg?.metrics?.brandAsks) {
+    const items = topMetricLow(seg.metrics.brandAsks, 100);
+    if (items.length) {
+      lenses.push({ value: 'brand', label: 'What they ask of brands', items });
+    }
+  }
+
+  // Lens 5: What they index on — TGI lifestyle statements.
   if (tgiSeg?.lifestyle?.length) {
     const items = topIndexedTgi(tgiSeg.lifestyle);
     if (items.length) {
@@ -274,14 +290,14 @@ export default function init(rootEl, data) {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (!bars) {
       bars = horizontalBars(chartHost, {
-      showValues: false,  // TGI/index sizing numbers are never displayed
+        showValues: false,  // TGI/index sizing numbers are never displayed
         items: lens.items,
         max: lensMax(lens.items),
         accent: 'navy',
         decimals: 0,
-        barHeight: 46,
-        gap: 24,
-        labelWidth: 200,
+        barHeight: 34,
+        gap: 16,
+        labelWidth: 220,
         ariaLabel: `Hustlers: ${lens.label}`,
       });
     } else {

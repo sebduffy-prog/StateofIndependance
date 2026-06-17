@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Kill the mental load">
-  <!-- brain outline -->
-  <path d="M32 16 C26 12 18 14 18 21 C13 23 13 30 17 32 C15 37 19 43 25 41 C27 45 33 45 34 41"/>
-  <path d="M32 16 C38 12 46 14 46 21 C51 23 51 30 47 32 C49 37 45 43 39 41 C37 45 34 45 34 41 L34 16"/>
-  <!-- central fold -->
-  <path d="M32 16 L32 41"/>
-  <!-- heartbeat pulse line through it -->
-  <path d="M8 50 L22 50 L26 42 L31 56 L36 47 L40 50 L56 50"/>
+  <!-- head in profile -->
+  <path d="M40 52 L40 44 C48 41 50 30 44 23 C39 17 28 16 22 22 C16 28 17 38 24 42 L24 52"/>
+  <!-- tangled load lifting away and clearing into calm -->
+  <path d="M30 30 q4 -4 8 0"/>
+  <line x1="46" y1="14" x2="52" y2="11"/>
+  <line x1="49" y1="20" x2="56" y2="19"/>
+  <line x1="48" y1="26" x2="55" y2="28"/>
 </svg>

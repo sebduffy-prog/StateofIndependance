@@ -45,9 +45,14 @@ const PIVOT_START = 14;   // strip starts mostly on "survival"
 const PIVOT_SNAP = 50;    // crossover point for which word shows
 
 // The held beat (ms) on the wide spread before the needs auto-sweep into the
-// shared core. Long enough to read three separate needs, short enough to feel
-// like one continuous cinematic move on arrival.
-const AUTO_CONVERGE_HOLD_MS = 680;
+// shared core. Long enough to read three separate needs as three separate
+// asks, short enough to feel like one continuous cinematic move on arrival.
+const AUTO_CONVERGE_HOLD_MS = 820;
+
+// The convergence sweep itself — one orchestrated, eased glide (all three
+// circles on a SINGLE shared timeline so they arrive together and ignite
+// "empowerment" as one payoff, not three springs racing to the centre).
+const CONVERGE_DURATION_MS = 1180;
 
 /**
  * Wire the thin pivot strip. Returns { slider, apply } so scrollScene can prime
@@ -99,12 +104,16 @@ const NEED_LAYOUT = [
 
 // Geometry as fractions of the stage's shorter side (responsive). Tuned bigger
 // than before so the venn FILLS the pane — the centrepiece, not a motif.
+// The spread is held WIDE enough that at rest the three circles read as three
+// DISTINCT needs (only just kissing, not pre-merged), so the convergence into
+// one shared core is a real, felt resolution rather than a small nudge.
 const VENN = Object.freeze({
   diamFrac: 0.50,    // circle diameter — large, the screen's focal mass
-  spreadFrac: 0.36,  // home distance of each centre from stage centre — held
-                     // WIDE so the drag-to-overlap journey is a real, felt move
-  lockFrac: 0.10,    // resolved (overlapping) distance from centre
-  metFrac: 0.17,     // centre-distance under which a circle counts as "met"
+  spreadFrac: 0.46,  // home distance of each centre from stage centre — pushed
+                     // wider than before so the three needs start clearly apart
+  lockFrac: 0.115,   // resolved (overlapping) distance from centre — the venn
+                     // core: deep three-way overlap, none fully concentric
+  metFrac: 0.20,     // centre-distance under which a circle counts as "met"
 });
 
 const cssVar = (name, fallback) =>
@@ -261,20 +270,80 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     }
   };
 
-  const lockToCentre = () => {
+  // Premium ease — a slow-in / decisive-pull / soft-settle curve. The needs
+  // hesitate at the spread, then are drawn together as if by gravity, then
+  // ease to rest exactly as they meet on the shared core.
+  const easeConverge = (t) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  let sweepRaf = 0;
+  const cancelSweep = () => {
+    if (sweepRaf) {
+      cancelAnimationFrame(sweepRaf);
+      sweepRaf = 0;
+    }
+  };
+
+  // Snap (no animation) every need onto the resolved triangle — used for the
+  // keyboard "bring all in", resize-while-converged, and reduced motion.
+  const snapToCentre = () => {
+    cancelSweep();
     const g = geom();
     needs.forEach((n) => {
       const ctrl = drags.get(n.id);
       if (!ctrl) return;
       const { dx, dy } = resolvedOffset(n, g);
-      ctrl.setPosition(dx, dy, { animate: true });
+      ctrl.setPosition(dx, dy, { animate: false });
     });
   };
+
+  // THE CONVERGENCE — one orchestrated, eased sweep. All three circles ride a
+  // SINGLE shared timeline from their wide home (progress 0) to the shared core
+  // (progress 1), so they glide inward together and meet on the same frame. The
+  // overlap deepening to navy, the centre word and the yellow ignition all fall
+  // out of render() as the mean distance shrinks — the payoff is automatic.
+  const sweepToCentre = () => {
+    cancelSweep();
+    const g = geom();
+    // Capture each circle's start + end offset once, then interpolate on one t.
+    const lanes = needs
+      .map((n) => {
+        const ctrl = drags.get(n.id);
+        if (!ctrl) return null;
+        const o = offsets.get(n.id);
+        const end = resolvedOffset(n, g);
+        return { ctrl, fromX: o.dx, fromY: o.dy, toX: end.dx, toY: end.dy };
+      })
+      .filter(Boolean);
+
+    const start = performance.now();
+    const tick = (now) => {
+      const raw = Math.min(1, (now - start) / CONVERGE_DURATION_MS);
+      const e = easeConverge(raw);
+      lanes.forEach((l) => {
+        l.ctrl.setPosition(
+          l.fromX + (l.toX - l.fromX) * e,
+          l.fromY + (l.toY - l.fromY) * e,
+          { animate: false },
+        );
+      });
+      if (raw < 1) {
+        sweepRaf = requestAnimationFrame(tick);
+      } else {
+        sweepRaf = 0;
+      }
+    };
+    sweepRaf = requestAnimationFrame(tick);
+  };
+
+  // Keep the resolved end-state honoured on resize without re-animating.
+  const lockToCentre = snapToCentre;
 
   // Reset every need back to its WIDE home (offset 0,0) so the convergence can
   // replay from spread on a fresh arrival. No-op under reduced motion.
   const spreadOut = () => {
     if (reduced) return;
+    cancelSweep();
     converged = false;
     stage.classList.remove('is-converged', 'is-converging');
     centre.classList.remove('is-on');
@@ -293,11 +362,13 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     if (reduced) return;          // resolved at rest under reduced motion
     window.clearTimeout(autoTimer);
     spreadOut();                  // back to wide spread (resets converged)
-    autoTimer = window.setTimeout(lockToCentre, AUTO_CONVERGE_HOLD_MS);
+    autoTimer = window.setTimeout(sweepToCentre, AUTO_CONVERGE_HOLD_MS);
   };
 
-  // Snap a single need into the resolved triangle (keyboard path).
+  // Snap a single need into the resolved triangle (keyboard path). Springs in
+  // with the settle reward so a single Enter feels tactile, not teleported.
   const bringIn = (id) => {
+    cancelSweep();
     const g = geom();
     const n = needs.find((x) => x.id === id);
     const { dx, dy } = resolvedOffset(n, g);
@@ -344,6 +415,10 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     });
     drags.set(n.id, ctrl);
 
+    // A real grab takes over from the auto-sweep so the user can nudge the
+    // needs themselves mid-flight (drag stays an optional, always-live affordance).
+    n.el.addEventListener('pointerdown', cancelSweep);
+
     // Stat label = keyboard path: Enter/Space/arrows bring that need in.
     n.stat.addEventListener('keydown', (e) => {
       const keys = ['Enter', ' ', 'Spacebar', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
@@ -379,6 +454,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     autoConverge,
     destroy() {
       window.clearTimeout(autoTimer);
+      cancelSweep();
       ro.disconnect();
       window.removeEventListener('resize', onLayout);
       drags.forEach((d) => d.destroy());

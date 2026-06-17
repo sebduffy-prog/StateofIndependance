@@ -71,10 +71,10 @@ const topMetric = (family) =>
     .sort((a, b) => b.pct - a.pct)
     .slice(0, TOP_N);
 
-// Fingerprint cloud sizing: aim for a rich, space-filling set.
-const FP_TARGET = 12;
-const FP_MAX = 14;
-const FP_MIN = 8;
+// Fingerprint cloud sizing: a tight set that always fits one screen.
+const FP_TARGET = 7;
+const FP_MAX = 8;
+const FP_MIN = 5;
 const FP_THRESHOLDS = [120, 110, 100];
 
 /**
@@ -237,6 +237,22 @@ export default function init(rootEl, data) {
     }
   }
 
+  // How they take control — proactive control behaviours over-index.
+  if (seg?.metrics?.personalControlBehaviours) {
+    const items = topMetric(seg.metrics.personalControlBehaviours);
+    if (items.length) {
+      lenses.push({ value: 'control', label: 'How they take control', items });
+    }
+  }
+
+  // What they ask of brands — brandAsks over-index.
+  if (seg?.metrics?.brandAsks) {
+    const items = topMetric(seg.metrics.brandAsks);
+    if (items.length) {
+      lenses.push({ value: 'brand', label: 'What they ask of brands', items });
+    }
+  }
+
   // Populate the rich TGI fingerprint cloud (text only, no numbers).
   populateFingerprint(rootEl, tgiSeg);
 
@@ -248,13 +264,13 @@ export default function init(rootEl, data) {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (!bars) {
       bars = horizontalBars(chartHost, {
-      showValues: false,  // TGI/index sizing numbers are never displayed
+        showValues: false,  // TGI/index sizing numbers are never displayed
         items: lens.items,
         max: lensMax(lens.items),
         accent: 'navy',
         decimals: 0,
-        barHeight: 50,
-        gap: 26,
+        barHeight: 34,
+        gap: 16,
         labelWidth: 220,
         ariaLabel: 'Coasters index against the UK average',
       });

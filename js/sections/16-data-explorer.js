@@ -1,27 +1,19 @@
 /**
- * Step 16 — The data explorer (TGI on demand). ONE instrument: the same data,
- * FIVE ways, on demand.
+ * Step 16 — The data explorer. The explore-everything moment: the WHOLE survey,
+ * richly browsable. Three controls drive one morphing chart:
+ *   1. THE QUESTION  — every survey block, every segment metric, every TGI cut.
+ *   2. WHICH BRITAIN — All (national) or one of the four segments.
+ *   3. VIEW IT AS    — the SAME numbers five ways: Bars · Lollipop · Dot · Waffle
+ *                      · Venn. The chooser is the spectacle; the data re-forms.
  *
- * THE FOCAL POINT — a single morphing chart on the open cream ground. THREE quiet
- * square controls drive it:
- *   1. THE QUESTION  — a survey/segment metric, OR a TGI cut (lifestyle / media /
- *                      demographics distinctiveness, from data/tgi.json).
- *   2. WHICH BRITAIN — All (national) or one of the four segments. TGI cuts are
- *                      segment-only, so the segment pills steer which Britain's
- *                      TGI fingerprint you read.
- *   3. THE VIEW      — FIVE ways to view the SAME numbers: Bars · Lollipop ·
- *                      Dot plot · Waffle · Venn. The chooser is the spectacle:
- *                      the data re-forms, buttery, into a new shape on demand.
- *
- * THE DISPLAY MOMENT — the live read-out FIGURE (the leading value of the current
- * cut) sits at display scale on the left rail and COUNTS to its new value on every
- * change. The number is the headline; the chart is its supporting form.
+ * THE DISPLAY MOMENT — the masthead FIGURE (the leading value of the current cut)
+ * counts to its new value on every change. The number is the headline; the chart
+ * is its supporting form.
  *
  * HONEST LABELS — every figure traces to data/survey.json, data/segments.json or
  * data/tgi.json. Survey/segment metrics chart % (penetration). TGI cuts chart the
- * % of that segment giving the response, with the TGI index (vs UK average) named
- * in the read-out line so over-/under-indexing is never hidden. Deck segment sizes
- * (17/28/27/28) label the chips; nothing is typed by hand.
+ * % of that segment giving the response, with the index (vs UK average) named in
+ * the read-out line. Deck segment sizes (17/28/27/28) label the chips.
  *
  * GATING: Next stays soft-hinted until the first change; that fires journey.ready()
  * once. Never traps (Next frees after dwell).
@@ -49,7 +41,7 @@ const SEGMENT_BY_ID = Object.fromEntries(SEGMENT_ORDER.map((s) => [s.id, s]));
 
 const ALL_SEGMENTS = 'all';
 const NATIONAL_NOTE = 'National figure · all 1,504 respondents.';
-const MAX_ITEMS = 7; // keep every label legible — never overcrowd the cream
+const MAX_ITEMS = 8; // keep every label legible — never overcrowd the cream
 
 /* The five views — the chooser. Each renders the SAME resolved items.
  * `value` is the contract pillGroup reads (NOT `id`). */
@@ -61,20 +53,35 @@ const VIEWS = [
   { value: 'venn', label: 'Venn' },
 ];
 
-/* Metric registry. No numbers live here — only the path into verified data.
+/* Metric registry — the FULL survey, exposed. No numbers live here, only the
+ * path into verified data:
  *  - 'segment' : segments.json metrics[<metricKey>]; national from metricsTotals.
  *  - 'survey'  : a national-only block in survey.json (no segment split).
- *  - 'tgi'     : data/tgi.json per-segment cut (lifestyle | media | demoSkews).
- *                Segment-only; carries an over-/under-index vs the UK average. */
+ *  - 'tgi'     : data/tgi.json per-segment cut. Segment-only; carries an index.
+ * `sortDesc` (segment/survey) ranks the chart largest-first so the eye lands on
+ * the lead; TGI cuts keep their index sort (most distinctive first). */
 const METRICS = [
-  { id: 'finance', label: 'Financial position', kind: 'segment', metricKey: 'financialPosition', decimals: 1 },
-  { id: 'mindset', label: 'Mood of the nation', kind: 'segment', metricKey: 'mindsetNetAgree', decimals: 1 },
-  { id: 'tradedDown', label: 'Trading down', kind: 'segment', metricKey: 'tradedDown12Months', decimals: 1 },
-  { id: 'aiTasks', label: 'AI instead of a pro', kind: 'segment', metricKey: 'aiUseByTask', decimals: 1 },
-  { id: 'brandAsks', label: 'What people want from brands', kind: 'segment', metricKey: 'brandAsks', decimals: 1 },
-  { id: 'moneyMoves', label: 'Money-saving moves', kind: 'survey', surveyKey: 'moneySavingMoves', decimals: 1 },
-  { id: 'protected', label: 'Protected spend', kind: 'survey', surveyKey: 'protectedSpend', decimals: 1 },
-  { id: 'confidence', label: 'Institutional confidence', kind: 'survey', surveyKey: 'institutionTrust', decimals: 1 },
+  // ── Segment metrics: sliceable by which Britain ──
+  { id: 'finance', label: 'Financial position', kind: 'segment', metricKey: 'financialPosition', decimals: 1, sortDesc: true },
+  { id: 'mindset', label: 'Mood of the nation', kind: 'segment', metricKey: 'mindsetNetAgree', decimals: 1, sortDesc: true },
+  { id: 'forward', label: 'Forward mindset', kind: 'segment', metricKey: 'forwardMindset', decimals: 1, sortDesc: true },
+  { id: 'essentials', label: 'What counts as essential', kind: 'segment', metricKey: 'essentials', decimals: 1, sortDesc: true },
+  { id: 'firstToCut', label: 'First to cut', kind: 'segment', metricKey: 'firstToCut', decimals: 1, sortDesc: true },
+  { id: 'tradedDown', label: 'Trading down', kind: 'segment', metricKey: 'tradedDown12Months', decimals: 1, sortDesc: true },
+  { id: 'control', label: 'Taking control', kind: 'segment', metricKey: 'personalControlBehaviours', decimals: 1, sortDesc: true },
+  { id: 'selfManage', label: 'Self-managing life', kind: 'segment', metricKey: 'selfManagement', decimals: 1, sortDesc: true },
+  { id: 'aiTasks', label: 'AI instead of a pro', kind: 'segment', metricKey: 'aiUseByTask', decimals: 1, sortDesc: true },
+  { id: 'brandAsks', label: 'What people want from brands', kind: 'segment', metricKey: 'brandAsks', decimals: 1, sortDesc: true },
+  // ── Survey-only: national figures, no segment split ──
+  { id: 'mood', label: 'How the nation feels', kind: 'survey', surveyKey: 'moodOfNation', decimals: 1, sortDesc: true },
+  { id: 'moneyMoves', label: 'Money-saving moves', kind: 'survey', surveyKey: 'moneySavingMoves', decimals: 1, sortDesc: true },
+  { id: 'tradeCat', label: 'Where Britain traded down', kind: 'survey', surveyKey: 'tradingDownByCategory', decimals: 1, sortDesc: true },
+  { id: 'protected', label: 'Protected spend', kind: 'survey', surveyKey: 'protectedSpend', decimals: 1, sortDesc: true },
+  { id: 'availability', label: 'Availability worries', kind: 'survey', surveyKey: 'availabilityConcerns', decimals: 1, sortDesc: true },
+  { id: 'confidence', label: 'Institutional confidence', kind: 'survey', surveyKey: 'institutionTrust', decimals: 1, sortDesc: true },
+  { id: 'decline', label: 'Seen as declining', kind: 'survey', surveyKey: 'institutionDecline', decimals: 1, sortDesc: true },
+  { id: 'aiNational', label: 'AI by task (national)', kind: 'survey', surveyKey: 'aiTasks', decimals: 1, sortDesc: true },
+  // ── TGI cuts: segment-only fingerprints, carry an index vs UK ──
   { id: 'tgiLifestyle', label: 'TGI · lifestyle', kind: 'tgi', tgiCut: 'lifestyle', decimals: 1 },
   { id: 'tgiMedia', label: 'TGI · media', kind: 'tgi', tgiCut: 'media', decimals: 1 },
   { id: 'tgiDemo', label: 'TGI · demographics', kind: 'tgi', tgiCut: 'demographics', decimals: 1 },
@@ -94,7 +101,7 @@ const fixLabel = (metricKey, label) => LABEL_FIX[metricKey]?.[label] || label;
  * stay tight, and clamp to a legible length (no mid-word cut — append "…"). */
 const tidyLabel = (label) => {
   const s = String(label).replace(/^[“"]|[”"]$/g, '').trim();
-  return s.length > 34 ? `${s.slice(0, 33).trimEnd()}…` : s;
+  return s.length > 38 ? `${s.slice(0, 37).trimEnd()}…` : s;
 };
 
 /* ── helpers: turn verified data into [{id,label,pct,index?}] ────────────── */
@@ -117,13 +124,21 @@ const oneSegmentItems = (segments, metric, segmentId) => {
   );
 };
 
+/* Survey-only blocks. Most are { items:[{id,label,pct}] }; a few carry a
+ * different value key (confidence ranking, performance decline), normalised
+ * here so the chart always reads `pct`. */
 const surveyMetricItems = (survey, metric) => {
-  const block = survey[metric.surveyKey];
-  if (!block) return [];
+  // Both confidence + decline live INSIDE the institutionTrust block.
   if (metric.surveyKey === 'institutionTrust') {
-    const rows = block.confidenceRanking?.items || [];
+    const rows = survey.institutionTrust?.confidenceRanking?.items || [];
     return rows.map((r) => ({ id: r.id, label: r.label, pct: r.pctConfident }));
   }
+  if (metric.surveyKey === 'institutionDecline') {
+    const rows = survey.institutionTrust?.performanceChange?.items || [];
+    return rows.map((r) => ({ id: r.id, label: r.label, pct: r.pctDeclined }));
+  }
+  const block = survey[metric.surveyKey];
+  if (!block) return [];
   return (block.items || []).map((r) => ({ id: r.id, label: r.label, pct: r.pct }));
 };
 
@@ -143,47 +158,48 @@ const tgiItems = (tgi, metric, segmentId) => {
 
 /* ── view resolution — items + read-out figure + honest note ─────────────── */
 
+const sortItems = (items, metric) => {
+  if (metric.kind === 'tgi') return items; // already index-sorted
+  return metric.sortDesc ? items.slice().sort((a, b) => b.pct - a.pct) : items;
+};
+
 const resolveItems = (state, { survey, segments, tgi }) => {
   const { metric, segment } = state;
   if (metric.kind === 'survey') {
-    return { items: surveyMetricItems(survey, metric), note: NATIONAL_NOTE };
+    return { items: sortItems(surveyMetricItems(survey, metric), metric), note: NATIONAL_NOTE };
   }
   if (metric.kind === 'tgi') {
     const seg = segment === ALL_SEGMENTS ? 'architects' : segment;
     const s = SEGMENT_BY_ID[seg];
     return {
       items: tgiItems(tgi, metric, seg),
-      note: `${s.label} · TGI ${metric.tgiCut} · % of segment (index vs UK average).`,
+      note: `${s.label} · TGI ${metric.tgiCut} · % of segment, index vs UK average.`,
     };
   }
   if (segment === ALL_SEGMENTS) {
-    return { items: nationalSegmentItems(segments, metric), note: NATIONAL_NOTE };
+    return { items: sortItems(nationalSegmentItems(segments, metric), metric), note: NATIONAL_NOTE };
   }
   const s = SEGMENT_BY_ID[segment];
   return {
-    items: oneSegmentItems(segments, metric, segment),
+    items: sortItems(oneSegmentItems(segments, metric, segment), metric),
     note: `${s.label} only · ${s.sharePct}% of the nation.`,
   };
 };
 
 /** The single defining figure for the chart on screen — the leading item.
- * TGI cuts are about DISTINCTIVENESS, so lead with the most-distinctive
- * (highest-index) statement, which is already first (items are index-sorted).
- * Everything else leads with the largest share. */
+ * TGI cuts lead with the most-distinctive (highest-index, already first);
+ * everything else leads with the largest share (items are sorted desc). */
 const readoutFor = (metric, items) => {
   if (!items.length) return { value: 0, label: '', index: null };
-  const lead = metric.kind === 'tgi'
-    ? items[0]
-    : items.reduce((a, b) => (b.pct > a.pct ? b : a), items[0]);
+  const lead = items[0];
   return { value: lead.pct, label: lead.label, index: lead.index ?? null };
 };
 
 /* ── waffle (all options) — small multiples: one N-in-100 grid per option ──
- * Most explorer questions are multi-select (their options do NOT sum to 100),
- * so a single split 100-square waffle would be dishonest. Instead we render a
- * tile per option: each is its own 100-square grid filled to that option's %,
- * with the figure + label beneath. Reads as "x in 100" per answer, accurately,
- * and the tile field fills the hero space. */
+ * Most explorer questions are multi-select (options do NOT sum to 100), so a
+ * single split 100-square waffle would be dishonest. We render a tile per
+ * option: each its own 100-square grid filled to that option's %, figure +
+ * label beneath. Reads as "x in 100" per answer, and fills the hero space. */
 const drawWaffleAll = (host, metric, items) => {
   const rows = (items.length ? items : NO_DATA).slice(0, MAX_ITEMS);
   const wrap = document.createElement('div');
@@ -203,9 +219,7 @@ const drawWaffleAll = (host, metric, items) => {
       total: 100,
       accent: 'navy',
       // Tighter cells than the default (26/6): the small-multiple grid must
-      // stay compact so the whole tile field fits the chart band height-wise
-      // (the SVG scales to its host, but a smaller intrinsic aspect keeps the
-      // captions legible without the tiles ballooning).
+      // stay compact so the whole tile field fits the chart band height-wise.
       square: 16,
       gap: 3,
       ariaLabel: `${item.label}: ${Math.round(item.pct)} in 100`,
@@ -235,9 +249,8 @@ const drawWaffleAll = (host, metric, items) => {
 /* ── view dispatch — render the SAME items five ways ─────────────────────── */
 
 /* Tighten the axis to the data so bars/dots fill the track instead of leaving
- * a wide empty right margin (all our metrics are %, rarely near 100). Round UP
- * to a clean 10 above the largest value, clamped to [40, 100], so the dot-plot
- * quarter ticks stay tidy and small spreads still read honestly. */
+ * a wide empty right margin. Round UP to a clean 10 above the largest value,
+ * clamped to [40, 100], so dot-plot quarter ticks stay tidy. */
 const axisMaxFor = (items) => {
   const top = items.reduce((m, i) => Math.max(m, i.pct || 0), 0);
   if (top >= 90) return 100;
@@ -251,14 +264,12 @@ const drawView = (host, viewId, metric, items) => {
 
   if (viewId === 'bars') {
     // Commanding bars: row height scales DOWN as the item count grows so the
-    // chart's natural aspect ratio stays tall enough to fill the hero band
-    // top-to-bottom (few rows => very tall bars; many rows => still generous).
-    // The svg is width:100% so a taller internal aspect renders bigger marks.
+    // chart's natural aspect ratio stays tall enough to fill the hero band.
     const n = rows.length;
-    const barHeight = n <= 4 ? 84 : n <= 5 ? 70 : 58;
-    const gap = n <= 4 ? 40 : n <= 5 ? 32 : 26;
+    const barHeight = n <= 4 ? 78 : n <= 6 ? 56 : 44;
+    const gap = n <= 4 ? 38 : n <= 6 ? 28 : 22;
     horizontalBars(host, {
-      items: rows, max: axisMax, labelWidth: 248, barHeight, gap, ...common,
+      items: rows, max: axisMax, labelWidth: 272, barHeight, gap, ...common,
     });
     return;
   }
@@ -271,18 +282,17 @@ const drawView = (host, viewId, metric, items) => {
     return;
   }
   if (viewId === 'waffle') {
-    // ALL options as small-multiple waffles — every answer as N-in-100, not
-    // just the lead figure. Honest for multi-select questions, and fills the
-    // hero space cleanly.
+    // ALL options as small-multiple waffles — every answer as N-in-100.
     drawWaffleAll(host, metric, items);
     return;
   }
   // venn — the top up-to-four responses as overlap circles, sized by share.
+  // Brand: show the % of segment only; no TGI index numbers.
   const sets = rows.slice(0, 4).map((r) => ({
     id: r.id,
     label: r.label,
     value: `${r.pct.toFixed(metric.decimals)}%`,
-    sub: r.index != null ? `index ${r.index}` : '',
+    sub: '',
   }));
   if (sets.length < 2) {
     const p = document.createElement('p');
@@ -303,7 +313,7 @@ const drawView = (host, viewId, metric, items) => {
 
 /* ── The explorer (the whole step) ───────────────────────────────────────── */
 
-const FADE_MS = 240;
+const FADE_MS = 220;
 
 const initExplorer = (rootEl, dataSets, onChange) => {
   const chartHost = rootEl.querySelector('[data-pg-metric-chart]');
@@ -314,6 +324,7 @@ const initExplorer = (rootEl, dataSets, onChange) => {
   const numEl = rootEl.querySelector('[data-pg-readout-num]');
   const unitEl = rootEl.querySelector('[data-pg-readout-unit]');
   const lineEl = rootEl.querySelector('[data-pg-readout-line]');
+  const kickerEl = rootEl.querySelector('[data-pg-readout-kicker]');
   if (!chartHost || !metricHost || !segmentHost || !viewHost) return;
 
   const reduced = prefersReducedMotion();
@@ -323,7 +334,10 @@ const initExplorer = (rootEl, dataSets, onChange) => {
 
   const paintReadout = (items, note) => {
     if (noteEl) noteEl.textContent = note;
-    const { value, label, index } = readoutFor(state.metric, items);
+    const { value, label } = readoutFor(state.metric, items);
+    if (kickerEl) {
+      kickerEl.textContent = state.metric.kind === 'tgi' ? 'Most distinctive' : 'The leading answer';
+    }
     if (numEl) {
       if (started && !reduced) {
         countUp(numEl, { from: lastFigure, to: value, decimals: state.metric.decimals, durationMs: 700 });
@@ -335,9 +349,8 @@ const initExplorer = (rootEl, dataSets, onChange) => {
       }
     }
     if (unitEl) unitEl.textContent = '%';
-    if (lineEl) {
-      lineEl.textContent = index != null && label ? `${label} · index ${index}` : label;
-    }
+    // Brand: name the answer only; no TGI index numbers in the read line.
+    if (lineEl) lineEl.textContent = label;
     lastFigure = value;
   };
 
@@ -363,17 +376,13 @@ const initExplorer = (rootEl, dataSets, onChange) => {
   paint();
   started = true;
 
-  // Segment pills: TGI cuts are segment-only, so "All" is invalid for them —
-  // when a TGI metric is active, "All" is disabled and the cut defaults to the
-  // current segment (or Architects). Non-segment surveys grey the whole group.
+  // Segment pills: TGI cuts are segment-only, so "All" is invalid for them.
+  // Non-segment surveys grey the four segment chips (national-only).
   const syncSegmentAvailability = (group) => {
     const isTgi = state.metric.kind === 'tgi';
     const isSurvey = state.metric.kind === 'survey';
 
-    // Enable/disable FIRST — a disabled chip's click() is a no-op, so the
-    // setValue() below would silently fail if we hadn't re-enabled the target.
-    //   survey: national-only → keep "All" live, grey the four segments.
-    //   tgi:    segment-only  → grey "All", keep the four segments live.
+    // Enable/disable FIRST — a disabled chip's click() is a no-op.
     group.el.querySelectorAll('.pillgroup-chip').forEach((chip) => {
       const isAll = chip.dataset.value === ALL_SEGMENTS;
       const disabled = (isSurvey && !isAll) || (isTgi && isAll);
@@ -401,7 +410,7 @@ const initExplorer = (rootEl, dataSets, onChange) => {
     ariaLabel: 'Filter by which Britain',
     onChange: (value) => {
       state.segment = value;
-      paint();
+      paint({ crossfade: true });
       onChange?.();
     },
   });

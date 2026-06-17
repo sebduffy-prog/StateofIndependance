@@ -455,7 +455,9 @@ export const scrambleIn = (el, opts = {}) => {
   // The resolved target is captured once (first ever call) into the dataset.
   // After that we always trust the dataset, never the live (possibly garbled)
   // textContent — this is what kept titles stuck as glyphs forever.
-  const text = el.dataset.scrambleText ?? el.textContent ?? '';
+  // Collapse whitespace/newlines so a scramble target taken from an indented
+  // element's textContent can never balloon into a wall of extra glyphs.
+  const text = (el.dataset.scrambleText ?? el.textContent ?? '').replace(/\s+/g, ' ').trim();
   el.dataset.scrambleText = text;
 
   if (prefersReducedMotion() || text.length === 0) {

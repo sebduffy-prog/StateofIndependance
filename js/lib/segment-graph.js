@@ -38,23 +38,26 @@ const SEG_ACCENT = {
 };
 
 // ── Geometry (all circular) ───────────────────────────────────────────────
-const HUB_R = 44;            // hub circle radius
-const SAT_R = 10;            // attribute circle radius
+const HUB_R = 40;            // hub circle radius
+const SAT_R = 8;             // attribute circle radius (smaller — graph is dense)
 const LABEL_GAP = 9;         // gap between circle edge and its label baseline
-const SAT_COLLIDE = 28;      // satellite keep-out at rest (label hidden)
+const SAT_COLLIDE = 20;      // satellite keep-out at rest (label hidden)
 const PAD = 18;              // keep node centres inside the frame
 const APPROX_CHAR_W = 7.4;   // px per char at hub label size (fallback measure)
 const HUB_LABEL_FS = 15;     // hub label font-size (px)
-const MAX_LABEL_CHARS = 24;  // truncation guard
+const MAX_LABEL_CHARS = 34;  // truncation guard (statements run longer than tags)
 
-// Force constants — gentle, heavily damped, no jitter.
-const CHARGE = 2200;         // inverse-square repulsion strength
-const CHARGE_MIN_D = 36;     // distance floor so close pairs can't blow up
-const CHARGE_MAX_F = 1.4;    // hard cap on per-pair repulsion (calms close ticks)
-const SPRING = 0.018;        // link spring stiffness (soft)
-const REST_HUB = 132;        // rest length, hub → its attributes
-const CENTER = 0.0018;       // light pull toward canvas centre (satellites)
-const HUB_CENTER = 0.0045;   // hubs are pulled toward their ring anchor
+// Force constants — gentle, heavily damped, no jitter. Tuned for a DENSE graph
+// (16–19 statement satellites per hub on top of interests/channels/AI), so the
+// charge is a touch stronger and the spokes a touch shorter to keep each hub's
+// cloud full but contained within its zone.
+const CHARGE = 1700;         // inverse-square repulsion strength
+const CHARGE_MIN_D = 30;     // distance floor so close pairs can't blow up
+const CHARGE_MAX_F = 1.3;    // hard cap on per-pair repulsion (calms close ticks)
+const SPRING = 0.020;        // link spring stiffness (soft)
+const REST_HUB = 116;        // rest length, hub → its attributes
+const CENTER = 0.0024;       // light pull toward canvas centre (satellites)
+const HUB_CENTER = 0.0060;   // hubs held firmly on their ring anchor
 const DAMPING = 0.80;        // velocity damping per tick (calm settle)
 const MAX_V = 7;             // velocity clamp — low so motion reads as drift
 const COLLIDE_SOFT = 0.18;   // positional separation share per tick (no spring)
@@ -156,7 +159,7 @@ export function segmentGraph(container, opts = {}) {
   // Hub collision radius accounts for its always-on label sitting BELOW it, so
   // two hub labels can never overlap. Width is measured later from the DOM; we
   // seed with an approximation so the first ticks are stable.
-  const ringR = Math.min(W, H) * 0.30;
+  const ringR = Math.min(W, H) * 0.34;
   const hubLabelClearance = (label) => {
     const labelW = Math.min(label.length, MAX_LABEL_CHARS) * APPROX_CHAR_W;
     // keep-out = half the label width + a margin, but never less than the circle.

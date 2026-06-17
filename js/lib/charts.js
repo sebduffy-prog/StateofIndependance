@@ -1089,14 +1089,43 @@ export const dotField = (container, opts) => {
 
   const reduced = prefersReducedMotion();
 
+  // Size the canvas backing store to the SETTLED on-screen box.
+  //
+  // The container can be transiently scaled by an ancestor transform (e.g. a
+  // depth/zoom transition on the journey stage) or measured at zero size while
+  // off-screen. getBoundingClientRect() reports the *transformed* rect, so
+  // sizing the backing store at that moment bakes in the wrong dimensions; the
+  // canvas is then CSS-stretched (width/height:100%) back to the settled box,
+  // upscaling the bitmap into a blurry, over-large blob. We prefer
+  // offsetWidth/offsetHeight, which report the untransformed CSS box and so are
+  // immune to the in-flight zoom transform, falling back to the rect only if
+  // layout reports zero.
+  const measureSettled = () => {
+    let w = container.offsetWidth;
+    let h = container.offsetHeight;
+    if (w <= 0 || h <= 0) {
+      const rect = container.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+    }
+    return { w, h };
+  };
+
   const resize = () => {
-    const rect = container.getBoundingClientRect();
-    W = Math.max(1, rect.width);
-    H = Math.max(1, rect.height);
+    const { w, h } = measureSettled();
+    // Guard: never size against a collapsed box — keep the last good size so a
+    // resize fired while off-screen / mid-transition can't blow up the canvas.
+    if (w <= 0 || h <= 0) return;
+    const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Skip redundant work when the settled box and dpr are unchanged (avoids
+    // churn from the ResizeObserver + chapter:arrive double-fire).
+    if (w === W && h === H && nextDpr === dpr && canvas.width > 0) return;
+    W = w;
+    H = h;
     aspect = W / H;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
+    dpr = nextDpr;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
 
@@ -1265,6 +1294,16 @@ export const dotField = (container, opts) => {
     io.observe(canvas);
   }
 
+  // Re-size the backing store whenever the REAL container box changes — the
+  // settled compass size differs from the size captured at construction time
+  // (built off-screen / mid zoom-transition), so this is what makes the dots
+  // crisp once the stage arrives at rest.
+  let ro = null;
+  if (typeof ResizeObserver !== 'undefined') {
+    ro = new ResizeObserver(() => resize());
+    ro.observe(container);
+  }
+
   raf = requestAnimationFrame(frame);
 
   return {
@@ -1298,6 +1337,8 @@ export const dotField = (container, opts) => {
     },
     drift(amplitude = 1) { driftAmp = amplitude; },
     setPointer,
+    /** Force a re-measure of the settled container box (call on arrive). */
+    resize,
     destroy() {
       running = false;
       cancelAnimationFrame(raf);
@@ -1305,6 +1346,7 @@ export const dotField = (container, opts) => {
       container.removeEventListener('pointermove', onPointerMove);
       container.removeEventListener('pointerleave', onPointerLeave);
       if (io) io.disconnect();
+      if (ro) ro.disconnect();
       canvas.remove();
     },
   };

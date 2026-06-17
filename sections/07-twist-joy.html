@@ -1,14 +1,15 @@
 <!-- Chapter 07 — Twist two: PROTECTED JOY (the lipstick effect).
      Full-bleed warm-gradient pivot. Two-column composition.
-     LEFT: 40% hero stat — the focal anchor.
-     RIGHT: ONE clear lever, "Tighten the budget". Dragging it tighter cuts
-            every flexible spend in order of vulnerability — but the HOLIDAY
-            line resists: it stays full, locks, and glows ring-fenced.
-            The mechanic IS the message: everything else goes, the holiday holds.
-     Brand-world: BRAND-WORLD-FINAL.md §7 "04 — Twists".
+     LEFT: 40% hero stat + "protect their holiday" headline — the focal anchor.
+     RIGHT: the interaction is the hero of this side. A field of discretionary
+            spend tiles the visitor CUTS (tap / click / Enter). Each cut is
+            unmissable: the tile slams down, greys, gets a CUT stamp. The big
+            HOLIDAY tile is ring-fenced — it cannot be cut; it locks, glows, and
+            its yellow seal tightens. Everything else goes; the holiday holds.
+     Brand-world: BRAND-WORLD-FINAL.md §3 (book-cover card), §6 (navy+yellow).
      Data: data/survey.json protectedSpend (Q5; holidays 39.6%).
-     Character->title reveal on chapter:arrive. Square corners. No underline.
-     No em dashes. AA contrast. Reduced-motion safe. No console.log. -->
+     Square corners. No underline. No em dashes. AA contrast.
+     Reduced-motion safe. Keyboard accessible. No console.log. -->
 <div class="chapter-inner twist-joy-root" data-twist-joy-root>
 
   <!-- Decorative orbit — connective tissue, behind everything -->
@@ -34,48 +35,32 @@
       almost everything. The holiday is the one line it ring-fences.
     </p>
 
-    <!-- Lower-left anchor: ring-fence motif. You-dot rests here. -->
-    <div class="twist-joy-anchor-block" data-arrival data-youdot-anchor aria-hidden="true">
-      <span class="twist-joy-anchor-label">ring-fenced</span>
-      <span class="twist-joy-anchor-bar"></span>
-      <span class="twist-joy-anchor-pct num">39.6%</span>
+    <!-- Live tally + instruction. You-dot rests on the tally. -->
+    <div class="twist-joy-tally" data-arrival data-youdot-anchor>
+      <span class="twist-joy-tally-num num" data-twist-joy-count aria-hidden="true">0</span>
+      <span class="twist-joy-tally-label" data-twist-joy-tally-label>
+        Cut the spending. See what Britain refuses to give up.
+      </span>
     </div>
   </div>
 
-  <!-- RIGHT COLUMN — the single-lever budget interaction -->
-  <section class="twist-joy-stage" aria-label="Tighten the budget interaction">
-    <p class="vccp-eyebrow twist-joy-stage-kicker" data-arrival>
-      Tighten the household budget
-    </p>
+  <!-- RIGHT COLUMN — the interaction stage. Built + wired by JS. -->
+  <section class="twist-joy-stage" aria-label="Cut the budget interaction">
 
-    <!-- The lever. A real range input: drag, click, or arrow-key it. -->
-    <div class="twist-joy-lever" data-arrival>
-      <label class="twist-joy-lever-label" for="twist-joy-tighten">
-        Drag to tighten spending
-      </label>
-      <div class="twist-joy-lever-track">
-        <span class="twist-joy-lever-end twist-joy-lever-end--left" aria-hidden="true">Comfortable</span>
-        <input class="twist-joy-lever-input"
-               id="twist-joy-tighten"
-               type="range"
-               min="0" max="100" step="1" value="0"
-               data-twist-joy-lever
-               aria-label="Tighten the budget. Higher cuts more spending."
-               aria-describedby="twist-joy-readout" />
-        <span class="twist-joy-lever-end twist-joy-lever-end--right" aria-hidden="true">Tight</span>
-      </div>
-    </div>
+    <!-- The ring-fenced HOLIDAY hero. Cannot be cut. -->
+    <div class="twist-joy-protected" data-twist-joy-protected></div>
 
-    <!-- The spend lines. Built by JS from verified Q5 data. -->
-    <div class="twist-joy-budget" data-twist-joy-budget></div>
+    <!-- The field of cuttable discretionary spends. -->
+    <div class="twist-joy-field" data-twist-joy-field role="group"
+         aria-label="Discretionary spending. Activate a tile to cut it."></div>
 
     <!-- Live readout: how much has been cut vs held. -->
-    <p class="twist-joy-readout" id="twist-joy-readout" data-twist-joy-readout aria-live="polite">
-      Nothing cut yet. Tighten the budget and watch what survives.
+    <p class="twist-joy-readout" data-twist-joy-readout aria-live="polite">
+      Tap a tile to cut it. The holiday will not budge.
     </p>
 
     <p class="twist-joy-data-note" data-arrival>
-      Q5 · % of 1,504 UK adults ring-fencing each non-essential
+      Q5 · share of 1,504 UK adults ring-fencing each non-essential
     </p>
   </section>
 

@@ -62,12 +62,13 @@
   height: 100svh;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(300px, 30%) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 31%) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(32px, 5vw, 96px);
-  /* Tighter vertical padding so the rail stack fits on shorter viewports. */
-  padding: clamp(2.4rem, 5vh, 5rem) clamp(24px, 5vw, 96px)
-           calc(var(--journey-controls-h, 72px) + clamp(1.6rem, 4vh, 3.5rem));
+  gap: clamp(32px, 5vw, 88px);
+  /* Tight, capped vertical padding so the full rail stack fits on short
+     (~800-900px) laptop viewports without clipping at the bottom. */
+  padding: clamp(1.6rem, 3.2vh, 3rem) clamp(24px, 5vw, 96px)
+           calc(var(--journey-controls-h, 72px) + clamp(1.2rem, 2.4vh, 2.2rem));
 }
 
 /* ── LEFT AXIS: the quiet editorial rail ───────────────────────────────
@@ -85,18 +86,18 @@
 }
 
 #\30 2-research .research-rail .vccp-eyebrow {
-  margin: 0 0 clamp(16px, 2vh, 22px);
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
 }
 
 /* The ONE display moment on this screen — the BOLD BLACK book-cover voice.
    Sentence case, set tight, three lines; the accent word is italic only.
    No outline or border: the title stands alone on the cream ground. */
 #\30 2-research .research-headline {
-  margin: 0 0 clamp(22px, 3.2vh, 34px);
+  margin: 0 0 clamp(16px, 2.4vh, 26px);
   font-weight: 900;
-  line-height: 0.94;
+  line-height: 0.95;
   letter-spacing: -0.03em;
-  font-size: clamp(2.5rem, 3.8vw, 4.2rem);
+  font-size: clamp(2.3rem, 3.4vw, 3.7rem);
   color: var(--ink);
   outline: none;
   border: none;
@@ -117,9 +118,9 @@
 }
 
 #\30 2-research .research-standfirst {
-  margin: 0 0 clamp(30px, 4.4vh, 44px);
-  font-size: var(--t-md);
-  line-height: 1.5;
+  margin: 0 0 clamp(18px, 2.6vh, 28px);
+  font-size: var(--t-sm);
+  line-height: 1.48;
   font-weight: 400;
   color: var(--ink-soft);
   max-width: 38ch;
@@ -136,10 +137,10 @@
 /* The facts — a single quiet supporting row, never a second hero. Big navy
    tabular numerals (gravity); the small caption beneath in soft ink. */
 #\30 2-research .research-facts {
-  margin: 0 0 clamp(30px, 4.4vh, 44px);
+  margin: 0 0 clamp(18px, 2.6vh, 30px);
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(26px, 2.6vw, 44px);
+  gap: clamp(22px, 2.4vw, 40px);
 }
 #\30 2-research .research-fact { margin: 0; min-width: 0; }
 #\30 2-research .research-fact-k {
