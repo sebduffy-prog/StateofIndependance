@@ -41,14 +41,14 @@ const DOT_R = 5;
 /**
  * The eight qualitative cities (STORY.md slide 7 / 95).
  *
- * Coordinates derived from real UK geographic lat/lon projected onto the SVG
- * viewBox (823×1280). The SVG paths use transform="translate(0,1280)
- * scale(0.1,-0.1)" — so viewBox coords map directly to geographic position:
- *   x_vb = (lon − lon_min) / lon_span × silhouette_w + x_offset
- *   y_vb = (lat_max − lat) / lat_span × silhouette_h + y_offset
- *
- * Reference bounds: lat 49.8–58.7°N, lon -7.6–1.9°E;
- * silhouette X 10–405, Y 2–1275 in viewBox units.
+ * fx/fy are FRACTIONS of the uk-map.svg viewBox (823×1280): cx = fx·823,
+ * cy = fy·1280. They were calibrated directly against the real silhouette
+ * geometry — each city's dot was verified to sit on the correct landmass
+ * (Glasgow on Scotland's central belt, Wigan/Bury in NW England near
+ * Manchester, Cardiff in south Wales, Bristol east across the Severn,
+ * Watford just NW of London, London in the south-east, Southampton on the
+ * south coast). The earlier values placed several dots out in the sea
+ * because the assumed lat/lon→viewBox projection did not match this map.
  *
  * `side` controls label anchor (left = label to the west, right = to the east).
  *
@@ -58,50 +58,55 @@ const DOT_R = 5;
 const CITIES = [
   {
     id: 'glasgow', name: 'Glasgow',
-    // Calibrated via two fixed reference points on the SVG silhouette:
-    // M-coord (149.8,484.7) = Ayrshire coast (55.4N,-4.7W); London (51.5N,-0.1W) = (321,1031).
-    // Glasgow city sits inland of the Clyde at 55.87N, -4.26W.
-    fx: 0.2022, fy: 0.3280, side: 'right',
+    // Scotland's central belt, on the west of the mainland body by the Clyde.
+    fx: 0.4300, fy: 0.3600, side: 'right',
     note: "A week-long video diary with a local household, filmed in early June.",
   },
   {
     id: 'wigan', name: 'Wigan',
-    fx: 0.2757, fy: 0.5818, side: 'left',
+    // NW England, west of Manchester; just west of Bury.
+    fx: 0.5250, fy: 0.6220, side: 'left',
     note: "A week-long video diary with a local household, filmed in early June.",
   },
   {
     id: 'bury', name: 'Bury',
-    fx: 0.2908, fy: 0.5764, side: 'right',
+    // NW England, just NE of Wigan (north of Manchester).
+    fx: 0.5600, fy: 0.6160, side: 'right',
     quote: "I would say that it is more of an empowering feeling being able to do things yourself, to fix things yourself, to seek out answers yourself.",
     who: 'Bury, 39, Hustler',
   },
   {
     id: 'cardiff', name: 'Cardiff',
-    fx: 0.2509, fy: 0.8075, side: 'left',
+    // South Wales, west side of the Bristol Channel.
+    fx: 0.3600, fy: 0.8120, side: 'left',
     quote: "I do use ChatGPT all the time and find it really quite helpful when I do have problems… I do feel more empowered now with everything at my fingertips and I feel as if I’ve got more free time because of that.",
     who: 'Wales, 68, Architects',
   },
   {
     id: 'bristol', name: 'Bristol',
-    fx: 0.2774, fy: 0.8105, side: 'right',
+    // SW England, east across the Severn from Cardiff.
+    fx: 0.4300, fy: 0.8120, side: 'right',
     quote: "I particularly like all the apps, the shopping apps and anything new that comes into the shops, the loyalty apps. And, if we do want to purchase anything, it’s very easy to go in and just cost the price all across everywhere.",
     who: 'Bristol, 61, Coaster',
   },
   {
     id: 'watford', name: 'Watford',
-    fx: 0.3767, fy: 0.7885, side: 'left',
+    // Hertfordshire, just NW of London.
+    fx: 0.6000, fy: 0.8020, side: 'left',
     quote: "I don’t go out specifically to look for certain brand items. I go by, comfort and price.",
     who: 'Hertfordshire, 63, Coaster',
   },
   {
     id: 'london', name: 'London',
-    fx: 0.3889, fy: 0.8047, side: 'right',
+    // The south-east.
+    fx: 0.6280, fy: 0.8180, side: 'right',
     quote: "If I could get some sort of app that would kind of help me or prompt me to do certain things that I should do because even if it’s sort of like twenty minutes, fifteen minutes aside, sometimes it becomes, I know it sounds silly, but really overwhelming.",
     who: 'London, 42, Retreater',
   },
   {
     id: 'southampton', name: 'Southampton',
-    fx: 0.3312, fy: 0.8701, side: 'left',
+    // South coast, central.
+    fx: 0.5200, fy: 0.8720, side: 'left',
     quote: "I now have a lot less trust in institutions such as the government and politicians, local councils, than I did a few years ago… there’s just scandal after scandal. You know, they’re in it for themselves.",
     who: 'Southampton, 63, Architects',
   },

@@ -6,9 +6,15 @@
    the State of Independence MAZE logo-moment used once, big, on vast
    negative space. The you-dot is born here (the single thread).
 
-   The italic accent replaces the old orange highlight (BWF §2): the
-   slant of the italic IS the accent — no box, no underline, no skew.
-   One accent moment per screen: the single YELLOW you-dot at trace end.
+   Elevated to a cinematic, full-bleed hero: an ambient warmth bloom and
+   the signature orbit rings give the field depth and fill the corners so
+   no void reads as dead space; the maze sits large and grounded in the
+   right pane; the copy hangs on a left axis, vertically centred and held
+   clear of the engine-owned bottom-centre scroll cue.
+
+   The italic accent replaces the old orange highlight (BWF §2): the slant
+   of the italic IS the accent — no box, no underline, no skew. One accent
+   moment per screen: the single YELLOW you-dot at trace end.
    Backgroundless, square corners, no underline, navy/black-on-warm, AA.
    ============================================================ */
 
@@ -24,36 +30,97 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
+  padding: 0;
+  overflow: hidden;
 }
 
 /* ── the hero: copy on a left axis, the maze large to the right ──────
    Asymmetric editorial split — the copy holds a slightly larger left
    column so the dramatic display title has breathing room; the maze
-   takes the right field at a size that reads BIG but doesn't crowd.
+   takes the right field at a size that reads BIG but never clips.
    Tight within each group; the negative space IS the luxury. */
 #\30 1-cover .cover {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   align-items: center;
-  gap: clamp(32px, 4vw, 72px);
-  padding: clamp(3rem, 8vh, 8rem) clamp(24px, 6vw, 96px)
-           calc(var(--journey-controls-h, 72px) + clamp(2.4rem, 7vh, 5.5rem));
+  gap: clamp(24px, 3vw, 64px);
+  padding: clamp(2.4rem, 7vh, 6rem) clamp(28px, 6vw, 104px)
+           calc(var(--journey-controls-h, 72px) + clamp(3.4rem, 9vh, 7rem));
   overflow: hidden;
 }
 
+/* ── ambient field — decorative depth, pointer-inert, behind all content ─
+   A soft warmth bloom anchored under the maze + the signature orbit rings
+   that slowly drift. This is the cinematic atmosphere that fills the field
+   so no corner is a dead void (AD §6: the orbit is the connective signature). */
+#\30 1-cover .cover-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The warmth bloom — a soft radial glow behind the maze, lifting the right
+   field and warming the whole ground. Pure light, no banding, no box. */
+#\30 1-cover .cover-bloom {
+  position: absolute;
+  top: 50%;
+  right: clamp(-6%, 4vw, 8%);
+  width: clamp(620px, 64vw, 1120px);
+  height: clamp(620px, 64vw, 1120px);
+  transform: translateY(-50%);
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255, 244, 214, 0.62) 0%,
+      rgba(255, 218, 150, 0.34) 30%,
+      rgba(255, 165, 100, 0.12) 56%,
+      rgba(255, 165, 100, 0) 72%);
+  animation: cover-bloom-breathe 14s ease-in-out infinite;
+}
+@keyframes cover-bloom-breathe {
+  0%, 100% { opacity: 0.85; transform: translateY(-50%) scale(1); }
+  50%      { opacity: 1;    transform: translateY(-50%) scale(1.05); }
+}
+/* The orbit rings — thin navy-tint concentric circles centred on the maze
+   field, slowly rotating. The signature geometry, ambient and meaningless,
+   the connective tissue of the whole journey (AD §6). */
+#\30 1-cover .cover-rings {
+  position: absolute;
+  top: 50%;
+  right: clamp(-22%, -10vw, -4%);
+  width: clamp(720px, 76vw, 1280px);
+  height: clamp(720px, 76vw, 1280px);
+  transform: translateY(-50%);
+  overflow: visible;
+  opacity: 0.5;
+}
+#\30 1-cover .cover-rings circle {
+  fill: none;
+  stroke: rgba(4, 22, 84, 0.14);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+#\30 1-cover .cover-rings-drift {
+  transform-origin: 500px 500px;
+  animation: cover-rings-spin 180s linear infinite;
+}
+@keyframes cover-rings-spin { to { transform: rotate(360deg); } }
+
 /* ── left column: the signature, the wordmark, hung on the left axis ──
-   Tight within the group (lockup→title→standfirst), then a large jump
-   to the Begin cue. Dramatic type hierarchy: one huge display moment. */
+   Tight within the group (lockup→kicker→title), then a deliberate jump
+   to the standfirst. Dramatic type hierarchy: one huge display moment. */
 #\30 1-cover .cover-copy {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(14px, 2.2vh, 22px);
+  justify-content: center;
+  gap: 0;
+  max-width: 30ch;
 }
 
 /* the brand signature — the Challenger-Series lockup at hero scale, black
@@ -62,19 +129,19 @@
 #\30 1-cover .cover-lockup {
   display: block;
   width: 100%;
-  max-width: clamp(220px, 36vw, 420px);
+  max-width: clamp(220px, 32vw, 400px);
   height: auto;
-  margin: 0 0 clamp(28px, 6vh, 64px);
+  margin: 0 0 clamp(30px, 6vh, 68px);
 }
 
-/* kicker eyebrow above the display title — orients in 2–4 words, sentence case,
+/* kicker eyebrow above the display title — orients in 2 words, sentence case,
    navy, quiet weight. The jump of air between lockup and title is the group
    separator; the kicker sits tight with the title below it. */
 #\30 1-cover .cover-kicker {
-  margin: 0 0 clamp(10px, 1.4vh, 16px);
-  font-size: 0.78rem;
+  margin: 0 0 clamp(12px, 1.6vh, 18px);
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--navy);
   opacity: 0.65;
@@ -83,13 +150,13 @@
 #\30 1-cover .cover-wordmark {
   margin: 0;
   font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
   text-transform: none;
   /* the one display moment — enormous, dramatic. Sized so the longest line
      ("Independence", 12ch) never clips inside the left column at any width.
      Pushed larger than default for proper hero scale on the cover. */
-  font-size: clamp(3.6rem, 8.2vw, 7.2rem);
+  font-size: clamp(3.8rem, 8.8vw, 7.8rem);
   color: var(--ink);
 }
 #\30 1-cover .cover-line { display: block; }
@@ -115,17 +182,18 @@
    generous but not full-width measure so it reads as a block, not a banner.
    Two sentences: hook then the "so what". No em dashes. */
 #\30 1-cover .cover-standfirst {
-  margin: clamp(12px, 2.2vh, 24px) 0 0;
+  margin: clamp(22px, 3.6vh, 40px) 0 0;
   max-width: 42ch;
-  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
   line-height: 1.55;
   font-weight: 500;
   color: var(--navy);
   opacity: 0.88;
 }
 
-/* ── Begin cue — a magnetic navy button, square, no underline ────────
-   A large jump of space sits above it (the deliberate rhythm). */
+/* ── Begin cue — kept for non-engine contexts, but the live journey hides
+   it (vccp.css) in favour of the engine-owned scroll cue. A magnetic navy
+   button, square, no underline; a large jump of space sits above it. ──── */
 #\30 1-cover .cover-cue {
   display: inline-flex;
   align-items: center;
@@ -182,9 +250,15 @@
   align-self: center;
   justify-self: center;
   width: 100%;
-  max-width: min(52vw, 680px);
+  max-width: min(48vw, 660px);
   aspect-ratio: 1 / 1;
   margin: 0;
+  /* a gentle ambient float — the maze sits and breathes on the field */
+  animation: cover-maze-float 12s ease-in-out infinite;
+}
+@keyframes cover-maze-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1.4%); }
 }
 #\30 1-cover .cover-maze {
   position: absolute;
@@ -193,7 +267,7 @@
   height: 100%;
   object-fit: contain;
   /* a single soft contact shadow grounds the illustration on the field */
-  filter: drop-shadow(0 24px 48px rgba(4, 22, 84, 0.18));
+  filter: drop-shadow(0 30px 60px rgba(4, 22, 84, 0.22));
 }
 
 /* ── trace overlay: guide + ink + goal (illustration's own 800-space) ─ */
@@ -310,20 +384,28 @@
   #\30 1-cover .cover {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
-    gap: clamp(28px, 6vh, 56px);
+    gap: clamp(24px, 5vh, 48px);
     align-content: center;
+    padding-bottom: calc(var(--journey-controls-h, 72px) + clamp(4rem, 11vh, 7rem));
   }
+  #\30 1-cover .cover-copy { max-width: none; align-items: flex-start; }
   #\30 1-cover .cover-stage {
     order: -1;
-    max-width: min(74vw, 460px);
+    max-width: min(70vw, 440px);
+    animation: none;
   }
   #\30 1-cover .cover-standfirst { max-width: 48ch; }
+  #\30 1-cover .cover-bloom { right: 50%; transform: translate(50%, -50%); top: 38%; }
+  #\30 1-cover .cover-rings { right: 50%; transform: translate(50%, -50%); top: 38%; }
 }
 
 /* ── reduced-motion: kill ambient motion, keep state legible ─────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 1-cover .cover-cue.is-pulsing,
   #\30 1-cover .cover-handle-halo,
-  #\30 1-cover .cover-trace-goal { animation: none; }
+  #\30 1-cover .cover-trace-goal,
+  #\30 1-cover .cover-bloom,
+  #\30 1-cover .cover-rings-drift,
+  #\30 1-cover .cover-stage { animation: none; }
   #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }

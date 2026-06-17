@@ -1,313 +1,415 @@
 /* 05-twists-intro.css — the twists opener, scoped to #\30 5-twists-intro.
-   Full-bleed navy pivot (BRAND-WORLD-FINAL §7 "04 — Twists"):
-   cream type on navy, huge display title with the italic yellow accent,
-   three anomaly cards that hover/focus-reveal their reframe line.
+   Full-bleed navy chapter divider (BRAND-WORLD-FINAL §7 "04 — Twists"):
+   cream type on navy, one huge display title with the italic yellow accent,
+   and the three anomalies set as a single full-height editorial INDEX —
+   a continuous meridian threading three numbered rows, each revealing its
+   reframe on hover/focus.
 
-   COMPOSITION (Z-AXIS-JOURNEY §6b — cover-it-in-thirds test):
-     Two-column split. Left ~52%: eyebrow + display title + standfirst,
-     anchored mid-left. Right ~48%: three cards stacked full-height,
-     each a deliberate vertical beat. The orbit rings fill the atmospheric
-     field behind the cards on the right side.
-   Every zone is occupied. One screen, no overflow, no dead space,
-   no cream edge band. The navy background comes from si-ground-navy on
-   the section element (added by main.js from the manifest).
+   COMPOSITION (ART-DIRECTION §2 — asymmetric editorial grid, one focal point):
+     A confident 2-pane split that fills 100vw×100svh with no dead space.
+       LEFT (≈54%): eyebrow → huge display title → yellow tick rule → standfirst
+         → index marker at the floor. The rule guarantees the scramble word
+         clears the standfirst (no overlap, ever).
+       RIGHT (≈46%): the three twists as ONE designed object — a vertical
+         meridian (the orbit-circle signature, drawn as a thread) connecting
+         three numbered rows that span the full height. A travelling marker
+         rides the meridian to whichever row is open. This is the chapter's
+         table of contents: rows 01/02/03 set up sections 06/07/08.
 
-   Layout: full-stage CSS grid (two columns), fills 100% of the stage. */
+   Premium ambient motion: slow-drifting concentric orbit rings behind the
+   right pane; the meridian draws itself in on arrival; the marker glides.
+   All transform/opacity only, reduced-motion safe. Navy ground is supplied
+   by si-ground-navy on the stage element (main.js, manifest ground:navy). */
 
-/* ── Root: full-stage two-column grid ───────────────────────────────── */
+/* ── Local tokens (square corners, navy+yellow, one easing system) ─────── */
+#\30 5-twists-intro .twists-intro-root {
+  --ti-ink:        var(--on-navy, #F0EDE7);
+  --ti-accent:     var(--yellow, #F0CB08);
+  --ti-hair:       rgba(240, 237, 231, 0.16);
+  --ti-hair-soft:  rgba(240, 237, 231, 0.08);
+  --ti-ease:       var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+/* ── Root: full-stage two-pane grid ──────────────────────────────────── */
 #\30 5-twists-intro .twists-intro-root {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  grid-template-rows: 1fr;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.92fr);
   align-items: stretch;
   width: 100%;
   height: 100%;
   max-width: 100%;
-  padding: clamp(32px, 5vh, 72px) 0
-           calc(var(--journey-controls-h, 72px) + clamp(16px, 2.5vh, 36px)) 0;
+  padding: clamp(40px, 7vh, 96px) clamp(32px, 5.5vw, 104px)
+           calc(var(--journey-controls-h, 72px) + clamp(28px, 5vh, 64px));
+  gap: clamp(32px, 5vw, 88px);
   overflow: hidden;
-  gap: 0;
 }
 
-/* ── Left column: eyebrow + title + standfirst ───────────────────────── */
+/* ── Ambient orbit field — slow concentric rings, deep behind the right pane.
+   The connective signature motif as atmosphere; never decoration for its own
+   sake (ART-DIRECTION §6). Drifts imperceptibly; reduced-motion freezes it. */
+#\30 5-twists-intro .twists-intro-ambient {
+  position: absolute;
+  top: 50%;
+  right: clamp(-14vw, -9vw, -6vw);
+  width: min(78vh, 62vw);
+  height: min(78vh, 62vw);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+#\30 5-twists-intro .twists-intro-orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--ti-hair-soft);
+  will-change: transform, opacity;
+}
+#\30 5-twists-intro .twists-intro-orbit--a {
+  animation: ti-orbit-drift 34s var(--ti-ease) infinite alternate;
+}
+#\30 5-twists-intro .twists-intro-orbit--b {
+  inset: 13%;
+  border-color: rgba(240, 237, 231, 0.06);
+  animation: ti-orbit-drift 46s var(--ti-ease) infinite alternate-reverse;
+}
+#\30 5-twists-intro .twists-intro-orbit--c {
+  inset: 30%;
+  border-color: rgba(240, 237, 231, 0.05);
+  /* a single faint accent breath on the inner ring — the one accent moment */
+  box-shadow: inset 0 0 0 1px rgba(240, 203, 8, 0.05);
+  animation: ti-orbit-breathe 12s ease-in-out infinite;
+}
+@keyframes ti-orbit-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-2.2%, 1.6%, 0) scale(1.035); }
+}
+@keyframes ti-orbit-breathe {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* ── LEFT pane: the chapter statement, floor-to-ceiling rhythm ───────── */
 #\30 5-twists-intro .twists-intro-left {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 clamp(24px, 4vw, 72px) 0 clamp(32px, 5.5vw, 104px);
-  gap: clamp(16px, 2.5vh, 32px);
+  min-width: 0;
 }
 
-/* ── Header: eyebrow + display title ────────────────────────────────── */
 #\30 5-twists-intro .twists-intro-head {
-  position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 1vh, 12px);
-  /* Kill any rogue outline/border/pseudo-element box (client hard rule) */
+  gap: clamp(10px, 1.6vh, 20px);
   outline: none;
   border: none;
 }
-
 #\30 5-twists-intro .twists-intro-head::before,
-#\30 5-twists-intro .twists-intro-head::after {
-  display: none;
+#\30 5-twists-intro .twists-intro-head::after { display: none; }
+
+#\30 5-twists-intro .twists-intro-eyebrow {
+  margin: 0;
+  color: var(--ti-accent);
 }
 
-/* Display title: bold Poppins 900, large, no rogue outline ever. */
+/* Display title: Poppins 900, the one hero line. No outline box, ever. */
 #\30 5-twists-intro .twists-intro-title {
-  font-size: clamp(3.2rem, 5.8vw, 7rem);
+  font-size: clamp(3.4rem, 6.4vw, 7.6rem);
   font-weight: 900;
-  line-height: 0.92;
+  line-height: 0.9;
   letter-spacing: -0.03em;
-  color: var(--on-navy, #F0EDE7);
+  color: var(--ti-ink);
   margin: 0;
   outline: none;
   border: none;
 }
-
 #\30 5-twists-intro .twists-intro-title::before,
-#\30 5-twists-intro .twists-intro-title::after {
-  display: none;
-}
+#\30 5-twists-intro .twists-intro-title::after { display: none; }
+#\30 5-twists-intro .twists-intro-title-line { display: block; }
 
-#\30 5-twists-intro .twists-intro-title-line {
-  display: block;
-}
-
-/* The italic accent word — yellow Poppins italic.
-   The slant IS the accent (BRAND-WORLD-FINAL §2). No box, no underline. */
+/* The italic accent word — yellow Poppins italic. The slant IS the accent
+   (BRAND-WORLD-FINAL §2). Its own block, so the scramble can never overlap. */
 #\30 5-twists-intro .twists-intro-accent {
   display: block;
   font-style: italic;
   font-weight: 900;
-  color: var(--yellow, #F0CB08);
+  color: var(--ti-accent);
   letter-spacing: -0.03em;
 }
 
-/* ── Standfirst ──────────────────────────────────────────────────────── */
-#\30 5-twists-intro .twists-intro-stand {
-  margin: 0;
-  flex-shrink: 0;
-  font-size: clamp(0.92rem, 1.05vw, 1.1rem);
-  font-weight: 400;
-  line-height: 1.55;
-  color: var(--on-navy, #F0EDE7);
-  opacity: 0.78;
-  max-width: 50ch;
+/* Yellow tick rule: a short accent bar that physically separates the title
+   block from the standfirst. Guarantees clearance + reads as deliberate. */
+#\30 5-twists-intro .twists-intro-rule {
+  width: clamp(56px, 6vw, 92px);
+  height: 3px;
+  background: var(--ti-accent);
+  margin: clamp(22px, 3.4vh, 44px) 0 0;
+  transform-origin: left center;
 }
 
-/* You-dot anchor: small invisible spot at the bottom of the left column,
-   well clear of chart marks and text. The dot parks here quietly. */
+#\30 5-twists-intro .twists-intro-stand {
+  margin: clamp(18px, 2.6vh, 30px) 0 0;
+  font-size: clamp(1rem, 1.18vw, 1.22rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ti-ink);
+  opacity: 0.82;
+  max-width: 52ch;
+}
+
+/* Index marker — sits at the floor of the left column, balancing the
+   composition and parking the persistent you-dot. */
+#\30 5-twists-intro .twists-intro-index {
+  position: relative;
+  margin: clamp(28px, 5vh, 64px) 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: clamp(10px, 0.9vw, 16px);
+  flex-wrap: wrap;
+}
+#\30 5-twists-intro .twists-intro-index-count {
+  font-weight: 900;
+  font-size: clamp(1rem, 1.3vw, 1.4rem);
+  letter-spacing: -0.01em;
+  color: var(--ti-accent);
+  font-variant-numeric: tabular-nums;
+}
+#\30 5-twists-intro .twists-intro-index-label {
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ti-ink);
+  opacity: 0.6;
+}
 #\30 5-twists-intro .twists-intro-youdot-spot {
-  display: block;
+  position: absolute;
+  left: -18px;
+  top: 50%;
   width: 6px;
   height: 6px;
-  flex-shrink: 0;
+  transform: translateY(-50%);
   opacity: 0;
   pointer-events: none;
 }
 
-/* ── Right column: three anomaly cards stacked full-height ───────────── */
-#\30 5-twists-intro .twists-intro-list {
+/* ── RIGHT pane: the three-twist index threaded by a meridian ─────────── */
+#\30 5-twists-intro .twists-intro-index-list {
   position: relative;
   z-index: 1;
   list-style: none;
   margin: 0;
-  padding: 0 clamp(32px, 5.5vw, 104px) 0 clamp(12px, 2vw, 24px);
+  padding: clamp(8px, 1.4vh, 18px) 0 clamp(8px, 1.4vh, 18px)
+           clamp(34px, 3vw, 52px);
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.4vh, 18px);
-  align-items: stretch;
-  justify-content: center;
+  justify-content: space-between;
+  min-width: 0;
 }
 
-/* Card: backgroundless on navy — yellow top-bar + faint fill + hairline.
-   Square corners. One frame device only (border-top + hairline = still one
-   compound device — the yellow bar IS the card's identity accent).
-   No white, no cream box. */
-#\30 5-twists-intro .twists-intro-card {
+/* The meridian: a continuous vertical thread the rows hang off. Draws itself
+   in on arrival (scaleY), the orbit signature rendered as a connective line. */
+#\30 5-twists-intro .twists-intro-meridian {
+  position: absolute;
+  top: clamp(28px, 4vh, 56px);
+  bottom: clamp(28px, 4vh, 56px);
+  left: clamp(7px, 0.7vw, 12px);
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--ti-hair) 8%,
+    var(--ti-hair) 92%,
+    transparent 100%
+  );
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 1s var(--ti-ease) 0.15s;
+}
+#\30 5-twists-intro .twists-intro-root.is-threaded .twists-intro-meridian {
+  transform: scaleY(1);
+}
+
+/* Travelling marker that rides the meridian to the open row. JS sets --y. */
+#\30 5-twists-intro .twists-intro-meridian-marker {
+  position: absolute;
+  left: 50%;
+  top: var(--marker-y, 16%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ti-accent);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 4px rgba(240, 203, 8, 0.14);
+  transition: top 0.5s var(--ti-ease), opacity 0.4s ease;
+}
+#\30 5-twists-intro .twists-intro-root.is-marker-live .twists-intro-meridian-marker {
+  opacity: 1;
+}
+
+/* A row: oversized ghost number + the one-liner + the reframe. Backgroundless
+   on navy (ART-DIRECTION §5) — no cards, no boxes. The node ties it to the
+   meridian. Generous vertical space; the three fill the pane top to bottom. */
+#\30 5-twists-intro .twists-intro-row {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1.1vh, 14px);
-  padding: clamp(16px, 2.2vh, 28px) clamp(18px, 2.2vw, 32px);
-  background: rgba(240, 237, 231, 0.07);
-  border: 1px solid rgba(240, 237, 231, 0.13);
-  border-top: 3px solid var(--yellow, #F0CB08);
-  border-radius: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(16px, 1.6vw, 30px);
+  padding: clamp(10px, 1.4vh, 20px) 0;
   cursor: pointer;
   outline: none;
-  overflow: hidden;
-  transition: transform 0.28s var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
-              background-color 0.28s ease,
-              border-color 0.28s ease;
 }
 
-#\30 5-twists-intro .twists-intro-card:hover,
-#\30 5-twists-intro .twists-intro-card:focus-visible,
-#\30 5-twists-intro .twists-intro-card.is-open,
-#\30 5-twists-intro .twists-intro-card.is-pinned {
-  transform: translateX(-3px);
-  background: rgba(240, 237, 231, 0.11);
-  border-color: rgba(240, 237, 231, 0.28);
-}
-
-/* Yellow keyboard focus ring — not the default browser ring. */
-#\30 5-twists-intro .twists-intro-card:focus-visible {
-  box-shadow: 0 0 0 2px var(--yellow, #F0CB08);
-}
-
-/* Stage number — yellow tabular anchor. */
+/* Oversized ghost number — the rhythmic anchor of each row (tabular). */
 #\30 5-twists-intro .twists-intro-num {
   font-weight: 900;
-  font-size: clamp(1.2rem, 1.6vw, 1.8rem);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  color: var(--yellow, #F0CB08);
+  font-size: clamp(2.4rem, 4vw, 4.6rem);
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  color: rgba(240, 237, 231, 0.22);
   font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
+  transition: color 0.32s var(--ti-ease), transform 0.32s var(--ti-ease);
+}
+#\30 5-twists-intro .twists-intro-row:hover .twists-intro-num,
+#\30 5-twists-intro .twists-intro-row:focus-visible .twists-intro-num,
+#\30 5-twists-intro .twists-intro-row.is-open .twists-intro-num {
+  color: var(--ti-accent);
+  transform: translateY(-2px);
 }
 
-/* Anomaly headline — cream bold, flex-grows to push reframe to bottom. */
+#\30 5-twists-intro .twists-intro-body {
+  position: relative;
+  min-width: 0;
+  padding-bottom: 2px;
+}
+
+/* Node — the dot on the meridian for this row. The row's left edge sits at the
+   list's content box; the meridian lives in the list's left padding, so we step
+   back by (list padding-left − meridian left) to land the node exactly on the
+   thread. Independent of the variable-width number column = robust. */
+#\30 5-twists-intro .twists-intro-node {
+  position: absolute;
+  left: calc(-1 * (clamp(34px, 3vw, 52px) - clamp(7px, 0.7vw, 12px)));
+  top: clamp(18px, 2.4vw, 38px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ti-ink);
+  opacity: 0.32;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.3s var(--ti-ease);
+}
+#\30 5-twists-intro .twists-intro-row:hover .twists-intro-node,
+#\30 5-twists-intro .twists-intro-row:focus-visible .twists-intro-node,
+#\30 5-twists-intro .twists-intro-row.is-open .twists-intro-node {
+  background: var(--ti-accent);
+  opacity: 1;
+  transform: translateX(-50%) scale(1.25);
+}
+
+/* The one-liner — the sub-head register, the line that sets up the next screen. */
 #\30 5-twists-intro .twists-intro-line {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(0.98rem, 1.2vw, 1.3rem);
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-  color: var(--on-navy, #F0EDE7);
-  flex-grow: 1;
+  font-size: clamp(1.3rem, 1.9vw, 2.1rem);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--ti-ink);
 }
+#\30 5-twists-intro .twists-intro-line .hl { font-weight: 700; } /* yellow via .on-navy .hl */
 
-/* .hl on navy: yellow via vccp.css .on-navy .hl */
-#\30 5-twists-intro .twists-intro-line .hl {
-  font-weight: 700;
-}
-
-/* Reframe: collapsed at rest, animates open on hover/focus.
-   This IS the marquee interaction. */
+/* Reframe — collapsed at rest, slides open on hover/focus. The tactile reveal. */
 #\30 5-twists-intro .twists-intro-reframe {
-  margin: 0;
+  margin: clamp(8px, 1vh, 14px) 0 0;
   font-weight: 400;
-  font-size: clamp(0.82rem, 0.92vw, 0.96rem);
+  font-size: clamp(0.9rem, 1.02vw, 1.04rem);
   line-height: 1.55;
-  color: var(--on-navy, #F0EDE7);
+  color: var(--ti-ink);
+  max-width: 46ch;
   opacity: 0;
   max-height: 0;
   overflow: hidden;
   transform: translateY(6px);
-  transition: opacity 0.32s ease,
-              max-height 0.42s var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
-              transform 0.32s ease;
-  flex-shrink: 0;
+  transition: opacity 0.34s ease,
+              max-height 0.46s var(--ti-ease),
+              transform 0.34s ease;
 }
-
-#\30 5-twists-intro .twists-intro-card:hover .twists-intro-reframe,
-#\30 5-twists-intro .twists-intro-card:focus-visible .twists-intro-reframe,
-#\30 5-twists-intro .twists-intro-card.is-open .twists-intro-reframe,
-#\30 5-twists-intro .twists-intro-card.is-pinned .twists-intro-reframe {
+#\30 5-twists-intro .twists-intro-row:hover .twists-intro-reframe,
+#\30 5-twists-intro .twists-intro-row:focus-visible .twists-intro-reframe,
+#\30 5-twists-intro .twists-intro-row.is-open .twists-intro-reframe,
+#\30 5-twists-intro .twists-intro-row.is-pinned .twists-intro-reframe {
   opacity: 0.84;
-  max-height: 10em;
+  max-height: 12em;
   transform: translateY(0);
 }
 
-/* ── Orbit decoration — cream-tinted rings, atmospheric field on right.
-   Positioned absolutely behind the card column to fill the right side. */
-#\30 5-twists-intro .twists-intro-orbit {
-  position: absolute;
-  top: -15%;
-  right: -5%;
-  width: 48%;
-  height: 100%;
-  border-radius: 50%;
-  border: 1px solid rgba(240, 237, 231, 0.06);
-  pointer-events: none;
-  z-index: 0;
+/* Yellow keyboard focus ring — never the default browser outline. */
+#\30 5-twists-intro .twists-intro-row:focus-visible {
+  box-shadow: -8px 0 0 -6px var(--ti-accent);
+}
+#\30 5-twists-intro .twists-intro-row:focus-visible .twists-intro-line {
+  text-decoration: none;
 }
 
-#\30 5-twists-intro .twists-intro-orbit::before,
-#\30 5-twists-intro .twists-intro-orbit::after {
-  content: '';
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  border: 1px solid rgba(240, 237, 231, 0.045);
-}
-
-#\30 5-twists-intro .twists-intro-orbit::after {
-  inset: 32%;
-  background: rgba(240, 237, 231, 0.012);
-  border-color: rgba(240, 237, 231, 0.04);
-}
-
-/* ── Reduced motion: no lift, no collapse; reframes visible flat ─────── */
+/* ── Reduced motion: settle everything flat, no drift, reframes open ───── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 5-twists-intro .twists-intro-card {
+  #\30 5-twists-intro .twists-intro-orbit { animation: none; }
+  #\30 5-twists-intro .twists-intro-meridian {
     transition: none;
-    transform: none !important;
+    transform: scaleY(1);
   }
+  #\30 5-twists-intro .twists-intro-meridian-marker { transition: none; }
+  #\30 5-twists-intro .twists-intro-num { transition: none; }
+  #\30 5-twists-intro .twists-intro-node { transition: none; }
   #\30 5-twists-intro .twists-intro-reframe {
     transition: none;
     opacity: 0.82;
-    max-height: 10em;
+    max-height: 12em;
     transform: none;
   }
 }
 
-/* ── Narrow viewport (≤820px): stack everything vertically ──────────── */
-@media (max-width: 820px) {
+/* ── Narrow viewport (≤900px): single column, stacked ─────────────────── */
+@media (max-width: 900px) {
   #\30 5-twists-intro .twists-intro-root {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    padding-top: clamp(24px, 4vh, 48px);
+    align-items: start;
+    padding-top: clamp(28px, 5vh, 56px);
+    gap: clamp(24px, 5vh, 44px);
     overflow-y: auto;
   }
-  #\30 5-twists-intro .twists-intro-left {
-    padding: 0 clamp(20px, 5vw, 40px);
+  #\30 5-twists-intro .twists-intro-left { justify-content: flex-start; }
+  #\30 5-twists-intro .twists-intro-title { font-size: clamp(2.8rem, 11vw, 4.8rem); }
+  #\30 5-twists-intro .twists-intro-index { display: none; }
+  #\30 5-twists-intro .twists-intro-index-list {
     justify-content: flex-start;
+    gap: clamp(20px, 4vh, 36px);
   }
-  #\30 5-twists-intro .twists-intro-title {
-    font-size: clamp(2.6rem, 10vw, 4.4rem);
-  }
-  #\30 5-twists-intro .twists-intro-stand {
-    display: none;
-  }
-  #\30 5-twists-intro .twists-intro-list {
-    padding: 0 clamp(20px, 5vw, 40px);
-    margin-top: clamp(16px, 2.5vh, 28px);
-    justify-content: flex-start;
-  }
-  /* Small screens: always show reframes (no hover available). */
+  #\30 5-twists-intro .twists-intro-ambient { opacity: 0.5; }
+  /* No hover on touch — show every reframe. */
   #\30 5-twists-intro .twists-intro-reframe {
-    opacity: 0.80;
-    max-height: 10em;
+    opacity: 0.8;
+    max-height: 12em;
     transform: none;
   }
 }
 
-/* ── Very short viewports (≤600px height) ───────────────────────────── */
-@media (max-height: 600px) {
-  #\30 5-twists-intro .twists-intro-left {
-    justify-content: flex-start;
-    padding-top: clamp(8px, 1.5vh, 16px);
+/* ── Very short viewports (≤620px height) ─────────────────────────────── */
+@media (max-height: 620px) {
+  #\30 5-twists-intro .twists-intro-root {
+    padding-top: clamp(12px, 2vh, 22px);
+    gap: clamp(20px, 4vw, 48px);
   }
-  #\30 5-twists-intro .twists-intro-title {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-  }
-  #\30 5-twists-intro .twists-intro-stand {
-    display: none;
-  }
-  #\30 5-twists-intro .twists-intro-num {
-    font-size: clamp(1rem, 1.4vw, 1.4rem);
-  }
-  #\30 5-twists-intro .twists-intro-line {
-    font-size: clamp(0.88rem, 1.05vw, 1.05rem);
-  }
-  #\30 5-twists-intro .twists-intro-reframe {
-    display: none;
-  }
+  #\30 5-twists-intro .twists-intro-title { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+  #\30 5-twists-intro .twists-intro-rule { margin-top: clamp(12px, 2vh, 20px); }
+  #\30 5-twists-intro .twists-intro-stand { margin-top: clamp(10px, 1.5vh, 16px); }
+  #\30 5-twists-intro .twists-intro-index { display: none; }
+  #\30 5-twists-intro .twists-intro-num { font-size: clamp(1.8rem, 3vw, 3rem); }
+  #\30 5-twists-intro .twists-intro-line { font-size: clamp(1.05rem, 1.5vw, 1.5rem); }
+  #\30 5-twists-intro .twists-intro-reframe { display: none; }
 }

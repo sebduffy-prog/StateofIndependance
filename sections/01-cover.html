@@ -3,23 +3,43 @@
        Challenger-Series lockup as the brand signature, a huge BOLD BLACK Poppins-900
        title with ONE italic accent word ("Independence"), and the State of
        Independence MAZE logo-moment (assets/brand-final/maze-logo.gif) used once,
-       big, on vast negative space. No hero box; the ground breathes.
+       big, on vast negative space.
+
+       Elevated to a cinematic, full-bleed hero: ambient orbit geometry + a soft
+       warmth bloom fill the field (no dead void); the maze sits large and centred
+       in the right pane, grounded by its orbit; the copy hangs on a left axis,
+       held clear of the engine-owned bottom-centre scroll cue. The composition
+       fills the screen without crowding — the negative space is deliberate.
 
        MARQUEE — the "you" dot is born. A single cream dot blooms at the maze mouth
        (where the small figure stands, bottom-right of the maze) and the visitor
        drags / arrow-keys it INTO the maze along one clean ink trail toward its
-       heart. Starting = taking control. On arrival the journey is ready and Begin
-       wakes with the single yellow accent ring. Next always unlocks after the dwell;
-       the trace is the reward, never a block. Reduced-motion swaps the GIF for its
-       static first-frame poster and pre-draws the trail to its final state.
+       heart. Reduced-motion swaps the GIF for its static first-frame poster and
+       pre-draws the trail to its final state, and stills the ambient drift.
 
        One focal point only (the maze). The lockup is the signature, the title is the
        voice, the maze is the hero. Italic accent replaces the old orange highlight
-       (BWF §2): the slant of the italic IS the accent — no box, no underline, no skew. -->
+       (BWF §2): the slant of the italic IS the accent. No box, no underline, no skew. -->
   <div class="cover si-ground-warm" data-cover-root data-cover-hero>
 
-    <!-- LEFT — the brand signature (lockup) → the display title → standfirst →
-         the Begin cue, hung on a left axis in open space. -->
+    <!-- AMBIENT FIELD — decorative only, pointer-inert, behind all content. A soft
+         warmth bloom + the signature orbit rings give the hero cinematic depth and
+         fill the field so no corner reads as dead void. -->
+    <div class="cover-ambient" aria-hidden="true">
+      <span class="cover-bloom"></span>
+      <svg class="cover-rings" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g class="cover-rings-drift">
+          <circle cx="500" cy="500" r="190" />
+          <circle cx="500" cy="500" r="300" />
+          <circle cx="500" cy="500" r="420" />
+          <circle cx="500" cy="500" r="560" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- LEFT — the brand signature (lockup) → the display title → standfirst,
+         hung on a left axis in open space, vertically centred and clear of the
+         engine-owned scroll cue at the bottom centre. -->
     <header class="cover-copy" data-stagger="120">
       <img class="cover-lockup si-lockup si-lockup--hero" data-arrival
            src="assets/brand-final/challenger-series-lockup.png"
@@ -44,8 +64,10 @@
       </button>
     </header>
 
-    <!-- RIGHT — the maze logo-moment. The whole illustration is inert except the
-         one cream "you" dot that is born at the maze mouth and traces inward. -->
+    <!-- RIGHT — the maze logo-moment, large and centred in its field. The whole
+         illustration is inert except the one cream "you" dot born at the maze mouth
+         and traced inward. The illustration carries its own orbit ring, the navy
+         bear and the figure; no second ring is drawn over it. -->
     <figure class="cover-stage" data-cover-stage>
       <img class="cover-maze" data-cover-maze
            src="assets/brand-final/maze-logo.gif"

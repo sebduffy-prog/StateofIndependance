@@ -1,11 +1,12 @@
-/* 07-twist-joy.css — Twist two: PROTECTED JOY.
+/* 07-twist-joy.css — Twist two: PROTECTED JOY (the lipstick effect).
    Scoped entirely to #\30 7-twist-joy.
    Full-bleed warm-gradient stage. Two-column composition:
-     LEFT  — 40% hero stat towers as the focal anchor
-     RIGHT — tactile budget: tap scissors to cut, holiday springs back
-   Square corners, no underline, no parallelogram, no skew.
+     LEFT  — 40% hero stat as the focal anchor
+     RIGHT — ONE lever, "Tighten the budget". Dragging it cuts every flexible
+             spend in turn; the holiday line locks and glows ring-fenced.
+   Square corners, no underline, no parallelogram, no skew, no em dashes.
    AA contrast: navy on warm, cream on navy. No gradients on data elements.
-   Reduced-motion: cuts snap instantly; spring-refuse becomes instant class toggle. */
+   Reduced-motion: line cut/lock state changes snap (no transitions). */
 
 /* ── Root: full viewport two-column grid ──────────────────────────────── */
 #\30 7-twist-joy .twist-joy-root {
@@ -63,10 +64,6 @@
   min-width: 0;
 }
 
-#\30 7-twist-joy .twist-joy-eyebrow {
-  /* inherits .vccp-eyebrow — just ensure it inherits correctly */
-}
-
 /* The hero bignum — towers and commands the left half */
 #\30 7-twist-joy .twist-joy-bignum {
   font-size: clamp(5.5rem, 13vw, 12rem);
@@ -104,43 +101,25 @@
   color: var(--navy, #041654);
 }
 
-/* Sub copy — WLV register: punchy, one sentence */
+/* Sub copy — WLV register: punchy */
 #\30 7-twist-joy .twist-joy-sub {
   margin: 0;
   font-weight: 500;
   font-size: clamp(0.88rem, 1.2vw, 1.05rem);
   line-height: 1.5;
-  max-width: 36ch;
+  max-width: 38ch;
   color: var(--navy, #041654);
   opacity: 0.85;
 }
 
-/* Instruction line — tells the visitor exactly what to do */
-#\30 7-twist-joy .twist-joy-instruction {
-  margin: clamp(4px, 0.8vh, 8px) 0 0;
-  font-weight: 600;
-  font-size: clamp(0.78rem, 1vw, 0.92rem);
-  color: var(--navy, #041654);
-  opacity: 0.65;
-  letter-spacing: 0.01em;
-}
-#\30 7-twist-joy .twist-joy-scissors-icon {
-  font-style: normal;
-  opacity: 0.85;
-}
-
-/* ── RIGHT COLUMN — the marquee budget ───────────────────────────────── */
+/* ── RIGHT COLUMN — the lever + budget ───────────────────────────────── */
 #\30 7-twist-joy .twist-joy-stage {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.8vh, 20px);
+  gap: clamp(14px, 2vh, 22px);
   min-width: 0;
-}
-
-#\30 7-twist-joy .twist-joy-stage-kicker {
-  /* inherits .vccp-eyebrow */
 }
 
 /* Verified data note — restrained, not a source caption */
@@ -154,13 +133,13 @@
   text-transform: uppercase;
 }
 
-/* Hint text — lives below the rows; updated by JS */
-#\30 7-twist-joy .twist-joy-hint {
+/* Live readout — sits below the lines; updated by JS */
+#\30 7-twist-joy .twist-joy-readout {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: clamp(0.86rem, 1.1vw, 0.98rem);
   font-weight: 600;
   color: var(--navy, #041654);
-  opacity: 0.7;
+  opacity: 0.78;
   min-height: 1.4em;
   transition: opacity 0.3s ease;
 }
@@ -171,6 +150,84 @@
   opacity: 0.7;
 }
 
+/* ── THE LEVER — one clear control ────────────────────────────────────── */
+#\30 7-twist-joy .twist-joy-lever {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 12px);
+  padding: clamp(14px, 1.8vh, 20px) clamp(16px, 2vw, 22px);
+  background: rgba(4, 22, 84, 0.06);
+  border-left: 3px solid var(--yellow, #f0cb08);
+}
+
+#\30 7-twist-joy .twist-joy-lever-label {
+  font-weight: 700;
+  font-size: clamp(0.82rem, 1.05vw, 0.96rem);
+  letter-spacing: -0.01em;
+  color: var(--navy, #041654);
+}
+
+#\30 7-twist-joy .twist-joy-lever-track {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 14px);
+}
+
+#\30 7-twist-joy .twist-joy-lever-end {
+  font-weight: 700;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--navy, #041654);
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+/* The range input — restyled to a flat navy/yellow lever, square thumb */
+#\30 7-twist-joy .twist-joy-lever-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  margin: 6px 0;
+  background: rgba(4, 22, 84, 0.18);
+  outline: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+#\30 7-twist-joy .twist-joy-lever-input:focus-visible {
+  box-shadow: 0 0 0 3px rgba(4, 22, 84, 0.28);
+}
+/* WebKit thumb */
+#\30 7-twist-joy .twist-joy-lever-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 26px;
+  background: var(--yellow, #f0cb08);
+  border: 2px solid var(--navy, #041654);
+  border-radius: 0;
+  cursor: grab;
+}
+#\30 7-twist-joy .twist-joy-lever-input::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+/* Firefox track + thumb */
+#\30 7-twist-joy .twist-joy-lever-input::-moz-range-track {
+  height: 6px;
+  background: rgba(4, 22, 84, 0.18);
+  border-radius: 0;
+}
+#\30 7-twist-joy .twist-joy-lever-input::-moz-range-thumb {
+  width: 16px;
+  height: 26px;
+  background: var(--yellow, #f0cb08);
+  border: 2px solid var(--navy, #041654);
+  border-radius: 0;
+  cursor: grab;
+}
+
 /* ── Budget row list ──────────────────────────────────────────────────── */
 #\30 7-twist-joy .twist-joy-rows {
   list-style: none;
@@ -178,36 +235,29 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vh, 12px);
+  gap: clamp(7px, 1vh, 11px);
 }
 
-/* Each row: a cream tile with a cut button on the right.
-   Overflow hidden so the crumple stays contained. */
+/* Each row: a cream tile. Square corners always. */
 #\30 7-twist-joy .twist-joy-row {
   position: relative;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 16px);
+  padding: clamp(11px, 1.5vh, 16px) clamp(14px, 1.8vw, 20px);
   background: var(--cream, #f0ede7);
   box-shadow: 0 8px 24px rgba(4, 22, 84, 0.07);
-  /* No border-radius — square corners always */
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.42s ease,
+    filter 0.42s ease;
+  transform-origin: left center;
 }
-
-/* The protected (holiday) row wears the yellow left-seal */
-#\30 7-twist-joy .twist-joy-row.is-protected {
-  box-shadow:
-    0 8px 24px rgba(4, 22, 84, 0.09),
-    inset 4px 0 0 0 var(--yellow, #f0cb08);
-}
-
-/* Inner: label + pct + meta + scissors button in one line */
-#\30 7-twist-joy .twist-joy-row-inner {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 18px);
-  padding: clamp(12px, 1.6vh, 18px) clamp(14px, 1.8vw, 20px);
-  position: relative;
-  z-index: 1;
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+/* Flexible rows have no shield slot — collapse the first column to zero */
+#\30 7-twist-joy .twist-joy-row.is-flexible {
+  grid-template-columns: 1fr auto auto;
 }
 
 #\30 7-twist-joy .twist-joy-row-label {
@@ -229,134 +279,70 @@
   white-space: nowrap;
 }
 
-#\30 7-twist-joy .twist-joy-row-meta {
-  font-weight: 600;
-  font-size: 0.6rem;
+/* Tag pill — "ring-fenced" on holiday, "cut" stamp on flexible lines */
+#\30 7-twist-joy .twist-joy-row-tag {
+  font-weight: 700;
+  font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--navy, #041654);
-  opacity: 0.5;
   white-space: nowrap;
 }
-/* Protected row — more prominent meta */
-#\30 7-twist-joy .twist-joy-row.is-protected .twist-joy-row-meta {
+#\30 7-twist-joy .twist-joy-row-tag--cut {
+  opacity: 0;
+  color: var(--ink, #000);
+  transition: opacity 0.3s ease;
+}
+
+/* ── PROTECTED (holiday) row — the line that holds ────────────────────── */
+#\30 7-twist-joy .twist-joy-row.is-protected {
+  box-shadow:
+    0 8px 24px rgba(4, 22, 84, 0.09),
+    inset 4px 0 0 0 var(--yellow, #f0cb08);
+}
+#\30 7-twist-joy .twist-joy-row.is-protected .twist-joy-row-tag {
+  color: var(--navy, #041654);
+  opacity: 0.85;
+}
+#\30 7-twist-joy .twist-joy-row-shield {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy, #041654);
+  opacity: 0.85;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), color 0.42s ease;
+}
+
+/* LOCKED state — once any tightening begins, the holiday glows ring-fenced */
+#\30 7-twist-joy .twist-joy-row.is-locked {
+  box-shadow:
+    0 10px 30px rgba(4, 22, 84, 0.16),
+    inset 5px 0 0 0 var(--yellow, #f0cb08),
+    0 0 0 2px var(--yellow, #f0cb08);
+}
+#\30 7-twist-joy .twist-joy-row.is-locked .twist-joy-row-shield {
+  transform: scale(1.12);
+}
+#\30 7-twist-joy .twist-joy-row.is-locked .twist-joy-row-pct {
+  color: var(--navy, #041654);
+}
+
+/* ── CUT state — flexible line shrinks, greys, and stamps CUT ─────────── */
+#\30 7-twist-joy .twist-joy-row.is-flexible.is-cut {
+  opacity: 0.32;
+  transform: scaleX(0.88) scaleY(0.92);
+  box-shadow: 0 2px 8px rgba(4, 22, 84, 0.04);
+  filter: grayscale(1);
+}
+#\30 7-twist-joy .twist-joy-row.is-flexible.is-cut .twist-joy-row-label {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+#\30 7-twist-joy .twist-joy-row.is-flexible.is-cut .twist-joy-row-tag--cut {
   opacity: 0.85;
 }
 
-/* ── The scissors cut button ──────────────────────────────────────────── */
-#\30 7-twist-joy .twist-joy-cut-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(34px, 3.2vw, 42px);
-  height: clamp(34px, 3.2vw, 42px);
-  background: rgba(4, 22, 84, 0.08);
-  border: 1.5px solid rgba(4, 22, 84, 0.18);
-  border-radius: 0;            /* square always */
-  cursor: pointer;
-  flex: none;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
-  /* Reset browser button defaults */
-  appearance: none;
-  -webkit-appearance: none;
-  font-family: inherit;
-  padding: 0;
-  outline: none;
-}
-#\30 7-twist-joy .twist-joy-cut-btn:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--navy, #041654);
-}
-#\30 7-twist-joy .twist-joy-cut-btn:hover {
-  background: rgba(4, 22, 84, 0.15);
-  border-color: rgba(4, 22, 84, 0.35);
-  transform: scale(1.06);
-}
-#\30 7-twist-joy .twist-joy-cut-btn:active {
-  transform: scale(0.96);
-}
-
-#\30 7-twist-joy .twist-joy-scissors {
-  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
-  opacity: 0.72;
-  user-select: none;
-  pointer-events: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-#\30 7-twist-joy .twist-joy-cut-btn:hover .twist-joy-scissors {
-  opacity: 1;
-  transform: rotate(-15deg) scale(1.1);
-}
-
-/* ── CUT state — flexible row folds and dims ──────────────────────────── */
-#\30 7-twist-joy .twist-joy-row.is-cut .twist-joy-row-inner {
-  opacity: 0.22;
-  transform: scale(0.96);
-}
-#\30 7-twist-joy .twist-joy-row.is-cut .twist-joy-cut-btn {
-  background: rgba(4, 22, 84, 0.05);
-  border-color: rgba(4, 22, 84, 0.1);
-}
-/* Show the CUT banner behind the dimmed row */
-#\30 7-twist-joy .twist-joy-cut-banner {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: clamp(0.72rem, 1.1vw, 0.96rem);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--navy, #041654);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.28s ease;
-  z-index: 0;
-}
-#\30 7-twist-joy .twist-joy-row.is-cut .twist-joy-cut-banner {
-  opacity: 0.28;
-}
-
-/* ── REFUSING state — holiday springs back; visible shake + glow ──────── */
-#\30 7-twist-joy .twist-joy-row.is-refusing .twist-joy-row-inner {
-  animation: tj-refuse 0.72s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-}
-#\30 7-twist-joy .twist-joy-row.is-refusing {
-  box-shadow:
-    0 8px 24px rgba(4, 22, 84, 0.14),
-    inset 4px 0 0 0 var(--yellow, #f0cb08),
-    0 0 0 2px var(--yellow, #f0cb08);
-}
-#\30 7-twist-joy .twist-joy-row.is-refusing .twist-joy-scissors {
-  transform: rotate(20deg);
-  opacity: 0.38;
-}
-
-@keyframes tj-refuse {
-  0%   { transform: translateX(0); }
-  12%  { transform: translateX(-18px) scale(0.97); }
-  28%  { transform: translateX(12px) scale(1.01); }
-  44%  { transform: translateX(-10px); }
-  60%  { transform: translateX(6px); }
-  74%  { transform: translateX(-4px); }
-  88%  { transform: translateX(2px); }
-  100% { transform: translateX(0); }
-}
-
-/* The shield badge on the protected row — a small navy ring-fence motif */
-#\30 7-twist-joy .twist-joy-shield {
-  position: absolute;
-  top: clamp(6px, 0.8vh, 10px);
-  right: clamp(52px, 5vw, 68px);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--yellow, #f0cb08);
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-/* ── Lower-left anchor block — fills dead space, ring-fence motif ──────── */
+/* ── Lower-left anchor block — ring-fence motif, you-dot rest ──────────── */
 #\30 7-twist-joy .twist-joy-anchor-block {
   display: flex;
   flex-direction: column;
@@ -367,7 +353,6 @@
   border-left: 3px solid var(--yellow, #f0cb08);
   max-width: 22ch;
 }
-
 #\30 7-twist-joy .twist-joy-anchor-label {
   font-weight: 700;
   font-size: 0.6rem;
@@ -376,7 +361,6 @@
   color: var(--navy, #041654);
   opacity: 0.55;
 }
-
 #\30 7-twist-joy .twist-joy-anchor-bar {
   display: block;
   height: 3px;
@@ -384,7 +368,6 @@
   background: var(--yellow, #f0cb08);
   opacity: 0.7;
 }
-
 #\30 7-twist-joy .twist-joy-anchor-pct {
   font-weight: 900;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
@@ -414,17 +397,27 @@
   #\30 7-twist-joy .twist-joy-stage {
     width: 100%;
   }
+  /* Save vertical space on stacked layout: hide the left anchor block,
+     the holiday row already carries the ring-fence story. */
+  #\30 7-twist-joy .twist-joy-anchor-block {
+    display: none;
+  }
 }
 
 /* ── Reduced motion ───────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 7-twist-joy .twist-joy-row-inner,
-  #\30 7-twist-joy .twist-joy-cut-btn,
-  #\30 7-twist-joy .twist-joy-scissors,
-  #\30 7-twist-joy .twist-joy-hint,
-  #\30 7-twist-joy .twist-joy-cut-banner {
+  #\30 7-twist-joy .twist-joy-row,
+  #\30 7-twist-joy .twist-joy-row-shield,
+  #\30 7-twist-joy .twist-joy-row-tag--cut,
+  #\30 7-twist-joy .twist-joy-readout {
     transition: none !important;
     animation: none !important;
+  }
+  /* Keep the cut state legible without the shrink/grey motion */
+  #\30 7-twist-joy .twist-joy-row.is-flexible.is-cut {
+    transform: none;
+    filter: none;
+    opacity: 0.4;
   }
   #\30 7-twist-joy .twist-joy-orbit,
   #\30 7-twist-joy .twist-joy-orbit::after {

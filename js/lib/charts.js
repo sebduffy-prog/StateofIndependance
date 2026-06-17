@@ -110,6 +110,142 @@ const fmtPct = (value, decimals = 0) =>
 
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
+/* ─────────────────── end-anchored label fitting ────────────────────
+ * Right-aligned category labels (text-anchor:end at x = availWidth) crop
+ * their LEADING characters when the text is wider than availWidth, because
+ * the overflow runs off to x < 0. This helper guarantees the full label is
+ * always visible: it first shrinks the font-size toward a floor, and if the
+ * label still doesn't fit it wraps onto two lines (each line independently
+ * fitted). Leading characters can therefore never be clipped.
+ *
+ * Works at the library level so every caller (segments, 04 baselines,
+ * data-explorer) is fixed without touching their option APIs.
+ *
+ * `label` is an SVG <text> node already appended to the DOM with its final
+ * text content, x, text-anchor:end and baseline set. `baseFontSize` is the
+ * design size; `minFontSize` is the smallest we will shrink to before
+ * wrapping. We measure with getComputedTextLength(), guarding the case where
+ * the node isn't laid out yet (e.g. display:none) — in which case we leave
+ * the label untouched and re-fit on first view.
+ */
+const LABEL_MIN_FONT = 11;
+
+const measureText = (node) => {
+  try {
+    return node.getComputedTextLength();
+  } catch {
+    return 0;
+  }
+};
+
+/** Greedy word-wrap of `text` into up to `maxLines` lines that each fit
+ *  `availWidth` at the node's current font-size. Returns array of strings;
+ *  the final line may still overflow if a single word is too long. */
+const wrapToLines = (probe, text, availWidth, maxLines) => {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length <= 1) return [text];
+  const lines = [];
+  let current = '';
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word;
+    probe.textContent = candidate;
+    if (measureText(probe) <= availWidth || !current) {
+      current = candidate;
+    } else {
+      lines.push(current);
+      current = word;
+      if (lines.length === maxLines - 1) break;
+    }
+  }
+  // Push remaining words (joined) onto the last allowed line.
+  const used = lines.join(' ');
+  const remaining = text.slice(used.length).trim();
+  if (remaining) lines.push(remaining);
+  return lines.slice(0, maxLines);
+};
+
+/**
+ * Fit an end-anchored label into `availWidth`. Mutates only presentational
+ * attributes of the given node (font-size) and, when wrapping is needed,
+ * replaces its text with <tspan> lines. Never changes the label's value.
+ *
+ * @param {SVGTextElement} label  text node, anchored end, x already set
+ * @param {number} availWidth     px of room to the left of the anchor
+ * @param {number} baseFontSize   design font size
+ * @param {object} [opts]
+ * @param {number} [opts.minFont] floor before wrapping (default LABEL_MIN_FONT)
+ * @param {number} [opts.cy]      vertical centre (for two-line balancing)
+ */
+const fitEndLabel = (label, availWidth, baseFontSize, opts = {}) => {
+  const minFont = opts.minFont != null ? opts.minFont : LABEL_MIN_FONT;
+  const fullText = label.textContent;
+  if (!fullText || availWidth <= 0) return;
+
+  // Reset to the design size, single line, before measuring.
+  label.setAttribute('font-size', baseFontSize);
+  label.textContent = fullText;
+  const fullWidth = measureText(label);
+  if (fullWidth === 0) return; // not laid out yet; caller re-fits on view
+  if (fullWidth <= availWidth) return; // already fits at full size
+
+  // 1) Try shrinking the font so the whole label fits on one line, but not
+  //    below the readable floor.
+  const shrunk = Math.max(minFont, baseFontSize * (availWidth / fullWidth));
+  label.setAttribute('font-size', shrunk);
+  if (measureText(label) <= availWidth) return; // fits on one line, shrunk
+
+  // 2) Still too wide at the floor → wrap onto two lines at the floor size.
+  label.setAttribute('font-size', minFont);
+  const lines = wrapToLines(label, fullText, availWidth, 2);
+  if (lines.length <= 1) {
+    // Single unsplittable word: leave it at the floor size (best effort) —
+    // it stays right-anchored so its leading chars remain visible.
+    label.textContent = lines[0] || fullText;
+    return;
+  }
+
+  // Render the wrapped lines as tspans, vertically centred on the row.
+  const x = label.getAttribute('x');
+  const cy = opts.cy;
+  const lineH = minFont * 1.05;
+  label.textContent = '';
+  label.removeAttribute('dominant-baseline');
+  lines.forEach((line, i) => {
+    const tspan = el('tspan', { x });
+    // Centre the block: first line offset up by half the total block height.
+    const dy = i === 0 ? -((lines.length - 1) * lineH) / 2 : lineH;
+    if (cy != null && i === 0) {
+      tspan.setAttribute('y', cy);
+      tspan.setAttribute('dy', dy);
+    } else {
+      tspan.setAttribute('dy', i === 0 ? dy : lineH);
+    }
+    tspan.setAttribute('dominant-baseline', 'central');
+    tspan.textContent = line;
+    label.append(tspan);
+  });
+};
+
+/** Fit every end-anchored label in `labelMeta` once the SVG is laid out.
+ *  Re-runs on first intersection so labels measured while hidden still fit. */
+const fitLabelsWhenReady = (svg, labelMeta) => {
+  const run = () => labelMeta.forEach((m) =>
+    fitEndLabel(m.node, m.availWidth, m.baseFont, { cy: m.cy }));
+  // Try immediately (covers already-visible charts).
+  run();
+  // Re-fit on first view in case it was hidden/zero-width at build time.
+  if (typeof IntersectionObserver !== 'undefined') {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        run();
+        obs.disconnect();
+      });
+    }, { threshold: 0 });
+    io.observe(svg);
+  }
+};
+
 /**
  * Tween a numeric value with rAF, calling onStep(value) each frame.
  * Jump-cuts under reduced motion. Returns a cancel function.
@@ -174,8 +310,12 @@ export const horizontalBars = (container, opts) => {
   const isDark = onNavy === true || accent === 'cream';
   const highlightColour = isDark ? c.tealDeep : c.ink;
 
+  const LABEL_FONT = 15;
   let items = opts.items.slice();
   const rowFor = new Map();
+  // Collected so every end-anchored label can be fitted (shrink → wrap)
+  // after layout, so long categories never crop their leading characters.
+  const labelMeta = [];
 
   const svg = el('svg', {
     viewBox: `0 0 ${width} ${items.length * (barHeight + gap)}`,
@@ -200,11 +340,13 @@ export const horizontalBars = (container, opts) => {
       'text-anchor': 'end',
       'dominant-baseline': 'central',
       fill: textColour,
-      'font-size': 15,
+      'font-size': LABEL_FONT,
       'font-weight': 600,
       'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
     });
     label.textContent = item.label;
+    // Leave a small gutter so the longest label keeps clear of the track.
+    labelMeta.push({ node: label, availWidth: labelWidth - 4, baseFont: LABEL_FONT, cy: barHeight / 2 });
 
     // Track is a faint ink/cream tint, never a white box, no border.
     const track = el('rect', {

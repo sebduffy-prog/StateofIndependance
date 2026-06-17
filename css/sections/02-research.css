@@ -55,20 +55,33 @@
 #\30 2-research .research-grid {
   position: relative;
   z-index: 1;
+  /* Full-bleed, but never taller than the viewport: the section clips
+     overflow, so the grid box must stay within 100svh or content is cut. */
   min-height: 100vh;
   min-height: 100svh;
+  height: 100svh;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(300px, 30%) minmax(0, 1fr);
   align-items: center;
   gap: clamp(32px, 5vw, 96px);
-  padding: clamp(3.4rem, 8vh, 6.5rem) clamp(24px, 5vw, 96px)
-           calc(var(--journey-controls-h, 72px) + clamp(2.4rem, 6vh, 5rem));
+  /* Tighter vertical padding so the rail stack fits on shorter viewports. */
+  padding: clamp(2.4rem, 5vh, 5rem) clamp(24px, 5vw, 96px)
+           calc(var(--journey-controls-h, 72px) + clamp(1.6rem, 4vh, 3.5rem));
 }
 
-/* ── LEFT AXIS: the quiet editorial rail ───────────────────────────── */
+/* ── LEFT AXIS: the quiet editorial rail ───────────────────────────────
+   A stable, fully-on-screen composition. The rail is a flex column whose
+   height is the available grid track; it centres when there's room and
+   anchors to the top when there isn't, so nothing reflows as the title
+   assembles + the counts run, and nothing overflows the clipped section. */
 #\30 2-research .research-rail {
   min-width: 0;
-  align-self: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
 }
 
 #\30 2-research .research-rail .vccp-eyebrow {
@@ -331,8 +344,11 @@
    Editorial register: a hanging quote, the yellow accent on the quote mark,
    navy emphasis on the attribution. Backgroundless — no card behind it. ── */
 #\30 2-research .research-diary {
-  min-height: clamp(120px, 18vh, 180px);
+  /* Reserve a fixed slot so the rail never reflows when a diary opens —
+     but keep it modest so the whole stack stays within the viewport. */
+  min-height: clamp(104px, 15vh, 160px);
   margin: 0 0 clamp(8px, 1.5vh, 16px);
+  overflow: hidden;
 }
 #\30 2-research .research-quote { margin: 0; }
 #\30 2-research .research-quote-text {
@@ -402,10 +418,20 @@
 @media (max-width: 900px) {
   #\30 2-research .research-grid {
     grid-template-columns: 1fr;
+    /* When stacked, let the content set its own height (it can exceed one
+       screen) rather than forcing it into 100svh and clipping. */
+    height: auto;
+    min-height: 100svh;
     align-content: center;
     gap: clamp(28px, 5vh, 48px);
     padding: clamp(3.6rem, 6vh, 4.5rem) clamp(20px, 7vw, 40px)
              calc(var(--journey-controls-h, 72px) + clamp(2rem, 5vh, 3.5rem));
+  }
+  /* Stacked: the rail no longer competes with the map for vertical room. */
+  #\30 2-research .research-rail {
+    align-self: auto;
+    max-height: none;
+    overflow: visible;
   }
   #\30 2-research .research-map-wrap { min-height: clamp(320px, 46vh, 520px); }
   #\30 2-research .research-status,

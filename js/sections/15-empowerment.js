@@ -2,24 +2,23 @@
  * Chapter 06 — the empowerment architecture.
  *
  * THE ONE MEMORABLE THING (ART-DIRECTION §7): three needs you pull together
- * until they meet on empowerment. Tactile, elemental, lots of space. The screen
- * has exactly ONE focal point — the marquee venn — and a quiet prelude:
+ * until they meet on empowerment. Tactile, elemental, expensive. The screen
+ * has exactly ONE focal point — the venn centrepiece — and a quiet prelude:
  *
  *   PRELUDE (ungated, cinematic). A single thin strip wipes "survival mode" to
  *   "active agency". One word shows at a time (the off side is clipped, never
  *   stacked). A range input drives it; scroll primes the turn until touched.
  *   Keyboard operable. Narrative only — it does not gate.
  *
- *   THE MARQUEE (gated, the hero motion). "Bring the three together." Money /
- *   time / stress start as three flat brand circles held WIDE apart on the open
- *   ground. The visitor DRAGS them together (real physics + contact shadow via
- *   tactile.js); as they converge the shared overlap grows and the word
- *   "empowerment" assembles in the centre. The three verified Q14 brand-ask
- *   values read inline beneath each need — data as a reality, not a chart. When
- *   the three meet, journey.ready() fires (advisory — Next is never blocked).
- *   Fully keyboard operable (focus a need in the legend, Enter/arrows bring it
- *   in) and reduced-motion safe (circles start resolved). The "you" dot lands
- *   on the resolved core.
+ *   THE CENTREPIECE (gated, the hero motion). Money / time / stress start as
+ *   three large flat brand circles held WIDE apart on the open ground. Each
+ *   carries its own verified Q14 brand-ask figure AS its label (the number IS
+ *   the reading — 38.8 / 24.0 / 27.7, not a marooned chart below). They sweep
+ *   together (auto on arrival; drag as an optional nudge) and the shared
+ *   overlap blooms a luminous yellow core with "empowerment" assembling in the
+ *   centre. When the three meet, journey.ready() fires (advisory — Next is
+ *   never blocked). Fully keyboard operable (focus a need's stat, Enter/arrows
+ *   bring it in) and reduced-motion safe (circles start resolved).
  *
  * Contract: docs/CONTRACT.md. Every CSS selector scoped #15-empowerment.
  * Verified Q14 values from segments.json meta.metricsTotals.brandAsks
@@ -48,7 +47,7 @@ const PIVOT_SNAP = 50;    // crossover point for which word shows
 // The held beat (ms) on the wide spread before the needs auto-sweep into the
 // shared core. Long enough to read three separate needs, short enough to feel
 // like one continuous cinematic move on arrival.
-const AUTO_CONVERGE_HOLD_MS = 620;
+const AUTO_CONVERGE_HOLD_MS = 680;
 
 /**
  * Wire the thin pivot strip. Returns { slider, apply } so scrollScene can prime
@@ -72,19 +71,19 @@ const buildPivot = (mount) => {
   return { slider, apply };
 };
 
-/* ──────────── THE MARQUEE — the tactile three-needs venn ────────────────── */
+/* ──────────── THE CENTREPIECE — the tactile three-needs venn ─────────────── */
 
-// Verified Q14 brand-asks (national totals), inline at each need.
+// Verified Q14 brand-asks (national totals), read AS each need's own label.
 const NEED_KEYS = Object.freeze({
   money: 'Stretch my money further',
   time: 'Save me time',
   stress: 'Reduce stress',
 });
 
-// Three CLEARLY DISTINCT fills that all read against the warm ground — NO
-// mustard-on-mustard, all from the navy icon system. Money (the loud ask) takes
-// deep navy; time takes the brighter icon blue; stress takes the warm orange.
-// All three stay legible apart and resolve to a deep navy core under multiply.
+// Three CLEARLY DISTINCT fills, all from the navy icon system so none reads as
+// mustard-on-mustard, and all resolve to a deep navy core under multiply.
+// Money (the loud, obvious ask) takes deep navy; time the brighter icon blue;
+// stress the warm coral — the two "premium" asks lean warm, money leans deep.
 const NEED_META = Object.freeze({
   money: { label: 'Save me money', short: 'money', sub: 'the obvious ask', token: '--navy', fallback: '#041654' },
   time: { label: 'Save me time', short: 'time', sub: 'the premium ask', token: '--navy-bright', fallback: '#0129A4' },
@@ -98,13 +97,14 @@ const NEED_LAYOUT = [
   { id: 'stress', ang: 30 },
 ];
 
-// Geometry as fractions of the stage's shorter side (responsive).
+// Geometry as fractions of the stage's shorter side (responsive). Tuned bigger
+// than before so the venn FILLS the pane — the centrepiece, not a motif.
 const VENN = Object.freeze({
-  diamFrac: 0.42,    // circle diameter
-  spreadFrac: 0.40,  // home distance of each centre from stage centre — held
+  diamFrac: 0.50,    // circle diameter — large, the screen's focal mass
+  spreadFrac: 0.36,  // home distance of each centre from stage centre — held
                      // WIDE so the drag-to-overlap journey is a real, felt move
-  lockFrac: 0.084,   // resolved (overlapping) distance from centre
-  metFrac: 0.16,     // centre-distance under which a circle counts as "met"
+  lockFrac: 0.10,    // resolved (overlapping) distance from centre
+  metFrac: 0.17,     // centre-distance under which a circle counts as "met"
 });
 
 const cssVar = (name, fallback) =>
@@ -117,11 +117,11 @@ const dirXY = (ang) => ({
 
 /**
  * Build the tactile venn. Calls onConverged() once the three needs fully meet.
- * Returns { destroy }.
+ * Returns { autoConverge, destroy }.
  */
 const buildVenn = (mount, brandAsks, onConverged) => {
   if (!brandAsks) {
-    mount.innerHTML = '<p class="emp-tv-empty">Brand-ask data is not available.</p>';
+    mount.innerHTML = '<p class="emp-tv-empty">Brand-ask data is awaiting the survey file.</p>';
     return { autoConverge() {}, destroy() {} };
   }
 
@@ -130,23 +130,19 @@ const buildVenn = (mount, brandAsks, onConverged) => {
 
   mount.innerHTML = `
     <div class="emp-tv-stage" role="group"
-         aria-label="Drag save me money, save me time and save me stress together until they meet on empowerment">
+         aria-label="Bring save me money, save me time and save me stress together until they meet on empowerment">
       <div class="emp-tv-field" data-emp-tv-field>
         <div class="emp-tv-overlap" aria-hidden="true"></div>
         <div class="emp-tv-centre" aria-hidden="true">
           <span class="emp-tv-centre-word">empowerment</span>
         </div>
       </div>
-      <p class="emp-tv-hint" data-emp-tv-hint aria-live="polite">Drag the three circles together</p>
-    </div>
-    <div class="emp-tv-legend"></div>`;
+    </div>`;
 
   const stage = mount.querySelector('.emp-tv-stage');
   const field = mount.querySelector('[data-emp-tv-field]');
   const overlap = mount.querySelector('.emp-tv-overlap');
   const centre = mount.querySelector('.emp-tv-centre');
-  const hint = mount.querySelector('[data-emp-tv-hint]');
-  const legend = mount.querySelector('.emp-tv-legend');
 
   // Live geometry in px, computed per render from the field box.
   const geom = () => {
@@ -164,8 +160,9 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     };
   };
 
-  // The three need circles — absolutely positioned; tactile transforms them in
-  // real px on top of their CSS home left/top.
+  // Each need = a draggable circle PLUS an integrated stat label (the number is
+  // the reading). The label is a sibling, positioned to follow the circle.
+  const fmtPct = (v) => (typeof v === 'number' ? v.toFixed(1) : '—');
   const needs = NEED_LAYOUT.map(({ id, ang }) => {
     const el = document.createElement('div');
     el.className = 'emp-tv-need';
@@ -173,33 +170,43 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     el.style.setProperty('--accent', accent(id));
     el.innerHTML = `<span class="emp-tv-need-lbl">${NEED_META[id].short}</span>`;
     field.appendChild(el);
-    return { id, el, dir: dirXY(ang), homeX: 0, homeY: 0 };
-  });
 
-  // Legend rows — backgroundless, focusable; the keyboard path AND the inline
-  // data reality (each verified Q14 value reads at its need).
-  const legRows = needs.map(({ id }) => {
-    const row = document.createElement('div');
-    row.className = 'emp-tv-leg';
-    row.dataset.need = id;
-    row.tabIndex = 0;
-    row.style.setProperty('--accent', accent(id));
+    // Integrated stat label — the verified Q14 figure, focusable (keyboard path).
+    const stat = document.createElement('div');
+    stat.className = 'emp-tv-stat';
+    stat.dataset.need = id;
+    stat.tabIndex = 0;
+    stat.style.setProperty('--accent', accent(id));
     const v = brandAsks[NEED_KEYS[id]];
     const numAttrs =
       typeof v === 'number'
         ? `data-count-to="${v}" data-count-suffix="%" data-count-decimals="1"`
         : '';
-    row.innerHTML =
-      `<span class="emp-tv-leg-n num" ${numAttrs}>0</span>` +
-      `<span class="emp-tv-leg-name">${NEED_META[id].label}</span>` +
-      `<span class="emp-tv-leg-sub">${NEED_META[id].sub}</span>`;
-    legend.appendChild(row);
-    return { id, row };
+    stat.innerHTML =
+      `<span class="emp-tv-stat-n num" ${numAttrs}>${fmtPct(v)}%</span>` +
+      `<span class="emp-tv-stat-name">${NEED_META[id].label}</span>` +
+      `<span class="emp-tv-stat-sub">${NEED_META[id].sub}</span>`;
+    field.appendChild(stat);
+
+    return { id, el, stat, dir: dirXY(ang), homeX: 0, homeY: 0 };
   });
 
   const offsets = new Map(needs.map((n) => [n.id, { dx: 0, dy: 0 }]));
   const drags = new Map();
   let converged = false;
+
+  // Stat labels sit OUTSIDE each circle's home, pushed radially outward so the
+  // number never collides with the converging mass — anchored to the field edge
+  // in the circle's home direction.
+  const placeStat = (n, g) => {
+    const px = g.cx + n.dir.x * (g.spread + g.diam * 0.5);
+    const py = g.cy + n.dir.y * (g.spread + g.diam * 0.5);
+    // Money (top) reads above; the two lower needs read below their circle.
+    const above = n.dir.y < -0.5;
+    n.stat.style.left = `${px}px`;
+    n.stat.style.top = `${py}px`;
+    n.stat.dataset.pos = above ? 'above' : 'below';
+  };
 
   const placeHome = () => {
     const g = geom();
@@ -210,6 +217,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       n.homeY = g.cy + n.dir.y * g.spread;
       n.el.style.left = `${n.homeX - g.diam / 2}px`;
       n.el.style.top = `${n.homeY - g.diam / 2}px`;
+      placeStat(n, g);
     });
   };
 
@@ -248,7 +256,6 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       stage.classList.remove('is-pulse');
       void stage.offsetWidth;
       stage.classList.add('is-pulse');
-      if (hint) hint.textContent = 'They all resolve to one thing: empowerment.';
       onConverged();
       lockToCentre();
     }
@@ -269,6 +276,8 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   const spreadOut = () => {
     if (reduced) return;
     converged = false;
+    stage.classList.remove('is-converged', 'is-converging');
+    centre.classList.remove('is-on');
     needs.forEach((n) => {
       const ctrl = drags.get(n.id);
       if (ctrl) ctrl.setPosition(0, 0, { animate: false });
@@ -334,23 +343,21 @@ const buildVenn = (mount, brandAsks, onConverged) => {
       },
     });
     drags.set(n.id, ctrl);
-  });
 
-  // Legend rows = keyboard path: Enter/Space/arrows bring that need in.
-  legRows.forEach(({ id, row }) => {
-    row.addEventListener('keydown', (e) => {
+    // Stat label = keyboard path: Enter/Space/arrows bring that need in.
+    n.stat.addEventListener('keydown', (e) => {
       const keys = ['Enter', ' ', 'Spacebar', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
       if (keys.includes(e.key)) {
         e.preventDefault();
-        bringIn(id);
+        bringIn(n.id);
       }
     });
-    const on = () => { stage.dataset.focus = id; };
+    const on = () => { stage.dataset.focus = n.id; };
     const off = () => { delete stage.dataset.focus; };
-    row.addEventListener('mouseenter', on);
-    row.addEventListener('mouseleave', off);
-    row.addEventListener('focus', on);
-    row.addEventListener('blur', off);
+    n.stat.addEventListener('mouseenter', on);
+    n.stat.addEventListener('mouseleave', off);
+    n.stat.addEventListener('focus', on);
+    n.stat.addEventListener('blur', off);
   });
 
   if (reduced) snapResolved();
@@ -391,7 +398,7 @@ export default function init(rootEl, data) {
   // PRELUDE — pivot wipe (ungated).
   const pivot = pivotMount ? buildPivot(pivotMount) : null;
 
-  // THE MARQUEE — venn (advisory gate via journey.ready()).
+  // THE CENTREPIECE — venn (advisory gate via journey.ready()).
   let unlocked = false;
   const unlock = () => {
     if (unlocked) return;
@@ -417,7 +424,7 @@ export default function init(rootEl, data) {
     venn?.autoConverge?.();
   });
 
-  // Experiential motion — everything but the marquee stays quiet.
+  // Experiential motion — everything but the centrepiece stays quiet.
   const cleanups = [];
   cleanups.push(chapterTransition(root));
   cleanups.push(observeParallax(root, { maxShiftPx: 40 }));

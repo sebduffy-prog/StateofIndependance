@@ -264,6 +264,46 @@
   flex-shrink: 0;
 }
 
+/* ── TGI fingerprint cloud — quiet navy-on-cream tags, square corners,
+   text only (no index numbers). Fills the lower card area. */
+#\31 3-segment-retreaters .segment-fingerprint {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.1vh, 12px);
+  border-top: 1px solid rgba(4, 22, 84, 0.1);
+  padding-top: clamp(10px, 1.3vh, 14px);
+}
+#\31 3-segment-retreaters .segment-fingerprint-label {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+}
+#\31 3-segment-retreaters .segment-fingerprint-cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.7vw, 10px);
+}
+#\31 3-segment-retreaters .segment-fingerprint-tag {
+  display: inline-block;
+  padding: 5px 11px;
+  border: 1px solid rgba(4, 22, 84, 0.22);
+  background: rgba(4, 22, 84, 0.045);
+  border-radius: 0;
+  font-size: clamp(0.7rem, 0.88vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
 /* ── Narrow / short viewports — stack, keep one screen ────────────── */
 @media (max-width: 900px) {
   #\31 3-segment-retreaters .segment-retreaters-grid {

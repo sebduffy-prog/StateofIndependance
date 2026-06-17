@@ -1,40 +1,38 @@
 <!-- Chapter 15 — the empowerment architecture. THE TURN.
      AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "06"):
-     Full-bleed warm gradient. Two-column stage: LEFT = hero copy +
-     cinematic pivot wipe; RIGHT = the tactile three-needs venn (the
-     focal point). The bear/girl tall silhouette anchors the far right
-     edge as a decorative brand layer. Tiny Challenger-Series stamp
-     top-right (book-cover position). Zero dead space; balanced frame.
+     Full-bleed warm gradient world moment. The whole screen is the stage.
 
-     Composition: left column (~38%) is the prelude — eyebrow, bold-
-     black display title with italic accent, a standfirst that frames
-     the argument, and the cinematic pivot strip. Right column (~62%)
-     IS the screen — the three draggable needs (money / time / stress)
-     held wide apart until pulled together, "empowerment" assembling in
-     the dark shared core. The data (Q14 brand-ask values) reads inline
-     in the legend below. One focal point. No borders, no boxes, no
-     plates — every element lives directly on the warm ground. -->
+     Composition (the expensive frame): an asymmetric two-pane grid that
+     FILLS 100vw x 100svh. LEFT (the argument): eyebrow, the bold-black
+     Poppins-900 hero with one italic navy accent, a tight standfirst, and
+     the cinematic survival -> agency pivot wipe. RIGHT (the centrepiece):
+     the three needs — money / time / stress — held wide on the open ground
+     then pulled together until they converge on EMPOWERMENT in a tactile,
+     luminous shared core. The three verified Q14 figures (38.8 / 24.0 /
+     27.7) are integrated AS each need's own label — the number IS the
+     reading, never a marooned chart below. One focal point. Backgroundless.
+     No box, no border, no plate — every element lives on the warm ground. -->
 
 <div class="chapter-inner emp-root on-warm" data-emp-root>
 
-  <!-- Decorative orbit — connective signature, behind everything. -->
+  <!-- Decorative orbit — the connective signature, behind everything. -->
   <div class="emp-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.04"></div>
 
-  <!-- The tall agent silhouette — the small figure stepping up to fix
-       things itself. Brand-signature mass on the warm ground; far right
-       edge column behind the venn. Decorative only. -->
+  <!-- The tall agent silhouette — the small figure stepping up to fix things
+       itself. Grounded full-height at the far right as a deliberate edge
+       presence (never an awkward half-cut). Decorative brand layer only. -->
   <img class="emp-figure si-silhouette" src="assets/brand-final/bear-girl-tall.png"
-       alt="" aria-hidden="true" data-parallax="0.06" />
+       alt="" aria-hidden="true" data-parallax="0.05" />
 
   <!-- The Challenger-Series brand stamp, top-right (book-cover position). -->
   <img class="emp-mark si-lockup si-lockup--mark"
        src="assets/brand-final/challenger-series-lockup.png"
        alt="Challenger Series" />
 
-  <!-- ── TWO-COLUMN STAGE ────────────────────────────────────────── -->
+  <!-- ── TWO-PANE STAGE ──────────────────────────────────────────────── -->
   <div class="emp-stage">
 
-    <!-- LEFT — the prelude: hero title + cinematic pivot wipe ────── -->
+    <!-- LEFT — the argument: hero title + cinematic pivot wipe ────────── -->
     <header class="emp-head">
 
       <p class="vccp-eyebrow emp-eyebrow" data-arrival-scramble>The turn</p>
@@ -44,19 +42,16 @@
       </h2>
 
       <p class="emp-standfirst" data-arrival>
-        Britain doesn't want to be rescued.<br>
-        It wants to be equipped. One need<br>
-        unifies all four: personal control.<br>
-        Money is the obvious ask.<br>
-        <strong class="hl">Time</strong> and <strong class="hl">stress</strong> are the
-        premium one.
+        Britain doesn't want to be rescued. It wants to be equipped. One need
+        unifies all four segments: personal control. Money is the obvious ask.
+        <strong class="hl">Time</strong> and <strong class="hl">stress</strong>
+        are the premium one.
       </p>
 
       <!-- Cinematic pivot wipe — survival mode wipes to active agency.
-           A single line at a time; the off side is clipped, not stacked.
+           One word at a time; the off side is clipped, never stacked.
            Scroll primes it; the visitor finishes the turn. -->
       <div class="emp-pivot" data-emp-pivot data-arrival>
-        <div class="emp-pivot-label">The old model</div>
         <div class="emp-pivot-readout" data-side="before" aria-live="polite">
           <span class="emp-pivot-word emp-pivot-word--before">Survival mode</span>
           <span class="emp-pivot-word emp-pivot-word--after">Active agency</span>
@@ -66,19 +61,22 @@
           <input type="range" class="emp-pivot-slider" min="0" max="100" value="14"
                  aria-label="Scrub from survival mode to active agency" />
         </div>
-        <div class="emp-pivot-label emp-pivot-label--after">The new model</div>
+        <div class="emp-pivot-ends" aria-hidden="true">
+          <span>The old model</span>
+          <span>The new model</span>
+        </div>
       </div>
 
     </header>
 
-    <!-- RIGHT — THE FOCAL POINT: tactile three-needs venn ───────── -->
+    <!-- RIGHT — THE CENTREPIECE: tactile three-needs venn ─────────────── -->
     <section class="emp-venn" aria-labelledby="emp-venn-lbl">
 
       <p class="emp-venn-instruction vccp-eyebrow" id="emp-venn-lbl" data-arrival>
-        Three needs, one centre
+        Three needs · one centre
       </p>
 
-      <!-- JS builds circles + legend into this mount -->
+      <!-- JS builds the field + integrated need labels into this mount. -->
       <div class="emp-venn-mount" data-emp-venn></div>
 
     </section>
