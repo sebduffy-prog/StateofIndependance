@@ -12,13 +12,13 @@
      • MASTHEAD band (top) — eyebrow + display figure on the left, the read line
        beside it, the Challenger lockup stamped top-right.
      • CONTROL DECK — a full-width toolbar directly below: the question pills in
-       tidy wrap rows, then Britain + view on one row. Held compact so the chart
-       keeps a large band. Tactile square chips.
+       tidy wrap rows, then the Britain row. Held compact so the chart keeps a
+       large band. Tactile square chips. No view-type chooser: every cut is a
+       lollipop.
      • HERO STAGE — one large panel that FILLS the rest of the screen below the
-       controls; the chart is big and dominant, morphing / crossfading on every
-       change.
+       controls; the lollipop is big and dominant, crossfading on every change.
 
-   MOTION — one hero motion: the chart morphs and the figure counts. Quiet
+   MOTION — one hero motion: the lollipop crossfades and the figure counts. Quiet
    elsewhere. Reduced-motion safe. */
 
 /* ─── The editorial cream ground — a faint warm top-light gives depth. ─── */
@@ -271,10 +271,9 @@
   transform: translateY(0) scale(0.97);
 }
 /* Active: solid navy GROUND, cream text, a yellow underline wedge — the
-   data-serious chip. High-contrast and unmistakable, identical across all three
-   control groups (THE QUESTION / WHICH BRITAIN / VIEW IT AS). The double
-   selector lifts specificity so the fill + text colour always win; square
-   corners kept. */
+   data-serious chip. High-contrast and unmistakable, identical across both
+   control groups (THE QUESTION / WHICH BRITAIN). The double selector lifts
+   specificity so the fill + text colour always win; square corners kept. */
 #\31 6-data-explorer .pillgroup-chip.is-active,
 #\31 6-data-explorer .pillgroup-chip.is-active:hover {
   background-color: var(--navy);
@@ -344,188 +343,6 @@
   margin: 0 auto;
 }
 
-/* ─── Waffle view · ALL options as small-multiple N-in-100 grids ────────
-   The waffle field OWNS the full chart band height and FILLS it densely:
-   tiles pack tight so every option-waffle sits inside the band, nothing
-   clips the viewport, and the stage never grows. */
-#\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
-  justify-content: stretch;
-  overflow: hidden;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-all {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(96px, 10vw, 132px), 1fr));
-  grid-auto-rows: 1fr;
-  gap: clamp(var(--space-1), 1.4vw, var(--space-3));
-  align-content: stretch;
-  align-items: stretch;
-  justify-items: center;
-}
-/* Few options? Cap the column count so tiles don't balloon, but still let
-   each tile stretch to fill its row height. */
-#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 1"],
-#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 2"],
-#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 3"],
-#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 4"] {
-  grid-template-columns: repeat(var(--pg-waffle-count), minmax(0, clamp(120px, 14vw, 184px)));
-  justify-content: center;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-tile {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(2px, 0.6vh, 8px);
-  width: 100%;
-  min-height: 0;
-  max-width: 200px;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-grid {
-  width: 100%;
-  min-height: 0;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-grid > svg {
-  width: auto !important;
-  max-width: 100% !important;
-  height: 100% !important;
-  max-height: 100% !important;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-tile-cap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1px;
-  flex: 0 0 auto;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-tile-num {
-  font-size: clamp(1rem, 1.7vw, 1.5rem);
-  font-weight: 900;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-tile-lab {
-  font-size: clamp(0.68rem, 0.9vw, 0.85rem);
-  font-weight: 600;
-  color: var(--navy);
-  opacity: 0.72;
-  line-height: 1.12;
-  max-width: 16ch;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-#\31 6-data-explorer .pg-chart .pg-waffle-cap {
-  text-align: center;
-  font-weight: 600;
-  color: var(--navy);
-  opacity: 0.7;
-}
-
-/* ─── Venn view — flat circles on the cream; navy text, no white box ──── */
-#\31 6-data-explorer .pg-chart .venn-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-}
-#\31 6-data-explorer .pg-chart .venn-stage { position: relative; width: 100%; }
-#\31 6-data-explorer .pg-chart .venn-svg { width: 100%; height: auto; max-height: clamp(420px, 56vh, 640px); }
-#\31 6-data-explorer .pg-chart .venn-petal {
-  fill-opacity: 0.34;
-  stroke-width: 1.5;
-  transition: fill-opacity 0.22s var(--ease-entrance);
-}
-#\31 6-data-explorer .pg-chart .venn-svg.is-focus .venn-petal { fill-opacity: 0.14; }
-#\31 6-data-explorer .pg-chart .venn-svg.is-focus .venn-petal.is-on { fill-opacity: 0.5; }
-#\31 6-data-explorer .pg-chart .venn-leader { stroke: var(--pg-rule); stroke-width: 1; }
-#\31 6-data-explorer .pg-chart .venn-ltext {
-  fill: var(--navy);
-  font: 700 14px/1 var(--font-sans);
-}
-#\31 6-data-explorer .pg-chart .venn-lmeta {
-  fill: var(--navy);
-  opacity: 0.6;
-  font: 600 12px/1 var(--font-sans);
-  font-variant-numeric: tabular-nums;
-}
-#\31 6-data-explorer .pg-chart .venn-centre {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  pointer-events: none;
-}
-#\31 6-data-explorer .pg-chart .venn-centre .lbl {
-  font-size: var(--t-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--navy);
-  opacity: 0.55;
-}
-#\31 6-data-explorer .pg-chart .venn-centre .val {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 900;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-#\31 6-data-explorer .pg-chart .venn-centre .sub {
-  font-size: var(--t-xs);
-  font-weight: 600;
-  color: var(--navy);
-  opacity: 0.7;
-  max-width: 14ch;
-}
-#\31 6-data-explorer .pg-chart .venn-legend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-#\31 6-data-explorer .pg-chart .venn-leg {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  background: transparent;
-  border: 1.5px solid rgba(4, 22, 84, 0.28);
-  border-left: 4px solid var(--accent, var(--navy));
-  border-radius: 0;
-  padding: 6px 11px;
-  color: var(--navy);
-  cursor: pointer;
-  font: 600 var(--t-xs) / 1 var(--font-sans);
-  transition: border-color 0.18s var(--ease-entrance);
-}
-#\31 6-data-explorer .pg-chart .venn-leg:hover,
-#\31 6-data-explorer .pg-chart .venn-leg.is-on,
-#\31 6-data-explorer .pg-chart .venn-leg:focus-visible {
-  border-color: var(--navy);
-  outline: none;
-}
-#\31 6-data-explorer .pg-chart .venn-leg .n {
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-#\31 6-data-explorer .pg-chart .venn-leg .pct { opacity: 0.6; }
-
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   #\31 6-data-explorer .pillgroup-chip,
@@ -557,7 +374,4 @@
     min-height: clamp(360px, 56vh, 520px);
   }
   #\31 6-data-explorer .pg-chart > svg { max-height: none; }
-  #\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
-    height: clamp(360px, 56vh, 520px);
-  }
 }

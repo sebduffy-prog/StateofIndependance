@@ -72,7 +72,7 @@ const CITIES = [
     id: 'bury', name: 'Bury',
     // NW England, just NE of Wigan (north of Manchester).
     fx: 0.5600, fy: 0.6160, side: 'right',
-    quote: "It is more of an empowering feeling, being able to do things yourself, to fix things yourself.",
+    quote: "It is more of an empowering feeling, being able to do things yourself.",
     who: 'Bury, 39, Hustler',
   },
   {
@@ -80,34 +80,34 @@ const CITIES = [
     // South Wales, west side of the Bristol Channel.
     fx: 0.3600, fy: 0.8120, side: 'left',
     quote: "I use ChatGPT all the time. I feel more empowered now, with everything at my fingertips.",
-    who: 'Wales, 68, Architects',
+    who: 'Cardiff, 68, Architects',
   },
   {
     id: 'bristol', name: 'Bristol',
     // SW England, east across the Severn from Cardiff.
     fx: 0.4300, fy: 0.8120, side: 'right',
-    quote: "I particularly like all the apps, the shopping apps and the loyalty apps. It is very easy to cost the price everywhere.",
+    quote: "I particularly like all the apps, the shopping apps and the loyalty apps. It is very easy to cost the price.",
     who: 'Bristol, 61, Coaster',
   },
   {
     id: 'watford', name: 'Watford',
     // Hertfordshire, just NW of London.
     fx: 0.6000, fy: 0.8020, side: 'left',
-    quote: "I don’t go out specifically to look for certain brand items. I go by, comfort and price.",
-    who: 'Hertfordshire, 63, Coaster',
+    quote: "I don’t go out to look for certain brand items. I go by comfort and price.",
+    who: 'Watford, 63, Coaster',
   },
   {
     id: 'london', name: 'London',
     // The south-east.
     fx: 0.6280, fy: 0.8180, side: 'right',
-    quote: "If I could get an app to prompt me to do certain things, even fifteen minutes aside. Sometimes it becomes really overwhelming.",
+    quote: "If I could get an app to prompt me to do things, even fifteen minutes aside. Sometimes it becomes really overwhelming.",
     who: 'London, 42, Retreater',
   },
   {
     id: 'southampton', name: 'Southampton',
     // South coast, central.
     fx: 0.5200, fy: 0.8720, side: 'left',
-    quote: "I now have a lot less trust in institutions than I did a few years ago. There is just scandal after scandal.",
+    quote: "I have a lot less trust in institutions than I did a few years ago. There is just scandal after scandal.",
     who: 'Southampton, 63, Architects',
   },
 ];

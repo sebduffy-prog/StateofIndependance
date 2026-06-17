@@ -2,14 +2,13 @@
      AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
      warm gradient full-bleed ground. Black on warm.
 
-     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
-     LEFT  — move number + eyebrow + scramble title + WLV lesson + sandwich-generation
-             stat cards (87/58/31/12 from Killik & Co 2025) with the new-premium quote.
-     RIGHT — move-04.svg icon + death-to beats + flipReveal less→more interaction.
-     Both columns stretch the full height; no dead space in any quadrant.
-
-     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
-     arrival() wired to chapter:arrive in JS.
+     COMPOSITION — identical skeleton to Move 01 (17-move-unplug):
+     LEFT  — designed stage marker (04 + rule + "Move four of five") + title
+             lockup + WLV lesson + sandwich-generation stat strip (87/58/31/12,
+             Killik & Co 2025) + new-premium quote card.
+     RIGHT — icon + death-to beats (the stat-hero slot for this move) +
+             flipReveal inside a navy panel with yellow kicker.
+     Columns are CENTERED (no space-between): one screen, no dead space.
 
      DATA: 87/58/31/12 sandwich generation — Killik & Co poll, 2025 (STORY.md §07 Move 04).
      Quote: "The brand I find most aspirational isn't a fashion house, it's Cook or
@@ -35,10 +34,12 @@
     <!-- LEFT COLUMN — move header + sandwich stats + premium quote -->
     <div class="mml-left">
       <header class="mml-head">
-        <p class="vccp-eyebrow mml-eyebrow" data-arrival>
-          <span class="mml-movenum" aria-hidden="true">04</span>
-          Move four of five
-        </p>
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="mml-stage" data-arrival>
+          <span class="mml-stage__num" aria-hidden="true">04</span>
+          <span class="mml-stage__rule" aria-hidden="true"></span>
+          <span class="mml-stage__label vccp-eyebrow">Move four of five</span>
+        </div>
         <h2 class="mml-title" data-arrival>
           <img class="mml-title-img" src="assets/logos/move-04.png"
                alt="Kill the mental load" />
@@ -103,11 +104,11 @@
       </blockquote>
     </div>
 
-    <!-- RIGHT COLUMN — icon + death-to beats + flipReveal -->
+    <!-- RIGHT COLUMN — icon + death-to lead + navy flip panel -->
     <aside class="mml-right" aria-label="Kill the mental load: less to more">
 
-      <!-- Icon + death-to header cluster -->
-      <div class="mml-icon-cluster" data-arrival>
+      <!-- Icon + death-to cluster (this move's stat-hero slot) -->
+      <div class="mml-stat-hero" data-arrival>
         <div class="mml-icon" aria-hidden="true">
           <img src="assets/icons/move-04.svg"
                alt="Kill the mental load icon"
@@ -120,9 +121,12 @@
         </div>
       </div>
 
-      <!-- flipReveal interaction — the marquee beat -->
-      <div class="mml-flip" data-flip
-           aria-label="Flip each row to reveal the brand shift"></div>
+      <!-- flipReveal interaction — the designed less-to-more beat -->
+      <div class="mml-flip-panel" data-arrival>
+        <p class="mml-flip-kicker">The shift, in three moves</p>
+        <div class="mml-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift"></div>
+      </div>
 
     </aside>
   </div>

@@ -81,6 +81,10 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
+  /* Centre the stack in its track: with the diary slot now sized to hold a
+     full 3-line quote + cite, the whole rail (~520px max) sits comfortably
+     inside the track on short laptops AND tall displays, so centring stays
+     balanced with no dead space and the diary never reaches the controls. */
   justify-content: center;
   min-height: 0;
 }
@@ -93,7 +97,7 @@
    Sentence case, set tight, three lines; the accent word is italic only.
    No outline or border: the title stands alone on the cream ground. */
 #\30 2-research .research-headline {
-  margin: 0 0 clamp(16px, 2.4vh, 26px);
+  margin: 0 0 clamp(13px, 2vh, 22px);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -118,9 +122,9 @@
 }
 
 #\30 2-research .research-standfirst {
-  margin: 0 0 clamp(18px, 2.6vh, 28px);
+  margin: 0 0 clamp(14px, 2vh, 22px);
   font-size: var(--t-sm);
-  line-height: 1.48;
+  line-height: 1.45;
   font-weight: 400;
   color: var(--ink-soft);
   max-width: 38ch;
@@ -137,7 +141,7 @@
 /* The facts — a single quiet supporting row, never a second hero. Big navy
    tabular numerals (gravity); the small caption beneath in soft ink. */
 #\30 2-research .research-facts {
-  margin: 0 0 clamp(18px, 2.6vh, 30px);
+  margin: 0 0 clamp(14px, 2vh, 24px);
   display: flex;
   flex-wrap: nowrap;   /* all three stats (8 / 1wk / May 26) on ONE row */
   gap: clamp(12px, 1.6vw, 26px);
@@ -347,11 +351,12 @@
    Editorial register: a hanging quote, the yellow accent on the quote mark,
    navy emphasis on the attribution. Backgroundless — no card behind it. ── */
 #\30 2-research .research-diary {
-  /* Reserve a fixed slot so the rail never reflows when a diary opens —
-     kept compact so the whole rail stack stays within 100svh on short
-     (~800-900px) laptop viewports. Long quotes clamp rather than push down. */
-  min-height: clamp(84px, 11vh, 124px);
-  max-height: clamp(84px, 11vh, 124px);
+  /* Reserve a fixed slot so the rail never reflows when a diary opens. Sized to
+     hold a 3-line quote AND its attribution cite with headroom, so neither the
+     quote nor the cite is ever clipped at the bottom. Long quotes line-clamp
+     within the quote block rather than pushing the cite out of view. */
+  min-height: clamp(118px, 15vh, 148px);
+  max-height: clamp(118px, 15vh, 148px);
   margin: 0 0 clamp(6px, 1.2vh, 12px);
   overflow: hidden;
 }
@@ -382,7 +387,7 @@
   color: var(--yellow);
 }
 #\30 2-research .research-quote-cite {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   padding-left: 1em;
   font-size: var(--t-xs);
   letter-spacing: 0.06em;

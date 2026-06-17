@@ -311,12 +311,21 @@
 }
 
 /* The Challenger-Series lockup — black silhouette on warm, signs off quietly
-   from the top-right. Never recoloured, stretched, or skewed. */
+   from the top of the right pane. The tall figure owns the far-right edge and
+   rises high, so the lockup is anchored top-LEFT of the pane and pulled clear
+   of the figure's column — clean separation, no overlap. Never recoloured,
+   stretched, or skewed. */
 #\32 2-outro .ot-lockup {
-  display: block;
-  width: clamp(180px, 20vw, 268px);
+  position: absolute;
+  top: clamp(4px, 2vh, 24px);
+  left: 0;
+  /* Cap the lockup short of the figure's column (~45% of the pane) so the two
+     never meet, while clamp keeps it generous on wide screens. */
+  width: clamp(150px, 16vw, 224px);
+  max-width: 45%;
   height: auto;
   flex-shrink: 0;
+  z-index: 3;
 }
 
 /* The figure — large, the protagonist of the close, standing flush on the floor.

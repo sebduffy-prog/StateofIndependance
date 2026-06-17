@@ -2,14 +2,13 @@
      AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
      warm gradient full-bleed ground. Black on warm.
 
-     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
-     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
-     RIGHT — move-03.svg icon + self-help feed (flipReveal less→more) +
-             media shift table.
-     Both columns stretch the full height; no dead space in any quadrant.
-
-     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
-     arrival() wired to chapter:arrive in JS.
+     COMPOSITION — identical skeleton to Move 01 (17-move-unplug):
+     LEFT  — designed stage marker (03 + rule + "Move three of five") + title
+             lockup + WLV lesson + cream quote card.
+     RIGHT — icon + lead label (the stat-hero slot for this move) + flipReveal
+             inside a navy panel with yellow kicker + media-shift table as a
+             compact row directly under the navy panel.
+     Columns are CENTERED (no space-between): one screen, no dead space.
 
      Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
      Single root .chapter-inner. Every CSS scoped to #\31 9-move-selfhelp. -->
@@ -30,10 +29,12 @@
     <!-- LEFT COLUMN — move header + lesson + quote -->
     <div class="msh-left">
       <header class="msh-head">
-        <p class="vccp-eyebrow msh-eyebrow" data-arrival>
-          <span class="msh-movenum" aria-hidden="true">03</span>
-          Move three of five
-        </p>
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="msh-stage" data-arrival>
+          <span class="msh-stage__num" aria-hidden="true">03</span>
+          <span class="msh-stage__rule" aria-hidden="true"></span>
+          <span class="msh-stage__label vccp-eyebrow">Move three of five</span>
+        </div>
         <h2 class="msh-title" data-arrival>
           <img class="msh-title-img" src="assets/logos/move-03.png"
                alt="Ride the social self-help wave" />
@@ -58,11 +59,11 @@
       </blockquote>
     </div>
 
-    <!-- RIGHT COLUMN — icon + flip interaction + media shift -->
+    <!-- RIGHT COLUMN — icon lead + navy flip panel + media shift -->
     <aside class="msh-right" aria-label="Self-help wave interaction: less to more">
 
-      <!-- Icon + kicker -->
-      <div class="msh-icon-row" data-arrival>
+      <!-- Lead cluster — icon + label (this move's stat-hero slot) -->
+      <div class="msh-stat-hero" data-arrival>
         <div class="msh-icon" aria-hidden="true">
           <img src="assets/icons/move-03.svg"
                alt="Self-help wave icon"
@@ -70,15 +71,18 @@
         </div>
         <div class="msh-stat">
           <span class="msh-stat__label" data-youdot-anchor>
-            The nation's self-help manuals<br>live on platforms where
+            The nation's self-help manuals live on platforms where
             context is king.
           </span>
         </div>
       </div>
 
-      <!-- flipReveal interaction — the marquee beat -->
-      <div class="msh-flip" data-flip
-           aria-label="Flip each row to reveal the brand shift"></div>
+      <!-- flipReveal interaction — the designed less-to-more beat -->
+      <div class="msh-flip-panel" data-arrival>
+        <p class="msh-flip-kicker">The shift, in three moves</p>
+        <div class="msh-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift"></div>
+      </div>
 
       <!-- Media shift table — From → To (slide 56) -->
       <div class="msh-shift" data-arrival aria-label="From audiences to contexts">

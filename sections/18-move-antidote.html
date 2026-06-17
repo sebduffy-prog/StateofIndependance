@@ -2,14 +2,14 @@
      AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
      warm gradient full-bleed ground. Black on warm.
 
-     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
-     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
-     RIGHT — 29pt trust spread stat + move-02.svg icon + flipReveal less→more
-             + M&S / Boots brand evidence cards.
-     Both columns stretch the full height; no dead space in any quadrant.
-
-     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
-     arrival() wired to chapter:arrive in JS.
+     COMPOSITION — identical skeleton to Move 01 (17-move-unplug):
+     LEFT  — designed stage marker (02 + rule + "Move two of five") + title
+             lockup + WLV lesson + cream quote card.
+     RIGHT — 29-pt trust spread stat hero (icon + number + label) + flipReveal
+             inside a navy panel with yellow kicker + M&S / Boots brand cards
+             as a compact row directly under the navy panel.
+     Columns are CENTERED (no space-between) so clusters stay tight: one screen,
+     no dead space, one focal point.
 
      Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
      Single root .chapter-inner. Every CSS scoped to #\31 8-move-antidote. -->
@@ -30,10 +30,12 @@
     <!-- LEFT COLUMN — move header + lesson + quote -->
     <div class="ma-left">
       <header class="ma-head">
-        <p class="vccp-eyebrow ma-eyebrow" data-arrival data-youdot-anchor>
-          <span class="ma-movenum" aria-hidden="true">02</span>
-          Move two of five
-        </p>
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="ma-stage" data-arrival data-youdot-anchor>
+          <span class="ma-stage__num" aria-hidden="true">02</span>
+          <span class="ma-stage__rule" aria-hidden="true"></span>
+          <span class="ma-stage__label vccp-eyebrow">Move two of five</span>
+        </div>
         <h2 class="ma-title" data-arrival>
           <img class="ma-title-img" src="assets/logos/move-02.png"
                alt="Be the trusted antidote" />
@@ -60,7 +62,7 @@
       </blockquote>
     </div>
 
-    <!-- RIGHT COLUMN — trust spread stat + icon + interaction + brand cards -->
+    <!-- RIGHT COLUMN — trust spread stat + icon + navy flip panel + brand cards -->
     <aside class="ma-right" aria-label="Trusted antidote interaction: less to more">
 
       <!-- Stat hero — 29-point trust spread -->
@@ -79,9 +81,12 @@
         </div>
       </div>
 
-      <!-- flipReveal interaction — the marquee beat -->
-      <div class="ma-flip" data-flip
-           aria-label="Flip each row to reveal the brand shift"></div>
+      <!-- flipReveal interaction — the designed less-to-more beat -->
+      <div class="ma-flip-panel" data-arrival>
+        <p class="ma-flip-kicker">The shift, in three moves</p>
+        <div class="ma-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift"></div>
+      </div>
 
       <!-- Brand evidence cards — M&S and Boots only -->
       <div class="ma-brands" data-arrival aria-label="Brand examples">

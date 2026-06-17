@@ -1,10 +1,12 @@
 <div class="chapter-inner graphrag-root on-navy" data-graphrag-root>
 
-  <!-- GraphRAG explorer — the living segment network. Navy full-bleed ground.
-       LEFT: title cluster + legend + read-out. RIGHT: the force-graph explorer
-       (js/lib/segment-graph.js) — click a segment to see what it over-indexes
-       on; click a statement to see who shares it. Character->title reveal on
-       arrival. Square corners, no underlines, no parallelogram. -->
+  <!-- GraphRAG explorer — the living segment network + the full survey.
+       Navy full-bleed ground. TOP: title cluster + legend + the survey-question
+       explorer (every survey question, by audience). CENTRE: the force-graph
+       explorer (js/lib/segment-graph.js) given the lion's share of the stage —
+       click a segment to see what it over-indexes on; click a statement to see
+       who shares it. BOTTOM: the four audience profiles as a short, wide strip.
+       Square corners, no underlines, no parallelogram, tabular nums. -->
 
   <span class="graphrag-orbit" aria-hidden="true"></span>
 
@@ -12,50 +14,47 @@
        src="assets/brand-final/challenger-series-lockup.png"
        alt="" aria-hidden="true" />
 
-  <div class="graphrag-grid">
+  <div class="graphrag-layout">
 
-    <aside class="graphrag-left">
-      <header class="graphrag-head">
+    <!-- ── TOP BAND: title + legend + survey-question explorer ───────────── -->
+    <header class="graphrag-top">
+      <div class="graphrag-head">
         <p class="vccp-eyebrow graphrag-eyebrow" data-arrival>The living network</p>
         <h2 class="graphrag-title si-display si-display--black" data-arrival>
-          Explore the<br><em class="graphrag-accent" data-arrival-scramble>segments</em>
+          Explore the <em class="graphrag-accent" data-arrival-scramble>segments</em>
         </h2>
-        <p class="graphrag-stand" data-arrival>
-          Four segments, woven from what they over-index on: interests, channels,
-          AI stance and their most distinctive TGI signals. The network reveals
-          itself; tap a segment to hold it, tap a signal to see who shares it.
-        </p>
-      </header>
-
-      <div class="graphrag-legend" data-arrival aria-hidden="false">
-        <ul class="graphrag-keys">
+        <ul class="graphrag-keys" data-arrival>
           <li><span class="gk-swatch gk-architects"></span>Architects · 17%</li>
           <li><span class="gk-swatch gk-hustlers"></span>Hustlers · 28%</li>
           <li><span class="gk-swatch gk-coasters"></span>Coasters · 27%</li>
           <li><span class="gk-swatch gk-retreaters"></span>Retreaters · 28%</li>
         </ul>
-        <ul class="graphrag-keys graphrag-keys--attr">
-          <li><span class="gk-dot gk-shared"></span>Shared signal</li>
-          <li><span class="gk-dot gk-unique"></span>Unique signal</li>
-        </ul>
       </div>
 
-      <p class="graphrag-hint" data-arrival>
-        The network cycles through each segment on its own. Tap or press Enter to
-        hold one, drag a node to nudge it.
-      </p>
+      <!-- The survey-question explorer — EVERY survey question, by audience.
+           A labelled selector drives the per-audience comparison beneath it. -->
+      <div class="graphrag-survey" data-graphrag-survey data-arrival>
+        <div class="gs-control">
+          <label class="gs-label" for="gs-question">Every survey question</label>
+          <select class="gs-select" id="gs-question" data-gs-select aria-label="Choose a survey question to compare across the four audiences"></select>
+        </div>
+        <p class="gs-measure" data-gs-measure></p>
+        <div class="gs-table" data-gs-table role="table" aria-label="Per-audience survey answers"></div>
+      </div>
+    </header>
 
-      <!-- The explorer's read-out (segment profile / signal owners) is mounted
-           HERE in the left rail by segment-graph.js, pinned directly beneath the
-           title + legend + hint copy (upper-to-middle of the rail), so the active
-           segment's profile reads as a confident panel and never overlaps or
-           drifts into the graph's right-hand zone. -->
-      <div class="graphrag-readout" data-graphrag-panel></div>
-    </aside>
-
+    <!-- ── CENTRE: the graph stage — given the most of the viewport ──────── -->
     <div class="graphrag-stage" data-graphrag-mount>
       <p class="graphrag-fallback-msg" data-graphrag-msg hidden>
         Segment data is loading. The explorer will appear here.
+      </p>
+    </div>
+
+    <!-- ── BOTTOM: the four audience profiles — short and wide ───────────── -->
+    <div class="graphrag-profiles" data-graphrag-panel>
+      <p class="graphrag-profiles-hint">
+        The network cycles through each segment on its own. Tap a segment to hold
+        it, tap a signal to see who shares it.
       </p>
     </div>
 

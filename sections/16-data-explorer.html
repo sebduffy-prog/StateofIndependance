@@ -1,17 +1,18 @@
 <!-- Step 16 — The data explorer. ONE survey, fully explorable: every question,
-     sliced by which Britain, viewed five ways. The explore-everything moment.
+     sliced by which Britain, every metric rendered as a LOLLIPOP. The
+     explore-everything moment.
 
      COMPOSITION — a confident editorial CONSOLE, stacked top-to-bottom so the
      chart owns the floor (the client-approved layout):
        • A top MASTHEAD band: the eyebrow + the live display FIGURE (the number is
          the headline, counting on every change) on the left, the supporting read
          line beside it, the Challenger-Series lockup stamped top-right.
-       • A full-width CONTROL DECK: three labelled clusters — THE QUESTION (every
-         survey + segment + TGI metric, in tidy wrap rows), WHICH BRITAIN
-         (All / the four segments), VIEW IT AS (Bars · Lollipop · Dot · Waffle ·
-         Venn). Tactile square chips, held compact so the chart gets the room.
+       • A full-width CONTROL DECK: two labelled clusters — THE QUESTION (every
+         survey + segment + TGI metric, in tidy wrap rows) and WHICH BRITAIN
+         (All / the four segments). Tactile square chips, held compact so the
+         chart gets the room. No view-type chooser: every cut is a lollipop.
        • The HERO STAGE: one large panel that fills the rest of the screen below
-         the controls; the chart morphs / crossfades on every change, big and
+         the controls; the lollipop crossfades on every change, big and
          box-less on the cream.
      ON BRAND — cream ground, navy gravity, ONE yellow accent (the figure unit +
      the orbit seed + the active control wedge), Poppins, square corners,
@@ -28,7 +29,7 @@
     <!-- MASTHEAD: eyebrow + the live display figure on the left, the read line beside it -->
     <header class="pg-masthead">
       <div class="pg-masthead-lead">
-        <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
+        <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">every answer</em></p>
         <p class="pg-readout-num" data-arrival>
           <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
         </p>
@@ -47,13 +48,9 @@
         <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
       </div>
       <div class="pg-deck-row">
-        <div class="pg-control">
+        <div class="pg-control pg-control--wide">
           <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
           <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
-        </div>
-        <div class="pg-control">
-          <span class="pg-control-label" id="pg-view-label">View it as</span>
-          <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
         </div>
       </div>
     </div>

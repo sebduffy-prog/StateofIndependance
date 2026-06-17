@@ -1,10 +1,10 @@
 /**
  * Step 16 — The data explorer. The explore-everything moment: the WHOLE survey,
- * richly browsable. Three controls drive one morphing chart:
+ * richly browsable. Two controls drive one lollipop chart:
  *   1. THE QUESTION  — every survey block, every segment metric, every TGI cut.
  *   2. WHICH BRITAIN — All (national) or one of the four segments.
- *   3. VIEW IT AS    — the SAME numbers five ways: Bars · Lollipop · Dot · Waffle
- *                      · Venn. The chooser is the spectacle; the data re-forms.
+ * Every cut renders the SAME way: a lollipop (navy stem + navy marker), so the
+ * read is consistent and the controls — not a view chooser — are the spectacle.
  *
  * THE DISPLAY MOMENT — the masthead FIGURE (the leading value of the current cut)
  * counts to its new value on every change. The number is the headline; the chart
@@ -22,10 +22,7 @@
  * @param {{survey:object, segments:object, tgi:object, journey?:object}} data
  */
 import { observeReveals } from '../lib/reveal.js';
-import {
-  horizontalBars, lollipopChart, dotPlot, waffleGrid,
-} from '../lib/charts.js';
-import { vennDiagram } from '../lib/venn.js';
+import { lollipopChart } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 import { countUp } from '../lib/counter.js';
 import { arrival, prefersReducedMotion } from '../lib/experiential.js';
@@ -42,16 +39,6 @@ const SEGMENT_BY_ID = Object.fromEntries(SEGMENT_ORDER.map((s) => [s.id, s]));
 const ALL_SEGMENTS = 'all';
 const NATIONAL_NOTE = 'National figure · all 1,504 respondents.';
 const MAX_ITEMS = 8; // keep every label legible — never overcrowd the cream
-
-/* The five views — the chooser. Each renders the SAME resolved items.
- * `value` is the contract pillGroup reads (NOT `id`). */
-const VIEWS = [
-  { value: 'bars', label: 'Bars' },
-  { value: 'lollipop', label: 'Lollipop' },
-  { value: 'dotplot', label: 'Dot plot' },
-  { value: 'waffle', label: 'Waffle' },
-  { value: 'venn', label: 'Venn' },
-];
 
 /* Metric registry — the FULL survey, exposed. No numbers live here, only the
  * path into verified data:
@@ -195,122 +182,25 @@ const readoutFor = (metric, items) => {
   return { value: lead.pct, label: lead.label, index: lead.index ?? null };
 };
 
-/* ── waffle (all options) — small multiples: one N-in-100 grid per option ──
- * Most explorer questions are multi-select (options do NOT sum to 100), so a
- * single split 100-square waffle would be dishonest. We render a tile per
- * option: each its own 100-square grid filled to that option's %, figure +
- * label beneath. Reads as "x in 100" per answer, and fills the hero space. */
-const drawWaffleAll = (host, metric, items) => {
-  const rows = (items.length ? items : NO_DATA).slice(0, MAX_ITEMS);
-  const wrap = document.createElement('div');
-  wrap.className = 'pg-waffle-all';
-  wrap.style.setProperty('--pg-waffle-count', String(rows.length));
+/* ── view — every cut rendered as ONE lollipop chart ─────────────────────── */
 
-  rows.forEach((item) => {
-    const tile = document.createElement('figure');
-    tile.className = 'pg-waffle-tile';
-
-    const gridHost = document.createElement('div');
-    gridHost.className = 'pg-waffle-grid';
-    tile.append(gridHost);
-
-    const grid = waffleGrid(gridHost, {
-      value: item.pct,
-      total: 100,
-      accent: 'navy',
-      // Tighter cells than the default (26/6): the small-multiple grid must
-      // stay compact so the whole tile field fits the chart band height-wise.
-      square: 16,
-      gap: 3,
-      ariaLabel: `${item.label}: ${Math.round(item.pct)} in 100`,
-    });
-    grid.setValue(item.pct);
-
-    const cap = document.createElement('figcaption');
-    cap.className = 'pg-waffle-tile-cap';
-    const num = document.createElement('span');
-    num.className = 'pg-waffle-tile-num';
-    num.textContent = `${item.pct.toLocaleString('en-GB', {
-      minimumFractionDigits: metric.decimals,
-      maximumFractionDigits: metric.decimals,
-    })}%`;
-    const lab = document.createElement('span');
-    lab.className = 'pg-waffle-tile-lab';
-    lab.textContent = item.label;
-    cap.append(num, lab);
-    tile.append(cap);
-
-    wrap.append(tile);
-  });
-
-  host.append(wrap);
-};
-
-/* ── view dispatch — render the SAME items five ways ─────────────────────── */
-
-/* Tighten the axis to the data so bars/dots fill the track instead of leaving
+/* Tighten the axis to the data so the stems fill the track instead of leaving
  * a wide empty right margin. Round UP to a clean 10 above the largest value,
- * clamped to [40, 100], so dot-plot quarter ticks stay tidy. */
+ * clamped to [40, 100]. */
 const axisMaxFor = (items) => {
   const top = items.reduce((m, i) => Math.max(m, i.pct || 0), 0);
   if (top >= 90) return 100;
   return Math.min(100, Math.max(40, Math.ceil((top + 6) / 10) * 10));
 };
 
-const drawView = (host, viewId, metric, items) => {
+const drawView = (host, metric, items) => {
   const rows = (items.length ? items : NO_DATA).slice(0, MAX_ITEMS);
-  const common = { accent: 'navy', decimals: metric.decimals, ariaLabel: metric.label };
-  const axisMax = axisMaxFor(rows);
-
-  if (viewId === 'bars') {
-    // Commanding HERO bars: the viewBox is 720 wide × items × (barHeight + gap)
-    // tall, and the SVG renders at width:100% (capped at the band height). BIG,
-    // chunky bars are the original ask, so we run a tall, generous row height
-    // that scales DOWN only as the item count grows so a long list still fits
-    // the band cleanly. Even the densest 8-row case keeps fat, legible bars.
-    const n = rows.length;
-    const barHeight = n <= 3 ? 128 : n <= 4 ? 112 : n <= 6 ? 88 : 70;
-    const gap = n <= 3 ? 64 : n <= 4 ? 56 : n <= 6 ? 46 : 36;
-    horizontalBars(host, {
-      items: rows, max: axisMax, labelWidth: 272, barHeight, gap, ...common,
-    });
-    return;
-  }
-  if (viewId === 'lollipop') {
-    lollipopChart(host, { items: rows, max: axisMax, ...common });
-    return;
-  }
-  if (viewId === 'dotplot') {
-    dotPlot(host, { items: rows, max: axisMax, ...common });
-    return;
-  }
-  if (viewId === 'waffle') {
-    // ALL options as small-multiple waffles — every answer as N-in-100.
-    drawWaffleAll(host, metric, items);
-    return;
-  }
-  // venn — the top up-to-four responses as overlap circles, sized by share.
-  // Brand: show the % of segment only; no TGI index numbers.
-  const sets = rows.slice(0, 4).map((r) => ({
-    id: r.id,
-    label: r.label,
-    value: `${r.pct.toFixed(metric.decimals)}%`,
-    sub: '',
-  }));
-  if (sets.length < 2) {
-    const p = document.createElement('p');
-    p.className = 'pg-waffle-cap';
-    p.textContent = 'Not enough responses to overlap.';
-    host.append(p);
-    return;
-  }
-  const lead = readoutFor(metric, items);
-  vennDiagram(host, {
-    sets,
-    orbit: 118,
-    radius: 150,
-    centre: { label: 'leads', value: `${lead.value.toFixed(metric.decimals)}%`, sub: tidyLabel(lead.label) },
-    ariaLabel: `${metric.label}: top responses as overlapping shares`,
+  lollipopChart(host, {
+    items: rows,
+    max: axisMaxFor(rows),
+    accent: 'navy',
+    decimals: metric.decimals,
+    ariaLabel: metric.label,
   });
 };
 
@@ -322,16 +212,15 @@ const initExplorer = (rootEl, dataSets, onChange) => {
   const chartHost = rootEl.querySelector('[data-pg-metric-chart]');
   const metricHost = rootEl.querySelector('[data-pg-metric-pills]');
   const segmentHost = rootEl.querySelector('[data-pg-segment-pills]');
-  const viewHost = rootEl.querySelector('[data-pg-view-pills]');
   const noteEl = rootEl.querySelector('[data-pg-note]');
   const numEl = rootEl.querySelector('[data-pg-readout-num]');
   const unitEl = rootEl.querySelector('[data-pg-readout-unit]');
   const lineEl = rootEl.querySelector('[data-pg-readout-line]');
   const kickerEl = rootEl.querySelector('[data-pg-readout-kicker]');
-  if (!chartHost || !metricHost || !segmentHost || !viewHost) return;
+  if (!chartHost || !metricHost || !segmentHost) return;
 
   const reduced = prefersReducedMotion();
-  const state = { metric: METRICS[0], segment: ALL_SEGMENTS, view: VIEWS[0].value };
+  const state = { metric: METRICS[0], segment: ALL_SEGMENTS };
   let lastFigure = 0;
   let started = false; // first paint = jump-cut; later = count
 
@@ -361,7 +250,7 @@ const initExplorer = (rootEl, dataSets, onChange) => {
     const { items, note } = resolveItems(state, dataSets);
     const build = () => {
       chartHost.replaceChildren();
-      drawView(chartHost, state.view, state.metric, items);
+      drawView(chartHost, state.metric, items);
     };
     if (crossfade && !reduced) {
       chartHost.classList.add('is-fading');
@@ -425,17 +314,6 @@ const initExplorer = (rootEl, dataSets, onChange) => {
     onChange: (value) => {
       state.metric = METRICS.find((m) => m.id === value) || METRICS[0];
       syncSegmentAvailability(segmentGroup);
-      paint({ crossfade: true });
-      onChange?.();
-    },
-  });
-
-  pillGroup(viewHost, {
-    options: VIEWS,
-    value: state.view,
-    ariaLabel: 'Choose how to view the data',
-    onChange: (value) => {
-      state.view = value;
       paint({ crossfade: true });
       onChange?.();
     },

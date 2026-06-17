@@ -197,15 +197,15 @@
 /* Flat navy + segment-accent icon, top of the lens. */
 #\31 1-segment-hustlers .seg-icon {
   color: var(--navy);
-  width: clamp(44px, 4vw, 56px);
-  height: clamp(44px, 4vw, 56px);
+  width: clamp(76px, 7vw, 98px);
+  height: clamp(76px, 7vw, 98px);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: var(--seg-accent-soft);
   border-radius: 0;            /* square corners - house rule */
-  padding: clamp(7px, 0.8vw, 10px);
+  padding: clamp(10px, 1.1vw, 14px);
   box-sizing: border-box;
 }
 #\31 1-segment-hustlers .seg-icon svg { width: 100%; height: 100%; }
@@ -245,37 +245,42 @@
   max-width: 50ch;
 }
 
-/* Square pill control (no radius - house rule). Wraps gracefully. */
+/* Separate square buttons (no radius - house rule). Each chip is its own
+   distinct button with its own border + background; gaps keep them apart so
+   the control reads as individual buttons, not one joined bar. Wraps gracefully. */
 #\31 1-segment-hustlers .seg-lens .pillgroup {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 0;
-  border: 1px solid rgba(4, 22, 84, 0.2);
+  gap: clamp(6px, 0.6vw, 10px);
+  border: 0;
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip {
   appearance: none;
-  border: 0;
-  background: transparent;
+  border: 1px solid rgba(4, 22, 84, 0.28);
+  background: rgba(4, 22, 84, 0.04);
   cursor: pointer;
   font: inherit;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.03em;
-  padding: 6px 11px;
+  padding: 6px 12px;
   color: var(--navy);
   border-radius: 0;
-  transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms);
+  transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms),
+              border-color var(--dur-micro, 180ms);
 }
-#\31 1-segment-hustlers .seg-lens .pillgroup-chip + .pillgroup-chip {
-  border-left: 1px solid rgba(4, 22, 84, 0.2);
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:hover {
+  border-color: var(--navy);
+  background: rgba(4, 22, 84, 0.08);
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip.is-active {
   background: var(--navy);
+  border-color: var(--navy);
   color: var(--cream, #F0EDE7);
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip:focus-visible {
   outline: 2px solid var(--seg-accent);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 
 /* Backgroundless chart host - bars float on cream; SVG scales to width.

@@ -2,13 +2,12 @@
      AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
      warm gradient full-bleed ground. Black on warm.
 
-     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
-     LEFT  — move number + eyebrow + scramble title + WLV lesson + Vinted quote card.
-     RIGHT — move-05.svg medal icon + reward-reveal (gamified less→more flip) interaction.
-     Both columns stretch the full height; no dead space in any quadrant.
-
-     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
-     arrival() wired to chapter:arrive in JS.
+     COMPOSITION — identical skeleton to Move 01 (17-move-unplug):
+     LEFT  — designed stage marker (05 + rule + "Move five of five") + title
+             lockup + WLV lesson + Vinted brand note + cream quote card.
+     RIGHT — move-05 medal icon (the stat-hero slot for this move) + flipReveal
+             inside a navy panel with yellow kicker.
+     Columns are CENTERED (no space-between): one screen, no dead space.
 
      DATA (STORY.md §07 Move 05 slide 73, verbatim):
        Less → More:
@@ -35,13 +34,15 @@
   <!-- Two-column grid -->
   <div class="mb-grid">
 
-    <!-- LEFT COLUMN — move header + lesson + Vinted quote -->
+    <!-- LEFT COLUMN — move header + lesson + Vinted brand + quote -->
     <div class="mb-left">
       <header class="mb-head">
-        <p class="vccp-eyebrow mb-eyebrow" data-arrival>
-          <span class="mb-movenum" aria-hidden="true">05</span>
-          Move five of five
-        </p>
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="mb-stage" data-arrival>
+          <span class="mb-stage__num" aria-hidden="true">05</span>
+          <span class="mb-stage__rule" aria-hidden="true"></span>
+          <span class="mb-stage__label vccp-eyebrow">Move five of five</span>
+        </div>
         <h2 class="mb-title" data-arrival>
           <img class="mb-title-img" src="assets/logos/move-05.png"
                alt="Boost good behaviours" />
@@ -52,7 +53,7 @@
         </p>
       </header>
 
-      <!-- Vinted brand moment + quote — soi-card: cream, square corners, one lift -->
+      <!-- Vinted brand moment -->
       <div class="mb-brand" data-arrival>
         <p class="vccp-eyebrow mb-brand__kicker">Brand in action · Vinted</p>
         <p class="mb-brand__copy">
@@ -74,11 +75,11 @@
       </blockquote>
     </div>
 
-    <!-- RIGHT COLUMN — icon + gamified reward flip interaction -->
+    <!-- RIGHT COLUMN — icon lead + navy flip panel -->
     <aside class="mb-right" aria-label="Boost good behaviours: less to more">
 
-      <!-- Icon + reward badge cluster -->
-      <div class="mb-icon-cluster" data-arrival>
+      <!-- Icon cluster (this move's stat-hero slot) -->
+      <div class="mb-stat-hero" data-arrival>
         <div class="mb-icon" data-youdot-anchor aria-hidden="true">
           <img src="assets/icons/move-05.svg"
                alt="Boost good behaviours icon"
@@ -90,9 +91,12 @@
         </div>
       </div>
 
-      <!-- flipReveal interaction — the marquee gamified beat -->
-      <div class="mb-flip" data-flip data-arrival
-           aria-label="Flip each row to reveal the brand shift from less to more"></div>
+      <!-- flipReveal interaction — the designed gamified less-to-more beat -->
+      <div class="mb-flip-panel" data-arrival>
+        <p class="mb-flip-kicker">The shift, in three moves</p>
+        <div class="mb-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift from less to more"></div>
+      </div>
 
     </aside>
   </div>
