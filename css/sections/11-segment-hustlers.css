@@ -16,8 +16,8 @@
   height: 100%;
   display: flex;
   align-items: center;
-  padding: clamp(40px, 6vh, 80px) clamp(28px, 6vw, 110px)
-           calc(var(--journey-controls-h, 72px) + clamp(20px, 3vh, 40px)) clamp(28px, 6vw, 110px);
+  padding: clamp(40px, 6vh, 80px) clamp(24px, 3.5vw, 64px)
+           calc(var(--journey-controls-h, 72px) + clamp(20px, 3vh, 40px)) clamp(24px, 3.5vw, 64px);
   overflow: hidden;
 }
 
@@ -35,8 +35,8 @@
 #\31 1-segment-hustlers .segment-hustlers-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 5vw, 80px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+  gap: clamp(28px, 4vw, 60px);
   align-items: stretch;
   min-height: 0;
 }
@@ -182,10 +182,16 @@
   /* pillGroup styles below */
 }
 
-/* The chart host — explicit height so bars size correctly. */
+/* The chart host — explicit height so bars size correctly. Taller +
+   full-width so the index chart reads as a confident focal element. */
 #\31 1-segment-hustlers .segment-hustlers-chart {
   width: 100%;
-  min-height: clamp(140px, 20vh, 220px);
+  min-height: clamp(250px, 40vh, 400px);
+}
+#\31 1-segment-hustlers .segment-hustlers-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* Baseline legend — faint, never on an orbit line. */

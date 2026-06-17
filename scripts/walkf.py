@@ -5,7 +5,7 @@ with sync_playwright() as p:
     b=p.chromium.launch(headless=True)
     pg=b.new_page(viewport={"width":1512,"height":900},device_scale_factor=2)
     logs=[]; pg.on("console",lambda m: logs.append(f"{m.type}: {m.text}"))
-    pg.goto("http://localhost:8131/",wait_until="networkidle"); pg.wait_for_timeout(2000)
+    pg.goto("http://localhost:8142/",wait_until="networkidle"); pg.wait_for_timeout(2000)
     pg.screenshot(path=f"{OUT}/00-cover.png")
     for i in range(1,22):
         pg.keyboard.press("ArrowDown")

@@ -256,7 +256,10 @@
    overflow:hidden so nothing bleeds outside the column. */
 #\30 3-baselines .bl-crowd-inner {
   position: relative;
-  flex: 1 1 0;
+  /* Size to the grid (capped by max-height) rather than expanding to fill the
+     whole column — otherwise the centred grid floats high and the caption is
+     stranded at the column bottom with a dead gap between them. */
+  flex: 0 1 auto;
   min-height: 0;
   display: flex;
   align-items: center;
@@ -308,9 +311,12 @@
 #\30 3-baselines .bl-crowd-cap {
   display: flex;
   align-items: baseline;
+  justify-content: flex-end;   /* tuck under the grid's right edge */
+  text-align: right;
   gap: 0.5ch;
   flex-wrap: wrap;
   min-height: 1.5rem;
+  margin-top: clamp(0.6rem, 1.5vh, 1rem);
   flex-shrink: 0;
 }
 #\30 3-baselines .bl-crowd-count {

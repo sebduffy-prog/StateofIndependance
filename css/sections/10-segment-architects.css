@@ -10,9 +10,9 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: clamp(40px, 7vh, 88px) clamp(28px, 6vw, 110px)
+  padding: clamp(40px, 7vh, 88px) clamp(24px, 3.5vw, 64px)
            calc(var(--journey-controls-h, 96px) + clamp(20px, 3vh, 40px))
-           clamp(28px, 6vw, 110px);
+           clamp(24px, 3.5vw, 64px);
   overflow: hidden;
 }
 
@@ -30,8 +30,8 @@
 #\31 0-segment-architects .segment-architects-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: clamp(28px, 5vw, 88px);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.25fr);
+  gap: clamp(28px, 4vw, 64px);
   align-items: center;
   align-self: center;
   /* Prevent the grid from overflowing the padded chapter-inner. */
@@ -224,10 +224,16 @@
   outline-offset: -2px;
 }
 
-/* Backgroundless chart host — bars float directly on the cream ground. */
+/* Backgroundless chart host — bars float directly on the cream ground.
+   Taller + full-width so the index chart reads as a confident focal element. */
 #\31 0-segment-architects .segment-architects-chart {
   width: 100%;
-  min-height: clamp(140px, 20vh, 200px);
+  min-height: clamp(240px, 38vh, 380px);
+}
+#\31 0-segment-architects .segment-architects-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* Baseline legend — faint, no box. */

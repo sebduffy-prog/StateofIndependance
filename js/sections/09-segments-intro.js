@@ -29,11 +29,14 @@ const DOT_COUNT = 100;
 
 /** Per-quadrant placement rect in dotField 0..1 space (insets keep dots off
  *  the axis lines and the field edge so clusters read as four distinct masses). */
+/* Clusters hug the INNER corner of each quadrant (toward the centre cross),
+   leaving the OUTER corner of every cell free for its share label — so the
+   dots can never sit under the "28% The Hustlers" text. */
 const QUADRANTS = {
-  hustlers:   { x: 0.07, y: 0.10, w: 0.36, h: 0.34 }, // top-left  (pessimistic, proactive)
-  architects: { x: 0.57, y: 0.10, w: 0.36, h: 0.34 }, // top-right (optimistic, proactive)
-  retreaters: { x: 0.07, y: 0.56, w: 0.36, h: 0.34 }, // bot-left  (pessimistic, passive)
-  coasters:   { x: 0.57, y: 0.56, w: 0.36, h: 0.34 }, // bot-right (optimistic, passive)
+  hustlers:   { x: 0.15, y: 0.18, w: 0.31, h: 0.30 }, // top-left  (pessimistic, proactive)
+  architects: { x: 0.54, y: 0.18, w: 0.31, h: 0.30 }, // top-right (optimistic, proactive)
+  retreaters: { x: 0.15, y: 0.52, w: 0.31, h: 0.30 }, // bot-left  (pessimistic, passive)
+  coasters:   { x: 0.54, y: 0.52, w: 0.31, h: 0.30 }, // bot-right (optimistic, passive)
 };
 
 /** Visual order for the legend / quadrant labels (matches the 2x2 grid rows). */

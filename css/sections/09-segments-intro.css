@@ -11,8 +11,8 @@
   height: 100%;
   display: flex;
   align-items: stretch;
-  padding-inline: clamp(28px, 6vw, 110px);
-  padding-block: clamp(40px, 7vh, 88px) clamp(20px, 3vh, 40px);
+  padding-inline: clamp(24px, 3.5vw, 64px);
+  padding-block: clamp(22px, 3vh, 44px) clamp(16px, 2.4vh, 32px);
 }
 
 /* The tiny Challenger-Series stamp, top-right (book-cover position). */
@@ -37,8 +37,6 @@
   gap: clamp(28px, 4vw, 72px);
   width: 100%;
   height: 100%;
-  max-width: 1320px;
-  margin-inline: auto;
 }
 
 /* ── Left rail ─────────────────────────────────────────────────────── */
@@ -145,7 +143,7 @@
 
 #\30 9-segments-intro .segments-intro-compass {
   position: relative;
-  width: min(74vh, 100%, 720px);
+  width: min(88vh, 100%);
   aspect-ratio: 1 / 1;
 }
 

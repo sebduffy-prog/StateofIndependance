@@ -72,13 +72,12 @@ export default function init(rootEl, data) {
     }));
     lollipopChart(dealHost, {
       items:       dealItems,
-      max:         100,
+      // Tightened scale: values top out at 55, so a 62 ceiling lets the bars
+      // run most of the width instead of stranding the right half empty.
+      max:         62,
       accent:      'navy',
       highlightId: 'shoppedAround',
       ariaLabel:   'Money-saving moves taken in the last three months',
-      barHeight:   22,
-      gap:         10,
-      labelWidth:  160,
     });
   }
 
@@ -100,7 +99,9 @@ export default function init(rootEl, data) {
     }));
     dotPlot(anxietyHost, {
       items:    moodItems,
-      max:      100,
+      // Mood readings peak at 77, so an 88 ceiling spreads the dots across the
+      // full width and pushes them clear of the dead space on the right.
+      max:      88,
       accent:   'navy',
       ariaLabel: 'National mood scores: top four readings',
     });

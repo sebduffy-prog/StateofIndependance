@@ -178,33 +178,97 @@ const readoutFor = (metric, items) => {
   return { value: lead.pct, label: lead.label, index: lead.index ?? null };
 };
 
+/* ── waffle (all options) — small multiples: one N-in-100 grid per option ──
+ * Most explorer questions are multi-select (their options do NOT sum to 100),
+ * so a single split 100-square waffle would be dishonest. Instead we render a
+ * tile per option: each is its own 100-square grid filled to that option's %,
+ * with the figure + label beneath. Reads as "x in 100" per answer, accurately,
+ * and the tile field fills the hero space. */
+const drawWaffleAll = (host, metric, items) => {
+  const rows = (items.length ? items : NO_DATA).slice(0, MAX_ITEMS);
+  const wrap = document.createElement('div');
+  wrap.className = 'pg-waffle-all';
+  wrap.style.setProperty('--pg-waffle-count', String(rows.length));
+
+  rows.forEach((item) => {
+    const tile = document.createElement('figure');
+    tile.className = 'pg-waffle-tile';
+
+    const gridHost = document.createElement('div');
+    gridHost.className = 'pg-waffle-grid';
+    tile.append(gridHost);
+
+    const grid = waffleGrid(gridHost, {
+      value: item.pct,
+      total: 100,
+      accent: 'navy',
+      ariaLabel: `${item.label}: ${Math.round(item.pct)} in 100`,
+    });
+    grid.setValue(item.pct);
+
+    const cap = document.createElement('figcaption');
+    cap.className = 'pg-waffle-tile-cap';
+    const num = document.createElement('span');
+    num.className = 'pg-waffle-tile-num';
+    num.textContent = `${item.pct.toLocaleString('en-GB', {
+      minimumFractionDigits: metric.decimals,
+      maximumFractionDigits: metric.decimals,
+    })}%`;
+    const lab = document.createElement('span');
+    lab.className = 'pg-waffle-tile-lab';
+    lab.textContent = item.label;
+    cap.append(num, lab);
+    tile.append(cap);
+
+    wrap.append(tile);
+  });
+
+  host.append(wrap);
+};
+
 /* ── view dispatch — render the SAME items five ways ─────────────────────── */
+
+/* Tighten the axis to the data so bars/dots fill the track instead of leaving
+ * a wide empty right margin (all our metrics are %, rarely near 100). Round UP
+ * to a clean 10 above the largest value, clamped to [40, 100], so the dot-plot
+ * quarter ticks stay tidy and small spreads still read honestly. */
+const axisMaxFor = (items) => {
+  const top = items.reduce((m, i) => Math.max(m, i.pct || 0), 0);
+  if (top >= 90) return 100;
+  return Math.min(100, Math.max(40, Math.ceil((top + 6) / 10) * 10));
+};
 
 const drawView = (host, viewId, metric, items) => {
   const rows = (items.length ? items : NO_DATA).slice(0, MAX_ITEMS);
   const common = { accent: 'navy', decimals: metric.decimals, ariaLabel: metric.label };
+  const axisMax = axisMaxFor(rows);
 
   if (viewId === 'bars') {
-    horizontalBars(host, { items: rows, max: 100, labelWidth: 248, ...common });
+    // Commanding bars: row height scales DOWN as the item count grows so the
+    // chart's natural aspect ratio stays tall enough to fill the hero band
+    // top-to-bottom (few rows => very tall bars; many rows => still generous).
+    // The svg is width:100% so a taller internal aspect renders bigger marks.
+    const n = rows.length;
+    const barHeight = n <= 4 ? 84 : n <= 5 ? 70 : 58;
+    const gap = n <= 4 ? 40 : n <= 5 ? 32 : 26;
+    horizontalBars(host, {
+      items: rows, max: axisMax, labelWidth: 248, barHeight, gap, ...common,
+    });
     return;
   }
   if (viewId === 'lollipop') {
-    lollipopChart(host, { items: rows, max: 100, ...common });
+    lollipopChart(host, { items: rows, max: axisMax, ...common });
     return;
   }
   if (viewId === 'dotplot') {
-    dotPlot(host, { items: rows, max: 100, ...common });
+    dotPlot(host, { items: rows, max: axisMax, ...common });
     return;
   }
   if (viewId === 'waffle') {
-    // The lead figure as N-in-100 — the same headline number, made tactile.
-    const lead = readoutFor(metric, items);
-    const grid = waffleGrid(host, { value: lead.value, total: 100, accent: 'navy', ariaLabel: `${lead.label}: ${lead.value} in 100` });
-    grid.setValue(lead.value);
-    const cap = document.createElement('p');
-    cap.className = 'pg-waffle-cap';
-    cap.textContent = lead.label ? `${lead.label}: ${Math.round(lead.value)} in 100` : '';
-    host.append(cap);
+    // ALL options as small-multiple waffles — every answer as N-in-100, not
+    // just the lead figure. Honest for multi-select questions, and fills the
+    // hero space cleanly.
+    drawWaffleAll(host, metric, items);
     return;
   }
   // venn — the top up-to-four responses as overlap circles, sized by share.

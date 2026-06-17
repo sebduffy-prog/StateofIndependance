@@ -371,11 +371,18 @@ export function segmentGraph(container, opts = {}) {
     });
   };
 
-  // detail panel + keyboard fallback list
+  // detail panel + keyboard fallback list. The panel can be mounted OUTSIDE the
+  // stage (opts.panelMount) so the read-out lives in a dedicated rail and never
+  // overlaps the graph; it defaults to the stage to preserve the old contract.
   const panel = document.createElement('div');
   panel.className = 'sg-panel'; panel.setAttribute('aria-live', 'polite');
   panel.innerHTML = '<p class="sg-hint">Select a segment or attribute to explore the network.</p>';
-  stage.appendChild(panel);
+  if (opts.panelMount instanceof HTMLElement) {
+    panel.classList.add('sg-panel--railed');
+    opts.panelMount.appendChild(panel);
+  } else {
+    stage.appendChild(panel);
+  }
   wrap.appendChild(stage);
 
   const fallback = document.createElement('ul');

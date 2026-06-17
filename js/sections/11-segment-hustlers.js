@@ -24,7 +24,17 @@ import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'hustlers';
 const TOP_N = 6;
-const INDEX_MAX = 200;
+// 100 = the UK average. The chart max is computed per-lens from the data so
+// bars fill the track instead of stranding right-side dead space.
+const INDEX_BASELINE = 100;
+const SCALE_HEADROOM = 1.08;
+
+/** Tight per-lens max so the longest bar nearly fills the track. */
+function lensMax(items) {
+  const top = items.reduce((m, it) => Math.max(m, it.pct || 0), 0);
+  const raw = Math.max(INDEX_BASELINE + 20, top * SCALE_HEADROOM);
+  return Math.ceil(raw / 10) * 10;
+}
 
 /**
  * Top-N over-indexing entries from a TGI array.
@@ -141,17 +151,18 @@ export default function init(rootEl, data) {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (!bars) {
       bars = horizontalBars(chartHost, {
+      showValues: false,  // TGI/index sizing numbers are never displayed
         items: lens.items,
-        max: INDEX_MAX,
+        max: lensMax(lens.items),
         accent: 'navy',
         decimals: 0,
-        barHeight: 26,
-        gap: 14,
-        labelWidth: 220,
+        barHeight: 36,
+        gap: 18,
+        labelWidth: 200,
         ariaLabel: `Hustlers: ${lens.label}`,
       });
     } else {
-      bars.update(lens.items, { resort: true });
+      bars.update(lens.items, { resort: true, max: lensMax(lens.items) });
     }
   };
 

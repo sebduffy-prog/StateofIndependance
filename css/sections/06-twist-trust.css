@@ -405,6 +405,69 @@
   margin-bottom: 0;
 }
 
+/* ── Real final ranking — compact ordered list in the top-right zone.
+   Right-aligned, light-on-navy, tabular nums; sits above the spread so
+   the true answer order reads first. Fills the previously dead top zone. */
+#\30 6-twist-trust .tt-order {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.5vh, 5px);
+}
+#\30 6-twist-trust .tt-order__row {
+  display: grid;
+  grid-template-columns: 1.6ch 1fr auto;
+  align-items: baseline;
+  gap: clamp(8px, 1vw, 14px);
+  padding: clamp(3px, 0.6vh, 6px) 0;
+  border-bottom: 1px solid rgba(240, 237, 231, 0.10);
+}
+#\30 6-twist-trust .tt-order__row:last-child {
+  border-bottom: 0;
+}
+/* Rank position — yellow, tabular */
+#\30 6-twist-trust .tt-order__pos {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: clamp(0.7rem, 0.82vw, 0.84rem);
+  color: rgba(240, 203, 8, 0.55);
+  text-align: right;
+}
+/* Institution name — cream */
+#\30 6-twist-trust .tt-order__name {
+  font-weight: 600;
+  font-size: clamp(0.8rem, 0.92vw, 0.96rem);
+  color: rgba(240, 237, 231, 0.84);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Trust score percentage — right-aligned, tabular */
+#\30 6-twist-trust .tt-order__score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: clamp(0.84rem, 0.96vw, 1rem);
+  color: var(--cream, #F0EDE7);
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+/* Top (NHS) and bottom (Government) get the focal navy+yellow accents */
+#\30 6-twist-trust .tt-order__row--top .tt-order__name,
+#\30 6-twist-trust .tt-order__row--top .tt-order__score {
+  color: var(--cream, #F0EDE7);
+}
+#\30 6-twist-trust .tt-order__row--top .tt-order__pos {
+  color: var(--yellow, #F0CB08);
+}
+#\30 6-twist-trust .tt-order__row--bottom .tt-order__name {
+  color: rgba(240, 203, 8, 0.78);
+}
+#\30 6-twist-trust .tt-order__row--bottom .tt-order__score {
+  color: var(--yellow, #F0CB08);
+}
+
 /* Hero spread — 53% → 24% side by side */
 #\30 6-twist-trust .tt-spread {
   display: flex;

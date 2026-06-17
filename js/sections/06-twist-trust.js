@@ -58,12 +58,47 @@ export default function init(rootEl, data) {
   const prePanel = rootEl.querySelector('[data-pre-reveal]');
   const truthPanel = rootEl.querySelector('[data-truth]');
   const gaugeHost = rootEl.querySelector('[data-gauge]');
+  const orderHost = rootEl.querySelector('[data-order]');
 
   if (!rankHost || !prePanel || !truthPanel || !gaugeHost) return;
 
   // True order = descending % confident (NHS 52.8 → Government 23.9).
   const sorted = rankingData.slice().sort((a, b) => b.pctConfident - a.pctConfident);
   const trueOrder = sorted.map((item) => item.id);
+
+  /**
+   * Render the verified final ranking into the top-right truth zone.
+   * Each row: position · institution · % confident (7–10 out of 10).
+   * Values come straight from survey data — never fabricated.
+   * @param {HTMLElement} host
+   */
+  const renderOrder = (host) => {
+    if (!host) return;
+    host.replaceChildren(
+      ...sorted.map((item, i) => {
+        const row = document.createElement('li');
+        row.className = 'tt-order__row';
+        if (i === 0) row.classList.add('tt-order__row--top');
+        if (i === sorted.length - 1) row.classList.add('tt-order__row--bottom');
+
+        const pos = document.createElement('span');
+        pos.className = 'tt-order__pos';
+        pos.textContent = String(i + 1);
+
+        const name = document.createElement('span');
+        name.className = 'tt-order__name';
+        name.textContent = item.label;
+
+        const score = document.createElement('span');
+        score.className = 'tt-order__score num';
+        // One decimal, tabular — the verified % confident (7–10).
+        score.textContent = `${item.pctConfident.toFixed(1)}%`;
+
+        row.append(pos, name, score);
+        return row;
+      }),
+    );
+  };
   // Present in a deterministic scramble so the visitor actually has to think.
   const items = seededShuffle(sorted.map((item) => ({ id: item.id, label: item.label })));
 
@@ -80,6 +115,9 @@ export default function init(rootEl, data) {
     setTimeout(() => {
       prePanel.hidden = true;
       truthPanel.hidden = false;
+
+      // Populate the verified final ranking in the top-right zone.
+      renderOrder(orderHost);
 
       // Trigger animation next frame so the unhide registers.
       requestAnimationFrame(() => {

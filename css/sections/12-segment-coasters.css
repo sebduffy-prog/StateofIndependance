@@ -10,8 +10,8 @@
   height: 100%;
   display: flex;
   align-items: center;
-  padding: clamp(52px, 7vh, 96px) clamp(28px, 6vw, 110px)
-           calc(var(--journey-controls-h, 96px) + clamp(16px, 2.5vh, 32px)) clamp(28px, 6vw, 110px);
+  padding: clamp(52px, 7vh, 96px) clamp(24px, 3.5vw, 64px)
+           calc(var(--journey-controls-h, 96px) + clamp(16px, 2.5vh, 32px)) clamp(24px, 3.5vw, 64px);
   overflow: hidden;
 }
 
@@ -28,8 +28,8 @@
 #\31 2-segment-coasters .segment-coasters-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
-  gap: clamp(28px, 5vw, 88px);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(28px, 4vw, 60px);
   align-items: stretch; /* card fills the row height, no dead space */
 }
 
@@ -237,7 +237,10 @@
 #\31 2-segment-coasters .segment-coasters-chart {
   width: 100%;
   flex: 1 1 auto;
-  min-height: 0;
+  /* Floor so the bars stay a confident focal element, not a small panel. */
+  min-height: clamp(230px, 36vh, 360px);
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 #\31 2-segment-coasters .segment-coasters-chart svg {

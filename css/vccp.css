@@ -194,6 +194,10 @@ a:hover { text-decoration: none; }
   outline: none;
 }
 
+/* The persistent yellow "you-dot" is retired at the client's request — it read
+   as a stray dot floating across the stages. Hidden globally. */
+.you-dot { display: none !important; }
+
 .si-display--lg { font-size: var(--t-display); }
 .si-display--sm { font-size: var(--t-title); font-weight: 800; letter-spacing: -0.02em; line-height: 1.0; }
 .si-display--black { font-weight: 900; letter-spacing: -0.03em; }
@@ -703,9 +707,9 @@ html, body { height: 100%; overflow: hidden; }
   z-index: 100;
   min-height: var(--journey-controls-h);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px clamp(16px, 3vw, 44px);
+  align-items: flex-end;
+  justify-content: flex-end;       /* wheel sits in the bottom-right corner */
+  padding: 12px clamp(18px, 3vw, 44px) clamp(14px, 2.4vh, 24px);
   pointer-events: none;            /* it informs; it does not capture scroll */
 }
 .journey-controls[hidden] { display: none; }
@@ -716,23 +720,10 @@ html, body { height: 100%; overflow: hidden; }
   gap: 12px;
   pointer-events: auto;
 }
-.journey-indicator {
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--navy);
-  opacity: 0.7;
-  font-variant-numeric: tabular-nums;
-}
-.journey-hint {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--navy);
-  opacity: 0.85;
-}
-.journey-hint[hidden] { display: none; }
+/* The "N / 22" counter and the advisory hint are retired at the client's
+   request — only the progress wheel remains, in the bottom-right corner. */
+.journey-indicator { display: none !important; }
+.journey-hint { display: none !important; }
 
 /* ── Orbit progress MERIDIAN — thin completion arc (AD §6) ── */
 .journey-meridian { flex: 0 0 auto; display: block; }

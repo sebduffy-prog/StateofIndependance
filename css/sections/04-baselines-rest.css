@@ -24,14 +24,15 @@
   display: grid;
   grid-template-columns: 2fr 3fr;
   grid-template-rows: 1fr;
-  gap: clamp(2.4rem, 4.5vw, 6rem);
+  gap: clamp(1.6rem, 3vw, 3.5rem);
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   /* Generous top padding frames content in the upper-centre zone.
-     Both columns use the same explicit height and align-self:start so
-     they share identical top and bottom edges.                        */
-  padding: clamp(2rem, 14vh, 9rem) clamp(2rem, 5.5vw, 7rem) clamp(1.6rem, 3vh, 2.8rem);
+     Tighter RIGHT inset (4-value: top right bottom left) pulls the whole
+     composition leftward and hands the freed width to the charts so they
+     read bigger and there is no stranded gap on the right edge.         */
+  padding: clamp(2rem, 14vh, 9rem) clamp(1.5rem, 3vw, 3.5rem) clamp(1.6rem, 3vh, 2.8rem) clamp(2rem, 5.5vw, 7rem);
   align-items: start;
 }
 

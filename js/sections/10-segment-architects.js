@@ -24,7 +24,19 @@ import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'architects';
 const TOP_N = 5;
-const INDEX_MAX = 250; // architects lifestyle indices reach 236
+// Scale baseline: 100 = the UK average, always shown for context. The real
+// chart max is computed per-lens from the data (see lensMax) so bars fill the
+// track instead of stranding dead space on the right of a fixed wide scale.
+const INDEX_BASELINE = 100;
+const SCALE_HEADROOM = 1.08; // a touch of air past the longest bar
+
+/** Tight per-lens max so the longest bar nearly fills the track. */
+function lensMax(items) {
+  const top = items.reduce((m, it) => Math.max(m, it.pct || 0), 0);
+  // Never compress below the 100 baseline; round up to a clean step.
+  const raw = Math.max(INDEX_BASELINE + 20, top * SCALE_HEADROOM);
+  return Math.ceil(raw / 10) * 10;
+}
 
 /**
  * Top-N over-indexing entries from a TGI array.
@@ -106,11 +118,11 @@ function populateTgiLines(rootEl, tgiSeg) {
   const lbl2 = rootEl.querySelector('[data-segment-tgi-lbl-2]');
 
   if (top2[0] && idx1 && lbl1) {
-    idx1.textContent = top2[0].index;
+    if (idx1) idx1.remove();  // TGI sizing not shown
     lbl1.textContent = tidyLabel(top2[0].label || top2[0].statement || '');
   }
   if (top2[1] && idx2 && lbl2) {
-    idx2.textContent = top2[1].index;
+    if (idx2) idx2.remove();  // TGI sizing not shown
     lbl2.textContent = tidyLabel(top2[1].label || top2[1].statement || '');
   }
 }
@@ -180,17 +192,18 @@ export default function init(rootEl, data) {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (!bars) {
       bars = horizontalBars(chartHost, {
+      showValues: false,  // TGI/index sizing numbers are never displayed
         items: lens.items,
-        max: INDEX_MAX,
+        max: lensMax(lens.items),
         accent: 'navy',
         decimals: 0,
-        barHeight: 26,
-        gap: 14,
-        labelWidth: 220,
+        barHeight: 40,
+        gap: 22,
+        labelWidth: 200,
         ariaLabel: `Architects: ${lens.label}`,
       });
     } else {
-      bars.update(lens.items, { resort: true });
+      bars.update(lens.items, { resort: true, max: lensMax(lens.items) });
     }
   };
 

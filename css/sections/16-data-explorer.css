@@ -54,13 +54,13 @@
 #\31 6-data-explorer .pg-orbit {
   position: absolute;
   z-index: 0;
-  /* A large ring anchored off the bottom-right corner: its visible upper-left
-     arc sweeps through the lower-right ground so nothing reads as empty space,
-     while its CENTRE sits off-canvas so the seed-dot rides the rim well clear
-     of the chart marks (never a stray dot over the data). */
-  --pg-orbit-r: clamp(340px, 38vw, 640px);
-  bottom: clamp(-360px, -22vw, -200px);
-  right: clamp(-360px, -22vw, -200px);
+  /* A very large ring whose centre sits FAR off the bottom-right corner so only
+     a shallow, ambient arc grazes the lower edge of the ground — it reads as a
+     faint horizon line behind the chart, never as an empty bounded circle that
+     leaves a void. The seed-dot still rides the rim, clear of the chart marks. */
+  --pg-orbit-r: clamp(620px, 64vw, 1100px);
+  bottom: clamp(-940px, -52vw, -560px);
+  right: clamp(-820px, -46vw, -480px);
   width: calc(var(--pg-orbit-r) * 2);
   height: calc(var(--pg-orbit-r) * 2);
   transform-origin: center;
@@ -106,9 +106,13 @@
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  align-items: center;
-  gap: clamp(var(--space-4), 6vw, var(--space-7));
+  /* A COMPACT left rail (fixed, controls-width) and a dominant chart hero that
+     takes the rest of the width — no big empty band on the right. */
+  grid-template-columns: clamp(300px, 26vw, 380px) minmax(0, 1fr);
+  /* Stretch both columns to equal height so the chart hero can fill the full
+     stage height (the rail centres its own content below). */
+  align-items: stretch;
+  gap: clamp(var(--space-4), 4vw, var(--space-6));
 }
 
 /* The tiny Challenger-Series lockup — the book-cover stamp, top-right of the
@@ -128,6 +132,7 @@
 #\31 6-data-explorer .pg-rail {
   display: flex;
   flex-direction: column;
+  justify-content: center;   /* centre the rail content in the stretched column */
   min-width: 0;
 }
 #\31 6-data-explorer .pg-eyebrow {
@@ -151,7 +156,8 @@
   margin: 0;
   color: var(--navy);
   font-weight: 900;
-  font-size: clamp(4rem, 9vw, 8rem);
+  /* sized to the compact rail so the display figure never overflows it */
+  font-size: clamp(3.6rem, 6vw, 6.4rem);
   line-height: 0.86;
   letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
@@ -250,17 +256,24 @@
 /* ─── RIGHT: the single hero — the chart, box-less on the open cream ─── */
 #\31 6-data-explorer .pg-instrument {
   min-width: 0;
+  /* Fill the full height of the stage row so the chart has the whole right
+     two-thirds to occupy, floor-to-ceiling, with no dead band beneath it. */
+  align-self: stretch;
+  height: 100%;
+  display: flex;
 }
 #\31 6-data-explorer .pg-chart-holder {
-  width: 100%;
+  flex: 1;            /* claim the full width + height of the instrument column */
+  min-width: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 #\31 6-data-explorer .pg-chart {
   width: 100%;
-  /* The chart is the hero: reserve a commanding band so it fills the right
-     two-thirds and the lower ground is never empty. */
-  min-height: clamp(360px, 46vh, 560px);
+  /* The chart is the hero: it claims the full height of the stage so it fills
+     the right side floor-to-ceiling and the lower-right ground is never empty. */
+  min-height: clamp(480px, 78vh, 820px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -279,18 +292,71 @@
   max-width: 100%;
   width: 100%;
   height: auto;
+  /* Never let a tall chart push past the stage band on wide screens; it scales
+     down to fit height-wise while staying centred (preserveAspectRatio meet). */
+  max-height: clamp(480px, 78vh, 820px);
   margin-inline: auto;
 }
 
-/* ─── Waffle view — the lead figure as N-in-100, with an honest caption ─ */
-#\31 6-data-explorer .pg-chart .pg-waffle-cap {
-  margin: var(--space-2) 0 0 0;
-  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
+/* ─── Waffle view — ALL options as small-multiple N-in-100 grids ──────── */
+#\31 6-data-explorer .pg-chart .pg-waffle-all {
+  width: 100%;
+  display: grid;
+  /* auto-fit tiles across the hero; min tile keeps each 100-grid legible */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(118px, 13vw, 168px), 1fr));
+  gap: clamp(var(--space-3), 2.4vw, var(--space-5));
+  align-items: start;
+  justify-items: center;
+}
+/* Few options? Cap the column count so tiles don't balloon. */
+#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 1"],
+#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 2"],
+#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 3"],
+#\31 6-data-explorer .pg-chart .pg-waffle-all[style*="--pg-waffle-count: 4"] {
+  grid-template-columns: repeat(var(--pg-waffle-count), minmax(0, clamp(150px, 16vw, 210px)));
+  justify-content: center;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-tile {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 220px;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-grid {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-grid > svg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-tile-cap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  gap: 2px;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-tile-num {
+  font-size: clamp(1.3rem, 2.1vw, 1.9rem);
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#\31 6-data-explorer .pg-chart .pg-waffle-tile-lab {
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+  font-weight: 600;
+  color: var(--navy);
+  opacity: 0.72;
+  line-height: 1.18;
+  max-width: 18ch;
 }
 
 /* ─── Venn view — flat circles on the cream; navy text, no white box ──── */
@@ -301,7 +367,7 @@
   gap: var(--space-2);
 }
 #\31 6-data-explorer .pg-chart .venn-stage { position: relative; width: 100%; }
-#\31 6-data-explorer .pg-chart .venn-svg { width: 100%; height: auto; max-height: 360px; }
+#\31 6-data-explorer .pg-chart .venn-svg { width: 100%; height: auto; max-height: clamp(420px, 62vh, 640px); }
 /* flat petals — soft fill, ink hairline; isolate on hover/focus */
 #\31 6-data-explorer .pg-chart .venn-petal {
   fill-opacity: 0.34;
@@ -416,4 +482,9 @@
     margin-bottom: var(--space-4);
   }
   #\31 6-data-explorer .pg-chart { min-height: 300px; }
+  /* Stacked layout: the chart no longer needs to fill a full-height column, so
+     release the height cap and let it size naturally below the rail. */
+  #\31 6-data-explorer .pg-chart > svg { max-height: none; }
+  #\31 6-data-explorer .pg-instrument { height: auto; }
+  #\31 6-data-explorer .pg-stage { align-items: start; }
 }

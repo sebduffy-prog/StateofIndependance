@@ -147,7 +147,6 @@ const tween = (from, to, durationMs, onStep, onDone) => {
 export const horizontalBars = (container, opts) => {
   const c = palette();
   const {
-    max = 100,
     accent = 'navy',
     onNavy = false,
     decimals = 0,
@@ -156,7 +155,12 @@ export const horizontalBars = (container, opts) => {
     barHeight = 30,
     gap = 12,
     labelWidth = 200,
+    showValues = true,   // when false, the numeric value label is omitted
   } = opts;
+
+  // Chart max can be updated per-redraw (tightens to the data so bars fill
+  // the track instead of stranding right-side dead space). Defaults to 100.
+  let max = opts.max != null ? opts.max : 100;
 
   const scheme = groundScheme(c, { accent, onNavy });
   const valueX = labelWidth + 12;
@@ -182,6 +186,9 @@ export const horizontalBars = (container, opts) => {
   });
   svg.style.maxWidth = '100%';
   svg.style.height = 'auto';
+  // Allow a label that runs slightly longer than labelWidth to spill into the
+  // left margin rather than being hard-clipped at the viewBox edge.
+  svg.style.overflow = 'visible';
 
   const buildRow = (item, index) => {
     const y = index * (barHeight + gap);
@@ -211,23 +218,26 @@ export const horizontalBars = (container, opts) => {
       fill: isHi ? highlightColour : fillColour,
     });
 
-    const value = el('text', {
+    const value = showValues ? el('text', {
       x: valueX, y: barHeight / 2,
       'dominant-baseline': 'central',
       fill: textColour, 'font-size': 16, 'font-weight': 700,
       'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
       style: 'font-variant-numeric: tabular-nums;',
-    });
-    value.textContent = fmtPct(0, decimals);
+    }) : null;
+    if (value) value.textContent = fmtPct(0, decimals);
 
-    g.append(label, track, bar, value);
+    g.append(label, track, bar);
+    if (value) g.append(value);
     svg.append(g);
 
     const render = (pct) => {
       const w = Math.max(0, (pct / max) * trackWidth);
       bar.setAttribute('width', w);
-      value.setAttribute('x', valueX + w + 8);
-      value.textContent = fmtPct(pct, decimals);
+      if (value) {
+        value.setAttribute('x', valueX + w + 8);
+        value.textContent = fmtPct(pct, decimals);
+      }
     };
     return { g, render, current: 0, y };
   };
@@ -275,7 +285,8 @@ export const horizontalBars = (container, opts) => {
 
   return {
     el: svg,
-    update(newItems, { resort = false } = {}) {
+    update(newItems, { resort = false, max: nextMax } = {}) {
+      if (nextMax != null) max = nextMax;
       items = resort
         ? newItems.slice().sort((a, b) => b.pct - a.pct)
         : newItems.slice();

@@ -64,9 +64,11 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  align-items: center;
-  gap: clamp(24px, 3.6vw, 64px);
+  /* Narrow fixed-ish LEFT rail (title + legend + read-out) and a wide, clear
+     RIGHT zone that belongs entirely to the graph — the two never overlap. */
+  grid-template-columns: clamp(300px, 30vw, 420px) minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(24px, 3vw, 56px);
   width: 100%;
   max-width: 1480px;
   margin-inline: auto;
@@ -81,8 +83,11 @@
 #\31 4-graphrag .graphrag-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.4vh, 30px);
+  justify-content: flex-start;
+  gap: clamp(14px, 2vh, 26px);
   min-width: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 #\31 4-graphrag .graphrag-head {
@@ -274,7 +279,38 @@
 #\31 4-graphrag .sg-hub:focus-visible .sg-dot,
 #\31 4-graphrag .sg-attr:focus-visible .sg-dot { stroke: var(--yellow, #F0CB08); stroke-width: 2.5; }
 
-/* ── Detail panel — backgroundless read-out anchored bottom-left of stage ── */
+/* ── Read-out rail — the profile/owners panel lives in the LEFT column ─────
+   It is mounted here (data-graphrag-panel) by segment-graph.js, so it can
+   never overlap the graph zone on the right. It fills the rail's remaining
+   height and gets a faint top rule to set it apart from the legend/hint. */
+#\31 4-graphrag .graphrag-readout {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: clamp(6px, 1.2vh, 14px);
+  padding-top: clamp(12px, 1.8vh, 20px);
+  border-top: 1px solid rgba(240, 237, 231, 0.14);
+  overflow: hidden;
+}
+
+/* Railed variant: static in the rail (not absolutely floated over the graph). */
+#\31 4-graphrag .sg-panel--railed {
+  position: static;
+  left: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: none;
+  pointer-events: auto;
+  z-index: auto;
+}
+#\31 4-graphrag .sg-panel--railed h4 {
+  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+}
+#\31 4-graphrag .sg-panel--railed blockquote { font-size: 0.88rem; }
+#\31 4-graphrag .sg-panel--railed .sg-desc { font-size: 0.9rem; }
+#\31 4-graphrag .sg-panel--railed .sg-facts { font-size: 0.82rem; }
+
+/* ── Detail panel — backgroundless read-out (default: floats bottom-left of
+   stage; the railed variant above overrides this when mounted in the rail) ── */
 #\31 4-graphrag .sg-panel {
   position: absolute;
   left: clamp(4px, 1vw, 16px);
@@ -412,6 +448,14 @@
     gap: clamp(10px, 1.8vh, 20px);
     align-items: start;
   }
+  #\31 4-graphrag .graphrag-left { height: auto; overflow: visible; }
   #\31 4-graphrag .graphrag-stand { display: none; }
-  #\31 4-graphrag .sg-panel { width: min(260px, 46%); }
+  /* On the stacked fallback the read-out would steal the graph's height, so
+     keep it tight and let the network keep its zone. */
+  #\31 4-graphrag .graphrag-readout {
+    flex: 0 0 auto;
+    margin-top: 6px;
+    padding-top: 10px;
+  }
+  #\31 4-graphrag .graphrag-hint { display: none; }
 }

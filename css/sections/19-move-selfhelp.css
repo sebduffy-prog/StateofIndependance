@@ -92,7 +92,7 @@
   flex-direction: column;
   gap: clamp(16px, 2.2vh, 28px);
   min-width: 0;
-  justify-content: space-between;
+  justify-content: center;   /* balanced group, not stretched edge-to-edge */
   overflow: hidden;   /* prevent quote card bleeding past the column edge */
   min-height: 0;      /* allow flex shrink within the grid row */
 }

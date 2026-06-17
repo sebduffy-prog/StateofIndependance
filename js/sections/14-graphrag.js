@@ -17,10 +17,13 @@ import { arrival } from '../lib/experiential.js';
 import { segmentGraph } from '../lib/segment-graph.js';
 
 // How many distinctive TGI statements to weave in per segment, per facet, and
-// the index floor that counts as a genuine over-index (per tgi indexNote).
-const TGI_PER_FACET = 2;
-const TGI_OVERINDEX_MIN = 150;
-const TGI_FACETS = ['lifestyle', 'media'];
+// the index floor that counts as a genuine over-index (per tgi indexNote:
+// ">=120 strongly over-indexes"). The graph has far more space than the few
+// nodes it used to show, so we pull from all three facets with a higher
+// per-facet cap — ~5x more real statement satellites per hub, never fabricated.
+const TGI_PER_FACET = 8;
+const TGI_OVERINDEX_MIN = 120;
+const TGI_FACETS = ['lifestyle', 'media', 'demographics'];
 
 // Auto-reveal: dwell on each segment long enough to read its signals, then move
 // on, so every question-answer surfaces without a tap. A manual tap pauses it.
@@ -79,6 +82,7 @@ export default function init(rootEl, data) {
 
   const mount = rootEl.querySelector('[data-graphrag-mount]');
   const msg = rootEl.querySelector('[data-graphrag-msg]');
+  const panelMount = rootEl.querySelector('[data-graphrag-panel]');
   if (!mount) return;
 
   // Fail soft: no segment data → leave the "loading" message visible, no throw.
@@ -139,10 +143,11 @@ export default function init(rootEl, data) {
     graph = segmentGraph(mount, {
       segments: woven,
       facets: ['interests', 'channels', 'aiAttitude'],
-      width: 940,
-      height: 660,
+      width: 1080,
+      height: 720,
       onNavy: true,
       ariaLabel: 'Explore the four segments and the signals they over-index on',
+      panelMount: panelMount || undefined,
       onSelectSegment: onManualSelect,
       onSelectAttribute: onManualSelect,
     });
