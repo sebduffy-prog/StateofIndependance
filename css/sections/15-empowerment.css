@@ -523,14 +523,20 @@
   outline-offset: 4px;
 }
 
-/* Colour dot keys the figure to its circle (money navy, time blue, stress coral). */
-#\31 5-empowerment .emp-tv-stat-dot {
-  width: 0.7rem;
-  height: 0.7rem;
-  margin-bottom: 0.15rem;
-  background: var(--accent, var(--navy));
-  border-radius: 50%;
+/* Flat navy+ need icon keys the figure to its circle (money piggy / time
+   stopwatch / stress brain). Inherits the need accent via currentColor so the
+   money navy / time blue / stress coral coding carries through. */
+#\31 5-empowerment .emp-tv-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(28px, 2.6vw, 36px);
+  height: clamp(28px, 2.6vw, 36px);
+  margin-bottom: 0.2rem;
+  color: var(--accent, var(--navy));
 }
+
+#\31 5-empowerment .emp-tv-stat-icon svg { width: 100%; height: 100%; }
 
 #\31 5-empowerment .emp-tv-stat-n {
   font-weight: 900;

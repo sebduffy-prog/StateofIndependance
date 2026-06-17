@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#041654" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Ride the social self-help wave: a surf wave">
+  <!-- the breaking wave, curling over -->
+  <path d="M8 44 C8 28 22 16 38 18 C50 19.5 54 28 50 34 C47 38 41 38 39 33 C42 35 46 33 45 29 C44 24 36 23 30 27 C22 32 18 40 20 48"/>
+  <!-- the spray / curl crest -->
+  <path d="M50 22 C55 20 58 22 58 26"/>
+  <!-- water line beneath -->
+  <path d="M8 52 C16 49 24 49 32 52 C40 55 48 55 56 52"/>
+</svg>

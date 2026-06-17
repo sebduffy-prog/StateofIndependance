@@ -111,7 +111,7 @@
 
 #\30 4-baselines-rest .br-stat {
   display: flex;
-  align-items: baseline;
+  align-items: center;   /* label lines up vertically with the big number */
   gap: clamp(0.7rem, 1.4vw, 1.4rem);
   transition: opacity 0.26s var(--ease-entrance);
 }

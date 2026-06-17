@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#041654" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Retreaters: safety hard hat">
+  <!-- dome of the hard hat -->
+  <path d="M16 38 C16 26 23 18 32 18 C41 18 48 26 48 38"/>
+  <!-- centre ridge -->
+  <line x1="32" y1="18" x2="32" y2="38"/>
+  <!-- side ridges -->
+  <path d="M24 20 C22 26 22 32 22 38"/>
+  <path d="M40 20 C42 26 42 32 42 38"/>
+  <!-- brim -->
+  <path d="M10 42 C10 39 13 38 16 38 L48 38 C51 38 54 39 54 42 C54 44 51 45 48 45 L16 45 C13 45 10 44 10 42 Z"/>
+</svg>

@@ -99,9 +99,9 @@ export default function init(rootEl, data) {
     }));
     dotPlot(anxietyHost, {
       items:    moodItems,
-      // Mood readings peak at 77, so an 88 ceiling spreads the dots across the
-      // full width and pushes them clear of the dead space on the right.
-      max:      88,
+      // Max 100 gives clean round axis ticks (0/25/50/75/100); 88 produced the
+      // odd 22/44/66/88 markers the client flagged.
+      max:      100,
       accent:   'navy',
       ariaLabel: 'National mood scores: top four readings',
     });

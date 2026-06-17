@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#041654" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Save me money: piggy bank">
+  <!-- body -->
+  <path d="M14 36 C14 26 23 20 33 20 C45 20 52 27 52 36 C52 41 49 45 45 48 L45 52 L39 52 L38 49 C36 49.5 34 50 32 50 C30 50 28 49.5 26 49 L25 52 L19 52 L19 47 C16 44 14 40 14 36 Z"/>
+  <!-- snout -->
+  <path d="M14 34 C10 34 9 38 12 40 L16 40"/>
+  <circle cx="12" cy="37" r="0.6"/>
+  <!-- eye -->
+  <circle cx="24" cy="31" r="1.6"/>
+  <!-- ear -->
+  <path d="M33 20 L30 14 L37 17 Z"/>
+  <!-- coin slot -->
+  <line x1="34" y1="26" x2="42" y2="26"/>
+  <!-- a coin dropping in -->
+  <circle cx="38" cy="14" r="4"/>
+</svg>
