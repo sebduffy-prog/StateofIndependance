@@ -219,7 +219,7 @@ export default function init(rootEl, data) {
       if (crowdLabel)  crowdLabel.textContent  = '77 in 100 are more careful. One square is you.';
       if (crowdCap)    crowdCap.classList.add('is-truth');
       if (crowdKicker) crowdKicker.textContent = 'The truth';
-      if (crowdOf)     crowdOf.textContent     = 'in 100 are more careful. One of them is you.';
+      if (crowdOf)     crowdOf.textContent     = 'in 100 are more careful. One of them is\u00A0you.';
 
       if (crowdCount) {
         countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
