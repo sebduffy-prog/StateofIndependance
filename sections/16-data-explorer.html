@@ -1,15 +1,18 @@
 <!-- Step 16 — The data explorer. ONE survey, fully explorable: every question,
      sliced by which Britain, viewed five ways. The explore-everything moment.
 
-     COMPOSITION — a confident editorial CONSOLE, not a thin rail + lonely chart.
+     COMPOSITION — a confident editorial CONSOLE, stacked top-to-bottom so the
+     chart owns the floor (the client-approved layout):
        • A top MASTHEAD band: the eyebrow + the live display FIGURE (the number is
          the headline, counting on every change) on the left, the supporting read
          line beside it, the Challenger-Series lockup stamped top-right.
        • A full-width CONTROL DECK: three labelled clusters — THE QUESTION (every
-         survey + segment + TGI metric), WHICH BRITAIN (All / the four segments),
-         VIEW IT AS (Bars · Lollipop · Dot · Waffle · Venn). Tactile square chips.
-       • The HERO STAGE: one large panel that fills the rest of the screen; the
-         chart morphs / crossfades on every change, box-less on the cream.
+         survey + segment + TGI metric, in tidy wrap rows), WHICH BRITAIN
+         (All / the four segments), VIEW IT AS (Bars · Lollipop · Dot · Waffle ·
+         Venn). Tactile square chips, held compact so the chart gets the room.
+       • The HERO STAGE: one large panel that fills the rest of the screen below
+         the controls; the chart morphs / crossfades on every change, big and
+         box-less on the cream.
      ON BRAND — cream ground, navy gravity, ONE yellow accent (the figure unit +
      the orbit seed + the active control wedge), Poppins, square corners,
      tabular nums. Every number renders from data/*.json; nothing typed by hand. -->
@@ -22,46 +25,40 @@
     <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
          alt="VCCP Challenger Series" data-arrival />
 
-    <!-- ── CONTROL RAIL: the masthead figure + the three driving controls,
-         held compact on the left so the chart owns the rest of the screen. ── -->
-    <div class="pg-rail">
+    <!-- MASTHEAD: eyebrow + the live display figure on the left, the read line beside it -->
+    <header class="pg-masthead">
+      <div class="pg-masthead-lead">
+        <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
+        <p class="pg-readout-num" data-arrival>
+          <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
+        </p>
+      </div>
+      <div class="pg-masthead-read" data-arrival>
+        <p class="pg-readout-kicker" data-pg-readout-kicker>The leading answer</p>
+        <p class="pg-readout-line"><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
+        <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
+      </div>
+    </header>
 
-      <!-- MASTHEAD: eyebrow + the live display figure + the read line -->
-      <header class="pg-masthead">
-        <div class="pg-masthead-lead">
-          <p class="vccp-eyebrow pg-eyebrow" data-arrival>The whole survey, explorable · <em class="si-accent">five ways</em></p>
-          <p class="pg-readout-num" data-arrival>
-            <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit>%</span>
-          </p>
+    <!-- CONTROL DECK: the three driving controls, full width across the top -->
+    <div class="pg-deck" data-arrival>
+      <div class="pg-control pg-control--wide">
+        <span class="pg-control-label" id="pg-metric-label">The question</span>
+        <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
+      </div>
+      <div class="pg-deck-row">
+        <div class="pg-control">
+          <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
+          <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
         </div>
-        <div class="pg-masthead-read" data-arrival>
-          <p class="pg-readout-kicker" data-pg-readout-kicker>The leading answer</p>
-          <p class="pg-readout-line"><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
-          <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
-        </div>
-      </header>
-
-      <!-- CONTROL DECK: the three driving controls, stacked in the rail -->
-      <div class="pg-deck" data-arrival>
-        <div class="pg-control pg-control--wide">
-          <span class="pg-control-label" id="pg-metric-label">The question</span>
-          <div class="pg-pills" data-pg-metric-pills aria-describedby="pg-metric-label"></div>
-        </div>
-        <div class="pg-deck-row">
-          <div class="pg-control">
-            <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
-            <div class="pg-pills" data-pg-segment-pills aria-describedby="pg-segment-label"></div>
-          </div>
-          <div class="pg-control">
-            <span class="pg-control-label" id="pg-view-label">View it as</span>
-            <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
-          </div>
+        <div class="pg-control">
+          <span class="pg-control-label" id="pg-view-label">View it as</span>
+          <div class="pg-pills" data-pg-view-pills aria-describedby="pg-view-label"></div>
         </div>
       </div>
-
     </div>
 
-    <!-- ── HERO STAGE: the single morphing chart, box-less on the cream ── -->
+    <!-- HERO STAGE: the single morphing chart, big and box-less, fills the rest -->
     <div class="pg-instrument">
       <div class="chart-holder pg-chart-holder">
         <div class="pg-chart" data-pg-metric-chart></div>

@@ -3,22 +3,26 @@
  *
  * THE ONE MEMORABLE THING (ART-DIRECTION §7): three needs you pull together
  * until they meet on empowerment. Tactile, elemental, expensive. The screen
- * has exactly ONE focal point — the venn centrepiece — and a quiet prelude:
+ * has exactly ONE focal point — the venn centrepiece — driven by ONE control:
  *
- *   PRELUDE (ungated, cinematic). A single thin strip wipes "survival mode" to
- *   "active agency". One word shows at a time (the off side is clipped, never
- *   stacked). A range input drives it; scroll primes the turn until touched.
- *   Keyboard operable. Narrative only — it does not gate.
+ *   THE PIVOT SLIDER (the control). A single thin strip runs from "the old
+ *   model" to "the new model", wiping "survival mode" to "active agency". One
+ *   word shows at a time (the off side is clipped, never stacked). Its 0..1
+ *   value is the master control for the whole turn. Scroll primes it part-way
+ *   until touched; the visitor finishes (or reverses) the turn. Keyboard
+ *   operable by arrows.
  *
- *   THE CENTREPIECE (gated, the hero motion). Money / time / stress start as
- *   three large flat brand circles held WIDE apart on the open ground. Each
- *   carries its own verified Q14 brand-ask figure AS its label (the number IS
- *   the reading — 38.8 / 24.0 / 27.7, not a marooned chart below). They sweep
- *   together (auto on arrival; drag as an optional nudge) and the shared
- *   overlap blooms a luminous yellow core with "empowerment" assembling in the
- *   centre. When the three meet, journey.ready() fires (advisory — Next is
- *   never blocked). Fully keyboard operable (focus a need's stat, Enter/arrows
- *   bring it in) and reduced-motion safe (circles start resolved).
+ *   THE CENTREPIECE (the hero motion). Money / time / stress are three large
+ *   flat brand circles. Each carries its own verified Q14 brand-ask figure AS
+ *   its label (the number IS the reading — 38.8 / 24.0 / 27.7, not a marooned
+ *   chart below). The slider's value maps continuously to their spread: far
+ *   LEFT holds them WIDE apart with "empowerment" hidden; dragging RIGHT draws
+ *   them together proportionally until, at full right, they MEET on the shared
+ *   core, the overlap blooms a luminous yellow centre and "empowerment" ignites
+ *   in. When the three first meet, journey.ready() fires (advisory — Next is
+ *   never blocked). A direct drag of a circle stays available as an optional
+ *   nudge. Reduced-motion safe: the venn shows the resolved (converged +
+ *   revealed) state with no animation.
  *
  * Contract: docs/CONTRACT.md. Every CSS selector scoped #15-empowerment.
  * Verified Q14 values from segments.json meta.metricsTotals.brandAsks
@@ -41,24 +45,23 @@ import {
 
 /* ───────────────────── PRELUDE — the pivot wipe ────────────────────────── */
 
-const PIVOT_START = 14;   // strip starts mostly on "survival"
 const PIVOT_SNAP = 50;    // crossover point for which word shows
 
-// The held beat (ms) on the wide spread before the needs auto-sweep into the
-// shared core. Long enough to read three separate needs as three separate
-// asks, short enough to feel like one continuous cinematic move on arrival.
-const AUTO_CONVERGE_HOLD_MS = 820;
-
-// The convergence sweep itself — one orchestrated, eased glide (all three
-// circles on a SINGLE shared timeline so they arrive together and ignite
-// "empowerment" as one payoff, not three springs racing to the centre).
-const CONVERGE_DURATION_MS = 1180;
+// Easing for the slider->convergence map. A slow-in / decisive-pull / soft-
+// settle curve so the three needs hesitate at the spread, are drawn together
+// as if by gravity, then ease onto the shared core. Applied to the raw 0..1
+// slider value so the whole convergence feels eased even though the control
+// (the slider) is linear.
+const easeConverge = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 /**
- * Wire the thin pivot strip. Returns { slider, apply } so scrollScene can prime
- * it. Drives a single CSS var --pv 0..1 (fill width + which word is clipped).
+ * Wire the pivot slider. Returns { slider, apply } so init can drive the venn
+ * convergence from it and scrollScene can prime it. `apply` reports the eased
+ * 0..1 value to an optional onConverge sink (init wires it to the venn) and
+ * still drives the wipe's CSS var --pv (fill width + which word is clipped).
  */
-const buildPivot = (mount) => {
+const buildPivot = (mount, onConverge) => {
   const slider = mount.querySelector('.emp-pivot-slider');
   const fill = mount.querySelector('[data-emp-pivot-fill]');
   const readout = mount.querySelector('.emp-pivot-readout');
@@ -69,6 +72,10 @@ const buildPivot = (mount) => {
     mount.style.setProperty('--pv', f.toFixed(3));
     fill.style.width = `${(f * 100).toFixed(2)}%`;
     readout.dataset.side = pct >= PIVOT_SNAP ? 'after' : 'before';
+    // The slider IS the convergence control: far left (old model) = spread,
+    // far right (new model) = met on empowerment. Eased so the glide feels
+    // weighted even though the input is linear.
+    if (typeof onConverge === 'function') onConverge(easeConverge(f));
   };
 
   slider.addEventListener('input', () => apply(Number(slider.value)));
@@ -150,13 +157,15 @@ const dirXY = (ang) => ({
 });
 
 /**
- * Build the tactile venn. Calls onConverged() once the three needs fully meet.
- * Returns { autoConverge, destroy }.
+ * Build the tactile venn. The pivot slider drives setConvergence(0..1); render()
+ * derives the overlap, glow and "empowerment" reveal from the resulting spread,
+ * and onConverged() fires (advisory) the first time the needs fully meet.
+ * Returns { setConvergence, destroy }.
  */
 const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   if (!brandAsks) {
     mount.innerHTML = '<p class="emp-tv-empty">Brand-ask data is awaiting the survey file.</p>';
-    return { autoConverge() {}, destroy() {} };
+    return { setConvergence() {}, destroy() {} };
   }
 
   const reduced = prefersReducedMotion();
@@ -232,6 +241,10 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   const offsets = new Map(needs.map((n) => [n.id, { dx: 0, dy: 0 }]));
   const drags = new Map();
   let converged = false;
+  // The last slider-driven convergence value (0 spread .. 1 met). Held so a
+  // resize can re-apply the same convergence against the new geometry, and so
+  // a manual drag can hand control back to the slider cleanly.
+  let conv = 0;
 
   const placeHome = () => {
     const g = geom();
@@ -274,6 +287,7 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
 
     const allMet = dists.every((d) => d <= g.met);
     if (allMet && !converged) {
+      // The slider has driven the three needs onto the shared core: ignite.
       converged = true;
       stage.classList.add('is-converged');
       centre.classList.add('is-on');
@@ -281,116 +295,38 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
       void stage.offsetWidth;
       stage.classList.add('is-pulse');
       onConverged();
-      lockToCentre();
+    } else if (!allMet && converged) {
+      // Pulled back toward the old model: release so the reveal can re-ignite
+      // next time the slider reaches the meeting point.
+      converged = false;
+      stage.classList.remove('is-converged', 'is-pulse');
+      centre.classList.remove('is-on');
     }
   };
 
-  // Premium ease — a slow-in / decisive-pull / soft-settle curve. The needs
-  // hesitate at the spread, then are drawn together as if by gravity, then
-  // ease to rest exactly as they meet on the shared core.
-  const easeConverge = (t) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-  let sweepRaf = 0;
-  const cancelSweep = () => {
-    if (sweepRaf) {
-      cancelAnimationFrame(sweepRaf);
-      sweepRaf = 0;
-    }
-  };
-
-  // Snap (no animation) every need onto the resolved triangle — used for the
-  // keyboard "bring all in", resize-while-converged, and reduced motion.
-  const snapToCentre = () => {
-    cancelSweep();
+  // THE CONVERGENCE — driven directly by the pivot slider. setConvergence(t)
+  // places every circle on the line between its WIDE home (t=0, the old model:
+  // three distinct asks spread apart) and the shared core (t=1, the new model:
+  // met on empowerment). Each frame is positioned with no per-circle spring so
+  // all three track the slider together; render() then derives the overlap
+  // wash, the yellow core glow and the assembling "empowerment" word from the
+  // resulting mean distance, so the reveal is bound continuously to t.
+  const setConvergence = (t) => {
+    conv = Math.max(0, Math.min(1, t));
     const g = geom();
     needs.forEach((n) => {
       const ctrl = drags.get(n.id);
       if (!ctrl) return;
-      const { dx, dy } = resolvedOffset(n, g);
-      ctrl.setPosition(dx, dy, { animate: false });
+      const end = resolvedOffset(n, g);
+      ctrl.setPosition(end.dx * conv, end.dy * conv, { animate: false });
     });
   };
 
-  // THE CONVERGENCE — one orchestrated, eased sweep. All three circles ride a
-  // SINGLE shared timeline from their wide home (progress 0) to the shared core
-  // (progress 1), so they glide inward together and meet on the same frame. The
-  // overlap deepening to navy, the centre word and the yellow ignition all fall
-  // out of render() as the mean distance shrinks — the payoff is automatic.
-  const sweepToCentre = () => {
-    cancelSweep();
-    const g = geom();
-    // Capture each circle's start + end offset once, then interpolate on one t.
-    const lanes = needs
-      .map((n) => {
-        const ctrl = drags.get(n.id);
-        if (!ctrl) return null;
-        const o = offsets.get(n.id);
-        const end = resolvedOffset(n, g);
-        return { ctrl, fromX: o.dx, fromY: o.dy, toX: end.dx, toY: end.dy };
-      })
-      .filter(Boolean);
+  // Keep the slider-driven convergence honoured on resize without re-animating.
+  const lockToCentre = () => setConvergence(conv);
 
-    const start = performance.now();
-    const tick = (now) => {
-      const raw = Math.min(1, (now - start) / CONVERGE_DURATION_MS);
-      const e = easeConverge(raw);
-      lanes.forEach((l) => {
-        l.ctrl.setPosition(
-          l.fromX + (l.toX - l.fromX) * e,
-          l.fromY + (l.toY - l.fromY) * e,
-          { animate: false },
-        );
-      });
-      if (raw < 1) {
-        sweepRaf = requestAnimationFrame(tick);
-      } else {
-        sweepRaf = 0;
-      }
-    };
-    sweepRaf = requestAnimationFrame(tick);
-  };
-
-  // Keep the resolved end-state honoured on resize without re-animating.
-  const lockToCentre = snapToCentre;
-
-  // Reset every need back to its WIDE home (offset 0,0) so the convergence can
-  // replay from spread on a fresh arrival. No-op under reduced motion.
-  const spreadOut = () => {
-    if (reduced) return;
-    cancelSweep();
-    converged = false;
-    stage.classList.remove('is-converged', 'is-converging');
-    centre.classList.remove('is-on');
-    needs.forEach((n) => {
-      const ctrl = drags.get(n.id);
-      if (ctrl) ctrl.setPosition(0, 0, { animate: false });
-    });
-    render();
-  };
-
-  // AUTO-CONVERGE — the cinematic default. After a short held beat on the wide
-  // spread, the three needs sweep into the shared core on their own. Drag stays
-  // available as an optional nudge; reduced motion is already resolved at rest.
-  let autoTimer = 0;
-  const autoConverge = () => {
-    if (reduced) return;          // resolved at rest under reduced motion
-    window.clearTimeout(autoTimer);
-    spreadOut();                  // back to wide spread (resets converged)
-    autoTimer = window.setTimeout(sweepToCentre, AUTO_CONVERGE_HOLD_MS);
-  };
-
-  // Snap a single need into the resolved triangle (keyboard path). Springs in
-  // with the settle reward so a single Enter feels tactile, not teleported.
-  const bringIn = (id) => {
-    cancelSweep();
-    const g = geom();
-    const n = needs.find((x) => x.id === id);
-    const { dx, dy } = resolvedOffset(n, g);
-    drags.get(id).setPosition(dx, dy, { animate: true });
-  };
-
-  // Reduced motion: snap every circle onto the resolved triangle immediately.
+  // Reduced motion: place every circle on the resolved triangle immediately so
+  // the venn shows a sensible, converged-and-revealed state without animation.
   const snapResolved = () => {
     const g = geom();
     needs.forEach((n) => {
@@ -400,6 +336,7 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
       o.dy = r.dy;
       n.el.style.transform = `translate3d(${o.dx}px, ${o.dy}px, 0) scale(var(--tactile-scale, 1))`;
     });
+    conv = 1;
   };
 
   placeHome();
@@ -430,18 +367,10 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
     });
     drags.set(n.id, ctrl);
 
-    // A real grab takes over from the auto-sweep so the user can nudge the
-    // needs themselves mid-flight (drag stays an optional, always-live affordance).
-    n.el.addEventListener('pointerdown', cancelSweep);
-
-    // Stat label = keyboard path: Enter/Space/arrows bring that need in.
-    n.stat.addEventListener('keydown', (e) => {
-      const keys = ['Enter', ' ', 'Spacebar', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
-      if (keys.includes(e.key)) {
-        e.preventDefault();
-        bringIn(n.id);
-      }
-    });
+    // The slider is the convergence control; a direct drag stays available as an
+    // optional, always-live nudge (it springs/settles on release and the slider
+    // re-asserts the convergence on its next move). Stat tiles stay focusable
+    // purely for the colour-keyed reading + focus highlight.
     const on = () => { stage.dataset.focus = n.id; };
     const off = () => { delete stage.dataset.focus; };
     n.stat.addEventListener('mouseenter', on);
@@ -457,8 +386,10 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   // placeHome() ran against a zero box). Re-place + re-render on resize/show.
   const onLayout = () => {
     placeHome();
+    // Re-apply the current slider-driven convergence against the new geometry
+    // (the step mounts hidden, so the first layout is the first real box).
     if (reduced) snapResolved();
-    else if (converged) lockToCentre();
+    else lockToCentre();
     render();
   };
   const ro = new ResizeObserver(onLayout);
@@ -466,10 +397,8 @@ const buildVenn = (mount, statRow, brandAsks, onConverged) => {
   window.addEventListener('resize', onLayout, { passive: true });
 
   return {
-    autoConverge,
+    setConvergence,
     destroy() {
-      window.clearTimeout(autoTimer);
-      cancelSweep();
       ro.disconnect();
       window.removeEventListener('resize', onLayout);
       drags.forEach((d) => d.destroy());
@@ -487,10 +416,8 @@ export default function init(rootEl, data) {
   const brandAsks = data?.segments?.meta?.metricsTotals?.brandAsks ?? null;
   const journey = data?.journey ?? null;
 
-  // PRELUDE — pivot wipe (ungated).
-  const pivot = pivotMount ? buildPivot(pivotMount) : null;
-
-  // THE CENTREPIECE — venn (advisory gate via journey.ready()).
+  // THE CENTREPIECE — venn (advisory gate via journey.ready()). Built first so
+  // the pivot slider can drive its convergence directly.
   let unlocked = false;
   const unlock = () => {
     if (unlocked) return;
@@ -505,52 +432,43 @@ export default function init(rootEl, data) {
     if (!brandAsks) unlock(); // fail soft: never trap the visitor
   }
 
+  // PRELUDE + CONTROL — the pivot slider IS the convergence control. Its 0..1
+  // value (old model -> new model) is fed straight into the venn: far left =
+  // circles spread, "empowerment" hidden; far right = circles meet on the
+  // shared core, "empowerment" revealed. The wipe word + fill ride along.
+  const pivot = pivotMount
+    ? buildPivot(pivotMount, (t) => venn && venn.setConvergence(t))
+    : null;
+
+  // Reduced motion: present the resolved state up front (no animation). The
+  // venn is already snapped converged in buildVenn; reflect that on the slider
+  // + wipe so the whole turn reads as completed rather than half-told.
+  if (pivot && prefersReducedMotion()) {
+    pivot.slider.value = '100';
+    pivot.apply(100);
+  }
+
   observeReveals(rootEl);
   observeCounters(rootEl);
 
   // Teardown handles collected across the init (steps stay mounted).
   const cleanups = [];
 
-  // Re-assemble headlines AND auto-converge the venn on every arrival. The
-  // circles start wide then sweep into the shared core on their own — no drag
-  // required (drag stays as an optional nudge). A double rAF lets the section's
-  // show + first real layout settle so the sweep runs from a measured spread.
-  // Debounced so near-simultaneous triggers (chapter:arrive + the scroll-in
-  // observer) collapse into a single sweep instead of a visible restart.
-  let convergeRaf = 0;
-  const fireConverge = () => {
-    if (!venn) return;
-    cancelAnimationFrame(convergeRaf);
-    convergeRaf = requestAnimationFrame(() =>
-      requestAnimationFrame(() => venn.autoConverge?.()),
-    );
-  };
+  // Re-assemble headlines on arrival. The convergence is no longer auto-fired:
+  // it is bound to the slider, so the visitor drives the turn themselves.
   rootEl.addEventListener('chapter:arrive', (e) => {
     arrival(rootEl, e.detail);
-    fireConverge();
   });
-
-  // Belt-and-braces scroll-in trigger: the moment the venn enters the viewport
-  // (e.g. a direct scroll into the step that does not change journey focus), the
-  // converge sweep still fires automatically. Reduced motion is already resolved
-  // at rest, so autoConverge() is a no-op there.
-  if (vennMount && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((en) => en.isIntersecting)) fireConverge();
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(vennMount);
-    cleanups.push(() => io.disconnect());
-  }
 
   // Experiential motion — everything but the centrepiece stays quiet.
   cleanups.push(chapterTransition(root));
   cleanups.push(observeParallax(root, { maxShiftPx: 40 }));
 
-  // Prime the pivot wipe as the section scrolls in — until the visitor touches
-  // it, scroll progress nudges the strip from survival toward agency.
+  // Prime the pivot as the section scrolls in — until the visitor touches it,
+  // scroll progress nudges the slider from the old model toward the new one,
+  // teasing the convergence. Once touched, the visitor is in full control and
+  // finishes (or reverses) the turn. Reduced motion shows the resolved state
+  // and installs no scroll work.
   if (pivot && pivotMount && !prefersReducedMotion()) {
     let touched = false;
     const markTouched = () => { touched = true; };
@@ -560,9 +478,12 @@ export default function init(rootEl, data) {
       scrollScene(pivotMount, [], {
         onProgress: (p) => {
           if (touched) return;
+          // Tease only partway in (a hint, not a full reveal): scroll nudges
+          // the slider from the old model toward — but not all the way to —
+          // the new one, leaving the payoff for the visitor to complete.
           const t = Math.max(0, Math.min(1, (p - 0.2) / 0.5));
-          const pct = PIVOT_START + t * (76 - PIVOT_START);
-          pivot.slider.value = String(Math.round(pct));
+          const pct = Math.round(t * 55);
+          pivot.slider.value = String(pct);
           pivot.apply(pct);
         },
       }),
@@ -571,7 +492,6 @@ export default function init(rootEl, data) {
 
   // Teardown handle (steps stay mounted; expose for safety).
   rootEl._empCleanup = () => {
-    cancelAnimationFrame(convergeRaf);
     cleanups.forEach((fn) => fn && fn());
     if (venn) venn.destroy();
   };

@@ -1,4 +1,4 @@
-/* Chapter 08 — the data explorer. The explore-everything moment: the WHOLE
+/* Step 16 — the data explorer. The explore-everything moment: the WHOLE
    survey, browsable. Every selector prefixed with #\31 6-data-explorer.
 
    THE BRAND WORLD: a calm, precise CREAM instrument (#F0EDE7) — the reading /
@@ -8,14 +8,15 @@
    carries the display figure (the number IS the headline). Backgroundless data:
    charts float on the cream, no white box, no gridlines, no chart-junk.
 
-   COMPOSITION — a confident editorial CONSOLE that fills the screen, not a thin
-   rail + a lonely chart:
-     • MASTHEAD band — eyebrow + display figure on the left, the read line beside
-       it, the Challenger lockup stamped top-right.
-     • CONTROL DECK — a full-width toolbar: the question pills, then Britain + view
-       on one row. Tactile square chips.
-     • HERO STAGE — one large panel that fills the rest of the screen; the chart
-       morphs / crossfades on every change.
+   COMPOSITION — the client-approved TOP-STACKED console that fills the screen:
+     • MASTHEAD band (top) — eyebrow + display figure on the left, the read line
+       beside it, the Challenger lockup stamped top-right.
+     • CONTROL DECK — a full-width toolbar directly below: the question pills in
+       tidy wrap rows, then Britain + view on one row. Held compact so the chart
+       keeps a large band. Tactile square chips.
+     • HERO STAGE — one large panel that FILLS the rest of the screen below the
+       controls; the chart is big and dominant, morphing / crossfading on every
+       change.
 
    MOTION — one hero motion: the chart morphs and the figure counts. Quiet
    elsewhere. Reduced-motion safe. */
@@ -42,18 +43,16 @@
   min-height: 100svh;            /* one screen, no internal scroll */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-block: clamp(var(--space-3), 5vh, var(--space-5));
+  padding-block: clamp(var(--space-2), 3.5vh, var(--space-4));
 }
 #\31 6-data-explorer .pg-world > * { position: relative; z-index: 1; }
 
 /* This console is dense and wants the full screen — trim the global
    chapter-inner top padding (it reserves space for a hero headline this
-   step doesn't have) so the masthead sits high and nothing is wasted.
-   The bottom band still clears the journey controls. */
+   step doesn't have) so the masthead sits high and nothing is wasted. */
 #\31 6-data-explorer .chapter-inner.pg-stage {
-  padding-top: clamp(1.5rem, 3vh, 2.5rem);
-  max-height: none;          /* the pg-world already caps the screen */
+  padding-top: clamp(1rem, 2.4vh, 2rem);
+  max-height: none;
   overflow: visible;
 }
 
@@ -99,33 +98,18 @@
   to { transform: rotate(360deg) translateX(calc(var(--pg-orbit-r) * -1)) rotate(-360deg); }
 }
 
-/* ─── The console: a SIDE-BY-SIDE layout — a compact CONTROL RAIL on the left
-   (masthead figure + the three filter groups) and the CHART owning the whole
-   right band at full height. This frees the vertical room the stacked layout
-   used to lose to the 21 question chips, so the chart reads as the dominant
-   hero at laptop heights (768–900px) regardless of how many pills there are. ─ */
+/* ─── The console: a TOP-STACKED column — masthead, then the full-width
+   control deck, then the chart owning ALL remaining height. The masthead and
+   deck are held compact (flex: 0 0 auto) so the chart band (flex: 1) gets the
+   lion's share of the screen and the bars read BIG at laptop heights. ─── */
 #\31 6-data-explorer .pg-stage {
   position: relative;
   width: 100%;
-  height: 100%;             /* fill the padded chapter-inner box */
-  display: grid;
-  grid-template-columns: minmax(360px, 38%) minmax(0, 1fr);
-  column-gap: clamp(var(--space-3), 3vw, var(--space-5));
-  align-items: stretch;
-  min-height: clamp(520px, 80vh, 860px);
-}
-
-/* The left rail: masthead stacked above the control deck, the whole column
-   scrollable only if it ever overflows (it should not at laptop heights). */
-#\31 6-data-explorer .pg-rail {
-  min-width: 0;
+  flex: 1 1 auto;            /* fill the pg-world column */
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--space-2), 2.2vh, var(--space-4));
-  align-content: start;
-  overflow: auto;
-  padding-right: clamp(var(--space-2), 1.4vw, var(--space-3));
+  gap: clamp(var(--space-2), 2vh, var(--space-3));
 }
 
 /* The tiny Challenger-Series lockup — the book-cover stamp, top-right. */
@@ -140,14 +124,19 @@
   pointer-events: none;
 }
 
-/* ─── MASTHEAD: the display moment, stacked at the top of the rail ────── */
+/* ─── MASTHEAD: the horizontal display band — figure left, read line beside. ─ */
 #\31 6-data-explorer .pg-masthead {
   position: relative;
+  flex: 0 0 auto;
   display: flex;
-  flex-direction: column;
-  gap: clamp(var(--space-1), 1.4vh, var(--space-2));
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: clamp(var(--space-3), 4vw, var(--space-6));
+  row-gap: var(--space-1);
   border-bottom: 1.5px solid var(--pg-rule);
-  padding-bottom: clamp(var(--space-2), 1.8vh, var(--space-3));
+  padding-bottom: clamp(var(--space-1), 1.4vh, var(--space-2));
+  padding-right: 92px;       /* clear the top-right lockup */
 }
 #\31 6-data-explorer .pg-masthead-lead { min-width: 0; }
 #\31 6-data-explorer .pg-eyebrow {
@@ -162,13 +151,13 @@
   display: block;
 }
 
-/* The number is the headline: Poppins 900, navy gravity, tabular. Scaled to the
-   rail so it stays a confident display figure without crowding the controls. */
+/* The number is the headline: Poppins 900, navy gravity, tabular, a confident
+   display figure (~50.5% scale) without crowding the controls below. */
 #\31 6-data-explorer .pg-readout-num {
   margin: 0;
   color: var(--navy);
   font-weight: 900;
-  font-size: clamp(3.4rem, 6.2vw, 6.4rem);
+  font-size: clamp(3.6rem, 8vw, 6.4rem);
   line-height: 0.82;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
@@ -186,7 +175,8 @@
 /* The read column: a kicker, the leading-answer line, the honest note. */
 #\31 6-data-explorer .pg-masthead-read {
   min-width: 0;
-  padding-bottom: 0.4em;
+  flex: 1 1 18ch;
+  padding-bottom: 0.5em;
 }
 #\31 6-data-explorer .pg-readout-kicker {
   margin: 0 0 4px 0;
@@ -200,11 +190,11 @@
 #\31 6-data-explorer .pg-readout-line {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.05rem, 1.3vw, 1.35rem);
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
   font-weight: 700;
   line-height: 1.16;
   letter-spacing: -0.01em;
-  max-width: 32ch;
+  max-width: 40ch;
   font-variant-numeric: tabular-nums;
 }
 #\31 6-data-explorer .pg-note {
@@ -218,19 +208,21 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── CONTROL DECK: the three driving controls, stacked in the rail ───── */
+/* ─── CONTROL DECK: the three driving controls, full width across the top.
+   Held compact (flex: 0 0 auto) so the chart band stays the dominant hero. ── */
 #\31 6-data-explorer .pg-deck {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--space-2), 1.8vh, var(--space-3));
+  gap: clamp(var(--space-1), 1.2vh, var(--space-2));
 }
-/* In the narrow rail the Britain + view groups stack rather than sit side by
-   side, so each keeps its own tidy row of chips. */
+/* Britain + view sit side by side on one row — they are short lists. */
 #\31 6-data-explorer .pg-deck-row {
   display: flex;
-  flex-direction: column;
-  gap: clamp(var(--space-2), 1.8vh, var(--space-3));
-  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: clamp(var(--space-3), 3vw, var(--space-5));
+  align-items: flex-start;
 }
 #\31 6-data-explorer .pg-control { min-width: 0; }
 #\31 6-data-explorer .pg-control--wide { width: 100%; }
@@ -242,23 +234,22 @@
   font-weight: 700;
   color: var(--navy);
   opacity: 0.55;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
-/* The 21 question chips pack into a tidy multi-column block so the rail stays
-   short. The Britain + view groups keep a normal wrapping row. */
+/* The 21 question chips pack into tidy wrapping rows so the deck stays short. */
 #\31 6-data-explorer .pg-pills .pillgroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
-/* Rest: navy outline, no fill box — the quiet square control. Tightened
-   padding keeps all 21 question chips compact in the rail. */
+/* Rest: navy outline, no fill box — the quiet square control. Tight padding
+   keeps all 21 question chips compact so the chart band stays large. */
 #\31 6-data-explorer .pillgroup-chip {
   background: transparent;
   color: var(--navy);
   border: 1.5px solid rgba(4, 22, 84, 0.32);
   border-radius: 0;
-  padding: 6px 11px;
+  padding: 5px 10px;
   font: 600 var(--t-xs) / 1.05 var(--font-sans);
   letter-spacing: 0.01em;
   cursor: pointer;
@@ -282,8 +273,8 @@
 /* Active: solid navy GROUND, cream text, a yellow underline wedge — the
    data-serious chip. High-contrast and unmistakable, identical across all three
    control groups (THE QUESTION / WHICH BRITAIN / VIEW IT AS). The double
-   selector lifts specificity so the fill + text colour always win over the
-   rest/hover declarations; square corners are kept. */
+   selector lifts specificity so the fill + text colour always win; square
+   corners kept. */
 #\31 6-data-explorer .pillgroup-chip.is-active,
 #\31 6-data-explorer .pillgroup-chip.is-active:hover {
   background-color: var(--navy);
@@ -303,13 +294,13 @@
   opacity: 0.3;
 }
 
-/* ─── HERO STAGE: the single morphing chart, box-less on the cream ───── */
-/* The instrument owns the whole floor of the console (the minmax(0,1fr) grid
-   row). It must STRETCH — full width, full remaining height — so the chart is
-   the dominant, confident hero, never a corner thumbnail. */
+/* ─── HERO STAGE: the single morphing chart, BIG and box-less on the cream.
+   The instrument takes ALL remaining vertical room (flex: 1) so the chart is
+   the dominant, confident hero — never a thumbnail. ─── */
 #\31 6-data-explorer .pg-instrument {
-  min-width: 0;
+  flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
   width: 100%;
   display: flex;
 }
@@ -349,8 +340,8 @@
   height: auto;
   flex: 1 1 auto;
   min-height: 0;
-  max-height: none;
-  margin: 0;
+  max-height: 100%;
+  margin: 0 auto;
 }
 
 /* ─── Waffle view · ALL options as small-multiple N-in-100 grids ────────
@@ -546,44 +537,8 @@
 }
 
 /* ─── Responsive ────────────────────────────────────────────────────── */
-/* Below the side-by-side comfort width the console stacks: control rail on
-   top, chart beneath with a guaranteed large min-height so it stays the hero. */
-@media (max-width: 1024px) {
-  #\31 6-data-explorer .pg-world {
-    justify-content: flex-start;
-  }
-  #\31 6-data-explorer .pg-stage {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: clamp(var(--space-2), 2.4vh, var(--space-4));
-    min-height: 0;
-  }
-  #\31 6-data-explorer .pg-rail {
-    overflow: visible;
-    padding-right: 0;
-  }
-  /* Reclaim the horizontal masthead + the wider chip rows now there is width. */
-  #\31 6-data-explorer .pg-masthead {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    column-gap: clamp(var(--space-3), 4vw, var(--space-5));
-  }
-  #\31 6-data-explorer .pg-deck-row {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: clamp(var(--space-3), 3vw, var(--space-5));
-    align-items: flex-start;
-  }
-  #\31 6-data-explorer .pg-chart {
-    min-height: clamp(360px, 56vh, 560px);
-    height: auto;
-  }
-  #\31 6-data-explorer .pg-chart > svg { max-height: none; }
-  #\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
-    height: clamp(360px, 56vh, 560px);
-  }
-}
-
+/* Narrow screens: the stage may exceed one screen, so let it grow and give the
+   chart a generous min-height so it stays the hero rather than collapsing. */
 @media (max-width: 760px) {
   #\31 6-data-explorer .pg-world {
     padding-block: clamp(var(--space-3), 5vh, var(--space-5));
@@ -591,13 +546,18 @@
   #\31 6-data-explorer .pg-masthead {
     flex-direction: column;
     align-items: start;
+    padding-right: 0;
   }
   #\31 6-data-explorer .pg-mark { top: 0; height: 22px; }
   #\31 6-data-explorer .pg-readout-num { font-size: clamp(3.6rem, 22vw, 6rem); }
-  #\31 6-data-explorer .pg-chart {
-    min-height: clamp(360px, 60vh, 520px);
+  #\31 6-data-explorer .pg-instrument {
+    min-height: clamp(360px, 56vh, 520px);
   }
+  #\31 6-data-explorer .pg-chart {
+    min-height: clamp(360px, 56vh, 520px);
+  }
+  #\31 6-data-explorer .pg-chart > svg { max-height: none; }
   #\31 6-data-explorer .pg-chart:has(.pg-waffle-all) {
-    height: clamp(360px, 60vh, 520px);
+    height: clamp(360px, 56vh, 520px);
   }
 }

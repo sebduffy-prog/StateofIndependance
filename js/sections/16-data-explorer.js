@@ -263,13 +263,14 @@ const drawView = (host, viewId, metric, items) => {
   const axisMax = axisMaxFor(rows);
 
   if (viewId === 'bars') {
-    // Commanding HERO bars: the viewBox height is items × (barHeight + gap), so
-    // taller rows make the SVG's natural aspect ratio tall enough to fill the
-    // hero band at full width (the SVG renders at width:100%). Row height scales
-    // DOWN as the item count grows so a long list still fits the band cleanly.
+    // Commanding HERO bars: the viewBox is 720 wide × items × (barHeight + gap)
+    // tall, and the SVG renders at width:100% (capped at the band height). BIG,
+    // chunky bars are the original ask, so we run a tall, generous row height
+    // that scales DOWN only as the item count grows so a long list still fits
+    // the band cleanly. Even the densest 8-row case keeps fat, legible bars.
     const n = rows.length;
-    const barHeight = n <= 4 ? 104 : n <= 6 ? 78 : 60;
-    const gap = n <= 4 ? 52 : n <= 6 ? 40 : 30;
+    const barHeight = n <= 3 ? 128 : n <= 4 ? 112 : n <= 6 ? 88 : 70;
+    const gap = n <= 3 ? 64 : n <= 4 ? 56 : n <= 6 ? 46 : 36;
     horizontalBars(host, {
       items: rows, max: axisMax, labelWidth: 272, barHeight, gap, ...common,
     });
