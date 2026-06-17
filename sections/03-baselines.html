@@ -4,7 +4,7 @@
   <img class="bl-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
        alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <!-- ── HERO ROW — left: editorial claim + interaction; right: waffle crowd ── -->
+  <!-- ── HERO ROW — left: headline + guess/truth; right: crowd of 100 ── -->
   <div class="bl-hero">
 
     <!-- LEFT RAIL: headline then guess/truth stacked in the same cell -->
@@ -32,42 +32,39 @@
           </p>
         </div>
       </div>
-    </div>
+      <!-- Floor stats — quiet tabular line, lives in the left rail below the claim -->
+      <dl class="bl-floor-row" aria-label="Supporting evidence">
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
+          <dd class="bl-floor-lbl">hunt out deals and shop around.</dd>
+        </div>
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="60" data-count-suffix="%">60%</span></dt>
+          <dd class="bl-floor-lbl">feel anxious about the months ahead.</dd>
+        </div>
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="54" data-count-suffix="%">54%</span></dt>
+          <dd class="bl-floor-lbl">are trading down on the weekly shop.</dd>
+        </div>
+      </dl>
+    </div><!-- /bl-rail -->
 
     <!-- RIGHT: waffle crowd of 100.
-         All 100 faint squares visible immediately — no void from first frame.
-         On reveal: 77 squares fill navy; the you-square pops yellow.
+         Pre-reveal: grid fills to match the slider value (live, no void).
+         On reveal: snaps to 77 navy; the you-square pops yellow.
          data-youdot-anchor is added by JS to the you-square ONLY after reveal. -->
     <figure class="bl-crowd" data-crowd aria-label="Crowd of one hundred">
+      <p class="bl-crowd-label" data-crowd-label>Each square = 1 in 100 UK adults</p>
       <div class="bl-crowd-inner">
-        <p class="bl-crowd-label" data-crowd-label>Each square = 1 in 100 UK adults</p>
         <div class="bl-crowd-grid" data-crowd-grid role="img"
-             aria-label="A crowd of a hundred squares — guess first, then see who is more careful."></div>
+             aria-label="Move the slider to guess how many in every 100 are more careful with money."></div>
       </div>
       <figcaption class="bl-crowd-cap">
         <span class="bl-crowd-count num" data-crowd-count aria-live="polite"></span>
-        <span class="bl-crowd-of" data-crowd-of>Lock in your guess to fill the crowd.</span>
+        <span class="bl-crowd-of" data-crowd-of>Move the slider — then lock in your guess.</span>
       </figcaption>
     </figure>
 
   </div><!-- /bl-hero -->
-
-  <!-- ── FLOOR — one quiet supporting line; floor stats demoted, crowd stays focal ── -->
-  <aside class="bl-floor" aria-label="Supporting evidence">
-    <dl class="bl-floor-row">
-      <div class="bl-floor-fig">
-        <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
-        <dd class="bl-floor-lbl">hunt out deals and shop around.</dd>
-      </div>
-      <div class="bl-floor-fig">
-        <dt class="bl-floor-num num"><span data-count-to="60" data-count-suffix="%">60%</span></dt>
-        <dd class="bl-floor-lbl">feel anxious about the months ahead.</dd>
-      </div>
-      <div class="bl-floor-fig">
-        <dt class="bl-floor-num num"><span data-count-to="54" data-count-suffix="%">54%</span></dt>
-        <dd class="bl-floor-lbl">are trading down on the weekly shop.</dd>
-      </div>
-    </dl>
-  </aside>
 
 </div>

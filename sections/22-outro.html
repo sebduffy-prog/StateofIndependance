@@ -1,95 +1,126 @@
-<div class="chapter-inner">
-  <!-- ── 09 · OUTRO — the nation disperses; one line remains ───────────────
-       BRAND-WORLD-FINAL §7 (09): "Calm cream (or warm) ground. The nation
-       disperses; one line remains. Team credits grid with even spacing; the
-       'making the most of the data' CTA as a single focal element. © VCCP
-       MEDIA 2026 furniture small and low-emphasis. Yellow as the single
-       accent; the Challenger-Series lockup signs off."
+<!-- 22-outro.html — The cinematic close.
+     BRAND-WORLD-FINAL §7 (09): warm-gradient full-bleed ground. One screen.
 
-       Two beats, one screen each:
-         1. THE CLOSE — the Martin Lewis line, the one huge thing, on the open
-            navy ground. The nation (the dotField, carrying the you-dot)
-            disperses upward behind it. One italic accent word ("tools"), one
-            yellow accent. Backgroundless: every decorative layer sits BEHIND
-            (z-index 0, pointer-events:none) and never occludes the line.
-         2. THE BACK-COVER — the warm-gradient sign-off. The authoritative
-            challenger-series-lockup.png signs the work, the tall bear+girl
-            silhouette stands flush in its own column, the team credits sit in
-            an even grid, the copyright is small and low. Square corners. -->
+     COMPOSITION (Z-AXIS §6b): two columns fill the full viewport — balanced.
+     LEFT column (two-thirds): stacked sequentially—
+       eyebrow (kicker) → Institutions ▸▸▸▸ Individuals motif → Martin Lewis
+       scramble quote → "Thank you" hero → team credits
+     RIGHT column (one-third): bear-girl-tall.png flush to the bottom edge,
+       with the Challenger-Series lockup anchored mid-right above it.
 
-  <!-- ── The close: one line on the open navy ground ───────────────────── -->
-  <div class="outro-dark si-dark" data-outro-close>
-    <!-- The nation, dispersing. A field of cream dots rises and releases off
-         the top; the persistent you-dot is among them and leaves with it.
-         THE ONE HERO MOTION of this screen. -->
-    <div class="outro-dots" data-outro-dots aria-hidden="true"></div>
+     Beat sequence (js drives this on chapter:arrive):
+       0 — eyebrow / kicker arrives (data-arrival)
+       1 — Institutions ▸▸▸▸ Individuals assembles (data-arrival)
+       2 — Martin Lewis quote scrambles in (data-arrival-scramble on cite line)
+       3 — "Thank you" lands (data-arrival)
+       4 — credits and lockup settle (data-arrival)
+       5 — you-dot disperses with the nation (js disperseYouDot)
 
-    <!-- A single thin orbit ring — the connective signature, ambient, low. -->
-    <div class="outro-orbit si-orbit" aria-hidden="true" data-parallax="0.06"></div>
+     CHARACTER→TITLE: arrival() wired to chapter:arrive in JS.
+     DATA: STORY.md §Chapter 09 — verbatim quote, credits, motif. Verified.
 
-    <!-- The focal point: the Martin Lewis line, hung on a left axis (editorial,
-         asymmetric — never a centred stack). It assembles word-by-word as the
-         marquee plays; the attribution settles last. The accent word is set in
-         italic (the "Series" gesture) and carries the single yellow accent. -->
-    <figure class="outro-quote" data-outro-quote>
-      <p class="vccp-eyebrow outro-kicker" data-outro-kicker>The state of independence</p>
-      <blockquote class="outro-quote-text si-display si-display--black" data-outro-line>They do not want brands to hold their hands. They want brands to hand them the <span class="outro-accent hl">tools</span>.</blockquote>
-      <figcaption class="outro-quote-cite" data-outro-cite>Martin Lewis &middot; BBC Sounds, February 2026</figcaption>
-    </figure>
+     Square corners, AA contrast, no underline, no parallelogram, tabular nums.
+     Single root .chapter-inner. Every CSS scoped to #\32 2-outro. -->
 
-    <!-- The one mark the you-dot rests on before it disperses. Invisible
-         anchor at the line's end — the visitor's thread arrives, then leaves
-         with the nation (js beat: disperse). -->
-    <span class="outro-anchor" data-youdot-anchor aria-hidden="true"></span>
-  </div>
+<div class="chapter-inner ot-root on-warm" data-ot-root>
 
-  <!-- ── Grounded warm back-cover — the report closes, the bear stands ────
-       Warm-gradient ground. Asymmetric two-column: the CTA standfirst + the
-       Challenger-Series lockup sign-off + the team credits grid + the small
-       copyright hang on the left axis; the tall bear+girl stands flush on the
-       floor in its own column (zero overlap). -->
-  <div class="outro-backcover si-ground-warm" data-outro-backcover>
-    <div class="outro-backcover-orbit si-orbit" aria-hidden="true"></div>
-    <span class="si-seed outro-seed-a" aria-hidden="true"></span>
-    <span class="si-seed outro-seed-b" aria-hidden="true"></span>
+  <!-- Warm-gradient full-bleed ground — orbit signature, ambient low -->
+  <span class="ot-orbit si-orbit" aria-hidden="true"></span>
 
-    <div class="outro-backcover-copy">
-      <!-- The single CTA focal element: make the most of the data. The accent
-           word "themselves" carries the one italic gesture. -->
-      <p class="vccp-eyebrow outro-cta-kicker">Make the most of the data</p>
-      <p class="outro-cta si-display si-display--sm">Stop trying to lead the consumer. Equip them to lead <span class="outro-accent">themselves</span>.</p>
+  <!-- ── Two-column layout ───────────────────────────────────────── -->
+  <div class="ot-grid">
 
-      <!-- The Challenger-Series lockup signs off — the authoritative brand
-           signature, black silhouette on warm, never recoloured or distorted. -->
+    <!-- LEFT COLUMN — the narrative close -->
+    <div class="ot-left">
+
+      <!-- Eyebrow / kicker -->
+      <p class="vccp-eyebrow ot-kicker" data-arrival>The State of Independence · The close</p>
+
+      <!-- Institutions ▸▸▸▸ Individuals — the motif assembles word by word -->
+      <div class="ot-motif" aria-label="Institutions becoming Individuals">
+        <span class="ot-motif-word" data-arrival>Institutions</span>
+        <span class="ot-motif-arrow" aria-hidden="true" data-arrival>&#9654;&#9654;&#9654;&#9654;</span>
+        <span class="ot-motif-word ot-motif-word--accent" data-arrival>Individuals</span>
+      </div>
+
+      <!-- Martin Lewis quote — scrambles in, the centrepiece of the close -->
+      <figure class="ot-quote" data-arrival>
+        <blockquote class="ot-quote-text">
+          <span class="ot-qt-line" data-arrival>They do not want brands to hold their hands.</span>
+          <span class="ot-qt-line ot-qt-line--accent" data-arrival>They want brands to hand them the <em class="ot-accent" data-arrival-scramble>tools</em>.</span>
+        </blockquote>
+        <figcaption class="ot-quote-cite" data-arrival>
+          Martin Lewis &middot; BBC Sounds, February 2026
+        </figcaption>
+      </figure>
+
+      <!-- "Thank you" — the clear, large sign-off -->
+      <p class="ot-thankyou" data-arrival>
+        Thank <em class="ot-accent">you</em>.
+      </p>
+
+      <!-- The invisible you-dot anchor: the dot arrives here, then disperses -->
+      <span class="ot-youdot-anchor" data-youdot-anchor aria-hidden="true"></span>
+
+      <!-- Team credits — even two-column grid -->
+      <div class="ot-credits" data-arrival>
+        <p class="ot-credits-label">Built by</p>
+        <ul class="ot-credits-grid">
+          <li class="ot-credit">
+            <span class="ot-credit-name">Michael Lee</span>
+            <span class="ot-credit-role">Chief Strategy Officer</span>
+          </li>
+          <li class="ot-credit">
+            <span class="ot-credit-name">Will Parrish</span>
+            <span class="ot-credit-role">CSO, VCCP Media</span>
+          </li>
+          <li class="ot-credit">
+            <span class="ot-credit-name">Stefan Siedentopf</span>
+            <span class="ot-credit-role">Deputy CSO</span>
+          </li>
+          <li class="ot-credit">
+            <span class="ot-credit-name">Jenny Nichols</span>
+            <span class="ot-credit-role">Deputy CSO</span>
+          </li>
+          <li class="ot-credit">
+            <span class="ot-credit-name">Ellie Gauci</span>
+            <span class="ot-credit-role">Head of Strategy, CRM &amp; Data</span>
+          </li>
+          <li class="ot-credit">
+            <span class="ot-credit-name">Watermelon Research</span>
+            <span class="ot-credit-role">Fieldwork &middot; n=1,504</span>
+          </li>
+        </ul>
+
+        <!-- Copyright furniture — small, low-emphasis -->
+        <p class="ot-copyright num">&copy; VCCP Media 2026</p>
+      </div>
+
+    </div><!-- /ot-left -->
+
+    <!-- RIGHT COLUMN — bear/girl + lockup -->
+    <aside class="ot-right" aria-hidden="true">
+
+      <!-- Challenger-Series lockup — the brand signature signs off -->
       <img
-        class="outro-lockup"
+        class="ot-lockup"
         src="assets/brand-final/challenger-series-lockup.png"
         alt="VCCP Challenger Series"
         width="688" height="245"
         loading="lazy" decoding="async"
       />
 
-      <!-- Team credits — an even grid, supporting type on the ground. -->
-      <p class="outro-credits-label">Built by</p>
-      <ul class="outro-credits-grid">
-        <li class="outro-credit"><span class="outro-credit-name">Michael Lee</span><span class="outro-credit-role">Chief Strategy Officer</span></li>
-        <li class="outro-credit"><span class="outro-credit-name">Will Parrish</span><span class="outro-credit-role">CSO, VCCP Media</span></li>
-        <li class="outro-credit"><span class="outro-credit-name">Stefan Siedentopf</span><span class="outro-credit-role">Deputy CSO</span></li>
-        <li class="outro-credit"><span class="outro-credit-name">Jenny Nichols</span><span class="outro-credit-role">Deputy CSO</span></li>
-        <li class="outro-credit"><span class="outro-credit-name">Ellie Gauci</span><span class="outro-credit-role">Head of Strategy, CRM &amp; Data</span></li>
-        <li class="outro-credit"><span class="outro-credit-name">Watermelon Research</span><span class="outro-credit-role">Fieldwork &middot; n=1,504</span></li>
-      </ul>
+      <!-- The tall bear+girl silhouette, flush to the floor -->
+      <img
+        class="ot-bear"
+        src="assets/brand-final/bear-girl-tall.png"
+        alt=""
+        width="104" height="585"
+        loading="lazy" decoding="async"
+      />
 
-      <!-- Copyright — small, low-emphasis furniture. -->
-      <p class="outro-backcover-org"><span class="num">&copy; VCCP Media 2026</span></p>
-    </div>
+    </aside>
 
-    <img
-      class="outro-backcover-bear"
-      src="assets/brand-final/bear-girl-tall.png"
-      alt="The bear and the small girl, the figure regarding the bear"
-      width="104" height="585"
-      loading="lazy" decoding="async"
-    />
-  </div>
+  </div><!-- /ot-grid -->
+
 </div>

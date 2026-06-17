@@ -1,16 +1,18 @@
 /**
  * 10-segment-architects.js — The Architects (17%) full-screen segment profile.
  *
- * The first of four segment book-cover profiles; the template the other three
- * follow. A cream editorial stage: an editorial rail (descriptor + hero quote +
- * a distinctive TGI statement) counter-weighted by a book-cover profile card
- * carrying who/money/essentials/AI and a togglable over-index chart.
+ * Cream editorial stage. Left rail: eyebrow → bold-black "The Architects"
+ * display title (scramble-in on arrive) → three-word descriptor → hero
+ * quote → who/money/essentials/AI facts → 17% share stat.
  *
- * Marquee interaction: a square pillGroup toggle flips the backgroundless
- * over-index bars between two facets of the type — what they treat as
- * essential, and how they put AI to work. gate()/ready() advise the hint only.
+ * Right: a backgroundless horizontal-bar index chart with a square pill
+ * control that swaps the lens: "What they value" (essentials over-index)
+ * / "How they see themselves" (mindset + forward-mindset over-index)
+ * / "What they index on" (TGI lifestyle statements). Bars morph in place;
+ * the first lens-switch clears the interaction hint.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\31 0-segment-architects.
+ * Contract: docs/CONTRACT.md. Every CSS selector scoped to
+ * #\31 0-segment-architects.
  *
  * @param {HTMLElement} rootEl  the <section id="10-segment-architects">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
@@ -21,116 +23,194 @@ import { horizontalBars } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'architects';
+const TOP_N = 5;
+const INDEX_MAX = 250; // architects lifestyle indices reach 236
 
-// The facets the toggle switches between. Each charts the within-segment
-// penetration (a genuine %) for a handful of labels; the index is surfaced as
-// an "over-index" badge so the distinctiveness reads without misusing the %.
-const FACETS = [
-  {
-    value: 'essentials',
-    label: 'Essentials',
-    metric: 'essentials',
-    title: 'What they treat as essential',
-    rows: ['Beauty', 'Holidays', 'Eating out', 'Clothing', 'Subscriptions'],
-  },
-  {
-    value: 'ai',
-    label: 'AI use',
-    metric: 'aiUseByTask',
-    title: 'How they put AI to work',
-    rows: ['Creative work', 'Health information', 'Education/learning', 'Financial advice', 'Technical support'],
-  },
-];
-
-/** Build chart items [{id,label,pct}] from a facet, charting penetration pct. */
-function itemsFor(metrics, facet) {
-  const family = metrics[facet.metric] || {};
-  return facet.rows
-    .map((label) => {
-      const entry = family[label];
-      if (!entry || typeof entry.pct !== 'number') return null;
-      return { id: label, label, pct: entry.pct };
-    })
-    .filter(Boolean)
-    .sort((a, b) => b.pct - a.pct);
+/**
+ * Top-N over-indexing entries from a TGI array.
+ * Entries may use either .label or .statement (handles both data files).
+ */
+function topIndexedTgi(entries) {
+  if (!Array.isArray(entries)) return [];
+  return entries
+    .filter((e) => e && typeof e.index === 'number' && e.index >= 120)
+    .sort((a, b) => b.index - a.index)
+    .slice(0, TOP_N)
+    .map((e) => ({
+      label: tidyLabel(e.label || e.statement || ''),
+      pct: e.index,
+    }))
+    .filter((e) => e.label);
 }
 
-/** Pick the single most distinctive TGI lifestyle statement (highest index). */
-function distinctiveTgi(tgi) {
-  const block = tgi && tgi.segments && tgi.segments[SEGMENT_ID];
-  const lifestyle = block && Array.isArray(block.lifestyle) ? block.lifestyle : [];
-  let top = null;
-  for (const s of lifestyle) {
-    if (s && typeof s.index === 'number' && (!top || s.index > top.index)) top = s;
+/**
+ * Top-N over-indexing rows from a segment metric family {label:{pct,index}}.
+ */
+function topMetricLow(family, min) {
+  return Object.entries(family || {})
+    .map(([label, v]) => ({ label, pct: v.index }))
+    .filter((row) => row.pct >= min)
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, TOP_N);
+}
+
+function topMetric(family) {
+  return topMetricLow(family, 120);
+}
+
+/**
+ * Tidy a long TGI label into a shorter, legible bar label.
+ * Strips surrounding smart-quotes used in tgi.json and trims whitespace.
+ */
+function tidyLabel(label) {
+  return label
+    .replace(/^[""']/, '')
+    .replace(/[""']$/, '')
+    .replace(/I prefer to buy products from companies who sponsor TV programmes/i,
+      'Buys from TV sponsors')
+    .replace(/I prefer to buy products from companies who sponsor sports events and teams/i,
+      'Buys from sports sponsors')
+    .replace(/I prefer to buy products from companies who sponsor exhibitions or music events/i,
+      'Buys from event sponsors')
+    .replace(/I would be willing to pay for exclusive podcast content/i,
+      'Pays for exclusive podcasts')
+    .replace(/Celebrities influence my purchase decisions/i,
+      'Celebrity-influenced buyer')
+    .replace(/I use my credit card mostly for business/i,
+      'Uses credit card for business')
+    .replace(/Ads in podcasts improve my perception of the brand/i,
+      'Podcast ads improve brand perception')
+    .replace(/I am willing to pay to access content on magazine websites\/Apps/i,
+      'Pays for magazine website content')
+    .replace(/I cannot resist buying magazines/i,
+      'Cannot resist buying magazines')
+    .replace(/\s*\(\+?\d+\/?\d*\)\s*/g, '')
+    .trim();
+}
+
+/**
+ * Populate the two distinctive TGI fingerprint lines in the HTML.
+ * Shows the top-2 lifestyle over-index statements from tgi.json.
+ */
+function populateTgiLines(rootEl, tgiSeg) {
+  const lifestyle = tgiSeg?.lifestyle;
+  if (!Array.isArray(lifestyle)) return;
+  const top2 = lifestyle
+    .filter((e) => e && typeof e.index === 'number' && e.index >= 120)
+    .sort((a, b) => b.index - a.index)
+    .slice(0, 2);
+
+  const idx1 = rootEl.querySelector('[data-segment-tgi-idx-1]');
+  const lbl1 = rootEl.querySelector('[data-segment-tgi-lbl-1]');
+  const idx2 = rootEl.querySelector('[data-segment-tgi-idx-2]');
+  const lbl2 = rootEl.querySelector('[data-segment-tgi-lbl-2]');
+
+  if (top2[0] && idx1 && lbl1) {
+    idx1.textContent = top2[0].index;
+    lbl1.textContent = tidyLabel(top2[0].label || top2[0].statement || '');
   }
-  return top;
+  if (top2[1] && idx2 && lbl2) {
+    idx2.textContent = top2[1].index;
+    lbl2.textContent = tidyLabel(top2[1].label || top2[1].statement || '');
+  }
 }
 
 export default function init(rootEl, data) {
-  const { segments, tgi, journey } = data || {};
-
-  // Arrival signature re-plays on every focus (idempotent).
+  // Arrival re-plays on every focus (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
-  const segment =
-    segments && Array.isArray(segments.segments)
-      ? segments.segments.find((s) => s.id === SEGMENT_ID)
-      : null;
-  if (!segment || !segment.metrics) return; // fail soft — data may be null
+  const chartHost = rootEl.querySelector('[data-segment-architects-chart]');
+  const lensHost = rootEl.querySelector('[data-segment-architects-lens]');
+  if (!chartHost || !lensHost) return; // fail soft — markup not found
 
-  // The distinctive TGI line, woven into the rail.
-  const tgiEl = rootEl.querySelector('[data-segment-tgi]');
-  const top = distinctiveTgi(tgi);
-  if (tgiEl && top) {
-    tgiEl.innerHTML =
-      `<span class="segment-architects-tgi-index">${top.index}</span>` +
-      `<span class="segment-architects-tgi-text">They are ` +
-      `<strong>${top.index / 100 >= 2 ? 'more than twice' : 'far more'} as likely</strong> to say: ` +
-      `&ldquo;${top.statement}&rdquo;</span>`;
-  } else if (tgiEl) {
-    tgiEl.remove();
+  const seg =
+    data?.segments?.segments?.find((s) => s.id === SEGMENT_ID) || null;
+  const tgiSeg = data?.tgi?.segments?.[SEGMENT_ID] || null;
+
+  // Build lenses only from verified data; omit any lens with no items.
+  const lenses = [];
+
+  // Lens 1: What they value — essentials over-index from segments.json.
+  if (seg?.metrics?.essentials) {
+    const items = topMetric(seg.metrics.essentials);
+    if (items.length) {
+      lenses.push({ value: 'value', label: 'What they value', items });
+    }
   }
 
-  // The over-index chart + its toggle (the marquee interaction).
-  const chartHost = rootEl.querySelector('[data-segment-chart]');
-  const labelEl = rootEl.querySelector('[data-segment-chart-label]');
-  const toggleHost = rootEl.querySelector('[data-segment-toggle]');
-  if (!chartHost || !toggleHost) return;
+  // Lens 2: How they see themselves — combined mindset + financial over-index.
+  if (seg?.metrics) {
+    const combined = [
+      ...topMetricLow(seg.metrics.mindsetNetAgree, 110),
+      ...topMetricLow(seg.metrics.forwardMindset, 110),
+      ...topMetricLow(seg.metrics.financialPosition, 110),
+    ]
+      .sort((a, b) => b.pct - a.pct)
+      .slice(0, TOP_N);
+    if (combined.length) {
+      lenses.push({ value: 'mindset', label: 'How they see themselves', items: combined });
+    }
+  }
 
-  let chart = null;
-  const render = (facet) => {
-    const items = itemsFor(segment.metrics, facet);
-    if (labelEl) labelEl.textContent = facet.title;
-    if (!chart) {
-      chart = horizontalBars(chartHost, {
-        items,
-        max: 100,
+  // Lens 3: What they index on — TGI lifestyle statements (tgi.json).
+  if (tgiSeg?.lifestyle?.length) {
+    const items = topIndexedTgi(tgiSeg.lifestyle);
+    if (items.length) {
+      lenses.push({ value: 'tgi', label: 'What they index on', items });
+    }
+  }
+
+  // Fallback: AI use by task if nothing else populated.
+  if (!lenses.length && seg?.metrics?.aiUseByTask) {
+    const items = topMetric(seg.metrics.aiUseByTask);
+    if (items.length) {
+      lenses.push({ value: 'ai', label: 'AI use', items });
+    }
+  }
+
+  // Populate the two TGI fingerprint lines.
+  populateTgiLines(rootEl, tgiSeg);
+
+  if (!lenses.length) return; // no verified data — leave the identity card visible
+
+  // One reusable chart; lens changes morph bars in place.
+  let bars = null;
+
+  const drawLens = (value) => {
+    const lens = lenses.find((l) => l.value === value) || lenses[0];
+    if (!bars) {
+      bars = horizontalBars(chartHost, {
+        items: lens.items,
+        max: INDEX_MAX,
         accent: 'navy',
-        labelWidth: 132,
-        barHeight: 22,
-        gap: 12,
-        ariaLabel: facet.title,
+        decimals: 0,
+        barHeight: 26,
+        gap: 14,
+        labelWidth: 220,
+        ariaLabel: `Architects: ${lens.label}`,
       });
     } else {
-      chart.update(items, { resort: true });
+      bars.update(lens.items, { resort: true });
     }
   };
 
-  render(FACETS[0]);
+  // Wire the marquee interaction — gate() advises the hint; first switch
+  // clears it. Never blocks Next.
+  data?.journey?.gate?.();
+  let explored = false;
 
-  journey.gate();
-  let switched = false;
-  pillGroup(toggleHost, {
-    options: FACETS.map((f) => ({ value: f.value, label: f.label })),
-    value: FACETS[0].value,
-    ariaLabel: 'Switch the over-index view',
+  pillGroup(lensHost, {
+    options: lenses.map((l) => ({ value: l.value, label: l.label })),
+    value: lenses[0].value,
+    ariaLabel: 'Choose a lens on the Architects',
     onChange: (value) => {
-      const facet = FACETS.find((f) => f.value === value) || FACETS[0];
-      render(facet);
-      if (!switched) {
-        switched = true;
-        journey.ready();
+      drawLens(value);
+      if (!explored) {
+        explored = true;
+        data?.journey?.ready?.();
       }
     },
   });
+
+  drawLens(lenses[0].value);
 }

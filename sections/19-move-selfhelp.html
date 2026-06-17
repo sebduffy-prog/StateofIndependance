@@ -1,17 +1,108 @@
-<div class="chapter-inner stage-placeholder move-selfhelp-root on-warm" data-move-selfhelp-root>
+<!-- 19-move-selfhelp.html — Move 03: RIDE THE SOCIAL SELF-HELP WAVE.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="move-selfhelp-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
+     RIGHT — move-03.svg icon + self-help feed (flipReveal less→more) +
+             media shift table.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-  <header class="move-selfhelp-head">
-    <p class="vccp-eyebrow" data-arrival>Move three of five</p>
-    <h2 class="move-selfhelp-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Ride the social self-help wave</h2>
-    <p class="move-selfhelp-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-  <span class="move-selfhelp-dot" data-youdot-anchor aria-hidden="true"></span>
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\31 9-move-selfhelp. -->
+
+<div class="chapter-inner msh-root on-warm" data-msh-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="msh-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="msh-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="msh-grid">
+
+    <!-- LEFT COLUMN — move header + lesson + quote -->
+    <div class="msh-left">
+      <header class="msh-head">
+        <p class="vccp-eyebrow msh-eyebrow" data-arrival>
+          <span class="msh-movenum" aria-hidden="true">03</span>
+          Move three of five
+        </p>
+        <h2 class="msh-title" data-arrival>
+          Ride the social<br><em class="msh-accent" data-arrival-scramble>self-help wave</em>
+        </h2>
+        <p class="msh-lesson" data-arrival>
+          In our excitement about LLMs, too many brands have under-leveraged
+          social search as a self-help environment.
+        </p>
+      </header>
+
+      <!-- Quote card — .soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card msh-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="msh-quote__text">
+          "Whether it's fixing things with YouTube videos or going on sort of
+          Money Saving Expert looking for the best deals — shopping around,
+          going on Instagram for like hacks."
+        </p>
+        <footer class="msh-quote__attr">Bury, 39 · Hustler</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — icon + flip interaction + media shift -->
+    <aside class="msh-right" aria-label="Self-help wave interaction: less to more">
+
+      <!-- Icon + kicker -->
+      <div class="msh-icon-row" data-arrival>
+        <div class="msh-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-03.svg"
+               alt="Self-help wave icon"
+               class="msh-icon__img" />
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat__label" data-youdot-anchor>
+            The nation's self-help manuals<br>live on platforms where
+            context is king.
+          </span>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the marquee beat -->
+      <div class="msh-flip" data-flip
+           aria-label="Flip each row to reveal the brand shift"></div>
+
+      <!-- Media shift table — From → To (slide 56) -->
+      <div class="msh-shift" data-arrival aria-label="From audiences to contexts">
+        <p class="msh-shift__head">From audiences to contexts</p>
+        <dl class="msh-shift__list">
+          <div class="msh-shift__row">
+            <dt class="msh-shift__from">Demographics &amp; locations</dt>
+            <dd class="msh-shift__to">Context long lists</dd>
+          </div>
+          <div class="msh-shift__row">
+            <dt class="msh-shift__from">Look-a-likes</dt>
+            <dd class="msh-shift__to">Creative as targeting</dd>
+          </div>
+          <div class="msh-shift__row">
+            <dt class="msh-shift__from">Off-the-shelf audiences</dt>
+            <dd class="msh-shift__to">Mimicking content behaviours</dd>
+          </div>
+          <div class="msh-shift__row">
+            <dt class="msh-shift__from">Chasing segments</dt>
+            <dd class="msh-shift__to">Man marking behaviours</dd>
+          </div>
+        </dl>
+      </div>
+
+    </aside>
+  </div>
+
 </div>

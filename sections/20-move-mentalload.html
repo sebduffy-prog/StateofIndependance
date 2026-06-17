@@ -1,17 +1,130 @@
-<div class="chapter-inner stage-placeholder move-mentalload-root on-warm" data-move-mentalload-root>
+<!-- 20-move-mentalload.html — Move 04: KILL THE MENTAL LOAD.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="move-mentalload-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + sandwich-generation
+             stat cards (87/58/31/12 from Killik & Co 2025) with the new-premium quote.
+     RIGHT — move-04.svg icon + death-to beats + flipReveal less→more interaction.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-  <header class="move-mentalload-head">
-    <p class="vccp-eyebrow" data-arrival>Move four of five</p>
-    <h2 class="move-mentalload-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Kill the mental load</h2>
-    <p class="move-mentalload-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-  <span class="move-mentalload-dot" data-youdot-anchor aria-hidden="true"></span>
+     DATA: 87/58/31/12 sandwich generation — Killik & Co poll, 2025 (STORY.md §07 Move 04).
+     Quote: "The brand I find most aspirational isn't a fashion house, it's Cook or
+     Mindful Chef. Time is the rarest thing I have. Paying someone to solve dinner is
+     the ultimate luxury" — qualitative research, slide 63.
+
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\32 0-move-mentalload. -->
+
+<div class="chapter-inner mml-root on-warm" data-mml-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="mml-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="mml-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="mml-grid">
+
+    <!-- LEFT COLUMN — move header + sandwich stats + premium quote -->
+    <div class="mml-left">
+      <header class="mml-head">
+        <p class="vccp-eyebrow mml-eyebrow" data-arrival>
+          <span class="mml-movenum" aria-hidden="true">04</span>
+          Move four of five
+        </p>
+        <h2 class="mml-title" data-arrival>
+          Kill the<br><em class="mml-accent" data-arrival-scramble>mental load</em>
+        </h2>
+        <p class="mml-lesson" data-arrival>
+          Cognitive overload is the new poverty. The brands that win are
+          those that carry the weight — not add to it.
+        </p>
+      </header>
+
+      <!-- Sandwich generation stat strip — Killik & Co 2025 -->
+      <div class="mml-sandwich" data-arrival aria-label="Sandwich generation data">
+        <p class="mml-sandwich__label vccp-eyebrow">The sandwich generation</p>
+        <div class="mml-sandwich__bars" role="list">
+          <div class="mml-sbar" role="listitem">
+            <span class="mml-sbar__num num"
+                  data-count-to="87" data-count-suffix="%"
+                  data-youdot-anchor>87%</span>
+            <span class="mml-sbar__track" aria-hidden="true">
+              <span class="mml-sbar__fill" data-pct="87"></span>
+            </span>
+            <span class="mml-sbar__desc">support children financially</span>
+          </div>
+          <div class="mml-sbar" role="listitem">
+            <span class="mml-sbar__num num"
+                  data-count-to="58" data-count-suffix="%">58%</span>
+            <span class="mml-sbar__track" aria-hidden="true">
+              <span class="mml-sbar__fill" data-pct="58"></span>
+            </span>
+            <span class="mml-sbar__desc">support their partners</span>
+          </div>
+          <div class="mml-sbar" role="listitem">
+            <span class="mml-sbar__num num"
+                  data-count-to="31" data-count-suffix="%">31%</span>
+            <span class="mml-sbar__track" aria-hidden="true">
+              <span class="mml-sbar__fill" data-pct="31"></span>
+            </span>
+            <span class="mml-sbar__desc">support parents financially</span>
+          </div>
+          <div class="mml-sbar" role="listitem">
+            <span class="mml-sbar__num num"
+                  data-count-to="12" data-count-suffix="%">12%</span>
+            <span class="mml-sbar__track" aria-hidden="true">
+              <span class="mml-sbar__fill" data-pct="12"></span>
+            </span>
+            <span class="mml-sbar__desc">support extended family</span>
+          </div>
+        </div>
+        <p class="mml-sandwich__source">Source: Killik &amp; Co poll, 2025</p>
+      </div>
+
+      <!-- New-premium quote — soi-card, cream, square corners -->
+      <blockquote class="soi-card mml-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="mml-quote__text">
+          "The brand I find most aspirational isn't a fashion house, it's Cook
+          or Mindful Chef. Time is the rarest thing I have. Paying someone to
+          solve dinner is the ultimate luxury."
+        </p>
+        <footer class="mml-quote__attr">Qualitative research · The new premium</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — icon + death-to beats + flipReveal -->
+    <aside class="mml-right" aria-label="Kill the mental load: less to more">
+
+      <!-- Icon + death-to header cluster -->
+      <div class="mml-icon-cluster" data-arrival>
+        <div class="mml-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-04.svg"
+               alt="Kill the mental load icon"
+               class="mml-icon__img" />
+        </div>
+        <div class="mml-deaths" aria-label="Three cognitive burdens">
+          <p class="mml-death">Death to <strong>'I'm too busy'</strong></p>
+          <p class="mml-death">Death to <strong>'It's confusing'</strong></p>
+          <p class="mml-death">Death to <strong>'I'm stressed'</strong></p>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the marquee beat -->
+      <div class="mml-flip" data-flip
+           aria-label="Flip each row to reveal the brand shift"></div>
+
+    </aside>
+  </div>
+
 </div>

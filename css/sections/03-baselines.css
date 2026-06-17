@@ -2,19 +2,11 @@
    Chapter 03 — baselines. "The numbers you already know."
    Scoped to #03-baselines via the escaped #\30 3-baselines prefix.
 
-   THE AUTHORITATIVE BRAND WORLD (BWF §7, 03-baselines):
-   Cream editorial register. Guess, then the truth lands as a crowd of 100
-   with YOUR square highlighted. Bold-black Poppins headline (left), display
-   navy number (left), waffle crowd (right). ONE focal point — the crowd.
-   Faint navy-tint empty squares from the first frame (no void). ONE yellow
-   you-square (the single accent per screen). Tabular navy numbers. Square
-   corners. No underline. No parallelogram. No edge band. Full-bleed.
-
-   ANTI-VOID CONTRACT:
-   - The waffle shows all 100 faint squares immediately — RHS is never empty.
-   - A quiet crowd label anchors the RHS before and after guess.
-   - The you-square only appears after reveal (no random floating dot).
-   - The two panes balance: left claims the headline + guess, right owns the crowd.
+   BRAND WORLD (BWF §7, 03-baselines):
+   Cream editorial register. LEFT: headline + guess-then-reveal (bold black
+   Poppins + display navy number). RIGHT: the crowd of 100 — waffle grid,
+   full-height, dominant; 77 fill navy on reveal, one yellow you-square.
+   No white boxes. No edge band. Full-bleed cream. Balanced halves.
    ============================================================ */
 
 /* ── Stage: cream ground, full-bleed one screen ───────────────── */
@@ -23,58 +15,60 @@
   color: var(--on-cream);
 }
 
-/* chapter-inner fills the section; column rhythm on top. */
+/* chapter-inner fills the section as a two-row flex column:
+   hero row (flex-grow) — floor is now inside the left rail */
 #\30 3-baselines .chapter-inner {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  /* header → hero (flex-grow) → floor */
-  gap: clamp(1.2rem, 2.5vh, 2rem);
-  padding-block: clamp(2.4rem, 5.5vh, 4.5rem);
+  padding-block: clamp(2.4rem, 5vh, 4rem);
+  padding-inline: var(--margin-page, clamp(24px, 5vw, 96px));
   box-sizing: border-box;
+  height: 100%;
 }
 
 /* ── Brand signature: tiny lockup stamp, top-right (book-cover position) ── */
 #\30 3-baselines .bl-mark {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: clamp(14px, 2.5vh, 28px);
+  right: var(--margin-page, clamp(24px, 5vw, 96px));
   height: clamp(26px, 3vw, 34px);
   opacity: 0.85;
   z-index: 4;
   pointer-events: none;
 }
 
-/* ── HERO ROW — balanced two-pane: claim left, crowd right ─────── */
+/* ── HERO ROW — two balanced halves, fills the available height ─── */
 #\30 3-baselines .bl-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 6vw, 6rem);
-  align-items: center;
-  flex: 1 1 0;   /* stretch between eyebrow-header and floor */
+  gap: clamp(2.5rem, 6vw, 7rem);
+  align-items: stretch;
+  flex: 1 1 0;
   min-height: 0;
 }
 
-/* ── LEFT RAIL — headline + interaction ─────────────────────────── */
+/* ── LEFT RAIL — headline + interaction + floor stats ──────────── */
 #\30 3-baselines .bl-rail {
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 2vh, 1.75rem);
+  justify-content: center;
+  gap: clamp(1rem, 2vh, 1.5rem);
 }
 
 #\30 3-baselines .bl-head { position: relative; }
 
 /* The one bold-black Poppins display title (book-cover voice) */
 #\30 3-baselines .bl-headline {
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  font-size: clamp(2.6rem, 4.5vw, 4.4rem);
   line-height: 0.94;
   margin: var(--space-2) 0 0;
   max-width: 16ch;
   color: var(--ink);
 }
 #\30 3-baselines .bl-headline span { display: block; }
-/* The italic accent word — the "Series" gesture (BWF §2). Slant IS the accent. */
+/* The italic accent word — the "Series" gesture (BWF §2) */
 #\30 3-baselines .bl-headline .si-accent {
   display: inline;
   color: var(--navy);
@@ -84,7 +78,7 @@
 #\30 3-baselines .bl-claim {
   display: grid;
   align-items: start;
-  min-height: 9rem;
+  min-height: 8rem;
 }
 #\30 3-baselines .bl-claim > * { grid-area: 1 / 1; }
 #\30 3-baselines .bl-claim.is-revealed .bl-guess { display: none; }
@@ -97,7 +91,7 @@
   font-weight: 900;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(5rem, 12vw, 10rem);
+  font-size: clamp(5rem, 11vw, 9rem);
   line-height: 0.84;
 }
 #\30 3-baselines .bl-num .bl-pct {
@@ -124,7 +118,7 @@
   max-width: 34ch;
 }
 
-/* Truth arrives on the entrance easing */
+/* Truth arrives on entrance easing */
 #\30 3-baselines .bl-truth {
   animation: bl-truth-in var(--dur-reveal, 0.5s) var(--ease-entrance, ease-out) both;
 }
@@ -164,14 +158,14 @@
   appearance: none;
   -webkit-appearance: none;
   height: 4px;
-  background: rgba(4, 22, 84, 0.18);  /* faint navy-tint track, never white */
+  background: rgba(4, 22, 84, 0.18); /* faint navy-tint track, never white */
   outline-offset: 4px;
 }
 #\30 3-baselines .guess-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 28px;
   height: 28px;
-  border-radius: 0;                    /* square, always */
+  border-radius: 0; /* square, always */
   background: var(--navy);
   cursor: grab;
 }
@@ -198,24 +192,45 @@
 /* The lib's textual reveal is redundant with the display number; hide it. */
 #\30 3-baselines .guess-reveal { display: none; }
 
-/* ── RIGHT PANE — crowd wrapper: always anchors the grid ────────── */
+/* ── FLOOR STATS — quiet tabular row inside the left rail ───────── */
+#\30 3-baselines .bl-floor-row {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+  border-top: 1px solid rgba(4, 22, 84, 0.14);
+  padding-top: clamp(0.75rem, 1.5vh, 1.25rem);
+}
+#\30 3-baselines .bl-floor-fig { margin: 0; }
+#\30 3-baselines .bl-floor-num {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy);
+}
+#\30 3-baselines .bl-floor-lbl {
+  margin: var(--space-1) 0 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  opacity: 0.85;
+  max-width: 20ch;
+}
+
+/* ── RIGHT PANE — crowd of 100: fills full right column height ───── */
 #\30 3-baselines .bl-crowd {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.6rem, 1.2vh, 1rem);
-  align-items: flex-start;
-  /* Always occupies its column — no collapse before reveal */
-  min-height: 0;
-}
-
-/* Inner wrapper: positioning context for the you-square overlay */
-#\30 3-baselines .bl-crowd-inner {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: clamp(0.5rem, 1vh, 0.75rem);
-  width: 100%;
+  height: 100%;
+  /* Ensure the crowd column never shrinks to a void */
+  min-height: 0;
 }
 
 /* Small label above the grid — anchors the RHS before the crowd fills */
@@ -229,24 +244,45 @@
   opacity: 0.55;
 }
 
-/* ── THE WAFFLE CROWD (THE FORM — sole focal point) ──────────────
-   Backgroundless: the waffleGrid SVG sits directly on cream.
-   Filled = navy; empty = faint navy tint (the lib handles this).
-   All 100 squares visible immediately — the faint grid IS the crowd. */
+/* Inner wrapper: positioning context for the you-square overlay.
+   flex-grow so the grid+overlay fill the available column height.
+   overflow:hidden so nothing bleeds outside the column. */
+#\30 3-baselines .bl-crowd-inner {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── THE WAFFLE CROWD — the sole focal point on the RHS ──────────
+   Backgroundless: SVG sits directly on cream. Filled = navy.
+   Empty = faint navy tint (the lib handles this).
+   The SVG must fill the column fully — no dead space around it.
+   preserveAspectRatio="xMidYMid meet" keeps the grid square;
+   we constrain height so it never overflows vertically. */
 #\30 3-baselines [data-crowd-grid] {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-/* waffleGrid appends an SVG; ensure it fills the div */
 #\30 3-baselines [data-crowd-grid] svg {
+  /* Fill the column: width first, then cap height so it stays in frame */
   width: 100% !important;
   max-width: 100% !important;
-  height: auto;
+  height: auto !important;
+  max-height: 100%;
   display: block;
 }
 
 /* ── YOU SQUARE — the ONE accent per screen: yellow, scaled proud ──
    Positioned absolutely over the waffleGrid SVG by JS.
-   Created ONLY after reveal — starts transparent, pops on .is-landed. */
+   Created ONLY after reveal — starts transparent, pops on .is-landed.
+   No data-youdot-anchor in the static HTML — shell only sees it post-reveal. */
 #\30 3-baselines .bl-you-square {
   background: transparent;
   transition:
@@ -256,7 +292,7 @@
 }
 #\30 3-baselines .bl-you-square.is-landed {
   background: var(--yellow);
-  transform: scale(1.25);
+  transform: scale(1.3);
   box-shadow: 0 0 0 2px var(--navy);
   z-index: 4;
 }
@@ -267,10 +303,11 @@
   align-items: baseline;
   gap: 0.5ch;
   flex-wrap: wrap;
-  min-height: 2rem;   /* reserve height so layout doesn't jump on fill */
+  min-height: 1.5rem;
+  flex-shrink: 0;
 }
 #\30 3-baselines .bl-crowd-count {
-  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -283,55 +320,31 @@
   font-weight: 500;
   line-height: 1.4;
   color: var(--ink-soft);
-  max-width: 32ch;
-}
-
-/* ── FLOOR — one quiet tabular line; no boxes; border-top separator ── */
-#\30 3-baselines .bl-floor {
-  border-top: 1px solid rgba(4, 22, 84, 0.14);
-  padding-top: clamp(1rem, 2.5vh, 1.75rem);
-}
-#\30 3-baselines .bl-floor-row {
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.2rem, 3vw, 3rem);
-}
-#\30 3-baselines .bl-floor-fig { margin: 0; }
-#\30 3-baselines .bl-floor-num {
-  margin: 0;
-  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--navy);
-}
-#\30 3-baselines .bl-floor-lbl {
-  margin: var(--space-1) 0 0;
-  font-size: var(--t-sm, 0.875rem);
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--ink-soft);
-  opacity: 0.85;
-  max-width: 26ch;
+  max-width: 38ch;
 }
 
 /* ── Responsive: stack hero on narrow viewports ─────────────────── */
 @media (max-width: 860px) {
   #\30 3-baselines .bl-hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(2rem, 6vh, 3.5rem);
+    gap: clamp(2rem, 5vh, 3rem);
+    overflow-y: auto;
   }
-  #\30 3-baselines .bl-crowd { align-items: flex-start; }
+  #\30 3-baselines .bl-crowd {
+    height: auto;
+    min-height: 50vw;
+  }
+  #\30 3-baselines .bl-crowd-inner {
+    flex: none;
+    min-height: 50vw;
+  }
   #\30 3-baselines .bl-floor-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 3-baselines .bl-truth    { animation: none; }
-  #\30 3-baselines .bl-you-square { transition: none; }
+  #\30 3-baselines .bl-truth       { animation: none; }
+  #\30 3-baselines .bl-you-square  { transition: none; }
 }

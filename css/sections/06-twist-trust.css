@@ -7,6 +7,18 @@
    Square corners, no underlines, no parallelogram, tabular nums.
    Reduced-motion safe. */
 
+/* ── Override global chapter-inner constraints so tt-root is truly full-bleed.
+   The global rule adds padding and max-width to .chapter-inner; we reset
+   those here so our tt-root and tt-grid own ALL the layout geometry. ───── */
+#\30 6-twist-trust .chapter-inner {
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
 /* ── Root — fills the section shell (100vw × 100svh) ──────────────── */
 #\30 6-twist-trust .tt-root {
   position: relative;
@@ -14,9 +26,7 @@
   height: 100%;
   overflow: hidden;
   display: flex;
-  align-items: center;
-  /* Navy ground defined by .si-ground-navy; add a subtle directional
-     depth so the navy doesn't read flat at large sizes. */
+  align-items: stretch;
   background: linear-gradient(140deg, #02103F 0%, #041654 55%, #0A2270 100%);
 }
 
@@ -25,26 +35,26 @@
   position: absolute;
   bottom: -26vh;
   right: -18vw;
-  width: clamp(400px, 56vw, 860px);
-  height: clamp(400px, 56vw, 860px);
+  width: clamp(480px, 60vw, 960px);
+  height: clamp(480px, 60vw, 960px);
   border-radius: 50%;
-  border: 1px solid rgba(240, 237, 231, 0.14);
+  border: 1px solid rgba(240, 237, 231, 0.12);
   pointer-events: none;
   z-index: 0;
 }
 #\30 6-twist-trust .tt-orbit::before {
   content: "";
   position: absolute;
-  inset: 14%;
+  inset: 12%;
   border-radius: 50%;
-  border: 1px solid rgba(240, 237, 231, 0.09);
+  border: 1px solid rgba(240, 237, 231, 0.08);
 }
 #\30 6-twist-trust .tt-orbit::after {
   content: "";
   position: absolute;
-  inset: 30%;
+  inset: 26%;
   border-radius: 50%;
-  border: 1px solid rgba(240, 237, 231, 0.06);
+  border: 1px solid rgba(240, 237, 231, 0.05);
 }
 
 /* ── Brand stamp top-right ─────────────────────────────────────────── */
@@ -54,36 +64,37 @@
   right: clamp(20px, 4vw, 60px);
   height: 28px;
   width: auto;
-  /* Lockup is black silhouette — invert to cream on dark ground. */
   filter: invert(1) brightness(0.88);
   opacity: 0.72;
   z-index: 10;
   pointer-events: none;
 }
 
-/* ── Two-column grid ───────────────────────────────────────────────── */
+/* ── Two-column grid — fills the full height of the viewport ───────── */
 #\30 6-twist-trust .tt-grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 72px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: stretch;
+  gap: clamp(28px, 4.5vw, 80px);
   width: 100%;
-  max-width: 1380px;
+  max-width: 1400px;
   margin-inline: auto;
-  padding: clamp(24px, 5vh, 72px) clamp(28px, 6vw, 100px);
+  padding: clamp(40px, 5.5vh, 68px) clamp(32px, 6vw, 100px) clamp(28px, 3.8vh, 48px);
   box-sizing: border-box;
-  /* Ensure grid never overflows one screen */
+  height: 100svh;
   max-height: 100svh;
+  overflow: hidden;
 }
 
 /* ── LEFT column ───────────────────────────────────────────────────── */
 #\30 6-twist-trust .tt-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2.2vh, 26px);
+  gap: clamp(14px, 2vh, 22px);
   min-width: 0;
+  justify-content: space-between;
 }
 
 #\30 6-twist-trust .tt-head {
@@ -94,7 +105,7 @@
 
 /* Eyebrow — cream, reduced opacity for hierarchy */
 #\30 6-twist-trust .tt-eyebrow {
-  color: rgba(240, 237, 231, 0.65);
+  color: rgba(240, 237, 231, 0.6);
   margin-bottom: 0;
 }
 
@@ -102,35 +113,51 @@
 #\30 6-twist-trust .tt-title {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(2.8rem, 5.4vw, 5rem);
+  font-size: clamp(3rem, 5.6vw, 5.2rem);
   letter-spacing: -0.03em;
-  line-height: 0.94;
+  line-height: 0.93;
   color: var(--cream, #F0EDE7);
 }
 
 /* Italic accent word — yellow on navy for one focal pop */
 #\30 6-twist-trust .tt-accent {
   color: var(--yellow, #F0CB08);
+  font-style: italic;
 }
 
-/* Standfirst — faint cream */
+/* Standfirst */
 #\30 6-twist-trust .tt-stand {
   margin: 0;
-  color: rgba(240, 237, 231, 0.78);
+  color: rgba(240, 237, 231, 0.72);
   font-size: clamp(0.9rem, 1.1vw, 1.06rem);
   line-height: 1.52;
-  max-width: 46ch;
+  max-width: 44ch;
+}
+
+/* Rank-block wraps the interaction and fills remaining left space */
+#\30 6-twist-trust .tt-rank-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 /* ── Drag-rank interaction (class hooks from interactions.js) ──────── */
 #\30 6-twist-trust .tt-rank {
   min-width: 0;
+  flex: 1 1 auto;
+}
+
+#\30 6-twist-trust .rank {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 #\30 6-twist-trust .rank-help {
-  margin: 0 0 clamp(8px, 1.2vh, 14px);
-  color: rgba(240, 237, 231, 0.55);
-  font-size: 0.8rem;
+  margin: 0 0 clamp(7px, 1vh, 12px);
+  color: rgba(240, 237, 231, 0.50);
+  font-size: 0.78rem;
   line-height: 1.4;
   max-width: 48ch;
 }
@@ -141,7 +168,8 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.7vh, 8px);
+  gap: clamp(3px, 0.5vh, 6px);
+  flex: 1 1 auto;
 }
 
 #\30 6-twist-trust .rank-item {
@@ -149,9 +177,9 @@
   grid-template-columns: 2ch 1fr auto auto;
   align-items: center;
   gap: 10px;
-  padding: clamp(7px, 1.1vh, 12px) 14px;
-  background: rgba(240, 237, 231, 0.07);
-  border: 1px solid rgba(240, 237, 231, 0.14);
+  padding: clamp(6px, 1vh, 11px) 14px;
+  background: rgba(240, 237, 231, 0.06);
+  border: 1px solid rgba(240, 237, 231, 0.12);
   border-radius: 0;
   color: var(--cream, #F0EDE7);
   cursor: grab;
@@ -160,35 +188,38 @@
     border-color var(--dur-micro, 180ms) ease,
     transform var(--dur-micro, 180ms) ease;
   user-select: none;
+  min-height: 0;
 }
 #\30 6-twist-trust .rank-item:hover,
 #\30 6-twist-trust .rank-item:focus-visible {
-  background: rgba(240, 237, 231, 0.12);
-  border-color: rgba(240, 237, 231, 0.30);
+  background: rgba(240, 237, 231, 0.11);
+  border-color: rgba(240, 237, 231, 0.26);
   outline: none;
 }
 #\30 6-twist-trust .rank-item:focus-visible {
   border-color: var(--yellow, #F0CB08);
-  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.32);
+  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.30);
 }
 #\30 6-twist-trust .rank-item.is-dragging {
-  background: rgba(240, 203, 8, 0.12);
+  background: rgba(240, 203, 8, 0.11);
   border-color: var(--yellow, #F0CB08);
-  transform: scale(1.012);
+  transform: scale(1.01);
   cursor: grabbing;
+  z-index: 10;
+  position: relative;
 }
 
 #\30 6-twist-trust .rank-pos {
   font-variant-numeric: tabular-nums;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--yellow, #F0CB08);
   text-align: center;
 }
 
 #\30 6-twist-trust .rank-label {
   font-weight: 600;
-  font-size: clamp(0.86rem, 0.98vw, 1rem);
+  font-size: clamp(0.84rem, 0.95vw, 0.98rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -196,30 +227,29 @@
 }
 
 #\30 6-twist-trust .rank-grip {
-  color: rgba(240, 237, 231, 0.36);
-  font-size: 0.95rem;
+  color: rgba(240, 237, 231, 0.32);
+  font-size: 0.9rem;
 }
 
 #\30 6-twist-trust .rank-delta {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-/* Correct placements light up in yellow; off ones in muted cream */
 #\30 6-twist-trust .rank-delta.vccp-delta-up { color: var(--yellow, #F0CB08); }
-#\30 6-twist-trust .rank-delta.vccp-delta-down { color: rgba(240, 237, 231, 0.45); }
+#\30 6-twist-trust .rank-delta.vccp-delta-down { color: rgba(240, 237, 231, 0.40); }
 
 #\30 6-twist-trust .rank-submit {
   margin-top: clamp(10px, 1.4vh, 16px);
   align-self: flex-start;
-  padding: 9px 22px;
+  padding: 9px 24px;
   background: var(--yellow, #F0CB08);
-  color: var(--navy, #041654);
+  color: #02103F;
   font-weight: 800;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   border: none;
   border-radius: 0;
@@ -228,97 +258,131 @@
 }
 #\30 6-twist-trust .rank-submit:hover,
 #\30 6-twist-trust .rank-submit:focus-visible {
-  opacity: 0.86;
-  outline: 2px solid rgba(240, 203, 8, 0.6);
+  opacity: 0.84;
+  outline: 2px solid rgba(240, 203, 8, 0.56);
   outline-offset: 2px;
 }
 
-/* ── RIGHT column — pre-reveal teaser + post-reveal truth ─────────── */
+/* ── RIGHT column — fills full height, flex column ─────────────────── */
 #\30 6-twist-trust .tt-right {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  height: 100%;
-  justify-content: center;
+  min-height: 0;
 }
 
-/* PRE-REVEAL — fills right half with a composed teaser before interaction */
+/* PRE-REVEAL — fills entire right column height */
 #\30 6-twist-trust .tt-pre {
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2.2vh, 28px);
+  justify-content: space-between;
+  flex: 1 1 0;
+  min-height: 0;
+  gap: 0;
   opacity: 1;
-  transition: opacity 280ms ease;
+  transition: opacity 300ms ease;
   position: relative;
+  padding: clamp(8px, 1.4vh, 20px) 0;
 }
 #\30 6-twist-trust .tt-pre.is-hidden {
   opacity: 0;
   pointer-events: none;
 }
 
+/* Top cluster: eyebrow + headline */
+#\30 6-twist-trust .tt-pre__top {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 16px);
+}
+
 #\30 6-twist-trust .tt-pre__eyebrow {
-  color: rgba(240, 237, 231, 0.65);
+  color: rgba(240, 237, 231, 0.60);
   margin-bottom: 0;
 }
 
 #\30 6-twist-trust .tt-pre__headline {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
-  line-height: 1.26;
+  font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+  line-height: 1.28;
   color: var(--cream, #F0EDE7);
-  max-width: 34ch;
+  max-width: 32ch;
 }
 
-/* Blurred placeholder numbers — teases the spread reveal */
+/* Hero blur numbers — fill the middle zone of the right column */
+#\30 6-twist-trust .tt-pre__hero {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vh, 20px);
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+/* The main blurred number pair */
 #\30 6-twist-trust .tt-pre__hint {
   display: flex;
   align-items: baseline;
-  gap: clamp(10px, 1.4vw, 20px);
+  gap: clamp(10px, 1.6vw, 22px);
 }
 #\30 6-twist-trust .tt-pre__num {
   font-weight: 900;
-  font-size: clamp(3.2rem, 6.2vw, 5.4rem);
-  letter-spacing: -0.03em;
-  line-height: 0.9;
+  font-size: clamp(4rem, 8.5vw, 7.2rem);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
   font-variant-numeric: tabular-nums;
-  color: rgba(240, 237, 231, 0.28);
-  filter: blur(7px);
+  color: rgba(240, 237, 231, 0.50);
+  filter: blur(6px);
   user-select: none;
 }
 #\30 6-twist-trust .tt-pre__arrow {
   font-weight: 600;
-  font-size: clamp(1rem, 1.5vw, 1.4rem);
-  color: rgba(240, 237, 231, 0.3);
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+  color: rgba(240, 237, 231, 0.28);
   font-style: italic;
 }
+
+/* Decorative spread label under the blurred numbers */
+#\30 6-twist-trust .tt-pre__spread-label {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(0.7rem, 0.82vw, 0.85rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 231, 0.28);
+}
+
+/* Bottom hint line */
 #\30 6-twist-trust .tt-pre__sub {
   margin: 0;
-  color: rgba(240, 237, 231, 0.55);
-  font-size: clamp(0.86rem, 0.96vw, 0.96rem);
+  color: rgba(240, 237, 231, 0.50);
+  font-size: clamp(0.84rem, 0.94vw, 0.96rem);
   line-height: 1.5;
 }
 
 /* You-dot anchor — invisible position marker for the shell dot */
 #\30 6-twist-trust .tt-youdot {
   position: absolute;
-  top: 40%;
-  right: 30%;
+  top: 50%;
+  left: 50%;
   width: 1px;
   height: 1px;
   opacity: 0;
   pointer-events: none;
 }
 
-/* POST-REVEAL — the real truth; hidden until interaction completes */
+/* POST-REVEAL — fills entire right column; hidden until reveal fires */
 #\30 6-twist-trust .tt-truth {
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2.2vh, 26px);
+  justify-content: space-between;
+  flex: 1 1 0;
+  gap: clamp(12px, 1.8vh, 22px);
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 540ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
-              transform 540ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transform: translateY(14px);
+  transition: opacity 560ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
+              transform 560ms var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1));
+  padding: clamp(8px, 1.4vh, 20px) 0;
 }
 #\30 6-twist-trust .tt-truth.is-shown {
   opacity: 1;
@@ -327,7 +391,7 @@
 #\30 6-twist-trust .tt-truth[hidden] { display: none; }
 
 #\30 6-twist-trust .tt-truth__eyebrow {
-  color: rgba(240, 237, 231, 0.65);
+  color: rgba(240, 237, 231, 0.60);
   margin-bottom: 0;
 }
 
@@ -335,7 +399,7 @@
 #\30 6-twist-trust .tt-spread {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 1.8vw, 28px);
+  gap: clamp(14px, 2vw, 30px);
 }
 #\30 6-twist-trust .tt-spread__block {
   display: flex;
@@ -344,9 +408,9 @@
 }
 #\30 6-twist-trust .tt-spread__num {
   font-weight: 900;
-  letter-spacing: -0.03em;
-  font-size: clamp(3rem, 6.2vw, 5.4rem);
-  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-size: clamp(3.4rem, 7vw, 6rem);
+  line-height: 0.88;
   font-variant-numeric: tabular-nums;
   color: var(--cream, #F0EDE7);
 }
@@ -356,43 +420,43 @@
 }
 #\30 6-twist-trust .tt-spread__label {
   font-weight: 600;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(240, 237, 231, 0.58);
+  color: rgba(240, 237, 231, 0.54);
 }
 #\30 6-twist-trust .tt-spread__label--low {
-  color: rgba(240, 203, 8, 0.72);
+  color: rgba(240, 203, 8, 0.70);
 }
 #\30 6-twist-trust .tt-spread__arrow {
   font-weight: 600;
   font-size: clamp(1rem, 1.5vw, 1.4rem);
-  color: rgba(240, 237, 231, 0.4);
+  color: rgba(240, 237, 231, 0.36);
   font-style: italic;
   align-self: center;
-  padding-bottom: 1.2rem; /* baseline-align with the number */
+  padding-bottom: 1.4rem; /* baseline-align with the number */
 }
 
 #\30 6-twist-trust .tt-spread-cap {
   margin: 0;
-  color: rgba(240, 237, 231, 0.78);
-  font-size: clamp(0.88rem, 0.98vw, 1rem);
+  color: rgba(240, 237, 231, 0.76);
+  font-size: clamp(0.88rem, 0.96vw, 1rem);
   line-height: 1.5;
-  max-width: 42ch;
+  max-width: 40ch;
 }
 
-/* NHS paradox block: gauge + copy side by side on a faint cream-tint line */
+/* NHS paradox block: gauge + copy side by side on a faint cream-tint divider */
 #\30 6-twist-trust .tt-paradox {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: clamp(14px, 1.8vw, 26px);
-  padding-top: clamp(12px, 1.8vh, 20px);
-  border-top: 1px solid rgba(240, 237, 231, 0.16);
+  gap: clamp(14px, 1.8vw, 24px);
+  padding-top: clamp(12px, 1.8vh, 22px);
+  border-top: 1px solid rgba(240, 237, 231, 0.14);
 }
 
 #\30 6-twist-trust .tt-paradox__gauge {
-  width: clamp(130px, 16vw, 200px);
+  width: clamp(120px, 14vw, 185px);
   flex: 0 0 auto;
 }
 #\30 6-twist-trust .tt-paradox__gauge svg {
@@ -411,7 +475,7 @@
 }
 #\30 6-twist-trust .tt-paradox__score {
   font-weight: 900;
-  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  font-size: clamp(1.7rem, 2.8vw, 2.6rem);
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   color: var(--cream, #F0EDE7);
@@ -420,15 +484,15 @@
 #\30 6-twist-trust .tt-paradox__denom {
   font-size: 0.52em;
   font-weight: 600;
-  color: rgba(240, 237, 231, 0.55);
+  color: rgba(240, 237, 231, 0.50);
   letter-spacing: 0;
 }
 
 #\30 6-twist-trust .tt-paradox__line {
   margin: 0;
-  color: rgba(240, 237, 231, 0.78);
-  font-size: clamp(0.84rem, 0.94vw, 0.96rem);
-  line-height: 1.52;
+  color: rgba(240, 237, 231, 0.76);
+  font-size: clamp(0.82rem, 0.92vw, 0.94rem);
+  line-height: 1.54;
 }
 /* Emphasis on navy ground = yellow */
 #\30 6-twist-trust .tt-paradox__line .hl {
@@ -437,35 +501,50 @@
   background: none;
 }
 
-/* ── Narrow / portrait: stack columns, still fits one screen ──────── */
+/* ── Narrow / portrait: stack columns ──────────────────────────────── */
 @media (max-width: 900px) {
   #\30 6-twist-trust .tt-grid {
     grid-template-columns: 1fr;
-    gap: clamp(16px, 2.6vh, 28px);
-    align-content: start;
-    padding: clamp(16px, 3vh, 48px) clamp(20px, 5vw, 56px);
+    gap: clamp(16px, 2.4vh, 28px);
+    align-items: start;
+    padding: clamp(48px, 7vh, 72px) clamp(20px, 5vw, 52px) clamp(24px, 4vh, 48px);
+    min-height: 100svh;
     overflow-y: auto;
   }
-  #\30 6-twist-trust .tt-paradox {
-    grid-template-columns: auto 1fr;
+  #\30 6-twist-trust .tt-left {
+    justify-content: flex-start;
+    gap: clamp(12px, 1.8vh, 18px);
+  }
+  #\30 6-twist-trust .tt-right {
+    min-height: auto;
+  }
+  #\30 6-twist-trust .tt-pre,
+  #\30 6-twist-trust .tt-truth {
+    flex: none;
   }
   #\30 6-twist-trust .tt-title {
-    font-size: clamp(2.2rem, 7vw, 3.4rem);
+    font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\30 6-twist-trust .tt-pre__num {
+    font-size: clamp(3.2rem, 9vw, 5rem);
   }
 }
 
 /* ── Short viewports: compress vertical gaps ──────────────────────── */
 @media (max-height: 680px) {
   #\30 6-twist-trust .tt-grid {
-    padding-top: clamp(12px, 2vh, 28px);
-    padding-bottom: clamp(12px, 2vh, 28px);
+    padding-top: clamp(40px, 5vh, 56px);
+    padding-bottom: clamp(20px, 3vh, 36px);
     gap: clamp(16px, 2.4vw, 40px);
   }
   #\30 6-twist-trust .rank-list {
-    gap: 3px;
+    gap: 2px;
   }
   #\30 6-twist-trust .rank-item {
-    padding: 6px 12px;
+    padding: 5px 12px;
+  }
+  #\30 6-twist-trust .tt-pre__num {
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
   }
 }
 
@@ -482,6 +561,6 @@
     transition: opacity 140ms ease;
   }
   #\30 6-twist-trust .tt-pre__num {
-    filter: blur(5px);
+    filter: blur(6px);
   }
 }

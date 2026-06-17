@@ -1,61 +1,265 @@
-/* 12-segment-coasters.css — WORKFLOW A branded placeholder, scoped to #\31 2-segment-coasters.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 12-segment-coasters.css — The Coasters (27%) segment profile.
+   Scoped to #\31 2-segment-coasters. Cream editorial stage, full-bleed,
+   one focal point per third: an editorial rail counter-weighted by a
+   book-cover profile card. Mirrors the architects template. */
 
-#\31 2-segment-coasters .segment-coasters-root {
+/* ── Root wrapper ─────────────────────────────────────────────────── */
+#\31 2-segment-coasters .chapter-inner {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
   width: 100%;
   height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  display: flex;
+  align-items: center;
+  padding: clamp(52px, 7vh, 96px) clamp(28px, 6vw, 110px)
+           calc(var(--journey-controls-h, 96px) + clamp(16px, 2.5vh, 32px)) clamp(28px, 6vw, 110px);
+  overflow: hidden;
 }
 
-#\31 2-segment-coasters .segment-coasters-head {
-  max-width: 22ch;
+/* The tiny lockup stamp sits top-right of the whole stage (book-cover pos). */
+#\31 2-segment-coasters .segment-coasters-mark {
+  position: absolute;
+  top: clamp(18px, 3vh, 34px);
+  right: clamp(20px, 4vw, 56px);
+  height: clamp(22px, 2.4vw, 30px);
+  opacity: 0.9;
+  z-index: 3;
+}
+
+#\31 2-segment-coasters .segment-coasters-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+  gap: clamp(28px, 5vw, 88px);
+  align-items: stretch; /* card fills the row height, no dead space */
+}
+
+/* ── LEFT: the editorial rail ─────────────────────────────────────── */
+#\31 2-segment-coasters .segment-coasters-rail {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
+  gap: clamp(8px, 1.2vh, 16px);
+  max-width: 30ch;
 }
 
 #\31 2-segment-coasters .segment-coasters-title {
   margin: 0;
-  line-height: 0.96;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
 }
 
-#\31 2-segment-coasters .segment-coasters-note {
+#\31 2-segment-coasters .segment-coasters-accent {
+  display: block;
+  font-style: italic;
+  color: var(--navy);
+}
+
+#\31 2-segment-coasters .segment-coasters-trio {
   margin: 0;
-  max-width: 34ch;
-  opacity: 0.72;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
-#\31 2-segment-coasters .segment-coasters-orbit {
-  position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
-  pointer-events: none;
+#\31 2-segment-coasters .segment-coasters-quote {
+  margin: 0;
+  border-left: 3px solid var(--navy);
+  padding-left: clamp(14px, 1.4vw, 20px);
 }
-#\31 2-segment-coasters .segment-coasters-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+#\31 2-segment-coasters .segment-coasters-quote p {
+  margin: 0 0 0.5em;
+  font-size: clamp(1.0rem, 1.4vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.32;
+  color: var(--ink-soft);
+}
+#\31 2-segment-coasters .segment-coasters-quote cite {
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  opacity: 0.8;
 }
 
+/* Facts as a clean definition grid — navy keys, ink values, no boxes. */
+#\31 2-segment-coasters .segment-coasters-facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px) clamp(16px, 2vw, 26px);
+}
+#\31 2-segment-coasters .segment-coasters-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#\31 2-segment-coasters .segment-coasters-facts dt {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.7;
+}
+#\31 2-segment-coasters .segment-coasters-facts dd {
+  margin: 0;
+  font-size: clamp(0.86rem, 1.05vw, 0.98rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+/* Share hero count-up — the number IS the headline. */
+#\31 2-segment-coasters .segment-coasters-share {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 clamp(10px, 1.2vw, 18px);
+}
+#\31 2-segment-coasters .segment-coasters-share-num {
+  font-weight: 900;
+  font-size: clamp(3.5rem, 6.5vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+#\31 2-segment-coasters .segment-coasters-share-cap {
+  max-width: 22ch;
+  font-size: clamp(0.88rem, 1.1vw, 1.0rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+/* The you-dot anchor sits invisibly at the foot of the share line. */
 #\31 2-segment-coasters .segment-coasters-dot {
   display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: var(--soi-seed, var(--yellow, #FCC107));
+}
+
+/* ── RIGHT: the book-cover profile card ───────────────────────────── */
+#\31 2-segment-coasters .segment-coasters-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6vh, 18px);
+  padding: clamp(22px, 2.4vw, 38px);
+  margin: 0;
+  /* fills the grid row so no dead space above/below */
+  align-self: stretch;
+  justify-content: space-between;
+  /* book-cover card: one lift device only */
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
+}
+
+/* Flat navy+yellow sun/horizon icon. */
+#\31 2-segment-coasters .segment-coasters-icon {
+  color: var(--navy);
+  width: clamp(40px, 4vw, 54px);
+  height: clamp(40px, 4vw, 54px);
+  flex-shrink: 0;
+}
+#\31 2-segment-coasters .segment-coasters-icon svg { width: 100%; height: 100%; }
+#\31 2-segment-coasters .segment-coasters-icon .ic-yellow { fill: var(--yellow, #F0CB08); }
+#\31 2-segment-coasters .segment-coasters-icon .ic-navy {
+  color: var(--navy, #041654);
+  stroke: var(--navy, #041654);
+}
+
+/* Data section head — eyebrow + sub-title. */
+#\31 2-segment-coasters .segment-coasters-data-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#\31 2-segment-coasters .segment-coasters-data-title {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(1.0rem, 1.4vw, 1.25rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+/* Square pill control (no radius — square chips). */
+#\31 2-segment-coasters .pillgroup {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid rgba(4, 22, 84, 0.2);
+}
+#\31 2-segment-coasters .pillgroup-chip {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  color: var(--navy);
+  border-radius: 0;
+}
+#\31 2-segment-coasters .pillgroup-chip + .pillgroup-chip {
+  border-left: 1px solid rgba(4, 22, 84, 0.2);
+}
+#\31 2-segment-coasters .pillgroup-chip.is-active {
+  background: var(--navy);
+  color: var(--cream, #F0EDE7);
+}
+#\31 2-segment-coasters .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--yellow, #F0CB08);
+  outline-offset: -2px;
+}
+
+/* The chart region — backgroundless bars on the cream card. */
+#\31 2-segment-coasters .segment-coasters-chart {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Footnote — faint, baseline note. */
+#\31 2-segment-coasters .segment-coasters-baseline {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  opacity: 0.65;
+  border-top: 1px solid rgba(4, 22, 84, 0.1);
+  padding-top: clamp(8px, 1vh, 12px);
+}
+/* A small navy square as the "100 = average" key mark. */
+#\31 2-segment-coasters .segment-coasters-baseline-key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--navy, #041654);
+  flex-shrink: 0;
+}
+
+/* ── Narrow / short viewports — stack, keep one screen ────────────── */
+@media (max-width: 900px) {
+  #\31 2-segment-coasters .segment-coasters-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vh, 32px);
+  }
+  #\31 2-segment-coasters .segment-coasters-facts {
+    grid-template-columns: 1fr;
+  }
+  #\31 2-segment-coasters .segment-coasters-title {
+    font-size: clamp(2.8rem, 9vw, 4.5rem);
+  }
 }

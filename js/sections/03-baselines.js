@@ -9,12 +9,13 @@
  *       where the visitor's square highlights inside it. The display number
  *       rolls from guess to truth; the crowd fills navy; one square pops yellow.
  *
- *   ANTI-VOID · The waffle shows all 100 faint squares immediately.
- *       The you-square is built and placed ONLY after reveal — no random
- *       floating dot in an empty grid before the guess is locked.
+ *   ANTI-VOID · The waffle is live from first render: it fills to the slider
+ *       value in real time as the visitor drags. No empty grid, no dead space.
+ *       The you-square is built ONLY after reveal — no data-youdot-anchor
+ *       in the static HTML, so the shell does not park its dot in empty space.
  *
- *   The floor — 55 / 60 / 54 kept as one quiet tabular line so the crowd
- *       is the sole focal point.
+ *   Floor stats — 55 / 60 / 54 rendered in the left rail so the crowd
+ *       on the right remains the uncontested focal point.
  *
  * @param {HTMLElement} rootEl  <section class="journey-step" id="03-baselines">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
@@ -22,21 +23,28 @@
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
-import { clickToGuess } from '../lib/interactions.js';
 import { waffleGrid } from '../lib/charts.js';
 import { arrival } from '../lib/experiential.js';
 
 const CAREFUL_TRUE  = 77.3;   // Q2r3 exact — survey.moodOfNation careful
 const CAREFUL_FILL  = 77;     // squares lit in the 100-grid (deck-rounded)
 const COUNT_MS      = 1400;
-/** Index of the "you" cell inside the waffle (0-based, row-major). */
-const YOU_INDEX     = 44;     // near the centre of the lit crowd
-const YOU_POP_DELAY = 280;    // ms after the fill wave before you pop
+const SLIDER_START  = 50;     // default slider position
+
+/** Default waffleGrid geometry (matches the lib defaults when no square/gap passed). */
+const WAFFLE_SQUARE = 26;
+const WAFFLE_GAP    = 6;
+
+/** Index of the "you" cell inside the waffle (0-based, row-major).
+ *  Cell 44 = row 4, col 4 — sits comfortably inside the lit 77 squares. */
+const YOU_INDEX     = 44;
+const YOU_POP_DELAY = 320; // ms after the fill wave before you pop
 
 /**
  * Overlay a single "you" square on top of the SVG waffle cell at `index`.
  * Built ONLY after reveal — keeps the pre-reveal grid clean (no floating dot).
- * Returns a cleanup function that removes the overlay.
+ * Adds data-youdot-anchor so the shell's you-dot locks here post-reveal.
+ *
  * @param {SVGElement} svgEl   The waffle <svg> element
  * @param {number}     index   Cell index (0-based, row-major in a 10×10 grid)
  * @param {number}     square  Cell size (px) used when the waffle was built
@@ -44,13 +52,13 @@ const YOU_POP_DELAY = 280;    // ms after the fill wave before you pop
  * @returns {{ el: HTMLElement, land: () => void, destroy: () => void }}
  */
 const buildYouSquare = (svgEl, index, square, gap) => {
-  const cols   = 10;
-  const col    = index % cols;
-  const row    = Math.floor(index / cols);
-  const total  = cols * square + (cols - 1) * gap;
-  const xFrac  = (col * (square + gap)) / total;
-  const yFrac  = (row * (square + gap)) / total;
-  const wFrac  = square / total;
+  const cols  = 10;
+  const col   = index % cols;
+  const row   = Math.floor(index / cols);
+  const total = cols * square + (cols - 1) * gap;
+  const xFrac = (col * (square + gap)) / total;
+  const yFrac = (row * (square + gap)) / total;
+  const wFrac = square / total;
 
   const wrapper = svgEl.parentElement;
   if (getComputedStyle(wrapper).position === 'static') {
@@ -59,32 +67,88 @@ const buildYouSquare = (svgEl, index, square, gap) => {
 
   const dot = document.createElement('span');
   dot.className = 'bl-you-square';
-  dot.setAttribute('data-youdot-anchor', '');
   dot.setAttribute('aria-hidden', 'true');
 
-  dot.style.cssText = `
-    position: absolute;
-    left:   ${(xFrac * 100).toFixed(3)}%;
-    width:  ${(wFrac * 100).toFixed(3)}%;
-    aspect-ratio: 1 / 1;
-    pointer-events: none;
-    z-index: 3;
-    background: transparent;
-  `;
+  dot.style.cssText = [
+    'position:absolute',
+    `left:${(xFrac * 100).toFixed(3)}%`,
+    `width:${(wFrac * 100).toFixed(3)}%`,
+    'aspect-ratio:1/1',
+    'pointer-events:none',
+    'z-index:3',
+    'background:transparent',
+  ].join(';');
 
-  const align = () => {
-    const svgH = svgEl.getBoundingClientRect().height;
-    if (svgH > 0) dot.style.top = `${yFrac * svgH}px`;
+  const alignTop = () => {
+    const svgRect = svgEl.getBoundingClientRect();
+    const wrapRect = wrapper.getBoundingClientRect();
+    if (svgRect.height > 0) {
+      const topOffset = svgRect.top - wrapRect.top;
+      dot.style.top = `${topOffset + yFrac * svgRect.height}px`;
+    }
   };
 
   wrapper.appendChild(dot);
-  const ro = new ResizeObserver(align);
-  ro.observe(svgEl);
-  align();
 
-  const land = () => dot.classList.add('is-landed');
+  const ro = new ResizeObserver(alignTop);
+  ro.observe(svgEl);
+  alignTop();
+
+  const land = () => {
+    // Only add the youdot-anchor when we're about to make it visible —
+    // the shell reads this attribute on chapter:arrive; by reveal time
+    // the step is already focused so the dot snaps to the new anchor.
+    dot.setAttribute('data-youdot-anchor', '');
+    dot.classList.add('is-landed');
+  };
+
   const destroy = () => { ro.disconnect(); dot.remove(); };
   return { el: dot, land, destroy };
+};
+
+/**
+ * Build the clickToGuess UI manually (no lib import) so we can wire
+ * a live `input` event to the waffle. Returns { el, reveal }.
+ */
+const buildGuessWidget = (container, opts) => {
+  const { trueValue, max = 100, unit = '%', label, prompt, onInput, onReveal } = opts;
+  const uid = `guess-bl-${Math.round(trueValue * 100)}`;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'guess';
+  wrap.innerHTML = `
+    <p class="guess-prompt">${prompt || 'Your guess'}</p>
+    <label class="guess-label" for="${uid}">${label}</label>
+    <div class="guess-control">
+      <input id="${uid}" class="guess-range" type="range" min="0" max="${max}"
+             value="${SLIDER_START}" step="1"
+             aria-describedby="${uid}-out"/>
+      <output id="${uid}-out" class="guess-output">${SLIDER_START}${unit}</output>
+    </div>
+    <button type="button" class="vccp-btn guess-submit">Lock in my guess</button>
+    <div class="guess-reveal" hidden></div>`;
+
+  const range  = wrap.querySelector('.guess-range');
+  const output = wrap.querySelector('.guess-output');
+  const submit = wrap.querySelector('.guess-submit');
+
+  range.addEventListener('input', () => {
+    output.textContent = `${range.value}${unit}`;
+    onInput && onInput(Number(range.value));
+  });
+
+  let revealed = false;
+  const reveal = () => {
+    if (revealed) return;
+    revealed = true;
+    range.disabled = true;
+    submit.hidden = true;
+    onReveal && onReveal(Number(range.value));
+  };
+
+  submit.addEventListener('click', reveal);
+  container.append(wrap);
+  return { el: wrap, reveal };
 };
 
 export default function init(rootEl, data) {
@@ -109,40 +173,50 @@ export default function init(rootEl, data) {
 
   if (!guessHost || !crowdGrid) return;
 
-  const SQUARE = 26;
-  const GAP    = 6;
-
-  // Build the waffle immediately: all 100 faint empty squares visible from
-  // the first frame so the right pane is never a void.
+  // Build the waffle immediately at SLIDER_START (not 0) so the right
+  // column has visual weight from frame one — no void, no dead space.
   const waffle = waffleGrid(crowdGrid, {
-    value: 0,
+    value: SLIDER_START,
     total: 100,
     accent: 'navy',
-    square: SQUARE,
-    gap: GAP,
-    ariaLabel: 'A crowd of a hundred: seventy-seven are more careful with money.',
+    square: WAFFLE_SQUARE,
+    gap: WAFFLE_GAP,
+    ariaLabel: 'A crowd of a hundred: move the slider to guess.',
   });
   const svgEl = waffle.el;
 
-  // youSquare is built ONLY on reveal — no floating dot in the empty grid.
+  // Show the initial count in the caption.
+  if (crowdCount) crowdCount.textContent = String(SLIDER_START);
+
+  // youSquare is built ONLY on reveal — no floating dot in the guess grid.
   let youSquare = null;
 
-  clickToGuess(guessHost, {
+  // Build the bespoke guess widget so we can wire the slider to the waffle.
+  buildGuessWidget(guessHost, {
     trueValue: CAREFUL_TRUE,
     max: 100,
     unit: '%',
     label: 'How many in every 100 are more careful with money than five years ago?',
     prompt: 'Before the truth — take a guess',
+
+    // Live: slider → waffle fills to match the current guess.
+    onInput: (guessValue) => {
+      const n = Math.round(guessValue);
+      waffle.setValue(n, { animate: false });
+      if (crowdCount) crowdCount.textContent = String(n);
+    },
+
     onReveal: (guess) => {
-      const from = Number.isFinite(guess) ? Math.round(guess) : 0;
+      const from = Number.isFinite(guess) ? Math.round(guess) : SLIDER_START;
 
       // Swap guess cell for the truth display (no layout jump).
       if (claim) claim.classList.add('is-revealed');
       if (truth) truth.hidden = false;
 
-      // Update the crowd label now the crowd has meaning.
+      // Update crowd label now the crowd has meaning.
       if (crowdLabel) crowdLabel.textContent = '77 in 100 are more careful. One square is you.';
-      if (crowdOf) crowdOf.textContent = 'of every 100 people you pass today — one of them is you.';
+      if (crowdOf)    crowdOf.textContent    = 'of every 100 people you pass today — one of them is you.';
+
       if (crowdCount) {
         countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
       }
@@ -162,7 +236,7 @@ export default function init(rootEl, data) {
 
       // Build the you-square now (first time only) and pop it.
       if (!youSquare) {
-        youSquare = buildYouSquare(svgEl, YOU_INDEX, SQUARE, GAP);
+        youSquare = buildYouSquare(svgEl, YOU_INDEX, WAFFLE_SQUARE, WAFFLE_GAP);
       }
       if (prefersReducedMotion()) {
         youSquare.land();

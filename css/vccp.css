@@ -554,6 +554,13 @@ html, body { height: 100%; overflow: hidden; }
   backface-visibility: hidden;
   will-change: transform, opacity, filter;
   contain: layout paint;
+  /* NO LOADING-SCREEN MESS: every stage starts hidden so the 22 full-bleed
+     stages do not stack on top of each other while they mount. main.js's first
+     render() (in start(), after all sections are mounted) sets visibility +
+     opacity per the depth field, so the focused stage paints cleanly first and
+     no bare/overlapping placeholder frame is ever shown. inline styles win. */
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* Inner content respects a max-width and the page margins — NEVER the ground.

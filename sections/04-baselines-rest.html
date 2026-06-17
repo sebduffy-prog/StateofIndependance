@@ -1,68 +1,101 @@
-<div class="chapter-inner on-cream" id="br">
+<div class="chapter-inner">
 
-  <!-- Tiny Challenger-Series lockup stamp, top-right (the book-cover position). -->
+  <!-- Tiny Challenger-Series lockup stamp — top-right, the book-cover position. -->
   <img class="br-mark" src="assets/brand-final/challenger-series-lockup.png"
        alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <!-- ── Header — compact, left-anchored ──────────────────────────── -->
-  <header class="br-head">
-    <p class="vccp-eyebrow" data-arrival>The rest of the floor</p>
-    <h2 class="br-headline">
-      <span data-arrival>Three more numbers</span>
-      <span data-arrival>everyone already <em class="br-accent" data-arrival-scramble>knows</em></span>
-    </h2>
-    <p class="br-standfirst" data-arrival>
-      Deal-hunting, low-grade dread, the quiet downgrade at the till.
-      The squeeze is the table the country eats at — not the meal.
-    </p>
-    <div class="br-filter" data-filter aria-hidden="false"></div>
-  </header>
+  <!-- ── LEFT COLUMN — hero title + standfirst + pill filter ─────────── -->
+  <aside class="br-left">
 
-  <!-- ── THREE BASELINES — ONE COMPOSED ROW ────────────────────────
-       Varied viz per panel: lollipop / dot-plot / tug-of-war.
-       Backgroundless navy marks on cream; tabular hero numbers. -->
+    <!-- Title block — eyebrow + headline grouped so space-between
+         distributes between the TWO groups, not four loose items.    -->
+    <div class="br-title-block">
+      <p class="vccp-eyebrow" data-arrival>The operational floor</p>
+      <h2 class="br-headline">
+        <span data-arrival>The squeeze</span>
+        <span data-arrival>is the table</span>
+        <span data-arrival>they eat <em class="br-accent" data-arrival-scramble>at</em></span>
+      </h2>
+    </div>
+
+    <!-- Flex spacer — the intentional breathing gap between title and copy. -->
+    <div class="br-left-spacer" aria-hidden="true"></div>
+
+    <!-- Copy + interaction block — standfirst + filter grouped at bottom. -->
+    <div class="br-copy-block">
+      <p class="br-standfirst" data-arrival>
+        Deal-hunting, low-grade dread, the quiet downgrade at the till.
+        These are the operational floor of modern British commerce —
+        not the strategy.
+      </p>
+      <!-- Marquee interaction: pill filter — focus one baseline, dim the others. -->
+      <div class="br-filter" data-filter role="group" aria-label="Focus one baseline"></div>
+      <!-- You-dot anchor in the copy zone. -->
+      <span class="br-youdot" data-youdot-anchor aria-hidden="true"></span>
+    </div>
+
+  </aside>
+
+  <!-- ── RIGHT COLUMN — three stacked data panels ─────────────────────── -->
   <section class="br-grid" aria-label="The three remaining baselines">
 
-    <!-- 1 · Deal-seeking 55% — lollipop of the money-saving moves -->
+    <!-- 1 · Deal-seeking 55% — lollipop of money-saving moves -->
     <article class="br-panel" data-panel="deal" aria-labelledby="br-deal-lbl">
-      <div class="br-num-row">
-        <p class="br-num num">
+
+      <div class="br-stat-cell">
+        <p class="br-num num" aria-hidden="true">
           <span data-count-to="55" data-count-suffix="%">55%</span>
         </p>
-        <p class="br-lbl" id="br-deal-lbl">hunted out deals in the last three months.</p>
+        <p class="br-lbl" id="br-deal-lbl">
+          actively hunted out<br>deals last quarter
+        </p>
       </div>
+
       <div class="br-viz" data-viz-deal
-           role="img" aria-label="Money-saving moves: shopped around 55%, own-label 43%, cut a sub 30%, kept a treat 25%"></div>
-      <p class="br-cap">The thrift reflex is muscle memory — shopping around is the first move, not the last resort.</p>
+           role="img"
+           aria-label="Money-saving moves last three months: shopped around 55%, own-label 43%, cut a sub 30%, kept a treat 25%">
+      </div>
+
     </article>
 
-    <!-- 2 · Anxiety 60% — dot-plot placing dread among national-mood readings -->
+    <!-- 2 · Anxiety 60% — dot-plot of the national mood -->
     <article class="br-panel" data-panel="anxiety" aria-labelledby="br-anx-lbl">
-      <div class="br-num-row">
-        <p class="br-num num">
+
+      <div class="br-stat-cell">
+        <p class="br-num num" aria-hidden="true">
           <span data-count-to="60" data-count-suffix="%">60%</span>
         </p>
-        <p class="br-lbl" id="br-anx-lbl">feel anxious about the coming months.</p>
+        <p class="br-lbl" id="br-anx-lbl">
+          feel anxious about<br>the coming months
+        </p>
       </div>
+
       <div class="br-viz" data-viz-anxiety
-           role="img" aria-label="National mood: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%"></div>
-      <p class="br-cap">Dread sits just below carefulness — the ambient weather the whole survey is taken in.</p>
+           role="img"
+           aria-label="National mood: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%">
+      </div>
+
     </article>
 
-    <!-- 3 · Trading down 54% — tug-of-war: traded down vs held the basket -->
+    <!-- 3 · Trading down 54% — tug-of-war binary split -->
     <article class="br-panel" data-panel="grocery" aria-labelledby="br-gro-lbl">
-      <div class="br-num-row">
-        <p class="br-num num">
+
+      <div class="br-stat-cell">
+        <p class="br-num num" aria-hidden="true">
           <span data-count-to="54" data-count-suffix="%">54%</span>
         </p>
-        <p class="br-lbl" id="br-gro-lbl">have traded down to cheaper groceries this year.</p>
+        <p class="br-lbl" id="br-gro-lbl">
+          have traded down<br>to cheaper groceries
+        </p>
       </div>
+
       <div class="br-viz br-viz--tow" data-viz-grocery
-           role="img" aria-label="Groceries: 54% traded down, 46% held the basket"></div>
-      <p class="br-cap">More than half quietly swapped the brand for the own-label — the basket shrank without a word.</p>
+           role="img"
+           aria-label="Groceries traded down 54%, held the basket 46%">
+      </div>
+
     </article>
 
-    <span class="br-dot" data-youdot-anchor aria-hidden="true"></span>
   </section>
 
 </div>

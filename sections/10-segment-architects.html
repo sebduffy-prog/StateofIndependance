@@ -8,60 +8,104 @@
 
   <div class="segment-architects-grid">
 
-    <!-- LEFT — the editorial rail. Eyebrow -> bold-black display title with a
-         single italic accent word -> three-word descriptor -> hero quote. -->
-    <aside class="segment-architects-rail">
-      <p class="vccp-eyebrow" data-arrival>Segment one of four &middot; 17% of Britain</p>
+    <!-- LEFT — the book-cover identity card. Eyebrow -> bold-black display
+         title with one italic accent word, three-word descriptor, hero quote,
+         who/money/AI facts, and the share as the hero number. -->
+    <aside class="segment-architects-id">
 
-      <h2 class="segment-architects-title si-display si-display--black" data-arrival>
-        The <span class="si-accent" data-arrival-scramble>Architects</span>
+      <p class="vccp-eyebrow" data-arrival>Segment one of four</p>
+
+      <h2 class="segment-architects-title si-display si-display--sm">
+        <span data-arrival>The</span>
+        <span class="si-accent" data-arrival data-arrival-scramble>Architects</span>
       </h2>
 
-      <p class="segment-architects-trio" data-arrival>Organised. Positive. In control.</p>
+      <p class="segment-architects-descriptor" data-arrival>
+        Organised. Positive. In control.
+      </p>
 
       <blockquote class="segment-architects-quote" data-arrival>
-        <p>&ldquo;I&rsquo;ve always been super organised. I like being in control.
-        I hate having my time wasted.&rdquo;</p>
-        <cite>&mdash; Southampton, 63 &middot; &lsquo;Taking control&rsquo; research</cite>
+        &ldquo;I&rsquo;ve always been super organised. I like being in control.
+        I hate having my time wasted.&rdquo;
       </blockquote>
 
-      <!-- A distinctive TGI statement — the one over-index that paints the type. -->
-      <p class="segment-architects-tgi" data-arrival data-segment-tgi></p>
-    </aside>
-
-    <!-- RIGHT — the book-cover profile card: flat navy+yellow icon, the
-         who/money/essentials/AI facts, and a togglable over-index chart. -->
-    <figure class="segment-architects-card soi-card soi-card--hairline">
-
-      <span class="segment-architects-icon" aria-hidden="true">
-        <!-- Flat navy+yellow "architect" mark: a drafting set-square + plotted
-             point, geometric, two-tone (BWF §6). -->
-        <svg viewBox="0 0 64 64" role="img" aria-label="Architect mark">
-          <path class="ic-navy" d="M8 52 L40 8 L56 52 Z" fill="none" stroke="currentColor" stroke-width="3.4"/>
-          <path class="ic-navy" d="M18 40 L46 40" stroke="currentColor" stroke-width="3.4"/>
-          <circle class="ic-yellow" cx="40" cy="8" r="5.4"/>
-        </svg>
-      </span>
-
       <dl class="segment-architects-facts" data-arrival>
-        <div><dt>Who</dt><dd>55+ skew, male &mdash; 42% are 55+</dd></div>
-        <div><dt>Money</dt><dd>Comfortable &mdash; 46% earn &pound;60k+ household</dd></div>
-        <div><dt>Essentials</dt><dd>Holidays &amp; eating out</dd></div>
-        <div><dt>AI</dt><dd>Embrace AI for everything &mdash; trusting their own judgement and the likes of Martin Lewis over authority</dd></div>
+        <div class="segment-architects-fact">
+          <dt>Who</dt>
+          <dd>55+ skew, male. <span class="num">42%</span> are 55+.</dd>
+        </div>
+        <div class="segment-architects-fact">
+          <dt>Money</dt>
+          <dd>Comfortable. <span class="num">46%</span> earn &pound;60k+
+            household income.</dd>
+        </div>
+        <div class="segment-architects-fact">
+          <dt>Essentials</dt>
+          <dd>Holidays &amp; eating out &mdash; the last things they&rsquo;d cut.</dd>
+        </div>
+        <div class="segment-architects-fact">
+          <dt>AI</dt>
+          <dd>Embrace it for everything: finance, health, home &mdash; trusting
+            their own judgement and Martin Lewis over authority.</dd>
+        </div>
       </dl>
 
-      <div class="segment-architects-data" data-arrival>
-        <div class="segment-architects-data-head">
-          <p class="segment-architects-data-label" data-segment-chart-label>Where they over-index vs the nation</p>
-          <div class="segment-architects-toggle" data-segment-toggle></div>
-        </div>
-        <!-- Backgroundless over-index bars, painted by JS. -->
-        <div class="segment-architects-chart" data-segment-chart></div>
-        <p class="segment-architects-note">Share of Architects, sorted high to low. Their TGI fingerprint runs far hotter than the nation&rsquo;s.</p>
+      <!-- The share number — hero count-up, youdot anchor. -->
+      <p class="segment-architects-share" data-arrival>
+        <span class="segment-architects-share-num si-bignum"
+              data-arrival-count data-to="17" data-suffix="%">17%</span>
+        <span class="segment-architects-share-cap">of Britain &mdash; the smallest
+          segment, but the one most firmly in the driving seat.</span>
+        <span class="segment-architects-dot" data-youdot-anchor aria-hidden="true"></span>
+      </p>
+
+      <!-- 2 distinctive TGI lifestyle statements — the fingerprint lines.
+           These sit below the share as a secondary evidence beat. -->
+      <div class="segment-architects-tgi-lines" aria-hidden="true" data-arrival>
+        <p class="segment-architects-tgi-line">
+          <strong data-segment-tgi-idx-1></strong>
+          <span data-segment-tgi-lbl-1></span>
+        </p>
+        <p class="segment-architects-tgi-line">
+          <strong data-segment-tgi-idx-2></strong>
+          <span data-segment-tgi-lbl-2></span>
+        </p>
       </div>
 
-      <span class="segment-architects-dot" data-youdot-anchor aria-hidden="true"></span>
+    </aside>
+
+    <!-- RIGHT — the data lens. One backgroundless index chart on cream;
+         a square pill control swaps the lens (the marquee interaction).
+         Each bar is an INDEX vs the UK average (100 = average). -->
+    <figure class="segment-architects-data">
+
+      <figcaption class="segment-architects-data-head">
+        <p class="vccp-eyebrow">The signature of the segment</p>
+        <h3 class="segment-architects-data-title si-subhead">
+          Where the Architects over-index against Britain
+        </h3>
+      </figcaption>
+
+      <!-- Square pill control — three lenses on the same audience. -->
+      <div class="segment-architects-lens" data-segment-architects-lens
+           aria-label="Choose a lens on the Architects"></div>
+
+      <!-- The index chart is mounted here by JS; redrawn on lens change. -->
+      <div class="segment-architects-chart" data-segment-architects-chart
+           aria-live="polite"></div>
+
+      <p class="segment-architects-baseline" aria-hidden="true">
+        <span class="segment-architects-baseline-key"></span>
+        <span class="num">100</span> = the UK average. Longer bars are where
+        this Britain leans hardest.
+      </p>
+
     </figure>
 
   </div>
+
+  <!-- Orbit ring — counter-balances the left column mass per Z-AXIS §6b.
+       Decorative connective tissue; pointer-events: none. -->
+  <div class="segment-architects-orbit" aria-hidden="true"></div>
+
 </div>

@@ -1,135 +1,161 @@
 /**
- * Step 04 — baselines: the rest. Deal-seeking / anxiety / trading-down on one
- * composed cream screen; a DIFFERENT viz each so the row never reads as three
- * identical charts:
+ * Step 04 — Baselines: the rest.
+ * Three remaining national-mood / behaviour baselines on one composed cream screen.
  *
- *   1 · Deal-seeking 55%  (Q6Ar4 shoppedAround 54.5) — LOLLIPOP of the
- *       money-saving moves it tops.
- *   2 · Anxiety 60%       (Q2r2 anxious 60.2)        — DOT PLOT placing dread
- *       among the four leading national-mood readings.
- *   3 · Trading down 54%  (Q6Br1 groceries 53.6)     — TUG-OF-WAR: traded
- *       down vs held the basket (binary split; labels can never overlap).
+ * Layout: two-column (left: WLV title + standfirst + pill filter; right: three stacked
+ * data panels — each a stat number + a distinct viz).
  *
- * MARQUEE — quiet pill filter: focuses one baseline, dims the other two.
- * Keyboard-driven (arrow keys between chips). Never traps navigation.
+ * Viz choices — varied per panel to avoid repetition:
+ *   1 · Deal-seeking 55%  (Q6Ar4 shoppedAround 54.5%) — LOLLIPOP: the four
+ *       money-saving moves (highlighted: shoppedAround). Navy marks on cream.
+ *   2 · Anxiety 60%       (Q2r2 anxious 60.2%)        — DOT PLOT: the four
+ *       leading national-mood readings. Shows 60% in context (not alone).
+ *   3 · Trading down 54%  (Q6Br1 groceries 53.6%)     — TUG-OF-WAR: binary
+ *       traded-down vs held-the-basket split. Labels never collide.
  *
- * All figures trace to data/survey.json. Backgroundless navy marks on cream,
- * tabular navy numbers, character→title reveal on chapter:arrive.
+ * MARQUEE — pill filter (square chips, keyboard-driven, arrow keys).
+ *   Focuses one panel, dims the other two. Never traps navigation.
+ *   gate() / ready() advisory only.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\30 4-baselines-rest.
+ * All figures traced to data/survey.json. Tabular navy numbers on cream.
+ * character→title reveal fires on every chapter:arrive (idempotent).
+ * Reduced-motion, keyboard, no console.log.
  *
- * @param {HTMLElement} rootEl  the <section class="journey-stage" id="04-baselines-rest">
+ * Contract: docs/CONTRACT.md.
+ * CSS selectors scoped to #\30 4-baselines-rest (escaped leading digit).
+ *
+ * @param {HTMLElement} rootEl  <section class="journey-stage" id="04-baselines-rest">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
  *           journey:{ gate():void, ready():void } }} data
  */
-import { observeReveals } from '../lib/reveal.js';
+
+import { observeReveals }  from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { arrival } from '../lib/experiential.js';
+import { arrival }         from '../lib/experiential.js';
 import { lollipopChart, dotPlot, tugOfWar } from '../lib/charts.js';
-import { pillGroup } from '../lib/interactions.js';
+import { pillGroup }       from '../lib/interactions.js';
 
 const PANELS = ['deal', 'anxiety', 'grocery'];
 
-/** Pick an item's pct from a survey block by id, or null if absent. */
+/** Safely extract pct from a survey block by item id. */
 const pctOf = (block, id) => {
-  const item = block && block.items && block.items.find((i) => i.id === id);
+  if (!block || !block.items) return null;
+  const item = block.items.find((i) => i.id === id);
   return item ? item.pct : null;
 };
 
 export default function init(rootEl, data) {
   const { survey, journey } = data;
-  if (!survey) return; // fail soft — any dataset may be null
+  if (!survey) return; // any dataset may be null — fail soft
 
-  // Entrance: re-assemble headline + count numbers on every arrival (idempotent).
+  // Entrance: re-assemble headline + count up numbers on every arrival (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
   observeReveals(rootEl);
   observeCounters(rootEl);
 
-  /* ── 1 · Deal-seeking — lollipop of the money-saving moves ──────── */
+  // ── 1 · Deal-seeking — lollipop of the money-saving moves ─────────────────
+
   const moves = survey.moneySavingMoves;
   const dealHost = rootEl.querySelector('[data-viz-deal]');
   if (dealHost && moves && moves.items) {
-    const SHORT = {
-      shoppedAround:          'Shopped around',
-      ownLabelSwitch:         'Own-label',
-      downgradedSubscription: 'Cut a sub',
-      protectedTreat:         'Kept a treat',
+    const SHORT_LABELS = {
+      shoppedAround:          'Shopped around / deals',
+      ownLabelSwitch:         'Switched own-label',
+      downgradedSubscription: 'Cut a subscription',
+      protectedTreat:         'Protected a treat',
     };
+    const dealItems = moves.items.map((i) => ({
+      id:    i.id,
+      label: SHORT_LABELS[i.id] || i.label,
+      pct:   i.pct,
+    }));
     lollipopChart(dealHost, {
-      items: moves.items.map((i) => ({ id: i.id, label: SHORT[i.id] || i.label, pct: i.pct })),
-      max: 100,
-      accent: 'navy',
+      items:       dealItems,
+      max:         100,
+      accent:      'navy',
       highlightId: 'shoppedAround',
-      ariaLabel: 'Money-saving moves taken in the last three months',
+      ariaLabel:   'Money-saving moves taken in the last three months',
+      barHeight:   22,
+      gap:         10,
+      labelWidth:  160,
     });
   }
 
-  /* ── 2 · Anxiety — dot plot among the national-mood readings ────── */
+  // ── 2 · Anxiety — dot plot placing dread among four mood readings ──────────
+
   const mood = survey.moodOfNation;
   const anxietyHost = rootEl.querySelector('[data-viz-anxiety]');
   if (anxietyHost && mood && mood.items) {
-    const SHORT = {
-      careful:    'Careful',
-      anxious:    'Anxious',
-      exhausted:  'Exhausted',
-      selfReliant:'Self-reliant',
+    const SHORT_LABELS = {
+      careful:     'Careful with money',
+      anxious:     'Anxious about next months',
+      exhausted:   'Emotionally exhausted',
+      selfReliant: 'More self-reliant',
     };
-    // Top four mood readings — anxiety sits among them, not alone.
-    const top = mood.items.slice(0, 4).map((i) => ({
-      label: SHORT[i.id] || i.label,
-      pct: i.pct,
+    // Top four mood readings — 60% sits in visible context, not alone.
+    const moodItems = mood.items.slice(0, 4).map((i) => ({
+      label: SHORT_LABELS[i.id] || i.label,
+      pct:   i.pct,
     }));
     dotPlot(anxietyHost, {
-      items: top,
-      max: 100,
-      accent: 'navy',
-      ariaLabel: 'The national mood ranked: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%',
+      items:    moodItems,
+      max:      100,
+      accent:   'navy',
+      ariaLabel: 'National mood scores: top four readings',
     });
   }
 
-  /* ── 3 · Trading down groceries — tug-of-war (binary split) ────── */
+  // ── 3 · Trading down groceries — tug-of-war binary split ──────────────────
+
   const groceries = pctOf(survey.tradingDownByCategory, 'groceries');
   const groceryHost = rootEl.querySelector('[data-viz-grocery]');
   if (groceryHost && groceries != null) {
-    const held = Math.round((100 - groceries) * 10) / 10;
+    const tradedDown = Math.round(groceries);
+    const heldBasket = 100 - tradedDown;
     tugOfWar(groceryHost, {
-      left:  { label: 'Traded down', pct: Math.round(groceries) },
-      right: { label: 'Held the basket', pct: Math.round(held) },
-      accent: 'navy',
-      ariaLabel: 'Groceries: traded down versus held the basket',
+      left:     { label: 'Traded down', pct: tradedDown },
+      right:    { label: 'Held the basket', pct: heldBasket },
+      accent:   'navy',
+      ariaLabel: 'Split: traded down to cheaper groceries vs held the basket',
     });
   }
 
-  /* ── MARQUEE — focus one baseline at a time ─────────────────────── */
-  const grid = rootEl.querySelector('.br-grid');
+  // ── MARQUEE — pill filter: focus one baseline at a time ───────────────────
+
+  const grid       = rootEl.querySelector('.br-grid');
   const filterHost = rootEl.querySelector('[data-filter]');
+
   if (grid && filterHost) {
-    const apply = (value) => {
+    const applyFocus = (value) => {
       grid.dataset.focus = value;
       PANELS.forEach((p) => {
         const panel = grid.querySelector(`[data-panel="${p}"]`);
-        if (panel) panel.classList.toggle('is-focus', value === p);
+        if (panel) {
+          // is-focus only when this specific panel is the active selection
+          panel.classList.toggle('is-focus', value === p);
+        }
       });
     };
 
     pillGroup(filterHost, {
       ariaLabel: 'Read one baseline at a time',
-      value: 'all',
+      value:     'all',
       options: [
-        { value: 'all',     label: 'All three' },
+        { value: 'all',     label: 'All three'   },
         { value: 'deal',    label: 'Deal-seeking' },
-        { value: 'anxiety', label: 'Anxiety' },
+        { value: 'anxiety', label: 'Anxiety'      },
         { value: 'grocery', label: 'Trading down' },
       ],
       onChange: (value) => {
-        apply(value);
+        applyFocus(value);
         if (value !== 'all') journey.ready();
       },
     });
-    apply('all');
 
-    // Advisory hint only — Next still unlocks after the dwell.
+    applyFocus('all');
+
+    // Advisory only — Next unlocks after dwell regardless.
     journey.gate();
   }
 }

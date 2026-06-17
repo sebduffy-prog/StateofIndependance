@@ -1,23 +1,22 @@
-<div class="chapter-inner segment-hustlers on-cream" data-segment-hustlers-root>
+<div class="chapter-inner segment-hustlers on-cream">
 
-  <!-- The brand signature stamp — tiny Challenger-Series lockup, top-right
+  <!-- Brand signature stamp — tiny Challenger-Series lockup, top-right
        (the book-cover position). Black silhouette, never recoloured. -->
   <img class="segment-hustlers-mark si-lockup si-lockup--mark"
        src="assets/brand-final/challenger-series-lockup.png"
        alt="Challenger Series" />
 
-  <div class="segment-hustlers-grid">
+  <div class="segment-hustlers segment-hustlers-grid">
 
-    <!-- LEFT — the book-cover identity card. Eyebrow -> bold-black display
-         title with one italic accent word, the three-word descriptor, the
-         hero quote, then the two facts that anchor the profile. -->
+    <!-- LEFT — the editorial identity rail.
+         Eyebrow → bold-black display title with one italic accent word
+         → three-word descriptor → hero quote → who/money facts → share. -->
     <aside class="segment-hustlers-id">
 
       <p class="vccp-eyebrow" data-arrival>Segment two of four</p>
 
-      <h2 class="segment-hustlers-title si-display si-display--sm">
-        <span data-arrival>The</span>
-        <span class="si-accent" data-arrival data-arrival-scramble>Hustlers</span>
+      <h2 class="segment-hustlers-title" data-arrival>
+        The <span class="si-accent" data-arrival-scramble>Hustlers</span>
       </h2>
 
       <p class="segment-hustlers-descriptor" data-arrival>
@@ -30,54 +29,68 @@
       </blockquote>
 
       <dl class="segment-hustlers-facts" data-arrival>
-        <div class="segment-hustlers-fact">
+        <div>
           <dt>Who</dt>
-          <dd>25&ndash;54 core. <span class="num">62%</span> are 25&ndash;54.</dd>
+          <dd>25&ndash;54 core &mdash; 62% are 25&ndash;54</dd>
         </div>
-        <div class="segment-hustlers-fact">
+        <div>
           <dt>Money</dt>
-          <dd>Middle-income families &mdash; and the most likely to call
-            themselves comfortable.</dd>
+          <dd>Middle-income families</dd>
+        </div>
+        <div>
+          <dt>Essentials</dt>
+          <dd>Holidays &amp; eating out</dd>
+        </div>
+        <div>
+          <dt>AI</dt>
+          <dd>The AI vanguard &mdash; using it as a multiplier</dd>
         </div>
       </dl>
 
-      <!-- The persistent "you" dot lands on the share figure — the headline
-           number for this Britain. -->
+      <!-- Share stat: the big number + caption. You-dot anchors on the number. -->
       <p class="segment-hustlers-share" data-arrival>
-        <span class="segment-hustlers-share-num si-bignum"
-              data-arrival-count data-to="28" data-suffix="%">28%</span>
+        <span class="segment-hustlers-share-num num"
+              data-arrival-count data-to="28" data-suffix="%"
+              data-youdot-anchor>28%</span>
         <span class="segment-hustlers-share-cap">of Britain &mdash; the
-          largest proactive Britain, and the AI vanguard.</span>
-        <span class="segment-hustlers-dot" data-youdot-anchor aria-hidden="true"></span>
+          largest proactive segment, and the AI vanguard.</span>
       </p>
 
     </aside>
 
-    <!-- RIGHT — the data lens. One backgroundless index chart on cream; a
-         square pill control swaps the lens (the marquee interaction). Each
-         bar is an INDEX vs the UK average (100 = average). -->
+    <!-- RIGHT — the backgroundless data panel.
+         A square pill control swaps the lens on the Hustlers; the
+         horizontal bars re-draw in place. The marquee interaction. -->
     <figure class="segment-hustlers-data">
 
       <figcaption class="segment-hustlers-data-head">
         <p class="vccp-eyebrow">The signature of the segment</p>
-        <h3 class="segment-hustlers-data-title si-subhead">
+        <h3 class="segment-hustlers-data-title">
           Where the Hustlers over-index against Britain
         </h3>
       </figcaption>
 
-      <!-- Square pill control — three lenses on the same audience. -->
+      <!-- Square pill lens selector — mounted by JS. -->
       <div class="segment-hustlers-lens" data-segment-hustlers-lens
            aria-label="Choose a lens on the Hustlers"></div>
 
-      <!-- The index chart is mounted here by JS; redrawn on lens change. -->
+      <!-- Backgroundless bars — mounted by JS, redrawn on lens change. -->
       <div class="segment-hustlers-chart" data-segment-hustlers-chart
            aria-live="polite"></div>
 
       <p class="segment-hustlers-baseline" aria-hidden="true">
         <span class="segment-hustlers-baseline-key"></span>
-        <span class="num">100</span> = the UK average. Longer bars are where
-        this Britain leans hardest.
+        <span class="num">100</span> = UK average.
+        Longer bars = where this Britain leans hardest.
       </p>
+
+      <!-- Signature stat — the one index that defines the type. -->
+      <div class="segment-hustlers-sig" data-arrival>
+        <span class="segment-hustlers-sig-index num">214</span>
+        <span class="segment-hustlers-sig-text">index on feeling
+          <strong>in control of their life</strong> &mdash;
+          more than twice the national average.</span>
+      </div>
 
     </figure>
 

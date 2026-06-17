@@ -2,171 +2,128 @@
  * Chapter 07 — Twist two: PROTECTED JOY.
  *
  * THE ONE MEMORABLE THING: a household budget under the knife. The visitor
- * drags each spend line LEFT, toward the bin gutter, to cut it. The flexible
- * "nice-to-haves" slide and STAY cut (tactile spring:'settle'). The holiday
- * RESISTS — it springs back to its place every time it is released
- * (spring:'return' with a weighty bounce), because 40% of Britain actively
- * ring-fence it (Q5 holidays 39.6%). Data as a felt reality, not a chart.
+ * taps the scissors button on each spend line to "cut" it. Flexible
+ * nice-to-haves stay cut (they crumple away). The holiday REFUSES — it
+ * springs back to its place every time, because 40% of Britain ring-fences
+ * it (Q5 holidays 39.6%). The resistance is the message.
  *
- * Every spend's verified Q5 protection % reads inline at its row. The one
- * marquee beat is advisory-gated (journey.gate()/ready()): cutting any line, or
- * feeling the holiday spring back, clears the hint. Fully keyboard operable
- * (each handle is focusable; arrows drag, Enter/Space grab) and reduced-motion
- * safe (cuts snap; the holiday still refuses to move). The "you" dot anchors on
- * the holiday — the thing that won't be cut.
+ * Each spend row shows its verified Q5 protection %. Cutting any line, or
+ * feeling the holiday spring back, clears the advisory gate hint.
+ * Keyboard operable: Enter/Space on the scissors button cuts (or tries to).
+ * Reduced-motion safe: cuts snap; the holiday still refuses to move.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\30 7-twist-joy.
- * Verified values: data/survey.json protectedSpend (Q5).
- *
- * @param {HTMLElement} rootEl  the <section class="journey-stage" id="07-twist-joy">
- * @param {{ survey:object|null, segments:object|null, tgi:object|null,
- *           journey:{ gate():void, ready():void } }} data
+ * @param {HTMLElement} rootEl  <section class="journey-step" id="07-twist-joy">
+ * @param {{ survey, segments, tgi, journey }} data
  */
 import { observeReveals } from '../lib/reveal.js';
-import { draggable } from '../lib/tactile.js';
 import { arrival, prefersReducedMotion } from '../lib/experiential.js';
 
-/** Distance (px) a flexible line must be dragged left to count as "cut". */
-const CUT_THRESHOLD = 96;
-/** The handle reaches this far left when fully cut. */
-const CUT_TRAVEL = 150;
+/** Items to display (a subset of Q5 — chosen for variety and story arc).
+ *  Order: flexible spends first, holiday last so the eye lands on the protected one. */
+const DISPLAY_IDS = ['streaming', 'hobbies', 'beauty', 'holidays'];
+
+/** Map id → protected (true = springs back) */
+const PROTECTED = { holidays: true };
+
+/** Duration of the spring-back "refuse" animation (ms) — for CSS class timing */
+const RESIST_DURATION_MS = 750;
+
+/** Build a quick id→item map from verified survey data. */
+const indexItems = (items) =>
+  items.reduce((acc, it) => ({ ...acc, [it.id]: it }), {});
 
 /**
- * The four lines on the chopping block, in protection order (most-defended
- * last so the eye lands on the holiday). The holiday is the protected one.
- * Each id maps to a protectedSpend item; pct reads inline and is verified.
+ * Build the tactile budget rows.
+ * Returns { destroy }.
  */
-const BUDGET_LINES = [
-  { id: 'streaming', protected: false },
-  { id: 'hobbies', protected: false },
-  { id: 'beauty', protected: false },
-  { id: 'holidays', protected: true },
-];
+const buildBudget = (mount, spendItems, hintEl, onActivity) => {
+  const byId = indexItems(spendItems);
+  const lines = DISPLAY_IDS.filter((id) => byId[id]);
 
-/** Build a quick id -> protectedSpend item map from verified survey data. */
-const indexSpend = (items) =>
-  items.reduce((acc, it) => {
-    acc[it.id] = it;
-    return acc;
-  }, {});
-
-/**
- * Build the tactile budget. Calls onActivity() the first time the visitor cuts
- * a line or feels the holiday spring back (advisory gate clear). Returns
- * { destroy }.
- */
-const buildBudget = (mount, spendItems, onActivity) => {
-  const byId = indexSpend(spendItems);
-  // Fail soft: if the verified data is missing, say so and don't trap anyone.
-  const lines = BUDGET_LINES.filter((l) => byId[l.id]);
   if (lines.length === 0) {
-    mount.innerHTML = '<p class="twist-joy-empty">Protected-spend data is not available.</p>';
+    mount.innerHTML =
+      '<p class="twist-joy-empty">Protected-spend data unavailable.</p>';
     return { destroy() {} };
   }
 
   const reduced = prefersReducedMotion();
-  const drags = [];
-  let activity = false;
-
+  let activityFired = false;
   const fireActivity = () => {
-    if (activity) return;
-    activity = true;
+    if (activityFired) return;
+    activityFired = true;
     onActivity();
   };
 
-  mount.innerHTML = `
-    <ul class="twist-joy-rows" role="list">
-      ${lines
-        .map((l) => {
-          const item = byId[l.id];
-          const role = l.protected ? 'protected' : 'flexible';
-          return `
-        <li class="twist-joy-row" data-row="${l.id}" data-role="${role}">
-          <span class="twist-joy-bin" aria-hidden="true">
-            <span class="twist-joy-bin-mark">cut</span>
-          </span>
-          <span class="twist-joy-handle" data-handle="${l.id}"
-                role="button"
-                aria-label="${item.label}: drag left to cut">
-            <span class="twist-joy-grip" aria-hidden="true"></span>
-            <span class="twist-joy-row-label">${item.label}</span>
-            <span class="twist-joy-row-meta">
-              <span class="twist-joy-row-pct num">${item.pct.toFixed(0)}%</span>
-              <span class="twist-joy-row-sub">${l.protected ? 'ring-fence it' : 'protect it'}</span>
-            </span>
-          </span>
-        </li>`;
-        })
-        .join('')}
-    </ul>
-    <p class="twist-joy-hint" data-twist-joy-hint aria-live="polite">
-      Drag a line left to cut it
-    </p>`;
+  // Build the row list
+  mount.innerHTML = `<ul class="twist-joy-rows" role="list">
+    ${lines.map((id) => {
+      const item = byId[id];
+      const isProtected = !!PROTECTED[id];
+      const btnLabel = isProtected
+        ? `Try to cut ${item.label} — it won't stay cut`
+        : `Cut ${item.label}`;
+      return `
+      <li class="twist-joy-row${isProtected ? ' is-protected' : ''}"
+          data-row="${id}" data-protected="${isProtected}">
+        <div class="twist-joy-row-inner">
+          <span class="twist-joy-row-label">${item.label}</span>
+          <span class="twist-joy-row-pct num">${item.pct.toFixed(0)}%</span>
+          <span class="twist-joy-row-meta">${isProtected ? 'ring-fenced' : 'protect it'}</span>
+          <button class="twist-joy-cut-btn"
+                  aria-label="${btnLabel}"
+                  aria-pressed="false">
+            <span class="twist-joy-scissors" aria-hidden="true">✂</span>
+          </button>
+        </div>
+        <span class="twist-joy-cut-banner" aria-hidden="true">CUT</span>
+        ${isProtected ? '<span class="twist-joy-shield" aria-hidden="true"></span>' : ''}
+      </li>`;
+    }).join('')}
+  </ul>`;
 
-  const hint = mount.querySelector('[data-twist-joy-hint]');
+  // Wire each cut button
+  lines.forEach((id) => {
+    const row = mount.querySelector(`[data-row="${id}"]`);
+    const btn = row.querySelector('.twist-joy-cut-btn');
+    const isProtected = !!PROTECTED[id];
 
-  lines.forEach((l) => {
-    const row = mount.querySelector(`.twist-joy-row[data-row="${l.id}"]`);
-    const handle = row.querySelector(`[data-handle="${l.id}"]`);
-    if (l.id === 'holidays') row.setAttribute('data-youdot-anchor', '');
+    // Mark the holiday row as the you-dot anchor
+    if (id === 'holidays') row.setAttribute('data-youdot-anchor', '');
 
-    // Visual progress 0..1 of how far this line has been pulled toward the bin.
-    const apply = (x) => {
-      const t = Math.min(1, Math.max(0, -x / CUT_TRAVEL));
-      row.style.setProperty('--cut', t.toFixed(3));
-    };
-
-    const ctrl = draggable(handle, {
-      axis: 'x',
-      // Only ever travels LEFT toward the bin; never past the right edge.
-      bounds: { minX: -CUT_TRAVEL, maxX: 0 },
-      // The holiday SPRINGS BACK (return) with a weighty bounce — it refuses to
-      // stay cut. The flexible spends SETTLE where released — they stay cut.
-      spring: l.protected ? 'return' : 'settle',
-      springOpts: l.protected
-        ? { stiffness: 220, bounce: 0.34 }
-        : { stiffness: 200 },
-      keyboardStep: 30,
-      onMove: ({ x }) => apply(x),
-      onRelease: ({ x }) => {
-        if (l.protected) {
-          // It snaps back: the resistance is the message.
-          row.classList.add('is-resisting');
-          if (hint) hint.textContent = 'The holiday won’t budge — two in five defend it.';
-          fireActivity();
-        } else if (-x >= CUT_THRESHOLD) {
-          row.classList.add('is-cut');
-          if (hint) hint.textContent = 'Gone — the flexible spends fold first.';
-          fireActivity();
+    btn.addEventListener('click', () => {
+      if (isProtected) {
+        // Refuse: spring-back animation
+        if (row.classList.contains('is-refusing')) return; // debounce
+        row.classList.add('is-refusing');
+        if (hintEl) hintEl.textContent = "The holiday won't budge — 2 in 5 defend it.";
+        fireActivity();
+        if (!reduced) {
+          setTimeout(() => row.classList.remove('is-refusing'), RESIST_DURATION_MS);
         } else {
+          row.classList.remove('is-refusing');
+        }
+      } else {
+        // Toggle cut state
+        const wasCut = row.classList.contains('is-cut');
+        if (wasCut) {
           row.classList.remove('is-cut');
+          btn.setAttribute('aria-pressed', 'false');
+          btn.setAttribute('aria-label', `Cut ${byId[id].label}`);
+        } else {
+          row.classList.add('is-cut');
+          btn.setAttribute('aria-pressed', 'true');
+          btn.setAttribute('aria-label', `Restore ${byId[id].label}`);
+          if (hintEl) hintEl.textContent = 'Gone. The flexible spends fold first.';
+          fireActivity();
         }
-      },
-      onSettle: () => {
-        if (l.protected) {
-          row.classList.remove('is-resisting');
-          apply(0);
-        }
-      },
+      }
     });
-    drags.push(ctrl);
   });
 
-  // Reduced motion: the holiday still refuses to move (bounds + return spring
-  // already enforce this with no overshoot); flexible cuts snap instantly. The
-  // draggable lib jump-cuts springs under reduced motion, so behaviour holds.
-  if (reduced && hint) {
-    hint.textContent = 'Try cutting a line — the holiday holds firm.';
-  }
-
-  return {
-    destroy() {
-      drags.forEach((d) => d.destroy());
-    },
-  };
+  return { destroy() {} };
 };
 
-/* ─────────────────────────────── init ──────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────────── */
 
 export default function init(rootEl, data) {
   const mount = rootEl.querySelector('[data-twist-joy-budget]');
@@ -180,22 +137,16 @@ export default function init(rootEl, data) {
     if (journey) journey.ready();
   };
 
-  let budget = null;
+  const hintEl = rootEl.querySelector('[data-twist-joy-hint]');
+
   if (mount && spendItems) {
-    budget = buildBudget(mount, spendItems, unlock);
+    buildBudget(mount, spendItems, hintEl, unlock);
     if (journey) journey.gate();
   } else if (mount) {
-    // Fail soft: no verified data — render the empty state, never trap anyone.
-    budget = buildBudget(mount, [], () => {});
+    buildBudget(mount, [], hintEl, () => {});
   }
 
   observeReveals(rootEl);
 
-  // Re-assemble headlines on every arrival (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
-
-  // Teardown handle (steps stay mounted; expose for safety).
-  rootEl._twistJoyCleanup = () => {
-    if (budget) budget.destroy();
-  };
 }

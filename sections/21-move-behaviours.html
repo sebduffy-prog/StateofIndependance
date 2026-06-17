@@ -1,17 +1,99 @@
-<div class="chapter-inner stage-placeholder move-behaviours-root on-warm" data-move-behaviours-root>
+<!-- 21-move-behaviours.html — Move 05: BOOST GOOD BEHAVIOURS.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="move-behaviours-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + Vinted quote card.
+     RIGHT — move-05.svg medal icon + reward-reveal (gamified less→more flip) interaction.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-  <header class="move-behaviours-head">
-    <p class="vccp-eyebrow" data-arrival>Move five of five</p>
-    <h2 class="move-behaviours-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Boost good behaviours</h2>
-    <p class="move-behaviours-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-  <span class="move-behaviours-dot" data-youdot-anchor aria-hidden="true"></span>
+     DATA (STORY.md §07 Move 05 slide 73, verbatim):
+       Less → More:
+         Setting tasks    → Gamifying goals
+         CRM modules      → Habit forming
+         Random rewards   → Meaningful rewards
+     Quote (slide 70): "I particularly like all the apps, the shopping apps and
+     anything new that comes into the shops, the loyalty apps." — Bristol, 61, Coaster.
+     Brand example (slide 72): Vinted.
+
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\32 1-move-behaviours. -->
+
+<div class="chapter-inner mb-root on-warm" data-mb-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="mb-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="mb-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="mb-grid">
+
+    <!-- LEFT COLUMN — move header + lesson + Vinted quote -->
+    <div class="mb-left">
+      <header class="mb-head">
+        <p class="vccp-eyebrow mb-eyebrow" data-arrival>
+          <span class="mb-movenum" aria-hidden="true">05</span>
+          Move five of five
+        </p>
+        <h2 class="mb-title" data-arrival>
+          Boost good<br><em class="mb-accent" data-arrival-scramble>behaviours</em>
+        </h2>
+        <p class="mb-lesson" data-arrival>
+          Encourage habits that lead to a better state of living — through
+          set challenges, earned rewards and positive reinforcement.
+        </p>
+      </header>
+
+      <!-- Vinted brand moment + quote — soi-card: cream, square corners, one lift -->
+      <div class="mb-brand" data-arrival>
+        <p class="vccp-eyebrow mb-brand__kicker">Brand in action · Vinted</p>
+        <p class="mb-brand__copy">
+          The recommerce platform that turned sustainable shopping into a habit loop —
+          not by lecturing, but by making every resale feel like a win.
+        </p>
+      </div>
+
+      <!-- Quote card — soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card mb-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="mb-quote__text">
+          "I particularly like all the apps, the shopping apps and anything
+          new that comes into the shops, the loyalty apps."
+        </p>
+        <footer class="mb-quote__attr">Bristol, 61 · Coasters</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — icon + gamified reward flip interaction -->
+    <aside class="mb-right" aria-label="Boost good behaviours: less to more">
+
+      <!-- Icon + reward badge cluster -->
+      <div class="mb-icon-cluster" data-arrival>
+        <div class="mb-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-05.svg"
+               alt="Boost good behaviours icon"
+               class="mb-icon__img" />
+        </div>
+        <div class="mb-reward-badge" data-youdot-anchor aria-hidden="true">
+          <span class="mb-reward-badge__star">★</span>
+          <span class="mb-reward-badge__label">Reward unlocked</span>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the marquee gamified beat -->
+      <div class="mb-flip" data-flip
+           aria-label="Flip each row to reveal the brand shift from less to more"></div>
+
+    </aside>
+  </div>
+
 </div>

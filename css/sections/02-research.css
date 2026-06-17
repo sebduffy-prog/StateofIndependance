@@ -187,22 +187,16 @@
   font-feature-settings: "tnum" 1;
 }
 
-/* Map wrapper: the field canvas + the silhouette share one large box. */
+/* Map wrapper: the silhouette fills the large box — no field canvas. */
 #\30 2-research .research-map-wrap {
   position: relative;
   width: 100%;
   flex: 1 1 auto;
   min-height: clamp(360px, 60vh, 720px);
 }
-#\30 2-research .research-field {
-  position: absolute;
-  inset: -4% -6%;          /* the nation breathes slightly past the country */
-  z-index: 0;
-}
 #\30 2-research .research-map {
   position: absolute;
   inset: 0;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -229,39 +223,59 @@
 #\30 2-research .research-map-svg > g:not(.research-markers) { pointer-events: none; }
 
 /* ── City markers — flat navy+yellow, the icon/accent system ────────
-   At rest a navy dot ringed cream; live it flips to the YELLOW accent
-   (the single accent moment). Square, clean, no gradient. ──────────── */
+   At rest: a small cream dot with navy stroke. Active: fill flips to
+   yellow, ring appears. The dot radius NEVER changes — adjacent cities
+   (Wigan/Bury are ~15px apart) must not blob together. ──────────────── */
 #\30 2-research .research-markers { pointer-events: auto; }
 #\30 2-research .research-marker { cursor: pointer; pointer-events: auto; }
-#\30 2-research .research-marker-pulse,
+#\30 2-research .research-marker-ring,
 #\30 2-research .research-marker-dot { pointer-events: auto; }
+
+/* The active ring: invisible at rest, stroked yellow when live.
+   Fixed radius (DOT_R + 4) — never grows, never overlaps a neighbour. */
+#\30 2-research .research-marker-ring {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#\30 2-research .research-marker.is-active .research-marker-ring { opacity: 1; }
+
+/* The dot: cream fill + navy stroke at rest; yellow fill when active.
+   No size change — r is set in JS as DOT_R=5, stays 5 always. */
 #\30 2-research .research-marker-dot {
   fill: var(--cream);
   stroke: var(--navy);
-  stroke-width: 4;
-  transition: r 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  stroke-width: 2.5;
+  transition: fill 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+              stroke 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-#\30 2-research .research-marker-pulse {
-  fill: none;
-  stroke: var(--yellow);
-  stroke-width: 3;
-  opacity: 0;
+#\30 2-research .research-marker:hover .research-marker-dot {
+  fill: color-mix(in srgb, var(--yellow) 60%, var(--cream));
 }
+/* The live city — the yellow accent moment. */
+#\30 2-research .research-marker.is-active .research-marker-dot {
+  fill: var(--yellow);
+  stroke: var(--navy);
+}
+
+/* Labels: visible only on hover or active, positioned offset from the dot.
+   Cream stroke halo so text reads over the navy silhouette. */
 #\30 2-research .research-marker-label {
   font-family: var(--font-sans);
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.01em;
   fill: var(--navy);
   paint-order: stroke;
   stroke: var(--cream);
-  stroke-width: 6;
+  stroke-width: 5;
   stroke-linejoin: round;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-/* Labels stay quiet until a city is the focus — keeps the map uncluttered. */
 #\30 2-research .research-marker:hover .research-marker-label,
 #\30 2-research .research-marker.is-active .research-marker-label { opacity: 1; }
 
@@ -272,31 +286,11 @@
     transform: scale(0.4);
     transform-origin: center;
     transform-box: fill-box;
-    animation: research-marker-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: research-marker-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     animation-delay: var(--marker-delay, 0ms);
   }
   @keyframes research-marker-in {
     to { opacity: 1; transform: scale(1); }
-  }
-}
-
-#\30 2-research .research-marker:hover .research-marker-dot,
-#\30 2-research .research-marker.is-active .research-marker-dot { r: 18; }
-/* The live city — the yellow accent moment, ringed navy. */
-#\30 2-research .research-marker.is-active .research-marker-dot {
-  fill: var(--yellow);
-  stroke: var(--navy);
-}
-@media (prefers-reduced-motion: no-preference) {
-  #\30 2-research .research-marker.is-active .research-marker-pulse {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: research-pulse 1.8s ease-out infinite;
-  }
-  @keyframes research-pulse {
-    0%   { opacity: 0.55; transform: scale(1); }
-    70%  { opacity: 0;    transform: scale(2.2); }
-    100% { opacity: 0; }
   }
 }
 

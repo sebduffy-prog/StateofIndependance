@@ -1,17 +1,85 @@
-<div class="chapter-inner stage-placeholder move-unplug-root on-warm" data-move-unplug-root>
+<!-- 17-move-unplug.html — Move 01: UNPLUG THEM FROM THE GRID.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="move-unplug-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
+     RIGHT — 34% hero stat + move-01.svg icon + flipReveal less→more interaction.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-  <header class="move-unplug-head">
-    <p class="vccp-eyebrow" data-arrival>Move one of five</p>
-    <h2 class="move-unplug-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Unplug them from the grid</h2>
-    <p class="move-unplug-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-  <span class="move-unplug-dot" data-youdot-anchor aria-hidden="true"></span>
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\31 7-move-unplug. -->
+
+<div class="chapter-inner mu-root on-warm" data-mu-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="mu-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="mu-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="mu-grid">
+
+    <!-- LEFT COLUMN — move header + lesson + quote -->
+    <div class="mu-left">
+      <header class="mu-head">
+        <p class="vccp-eyebrow mu-eyebrow" data-arrival>
+          <span class="mu-movenum" aria-hidden="true">01</span>
+          Move one of five
+        </p>
+        <h2 class="mu-title" data-arrival>
+          Unplug them<br>from the <em class="mu-accent" data-arrival-scramble>grid</em>
+        </h2>
+        <p class="mu-lesson" data-arrival>
+          Find practical, everyday ways to help your customers lower their
+          living costs and rely less on broken systems.
+        </p>
+      </header>
+
+      <!-- Quote card — .soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card mu-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="mu-quote__text">
+          "I now have a lot less trust in institutions such as the government
+          and politicians, local councils… Big brands are the same — I don't
+          want to give too much money to one brand."
+        </p>
+        <footer class="mu-quote__attr">Southampton, 63 · Architects</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — 34% stat + icon + flipReveal -->
+    <aside class="mu-right" aria-label="Unplug interaction: less to more">
+
+      <!-- Stat hero -->
+      <div class="mu-stat-hero" data-arrival>
+        <!-- move-01.svg icon — navy+yellow flat language -->
+        <div class="mu-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-01.svg"
+               alt="Unplug icon"
+               class="mu-icon__img" />
+        </div>
+        <div class="mu-stat">
+          <span class="mu-stat__num num" data-youdot-anchor
+                data-count-to="34" data-count-suffix="%">34%</span>
+          <span class="mu-stat__label">are already using tools to fix their own
+            practical home and financial problems</span>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the marquee beat -->
+      <div class="mu-flip" data-flip
+           aria-label="Flip each row to reveal the brand shift"></div>
+
+    </aside>
+  </div>
+
 </div>

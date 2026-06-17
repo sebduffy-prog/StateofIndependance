@@ -1,328 +1,326 @@
-/* Chapter 09 — outro (BRAND-WORLD-FINAL §7 — the close).
-   "Calm cream (or warm) ground. The nation disperses; one line remains. Team
-   credits grid with even spacing; the CTA as a single focal element. © VCCP
-   MEDIA 2026 furniture small and low-emphasis. Yellow as the single accent;
-   the Challenger-Series lockup signs off."
+/* Chapter 22 — outro (BRAND-WORLD-FINAL §7 — the cinematic close).
+   Warm-gradient full-bleed ground. ONE screen. Asymmetric two-column:
+   LEFT — kicker → Institutions motif → Martin Lewis scramble → Thank you →
+          credits → copyright;
+   RIGHT — Challenger-Series lockup (mid) + tall bear/girl (floor).
 
-   ONE focal point per screen: the Martin Lewis line on the navy close; the
-   warm-gradient back-cover signs the work. ONE hero motion: the nation (the
-   dotField) dispersing upward, the you-dot leaving with it. The accent word is
-   set in italic (the "Series" gesture, no underline / no parallelogram); the
-   one yellow accent rides the highlighted word. Backgroundless throughout: no
-   card/box/highlight fill behind any copy; emphasis is colour + weight only.
-   Square corners, tabular nums, reduced-motion safe. Scoped to #\32 2-outro. */
+   The italic accent word ("Individuals", "tools", "you") is the "Series"
+   gesture: italic, same weight, no box, no underline, no parallelogram.
+   Black/navy type on warm ground. AA contrast throughout.
+   Square corners, tabular nums, reduced-motion safe.
+   Scoped entirely to #\32 2-outro. */
 
-/* Both surfaces go full-bleed — break out of .chapter padding. */
+/* ── Full-bleed ground ──────────────────────────────────────────── */
 #\32 2-outro {
   padding: 0;
-  background: var(--soi-navy);
+  background: var(--ground-warm);
 }
+
 #\32 2-outro .chapter-inner {
   max-width: none;
   margin: 0;
   width: 100%;
+  height: 100%;
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  background: var(--ground-warm);
 }
 
-/* The italic accent — the "Series" gesture (replaces the parallelogram).
-   The slant IS the accent: no box, no skew transform, no underline. */
-#\32 2-outro .outro-accent {
+/* Full-bleed warm gradient on the root container */
+#\32 2-outro .ot-root {
+  background: var(--ground-warm);
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orbit ring — ambient, behind all content */
+#\32 2-outro .ot-orbit {
+  position: absolute;
+  top: 50%;
+  right: -8vw;
+  width: clamp(280px, 44vw, 640px);
+  height: clamp(280px, 44vw, 640px);
+  transform: translate(0, -50%);
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Two-column grid ────────────────────────────────────────────── */
+#\32 2-outro .ot-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(140px, 22vw, 280px);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: end;
+  width: 100%;
+  flex: 1;
+  padding: clamp(48px, 7vh, 100px) clamp(28px, 6vw, 100px) 0;
+}
+
+/* ── LEFT COLUMN ────────────────────────────────────────────────── */
+#\32 2-outro .ot-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 40px);
+  padding-bottom: clamp(44px, 7vh, 88px);
+  max-width: 58ch;
+}
+
+/* Kicker — eyebrow voice, navy on warm, generous letter-spacing */
+#\32 2-outro .ot-kicker {
+  color: var(--navy);
+  margin: 0;
+}
+
+/* ── Institutions ▸▸▸▸ Individuals motif ─── */
+#\32 2-outro .ot-motif {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1.2vw, 18px);
+  line-height: 1.0;
+}
+
+#\32 2-outro .ot-motif-word {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2rem, 4.2vw, 4rem);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  display: inline-block;
+}
+
+#\32 2-outro .ot-motif-word--accent {
+  color: var(--navy);
   font-style: italic;
 }
 
-/* ─── The close: one line on the open navy ground ───────────────────────
-   Grows to at least the controls-reserved viewport so the navy ground always
-   owns a full screen of breathing room (FILL THE SCREEN, with negative space
-   as the feature). The line hangs on a left axis — asymmetric, editorial. */
-#\32 2-outro .outro-dark {
-  position: relative;
-  isolation: isolate;
-  width: 100%;
-  flex: 1 0 auto;
-  min-height: calc(100svh - var(--journey-controls-h, 72px));
-  background: var(--soi-navy);
-  color: var(--soi-cream);
+#\32 2-outro .ot-motif-arrow {
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  color: var(--navy);
+  letter-spacing: -0.12em;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+/* ── Martin Lewis quote ─────────────────────────────────────────── */
+#\32 2-outro .ot-quote {
+  margin: 0;
+}
+
+#\32 2-outro .ot-quote-text {
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-  padding: clamp(48px, 9vh, 140px) clamp(24px, 7vw, 160px);
+  gap: clamp(4px, 0.6vh, 8px);
 }
 
-/* The nation, dispersing — the dotField canvas, full-bleed, behind the line. */
-#\32 2-outro .outro-dots {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-#\32 2-outro .outro-dots canvas {
+#\32 2-outro .ot-qt-line {
   display: block;
-  width: 100%;
-  height: 100%;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
 }
 
-/* A single thin orbit ring — the connective signature, ambient, low. One
-   accent moment of geometry; never interactive, never behind text as a box. */
-#\32 2-outro .outro-orbit {
-  z-index: 0;
-  opacity: 0.4;
-}
-
-/* Commit-pulse finish — a single faint yellow warmth blooms from the lower-left
-   as the close completes (.is-finished). Backgroundless: a screen-blend glow
-   behind all copy, never a box, can never occlude the line. The single accent. */
-#\32 2-outro .outro-dark::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    52% 46% at 26% 56%,
-    rgba(240, 203, 8, 0.16) 0%,
-    rgba(240, 203, 8, 0.05) 40%,
-    transparent 72%
-  );
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity 1.4s ease;
-}
-#\32 2-outro .outro-dark.is-finished::after { opacity: 1; }
-
-/* ─── The focal point: the Martin Lewis line ─────────────────────────────
-   Hung on the left axis, held to a generous measure so it breaks into a few
-   weighty lines. The kicker is the one small thing; the line is the one huge
-   thing; nothing in the muddy middle. */
-#\32 2-outro .outro-quote {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  /* Wide enough that the line breaks into a few weighty lines, not a tower of
-     single words — held off the full width so it never runs edge to edge. */
-  max-width: min(30ch, 86%);
-}
-#\32 2-outro .outro-kicker {
-  margin: 0 0 clamp(22px, 3.4vh, 48px);
-  color: var(--soi-cream);
-  opacity: 0;
-  transform: translate3d(0, 10px, 0);
-  transition: opacity .7s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform .7s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: opacity, transform;
-}
-#\32 2-outro .outro-kicker.is-in { opacity: 0.72; transform: none; }
-
-/* The display moment: Poppins Black, dramatic scale, tight tracking, tight
-   leading. The one huge thing on the screen. */
-#\32 2-outro .outro-quote-text {
-  margin: 0;
-  color: var(--soi-cream);
-  text-transform: none;
+/* The accent line: slightly larger, italic "tools" highlights the key word */
+#\32 2-outro .ot-qt-line--accent {
   font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1.0;
-  /* Sized so the measure holds ~3-4 words per line and the whole line settles
-     into a few weighty lines, not a tower of single words. */
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  overflow-wrap: break-word;
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  color: var(--ink);
 }
-#\32 2-outro .outro-quote-text .hl { line-height: inherit; }
-/* The accent word: italic + the single yellow accent (vccp.css gives .si-dark
-   .hl the yellow). The italic slant is the only emphasis device — no underline. */
-#\32 2-outro .outro-quote-text .outro-accent { font-style: italic; }
 
-/* Each word assembles up into place (the meaning builds). Pure transform +
-   opacity, never clips the glyphs. */
-#\32 2-outro .outro-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translate3d(0, 0.42em, 0);
-  transition: opacity .62s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform .62s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: opacity, transform;
+/* The italic accent — "Series" gesture, no underline */
+#\32 2-outro .ot-accent {
+  font-style: italic;
+  color: var(--navy);
 }
-#\32 2-outro .outro-word.is-in { opacity: 1; transform: none; }
 
-/* The attribution settles last — the one small line beneath the huge one. */
-#\32 2-outro .outro-quote-cite {
-  margin: clamp(26px, 4vh, 56px) 0 0;
-  font-size: var(--t-sm);
+#\32 2-outro .ot-quote-cite {
+  font-size: var(--t-xs);
+  font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(240, 237, 231, 0.66);
+  color: rgba(4, 22, 84, 0.62);
+  margin: 0;
   font-variant-numeric: tabular-nums;
-  opacity: 0;
-  transform: translate3d(0, 10px, 0);
-  transition: opacity .7s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform .7s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: opacity, transform;
-}
-#\32 2-outro .outro-quote-cite.is-in { opacity: 1; transform: none; }
-
-/* The line is keyboard-replayable (role=button) — a quiet focus ring, no box. */
-#\32 2-outro .outro-quote-text:focus-visible {
-  outline: 2px solid var(--yellow);
-  outline-offset: 8px;
 }
 
-/* The you-dot anchor — an invisible mark at the line's tail. */
-#\32 2-outro .outro-anchor {
+/* ── "Thank you" — the clear, large sign-off ─── */
+#\32 2-outro .ot-thankyou {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 7rem);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--ink);
+  margin: 0;
+  text-transform: none;
+}
+
+/* The you-dot anchor — invisible; sits near Thank you */
+#\32 2-outro .ot-youdot-anchor {
   position: absolute;
-  right: clamp(24px, 7vw, 160px);
-  bottom: clamp(48px, 9vh, 140px);
   width: 1px;
   height: 1px;
-  z-index: 1;
   pointer-events: none;
 }
 
-/* ─── Grounded warm back-cover ───────────────────────────────────────────
-   Signature warm-gradient ground. Asymmetric two-column: CTA + lockup sign-off
-   + credits grid + copyright on the left axis; the tall bear+girl stands flush
-   on the floor in its own column. Two columns => zero overlap. */
-#\32 2-outro .outro-backcover {
-  position: relative;
-  isolation: isolate;
-  flex: 0 0 auto;
-  padding: clamp(48px, 8vh, 120px) clamp(24px, 7vw, 160px) 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: clamp(32px, 5vw, 96px);
-  min-height: clamp(420px, 56vh, 680px);
-  overflow: hidden;
-}
-#\32 2-outro .outro-backcover-orbit { z-index: 0; opacity: 0.6; }
-#\32 2-outro .outro-seed-a { top: 20%; right: 30%; }
-#\32 2-outro .outro-seed-b { top: 52%; right: 18%; }
-
-#\32 2-outro .outro-backcover-copy {
-  position: relative;
-  z-index: 1;
-  align-self: end;
-  padding-bottom: clamp(44px, 7vh, 96px);
-  display: grid;
+/* ── Team credits ──────────────────────────────────────────────── */
+#\32 2-outro .ot-credits {
+  display: flex;
+  flex-direction: column;
   gap: 0;
-  max-width: 54ch;
 }
 
-/* The CTA focal element — the one instruction, navy on warm (high contrast). */
-#\32 2-outro .outro-cta-kicker {
-  margin: 0 0 clamp(14px, 1.8vh, 22px);
-  color: var(--soi-navy);
-}
-#\32 2-outro .outro-cta {
-  margin: 0;
-  color: var(--soi-navy);
-  max-width: 22ch;
-}
-#\32 2-outro .outro-cta .outro-accent { font-style: italic; }
-
-/* The Challenger-Series lockup signs off — black silhouette on warm, never
-   recoloured or distorted; proportional, generous clear space above. */
-#\32 2-outro .outro-lockup {
-  display: block;
-  width: clamp(220px, 26vw, 320px);
-  height: auto;
-  margin: clamp(34px, 5vh, 64px) 0 0;
-}
-
-/* Team credits — an even two-column grid, supporting type on the ground. */
-#\32 2-outro .outro-credits-label {
-  margin: clamp(30px, 4.4vh, 56px) 0 clamp(12px, 1.6vh, 18px);
+#\32 2-outro .ot-credits-label {
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
   font-size: var(--t-xs);
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(4, 22, 84, 0.62);
+  color: rgba(4, 22, 84, 0.55);
 }
-#\32 2-outro .outro-credits-grid {
+
+#\32 2-outro .ot-credits-grid {
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 1.8vh, 20px) clamp(28px, 4vw, 56px);
-  max-width: 52ch;
+  gap: clamp(10px, 1.4vh, 16px) clamp(24px, 4vw, 48px);
+  max-width: 50ch;
 }
-#\32 2-outro .outro-credit {
+
+#\32 2-outro .ot-credit {
   display: grid;
   gap: 2px;
 }
-#\32 2-outro .outro-credit-name {
+
+#\32 2-outro .ot-credit-name {
   font-size: var(--t-sm);
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--soi-navy);
-}
-#\32 2-outro .outro-credit-role {
-  font-size: var(--t-xs);
-  line-height: 1.4;
-  color: rgba(4, 22, 84, 0.7);
+  color: var(--navy);
 }
 
-/* Copyright — small, low-emphasis furniture, set low. */
-#\32 2-outro .outro-backcover-org {
-  margin: clamp(28px, 4vh, 52px) 0 0;
+#\32 2-outro .ot-credit-role {
+  font-size: var(--t-xs);
+  line-height: 1.35;
+  color: rgba(4, 22, 84, 0.65);
+}
+
+/* Copyright — small, low-emphasis furniture */
+#\32 2-outro .ot-copyright {
+  margin: clamp(14px, 2vh, 24px) 0 0;
   font-size: var(--t-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: rgba(4, 22, 84, 0.66);
+  color: rgba(4, 22, 84, 0.50);
   font-variant-numeric: tabular-nums;
 }
 
-/* The illustration: the tall bear+girl, flush to the bottom edge, in its own
-   column so it never overlaps the copy. Black silhouette on warm (high
-   contrast). Aspect 104×585 honoured by height:auto. Decorative. */
-#\32 2-outro .outro-backcover-bear {
-  position: relative;
-  z-index: 1;
-  align-self: end;
+/* ── RIGHT COLUMN — lockup + bear/girl ─────────────────────────── */
+#\32 2-outro .ot-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: clamp(24px, 4vh, 48px);
+  padding-bottom: 0;
+}
+
+/* The Challenger-Series lockup — black silhouette on warm.
+   Never recoloured, stretched, or skewed. Proportional. */
+#\32 2-outro .ot-lockup {
+  display: block;
+  width: clamp(160px, 18vw, 240px);
+  height: auto;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+/* The tall bear+girl silhouette — flush to the floor, full height of column.
+   Aspect ratio: 104 × 585. Black on warm. Never clipped. */
+#\32 2-outro .ot-bear {
   display: block;
   width: auto;
-  height: clamp(300px, 50vh, 600px);
-  margin-bottom: 0;
+  height: clamp(320px, 55vh, 640px);
+  flex-shrink: 0;
+  align-self: flex-end;
   pointer-events: none;
 }
 
-/* ─── Responsive ─────────────────────────────────────────────────────── */
-@media (max-width: 760px) {
-  #\32 2-outro .outro-backcover {
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  #\32 2-outro .ot-grid {
     grid-template-columns: 1fr;
-    align-items: end;
-    min-height: 0;
+    gap: 0;
     padding-bottom: 0;
-    gap: clamp(24px, 6vw, 48px);
+    align-items: start;
   }
-  #\32 2-outro .outro-backcover-copy {
-    padding-bottom: clamp(24px, 5vh, 44px);
-    justify-self: start;
+
+  #\32 2-outro .ot-right {
+    display: none; /* bear/girl hidden on small screens; left column owns the space */
   }
-  #\32 2-outro .outro-credits-grid {
+
+  #\32 2-outro .ot-left {
+    max-width: 100%;
+    padding-bottom: clamp(44px, 10vh, 80px);
+  }
+
+  #\32 2-outro .ot-credits-grid {
     grid-template-columns: 1fr;
   }
-  #\32 2-outro .outro-backcover-bear {
-    height: clamp(220px, 40vh, 360px);
-    justify-self: end;
-  }
-  #\32 2-outro .outro-seed-a,
-  #\32 2-outro .outro-seed-b { display: none; }
 }
 
-/* ─── Reduced motion: rest flat, fully assembled, no decorative animation ─── */
+/* ── arrival() animation hooks ──────────────────────────────────── */
+/* arrival() from experiential.js cascades .is-arrived on each
+   [data-arrival] element in document order, staggered by
+   --arrival-delay. These declarations wire the visual transition. */
+#\32 2-outro [data-arrival] {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity var(--dur-reveal) var(--arrival-delay, 0ms) var(--ease-entrance),
+              transform var(--dur-reveal) var(--arrival-delay, 0ms) var(--ease-entrance);
+  will-change: opacity, transform;
+}
+
+#\32 2-outro [data-arrival].is-arrived {
+  opacity: 1;
+  transform: none;
+}
+
+/* The scramble target — arrival() sets .is-arrived then scrambleIn()
+   decrypts the text into place. Start invisible; settle on is-arrived. */
+#\32 2-outro [data-arrival-scramble] {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 0.6s var(--arrival-delay, 0ms) var(--ease-entrance),
+              transform 0.6s var(--arrival-delay, 0ms) var(--ease-entrance);
+}
+
+#\32 2-outro [data-arrival-scramble].is-arrived {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Reduced motion — rest fully assembled ──────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\32 2-outro .outro-kicker,
-  #\32 2-outro .outro-word,
-  #\32 2-outro .outro-quote-cite {
+  #\32 2-outro [data-arrival],
+  #\32 2-outro [data-arrival-scramble] {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  #\32 2-outro .outro-kicker { opacity: 0.72; }
-  #\32 2-outro .outro-dark::after { transition: none; }
-  #\32 2-outro .outro-dark.is-finished::after { opacity: 1; }
 }

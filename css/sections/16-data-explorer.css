@@ -128,13 +128,13 @@
 /* The display moment — tight within the read-out group, large gap to controls.
    The number is the headline: Poppins 900, navy gravity, tabular. */
 #\31 6-data-explorer .pg-readout {
-  margin: var(--space-2) 0 clamp(var(--space-4), 6vh, var(--space-6)) 0;
+  margin: var(--space-1) 0 clamp(var(--space-3), 4vh, var(--space-5)) 0;
 }
 #\31 6-data-explorer .pg-readout-num {
   margin: 0;
   color: var(--navy);
   font-weight: 900;
-  font-size: clamp(4rem, 9vw, 8rem);
+  font-size: clamp(3.4rem, 7.6vw, 6.8rem);
   line-height: 0.9;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
@@ -161,7 +161,7 @@
 #\31 6-data-explorer .pg-controls {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 #\31 6-data-explorer .pg-control-label {
   display: block;
@@ -249,6 +249,113 @@
   transform: translate3d(0, 10px, 0);
 }
 #\31 6-data-explorer .pg-chart > svg { max-width: 100%; height: auto; }
+
+/* ─── Waffle view — the lead figure as N-in-100, with an honest caption ─ */
+#\31 6-data-explorer .pg-chart .pg-waffle-cap {
+  margin: var(--space-2) 0 0 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* ─── Venn view — flat circles on the cream; navy text, no white box ──── */
+#\31 6-data-explorer .pg-chart .venn-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+#\31 6-data-explorer .pg-chart .venn-stage { position: relative; width: 100%; }
+#\31 6-data-explorer .pg-chart .venn-svg { width: 100%; height: auto; max-height: 360px; }
+/* flat petals — soft fill, ink hairline; isolate on hover/focus */
+#\31 6-data-explorer .pg-chart .venn-petal {
+  fill-opacity: 0.34;
+  stroke-width: 1.5;
+  transition: fill-opacity 0.22s var(--ease-entrance);
+}
+#\31 6-data-explorer .pg-chart .venn-svg.is-focus .venn-petal { fill-opacity: 0.14; }
+#\31 6-data-explorer .pg-chart .venn-svg.is-focus .venn-petal.is-on { fill-opacity: 0.5; }
+#\31 6-data-explorer .pg-chart .venn-leader { stroke: var(--pg-rule); stroke-width: 1; }
+#\31 6-data-explorer .pg-chart .venn-ltext {
+  fill: var(--navy);
+  font: 700 14px/1 var(--font-sans);
+}
+#\31 6-data-explorer .pg-chart .venn-lmeta {
+  fill: var(--navy);
+  opacity: 0.6;
+  font: 600 12px/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+/* centre stat plate — navy figure, the chart's read-out echo (backgroundless) */
+#\31 6-data-explorer .pg-chart .venn-centre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+#\31 6-data-explorer .pg-chart .venn-centre .lbl {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.55;
+}
+#\31 6-data-explorer .pg-chart .venn-centre .val {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#\31 6-data-explorer .pg-chart .venn-centre .sub {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--navy);
+  opacity: 0.7;
+  max-width: 14ch;
+}
+/* legend — square focusable cards, navy on cream, no fill box */
+#\31 6-data-explorer .pg-chart .venn-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+#\31 6-data-explorer .pg-chart .venn-leg {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid rgba(4, 22, 84, 0.28);
+  border-left: 4px solid var(--accent, var(--navy));
+  border-radius: 0;
+  padding: 6px 11px;
+  color: var(--navy);
+  cursor: pointer;
+  font: 600 var(--t-xs) / 1 var(--font-sans);
+  transition: border-color 0.18s var(--ease-entrance);
+}
+#\31 6-data-explorer .pg-chart .venn-leg:hover,
+#\31 6-data-explorer .pg-chart .venn-leg.is-on,
+#\31 6-data-explorer .pg-chart .venn-leg:focus-visible {
+  border-color: var(--navy);
+  outline: none;
+}
+#\31 6-data-explorer .pg-chart .venn-leg .n {
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+#\31 6-data-explorer .pg-chart .venn-leg .pct { opacity: 0.6; }
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

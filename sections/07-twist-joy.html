@@ -1,61 +1,53 @@
-<!-- Chapter 07 — Twist two: PROTECTED JOY. THE EARNED PUNCTUATION.
-     AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "04 — Twists"):
-     a full-bleed WARM GRADIENT pivot. Full-screen, one focal point.
+<!-- Chapter 07 — Twist two: PROTECTED JOY.
+     Full-bleed warm-gradient pivot. Two-column composition.
+     LEFT: 40% hero stat towers as the focal anchor.
+     RIGHT: tactile budget — tap the scissors to cut each line.
+            Flexible spends stay cut. The holiday SPRINGS BACK.
+     Brand-world: BRAND-WORLD-FINAL.md §7 "04 — Twists".
+     Data: data/survey.json protectedSpend (Q5; holidays 39.6%).
+     Character→title reveal on chapter:arrive. Backgroundless on warm ground.
+     Square corners. No underline. No parallelogram. AA contrast. No console.log. -->
+<div class="chapter-inner twist-joy-root" data-twist-joy-root>
 
-     COMPOSITION: left column anchors the hero stat (40% / "2 in 5") as
-     a towering si-bignum with eyebrow + bold italic accent title below it —
-     the NUMBER commands the left half. Right column carries the tactile
-     budget interaction. No dead third — the stat IS the counter-weight to
-     the interaction. No internal scroll, fills one viewport.
-
-     THE ONE MEMORABLE THING: pull each spend line left toward the bin —
-     flexible spends fold and stay cut; the holiday FIGHTS BACK, springs
-     home every time, because 40% of Britain ring-fence it (Q5 holidays 39.6%).
-     Data as a felt reality, not a chart. Tactile (tactile.js draggable),
-     keyboard-operable, reduced-motion safe.
-
-     BOLD BLACK Poppins-900 hero stat + one italic accent word in the title.
-     Backgroundless — every element sits on the warm ground.
-     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
-     Single root. Every CSS selector scoped to #\30 7-twist-joy. -->
-<div class="chapter-inner twist-joy-root on-warm" data-twist-joy-root>
-
-  <!-- Decorative orbit ring — connective tissue, behind everything. -->
+  <!-- Decorative orbit — connective tissue, behind everything -->
   <span class="twist-joy-orbit" aria-hidden="true"></span>
 
-  <!-- Challenger-Series brand stamp, top-right (the book-cover position). -->
+  <!-- Brand stamp, top-right (book-cover position) -->
   <img class="twist-joy-mark"
        src="assets/brand-final/challenger-series-lockup.png"
        alt="Challenger Series" />
 
-  <!-- LEFT COLUMN — the hero stat IS the focal element.
-       40% (exact 39.6) is the number; it commands the left half of the frame.
-       Title below confirms what the number means. -->
-  <div class="twist-joy-hero" data-arrival>
-    <p class="vccp-eyebrow" data-arrival>Twist two</p>
-    <p class="twist-joy-bignum si-bignum num" aria-label="40 percent">
+  <!-- LEFT COLUMN — hero stat cluster. The 40% IS the focal element. -->
+  <div class="twist-joy-hero">
+    <p class="vccp-eyebrow twist-joy-eyebrow" data-arrival>Twist two</p>
+    <p class="twist-joy-bignum num" aria-label="40 percent">
       <span data-arrival-scramble>40%</span>
     </p>
     <h2 class="twist-joy-title" data-arrival>
       protect their<br>
-      <span class="si-accent twist-joy-accent">holiday</span>
+      <em class="twist-joy-accent">holiday</em>
     </h2>
     <p class="twist-joy-sub" data-arrival>
       Budget cuts stop at the departure gate.
-      Pull each line left — watch what gives way,
-      and what digs in.
+      2 in 5 Britons ring-fence their holiday —
+      not a luxury, a wellbeing line item.
+    </p>
+    <p class="twist-joy-instruction" data-arrival>
+      Press <span class="twist-joy-scissors-icon" aria-hidden="true">✂</span> to cut each line
     </p>
   </div>
 
-  <!-- RIGHT COLUMN — the tactile marquee interaction.
-       The "you" dot anchor is wired onto the holiday row from JS. -->
+  <!-- RIGHT COLUMN — tactile marquee interaction -->
   <section class="twist-joy-stage" aria-label="Cut the budget interaction">
-    <p class="twist-joy-stage-kicker vccp-eyebrow" data-arrival>
-      Drag left to cut
+    <p class="vccp-eyebrow twist-joy-stage-kicker" data-arrival>
+      Your budget under the knife
     </p>
     <div class="twist-joy-budget" data-twist-joy-budget></div>
+    <p class="twist-joy-hint" data-twist-joy-hint aria-live="polite">
+      Tap <span aria-hidden="true">✂</span> to cut a line
+    </p>
     <p class="twist-joy-data-note" data-arrival>
-      Figures: % of 1,504 UK adults ring-fencing each non-essential (Q5)
+      Q5 · % of 1,504 UK adults ring-fencing each non-essential
     </p>
   </section>
 

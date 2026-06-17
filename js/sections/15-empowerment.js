@@ -83,7 +83,7 @@ const NEED_KEYS = Object.freeze({
 const NEED_META = Object.freeze({
   money: { label: 'Save me money', short: 'money', sub: 'the obvious ask', token: '--navy', fallback: '#041654' },
   time: { label: 'Save me time', short: 'time', sub: 'the premium ask', token: '--navy-bright', fallback: '#0129A4' },
-  stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask', token: '--ground-orange', fallback: '#FFA764' },
+  stress: { label: 'Save me stress', short: 'stress', sub: 'the premium ask', token: '--ground-coral', fallback: '#FF8598' },
 });
 
 // Home directions on a wide triangle: money top, time lower-left, stress lower-right.

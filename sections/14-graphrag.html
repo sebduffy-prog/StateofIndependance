@@ -1,17 +1,57 @@
-<div class="chapter-inner stage-placeholder graphrag-root on-navy" data-graphrag-root>
+<div class="chapter-inner graphrag-root on-navy" data-graphrag-root>
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="graphrag-orbit si-orbit" aria-hidden="true"></span>
+  <!-- GraphRAG explorer — the living segment network. Navy full-bleed ground.
+       LEFT: title cluster + legend + read-out. RIGHT: the force-graph explorer
+       (js/lib/segment-graph.js) — click a segment to see what it over-indexes
+       on; click a statement to see who shares it. Character->title reveal on
+       arrival. Square corners, no underlines, no parallelogram. -->
 
-  <header class="graphrag-head">
-    <p class="vccp-eyebrow" data-arrival>The living network</p>
-    <h2 class="graphrag-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Explore the segments</h2>
-    <p class="graphrag-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+  <span class="graphrag-orbit" aria-hidden="true"></span>
 
-  <span class="graphrag-dot" data-youdot-anchor aria-hidden="true"></span>
+  <img class="graphrag-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="" aria-hidden="true" />
+
+  <div class="graphrag-grid">
+
+    <aside class="graphrag-left">
+      <header class="graphrag-head">
+        <p class="vccp-eyebrow graphrag-eyebrow" data-arrival>The living network</p>
+        <h2 class="graphrag-title si-display si-display--black" data-arrival>
+          Explore the<br><em class="graphrag-accent" data-arrival-scramble>network</em>
+        </h2>
+        <p class="graphrag-stand" data-arrival>
+          Four segments, woven from what they over-index on — interests, channels,
+          AI stance and their most distinctive TGI signals. Tap a segment to see
+          what defines it; tap a signal to see who shares it.
+        </p>
+      </header>
+
+      <div class="graphrag-legend" data-arrival aria-hidden="false">
+        <ul class="graphrag-keys">
+          <li><span class="gk-swatch gk-architects"></span>Architects · 17%</li>
+          <li><span class="gk-swatch gk-hustlers"></span>Hustlers · 28%</li>
+          <li><span class="gk-swatch gk-coasters"></span>Coasters · 27%</li>
+          <li><span class="gk-swatch gk-retreaters"></span>Retreaters · 28%</li>
+        </ul>
+        <ul class="graphrag-keys graphrag-keys--attr">
+          <li><span class="gk-dot gk-shared"></span>Shared signal</li>
+          <li><span class="gk-dot gk-unique"></span>Unique signal</li>
+        </ul>
+      </div>
+
+      <p class="graphrag-hint" data-arrival>
+        Drag a node to nudge the network. Click or press Enter to explore.
+      </p>
+    </aside>
+
+    <div class="graphrag-stage" data-graphrag-mount>
+      <p class="graphrag-fallback-msg" data-graphrag-msg hidden>
+        Segment data is loading. The explorer will appear here.
+      </p>
+    </div>
+
+  </div>
+
+  <span class="graphrag-youdot" data-youdot-anchor aria-hidden="true"></span>
 </div>

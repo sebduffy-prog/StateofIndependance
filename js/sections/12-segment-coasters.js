@@ -1,20 +1,16 @@
 /**
  * 12-segment-coasters.js — The Coasters (27%) full-screen segment profile.
  *
- * The third of four segment book-cover profiles; same template as the
- * Architects. A cream editorial stage: an editorial rail (descriptor + hero
- * quote + a distinctive TGI statement) counter-weighted by a book-cover
- * profile card carrying who/money/cutting-back/AI and a togglable over-index
- * chart.
- *
- * Marquee interaction: a square pillGroup toggle flips the backgroundless
- * over-index bars between two facets of the type — what they cut back first,
- * and the quiet ways they take control themselves. gate()/ready() advise the
- * hint only; Next is never trapped.
+ * A book-cover identity card (left) beside one backgroundless INDEX chart
+ * (right). The marquee interaction: a square pill control swaps the lens on
+ * the same audience — who they are (TGI demographics), what they index on
+ * (TGI lifestyle), how they behave (segment metric indices) — re-drawing the
+ * bars each time. Every value is an index vs the UK average (100 = average)
+ * and traces to data/segments.json or data/tgi.json.
  *
  * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\31 2-segment-coasters.
  *
- * @param {HTMLElement} rootEl  the <section id="12-segment-coasters">
+ * @param {HTMLElement} rootEl  the <section class="journey-stage" id="12-segment-coasters">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
  *           journey:{ gate():void, ready():void } }} data
  */
@@ -23,126 +19,131 @@ import { horizontalBars } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'coasters';
-const INDEX_MAX = 200; // 100 (the national average) sits mid-track.
+const TOP_N = 5; // bars per lens — fills the column without crowding
+const INDEX_MAX = 250; // chart scale: coasters top out around 192 (aged 75+)
 
-// The facets the toggle switches between. Labels + ids come straight from the
-// segment's metric families; values are the per-label `index` (vs national 100).
-const FACETS = [
-  {
-    value: 'cut',
-    label: 'First to cut',
-    metric: 'firstToCut',
-    title: 'What they trim back first',
-    rows: ['Clothing', 'Subscriptions', 'Holidays', 'Eating out', 'Energy'],
-  },
-  {
-    value: 'control',
-    label: 'Quiet control',
-    metric: 'personalControlBehaviours',
-    title: 'The quiet ways they take control',
-    rows: ['Managed energy proactively', 'Budgeting/comparison tools', 'YouTube/online guides', 'Self-diagnosed health', 'Vitamins/preventative'],
-  },
-];
+/** Tidy a long TGI statement into a short, legible bar label. */
+const tidyLabel = (statement) =>
+  statement
+    .replace(/^"/, '').replace(/"$/, '')
+    .replace(/\s*\(\+\d+\/\d+\)\s*/g, '')
+    .replace(/I am very good at managing money/i, 'Good at managing money')
+    .replace(/I get a good deal of pleasure from my garden/i, 'Garden is a pleasure')
+    .replace(/I never click on online ads/i, 'Never clicks online ads')
+    .replace(/I would never pay to access content online/i, 'Never pays for online content')
+    .replace(/I don.t normally eat between meals/i, "Doesn't snack between meals")
+    .replace(/Financial security after retirement is your own responsibility/i,
+      'Owns retirement planning')
+    .replace(/I always make sure I eat the recommended.*fruit and vegetables everyday/i,
+      'Eats 5-a-day fruit & veg')
+    .replace(/I prefer to buy products from companies who sponsor sports events and teams/i,
+      'Buys from sports sponsors')
+    .replace(/I would be willing to pay for exclusive podcast content/i,
+      'Pays for exclusive podcasts')
+    .replace(/Advertising within video or computer gameplay enhances the realism/i,
+      'Engaged by in-game ads')
+    .trim();
 
-// Tidy the longer metric labels so the chart rail stays legible.
-const SHORT_LABELS = {
-  'Managed energy proactively': 'Managed energy',
-  'Budgeting/comparison tools': 'Budgeting tools',
-  'YouTube/online guides': 'YouTube guides',
-  'Self-diagnosed health': 'Self-diagnose',
-  'Vitamins/preventative': 'Vitamins',
-};
+/** Top-N over-indexing entries from a [{label|statement,index,pct}] list.
+ *  Uses a relaxed threshold to ensure at least TOP_N bars fill the chart. */
+const topIndexed = (entries, minIndex = 100) =>
+  entries
+    .filter((e) => e.index >= minIndex)
+    .sort((a, b) => b.index - a.index)
+    .slice(0, TOP_N)
+    .map((e) => ({ label: tidyLabel(e.label || e.statement || ''), pct: e.index }));
 
-/** Build chart items [{id,label,pct}] from a facet, reading the index value. */
-function itemsFor(metrics, facet) {
-  const family = metrics[facet.metric] || {};
-  return facet.rows
-    .map((label) => {
-      const entry = family[label];
-      if (!entry || typeof entry.index !== 'number') return null;
-      return { id: label, label: SHORT_LABELS[label] || label, pct: entry.index };
-    })
-    .filter(Boolean)
-    .sort((a, b) => b.pct - a.pct);
-}
-
-/** Pick the single most distinctive TGI lifestyle statement (highest index). */
-function distinctiveTgi(tgi) {
-  const block = tgi && tgi.segments && tgi.segments[SEGMENT_ID];
-  const lifestyle = block && Array.isArray(block.lifestyle) ? block.lifestyle : [];
-  let top = null;
-  for (const s of lifestyle) {
-    if (s && typeof s.index === 'number' && (!top || s.index > top.index)) top = s;
-  }
-  return top;
-}
+/** Top-N over-indexing rows from a segment metric family {label:{pct,index}}. */
+const topMetric = (family) =>
+  Object.entries(family || {})
+    .map(([label, v]) => ({ label, pct: v.index }))
+    .filter((row) => row.pct >= 100)
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, TOP_N);
 
 export default function init(rootEl, data) {
-  const { segments, tgi, journey } = data || {};
-
-  // Arrival signature re-plays on every focus (idempotent).
+  // Re-play the arrival each time this stage reaches focus (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
-  const segment =
-    segments && Array.isArray(segments.segments)
-      ? segments.segments.find((s) => s.id === SEGMENT_ID)
-      : null;
-  if (!segment || !segment.metrics) return; // fail soft — data may be null
+  const segments = data?.segments;
+  const tgi = data?.tgi;
+  const chartHost = rootEl.querySelector('[data-segment-coasters-chart]');
+  const lensHost = rootEl.querySelector('[data-segment-coasters-lens]');
+  if (!chartHost || !lensHost) return; // fail soft if markup is missing
 
-  // The distinctive TGI line, woven into the rail.
-  const tgiEl = rootEl.querySelector('[data-segment-tgi]');
-  const top = distinctiveTgi(tgi);
-  if (tgiEl && top) {
-    tgiEl.innerHTML =
-      `<span class="segment-coasters-tgi-index">${top.index}</span>` +
-      `<span class="segment-coasters-tgi-text">They are ` +
-      `<strong>${top.index / 100 >= 2 ? 'more than twice' : 'far more'} as likely</strong> to be ` +
-      `&ldquo;${top.statement}&rdquo;</span>`;
-  } else if (tgiEl) {
-    tgiEl.remove();
+  // Assemble each lens from verified data; only keep lenses that have data.
+  const seg = segments?.segments?.find((s) => s.id === SEGMENT_ID);
+  const tgiSeg = tgi?.segments?.[SEGMENT_ID];
+
+  const lenses = [];
+
+  if (Array.isArray(tgiSeg?.demographics?.skews) && tgiSeg.demographics.skews.length) {
+    // Coasters have a strong age skew — use all skews above 100 so chart fills
+    lenses.push({
+      value: 'who',
+      label: 'Who they are',
+      items: topIndexed(tgiSeg.demographics.skews, 100),
+    });
   }
 
-  // The over-index chart + its toggle (the marquee interaction).
-  const chartHost = rootEl.querySelector('[data-segment-chart]');
-  const labelEl = rootEl.querySelector('[data-segment-chart-label]');
-  const toggleHost = rootEl.querySelector('[data-segment-toggle]');
-  if (!chartHost || !toggleHost) return;
+  if (Array.isArray(tgiSeg?.lifestyle) && tgiSeg.lifestyle.length) {
+    lenses.push({
+      value: 'index',
+      label: 'What they index on',
+      items: topIndexed(tgiSeg.lifestyle, 100),
+    });
+  }
 
-  let chart = null;
-  const render = (facet) => {
-    const items = itemsFor(segment.metrics, facet);
-    if (labelEl) labelEl.textContent = facet.title;
-    if (!chart) {
-      chart = horizontalBars(chartHost, {
-        items,
+  if (seg?.metrics) {
+    const behaviour = [
+      ...topMetric(seg.metrics.firstToCut),
+      ...topMetric(seg.metrics.financialPosition),
+      ...topMetric(seg.metrics.mindsetNetAgree),
+    ]
+      .sort((a, b) => b.pct - a.pct)
+      .slice(0, TOP_N);
+    if (behaviour.length) {
+      lenses.push({ value: 'behave', label: 'How they behave', items: behaviour });
+    }
+  }
+
+  if (!lenses.length) return; // no verified data — identity card still stands
+
+  // One reusable chart; lens changes morph the bars in place.
+  let bars = null;
+  const drawLens = (value) => {
+    const lens = lenses.find((l) => l.value === value) || lenses[0];
+    if (!bars) {
+      bars = horizontalBars(chartHost, {
+        items: lens.items,
         max: INDEX_MAX,
         accent: 'navy',
-        labelWidth: 150,
-        barHeight: 22,
-        gap: 12,
-        ariaLabel: 'Over-index versus the national average',
+        decimals: 0,
+        barHeight: 26,
+        gap: 14,
+        labelWidth: 210,
+        ariaLabel: 'Coasters index against the UK average',
       });
-      chartHost.appendChild(chart.el);
     } else {
-      chart.update(items, { resort: true });
+      bars.update(lens.items, { resort: true });
     }
   };
 
-  render(FACETS[0]);
-
-  journey.gate();
-  let switched = false;
-  pillGroup(toggleHost, {
-    options: FACETS.map((f) => ({ value: f.value, label: f.label })),
-    value: FACETS[0].value,
-    ariaLabel: 'Switch the over-index view',
+  // Square pill control — the marquee interaction.
+  data?.journey?.gate?.();
+  let explored = false;
+  pillGroup(lensHost, {
+    options: lenses.map((l) => ({ value: l.value, label: l.label })),
+    value: lenses[0].value,
+    ariaLabel: 'Choose a lens on the Coasters',
     onChange: (value) => {
-      const facet = FACETS.find((f) => f.value === value) || FACETS[0];
-      render(facet);
-      if (!switched) {
-        switched = true;
-        journey.ready();
+      drawLens(value);
+      if (!explored) {
+        explored = true;
+        data?.journey?.ready?.();
       }
     },
   });
+
+  drawLens(lenses[0].value);
 }

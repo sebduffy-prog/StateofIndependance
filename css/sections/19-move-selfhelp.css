@@ -1,61 +1,421 @@
-/* 19-move-selfhelp.css — WORKFLOW A branded placeholder, scoped to #\31 9-move-selfhelp.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 19-move-selfhelp.css — Move 03: Ride the social self-help wave.
+   Scoped entirely to #\31 9-move-selfhelp.
+   Warm gradient full-bleed ground. Black on warm palette.
+   Full-bleed, one-screen: 100vw × 100svh with overflow hidden.
+   Two-column balanced layout:
+     LEFT  = move header + lesson + quote card
+     RIGHT = icon row + flipReveal less→more + media shift table
+   Square corners, no underlines, no parallelogram, tabular nums.
+   Reduced-motion safe. */
 
-#\31 9-move-selfhelp .move-selfhelp-root {
+/* ── Override global chapter-inner so msh-root owns ALL layout geometry ─ */
+#\31 9-move-selfhelp .chapter-inner {
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Root — fills the section shell (100vw × 100svh) ───────────────── */
+#\31 9-move-selfhelp .msh-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #FFA764 0%, #FBC100 40%, #FFC002 70%, #FF8598 100%);
+}
+
+/* ── Orbit decoration — connective tissue, behind all content ───────── */
+#\31 9-move-selfhelp .msh-orbit {
+  position: absolute;
+  bottom: -22vh;
+  right: -14vw;
+  width: clamp(380px, 50vw, 820px);
+  height: clamp(380px, 50vw, 820px);
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+#\31 9-move-selfhelp .msh-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.08);
+}
+#\31 9-move-selfhelp .msh-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.05);
+}
+
+/* ── Brand stamp top-right ──────────────────────────────────────────── */
+#\31 9-move-selfhelp .msh-mark {
+  position: absolute;
+  top: clamp(16px, 2.4vh, 32px);
+  right: clamp(20px, 4vw, 60px);
+  height: 28px;
+  width: auto;
+  opacity: 0.55;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Two-column grid — fills the full height of the viewport ────────── */
+#\31 9-move-selfhelp .msh-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: stretch;
+  gap: clamp(28px, 4.5vw, 72px);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(44px, 6vh, 72px) clamp(36px, 6.5vw, 108px) clamp(32px, 4.2vh, 56px);
+  box-sizing: border-box;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+}
+
+/* ── LEFT column ────────────────────────────────────────────────────── */
+#\31 9-move-selfhelp .msh-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.2vh, 28px);
+  min-width: 0;
+  justify-content: space-between;
+}
+
+#\31 9-move-selfhelp .msh-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 14px);
+}
+
+/* Eyebrow — navy, reduced opacity for hierarchy on warm */
+#\31 9-move-selfhelp .msh-eyebrow {
+  color: rgba(4, 22, 84, 0.62);
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Move stage number — large tabular navy numerals (book-cover energy) */
+#\31 9-move-selfhelp .msh-movenum {
+  font-weight: 900;
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy, #041654);
+  line-height: 1;
+}
+
+/* Display title — black on warm, book-cover voice */
+#\31 9-move-selfhelp .msh-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.93;
+  color: var(--ink, #000);
+}
+
+/* Italic accent word — navy on warm for one focal pop */
+#\31 9-move-selfhelp .msh-accent {
+  color: var(--navy, #041654);
+  font-style: italic;
+}
+
+/* WLV lesson — the slide 53 lesson line */
+#\31 9-move-selfhelp .msh-lesson {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+  line-height: 1.46;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 46ch;
+}
+
+/* ── Quote card — .soi-card: cream, square corners, one lift device ─── */
+#\31 9-move-selfhelp .msh-quote {
+  margin: 0;
+  padding: clamp(18px, 2.4vw, 32px);
+  background: var(--cream, #F0EDE7);
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.07);
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
-  width: 100%;
-  height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  gap: clamp(10px, 1.4vh, 16px);
+  flex: 0 0 auto;
 }
 
-#\31 9-move-selfhelp .move-selfhelp-head {
-  max-width: 22ch;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
-}
-
-#\31 9-move-selfhelp .move-selfhelp-title {
-  margin: 0;
-  line-height: 0.96;
-}
-
-#\31 9-move-selfhelp .move-selfhelp-note {
-  margin: 0;
-  max-width: 34ch;
+#\31 9-move-selfhelp .msh-quote .soi-card__mark {
+  position: absolute;
+  top: clamp(14px, 1.8vh, 24px);
+  right: clamp(14px, 1.8vw, 24px);
+  height: 24px;
+  width: auto;
   opacity: 0.72;
 }
 
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
-#\31 9-move-selfhelp .move-selfhelp-orbit {
-  position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
-  pointer-events: none;
-}
-#\31 9-move-selfhelp .move-selfhelp-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+#\31 9-move-selfhelp .msh-quote__text {
+  margin: 0;
+  font-style: italic;
+  font-size: clamp(0.88rem, 1.0vw, 1.0rem);
+  line-height: 1.58;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 48ch;
+  /* pad right so text never overlaps the lockup mark */
+  padding-right: clamp(40px, 5vw, 64px);
 }
 
-#\31 9-move-selfhelp .move-selfhelp-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+#\31 9-move-selfhelp .msh-quote__attr {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.54);
+}
+
+/* ── RIGHT column ───────────────────────────────────────────────────── */
+#\31 9-move-selfhelp .msh-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vh, 30px);
+  min-width: 0;
+  justify-content: center;
+}
+
+/* Icon row — move-03.svg + kicker text */
+#\31 9-move-selfhelp .msh-icon-row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 2vw, 26px);
+}
+
+#\31 9-move-selfhelp .msh-icon {
+  flex: 0 0 auto;
+  width: clamp(48px, 5.8vw, 80px);
+  height: clamp(48px, 5.8vw, 80px);
+  color: var(--navy, #041654);
+}
+
+#\31 9-move-selfhelp .msh-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(8%) sepia(52%) saturate(3500%) hue-rotate(222deg) brightness(80%);
+}
+
+#\31 9-move-selfhelp .msh-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#\31 9-move-selfhelp .msh-stat__label {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+  line-height: 1.42;
+  color: rgba(4, 22, 84, 0.80);
+  max-width: 30ch;
+}
+
+/* ── flipReveal interaction (class hooks from interactions.js) ─────── */
+#\31 9-move-selfhelp .flip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+#\31 9-move-selfhelp .flip-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 1.6vw, 20px) clamp(5px, 0.8vh, 9px);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.48);
+}
+
+#\31 9-move-selfhelp .flip-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 16px);
+  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.6vw, 20px);
+  background: rgba(4, 22, 84, 0.06);
+  border: 1px solid rgba(4, 22, 84, 0.10);
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background var(--dur-micro, 180ms) ease,
+    border-color var(--dur-micro, 180ms) ease;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 2px;
+  font-family: var(--font-sans);
+}
+#\31 9-move-selfhelp .flip-row:hover,
+#\31 9-move-selfhelp .flip-row:focus-visible {
+  background: rgba(4, 22, 84, 0.10);
+  border-color: rgba(4, 22, 84, 0.22);
+  outline: none;
+}
+#\31 9-move-selfhelp .flip-row:focus-visible {
+  border-color: var(--navy, #041654);
+  box-shadow: 0 0 0 2px rgba(4, 22, 84, 0.24);
+}
+
+/* Less side — shown before flip */
+#\31 9-move-selfhelp .flip-less {
+  font-weight: 700;
+  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
+  color: rgba(4, 22, 84, 0.54);
+  transition: color var(--dur-micro, 180ms) ease,
+              opacity var(--dur-micro, 180ms) ease;
+}
+
+#\31 9-move-selfhelp .flip-arrow {
+  font-size: 0.78rem;
+  color: rgba(4, 22, 84, 0.28);
+  font-style: italic;
+  flex: 0 0 auto;
+  text-align: center;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+/* More side — dimmed before flip, vivid after */
+#\31 9-move-selfhelp .flip-more {
+  font-weight: 800;
+  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
+  color: rgba(4, 22, 84, 0.30);
+  text-align: right;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+/* Flipped state — less dims, more pops to navy */
+#\31 9-move-selfhelp .flip-row.is-flipped .flip-less {
+  color: rgba(4, 22, 84, 0.28);
+  opacity: 0.55;
+}
+#\31 9-move-selfhelp .flip-row.is-flipped .flip-more {
+  color: var(--navy, #041654);
+}
+#\31 9-move-selfhelp .flip-row.is-flipped .flip-arrow {
+  color: var(--navy, #041654);
+}
+#\31 9-move-selfhelp .flip-row.is-flipped {
+  background: rgba(4, 22, 84, 0.10);
+  border-color: rgba(4, 22, 84, 0.20);
+}
+
+/* ── Media shift table — From / To ──────────────────────────────────── */
+#\31 9-move-selfhelp .msh-shift {
+  flex: 0 0 auto;
+}
+
+#\31 9-move-selfhelp .msh-shift__head {
+  margin: 0 0 clamp(6px, 0.9vh, 10px);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.50);
+}
+
+#\31 9-move-selfhelp .msh-shift__list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#\31 9-move-selfhelp .msh-shift__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 1.2vw, 16px);
+  padding: clamp(6px, 0.9vh, 10px) clamp(10px, 1.4vw, 16px);
+  background: rgba(4, 22, 84, 0.05);
+  border-left: 2px solid rgba(4, 22, 84, 0.14);
+}
+
+#\31 9-move-selfhelp .msh-shift__from {
+  font-size: clamp(0.78rem, 0.88vw, 0.9rem);
+  font-weight: 600;
+  color: rgba(4, 22, 84, 0.46);
+  display: block;
+}
+
+#\31 9-move-selfhelp .msh-shift__to {
+  font-size: clamp(0.78rem, 0.88vw, 0.9rem);
+  font-weight: 800;
+  color: var(--navy, #041654);
+  display: block;
+  margin: 0;
+  text-align: left;
+}
+
+/* ── Narrow / portrait: stack columns ──────────────────────────────── */
+@media (max-width: 860px) {
+  #\31 9-move-selfhelp .msh-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2.8vh, 28px);
+    align-items: start;
+    padding: clamp(56px, 8vh, 80px) clamp(22px, 5.5vw, 56px) clamp(24px, 4vh, 48px);
+    min-height: 100svh;
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+  }
+  #\31 9-move-selfhelp .msh-left {
+    gap: clamp(12px, 1.8vh, 20px);
+    justify-content: flex-start;
+  }
+  #\31 9-move-selfhelp .msh-right {
+    justify-content: flex-start;
+  }
+  #\31 9-move-selfhelp .msh-title {
+    font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+}
+
+/* ── Short viewports: compress vertical gaps ────────────────────────── */
+@media (max-height: 680px) {
+  #\31 9-move-selfhelp .msh-grid {
+    padding-top: clamp(36px, 5vh, 52px);
+    padding-bottom: clamp(18px, 2.8vh, 32px);
+    gap: clamp(16px, 2.2vw, 36px);
+  }
+  #\31 9-move-selfhelp .flip-row {
+    padding: 8px clamp(10px, 1.2vw, 16px);
+  }
+  #\31 9-move-selfhelp .msh-shift__row {
+    padding: 5px clamp(8px, 1.2vw, 14px);
+  }
+}
+
+/* ── Reduced motion: kill transitions ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\31 9-move-selfhelp .flip-row,
+  #\31 9-move-selfhelp .flip-less,
+  #\31 9-move-selfhelp .flip-more,
+  #\31 9-move-selfhelp .flip-arrow {
+    transition: none;
+  }
 }

@@ -69,10 +69,20 @@ const DATA_FILES = {
 /** A step's "try it" hint may appear after this dwell at focus (advisory only). */
 const HINT_DWELL_MS = 1200;
 
-/** Eased progress: how fast `progress` chases the target index per frame. */
-const PROGRESS_EASE = 0.12;
-/** Below this gap we snap progress to the target (kills sub-pixel drift). */
-const SNAP_EPSILON = 0.0008;
+/**
+ * TIME-BASED TRANSITION TWEEN (replaces the old frame-rate-dependent fractional
+ * ease). A gesture commits ONE discrete `target` step; the engine then tweens
+ * `progress` from where it was to that single target over a fixed DURATION with
+ * a profile-specific easing curve. Because the tween interpolates between a fixed
+ * `from` and a fixed `to` (one step apart, never re-aimed mid-flight), the eased
+ * progress is monotonic and CANNOT overshoot a step — the double-jump is
+ * structurally impossible regardless of frame rate or trackpad momentum.
+ *
+ * Durations are LONG and CINEMATIC (client priority): each profile owns its own
+ * duration in the 1.0–1.6s band so the depth-travel reads as a slow, deliberate
+ * fly-through, not a snap.
+ */
+const TRANSITION_DURATION_DEFAULT_MS = 1200;
 
 /** Z-axis stage geometry — TRUE FLY-THROUGH model (Z-AXIS-JOURNEY.md §1).
  *
@@ -97,11 +107,14 @@ const STAGE_BLUR_MAX = 8;    // px blur on a fully-receded/approaching stage
 /** Stages further than this many steps from focus are not rendered (perf). */
 const RENDER_WINDOW = 2;
 
-/** Input normalisation — one discrete step per gesture, never a runaway. */
-const WHEEL_THRESHOLD = 36;    // accumulated |deltaY| to commit one step
-const WHEEL_COOLDOWN_MS = 540; // min time between committed wheel steps
-const WHEEL_IDLE_MS = 90;      // gap with no wheel events = one gesture has ended
-const TOUCH_THRESHOLD = 56;    // px swipe to commit one step
+/** Input normalisation — one discrete step per gesture, never a runaway.
+ *  Cooldown is held to roughly the transition length so a step always fully
+ *  resolves before the next is allowed to commit (smooth, deterministic). */
+const WHEEL_THRESHOLD = 40;     // accumulated |deltaY| to commit one step
+const WHEEL_COOLDOWN_MS = 760;  // min time between committed wheel steps (~transition length)
+const WHEEL_IDLE_MS = 110;      // gap with no wheel events = one gesture has ended
+const TOUCH_THRESHOLD = 56;     // px swipe to commit one step
+const KEY_COOLDOWN_MS = 520;    // min time between key-driven steps (debounce held keys)
 
 // ── Fetch helpers ────────────────────────────────────────────────────────────
 
@@ -197,80 +210,132 @@ const loadData = async () => {
  * profile degrades to a plain opacity cross-fade (no Z, scale, blur, rotate).
  */
 
-/** easeOutQuad on |d| clamped 0→1: smooth start at focus, quick departure. */
-const easeDepth = (ad) => 1 - Math.pow(1 - clamp(ad, 0, 1), 2);
-
 /**
- * Build a depth profile from tunable geometry. Keeps all five profiles DRY:
- * they differ only by these numbers (+ an optional rotate term).
- * @param {{zLeave:number, zDeep:number, scaleLeave:number, scaleFar:number,
- *          blur:number, fadeLeave:number, fadeArrive:number,
- *          rotZ?:number, rotX?:number}} cfg
- * @returns {(d:number)=>{transform:string, opacity:number, blur:number}}
+ * SPATIAL EASING — how a stage's distance |d| maps to its depth "phase" t∈0→1.
+ * This shapes the SHAPE of the fly-through (where the stage spends its time in
+ * Z), distinct from the temporal tween easing (which shapes the speed over the
+ * 1.0–1.6s). Each profile picks one so the profiles genuinely DIFFER in feel.
  */
-const makeProfile = (cfg) => (d) => {
-  const ad = Math.abs(d);
-  const t = easeDepth(ad);
-  let z;
-  let scale;
-  let opacity;
-
-  if (d <= 0) {
-    // LEAVING: comes TOWARD the camera, grows past the frame, fades + blurs.
-    z = cfg.zLeave * t;
-    scale = 1 + (cfg.scaleLeave - 1) * t;
-    opacity = clamp(1 - ad * cfg.fadeLeave, 0, 1);
-  } else {
-    // ARRIVING: emerges from deep −Z, grows small→full, sharpens + fades in.
-    z = -cfg.zDeep * t;
-    scale = cfg.scaleFar + (1 - cfg.scaleFar) * (1 - t);
-    opacity = clamp(1 - d * cfg.fadeArrive, 0, 1);
-  }
-
-  let rotate = '';
-  if (cfg.rotZ || cfg.rotX) {
-    // Swirl is strongest at depth, eases to flat (0) at focus. Leaving stage
-    // swirls one way, arriving the other, for a gentle orbital hand-off.
-    const dir = d <= 0 ? 1 : -1;
-    const rz = (cfg.rotZ || 0) * t * dir;
-    const rx = (cfg.rotX || 0) * t * dir;
-    rotate = ` rotateZ(${rz.toFixed(2)}deg) rotateX(${rx.toFixed(2)}deg)`;
-  }
-
-  return {
-    transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${scale.toFixed(4)})${rotate}`,
-    opacity,
-    blur: cfg.blur * t,
-  };
+const spatialEases = {
+  // easeOutQuad — leaves focus crisply, decelerates into deep space.
+  outQuad: (ad) => 1 - Math.pow(1 - ad, 2),
+  // easeInOutCubic — slow at focus AND at depth; the long, melting dissolve.
+  inOutCubic: (ad) => (ad < 0.5 ? 4 * ad * ad * ad : 1 - Math.pow(-2 * ad + 2, 3) / 2),
+  // easeInCubic — clings to focus then accelerates hard away: the dramatic punch.
+  inCubic: (ad) => ad * ad * ad,
+  // easeOutBack-ish — overshoots subtly at depth for the orbital swirl settle.
+  outBack: (ad) => {
+    const c = 1.18;
+    const p = ad - 1;
+    return 1 + (c + 1) * p * p * p + c * p * p;
+  },
+  // easeInExpo — sits still then scatters violently outward: the outro disperse.
+  inExpo: (ad) => (ad <= 0 ? 0 : Math.pow(2, 8 * ad - 8)),
 };
 
-/** The registry of named depth profiles. "flythrough" is the default/base. */
+/**
+ * Build a depth profile from tunable geometry + its own spatial easing.
+ * Keeps all five profiles DRY: they differ by these numbers, the spatial
+ * easing curve, an optional rotate term, AND a per-profile transition duration.
+ * @param {{zLeave:number, zDeep:number, scaleLeave:number, scaleFar:number,
+ *          blur:number, fadeLeave:number, fadeArrive:number,
+ *          ease?:(ad:number)=>number, rotZ:number, rotX:number,
+ *          durationMs:number}} cfg
+ * @returns {((d:number)=>{transform:string, opacity:number, blur:number})
+ *           & { durationMs:number }}
+ */
+const makeProfile = (cfg) => {
+  const ease = cfg.ease || spatialEases.outQuad;
+  const fn = (d) => {
+    const ad = clamp(Math.abs(d), 0, 1);
+    const t = clamp(ease(ad), 0, 1.25); // outBack may exceed 1 briefly (overshoot)
+    let z;
+    let scale;
+    let opacity;
+
+    if (d <= 0) {
+      // LEAVING: comes TOWARD the camera, grows past the frame, fades + blurs.
+      z = cfg.zLeave * t;
+      scale = 1 + (cfg.scaleLeave - 1) * t;
+      opacity = clamp(1 - Math.abs(d) * cfg.fadeLeave, 0, 1);
+    } else {
+      // ARRIVING: emerges from deep −Z, grows small→full, sharpens + fades in.
+      z = -cfg.zDeep * t;
+      scale = cfg.scaleFar + (1 - cfg.scaleFar) * (1 - t);
+      opacity = clamp(1 - d * cfg.fadeArrive, 0, 1);
+    }
+
+    let rotate = '';
+    if (cfg.rotZ || cfg.rotX) {
+      // Swirl is strongest at depth, eases to flat (0) at focus. Leaving stage
+      // swirls one way, arriving the other, for a gentle orbital hand-off.
+      const dir = d <= 0 ? 1 : -1;
+      const rz = (cfg.rotZ || 0) * t * dir;
+      const rx = (cfg.rotX || 0) * t * dir;
+      rotate = ` rotateZ(${rz.toFixed(2)}deg) rotateX(${rx.toFixed(2)}deg)`;
+    }
+
+    return {
+      transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${Math.max(scale, 0.01).toFixed(4)})${rotate}`,
+      opacity,
+      blur: cfg.blur * Math.min(t, 1),
+    };
+  };
+  fn.durationMs = cfg.durationMs;
+  return fn;
+};
+
+/**
+ * The registry of named depth PROFILES — five genuinely-distinct fly-throughs.
+ * Each owns geometry + a spatial easing curve + a duration, so consecutive
+ * steps (assigned alternating profiles in the manifest) read differently.
+ *
+ *   flythrough        the default pass-through — brisk, crisp, outQuad. 1.10s.
+ *   dissolve-through  soft + slow: short Z, gentle scale, LONG inOutCubic fade,
+ *                     heavy blur — a stage that melts into depth. 1.50s.
+ *   zoom-resolve      dramatic deep zoom (the segments compass): big +Z punch on
+ *                     leave (inCubic clings then accelerates), arrives from very
+ *                     far and very small. 1.60s.
+ *   orbit-tilt        a subtle swirl: base fly-through + rotateZ/rotateX with an
+ *                     outBack settle so it overshoots and eases to flat. 1.40s.
+ *   disperse          the outro: extreme +Z + scale, inExpo so it sits still then
+ *                     scatters violently apart into depth. 1.50s.
+ */
 const TRANSITIONS = {
   flythrough: makeProfile({
     zLeave: STAGE_Z_LEAVE, zDeep: STAGE_Z_DEEP,
     scaleLeave: STAGE_SCALE_LEAVE, scaleFar: STAGE_SCALE_FAR,
     blur: STAGE_BLUR_MAX, fadeLeave: 1.6, fadeArrive: 1.4,
+    ease: spatialEases.outQuad, rotZ: 0, rotX: 0,
+    durationMs: 1100,
   }),
   'dissolve-through': makeProfile({
     zLeave: 420, zDeep: 1100,
-    scaleLeave: 1.45, scaleFar: 0.55,
-    blur: 13, fadeLeave: 1.05, fadeArrive: 0.95, // long, soft fade
+    scaleLeave: 1.42, scaleFar: 0.56,
+    blur: 15, fadeLeave: 1.0, fadeArrive: 0.92, // long, soft fade
+    ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
+    durationMs: 1500,
   }),
   'zoom-resolve': makeProfile({
-    zLeave: 900, zDeep: 2100,
-    scaleLeave: 2.6, scaleFar: 0.22, // dramatic deep zoom
-    blur: 10, fadeLeave: 1.7, fadeArrive: 1.3,
+    zLeave: 980, zDeep: 2200,
+    scaleLeave: 2.7, scaleFar: 0.20, // dramatic deep zoom
+    blur: 11, fadeLeave: 1.7, fadeArrive: 1.3,
+    ease: spatialEases.inCubic, rotZ: 0, rotX: 0,
+    durationMs: 1600,
   }),
   'orbit-tilt': makeProfile({
-    zLeave: 640, zDeep: 1400,
-    scaleLeave: 1.8, scaleFar: 0.42,
+    zLeave: 660, zDeep: 1400,
+    scaleLeave: 1.78, scaleFar: 0.42,
     blur: 9, fadeLeave: 1.5, fadeArrive: 1.35,
-    rotZ: 7, rotX: 5, // subtle swirl, eases to flat at focus
+    ease: spatialEases.outBack, rotZ: 8, rotX: 5, // swirl, overshoots to flat
+    durationMs: 1400,
   }),
   disperse: makeProfile({
-    zLeave: 1150, zDeep: 1600,
-    scaleLeave: 3.2, scaleFar: 0.5, // stage scatters apart into depth
-    blur: 14, fadeLeave: 2.4, fadeArrive: 1.2, // very fast scatter-fade
+    zLeave: 1200, zDeep: 1650,
+    scaleLeave: 3.3, scaleFar: 0.5, // stage scatters apart into depth
+    blur: 16, fadeLeave: 2.3, fadeArrive: 1.2, // violent scatter-fade
+    ease: spatialEases.inExpo, rotZ: 0, rotX: 0,
+    durationMs: 1500,
   }),
 };
 
@@ -278,6 +343,10 @@ const DEFAULT_TRANSITION = 'flythrough';
 
 /** Resolve a manifest transition name to a profile, falling back to default. */
 const profileFor = (name) => TRANSITIONS[name] || TRANSITIONS[DEFAULT_TRANSITION];
+
+/** Cubic-bezier-ish TEMPORAL easing for the tween clock (speed over time).
+ *  easeInOutCubic: a slow, cinematic ramp-in and settle — never a linear slide. */
+const easeTween = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 
 /**
  * Pure function: a stage's distance from progress → its 3D transform, opacity
@@ -423,6 +492,10 @@ const createJourney = (manifest) => {
 
   // Resolve each step's depth profile once (pure functions; reused per frame).
   const profiles = manifest.map((entry) => profileFor(entry.transition));
+  // Each step's transition duration (ms) — owned by its profile. When stepping
+  // we use the duration of the profile that owns the MOVE (the higher-index of
+  // the two stages, i.e. the one being revealed / the direction we travel into).
+  const durations = profiles.map((p) => p.durationMs || TRANSITION_DURATION_DEFAULT_MS);
 
   const indicator = document.getElementById('journeyIndicator');
   const hint = document.getElementById('journeyHint');
@@ -444,6 +517,12 @@ const createJourney = (manifest) => {
   let hintTimer = null;
   let firstArrivalDone = false;
   let cueUpdate = null; // set once the cover scroll cue is mounted
+
+  // Time-based tween state: a step tweens `progress` from `tweenFrom` to
+  // `target` (exactly one index away) over `tweenDur` ms with eased timing.
+  let tweenFrom = 0;
+  let tweenStart = 0;
+  let tweenDur = TRANSITION_DURATION_DEFAULT_MS;
 
   // ── Advisory hint ────────────────────────────────────────────────────────
   const refreshMeta = () => {
@@ -529,10 +608,20 @@ const createJourney = (manifest) => {
     if (cueUpdate) cueUpdate();
   };
 
-  // ── rAF ease loop ──────────────────────────────────────────────────────────
-  const loop = () => {
-    const gap = target - progress;
-    if (Math.abs(gap) < SNAP_EPSILON) {
+  // ── rAF TIME-BASED tween loop ──────────────────────────────────────────────
+  // Eased interpolation from `tweenFrom` → `target` over `tweenDur`. Because
+  // both ends are fixed (and one step apart) and the clock is monotonic, the
+  // eased `progress` is monotonic too and CANNOT overshoot the target step —
+  // no frame-rate or momentum effect can produce a double-jump.
+  const loop = (nowArg) => {
+    const now = nowArg || performance.now();
+    const elapsed = now - tweenStart;
+    const p = tweenDur > 0 ? clamp(elapsed / tweenDur, 0, 1) : 1;
+    const eased = easeTween(p);
+    progress = tweenFrom + (target - tweenFrom) * eased;
+    render();
+
+    if (p >= 1) {
       progress = target;
       render();
       dispatchArrival(target);
@@ -540,10 +629,8 @@ const createJourney = (manifest) => {
       raf = 0;
       return;
     }
-    progress += gap * PROGRESS_EASE;
-    render();
-    // Fire arrival as soon as we settle near the target stage.
-    if (Math.abs(gap) < 0.5) dispatchArrival(target);
+    // Fire arrival once the focused stage is essentially resolved (last ~15%).
+    if (p > 0.85) dispatchArrival(target);
     raf = requestAnimationFrame(loop);
   };
 
@@ -554,10 +641,18 @@ const createJourney = (manifest) => {
   };
 
   // ── Discrete navigation (soft — always advances) ───────────────────────────
+  // One call = one committed step. Re-aims the tween from the CURRENT eased
+  // `progress` to the new `target`, so a mid-flight input retargets smoothly
+  // without ever skipping past a step.
   const goTo = (index) => {
     const next = clamp(index, 0, stepCount - 1);
     if (next === target) return;
     target = next;
+    tweenFrom = progress;
+    tweenStart = performance.now();
+    // The MOVE's feel/duration belongs to the stage we are travelling into.
+    // Reduced motion: a brief cross-fade, never a long cinematic tween.
+    tweenDur = reduced ? 260 : (durations[next] || TRANSITION_DURATION_DEFAULT_MS);
     refreshMeta();
     scheduleHint();
     kick();
@@ -654,6 +749,15 @@ const createJourney = (manifest) => {
     );
 
     // KEYS — ArrowDown / Space / PageDown forward; ArrowUp / PageUp back.
+    // A cooldown debounces auto-repeat from a held key to one step per cadence,
+    // so the keyboard matches the one-gesture-one-step contract of wheel/touch.
+    let lastKeyStep = 0;
+    const keyStep = (fn) => {
+      const now = performance.now();
+      if (now - lastKeyStep < KEY_COOLDOWN_MS) return;
+      lastKeyStep = now;
+      fn();
+    };
     document.addEventListener('keydown', (e) => {
       if (e.defaultPrevented) return;
       const tag = (e.target?.tagName || '').toLowerCase();
@@ -664,12 +768,12 @@ const createJourney = (manifest) => {
         case ' ':
         case 'Spacebar':
           e.preventDefault();
-          goNext();
+          keyStep(goNext);
           break;
         case 'ArrowUp':
         case 'PageUp':
           e.preventDefault();
-          goBack();
+          keyStep(goBack);
           break;
         case 'Home':
           e.preventDefault();

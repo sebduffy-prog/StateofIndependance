@@ -1,21 +1,59 @@
 /**
- * 19-move-selfhelp.js — WORKFLOW A branded placeholder (see docs/STRUCTURE-V2.md).
+ * 19-move-selfhelp.js — Move 03: Ride the social self-help wave.
  *
- * Renders nothing extra: the fragment already carries the on-brand-world
- * title, eyebrow and "coming in build B" note. This module only wires the
- * arrival signature (character->title reveal + cascade) so the placeholder
- * behaves like a real stage when it reaches focus. Build B replaces this with
- * the real content + marquee interaction.
+ * Warm gradient ground. Black on warm. Full-bleed one screen.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\31 9-move-selfhelp.
+ * THE STAGE:
+ *   LEFT  — move header + WLV lesson + quote card
+ *   RIGHT — move-03.svg icon + flipReveal less→more + media shift table
  *
- * @param {HTMLElement} rootEl  the <section class="journey-stage" id="19-move-selfhelp">
- * @param {{ survey:object|null, segments:object|null, tgi:object|null,
- *           journey:{ gate():void, ready():void } }} data
+ * Less→More rows (STORY.md §07 Move 03 slide 59, verbatim):
+ *   Dependency         → Independency
+ *   Dictation from the brand → Walk throughs on YT & TikTok
+ *   Broadcast to audiences   → Self-help contexts
+ *
+ * Contract: docs/CONTRACT.md. CSS scoped to #\31 9-move-selfhelp.
+ *
+ * @param {HTMLElement} rootEl  the <section id="19-move-selfhelp">
+ * @param {{ survey, segments, tgi, journey }} data
  */
 import { arrival } from '../lib/experiential.js';
+import { flipReveal } from '../lib/interactions.js';
 
-export default function init(rootEl) {
-  // Re-play the arrival each time this stage reaches focus (idempotent).
-  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
+// Less→More pairs verbatim from STORY.md §07 Move 03 slide 59
+const FLIP_ROWS = [
+  { less: 'Dependency',            more: 'Independency' },
+  { less: 'Dictation from the brand', more: 'Walk throughs on YT & TikTok' },
+  { less: 'Broadcast to audiences', more: 'Self-help contexts' },
+];
+
+export default function init(rootEl, data) {
+  // Re-play the arrival beat on every visit — idempotent.
+  rootEl.addEventListener('chapter:arrive', (e) => {
+    arrival(rootEl, e.detail);
+  });
+
+  const flipHost = rootEl.querySelector('[data-flip]');
+  if (!flipHost) return;
+
+  let flippedCount = 0;
+
+  flipReveal(flipHost, {
+    rows: FLIP_ROWS,
+    fromToLabels: ['Less', 'More'],
+    onFlip: (_index, flipped) => {
+      if (flipped) {
+        flippedCount += 1;
+      } else {
+        flippedCount = Math.max(0, flippedCount - 1);
+      }
+      // Mark complete once all rows are flipped.
+      if (flippedCount >= FLIP_ROWS.length) {
+        data && data.journey && data.journey.ready();
+      }
+    },
+  });
+
+  // Advisory hint: tell the visitor there is an interaction to try.
+  data && data.journey && data.journey.gate();
 }

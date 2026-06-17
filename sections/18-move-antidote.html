@@ -1,17 +1,100 @@
-<div class="chapter-inner stage-placeholder move-antidote-root on-warm" data-move-antidote-root>
+<!-- 18-move-antidote.html — Move 02: BE THE TRUSTED ANTIDOTE.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
 
-  <!-- WORKFLOW A SCAFFOLD — branded placeholder. Real content lands in build B
-       (see docs/STRUCTURE-V2.md). Full-bleed, balanced, arrival wired. -->
-  <span class="move-antidote-orbit si-orbit" aria-hidden="true"></span>
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — move number + eyebrow + scramble title + WLV lesson + quote card.
+     RIGHT — 29pt trust spread stat + move-02.svg icon + flipReveal less→more
+             + M&S / Boots brand evidence cards.
+     Both columns stretch the full height; no dead space in any quadrant.
 
-  <header class="move-antidote-head">
-    <p class="vccp-eyebrow" data-arrival>Move two of five</p>
-    <h2 class="move-antidote-title si-display si-display--black"
-        data-arrival data-arrival-scramble>Be the trusted antidote</h2>
-    <p class="move-antidote-note si-measure--tight" data-arrival>
-      This step is scaffolded. Its content and interaction arrive in the next build.
-    </p>
-  </header>
+     CHARACTER→TITLE: data-arrival / data-arrival-scramble on headline elements;
+     arrival() wired to chapter:arrive in JS.
 
-  <span class="move-antidote-dot" data-youdot-anchor aria-hidden="true"></span>
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\31 8-move-antidote. -->
+
+<div class="chapter-inner ma-root on-warm" data-ma-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="ma-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="ma-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="ma-grid">
+
+    <!-- LEFT COLUMN — move header + lesson + quote -->
+    <div class="ma-left">
+      <header class="ma-head">
+        <p class="vccp-eyebrow ma-eyebrow" data-arrival>
+          <span class="ma-movenum" aria-hidden="true">02</span>
+          Move two of five
+        </p>
+        <h2 class="ma-title" data-arrival>
+          Be the trusted<br><em class="ma-accent" data-arrival-scramble>antidote</em>
+        </h2>
+        <p class="ma-lesson" data-arrival>
+          Earn people's trust by being the honest, transparent alternative
+          when they feel let down by everyone else.
+        </p>
+      </header>
+
+      <!-- Quote card — .soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card ma-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="ma-quote__text">
+          "I do know that calling the police would probably be a complete waste of
+          time. However I do have faith in the sense that maybe if I did my own
+          investigations, I would have to knock on my neighbours' doors and ask if
+          they've got Ring camera footage. So I'd probably do half their job for them
+          before actually calling them."
+        </p>
+        <footer class="ma-quote__attr">London, 42 · Retreater</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — trust spread stat + icon + interaction + brand cards -->
+    <aside class="ma-right" aria-label="Trusted antidote interaction: less to more">
+
+      <!-- Stat hero — 29-point trust spread -->
+      <div class="ma-stat-hero" data-arrival>
+        <!-- move-02.svg icon — navy+yellow flat language -->
+        <div class="ma-icon" aria-hidden="true">
+          <img src="assets/deck/icons/move-02.svg"
+               alt="Trusted antidote icon"
+               class="ma-icon__img" />
+        </div>
+        <div class="ma-stat">
+          <span class="ma-stat__num num" data-youdot-anchor
+                data-count-to="29" data-count-suffix=" pts">29 pts</span>
+          <span class="ma-stat__label">trust gap — NHS 53% to
+            Government 24%</span>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the marquee beat -->
+      <div class="ma-flip" data-flip
+           aria-label="Flip each row to reveal the brand shift"></div>
+
+      <!-- Brand evidence cards — M&S and Boots only -->
+      <div class="ma-brands" data-arrival aria-label="Brand examples">
+        <div class="soi-card ma-brand-card">
+          <p class="ma-brand-label">M&amp;S</p>
+          <p class="ma-brand-desc">Trusted quality in an era of own-label retreat — the honest standard that earns loyalty.</p>
+        </div>
+        <div class="soi-card ma-brand-card">
+          <p class="ma-brand-label">Boots</p>
+          <p class="ma-brand-desc">Health expertise made accessible — stepping in where institutional confidence has slipped.</p>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
 </div>

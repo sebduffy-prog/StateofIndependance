@@ -1,61 +1,427 @@
-/* 18-move-antidote.css — WORKFLOW A branded placeholder, scoped to #\31 8-move-antidote.
-   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
-   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+/* 18-move-antidote.css — Move 02: Be the trusted antidote.
+   Scoped entirely to #\31 8-move-antidote.
+   Warm gradient full-bleed ground. Black on warm palette.
+   Full-bleed, one-screen: 100vw × 100svh with overflow hidden.
+   Two-column balanced layout:
+     LEFT  = move header + lesson + quote card
+     RIGHT = 29-pt trust spread stat + icon + flipReveal + brand evidence cards
+   Square corners, no underlines, no parallelogram, tabular nums.
+   Reduced-motion safe. */
 
-#\31 8-move-antidote .move-antidote-root {
+/* ── Override global chapter-inner so ma-root owns ALL layout geometry ─ */
+#\31 8-move-antidote .chapter-inner {
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Root — fills the section shell (100vw × 100svh) ───────────────── */
+#\31 8-move-antidote .ma-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #FFA764 0%, #FBC100 40%, #FFC002 70%, #FF8598 100%);
+}
+
+/* ── Orbit decoration — connective tissue, behind all content ───────── */
+#\31 8-move-antidote .ma-orbit {
+  position: absolute;
+  bottom: -22vh;
+  right: -14vw;
+  width: clamp(380px, 50vw, 820px);
+  height: clamp(380px, 50vw, 820px);
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+#\31 8-move-antidote .ma-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.08);
+}
+#\31 8-move-antidote .ma-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.05);
+}
+
+/* ── Brand stamp top-right ──────────────────────────────────────────── */
+#\31 8-move-antidote .ma-mark {
+  position: absolute;
+  top: clamp(16px, 2.4vh, 32px);
+  right: clamp(20px, 4vw, 60px);
+  height: 28px;
+  width: auto;
+  opacity: 0.55;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Two-column grid — fills the full height of the viewport ────────── */
+#\31 8-move-antidote .ma-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: stretch;
+  gap: clamp(28px, 4.5vw, 72px);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(44px, 6vh, 72px) clamp(36px, 6.5vw, 108px) clamp(32px, 4.2vh, 56px);
+  box-sizing: border-box;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+}
+
+/* ── LEFT column ────────────────────────────────────────────────────── */
+#\31 8-move-antidote .ma-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.2vh, 28px);
+  min-width: 0;
+  justify-content: space-between;
+}
+
+#\31 8-move-antidote .ma-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 14px);
+}
+
+/* Eyebrow — navy, reduced opacity for hierarchy on warm */
+#\31 8-move-antidote .ma-eyebrow {
+  color: rgba(4, 22, 84, 0.62);
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Move stage number — large tabular navy numerals (book-cover energy) */
+#\31 8-move-antidote .ma-movenum {
+  font-weight: 900;
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy, #041654);
+  line-height: 1;
+}
+
+/* Display title — black on warm, book-cover voice */
+#\31 8-move-antidote .ma-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.93;
+  color: var(--ink, #000);
+}
+
+/* Italic accent word — navy on warm for one focal pop */
+#\31 8-move-antidote .ma-accent {
+  color: var(--navy, #041654);
+  font-style: italic;
+}
+
+/* WLV lesson — the slide 44 lesson line */
+#\31 8-move-antidote .ma-lesson {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+  line-height: 1.46;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 46ch;
+}
+
+/* ── Quote card — .soi-card: cream, square corners, one lift device ─── */
+#\31 8-move-antidote .ma-quote {
+  margin: 0;
+  padding: clamp(18px, 2.4vw, 32px);
+  background: var(--cream, #F0EDE7);
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.07);
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.4vh, 26px);
-  width: 100%;
-  height: 100%;
-  padding-inline: clamp(28px, 7vw, 120px);
+  gap: clamp(10px, 1.4vh, 16px);
+  flex: 0 0 auto;
 }
 
-#\31 8-move-antidote .move-antidote-head {
-  max-width: 22ch;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.6vh, 18px);
-}
-
-#\31 8-move-antidote .move-antidote-title {
-  margin: 0;
-  line-height: 0.96;
-}
-
-#\31 8-move-antidote .move-antidote-note {
-  margin: 0;
-  max-width: 34ch;
+#\31 8-move-antidote .ma-quote .soi-card__mark {
+  position: absolute;
+  top: clamp(14px, 1.8vh, 24px);
+  right: clamp(14px, 1.8vw, 24px);
+  height: 24px;
+  width: auto;
   opacity: 0.72;
 }
 
-/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
-   so no third of the frame is an accidental void. */
-#\31 8-move-antidote .move-antidote-orbit {
-  position: absolute;
-  top: 50%;
-  right: clamp(-18vw, -6vw, 0px);
-  width: clamp(320px, 42vw, 640px);
-  height: clamp(320px, 42vw, 640px);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
-  pointer-events: none;
-}
-#\31 8-move-antidote .move-antidote-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+#\31 8-move-antidote .ma-quote__text {
+  margin: 0;
+  font-style: italic;
+  font-size: clamp(0.82rem, 0.95vw, 0.96rem);
+  line-height: 1.58;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 48ch;
+  /* pad right so text never overlaps the lockup mark */
+  padding-right: clamp(40px, 5vw, 64px);
 }
 
-#\31 8-move-antidote .move-antidote-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
+#\31 8-move-antidote .ma-quote__attr {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.54);
+}
+
+/* ── RIGHT column ───────────────────────────────────────────────────── */
+#\31 8-move-antidote .ma-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 28px);
+  min-width: 0;
+  justify-content: center;
+}
+
+/* Stat hero — icon + big number + label */
+#\31 8-move-antidote .ma-stat-hero {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 32px);
+}
+
+/* move-02.svg icon — navy+yellow flat icon language */
+#\31 8-move-antidote .ma-icon {
+  flex: 0 0 auto;
+  width: clamp(52px, 6.5vw, 88px);
+  height: clamp(52px, 6.5vw, 88px);
+  color: var(--navy, #041654);
+}
+
+#\31 8-move-antidote .ma-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Tint the SVG to navy */
+  filter: brightness(0) saturate(100%) invert(8%) sepia(52%) saturate(3500%) hue-rotate(222deg) brightness(80%);
+}
+
+/* Stat cluster — number + label */
+#\31 8-move-antidote .ma-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#\31 8-move-antidote .ma-stat__num {
+  display: block;
+  font-weight: 900;
+  font-size: clamp(5rem, 10vw, 9.6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy, #041654);
+}
+
+#\31 8-move-antidote .ma-stat__label {
+  display: block;
+  font-weight: 600;
+  font-size: clamp(0.82rem, 0.96vw, 0.98rem);
+  line-height: 1.42;
+  color: rgba(4, 22, 84, 0.72);
+  max-width: 28ch;
+}
+
+/* ── flipReveal interaction (class hooks from interactions.js) ─────── */
+#\31 8-move-antidote .flip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+#\31 8-move-antidote .flip-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 1.6vw, 20px) clamp(5px, 0.8vh, 9px);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.48);
+}
+
+#\31 8-move-antidote .flip-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 16px);
+  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.6vw, 20px);
+  background: rgba(4, 22, 84, 0.06);
+  border: 1px solid rgba(4, 22, 84, 0.10);
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background var(--dur-micro, 180ms) ease,
+    border-color var(--dur-micro, 180ms) ease;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 2px;
+  font-family: var(--font-sans);
+}
+#\31 8-move-antidote .flip-row:hover,
+#\31 8-move-antidote .flip-row:focus-visible {
+  background: rgba(4, 22, 84, 0.10);
+  border-color: rgba(4, 22, 84, 0.22);
+  outline: none;
+}
+#\31 8-move-antidote .flip-row:focus-visible {
+  border-color: var(--navy, #041654);
+  box-shadow: 0 0 0 2px rgba(4, 22, 84, 0.24);
+}
+
+/* Less side — shown before flip */
+#\31 8-move-antidote .flip-less {
+  font-weight: 700;
+  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
+  color: rgba(4, 22, 84, 0.54);
+  transition: color var(--dur-micro, 180ms) ease,
+              opacity var(--dur-micro, 180ms) ease;
+}
+
+#\31 8-move-antidote .flip-arrow {
+  font-size: 0.78rem;
+  color: rgba(4, 22, 84, 0.28);
+  font-style: italic;
+  flex: 0 0 auto;
+  text-align: center;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+/* More side — dimmed before flip, vivid after */
+#\31 8-move-antidote .flip-more {
+  font-weight: 800;
+  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
+  color: rgba(4, 22, 84, 0.30);
+  text-align: right;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+/* Flipped state — less dims, more pops to navy */
+#\31 8-move-antidote .flip-row.is-flipped .flip-less {
+  color: rgba(4, 22, 84, 0.28);
+  opacity: 0.55;
+}
+#\31 8-move-antidote .flip-row.is-flipped .flip-more {
+  color: var(--navy, #041654);
+}
+#\31 8-move-antidote .flip-row.is-flipped .flip-arrow {
+  color: var(--navy, #041654);
+}
+#\31 8-move-antidote .flip-row.is-flipped {
+  background: rgba(4, 22, 84, 0.10);
+  border-color: rgba(4, 22, 84, 0.20);
+}
+
+/* ── Brand evidence cards — M&S and Boots ───────────────────────────── */
+#\31 8-move-antidote .ma-brands {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 1.2vw, 14px);
+  width: 100%;
+}
+
+#\31 8-move-antidote .ma-brand-card {
+  padding: clamp(12px, 1.6vw, 20px);
+  background: var(--cream, #F0EDE7);
+  border-radius: 0;
+  box-shadow: 0 6px 20px rgba(4, 22, 84, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#\31 8-move-antidote .ma-brand-label {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(1.0rem, 1.4vw, 1.3rem);
+  letter-spacing: -0.02em;
+  color: var(--navy, #041654);
+  font-variant-numeric: tabular-nums;
+}
+
+#\31 8-move-antidote .ma-brand-desc {
+  margin: 0;
+  font-size: clamp(0.76rem, 0.88vw, 0.88rem);
+  line-height: 1.44;
+  color: var(--ink-soft, #1A1A1A);
+}
+
+/* ── Narrow / portrait: stack columns ──────────────────────────────── */
+@media (max-width: 860px) {
+  #\31 8-move-antidote .ma-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2.8vh, 28px);
+    align-items: start;
+    padding: clamp(56px, 8vh, 80px) clamp(22px, 5.5vw, 56px) clamp(24px, 4vh, 48px);
+    min-height: 100svh;
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+  }
+  #\31 8-move-antidote .ma-left {
+    gap: clamp(12px, 1.8vh, 20px);
+    justify-content: flex-start;
+  }
+  #\31 8-move-antidote .ma-right {
+    justify-content: flex-start;
+  }
+  #\31 8-move-antidote .ma-title {
+    font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\31 8-move-antidote .ma-stat__num {
+    font-size: clamp(4.2rem, 11vw, 6rem);
+  }
+}
+
+/* ── Short viewports: compress vertical gaps ────────────────────────── */
+@media (max-height: 680px) {
+  #\31 8-move-antidote .ma-grid {
+    padding-top: clamp(36px, 5vh, 52px);
+    padding-bottom: clamp(18px, 2.8vh, 32px);
+    gap: clamp(16px, 2.2vw, 36px);
+  }
+  #\31 8-move-antidote .ma-stat__num {
+    font-size: clamp(3.8rem, 7.5vw, 5.6rem);
+  }
+  #\31 8-move-antidote .flip-row {
+    padding: 8px clamp(10px, 1.2vw, 16px);
+  }
+  #\31 8-move-antidote .ma-brands {
+    gap: 6px;
+  }
+}
+
+/* ── Reduced motion: kill transitions ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\31 8-move-antidote .flip-row,
+  #\31 8-move-antidote .flip-less,
+  #\31 8-move-antidote .flip-more,
+  #\31 8-move-antidote .flip-arrow {
+    transition: none;
+  }
 }

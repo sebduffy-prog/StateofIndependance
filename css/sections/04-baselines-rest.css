@@ -1,80 +1,112 @@
 /* ============================================================
-   Step 04 — baselines: the rest.
-   Three table-stakes baselines on one composed cream screen.
-   Scoped to #04-baselines-rest via escaped #\30 4-baselines-rest.
+   Step 04 — Baselines: the rest.
+   Deal-seeking / anxiety / trading-down on one composed cream screen.
 
-   BRAND-WORLD-FINAL §7 (baselines register):
-   Cream editorial ground. Bold-black Poppins title, left-anchored,
-   one italic accent word. Tiny Challenger-Series lockup stamp
-   top-right. Tabular NAVY hero numbers. Three equal columns, each
-   a big number + one VARIED viz (lollipop / dot-plot / tug-of-war)
-   floating BACKGROUNDLESS on cream. Quiet square-chip pill filter
-   focuses one baseline at a time (marquee interaction). Full-bleed,
-   one viewport, no dead space. Square corners. No underlines. No
-   parallelogram. Reduced-motion safe.
+   Layout: two-column grid, 100vw × 100svh, full-bleed cream.
+   LEFT col (~40%): hero title + standfirst + pill filter + you-dot.
+   RIGHT col (~60%): three equal-height stacked data panels.
+
+   No dead space. No cream edge band. No internal scroll.
+   Square corners. No underlines. No parallelogram.
+   Reduced-motion safe. Keyboard accessible.
+
+   CSS scoped to #04-baselines-rest via escaped #\30 4-baselines-rest.
    ============================================================ */
 
-/* ── Stage ground — cream fills the full-bleed stage ──────── */
-#\30 4-baselines-rest.journey-stage {
-  background: var(--cream);
-  color: var(--on-cream);
-}
-
-/* ── chapter-inner: two-row layout that fills the full stage ─
-   Row 1 = compact header (sized to content)
-   Row 2 = the three-column data grid (grows to fill remaining)
-   Padding overrides the global chapter-inner defaults to keep
-   everything on one screen with no overflow.              ── */
+/* ── chapter-inner: two-column layout filling 100% of the stage ───────
+   Left ~40% carries the editorial weight; right ~60% carries data.
+   align-items: center centres both columns as a pair vertically so
+   the title cluster and the three data panels share the same midpoint.
+   Padding is the editorial outer margin (brand sheet §6).             ── */
 #\30 4-baselines-rest .chapter-inner {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-rows: auto 1fr;
-  gap: clamp(1rem, 2vh, 1.8rem);
+  grid-template-columns: 2fr 3fr;
+  grid-template-rows: 1fr;
+  gap: clamp(2.4rem, 4.5vw, 6rem);
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
-  /* Tighter vertical padding to maximise the data rows. */
-  padding-block: clamp(1.6rem, 4vh, 3.2rem);
+  /* Generous top padding frames content in the upper-centre zone.
+     Both columns use the same explicit height and align-self:start so
+     they share identical top and bottom edges.                        */
+  padding: clamp(2rem, 14vh, 9rem) clamp(2rem, 5.5vw, 7rem) clamp(1.6rem, 3vh, 2.8rem);
+  align-items: start;
 }
 
-/* ── Tiny lockup stamp — top-right, the book-cover position ─ */
+/* ── Tiny lockup stamp — absolute, top-right, the book-cover position ─ */
 #\30 4-baselines-rest .br-mark {
   position: absolute;
   top: clamp(16px, 2.8vh, 28px);
-  right: clamp(24px, 7vw, 120px);
-  height: clamp(22px, 2.4vw, 28px);
-  opacity: 0.85;
-  z-index: 2;
+  right: clamp(24px, 4.2vw, 72px);
+  height: clamp(20px, 2.2vw, 28px);
+  width: auto;
+  opacity: 0.82;
+  z-index: 3;
   pointer-events: none;
 }
 
-/* ── Header: compact, left-anchored, max two lines of headline ─ */
-#\30 4-baselines-rest .br-head {
+/* ──────────────────────────────────────────────────────────────────────
+   LEFT COLUMN — editorial weight
+   ────────────────────────────────────────────────────────────────────── */
+/* Left column: same explicit height as the right grid so both columns
+   share identical top and bottom edges. space-between distributes the
+   two groups: title-block anchors the top, copy-block anchors the bottom.
+   The space between them is intentional editorial breathing room.     */
+#\30 4-baselines-rest .br-left {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  max-width: 72ch;
+  gap: 0;
+  position: relative;
+  align-self: start;
+  justify-content: space-between;
+  height: clamp(420px, 68svh, 620px); /* must match .br-grid height */
 }
 
-#\30 4-baselines-rest .br-head .vccp-eyebrow {
-  margin-bottom: 0;
+/* Title group: eyebrow immediately above headline. */
+#\30 4-baselines-rest .br-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.3rem, 0.6vh, 0.6rem);
 }
 
-/* Display headline — tight, bold black, left-anchored. */
+/* Spacer: removed — no longer needed. */
+#\30 4-baselines-rest .br-left-spacer {
+  display: none;
+}
+
+/* Copy group: standfirst + filter immediately below the title. */
+#\30 4-baselines-rest .br-copy-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.0vh, 0.9rem);
+}
+
+#\30 4-baselines-rest .vccp-eyebrow {
+  margin: 0;
+}
+
+/* Display headline — Poppins 900, tight, bold black, three lines.
+   Sized to fill the left column width at 3 lines exactly.
+   At 1440px: 4.8vw ≈ 69px. Left col is ~487px.
+   "is the table" at ~55% char width ≈ 455px — safe within 487px.    */
 #\30 4-baselines-rest .br-headline {
   font-family: var(--font-sans);
   font-weight: 900;
-  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  font-size: clamp(2.8rem, 4.5vw, 5.8rem);
   line-height: 0.94;
   letter-spacing: -0.03em;
   margin: 0;
-  max-width: 24ch;
   color: var(--ink);
 }
 
-#\30 4-baselines-rest .br-headline span { display: block; }
+#\30 4-baselines-rest .br-headline span {
+  display: block;
+}
 
-/* The one italic accent word — slant is the accent, no box/underline. */
+/* The one italic accent word — Poppins italic, navy.
+   No box, no skew, no underline. The slant IS the accent.           */
 #\30 4-baselines-rest .br-accent {
   font-style: italic;
   color: var(--navy);
@@ -82,16 +114,16 @@
 
 #\30 4-baselines-rest .br-standfirst {
   margin: 0;
-  font-size: clamp(0.88rem, 1.05vw, 1.05rem);
+  font-size: clamp(0.88rem, 1.0vw, 1.0rem);
   font-weight: 500;
-  line-height: 1.44;
+  line-height: 1.52;
   color: var(--ink-soft);
-  max-width: 64ch;
+  max-width: 42ch;
 }
 
-/* ── Pill filter — square chips (the marquee interaction) ──── */
+/* ── Pill filter — square chips, the marquee interaction ──────────── */
 #\30 4-baselines-rest .br-filter {
-  margin-top: clamp(6px, 1vh, 12px);
+  margin-top: clamp(2px, 0.6vh, 8px);
 }
 
 #\30 4-baselines-rest .pillgroup {
@@ -100,26 +132,29 @@
   gap: clamp(4px, 0.5vw, 8px);
 }
 
+/* Square chips — no border-radius (always 0) per brand rules.
+   Navy border on default; navy fill on active. No underline.        */
 #\30 4-baselines-rest .pillgroup-chip {
   appearance: none;
-  border: 1px solid rgba(4, 22, 84, 0.28);
+  border: 1.5px solid rgba(4, 22, 84, 0.30);
   background: transparent;
   color: var(--navy);
-  font-family: inherit;
-  font-size: 0.76rem;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  padding: 0.36em 0.78em;
+  letter-spacing: 0.02em;
+  padding: 0.34em 0.76em;
   cursor: pointer;
   border-radius: 0; /* square — always */
   transition:
-    background-color 0.2s var(--ease-entrance),
-    color            0.2s var(--ease-entrance),
-    border-color     0.2s var(--ease-entrance);
+    background-color 0.18s var(--ease-entrance),
+    color            0.18s var(--ease-entrance),
+    border-color     0.18s var(--ease-entrance);
 }
 
 #\30 4-baselines-rest .pillgroup-chip:hover {
   border-color: var(--navy);
+  background: rgba(4, 22, 84, 0.06);
 }
 
 #\30 4-baselines-rest .pillgroup-chip.is-active {
@@ -133,82 +168,98 @@
   outline-offset: 3px;
 }
 
-/* ── THREE BASELINES: equal thirds filling the grid row ───────
-   Each panel is a flex column: number-row → viz → caption.
-   Viz grows to fill so all three rows are the same height.   ─ */
+/* You-dot anchor — zero-size inline element within the copy block.
+   The global shell you-dot springs to this element's position.      */
+#\30 4-baselines-rest .br-youdot {
+  display: block;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   RIGHT COLUMN — three stacked data panels
+   Three equal rows. Each row: stat cell (number + label) left of the viz.
+   The panels stretch to fill the full right column height.
+   Faint navy-tint dividers give editorial rhythm; no card chrome.
+   ────────────────────────────────────────────────────────────────────── */
+/* Right column: three equal rows sharing the same explicit height as
+   the left column (both use clamp(420px, 68svh, 620px)).
+   This ensures both columns start and end at the same vertical edges. */
 #\30 4-baselines-rest .br-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.4rem, 3vw, 3rem);
-  align-items: stretch;
-  /* The youdot anchor sits outside flow. */
-  position: relative;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0;
+  height: clamp(420px, 68svh, 620px);
+  align-self: start;
 }
 
+/* Each panel: stat-cell (auto width) | viz (1fr).
+   Vertically centred within its row.
+   Divided by a faint ink hairline below (removed from the last panel). */
 #\30 4-baselines-rest .br-panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: clamp(1.2rem, 2.2vw, 2.8rem);
+  align-items: center;
+  padding-block: clamp(1rem, 2.2vh, 1.8rem);
+  border-bottom: 1px solid rgba(4, 22, 84, 0.12);
+  transition:
+    opacity   0.26s var(--ease-entrance),
+    transform 0.26s var(--ease-entrance);
+}
+
+#\30 4-baselines-rest .br-panel:last-of-type {
+  border-bottom: none;
+}
+
+/* ── Stat cell: hero number stacked above its descriptor label ──── */
+#\30 4-baselines-rest .br-stat-cell {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.6rem, 1.2vh, 1rem);
-  /* A hairline left-border gives editorial rhythm — one frame device. */
-  padding-inline-start: clamp(14px, 1.6vw, 24px);
-  border-inline-start: 1px solid rgba(4, 22, 84, 0.15);
-  transition:
-    opacity   0.28s var(--ease-entrance),
-    transform 0.28s var(--ease-entrance);
-}
-
-#\30 4-baselines-rest .br-panel:first-of-type {
-  padding-inline-start: 0;
-  border-inline-start: 0;
-}
-
-/* Hero number + label side by side at the top of each panel. */
-#\30 4-baselines-rest .br-num-row {
-  display: flex;
-  align-items: baseline;
-  gap: clamp(8px, 1vw, 16px);
-  flex-wrap: wrap;
+  gap: clamp(2px, 0.4vh, 5px);
+  align-items: flex-start;
+  /* Fixed min-width so all three panels align their stats in one column. */
+  min-width: clamp(120px, 14vw, 188px);
   flex: 0 0 auto;
 }
 
-/* Hero number — tabular navy, the "serious data" colour (BWF §1). */
+/* Hero stat number — navy, Poppins 900, tabular. Large — the number is
+   the visual anchor of each row and drives the panel row height.     */
 #\30 4-baselines-rest .br-num {
   margin: 0;
   color: var(--navy);
   font-family: var(--font-sans);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.88;
+  line-height: 0.85;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
-  flex: 0 0 auto;
+  font-size: clamp(3.2rem, 6vw, 7.2rem);
 }
 
+/* Descriptor label — dark, compact, sits tightly below the number. */
 #\30 4-baselines-rest .br-lbl {
   margin: 0;
-  font-size: clamp(0.88rem, 1.05vw, 1.0rem);
+  font-size: clamp(0.76rem, 0.88vw, 0.88rem);
   font-weight: 700;
-  line-height: 1.22;
+  line-height: 1.28;
   letter-spacing: -0.01em;
   color: var(--ink);
-  max-width: 18ch;
 }
 
-/* Viz container — grows to fill the available column space so all
-   three columns share equal depth. Charts float backgroundless. */
+/* ── Viz container — fills the right cell of each panel row ────── */
 #\30 4-baselines-rest .br-viz {
-  flex: 1 1 0;
-  width: 100%;
-  min-height: clamp(90px, 14vh, 180px);
   display: flex;
-  align-items: flex-start;
-}
-
-/* Tug-of-war needs vertical centring in its flex container. */
-#\30 4-baselines-rest .br-viz--tow {
   align-items: center;
+  width: 100%;
+  /* Explicit height so chart factories have space to render into.
+     Uses a floor that guarantees legibility at all viewport heights. */
+  min-height: clamp(64px, 9.5vh, 120px);
+  height: 100%;
+  overflow: hidden;
 }
 
+/* Charts and SVGs injected by the lib factories fill the container. */
 #\30 4-baselines-rest .br-viz svg,
 #\30 4-baselines-rest .br-viz > * {
   display: block;
@@ -216,73 +267,78 @@
   flex: 1 1 auto;
 }
 
-#\30 4-baselines-rest .br-cap {
-  flex: 0 0 auto;
-  margin: 0;
-  font-size: clamp(0.8rem, 0.92vw, 0.92rem);
-  font-weight: 500;
-  line-height: 1.46;
-  color: var(--ink-soft);
-  opacity: 0.80;
-  max-width: 32ch;
+/* The tug-of-war strips fill the full width of the viz cell. */
+#\30 4-baselines-rest .br-viz--tow {
+  align-items: center;
 }
 
-/* ── MARQUEE — focused panel stands forward; others recede ──── */
+/* ── MARQUEE: focused panel stands forward; dim the others ─────── */
 #\30 4-baselines-rest .br-grid[data-focus="deal"]    .br-panel:not([data-panel="deal"]),
 #\30 4-baselines-rest .br-grid[data-focus="anxiety"] .br-panel:not([data-panel="anxiety"]),
 #\30 4-baselines-rest .br-grid[data-focus="grocery"] .br-panel:not([data-panel="grocery"]) {
-  opacity: 0.26;
-}
-
-#\30 4-baselines-rest .br-panel.is-focus {
-  transform: translateY(-4px);
-}
-
-/* You-dot anchor — no layout footprint. */
-#\30 4-baselines-rest .br-dot {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 10px;
-  height: 10px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: var(--yellow);
+  opacity: 0.2;
   pointer-events: none;
 }
 
-/* ── Responsive: stack on narrow screens ──────────────────── */
-@media (max-width: 860px) {
+/* The focused panel nudges slightly right — a subtle alive signal. */
+#\30 4-baselines-rest .br-panel.is-focus {
+  /* The JS currently toggles is-focus on all when value=all, so the
+     nudge only applies when a single panel is in focus (data-focus ≠ all). */
+  transform: translateX(0);
+}
+
+#\30 4-baselines-rest .br-grid[data-focus="deal"]    [data-panel="deal"],
+#\30 4-baselines-rest .br-grid[data-focus="anxiety"] [data-panel="anxiety"],
+#\30 4-baselines-rest .br-grid[data-focus="grocery"] [data-panel="grocery"] {
+  transform: translateX(5px);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   RESPONSIVE — single-column on narrow/portrait screens
+   The grid collapses to a vertical stack; the data panels become
+   individual rows, each with a stat+label on the left and chart right.
+   ────────────────────────────────────────────────────────────────────── */
+@media (max-width: 880px) {
   #\30 4-baselines-rest .chapter-inner {
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: clamp(1.2rem, 2.6vh, 2rem);
+    padding: clamp(1.4rem, 4vh, 2.6rem) clamp(1.2rem, 5vw, 2.8rem);
+    align-items: start;
     overflow-y: auto;
   }
 
+  #\30 4-baselines-rest .br-headline {
+    font-size: clamp(2.4rem, 7.5vw, 3.6rem);
+  }
+
   #\30 4-baselines-rest .br-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.2rem, 4vh, 2rem);
+    height: auto;
   }
 
   #\30 4-baselines-rest .br-panel {
-    padding-inline-start: 0;
-    border-inline-start: 0;
-    border-top: 1px solid rgba(4, 22, 84, 0.15);
-    padding-block-start: clamp(12px, 2vh, 20px);
+    padding-block: clamp(0.8rem, 2vh, 1.4rem);
   }
 
-  #\30 4-baselines-rest .br-panel:first-of-type {
-    border-top: 0;
-    padding-block-start: 0;
+  #\30 4-baselines-rest .br-stat-cell {
+    min-width: clamp(80px, 22vw, 120px);
   }
 
   #\30 4-baselines-rest .br-viz {
-    min-height: clamp(80px, 18vw, 130px);
+    min-height: clamp(56px, 13vw, 96px);
   }
 }
 
-/* ── Reduced motion ────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   REDUCED MOTION — jump-cut; no transform animation.
+   ────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 4-baselines-rest .br-panel { transition: none; }
-  #\30 4-baselines-rest .br-panel.is-focus { transform: none; }
-  #\30 4-baselines-rest .pillgroup-chip { transition: none; }
+  #\30 4-baselines-rest .br-panel          { transition: none; }
+  #\30 4-baselines-rest .pillgroup-chip    { transition: none; }
+
+  #\30 4-baselines-rest .br-grid[data-focus="deal"]    [data-panel="deal"],
+  #\30 4-baselines-rest .br-grid[data-focus="anxiety"] [data-panel="anxiety"],
+  #\30 4-baselines-rest .br-grid[data-focus="grocery"] [data-panel="grocery"] {
+    transform: none;
+  }
 }

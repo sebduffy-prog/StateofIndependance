@@ -1,25 +1,26 @@
-<!-- Chapter 08 — playground. ONE instrument: the data, beautifully, on demand.
+<!-- Step 16 — The data explorer (TGI on demand). ONE instrument, the same data
+     FIVE ways, on demand.
      THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 · "08 — Playground"):
        • A calm, precise CREAM instrument — the editorial reading/data register.
          Restraint is the luxury signal; the data, beautifully, on demand.
-       • ONE focal point — the divergence dial. Everything that competed for
-         attention (the TGI panel, the segment portrait) is cut. Pick a question,
-         pick a Britain, the data resolves on the open cream ground.
+       • ONE focal point — the explorer chart. Pick a question (or a TGI cut),
+         pick a Britain, then pick how to SEE it: bars, lollipop, dot plot,
+         waffle or venn. The same verified numbers, re-formed five ways.
        • DRAMATIC hierarchy — one display moment: the live headline FIGURE for
-         the current cut, at display scale, in BOLD navy Poppins-900, counts as
+         the current cut, at display scale, in BOLD navy Poppins-900, counting as
          you filter. The number IS the headline. Eyebrow + one line support it.
-       • ASYMMETRIC editorial split — a left instrument rail (eyebrow, the live
-         read-out, the two quiet square controls) hangs on a left axis; the chart
-         is the single hero to its right. The tiny Challenger-Series lockup stamps
-         the instrument top-right (the book-cover position). Not a centred stack.
-       • ONE accent — YELLOW, on the read-out unit + the orbit seed; navy is the
+       • ASYMMETRIC editorial split — a left instrument rail (eyebrow, live
+         read-out, the three quiet square controls) on a left axis; the chart is
+         the single hero to its right. The tiny Challenger-Series lockup stamps
+         the instrument top-right (the book-cover position).
+       • ONE accent — YELLOW on the read-out unit + the orbit seed; navy is the
          gravity (text + chart marks, AA on cream). An italic accent word names it.
-       • ONE hero motion — the chart MORPHS (tugOfWar springs / bars re-sort /
-         crossfade between viz types) and the figure counts. Everything else is
-         quiet. Reduced-motion safe (JS jumps to rest).
-       • Backgroundless — the chart sits transparently on the cream ground; no
-         white box, no gridlines, no chart-junk.
-     Every number renders from the verified survey/segments files. No captions. -->
+       • ONE hero motion — the chart MORPHS / crossfades between views and the
+         figure counts. Everything else is quiet. Reduced-motion safe.
+       • Backgroundless — the chart sits transparently on the cream; no white box,
+         no gridlines, no chart-junk.
+     Every number renders from data/survey.json, data/segments.json, data/tgi.json.
+     No captions, honest labels (TGI index named in the read-out line). -->
 <div class="pg-world" data-pg-world>
   <!-- the orbit signature — a single thin ring, ambient, behind everything -->
   <span class="pg-orbit" aria-hidden="true"></span>
@@ -29,17 +30,17 @@
     <img class="si-lockup pg-mark" src="assets/brand-final/challenger-series-lockup.png"
          alt="VCCP Challenger Series" data-arrival />
 
-    <!-- ── LEFT: the instrument rail (controls + the live read-out) ── -->
+    <!-- ── LEFT: the instrument rail (read-out + the three controls) ── -->
     <div class="pg-rail">
-      <p class="vccp-eyebrow pg-eyebrow" data-arrival>The appendix · the data <em class="si-accent">on demand</em></p>
+      <p class="vccp-eyebrow pg-eyebrow" data-arrival>The same data, five ways · <em class="si-accent">on demand</em></p>
 
       <!-- The display moment: the live figure for the current cut. The number
-           is the headline; it counts in on arrival and morphs on each filter. -->
+           is the headline; it counts in on arrival and morphs on each change. -->
       <div class="pg-readout" data-pg-readout>
         <p class="pg-readout-num" data-arrival>
           <span data-pg-readout-num>—</span><span class="pg-readout-unit" data-pg-readout-unit></span>
         </p>
-        <p class="pg-readout-line" data-arrival><span data-pg-readout-line>Pick a question, then a Britain.</span></p>
+        <p class="pg-readout-line" data-arrival><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
       </div>
 
       <div class="pg-controls">
@@ -50,6 +51,10 @@
         <div class="pg-control">
           <span class="pg-control-label" id="pg-segment-label">Which Britain</span>
           <div data-pg-segment-pills aria-describedby="pg-segment-label"></div>
+        </div>
+        <div class="pg-control">
+          <span class="pg-control-label" id="pg-view-label">View it as</span>
+          <div data-pg-view-pills aria-describedby="pg-view-label"></div>
         </div>
       </div>
 

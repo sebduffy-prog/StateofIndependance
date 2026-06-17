@@ -2,13 +2,12 @@
      AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "04 — Twists"):
      navy full-bleed ground. Cream-on-navy. No cream edge band.
 
-     COMPOSITION (Z-AXIS §6b): two balanced halves fill the entire viewport.
-     LEFT  — eyebrow + title cluster + drag-rank 7 institutions (the marquee interaction).
-     RIGHT — pre-reveal teaser (blurred ??→??) + post-reveal truth
-             (53%→24% spread hero + NHS 6.42/10 radialGauge paradox).
-     The right column is always rendered at full height; the teaser fills the
-     void until reveal; the truth-state provides equal visual weight after.
-     No dead space. No internal scroll. One focal point per half.
+     COMPOSITION (Z-AXIS §6b): two balanced columns fill the full viewport.
+     LEFT  — eyebrow + title cluster + drag-rank 7 institutions (marquee beat).
+     RIGHT — pre-reveal (hero blurred spread + teaser copy) fills the column
+             until the interaction completes; post-reveal swaps to the real
+             53%→24% spread hero + NHS 6.42/10 radialGauge paradox.
+     Both columns stretch the full height; no dead space in any quadrant.
 
      CHARACTER→TITLE: data-arrival / data-arrival-scramble on every
      headline element; arrival() wired to chapter:arrive in JS.
@@ -34,7 +33,7 @@
       <header class="tt-head">
         <p class="vccp-eyebrow tt-eyebrow" data-arrival>Twist one · the trust paradox</p>
         <h2 class="tt-title" data-arrival>
-          Who Britain<br><span class="si-accent tt-accent" data-arrival-scramble>trusts</span>
+          Who Britain<br><em class="tt-accent" data-arrival-scramble>trusts</em>
         </h2>
         <p class="tt-stand" data-arrival>
           Seven institutions. Rank them as you think Britain does —
@@ -43,30 +42,43 @@
       </header>
 
       <!-- dragRank mounts here — the marquee beat -->
-      <div class="tt-rank" data-rank aria-label="Drag to rank seven institutions by public trust"></div>
+      <div class="tt-rank-block">
+        <div class="tt-rank" data-rank aria-label="Drag to rank seven institutions by public trust"></div>
+      </div>
     </div>
 
-    <!-- RIGHT COLUMN — always rendered; pre-reveal fills the space;
-         post-reveal snaps to the real stats. aria-live for screen readers. -->
+    <!-- RIGHT COLUMN — always rendered at full column height;
+         pre-reveal fills the space; truth-state provides equal
+         visual weight after. aria-live for screen readers. -->
     <aside class="tt-right" aria-live="polite" aria-label="Trust ranking results">
 
       <!-- PRE-REVEAL: fills the right column while interaction is pending -->
       <div class="tt-pre" data-pre-reveal>
-        <p class="vccp-eyebrow tt-pre__eyebrow" data-arrival>Britain's verdict</p>
-        <p class="tt-pre__headline" data-arrival>
-          Complete the ranking to reveal the real spread — and the
-          paradox at the heart of British trust.
-        </p>
-        <!-- Blurred placeholder hint — teases the two-number reveal -->
-        <div class="tt-pre__hint" aria-hidden="true" data-arrival>
-          <span class="tt-pre__num tt-pre__num--blur">??%</span>
-          <span class="tt-pre__arrow">→</span>
-          <span class="tt-pre__num tt-pre__num--blur">??%</span>
+        <!-- Top: eyebrow + invite copy -->
+        <div class="tt-pre__top">
+          <p class="vccp-eyebrow tt-pre__eyebrow" data-arrival>Britain's verdict</p>
+          <p class="tt-pre__headline" data-arrival>
+            Complete the ranking to reveal the real spread — and the
+            paradox at the heart of British trust.
+          </p>
         </div>
+
+        <!-- Hero: the blurred numbers fill the centre of the column -->
+        <div class="tt-pre__hero" aria-hidden="true">
+          <div class="tt-pre__hint">
+            <span class="tt-pre__num tt-pre__num--blur">??%</span>
+            <span class="tt-pre__arrow">→</span>
+            <span class="tt-pre__num tt-pre__num--blur">??%</span>
+          </div>
+          <p class="tt-pre__spread-label">NHS · · · Government</p>
+        </div>
+
+        <!-- Bottom hint -->
         <p class="tt-pre__sub" data-arrival>
           Just one of seven institutions clears<br>half the country's confidence.
         </p>
-        <!-- You-dot anchor lives here on the pre-reveal focal point -->
+
+        <!-- You-dot anchor lives on the pre-reveal focal point -->
         <span class="tt-youdot" data-youdot-anchor aria-hidden="true"></span>
       </div>
 
