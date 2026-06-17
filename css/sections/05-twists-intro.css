@@ -1,50 +1,75 @@
 /* 05-twists-intro.css — the twists opener, scoped to #\30 5-twists-intro.
-   One full-bleed navy pivot (BRAND-WORLD-FINAL §7 "04 Twists"): cream type on
-   navy, bold-black title with the italic accent, three anomaly cards that set
-   up the next three stages. Balanced: title cluster top, three-card band below,
-   orbit motif counter-weighting the upper-right void. Fits one viewport. */
+   Full-bleed navy pivot (BRAND-WORLD-FINAL §7 "04 Twists"): cream type on
+   navy, huge display title with the italic yellow accent, three anomaly
+   cards that hover-reveal their reframe.
 
+   COMPOSITION (Z-AXIS-JOURNEY §6b):
+     Upper ~50% — the display title commands this zone. Counter-balanced by
+     the orbit ring motif in the upper-right.
+     Lower ~50% — three cards in a horizontal row fill edge-to-edge.
+   The "cover-it-in-thirds" test: every third is occupied.
+   One screen, no overflow, no dead space, no cream edge band. */
+
+/* ── Root: full stage, no internal scroll ───────────────────────────── */
 #\30 5-twists-intro .twists-intro-root {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: clamp(14px, 2.2vh, 28px);
+  justify-content: space-between;
   width: 100%;
   height: 100%;
+  padding: clamp(32px, 5vh, 72px) clamp(24px, 5vw, 96px)
+           clamp(32px, 5vh, 72px) clamp(24px, 5vw, 96px);
+  overflow: hidden;
 }
 
-/* ── Title cluster ───────────────────────────────────────────────────────── */
+/* ── Title cluster — upper zone, commands ~45% of the canvas ────────── */
 #\30 5-twists-intro .twists-intro-head {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vh, 14px);
-  max-width: 24ch;
+  gap: clamp(12px, 1.6vh, 24px);
+  /* Cap width so the title stays 2 lines and the right zone stays open
+     for the orbit ring counter-weight. */
+  max-width: min(56ch, 68%);
+}
+
+#\30 5-twists-intro .twists-intro-eyebrow {
+  /* vccp.css .si-ground-navy sets eyebrow to --on-navy (cream). */
 }
 
 #\30 5-twists-intro .twists-intro-title {
-  margin: 0;
+  /* Uses the shared .si-display / .si-display--black from vccp.css.
+     vccp.css .si-ground-navy rule overrides ink → cream automatically.
+     We scale it tighter here so 3 line fragments fit without clipping. */
+  font-size: clamp(3.2rem, 6.4vw, 7rem);
   line-height: 0.94;
-  font-size: clamp(2.4rem, 4.8vw, 4.6rem);
+  margin: 0;
+  /* Each span wraps a line; display block for stacking. */
 }
 
-/* The accent word italic only — the slant IS the accent. On navy it takes the
-   single yellow accent (echoing the icon wedge) rather than navy-on-navy. */
-#\30 5-twists-intro .twists-intro-title .si-accent {
+#\30 5-twists-intro .twists-intro-title-line {
+  display: block;
+}
+
+/* Accent word: italic Poppins in yellow — the brand signature on navy.
+   (Italic slant IS the accent; no box, no underline, no parallelogram.) */
+#\30 5-twists-intro .twists-intro-accent {
+  display: block;
+  font-style: italic;
   color: var(--yellow, #F0CB08);
 }
 
 #\30 5-twists-intro .twists-intro-stand {
   margin: 0;
-  max-width: 46ch;
   font-size: clamp(0.98rem, 1.2vw, 1.15rem);
   color: var(--on-navy, #F0EDE7);
-  opacity: 0.86;
+  opacity: 0.82;
+  max-width: 52ch;
 }
 
-/* ── The three anomaly cards (set up stages 06 / 07 / 08) ────────────────── */
+/* ── Three anomaly cards — lower zone, fills horizontal band ─────────── */
 #\30 5-twists-intro .twists-intro-list {
   position: relative;
   z-index: 1;
@@ -53,144 +78,169 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(14px, 1.6vw, 28px);
+  gap: clamp(12px, 1.6vw, 24px);
+  /* Each card fills the available height so the band has visual weight. */
+  align-items: stretch;
 }
 
+/* Card: backgroundless on navy — a yellow top-bar + hairline frame + faint fill.
+   (BRAND-WORLD-FINAL §3: no white box; one frame device only.) */
 #\30 5-twists-intro .twists-intro-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(7px, 0.9vh, 12px);
-  padding: clamp(13px, 1.4vw, 22px);
-  /* Backgroundless on navy: a hairline frame + faint tint, never a white box. */
-  background: rgba(240, 237, 231, 0.04);
-  border: 1px solid rgba(240, 237, 231, 0.16);
+  gap: clamp(8px, 1vh, 14px);
+  padding: clamp(16px, 1.8vw, 28px);
+  background: rgba(240, 237, 231, 0.05);
+  border: 1px solid rgba(240, 237, 231, 0.14);
   border-top: 3px solid var(--yellow, #F0CB08);
   cursor: pointer;
   outline: none;
-  transition: transform 0.32s ease, background-color 0.32s ease,
-              border-color 0.32s ease;
+  /* Square corners — always (BWF §3). */
+  border-radius: 0;
+  transition: transform 0.3s var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
+              background-color 0.3s ease,
+              border-color 0.3s ease;
 }
 
 #\30 5-twists-intro .twists-intro-card:hover,
 #\30 5-twists-intro .twists-intro-card:focus-visible,
+#\30 5-twists-intro .twists-intro-card.is-open,
 #\30 5-twists-intro .twists-intro-card.is-pinned {
-  transform: translateY(-4px);
-  background: rgba(240, 237, 231, 0.08);
-  border-color: rgba(240, 237, 231, 0.34);
+  transform: translateY(-5px);
+  background: rgba(240, 237, 231, 0.1);
+  border-color: rgba(240, 237, 231, 0.32);
 }
 
+/* Keyboard focus ring — yellow accent, not a default browser ring. */
 #\30 5-twists-intro .twists-intro-card:focus-visible {
   box-shadow: 0 0 0 2px var(--yellow, #F0CB08);
 }
 
+/* Stage number — the yellow bold kicker sets the visual weight anchor. */
 #\30 5-twists-intro .twists-intro-num {
   font-weight: 900;
-  font-size: clamp(1.3rem, 1.8vw, 1.9rem);
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
   letter-spacing: -0.02em;
   line-height: 1;
   color: var(--yellow, #F0CB08);
   font-variant-numeric: tabular-nums;
 }
 
+/* Main anomaly headline — cream, bold. */
 #\30 5-twists-intro .twists-intro-line {
   margin: 0;
-  font-weight: 800;
-  font-size: clamp(1rem, 1.3vw, 1.3rem);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
   letter-spacing: -0.01em;
-  line-height: 1.1;
+  line-height: 1.2;
   color: var(--on-navy, #F0EDE7);
+  /* Flex-grow so the reframe always stays at the bottom of the card. */
+  flex-grow: 1;
 }
 
-/* On navy, .hl resolves to yellow (vccp.css). Keep the twist verb emphatic. */
+/* On navy: .hl flips to yellow accent (vccp.css .on-navy .hl rule). */
 #\30 5-twists-intro .twists-intro-line .hl {
-  font-weight: 800;
+  font-weight: 700;
 }
 
-/* The reframe is the revealed payload — collapsed at rest, opens on hover/focus.
-   Reduced-motion path below jumps it open. */
+/* Reframe: the revealed payload — collapsed at rest, opens on interaction.
+   This IS the marquee interaction (hover/focus/Enter). */
 #\30 5-twists-intro .twists-intro-reframe {
   margin: 0;
   font-weight: 400;
-  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
-  line-height: 1.42;
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  line-height: 1.45;
   color: var(--on-navy, #F0EDE7);
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transform: translateY(4px);
-  transition: opacity 0.32s ease, max-height 0.4s ease, transform 0.32s ease;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease,
+              max-height 0.4s var(--ease-entrance, cubic-bezier(0.2, 0.8, 0.2, 1)),
+              transform 0.3s ease;
 }
 
 #\30 5-twists-intro .twists-intro-card:hover .twists-intro-reframe,
 #\30 5-twists-intro .twists-intro-card:focus-visible .twists-intro-reframe,
 #\30 5-twists-intro .twists-intro-card.is-open .twists-intro-reframe,
 #\30 5-twists-intro .twists-intro-card.is-pinned .twists-intro-reframe {
-  opacity: 0.82;
-  max-height: 6em;
+  opacity: 0.84;
+  max-height: 8em;
   transform: translateY(0);
 }
 
-/* ── Orbit motif — counter-weights the upper-right, kills the dead third ──── */
+/* ── Orbit motif — decorative rings, counter-weights the upper-right ──── */
 #\30 5-twists-intro .twists-intro-orbit {
-  position: absolute;
-  top: clamp(-10vh, -4vh, 0px);
-  right: clamp(-16vw, -6vw, 0px);
-  width: clamp(300px, 40vw, 560px);
-  height: clamp(300px, 40vw, 560px);
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.18));
-  pointer-events: none;
-  z-index: 0;
-}
-#\30 5-twists-intro .twists-intro-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(240, 237, 231, 0.12));
+  /* The .si-orbit class in vccp.css places the radial-gradient rings.
+     We reposition to fill the upper-right void. */
+  background-position: 78% 28%;
 }
 
-/* You-dot anchor — rides the title baseline. */
-#\30 5-twists-intro .twists-intro-dot {
-  position: absolute;
-  left: var(--margin-page, 6vw);
-  top: clamp(22%, 26vh, 30%);
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--soi-seed, var(--yellow, #FCC107));
-  pointer-events: none;
-}
-
-/* ── Reduced motion: no card lift / no collapse — reframes shown flat ─────── */
+/* ── Reduced motion: skip lift & collapse — reframes shown flat ─────── */
 @media (prefers-reduced-motion: reduce) {
   #\30 5-twists-intro .twists-intro-card,
   #\30 5-twists-intro .twists-intro-reframe {
     transition: none;
   }
   #\30 5-twists-intro .twists-intro-card {
-    transform: none;
+    transform: none !important;
   }
   #\30 5-twists-intro .twists-intro-reframe {
-    opacity: 0.82;
-    max-height: 6em;
+    opacity: 0.84;
+    max-height: 8em;
     transform: none;
   }
 }
 
-/* ── Narrow / short viewports: stack to keep one screen, no overflow ─────── */
+/* ── Narrow viewport (≤760px): stack cards vertically ───────────────── */
 @media (max-width: 760px) {
-  #\30 5-twists-intro .twists-intro-list {
-    grid-template-columns: 1fr;
-    gap: clamp(8px, 1.4vh, 14px);
+  #\30 5-twists-intro .twists-intro-root {
+    justify-content: flex-start;
+    gap: clamp(20px, 3.5vh, 40px);
+    padding-top: clamp(24px, 4vh, 48px);
   }
-  #\30 5-twists-intro .twists-intro-reframe {
-    opacity: 0.78;
-    max-height: 6em;
-    transform: none;
+  #\30 5-twists-intro .twists-intro-head {
+    max-width: 100%;
+  }
+  #\30 5-twists-intro .twists-intro-title {
+    font-size: clamp(2.4rem, 10vw, 4rem);
   }
   #\30 5-twists-intro .twists-intro-stand {
+    display: none;
+  }
+  #\30 5-twists-intro .twists-intro-list {
+    grid-template-columns: 1fr;
+    gap: clamp(8px, 1.5vh, 14px);
+  }
+  /* On small screens, always show the reframes (no hover available). */
+  #\30 5-twists-intro .twists-intro-reframe {
+    opacity: 0.8;
+    max-height: 8em;
+    transform: none;
+  }
+}
+
+/* ── Very short viewports (≤580px height) ────────────────────────────── */
+@media (max-height: 580px) {
+  #\30 5-twists-intro .twists-intro-root {
+    padding-top: clamp(16px, 2.5vh, 32px);
+    padding-bottom: clamp(16px, 2.5vh, 32px);
+    gap: clamp(12px, 2vh, 20px);
+  }
+  #\30 5-twists-intro .twists-intro-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+  #\30 5-twists-intro .twists-intro-stand {
+    display: none;
+  }
+  #\30 5-twists-intro .twists-intro-num {
+    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  }
+  #\30 5-twists-intro .twists-intro-line {
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  }
+  #\30 5-twists-intro .twists-intro-reframe {
     display: none;
   }
 }

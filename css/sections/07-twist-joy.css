@@ -1,31 +1,34 @@
 /* 07-twist-joy.css — Twist two: PROTECTED JOY. Scoped to #\30 7-twist-joy.
-   Full-bleed warm-gradient pivot. Balanced two-column composition: a left hero
-   cluster (eyebrow → bold-black title → standfirst) counter-weighted by the
-   marquee budget on the right. No dead third, no edge band, no white box —
-   every line and handle floats on the warm ground (cream tiles are the editorial
-   chrome for the draggable handles only). Square corners, no underline, no skew. */
+   Full-bleed warm-gradient pivot. Two-column composition:
+     LEFT  — the hero stat (40%) towers as the focal anchor, with eyebrow +
+             bold-black title + tight standfirst beneath it.
+     RIGHT — the marquee tactile budget interaction.
+   NO dead space: the bignum commands the entire left weight; the budget
+   commands the right. Square corners, no underline, no skew.
+   The chapter-inner max-width is 1240px centred within the full-bleed stage. */
 
+/* ── ROOT GRID — two equal-ish columns, full viewport height ────────────── */
 #\30 7-twist-joy .twist-joy-root {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: 1fr 1.1fr;
   align-items: center;
-  gap: clamp(28px, 5vw, 88px);
+  gap: clamp(32px, 5vw, 96px);
   width: 100%;
   height: 100%;
-  padding: clamp(48px, 7vh, 96px) clamp(28px, 6vw, 110px);
+  padding: clamp(56px, 8vh, 100px) clamp(28px, 6vw, 96px);
 }
 
-/* ── Orbit + brand stamp furniture ─────────────────────────────────────── */
+/* ── Orbit — decorative only, behind everything ─────────────────────────── */
 #\30 7-twist-joy .twist-joy-orbit {
   position: absolute;
   top: 50%;
-  left: clamp(-22vw, -10vw, -4vw);
-  width: clamp(360px, 50vw, 720px);
-  height: clamp(360px, 50vw, 720px);
+  left: clamp(-28vw, -12vw, -4vw);
+  width: clamp(380px, 55vw, 760px);
+  height: clamp(380px, 55vw, 760px);
   transform: translateY(-50%);
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255, 255, 255, 0.22));
+  border: 1px solid rgba(4, 22, 84, 0.14);
   pointer-events: none;
   z-index: 0;
 }
@@ -34,72 +37,104 @@
   position: absolute;
   inset: 18%;
   border-radius: 50%;
-  border: 1px solid var(--soi-orbit, rgba(255, 255, 255, 0.16));
+  border: 1px solid rgba(4, 22, 84, 0.09);
 }
 
+/* ── Brand stamp, top-right ──────────────────────────────────────────────── */
 #\30 7-twist-joy .twist-joy-mark {
   position: absolute;
-  top: clamp(20px, 3vh, 36px);
-  right: clamp(22px, 3vw, 44px);
-  height: clamp(26px, 2.4vw, 34px);
+  top: clamp(18px, 2.8vh, 34px);
+  right: clamp(20px, 2.8vw, 42px);
+  height: clamp(26px, 2.2vw, 34px);
   opacity: 0.9;
   z-index: 3;
 }
 
-/* ── Hero cluster (left) ───────────────────────────────────────────────── */
-#\30 7-twist-joy .twist-joy-head {
+/* ── LEFT COLUMN — hero stat cluster ────────────────────────────────────── */
+#\30 7-twist-joy .twist-joy-hero {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.8vh, 22px);
+  gap: clamp(8px, 1.4vh, 16px);
   min-width: 0;
 }
-/* Hero title capped + wrapping so it owns its column and never bleeds into the
-   budget. "Protected" / "joy" stack as two lines (the accent word drops). */
-#\30 7-twist-joy .twist-joy-title {
-  margin: 0;
-  font-size: clamp(2.6rem, 5.4vw, 5rem);
-  line-height: 0.9;
-  max-width: 9ch;
-}
-#\30 7-twist-joy .twist-joy-accent {
-  display: block;
+
+/* The hero bignum — the NUMBER commands the left column. Navy, tabular. */
+#\30 7-twist-joy .twist-joy-bignum {
+  /* Override si-bignum size to scale tighter to the column so it's grand
+     but doesn't overflow; line-height brings it tight to the title below. */
+  font-size: clamp(5rem, 12vw, 11rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   color: var(--navy);
-}
-#\30 7-twist-joy .twist-joy-standfirst {
   margin: 0;
-  font-weight: 500;
-  line-height: 1.5;
-  max-width: 40ch;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── The marquee budget (right) ────────────────────────────────────────── */
+/* Bold-black title — confirms what the number means ("protect their holiday").
+   Two lines: upright "protect their" / italic accent "holiday" drops below. */
+#\30 7-twist-joy .twist-joy-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.93;
+  color: var(--ink);
+}
+/* The italic accent — "holiday" in navy italic per brand-world §2. */
+#\30 7-twist-joy .twist-joy-accent {
+  font-style: italic;
+  color: var(--navy);
+  display: inline;
+}
+
+/* Sub-copy — WLV register: pithy, one sentence. Navy for weight on warm. */
+#\30 7-twist-joy .twist-joy-sub {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+  line-height: 1.5;
+  max-width: 38ch;
+  color: var(--navy);
+  opacity: 0.85;
+}
+
+/* ── RIGHT COLUMN — the marquee budget ──────────────────────────────────── */
 #\30 7-twist-joy .twist-joy-stage {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.4vh, 28px);
-  justify-self: center;
-  width: min(100%, 540px);
-}
-#\30 7-twist-joy .twist-joy-stage-title {
-  margin: 0;
-  color: var(--ink);
+  gap: clamp(14px, 2.2vh, 24px);
 }
 
+#\30 7-twist-joy .twist-joy-stage-kicker {
+  /* eyebrow sits above the budget rows */
+}
+
+/* Verified data note — small, navy, restrained; not a source caption. */
+#\30 7-twist-joy .twist-joy-data-note {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  opacity: 0.5;
+}
+
+/* ── Budget rows ─────────────────────────────────────────────────────────── */
 #\30 7-twist-joy .twist-joy-rows {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.6vh, 16px);
+  gap: clamp(9px, 1.4vh, 14px);
 }
 
-/* Each row: a bin gutter (left, revealed by the drag) under a draggable cream
-   handle tile. --cut (0..1) is driven from JS by how far the line is pulled. */
+/* Row container: a dashed bin behind a draggable cream handle tile.
+   --cut (0..1) drives the visual progress of the drag from JS. */
 #\30 7-twist-joy .twist-joy-row {
   --cut: 0;
   position: relative;
@@ -107,106 +142,115 @@
   border-radius: 0;
 }
 
-/* The bin gutter sits behind the handle; it brightens as the line is cut. */
+/* The bin gutter sits behind the handle; brightens as the line is cut. */
 #\30 7-twist-joy .twist-joy-bin {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: clamp(16px, 2vw, 26px);
-  border: 1px dashed rgba(4, 22, 84, calc(0.22 + var(--cut) * 0.5));
+  padding-right: clamp(14px, 1.8vw, 24px);
+  border: 1px dashed rgba(4, 22, 84, calc(0.20 + var(--cut) * 0.50));
   color: var(--navy);
   pointer-events: none;
 }
 #\30 7-twist-joy .twist-joy-bin-mark {
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  opacity: calc(0.25 + var(--cut) * 0.75);
+  opacity: calc(0.2 + var(--cut) * 0.8);
 }
 
-/* The handle tile — the editorial cream chrome that carries the spend.
-   Cream lifts off the warm ground by its own value contrast (one soft
-   self-shadow only). Square corners. Draggable owns its transform. */
+/* The handle tile — cream editorial chrome, one soft self-shadow only.
+   Draggable owns the element's transform; we must not override it.
+   Square corners. */
 #\30 7-twist-joy .twist-joy-handle {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: clamp(12px, 1.6vw, 20px);
-  padding: clamp(14px, 1.8vh, 20px) clamp(16px, 2vw, 26px);
+  gap: clamp(10px, 1.4vw, 18px);
+  padding: clamp(12px, 1.6vh, 18px) clamp(14px, 1.8vw, 24px);
   background: var(--cream, #f0ede7);
-  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.08);
+  box-shadow: 0 8px 28px rgba(4, 22, 84, 0.07);
   border-radius: 0;
   cursor: grab;
   outline: none;
+  /* No transition on transform — draggable owns that entirely. */
 }
 #\30 7-twist-joy .twist-joy-handle:focus-visible {
   box-shadow:
-    0 10px 30px rgba(4, 22, 84, 0.08),
+    0 8px 28px rgba(4, 22, 84, 0.07),
     inset 0 0 0 2px var(--navy);
 }
-
-/* Once a flexible line is cut, dim its tile so the screen reads "gone". */
-#\30 7-twist-joy .twist-joy-row.is-cut .twist-joy-handle {
-  opacity: 0.34;
+#\30 7-twist-joy .twist-joy-handle:active {
+  cursor: grabbing;
 }
-/* The holiday flashes its defiance the moment it springs back. */
+
+/* Flexible line — dimmed once cut (stays gone). */
+#\30 7-twist-joy .twist-joy-row.is-cut .twist-joy-handle {
+  opacity: 0.32;
+}
+/* Holiday resisting — brief yellow left-border flash. */
 #\30 7-twist-joy .twist-joy-row.is-resisting .twist-joy-handle {
   box-shadow:
-    0 10px 30px rgba(4, 22, 84, 0.08),
+    0 8px 28px rgba(4, 22, 84, 0.07),
     inset 0 0 0 2px var(--navy);
 }
 
+/* Grip dots — the "draggable" affordance. */
 #\30 7-twist-joy .twist-joy-grip {
-  width: 14px;
-  height: 22px;
+  width: 12px;
+  height: 20px;
   flex: none;
-  background:
-    radial-gradient(circle, var(--navy) 1.4px, transparent 1.6px) 0 0 / 6px 7px;
-  opacity: 0.55;
+  background: radial-gradient(circle, var(--navy) 1.3px, transparent 1.5px) 0 0 / 6px 7px;
+  opacity: 0.45;
 }
+
 #\30 7-twist-joy .twist-joy-row-label {
   min-width: 0;
   font-weight: 700;
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-size: clamp(0.92rem, 1.3vw, 1.1rem);
   color: var(--ink);
   letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Meta column — % and sub-label stacked right-aligned. */
 #\30 7-twist-joy .twist-joy-row-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   line-height: 1.05;
   text-align: right;
+  gap: 2px;
 }
 #\30 7-twist-joy .twist-joy-row-pct {
   font-weight: 900;
-  font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  font-size: clamp(1rem, 1.6vw, 1.32rem);
   color: var(--navy);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
 #\30 7-twist-joy .twist-joy-row-sub {
   font-weight: 600;
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.12em;
   color: var(--navy);
-  opacity: 0.6;
+  opacity: 0.55;
+  white-space: nowrap;
 }
 
-/* The defended line wears the brand yellow seal so it reads as the protected
-   one before it is even touched (a single accent per screen). */
+/* The PROTECTED row wears the yellow left-seal — signals it before touch.
+   One accent per screen: the yellow seal IS the single yellow moment. */
 #\30 7-twist-joy .twist-joy-row[data-role="protected"] .twist-joy-handle {
   box-shadow:
-    0 10px 30px rgba(4, 22, 84, 0.1),
+    0 8px 28px rgba(4, 22, 84, 0.09),
     inset 4px 0 0 0 var(--yellow, #f0cb08);
 }
 #\30 7-twist-joy .twist-joy-row[data-role="protected"] .twist-joy-row-sub {
@@ -214,36 +258,48 @@
   opacity: 0.85;
 }
 
+/* Hint + empty state — small, navy, never a white box. */
 #\30 7-twist-joy .twist-joy-hint,
 #\30 7-twist-joy .twist-joy-empty {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: var(--navy);
-  opacity: 0.78;
+  opacity: 0.72;
 }
 
-/* ── Responsive — collapse to a single stacked column on narrow viewports.
-   Stays one screen: the hero shrinks, the budget carries the focal weight. */
-@media (max-width: 860px) {
+/* ── Responsive: single-column below 800px. One screen: hero shrinks,
+   budget gets more real-estate. No horizontal overflow. ─────────────── */
+@media (max-width: 800px) {
   #\30 7-twist-joy .twist-joy-root {
     grid-template-columns: 1fr;
-    gap: clamp(20px, 4vh, 36px);
+    gap: clamp(18px, 3.5vh, 32px);
     align-content: center;
-    padding: clamp(40px, 6vh, 72px) clamp(22px, 7vw, 48px);
+    padding: clamp(44px, 7vh, 72px) clamp(20px, 7vw, 44px);
   }
-  #\30 7-twist-joy .twist-joy-head {
-    max-width: none;
+  /* On narrow screens, shrink the bignum so it doesn't overflow. */
+  #\30 7-twist-joy .twist-joy-bignum {
+    font-size: clamp(4rem, 18vw, 8rem);
+  }
+  #\30 7-twist-joy .twist-joy-hero {
+    gap: clamp(6px, 1.2vh, 12px);
+  }
+  #\30 7-twist-joy .twist-joy-sub {
+    max-width: 52ch;
   }
   #\30 7-twist-joy .twist-joy-stage {
     width: 100%;
-    justify-self: stretch;
   }
 }
 
-/* ── Reduced motion — no idle motion; transitions handled by the libs. ──── */
+/* ── Reduced motion — draggable lib handles springs; we suppress our own
+   transition overrides (the box-shadow flash is instantaneous anyway). ── */
 @media (prefers-reduced-motion: reduce) {
   #\30 7-twist-joy .twist-joy-handle {
-    transition: none;
+    transition: none !important;
+  }
+  #\30 7-twist-joy .twist-joy-orbit,
+  #\30 7-twist-joy .twist-joy-orbit::after {
+    display: none;
   }
 }

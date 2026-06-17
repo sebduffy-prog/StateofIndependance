@@ -1,53 +1,55 @@
 <div class="chapter-inner on-cream" id="bl">
 
-  <!-- The brand signature: the tiny Challenger-Series lockup, top-right
-       (the book-cover stamp position). Black silhouette on cream. -->
+  <!-- Brand signature: tiny Challenger-Series lockup, top-right (book-cover stamp). -->
   <img class="bl-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
        alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-  <!-- ── LEFT RAIL — the editorial claim. Opener, then the guess gives
-       way to the display number in the SAME cell (no layout jump). ── -->
-  <div class="bl-rail">
-    <header class="bl-head">
-      <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
-      <h2 class="bl-headline si-display si-display--black">
-        <span data-arrival>Carefulness is</span>
-        <span data-arrival>the new <em class="si-accent" data-arrival-scramble>baseline</em></span>
-      </h2>
-    </header>
+  <!-- ── HERO ROW — left: editorial claim + interaction; right: waffle crowd ── -->
+  <div class="bl-hero">
 
-    <!-- Both states share one cell so the guess swaps to the truth in place. -->
-    <div class="bl-claim" data-claim>
-      <div class="bl-guess" data-guess></div>
+    <!-- LEFT RAIL: headline, then guess/truth in the same cell (no layout jump) -->
+    <div class="bl-rail">
+      <header class="bl-head">
+        <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
+        <h2 class="bl-headline si-display si-display--black">
+          <span data-arrival>Carefulness is</span>
+          <span data-arrival>the new <em class="si-accent" data-arrival-scramble>baseline</em></span>
+        </h2>
+      </header>
 
-      <div class="bl-truth" data-truth hidden>
-        <p class="bl-numline">
-          <span class="bl-num" data-careful-num aria-hidden="true">77<span class="bl-pct">%</span></span>
-        </p>
-        <p class="bl-label" id="bl-claim">are more careful with money than they were five years ago.</p>
-        <p class="bl-sentence si-measure--tight">
-          Not a passing mood &mdash; the lens on every spend decision now. The
-          baseline, not the strategy.
-        </p>
+      <!-- Guess and truth share one stacking cell: guess vanishes, truth arrives. -->
+      <div class="bl-claim" data-claim>
+        <div class="bl-guess" data-guess></div>
+
+        <div class="bl-truth" data-truth hidden>
+          <p class="bl-numline">
+            <span class="bl-num num" data-careful-num aria-hidden="true">77<span class="bl-pct">%</span></span>
+          </p>
+          <p class="bl-label" id="bl-claim-label">are more careful with money than they were five years ago.</p>
+          <p class="bl-sentence">
+            Not a passing mood&thinsp;&mdash;&thinsp;the lens on every spend decision now.
+            The baseline, not the strategy.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ── RIGHT — the crowd of 100. Present from the start as a faint
-       navy-tint grid (no void); the truth lights it and pops YOUR
-       square. data-youdot-anchor lives on the you-square. ── -->
-  <figure class="bl-crowd" data-crowd>
-    <div class="bl-crowd-grid" data-crowd-grid role="img"
-         aria-label="A hundred squares: seventy-seven filled, one of them highlighted as you."></div>
-    <figcaption class="bl-crowd-cap">
-      <span class="bl-crowd-count num" data-crowd-count aria-hidden="true">0</span>
-      <span class="bl-crowd-of" data-crowd-of>squares wait. Lock in your guess to fill the crowd.</span>
-    </figcaption>
-  </figure>
+    <!-- RIGHT: waffle crowd of 100. Faint empty squares from the first frame (no void).
+         On reveal: 77 squares fill navy; the you-square pops yellow.
+         data-youdot-anchor lives on the you-square added by JS. -->
+    <figure class="bl-crowd" data-crowd>
+      <div class="bl-crowd-grid" data-crowd-grid role="img"
+           aria-label="A crowd of a hundred: seventy-seven are more careful, one square is you."></div>
+      <figcaption class="bl-crowd-cap">
+        <span class="bl-crowd-count num" data-crowd-count aria-live="polite">0</span>
+        <span class="bl-crowd-of" data-crowd-of>in 100. Lock in your guess to fill the crowd.</span>
+      </figcaption>
+    </figure>
 
-  <!-- ── The operational floor — one quiet supporting line across the
-       foot so the crowd stays the sole focal point. Verified data. ── -->
-  <aside class="bl-floor" aria-label="The rest of the operational floor">
+  </div><!-- /bl-hero -->
+
+  <!-- ── FLOOR — one quiet supporting line; floor stats demoted, crowd stays focal ── -->
+  <aside class="bl-floor" aria-label="Supporting evidence">
     <dl class="bl-floor-row">
       <div class="bl-floor-fig">
         <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
@@ -63,4 +65,5 @@
       </div>
     </dl>
   </aside>
+
 </div>

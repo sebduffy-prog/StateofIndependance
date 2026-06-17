@@ -1,50 +1,81 @@
 <div class="chapter-inner twist-trust-root on-navy" data-twist-trust-root>
 
+  <!-- Full-bleed orbit decoration — behind everything -->
   <span class="twist-trust-orbit si-orbit" aria-hidden="true"></span>
 
   <div class="twist-trust-grid">
 
-    <!-- LEFT: the title cluster + the drag-rank interaction -->
+    <!-- LEFT: eyebrow + title + standfirst + the drag-rank interaction -->
     <section class="twist-trust-left">
       <header class="twist-trust-head">
         <p class="vccp-eyebrow" data-arrival>Twist one · the trust paradox</p>
         <h2 class="twist-trust-title si-display si-display--black"
             data-arrival data-arrival-scramble>The trust <em class="si-accent">paradox</em></h2>
         <p class="twist-trust-stand si-measure--tight" data-arrival>
-          Seven institutions. Rank them as you think Britain does — most trusted to
-          least. Then meet the order the country actually gave.
+          Seven institutions. Rank them as you think Britain does — most trusted
+          to least. Then meet the order the country actually gave.
         </p>
       </header>
+
+      <!-- dragRank mounts here -->
       <div class="twist-trust-rank" data-rank aria-label="Drag-rank the seven institutions"></div>
     </section>
 
-    <!-- RIGHT: the reveal — the spread, the gauge, the paradox -->
-    <aside class="twist-trust-right" data-reveal hidden aria-live="polite">
-      <p class="vccp-eyebrow" data-reveal-eyebrow>What Britain said</p>
+    <!-- RIGHT: always visible — pre-reveal shows redacted question marks,
+         post-reveal snaps to the real stats + NHS gauge. -->
+    <aside class="twist-trust-right" aria-live="polite">
 
-      <p class="twist-trust-spread" data-spread>
-        <span class="twist-trust-spread__a"><span class="num" data-arrival-count
-              data-to="53" data-suffix="%">53%</span></span>
-        <span class="twist-trust-spread__to" aria-hidden="true">to</span>
-        <span class="twist-trust-spread__b"><span class="num" data-arrival-count
-              data-to="24" data-suffix="%">24%</span></span>
-      </p>
-      <p class="twist-trust-spread-cap si-measure--tight">
-        Confidence runs from the NHS at the top to government at the bottom — a
-        29-point spread, and only one institution of seven clears half the country.
-      </p>
-
-      <div class="twist-trust-gauge">
-        <div class="twist-trust-gauge__viz" data-gauge></div>
-        <p class="twist-trust-gauge__cap si-measure--tight">
-          The NHS scores <strong>6.42 / 10</strong> — the most trusted institution
-          in Britain. <span class="hl">Yet 53% say its performance has declined</span>
-          over the past decade. High regard and falling confidence, side by side.
+      <!-- Pre-reveal state: teaser that fills the canvas -->
+      <div class="twist-trust-pre" data-pre-reveal aria-hidden="false">
+        <p class="vccp-eyebrow twist-trust-pre__kicker">Britain's verdict</p>
+        <p class="twist-trust-pre__prompt">
+          Complete the ranking to reveal the real spread — and the institution
+          with high regard and falling confidence.
         </p>
+        <!-- Blurred placeholder numbers that hint the reveal -->
+        <div class="twist-trust-pre__hint" aria-hidden="true">
+          <span class="twist-trust-pre__blur">??%</span>
+          <span class="twist-trust-pre__to">to</span>
+          <span class="twist-trust-pre__blur">??%</span>
+        </div>
       </div>
+
+      <!-- Post-reveal state: the real truth -->
+      <div class="twist-trust-truth" data-truth hidden>
+        <p class="vccp-eyebrow" data-reveal-eyebrow>What Britain said</p>
+
+        <!-- The 53 → 24% spread: the hero moment -->
+        <p class="twist-trust-spread" data-spread>
+          <span class="twist-trust-spread__a">
+            <span class="num twist-trust-spread__num" data-count-to="53" data-count-suffix="%">53%</span>
+          </span>
+          <span class="twist-trust-spread__to" aria-hidden="true">to</span>
+          <span class="twist-trust-spread__b">
+            <span class="num twist-trust-spread__num" data-count-to="24" data-count-suffix="%">24%</span>
+          </span>
+        </p>
+        <p class="twist-trust-spread-cap si-measure--tight">
+          Confidence runs from the NHS at the top to government at the bottom —
+          a 29-point spread, and only one institution of seven clears half the country.
+        </p>
+
+        <!-- NHS paradox: gauge + caption side by side -->
+        <div class="twist-trust-gauge">
+          <div class="twist-trust-gauge__viz" data-gauge></div>
+          <p class="twist-trust-gauge__cap si-measure--tight">
+            The NHS scores <strong>6.42 / 10</strong> — the most trusted
+            institution in Britain. <span class="hl">Yet 53% say its performance
+            has declined</span> over the past decade. High regard and falling
+            confidence, side by side.
+          </p>
+        </div>
+      </div>
+
     </aside>
 
   </div>
 
+  <!-- You-dot lands near the title cluster -->
   <span class="twist-trust-dot" data-youdot-anchor aria-hidden="true"></span>
+
 </div>

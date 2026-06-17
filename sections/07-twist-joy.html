@@ -1,54 +1,62 @@
 <!-- Chapter 07 — Twist two: PROTECTED JOY. THE EARNED PUNCTUATION.
      AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "04 — Twists"):
-     a full-bleed WARM GRADIENT pivot. One focal point — the budget the visitor
-     is trying to cut. The tiny Challenger-Series lockup signs top-right.
+     a full-bleed WARM GRADIENT pivot. Full-screen, one focal point.
 
-     THE ONE MEMORABLE THING: when the household tightens its belt, most of the
-     "nice-to-haves" give way under the knife — but the holiday FIGHTS BACK.
-     The visitor drags each line item toward the bin; the flexible spends slide
-     and stay cut; the holiday resists the pull and SPRINGS BACK to its place,
-     because 40% of Britain actively ring-fence it (Q5 holidays 39.6%). Data as
-     a felt reality, not a chart. Tactile (tactile.js draggable), keyboard-
-     operable, reduced-motion safe.
+     COMPOSITION: left column anchors the hero stat (40% / "2 in 5") as
+     a towering si-bignum with eyebrow + bold italic accent title below it —
+     the NUMBER commands the left half. Right column carries the tactile
+     budget interaction. No dead third — the stat IS the counter-weight to
+     the interaction. No internal scroll, fills one viewport.
 
-     BOLD BLACK Poppins-900 hero line with ONE italic accent word. Backgroundless
-     — every line and number sits on the warm ground with COLOUR + WEIGHT only.
+     THE ONE MEMORABLE THING: pull each spend line left toward the bin —
+     flexible spends fold and stay cut; the holiday FIGHTS BACK, springs
+     home every time, because 40% of Britain ring-fence it (Q5 holidays 39.6%).
+     Data as a felt reality, not a chart. Tactile (tactile.js draggable),
+     keyboard-operable, reduced-motion safe.
+
+     BOLD BLACK Poppins-900 hero stat + one italic accent word in the title.
+     Backgroundless — every element sits on the warm ground.
      Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
      Single root. Every CSS selector scoped to #\30 7-twist-joy. -->
 <div class="chapter-inner twist-joy-root on-warm" data-twist-joy-root>
 
-  <!-- Decorative orbit — the connective signature, behind everything. -->
-  <span class="twist-joy-orbit si-orbit" aria-hidden="true" data-parallax="0.05"></span>
+  <!-- Decorative orbit ring — connective tissue, behind everything. -->
+  <span class="twist-joy-orbit" aria-hidden="true"></span>
 
-  <!-- The Challenger-Series brand stamp, top-right (the book-cover position). -->
-  <img class="twist-joy-mark si-lockup si-lockup--mark"
+  <!-- Challenger-Series brand stamp, top-right (the book-cover position). -->
+  <img class="twist-joy-mark"
        src="assets/brand-final/challenger-series-lockup.png"
        alt="Challenger Series" />
 
-  <!-- HERO — one display moment, hangs left, generous space. The hero number is
-       the headline: ~40% ring-fence the holiday. One italic accent word. -->
-  <header class="twist-joy-head">
+  <!-- LEFT COLUMN — the hero stat IS the focal element.
+       40% (exact 39.6) is the number; it commands the left half of the frame.
+       Title below confirms what the number means. -->
+  <div class="twist-joy-hero" data-arrival>
     <p class="vccp-eyebrow" data-arrival>Twist two</p>
-    <h2 class="twist-joy-title si-display si-display--black" data-arrival>
-      Protected <span class="si-accent twist-joy-accent">joy</span>
-    </h2>
-    <p class="twist-joy-standfirst si-measure--tight" data-arrival>
-      Britain is cutting back &mdash; but not on everything. Take the knife to the
-      budget below and watch what gives way. The flexible spends fold without a
-      fight. The holiday digs in: <strong class="hl">two in five</strong> defend
-      it on principle.
+    <p class="twist-joy-bignum si-bignum num" aria-label="40 percent">
+      <span data-arrival-scramble>40%</span>
     </p>
-  </header>
+    <h2 class="twist-joy-title" data-arrival>
+      protect their<br>
+      <span class="si-accent twist-joy-accent">holiday</span>
+    </h2>
+    <p class="twist-joy-sub" data-arrival>
+      Budget cuts stop at the departure gate.
+      Pull each line left — watch what gives way,
+      and what digs in.
+    </p>
+  </div>
 
-  <!-- THE MARQUEE — the focal point. A budget under the knife. Each line item is
-       a draggable handle the visitor pulls toward the bin. The flexible ones
-       stay cut; the holiday springs back. Built in JS into this mount.
-       The "you" dot anchors on the holiday — the thing that won't be cut. -->
-  <section class="twist-joy-stage" aria-labelledby="twist-joy-stage-title">
-    <h3 class="si-display si-display--sm twist-joy-stage-title" id="twist-joy-stage-title" data-arrival>
-      Cut the budget
-    </h3>
+  <!-- RIGHT COLUMN — the tactile marquee interaction.
+       The "you" dot anchor is wired onto the holiday row from JS. -->
+  <section class="twist-joy-stage" aria-label="Cut the budget interaction">
+    <p class="twist-joy-stage-kicker vccp-eyebrow" data-arrival>
+      Drag left to cut
+    </p>
     <div class="twist-joy-budget" data-twist-joy-budget></div>
+    <p class="twist-joy-data-note" data-arrival>
+      Figures: % of 1,504 UK adults ring-fencing each non-essential (Q5)
+    </p>
   </section>
 
 </div>

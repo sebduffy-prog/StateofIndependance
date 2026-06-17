@@ -1,16 +1,16 @@
 /**
  * 06-twist-trust.js — Twist one: the institutional trust paradox.
  *
- * THE STAGE (navy ground, cream-on-navy). The reader drag-ranks the seven
- * institutions Britain was asked about (Q7 confidence) most-trusted to least.
- * On "reveal" the tiles snap to the country's real order (each annotated
- * "spot on" / "N off") and the right column lands the truth: the 53% → 24%
- * confidence spread, plus the NHS paradox — 6.42/10 (the most trusted of all)
- * yet 53% say it has declined. The drag-rank reveal IS the marquee interaction.
+ * THE STAGE: navy ground, cream-on-navy. Two-column layout:
+ *   LEFT  — drag-rank 7 institutions (most-trusted to least)
+ *   RIGHT — pre-reveal teaser → post-reveal truth (53%→24% spread + NHS 6.42/10 gauge)
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped to #\30 6-twist-trust.
+ * On "Reveal the real ranking" the right column transitions from the teaser
+ * to the real stats, the spread numbers count up, and the radialGauge animates.
  *
- * @param {HTMLElement} rootEl  the <section class="journey-stage" id="06-twist-trust">
+ * Contract: docs/CONTRACT.md.  All CSS is scoped to #\30 6-twist-trust.
+ *
+ * @param {HTMLElement} rootEl  the <section class="journey-step" id="06-twist-trust">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
  *           journey:{ gate():void, ready():void } }} data
  */
@@ -34,7 +34,7 @@ const seededShuffle = (arr) => {
 };
 
 export default function init(rootEl, data) {
-  // Re-play the arrival each time this stage reaches focus (idempotent).
+  // Re-play the arrival beat on every visit (idempotent via arrival()).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
   const survey = data && data.survey;
@@ -42,12 +42,15 @@ export default function init(rootEl, data) {
     && survey.institutionTrust
     && survey.institutionTrust.confidenceRanking
     && survey.institutionTrust.confidenceRanking.items;
-  if (!Array.isArray(ranking) || ranking.length === 0) return; // fail soft
+
+  // Fail soft — if data is missing we still show the arrival but skip interactions.
+  if (!Array.isArray(ranking) || ranking.length === 0) return;
 
   const rankHost = rootEl.querySelector('[data-rank]');
-  const revealPanel = rootEl.querySelector('[data-reveal]');
+  const prePanel = rootEl.querySelector('[data-pre-reveal]');
+  const truthPanel = rootEl.querySelector('[data-truth]');
   const gaugeHost = rootEl.querySelector('[data-gauge]');
-  if (!rankHost || !revealPanel || !gaugeHost) return;
+  if (!rankHost || !prePanel || !truthPanel || !gaugeHost) return;
 
   // True order = descending % confident (NHS 52.8 → Government 23.9).
   const trueItems = ranking.slice().sort((a, b) => b.pctConfident - a.pctConfident);
@@ -59,37 +62,42 @@ export default function init(rootEl, data) {
     if (revealed) return;
     revealed = true;
 
-    revealPanel.hidden = false;
-    // Next frame so the unhide can transition.
-    requestAnimationFrame(() => revealPanel.classList.add('is-shown'));
+    // Swap pre-reveal teaser for the truth panel.
+    prePanel.hidden = true;
+    truthPanel.hidden = false;
 
-    // The flat semicircle gauge — NHS 6.42/10, cream-on-navy.
-    radialGauge(gaugeHost, {
-      value: NHS_MEAN_SCORE,
-      max: 10,
-      onNavy: true,
-      label: 'NHS trust · out of 10',
-      ariaLabel: 'NHS trust score 6.42 out of 10',
-    });
+    // Next frame so the unhide can pick up the transition.
+    requestAnimationFrame(() => {
+      truthPanel.classList.add('is-shown');
 
-    // Count the 53 → 24 spread numbers (arrival skipped them while hidden).
-    revealPanel.querySelectorAll('[data-arrival-count]').forEach((node) => {
-      countUp(node, {
-        to: Number(node.dataset.to) || 0,
-        decimals: 0,
-        suffix: node.dataset.suffix || '',
+      // Count up the 53% and 24% spread numbers.
+      truthPanel.querySelectorAll('[data-count-to]').forEach((node) => {
+        countUp(node, {
+          to: Number(node.dataset.to) || 0,
+          decimals: 0,
+          suffix: node.dataset.countSuffix || '%',
+        });
       });
-    });
 
-    data.journey.ready();
+      // Flat semicircle gauge — NHS 6.42/10, cream-on-navy.
+      radialGauge(gaugeHost, {
+        value: NHS_MEAN_SCORE,
+        max: 10,
+        onNavy: true,
+        label: 'NHS trust · out of 10',
+        ariaLabel: 'NHS trust score 6.42 out of 10',
+      });
+
+      data.journey.ready();
+    });
   };
 
-  // The marquee interaction: drag-rank → reveal the real order.
+  // Mount the drag-rank interaction — the marquee beat.
   dragRank(rankHost, {
     items,
     trueOrder,
-    instructions: 'Drag to reorder — or focus a row and use the up and down arrow keys. '
-      + 'Most trusted at the top.',
+    instructions:
+      'Drag to reorder — or focus a row and use ↑ ↓ arrow keys. Most trusted at the top.',
     onReveal: showReveal,
   });
 

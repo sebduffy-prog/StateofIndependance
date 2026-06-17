@@ -3,90 +3,89 @@
    Scoped to #03-baselines via the escaped #\30 3-baselines prefix.
 
    THE AUTHORITATIVE BRAND WORLD (BWF §7, 03-baselines):
-   the editorial CREAM reading register. You guess, then the truth
-   lands as a crowd of 100 with YOUR square in it — backgroundless
-   navy squares on cream, ONE yellow accent square (the single
-   accent per screen), tabular navy numbers, a BOLD BLACK Poppins
-   title low-left with one italic accent word, the tiny
-   Challenger-Series lockup stamp top-right (the book-cover position).
-   Faint navy-tint track, never a white box. ONE focal point (the
-   crowd); dramatic type hierarchy; deliberate spacing; square
-   corners; no underline; no parallelogram.
+   Cream editorial register. Guess, then the truth lands as a crowd of 100
+   with YOUR square highlighted. Bold-black Poppins headline (left), display
+   navy number (left), waffle crowd (right). ONE focal point — the crowd.
+   Faint navy-tint empty squares from the first frame (no void). ONE yellow
+   you-square (the single accent per screen). Tabular navy numbers. Square
+   corners. No underline. No parallelogram. No edge band. Full-bleed.
    ============================================================ */
 
+/* ── Stage: cream ground, full-bleed one screen ───────────────── */
 #\30 3-baselines.journey-step {
   background: var(--cream);
   color: var(--on-cream);
 }
 
+/* chapter-inner fills the section via the shell's .chapter-inner rule;
+   we add our own column rhythm on top. */
 #\30 3-baselines .chapter-inner {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  /* Deliberate rhythm: large between groups, larger still before the floor. */
-  gap: clamp(2.5rem, 6vh, 4.5rem);
-  padding-block: clamp(3rem, 7vh, 6rem);
+  /* Generous but controlled: headline → hero → floor */
+  gap: clamp(1.5rem, 3.5vh, 3rem);
+  padding-block: clamp(2.8rem, 6vh, 5rem);
+  box-sizing: border-box;
 }
 
-/* ── The brand signature: tiny lockup stamp, top-right (book-cover position) ── */
+/* ── Brand signature: tiny lockup stamp, top-right (book-cover position) ── */
 #\30 3-baselines .bl-mark {
   position: absolute;
   top: 0;
   right: 0;
   height: clamp(26px, 3vw, 34px);
   opacity: 0.85;
-  z-index: 2;
+  z-index: 4;
   pointer-events: none;
 }
 
-#\30 3-baselines .bl-head,
-#\30 3-baselines .bl-hero,
-#\30 3-baselines .bl-floor { position: relative; z-index: 1; }
+/* ── HERO ROW — balanced two-pane: claim left, crowd right ─────── */
+#\30 3-baselines .bl-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  flex: 1 1 0;   /* stretch between headline and floor */
+  min-height: 0;
+}
 
-/* ── Opener — hangs on the left axis (editorial, not centred) ──── */
+/* ── LEFT RAIL — headline + interaction ─────────────────────────── */
+#\30 3-baselines .bl-rail {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.5vh, 2rem);
+}
+
+/* Eyebrow */
+#\30 3-baselines .bl-head { position: relative; }
+
+/* The one bold-black Poppins display title (book-cover voice) */
 #\30 3-baselines .bl-headline {
-  /* One display moment; sits below the true hero (the number). */
-  font-size: clamp(2.4rem, 5.4vw, 5rem);
+  font-size: clamp(2.4rem, 4.8vw, 4.6rem);
   line-height: 0.94;
   margin: var(--space-2) 0 0;
   max-width: 16ch;
   color: var(--ink);
 }
 #\30 3-baselines .bl-headline span { display: block; }
-/* The one italic accent word — the "Series" gesture (BWF §2). No box, no
-   underline; the slant of the italic IS the accent. */
+/* The italic accent word — the "Series" gesture (BWF §2). Slant IS the accent. */
 #\30 3-baselines .bl-headline .si-accent {
   display: inline;
   color: var(--navy);
 }
-#\30 3-baselines .bl-standfirst {
-  margin-top: var(--space-3);
-  font-size: var(--t-md);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
 
-/* ── THE HERO — asymmetric two-pane: claim left, crowd right ──── */
-#\30 3-baselines .bl-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 6rem);
-  align-items: center;
-}
-
-/* The claim column. Both states occupy the SAME cell so the guess
-   gives way to the truth with no layout jump. */
+/* ── CLAIM CELL — guess and truth stack in the same grid area ──── */
 #\30 3-baselines .bl-claim {
   display: grid;
-  align-items: center;
+  align-items: start;
+  min-height: 8rem;   /* hold height while truth is hidden */
 }
 #\30 3-baselines .bl-claim > * { grid-area: 1 / 1; }
 #\30 3-baselines .bl-claim.is-revealed .bl-guess { display: none; }
 
-/* The display number IS the headline — the dramatic top of the scale.
-   Tabular navy, the "serious data" colour (BWF §1). */
+/* The display navy number — dramatic top of the scale */
 #\30 3-baselines .bl-numline { margin: 0; }
 #\30 3-baselines .bl-num {
   color: var(--navy);
@@ -94,43 +93,44 @@
   font-weight: 900;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(5.5rem, 14vw, 12rem);
-  line-height: 0.82;
+  font-size: clamp(5rem, 12vw, 10rem);
+  line-height: 0.84;
 }
 #\30 3-baselines .bl-num .bl-pct {
-  font-size: 0.42em;
+  font-size: 0.4em;
   vertical-align: super;
   font-weight: 800;
 }
 #\30 3-baselines .bl-label {
-  margin: var(--space-3) 0 0;
-  font-size: var(--t-lg);
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-lg, 1.125rem);
   font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.01em;
   color: var(--ink);
-  max-width: 20ch;
+  max-width: 22ch;
 }
 #\30 3-baselines .bl-sentence {
   margin: var(--space-2) 0 0;
-  font-size: var(--t-sm);
+  font-size: var(--t-sm, 0.875rem);
   font-weight: 500;
   line-height: 1.55;
   color: var(--ink-soft);
   opacity: 0.85;
+  max-width: 34ch;
 }
 
-/* The truth arrives on the entrance easing (one quiet supporting motion). */
+/* Truth arrives on the entrance easing */
 #\30 3-baselines .bl-truth {
-  animation: bl-truth-in var(--dur-reveal) var(--ease-entrance) both;
+  animation: bl-truth-in var(--dur-reveal, 0.5s) var(--ease-entrance, ease-out) both;
 }
 @keyframes bl-truth-in {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: none; }
 }
 
 /* ── clickToGuess — style the lib's hooks (no boxes, no underline) ── */
-#\30 3-baselines .bl-guess { max-width: 30rem; }
+#\30 3-baselines .bl-guess { max-width: 32rem; }
 #\30 3-baselines .guess-prompt {
   margin: 0 0 var(--space-2);
   font-size: 0.72rem;
@@ -143,7 +143,7 @@
 #\30 3-baselines .guess-label {
   display: block;
   margin: 0 0 var(--space-3);
-  font-size: var(--t-lg);
+  font-size: var(--t-lg, 1.125rem);
   font-weight: 700;
   line-height: 1.18;
   letter-spacing: -0.01em;
@@ -160,17 +160,19 @@
   appearance: none;
   -webkit-appearance: none;
   height: 4px;
-  background: rgba(4, 22, 84, 0.20);   /* faint navy-tint track, never white */
+  background: rgba(4, 22, 84, 0.18);  /* faint navy-tint track, never white */
   outline-offset: 4px;
 }
 #\30 3-baselines .guess-range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   background: var(--navy);
   cursor: grab;
 }
 #\30 3-baselines .guess-range::-moz-range-thumb {
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border: 0;
   background: var(--navy);
   cursor: grab;
@@ -179,7 +181,7 @@
 #\30 3-baselines .guess-output {
   flex: 0 0 auto;
   min-width: 4ch;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 900;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
@@ -187,92 +189,91 @@
   text-align: right;
 }
 #\30 3-baselines .guess-submit { margin: 0; }
-/* The lib's textual reveal is redundant with the display number; hide it
-   so the crowd + the big number carry the moment. */
+/* The lib's textual reveal is redundant with the display number; hide it. */
 #\30 3-baselines .guess-reveal { display: none; }
 
-/* ── The 100-in-100 crowd (the FORM — the focal point) ────────────
-   Backgroundless data: the squares sit directly on the cream. The
-   filled crowd is navy; the unfilled track is a faint navy tint. */
+/* ── RIGHT PANE: the 100-in-100 waffle crowd (THE FORM — sole focal point) ──
+   Backgroundless: the waffleGrid SVG sits directly on cream.
+   Filled = navy; empty = faint navy tint. */
 #\30 3-baselines .bl-crowd {
   margin: 0;
-  animation: bl-truth-in var(--dur-reveal) var(--ease-entrance) both;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.8rem, 1.5vh, 1.25rem);
+  align-items: flex-start;
+  position: relative;   /* positioning context for the you-square overlay */
 }
-#\30 3-baselines .bl-crowd-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: clamp(5px, 0.9vw, 10px);
+
+/* The waffleGrid SVG fills the pane width naturally (its own max-width governs).
+   We give it a gentle entrance. */
+#\30 3-baselines [data-crowd-grid] {
   width: 100%;
-  max-width: 34rem;
-  margin-inline-start: auto;   /* hold the crowd to the right edge of its pane */
+  animation: bl-truth-in var(--dur-reveal, 0.5s) var(--ease-entrance, ease-out) both;
 }
-#\30 3-baselines .bl-cell {
-  aspect-ratio: 1 / 1;
-  background: rgba(4, 22, 84, 0.10);   /* faint navy track, never white */
-  transition: background-color 0.32s var(--ease-entrance),
-              transform 0.32s var(--ease-entrance);
+/* waffleGrid appends an SVG; ensure it fills the div */
+#\30 3-baselines [data-crowd-grid] svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  display: block;
 }
-#\30 3-baselines .bl-cell.is-on { background: var(--navy); }
-/* ONE accent moment per screen: the visitor's own square, in YELLOW —
-   the single accent of the brand world (BWF §1), ringed in navy so it
-   reads on the cream and against the navy crowd. */
-#\30 3-baselines .bl-cell.is-you.is-landed {
+
+/* ── YOU SQUARE — the ONE accent per screen: yellow, scaled proud ──
+   Positioned absolutely over the waffleGrid SVG by JS; starts transparent
+   (faint, just present) then pops on reveal. */
+#\30 3-baselines .bl-you-square {
+  background: transparent;
+  transition:
+    background-color 0.3s var(--ease-entrance, ease-out),
+    transform        0.3s var(--ease-entrance, ease-out),
+    box-shadow       0.3s var(--ease-entrance, ease-out);
+}
+#\30 3-baselines .bl-you-square.is-landed {
   background: var(--yellow);
-  transform: scale(1.22);
+  transform: scale(1.25);
   box-shadow: 0 0 0 2px var(--navy);
-  position: relative;
-  z-index: 2;
+  z-index: 4;
 }
+
+/* Crowd caption: count + supporting copy */
 #\30 3-baselines .bl-crowd-cap {
-  margin-top: var(--space-4);
-  max-width: 34rem;
-  margin-inline-start: auto;
   display: flex;
   align-items: baseline;
-  gap: 0.6ch;
+  gap: 0.5ch;
   flex-wrap: wrap;
 }
 #\30 3-baselines .bl-crowd-count {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--navy);
+  flex-shrink: 0;
 }
 #\30 3-baselines .bl-crowd-of {
-  font-size: var(--t-sm);
+  font-size: var(--t-sm, 0.875rem);
   font-weight: 500;
   line-height: 1.4;
   color: var(--ink-soft);
-  max-width: 30ch;
+  max-width: 32ch;
 }
 
-/* ── The operational floor — quiet supporting evidence ────────── */
+/* ── FLOOR — one quiet tabular line; no boxes; border-top separator ── */
 #\30 3-baselines .bl-floor {
-  margin-top: clamp(2rem, 5vh, 4rem);   /* the considered jump to the quiet floor */
-  border-top: 1px solid rgba(4, 22, 84, 0.16);
-  padding-top: clamp(1.5rem, 4vh, 2.5rem);
-}
-#\30 3-baselines .bl-floor-kicker {
-  margin: 0 0 var(--space-4);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--navy);
-  opacity: 0.6;
+  border-top: 1px solid rgba(4, 22, 84, 0.14);
+  padding-top: clamp(1.2rem, 3vh, 2rem);
 }
 #\30 3-baselines .bl-floor-row {
   margin: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.5rem, 4vw, 4rem);
+  gap: clamp(1.2rem, 3vw, 3rem);
 }
 #\30 3-baselines .bl-floor-fig { margin: 0; }
 #\30 3-baselines .bl-floor-num {
   margin: 0;
-  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -281,7 +282,7 @@
 }
 #\30 3-baselines .bl-floor-lbl {
   margin: var(--space-1) 0 0;
-  font-size: var(--t-sm);
+  font-size: var(--t-sm, 0.875rem);
   font-weight: 500;
   line-height: 1.4;
   color: var(--ink-soft);
@@ -289,23 +290,22 @@
   max-width: 26ch;
 }
 
-/* ── Responsive: stack the hero on narrow screens ─────────────── */
-@media (max-width: 900px) {
+/* ── Responsive: stack hero on narrow viewports ─────────────────── */
+@media (max-width: 860px) {
   #\30 3-baselines .bl-hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(2.5rem, 7vh, 4rem);
+    gap: clamp(2rem, 6vh, 3.5rem);
   }
-  #\30 3-baselines .bl-crowd-grid,
-  #\30 3-baselines .bl-crowd-cap { margin-inline-start: 0; max-width: 30rem; }
+  #\30 3-baselines .bl-crowd { align-items: flex-start; }
   #\30 3-baselines .bl-floor-row {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 }
 
-/* ── Reduced motion ──────────────────────────────────────────── */
+/* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 3-baselines .bl-cell { transition: none; }
   #\30 3-baselines .bl-truth,
-  #\30 3-baselines .bl-crowd { animation: none; }
+  #\30 3-baselines [data-crowd-grid] { animation: none; }
+  #\30 3-baselines .bl-you-square    { transition: none; }
 }

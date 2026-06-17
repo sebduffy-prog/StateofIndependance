@@ -1,22 +1,16 @@
 /**
  * Chapter 03 — baselines. "The numbers you already know."
  *
- * THE ONE MEMORABLE THING: you guess how many in every 100 are more careful
- * with money — then the truth lands as a crowd of 100 squares with YOUR own
- * square singled out among them. The crowd is present from the first frame as
- * a faint navy-tint grid (no right-hand void); locking in your guess lights
- * 77 of the squares and pops your yellow square. The number is display-scale;
- * the crowd is the form. Everything else on the screen stays quiet.
+ * THE ONE MEMORABLE THING: guess how many in every 100 are more careful
+ * with money — then the truth lands as a crowd of 100 (waffle grid) where
+ * YOUR own square pops yellow among them.
  *
- *   THE MARQUEE · 77% careful — clickToGuess → a 100-in-100 crowd where the
- *       visitor's own square pops inside it. The display number is the
- *       headline; it rolls from the guess to the truth as the crowd fills.
+ *   THE MARQUEE · 77% careful — clickToGuess → waffleGrid crowd-of-100
+ *       where the visitor's square highlights inside it. The display number
+ *       rolls from guess to truth; the crowd fills.
  *
- *   The floor — 55 / 60 / 54 demoted to one quiet line of small tabular
- *       figures (no charts, no boxes) so the crowd is the sole focal point.
- *
- * Soft gating: gate() lights the advisory "try it" hint on the guess; ready()
- * clears it when the visitor locks in. Next is NEVER blocked.
+ *   The floor — 55 / 60 / 54 kept as one quiet tabular line so the crowd
+ *       is the sole focal point.
  *
  * @param {HTMLElement} rootEl  <section class="journey-step" id="03-baselines">
  * @param {{ survey:object|null, segments:object|null, tgi:object|null,
@@ -25,108 +19,160 @@
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { observeCounters, countUp } from '../lib/counter.js';
 import { clickToGuess } from '../lib/interactions.js';
+import { waffleGrid } from '../lib/charts.js';
 import { arrival } from '../lib/experiential.js';
 
-const CAREFUL_TRUE = 77.3;     // Q2r3 exact
-const CAREFUL_FILL = 77;       // squares lit in the 100-grid (deck-rounded)
-const CROWD_TOTAL = 100;
-const COUNT_MS = 1400;
-const STAGGER_MS = 13;         // per-square cascade
-const YOU_INDEX = 44;          // a lit square near the crowd's heart = "you"
-const YOU_POP_MS = 320;        // beat after your square lights, then it stands proud
+const CAREFUL_TRUE  = 77.3;   // Q2r3 exact — survey.moodOfNation careful
+const CAREFUL_FILL  = 77;     // squares lit in the 100-grid (deck-rounded)
+const COUNT_MS      = 1400;
+/** Index of the "you" cell inside the waffle (0-based, row-major). */
+const YOU_INDEX     = 44;     // near the centre of the lit crowd
+const YOU_POP_DELAY = 280;    // ms after the fill wave before you pop
 
 /**
- * Build the 100-in-100 crowd grid into `gridEl` up front: 100 faint squares,
- * with the visitor's square marked and given the journey's you-dot anchor.
- * Returns `run(from)` which cascades the fill (CAREFUL_FILL squares lit),
- * pops the you-square, and rolls the caption count from the guess up to the
- * truth. Reduced motion paints the final state instantly.
- * @param {HTMLElement} gridEl
- * @param {HTMLElement|null} countEl
- * @returns {(from?: number) => void}
+ * Overlay a single "you" square on top of the SVG waffle cell at `index`.
+ * Returns a cleanup function that removes the overlay.
+ * The overlay is an absolutely-positioned `<span>` that mirrors the cell
+ * position; this avoids touching the shared waffleGrid SVG internals.
+ * @param {SVGElement} svgEl   The waffle <svg> element
+ * @param {number}     index   Cell index (0-based, row-major in a 10×10 grid)
+ * @param {number}     square  Cell size (px) used when the waffle was built
+ * @param {number}     gap     Gap (px) used when the waffle was built
+ * @returns {{ el: HTMLElement, land: () => void, destroy: () => void }}
  */
-const buildCrowd = (gridEl, countEl) => {
-  const reduced = prefersReducedMotion();
-  const cells = [];
-  for (let i = 0; i < CROWD_TOTAL; i += 1) {
-    const cell = document.createElement('span');
-    cell.className = 'bl-cell';
-    if (i === YOU_INDEX) {
-      cell.classList.add('is-you');
-      cell.setAttribute('data-youdot-anchor', '');
-    }
-    gridEl.append(cell);
-    cells.push(cell);
+const buildYouSquare = (svgEl, index, square, gap) => {
+  const cols    = 10;
+  const col     = index % cols;
+  const row     = Math.floor(index / cols);
+  const total   = cols * square + (cols - 1) * gap;
+  // fractional position (0..1) within the SVG viewBox
+  const xFrac   = (col * (square + gap)) / total;
+  const yFrac   = (row * (square + gap)) / total;
+  const wFrac   = square / total;
+
+  const wrapper = svgEl.parentElement;
+  // ensure wrapper is the positioning context
+  if (getComputedStyle(wrapper).position === 'static') {
+    wrapper.style.position = 'relative';
   }
 
-  const light = (cell, i) => { if (i < CAREFUL_FILL) cell.classList.add('is-on'); };
-  const landYou = () => cells[YOU_INDEX].classList.add('is-landed');
+  const dot = document.createElement('span');
+  dot.className   = 'bl-you-square';
+  dot.setAttribute('data-youdot-anchor', '');
+  dot.setAttribute('aria-hidden', 'true');
 
-  return (from = 0) => {
-    if (reduced) {
-      cells.forEach(light);
-      landYou();
-      if (countEl) countEl.textContent = String(CAREFUL_FILL);
-      return;
-    }
-    cells.forEach((cell, i) => {
-      window.setTimeout(() => {
-        light(cell, i);
-        if (i === YOU_INDEX) window.setTimeout(landYou, YOU_POP_MS);
-      }, i * STAGGER_MS);
-    });
-    if (countEl) countUp(countEl, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
+  // Position using percentages so it scales with the SVG.
+  // The SVG fills 100% of its container width; height is auto.
+  // We cannot use simple % on top because the SVG height is intrinsic.
+  // Use a transparent overlay div that matches the SVG size.
+  dot.style.cssText = `
+    position: absolute;
+    left:   ${(xFrac * 100).toFixed(3)}%;
+    width:  ${(wFrac * 100).toFixed(3)}%;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+    z-index: 3;
+    background: transparent;
+  `;
+
+  // We need top = yFrac × (SVG rendered height). Use a ResizeObserver
+  // to keep it in sync as the SVG reflows.
+  const align = () => {
+    const svgH = svgEl.getBoundingClientRect().height;
+    if (svgH > 0) dot.style.top = `${yFrac * svgH}px`;
   };
+
+  wrapper.appendChild(dot);
+  const ro = new ResizeObserver(align);
+  ro.observe(svgEl);
+  align();
+
+  const land = () => dot.classList.add('is-landed');
+  const destroy = () => { ro.disconnect(); dot.remove(); };
+  return { el: dot, land, destroy };
 };
 
 export default function init(rootEl, data) {
   const { survey, journey } = data;
   if (!survey) return; // fail soft — any dataset may be null
 
-  // Entrance: re-assemble headline + count numbers on every arrival (idempotent).
+  // Entrance: re-assemble headline on every arrival (idempotent).
   rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
 
   observeReveals(rootEl);
   observeCounters(rootEl);
 
-  /* ── THE MARQUEE — guess, then the 100-in-100 crowd ──────────────── */
-  const guessHost = rootEl.querySelector('[data-guess]');
-  const claim = rootEl.querySelector('[data-claim]');
-  const truth = rootEl.querySelector('[data-truth]');
-  const crowdGrid = rootEl.querySelector('[data-crowd-grid]');
+  /* ── THE MARQUEE — guess, then the 100-in-100 waffle crowd ─────── */
+  const guessHost  = rootEl.querySelector('[data-guess]');
+  const claim      = rootEl.querySelector('[data-claim]');
+  const truth      = rootEl.querySelector('[data-truth]');
+  const crowdGrid  = rootEl.querySelector('[data-crowd-grid]');
   const crowdCount = rootEl.querySelector('[data-crowd-count]');
-  const crowdOf = rootEl.querySelector('[data-crowd-of]');
+  const crowdOf    = rootEl.querySelector('[data-crowd-of]');
   const carefulNum = rootEl.querySelector('[data-careful-num]');
 
-  if (guessHost && crowdGrid) {
-    // The crowd exists from the first frame — a faint grid, never a void.
-    const runCrowd = buildCrowd(crowdGrid, crowdCount);
+  if (!guessHost || !crowdGrid) return;
 
-    clickToGuess(guessHost, {
-      trueValue: CAREFUL_TRUE,
-      max: 100,
-      unit: '%',
-      label: 'How many in every 100 are more careful with money than five years ago?',
-      prompt: 'Before the truth — take a guess',
-      onReveal: (guess) => {
-        const from = Number.isFinite(guess) ? guess : 0;
+  const SQUARE = 26;
+  const GAP    = 6;
 
-        // The guess gives way to the display number: it IS the headline now.
-        if (claim) claim.classList.add('is-revealed');
-        if (truth) truth.hidden = false;
-        if (carefulNum) {
-          carefulNum.textContent = '';
-          countUp(carefulNum, { from, to: CAREFUL_FILL, suffix: '%', durationMs: COUNT_MS });
-        }
+  // Build the waffle (faint empty squares from the first frame — never a void).
+  const waffle = waffleGrid(crowdGrid, {
+    value: 0,
+    total: 100,
+    accent: 'navy',
+    square: SQUARE,
+    gap: GAP,
+    ariaLabel: 'A crowd of a hundred: seventy-seven are more careful with money.',
+  });
+  const svgEl = waffle.el;
 
-        // The faint grid lights into the crowd; your square pops.
-        if (crowdGrid) crowdGrid.classList.add('is-lit');
-        if (crowdOf) crowdOf.textContent = 'of every 100 people you pass today — and one of them is you.';
-        runCrowd(from);
-        journey.ready();
-      },
-    });
-    // Advisory "try it" hint only (Next still unlocks after the dwell).
-    journey.gate();
-  }
+  // Build the "you" overlay square immediately (faint until it lands).
+  const youSquare = buildYouSquare(svgEl, YOU_INDEX, SQUARE, GAP);
+
+  clickToGuess(guessHost, {
+    trueValue: CAREFUL_TRUE,
+    max: 100,
+    unit: '%',
+    label: 'How many in every 100 are more careful with money than five years ago?',
+    prompt: 'Before the truth — take a guess',
+    onReveal: (guess) => {
+      const from = Number.isFinite(guess) ? Math.round(guess) : 0;
+
+      // Swap guess cell for the truth display number (no layout jump).
+      if (claim) claim.classList.add('is-revealed');
+      if (truth) truth.hidden = false;
+
+      if (carefulNum) {
+        carefulNum.textContent = '';
+        countUp(carefulNum, {
+          from,
+          to: CAREFUL_FILL,
+          suffix: '%',
+          durationMs: COUNT_MS,
+        });
+      }
+
+      // Fill the crowd; pop the you-square after the wave settles.
+      waffle.setValue(CAREFUL_FILL, { animate: !prefersReducedMotion() });
+
+      if (prefersReducedMotion()) {
+        youSquare.land();
+      } else {
+        window.setTimeout(() => youSquare.land(), COUNT_MS - YOU_POP_DELAY);
+      }
+
+      if (crowdOf) {
+        crowdOf.textContent = 'of every 100 people you pass today — one of them is you.';
+      }
+      if (crowdCount) {
+        countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });
+      }
+
+      journey.ready();
+    },
+  });
+
+  // Advisory "try it" hint only — Next still unlocks after the dwell.
+  journey.gate();
 }
