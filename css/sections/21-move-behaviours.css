@@ -94,7 +94,7 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 #\32 1-move-behaviours .mb-head {
