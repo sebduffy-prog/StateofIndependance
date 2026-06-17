@@ -1,5 +1,5 @@
 /* Chapter 08 — playground. ONE instrument: the data, beautifully, on demand.
-   Every selector is prefixed with #\30 8-playground so nothing leaks.
+   Every selector is prefixed with #\31 6-data-explorer so nothing leaks.
 
    THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 · "08 — Playground"):
    a calm, precise CREAM instrument. The editorial light ground (#F0EDE7) — the
@@ -22,7 +22,7 @@
 
 /* ─── The editorial cream ground — the precise-instrument register.
    A faint warm top-light gives depth without a box; navy stays AA on it. ─── */
-#\30 8-playground {
+#\31 6-data-explorer {
   background:
     radial-gradient(135% 110% at 12% -8%, rgba(255, 255, 255, 0.55) 0%, transparent 50%),
     var(--cream);
@@ -32,12 +32,12 @@
 }
 
 /* Full-viewport immersive stage; top-aligned so the ground fills the screen. */
-#\30 8-playground.journey-step {
+#\31 6-data-explorer.journey-step {
   display: block;
   padding-top: 0;
 }
 
-#\30 8-playground .pg-world {
+#\31 6-data-explorer .pg-world {
   position: relative;
   isolation: isolate;
   overflow: hidden;              /* clip the ambient orbit ring to the ground */
@@ -47,11 +47,11 @@
   justify-content: center;       /* the one instrument sits in the centre band */
   padding-block: clamp(var(--space-4), 8vh, var(--space-6));
 }
-#\30 8-playground .pg-world > * { position: relative; z-index: 1; }
+#\31 6-data-explorer .pg-world > * { position: relative; z-index: 1; }
 
 /* The orbit signature — one thin navy-tint ring, ambient, behind everything,
    with a single yellow seed where the journey thread touches it (the accent). */
-#\30 8-playground .pg-orbit {
+#\31 6-data-explorer .pg-orbit {
   position: absolute;
   z-index: 0;
   top: clamp(-160px, -8vw, -60px);
@@ -63,7 +63,7 @@
   pointer-events: none;
   animation: pg-orbit-spin 80s linear infinite;
 }
-#\30 8-playground .pg-orbit::after {
+#\31 6-data-explorer .pg-orbit::after {
   content: "";
   position: absolute;
   inset: 16%;
@@ -71,7 +71,7 @@
   border: 1px solid rgba(4, 22, 84, 0.08);
 }
 /* the single yellow seed-dot riding the orbit ring — the one accent moment */
-#\30 8-playground .pg-orbit::before {
+#\31 6-data-explorer .pg-orbit::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -85,7 +85,7 @@
 @keyframes pg-orbit-spin { to { transform: rotate(360deg); } }
 
 /* ─── The asymmetric split: instrument rail | chart hero ─────────────── */
-#\30 8-playground .pg-stage {
+#\31 6-data-explorer .pg-stage {
   position: relative;
   width: 100%;
   display: grid;
@@ -96,7 +96,7 @@
 
 /* The tiny Challenger-Series lockup — the book-cover stamp, top-right of the
    instrument. Black silhouette, never recoloured; small brand signature. */
-#\30 8-playground .pg-mark {
+#\31 6-data-explorer .pg-mark {
   position: absolute;
   top: clamp(-8px, -1vw, 0px);
   right: 0;
@@ -108,29 +108,29 @@
 }
 
 /* ─── LEFT: the instrument rail ──────────────────────────────────────── */
-#\30 8-playground .pg-rail {
+#\31 6-data-explorer .pg-rail {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
-#\30 8-playground .pg-eyebrow {
+#\31 6-data-explorer .pg-eyebrow {
   margin: 0;
   color: var(--navy);
   opacity: 0.7;
   font-weight: 600;
 }
-#\30 8-playground .pg-eyebrow[data-arrival],
-#\30 8-playground .pg-readout-num[data-arrival],
-#\30 8-playground .pg-readout-line[data-arrival] {
+#\31 6-data-explorer .pg-eyebrow[data-arrival],
+#\31 6-data-explorer .pg-readout-num[data-arrival],
+#\31 6-data-explorer .pg-readout-line[data-arrival] {
   display: block;
 }
 
 /* The display moment — tight within the read-out group, large gap to controls.
    The number is the headline: Poppins 900, navy gravity, tabular. */
-#\30 8-playground .pg-readout {
+#\31 6-data-explorer .pg-readout {
   margin: var(--space-2) 0 clamp(var(--space-4), 6vh, var(--space-6)) 0;
 }
-#\30 8-playground .pg-readout-num {
+#\31 6-data-explorer .pg-readout-num {
   margin: 0;
   color: var(--navy);
   font-weight: 900;
@@ -140,7 +140,7 @@
   font-variant-numeric: tabular-nums;
 }
 /* The unit is the ONE yellow accent on the figure. */
-#\30 8-playground .pg-readout-unit {
+#\31 6-data-explorer .pg-readout-unit {
   font-size: 0.42em;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -148,7 +148,7 @@
   vertical-align: baseline;
   color: var(--yellow);
 }
-#\30 8-playground .pg-readout-line {
+#\31 6-data-explorer .pg-readout-line {
   margin: var(--space-1) 0 0 0;
   color: var(--ink);
   font-size: clamp(1.05rem, 1.7vw, 1.4rem);
@@ -158,12 +158,12 @@
 }
 
 /* ─── Controls — square chips, navy on the cream ground; large gap above ─ */
-#\30 8-playground .pg-controls {
+#\31 6-data-explorer .pg-controls {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
-#\30 8-playground .pg-control-label {
+#\31 6-data-explorer .pg-control-label {
   display: block;
   font-size: var(--t-xs);
   letter-spacing: 0.16em;
@@ -173,13 +173,13 @@
   opacity: 0.55;
   margin-bottom: var(--space-1);
 }
-#\30 8-playground .pillgroup {
+#\31 6-data-explorer .pillgroup {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 /* Rest: navy outline, no fill box (de-blocked) — the quiet square control. */
-#\30 8-playground .pillgroup-chip {
+#\31 6-data-explorer .pillgroup-chip {
   background: transparent;
   color: var(--navy);
   border: 1.5px solid rgba(4, 22, 84, 0.34);
@@ -194,28 +194,28 @@
     background 0.18s var(--ease-entrance),
     color 0.18s var(--ease-entrance);
 }
-#\30 8-playground .pillgroup-chip:hover:not(:disabled) {
+#\31 6-data-explorer .pillgroup-chip:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: var(--navy);
   background: rgba(4, 22, 84, 0.05);
 }
 /* Active: solid navy, cream text — deliberate contrast, the data-serious chip. */
-#\30 8-playground .pillgroup-chip.is-active {
+#\31 6-data-explorer .pillgroup-chip.is-active {
   background: var(--navy);
   color: var(--cream);
   border-color: var(--navy);
 }
-#\30 8-playground .pillgroup-chip:focus-visible {
+#\31 6-data-explorer .pillgroup-chip:focus-visible {
   outline: 2px solid var(--navy);
   outline-offset: 2px;
 }
-#\30 8-playground .pillgroup-chip:disabled {
+#\31 6-data-explorer .pillgroup-chip:disabled {
   cursor: not-allowed;
   opacity: 0.34;
 }
 
 /* The honest view-note — small, quiet, below the controls. */
-#\30 8-playground .pg-note {
+#\31 6-data-explorer .pg-note {
   margin: var(--space-3) 0 0 0;
   font-size: var(--t-xs);
   letter-spacing: 0.04em;
@@ -227,11 +227,11 @@
 }
 
 /* ─── RIGHT: the single hero — the chart, box-less on the open cream ─── */
-#\30 8-playground .pg-instrument {
+#\31 6-data-explorer .pg-instrument {
   min-width: 0;
 }
-#\30 8-playground .pg-chart-holder { width: 100%; }
-#\30 8-playground .pg-chart {
+#\31 6-data-explorer .pg-chart-holder { width: 100%; }
+#\31 6-data-explorer .pg-chart {
   width: 100%;
   min-height: 340px;             /* reserve space so the panel never jumps */
   display: flex;
@@ -244,36 +244,36 @@
     transform 0.36s var(--ease-entrance);
   will-change: opacity, transform;
 }
-#\30 8-playground .pg-chart.is-fading {
+#\31 6-data-explorer .pg-chart.is-fading {
   opacity: 0;
   transform: translate3d(0, 10px, 0);
 }
-#\30 8-playground .pg-chart > svg { max-width: 100%; height: auto; }
+#\31 6-data-explorer .pg-chart > svg { max-width: 100%; height: auto; }
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 8-playground .pillgroup-chip,
-  #\30 8-playground .pg-chart {
+  #\31 6-data-explorer .pillgroup-chip,
+  #\31 6-data-explorer .pg-chart {
     transition: none;
   }
-  #\30 8-playground .pg-orbit { animation: none; }
+  #\31 6-data-explorer .pg-orbit { animation: none; }
 }
 
 /* ─── Responsive: stack the rail above the chart ─────────────────────── */
 @media (max-width: 900px) {
-  #\30 8-playground .pg-stage {
+  #\31 6-data-explorer .pg-stage {
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
-  #\30 8-playground .pg-mark {
+  #\31 6-data-explorer .pg-mark {
     top: 0;
   }
-  #\30 8-playground .pg-world {
+  #\31 6-data-explorer .pg-world {
     justify-content: flex-start;
     padding-block: clamp(var(--space-4), 6vh, var(--space-6));
   }
-  #\30 8-playground .pg-readout {
+  #\31 6-data-explorer .pg-readout {
     margin-bottom: var(--space-4);
   }
-  #\30 8-playground .pg-chart { min-height: 300px; }
+  #\31 6-data-explorer .pg-chart { min-height: 300px; }
 }

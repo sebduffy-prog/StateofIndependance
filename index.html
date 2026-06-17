@@ -19,20 +19,19 @@
 </head>
 <body>
 
-  <!-- One step is visible at a time; all chapters mount inside #app. -->
+  <!-- The Z-axis depth-scroll journey. main.js builds a #journey-3d perspective
+       stage inside #app and mounts every full-bleed stage into it. Scrolling /
+       trackpad / touch / ArrowDown / Space fly forward through depth. -->
   <main id="app"></main>
 
-  <!-- Bottom journey controls — NOT a top bar, NOT a progress rail.
-       Built and wired by js/main.js. SOFT GATING: Next always unlocks after a
-       short dwell. The hint is an optional "try it" affordance only — it never
-       blocks Next. -->
-  <div class="journey-controls" id="journeyControls" role="navigation" aria-label="Journey controls" hidden>
-    <button type="button" class="journey-btn journey-back" id="journeyBack" aria-label="Previous step">Back</button>
+  <!-- Minimal bottom meta — NOT a top bar, NOT Next/Back buttons (scroll is the
+       mechanic). Just position (orbit arc + N/total) and the advisory "try it"
+       hint (SOFT GATING: scrolling always advances; the hint never traps). -->
+  <div class="journey-controls" id="journeyControls" role="status" aria-label="Journey position" hidden>
     <div class="journey-meta">
       <span class="journey-indicator" id="journeyIndicator" aria-live="polite"></span>
-      <span class="journey-hint" id="journeyHint" role="status" aria-live="polite" hidden>Try the interaction below</span>
+      <span class="journey-hint" id="journeyHint" role="status" aria-live="polite" hidden>Try the interaction</span>
     </div>
-    <button type="button" class="journey-btn journey-next journey-btn-primary" id="journeyNext" aria-label="Next step">Next</button>
   </div>
 
   <script type="module" src="js/main.js"></script>

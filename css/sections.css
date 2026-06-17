@@ -1,11 +1,25 @@
-/* sections.css — one @import per chapter, build order. Shared file —
-   section builders edit ONLY their own css/sections/{id}.css. */
+/* sections.css — one @import per step, in journey order (see sections/manifest.json
+   + docs/STRUCTURE-V2.md). Shared file — section builders edit ONLY their own
+   css/sections/{id}.css. Workflow-A placeholders are scaffolds; build B fills them. */
 @import "sections/01-cover.css";
 @import "sections/02-research.css";
 @import "sections/03-baselines.css";
-@import "sections/04-twists.css";
-@import "sections/05-segments.css";
-@import "sections/06-empowerment.css";
-@import "sections/07-moves.css";
-@import "sections/08-playground.css";
-@import "sections/09-outro.css";
+@import "sections/04-baselines-rest.css";
+@import "sections/05-twists-intro.css";
+@import "sections/06-twist-trust.css";
+@import "sections/07-twist-joy.css";
+@import "sections/08-twist-ai.css";
+@import "sections/09-segments-intro.css";
+@import "sections/10-segment-architects.css";
+@import "sections/11-segment-hustlers.css";
+@import "sections/12-segment-coasters.css";
+@import "sections/13-segment-retreaters.css";
+@import "sections/14-graphrag.css";
+@import "sections/15-empowerment.css";
+@import "sections/16-data-explorer.css";
+@import "sections/17-move-unplug.css";
+@import "sections/18-move-antidote.css";
+@import "sections/19-move-selfhelp.css";
+@import "sections/20-move-mentalload.css";
+@import "sections/21-move-behaviours.css";
+@import "sections/22-outro.css";

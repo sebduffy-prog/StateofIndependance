@@ -10,14 +10,14 @@
    set in italic (the "Series" gesture, no underline / no parallelogram); the
    one yellow accent rides the highlighted word. Backgroundless throughout: no
    card/box/highlight fill behind any copy; emphasis is colour + weight only.
-   Square corners, tabular nums, reduced-motion safe. Scoped to #\30 9-outro. */
+   Square corners, tabular nums, reduced-motion safe. Scoped to #\32 2-outro. */
 
 /* Both surfaces go full-bleed — break out of .chapter padding. */
-#\30 9-outro {
+#\32 2-outro {
   padding: 0;
   background: var(--soi-navy);
 }
-#\30 9-outro .chapter-inner {
+#\32 2-outro .chapter-inner {
   max-width: none;
   margin: 0;
   width: 100%;
@@ -28,7 +28,7 @@
 
 /* The italic accent — the "Series" gesture (replaces the parallelogram).
    The slant IS the accent: no box, no skew transform, no underline. */
-#\30 9-outro .outro-accent {
+#\32 2-outro .outro-accent {
   font-style: italic;
 }
 
@@ -36,7 +36,7 @@
    Grows to at least the controls-reserved viewport so the navy ground always
    owns a full screen of breathing room (FILL THE SCREEN, with negative space
    as the feature). The line hangs on a left axis — asymmetric, editorial. */
-#\30 9-outro .outro-dark {
+#\32 2-outro .outro-dark {
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -52,7 +52,7 @@
 }
 
 /* The nation, dispersing — the dotField canvas, full-bleed, behind the line. */
-#\30 9-outro .outro-dots {
+#\32 2-outro .outro-dots {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -60,7 +60,7 @@
   z-index: 0;
   pointer-events: none;
 }
-#\30 9-outro .outro-dots canvas {
+#\32 2-outro .outro-dots canvas {
   display: block;
   width: 100%;
   height: 100%;
@@ -68,7 +68,7 @@
 
 /* A single thin orbit ring — the connective signature, ambient, low. One
    accent moment of geometry; never interactive, never behind text as a box. */
-#\30 9-outro .outro-orbit {
+#\32 2-outro .outro-orbit {
   z-index: 0;
   opacity: 0.4;
 }
@@ -76,7 +76,7 @@
 /* Commit-pulse finish — a single faint yellow warmth blooms from the lower-left
    as the close completes (.is-finished). Backgroundless: a screen-blend glow
    behind all copy, never a box, can never occlude the line. The single accent. */
-#\30 9-outro .outro-dark::after {
+#\32 2-outro .outro-dark::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -92,13 +92,13 @@
   opacity: 0;
   transition: opacity 1.4s ease;
 }
-#\30 9-outro .outro-dark.is-finished::after { opacity: 1; }
+#\32 2-outro .outro-dark.is-finished::after { opacity: 1; }
 
 /* ─── The focal point: the Martin Lewis line ─────────────────────────────
    Hung on the left axis, held to a generous measure so it breaks into a few
    weighty lines. The kicker is the one small thing; the line is the one huge
    thing; nothing in the muddy middle. */
-#\30 9-outro .outro-quote {
+#\32 2-outro .outro-quote {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -106,7 +106,7 @@
      single words — held off the full width so it never runs edge to edge. */
   max-width: min(30ch, 86%);
 }
-#\30 9-outro .outro-kicker {
+#\32 2-outro .outro-kicker {
   margin: 0 0 clamp(22px, 3.4vh, 48px);
   color: var(--soi-cream);
   opacity: 0;
@@ -115,11 +115,11 @@
               transform .7s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: opacity, transform;
 }
-#\30 9-outro .outro-kicker.is-in { opacity: 0.72; transform: none; }
+#\32 2-outro .outro-kicker.is-in { opacity: 0.72; transform: none; }
 
 /* The display moment: Poppins Black, dramatic scale, tight tracking, tight
    leading. The one huge thing on the screen. */
-#\30 9-outro .outro-quote-text {
+#\32 2-outro .outro-quote-text {
   margin: 0;
   color: var(--soi-cream);
   text-transform: none;
@@ -131,14 +131,14 @@
   font-size: clamp(2rem, 4vw, 3.6rem);
   overflow-wrap: break-word;
 }
-#\30 9-outro .outro-quote-text .hl { line-height: inherit; }
+#\32 2-outro .outro-quote-text .hl { line-height: inherit; }
 /* The accent word: italic + the single yellow accent (vccp.css gives .si-dark
    .hl the yellow). The italic slant is the only emphasis device — no underline. */
-#\30 9-outro .outro-quote-text .outro-accent { font-style: italic; }
+#\32 2-outro .outro-quote-text .outro-accent { font-style: italic; }
 
 /* Each word assembles up into place (the meaning builds). Pure transform +
    opacity, never clips the glyphs. */
-#\30 9-outro .outro-word {
+#\32 2-outro .outro-word {
   display: inline-block;
   opacity: 0;
   transform: translate3d(0, 0.42em, 0);
@@ -146,10 +146,10 @@
               transform .62s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: opacity, transform;
 }
-#\30 9-outro .outro-word.is-in { opacity: 1; transform: none; }
+#\32 2-outro .outro-word.is-in { opacity: 1; transform: none; }
 
 /* The attribution settles last — the one small line beneath the huge one. */
-#\30 9-outro .outro-quote-cite {
+#\32 2-outro .outro-quote-cite {
   margin: clamp(26px, 4vh, 56px) 0 0;
   font-size: var(--t-sm);
   letter-spacing: 0.16em;
@@ -162,16 +162,16 @@
               transform .7s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: opacity, transform;
 }
-#\30 9-outro .outro-quote-cite.is-in { opacity: 1; transform: none; }
+#\32 2-outro .outro-quote-cite.is-in { opacity: 1; transform: none; }
 
 /* The line is keyboard-replayable (role=button) — a quiet focus ring, no box. */
-#\30 9-outro .outro-quote-text:focus-visible {
+#\32 2-outro .outro-quote-text:focus-visible {
   outline: 2px solid var(--yellow);
   outline-offset: 8px;
 }
 
 /* The you-dot anchor — an invisible mark at the line's tail. */
-#\30 9-outro .outro-anchor {
+#\32 2-outro .outro-anchor {
   position: absolute;
   right: clamp(24px, 7vw, 160px);
   bottom: clamp(48px, 9vh, 140px);
@@ -185,7 +185,7 @@
    Signature warm-gradient ground. Asymmetric two-column: CTA + lockup sign-off
    + credits grid + copyright on the left axis; the tall bear+girl stands flush
    on the floor in its own column. Two columns => zero overlap. */
-#\30 9-outro .outro-backcover {
+#\32 2-outro .outro-backcover {
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
@@ -197,11 +197,11 @@
   min-height: clamp(420px, 56vh, 680px);
   overflow: hidden;
 }
-#\30 9-outro .outro-backcover-orbit { z-index: 0; opacity: 0.6; }
-#\30 9-outro .outro-seed-a { top: 20%; right: 30%; }
-#\30 9-outro .outro-seed-b { top: 52%; right: 18%; }
+#\32 2-outro .outro-backcover-orbit { z-index: 0; opacity: 0.6; }
+#\32 2-outro .outro-seed-a { top: 20%; right: 30%; }
+#\32 2-outro .outro-seed-b { top: 52%; right: 18%; }
 
-#\30 9-outro .outro-backcover-copy {
+#\32 2-outro .outro-backcover-copy {
   position: relative;
   z-index: 1;
   align-self: end;
@@ -212,20 +212,20 @@
 }
 
 /* The CTA focal element — the one instruction, navy on warm (high contrast). */
-#\30 9-outro .outro-cta-kicker {
+#\32 2-outro .outro-cta-kicker {
   margin: 0 0 clamp(14px, 1.8vh, 22px);
   color: var(--soi-navy);
 }
-#\30 9-outro .outro-cta {
+#\32 2-outro .outro-cta {
   margin: 0;
   color: var(--soi-navy);
   max-width: 22ch;
 }
-#\30 9-outro .outro-cta .outro-accent { font-style: italic; }
+#\32 2-outro .outro-cta .outro-accent { font-style: italic; }
 
 /* The Challenger-Series lockup signs off — black silhouette on warm, never
    recoloured or distorted; proportional, generous clear space above. */
-#\30 9-outro .outro-lockup {
+#\32 2-outro .outro-lockup {
   display: block;
   width: clamp(220px, 26vw, 320px);
   height: auto;
@@ -233,14 +233,14 @@
 }
 
 /* Team credits — an even two-column grid, supporting type on the ground. */
-#\30 9-outro .outro-credits-label {
+#\32 2-outro .outro-credits-label {
   margin: clamp(30px, 4.4vh, 56px) 0 clamp(12px, 1.6vh, 18px);
   font-size: var(--t-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(4, 22, 84, 0.62);
 }
-#\30 9-outro .outro-credits-grid {
+#\32 2-outro .outro-credits-grid {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -249,24 +249,24 @@
   gap: clamp(12px, 1.8vh, 20px) clamp(28px, 4vw, 56px);
   max-width: 52ch;
 }
-#\30 9-outro .outro-credit {
+#\32 2-outro .outro-credit {
   display: grid;
   gap: 2px;
 }
-#\30 9-outro .outro-credit-name {
+#\32 2-outro .outro-credit-name {
   font-size: var(--t-sm);
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--soi-navy);
 }
-#\30 9-outro .outro-credit-role {
+#\32 2-outro .outro-credit-role {
   font-size: var(--t-xs);
   line-height: 1.4;
   color: rgba(4, 22, 84, 0.7);
 }
 
 /* Copyright — small, low-emphasis furniture, set low. */
-#\30 9-outro .outro-backcover-org {
+#\32 2-outro .outro-backcover-org {
   margin: clamp(28px, 4vh, 52px) 0 0;
   font-size: var(--t-xs);
   font-weight: 600;
@@ -278,7 +278,7 @@
 /* The illustration: the tall bear+girl, flush to the bottom edge, in its own
    column so it never overlaps the copy. Black silhouette on warm (high
    contrast). Aspect 104×585 honoured by height:auto. Decorative. */
-#\30 9-outro .outro-backcover-bear {
+#\32 2-outro .outro-backcover-bear {
   position: relative;
   z-index: 1;
   align-self: end;
@@ -291,38 +291,38 @@
 
 /* ─── Responsive ─────────────────────────────────────────────────────── */
 @media (max-width: 760px) {
-  #\30 9-outro .outro-backcover {
+  #\32 2-outro .outro-backcover {
     grid-template-columns: 1fr;
     align-items: end;
     min-height: 0;
     padding-bottom: 0;
     gap: clamp(24px, 6vw, 48px);
   }
-  #\30 9-outro .outro-backcover-copy {
+  #\32 2-outro .outro-backcover-copy {
     padding-bottom: clamp(24px, 5vh, 44px);
     justify-self: start;
   }
-  #\30 9-outro .outro-credits-grid {
+  #\32 2-outro .outro-credits-grid {
     grid-template-columns: 1fr;
   }
-  #\30 9-outro .outro-backcover-bear {
+  #\32 2-outro .outro-backcover-bear {
     height: clamp(220px, 40vh, 360px);
     justify-self: end;
   }
-  #\30 9-outro .outro-seed-a,
-  #\30 9-outro .outro-seed-b { display: none; }
+  #\32 2-outro .outro-seed-a,
+  #\32 2-outro .outro-seed-b { display: none; }
 }
 
 /* ─── Reduced motion: rest flat, fully assembled, no decorative animation ─── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 9-outro .outro-kicker,
-  #\30 9-outro .outro-word,
-  #\30 9-outro .outro-quote-cite {
+  #\32 2-outro .outro-kicker,
+  #\32 2-outro .outro-word,
+  #\32 2-outro .outro-quote-cite {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  #\30 9-outro .outro-kicker { opacity: 0.72; }
-  #\30 9-outro .outro-dark::after { transition: none; }
-  #\30 9-outro .outro-dark.is-finished::after { opacity: 1; }
+  #\32 2-outro .outro-kicker { opacity: 0.72; }
+  #\32 2-outro .outro-dark::after { transition: none; }
+  #\32 2-outro .outro-dark.is-finished::after { opacity: 1; }
 }

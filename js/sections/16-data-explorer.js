@@ -26,7 +26,7 @@
  * Every number traces to data/survey.json or data/segments.json. Nothing typed
  * by hand. Deck segment sizes (17/28/27/28) label the chips.
  *
- * @param {HTMLElement} rootEl - <section class="journey-step" id="08-playground">
+ * @param {HTMLElement} rootEl - <section class="journey-step" id="16-data-explorer">
  * @param {{survey: object, segments: object, journey?: object}} data
  */
 import { observeReveals } from '../lib/reveal.js';

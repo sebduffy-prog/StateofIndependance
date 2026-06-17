@@ -24,7 +24,7 @@
  *
  * Contract: docs/CONTRACT.md.
  *
- * @param {HTMLElement} rootEl - the <section class="journey-step" id="09-outro"> element
+ * @param {HTMLElement} rootEl - the <section class="journey-step" id="22-outro"> element
  * @param {{survey: object, segments: object, tgi: object, journey: object}} data
  */
 import { prefersReducedMotion } from '../lib/reveal.js';

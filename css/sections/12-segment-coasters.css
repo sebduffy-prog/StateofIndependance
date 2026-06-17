@@ -1,0 +1,61 @@
+/* 12-segment-coasters.css — WORKFLOW A branded placeholder, scoped to #\31 2-segment-coasters.
+   Full-bleed, balanced composition (Z-AXIS §6b): a confident left-anchored
+   title cluster counter-weighted by the orbit motif. Real styling lands in B. */
+
+#\31 2-segment-coasters .segment-coasters-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2.4vh, 26px);
+  width: 100%;
+  height: 100%;
+  padding-inline: clamp(28px, 7vw, 120px);
+}
+
+#\31 2-segment-coasters .segment-coasters-head {
+  max-width: 22ch;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.6vh, 18px);
+}
+
+#\31 2-segment-coasters .segment-coasters-title {
+  margin: 0;
+  line-height: 0.96;
+}
+
+#\31 2-segment-coasters .segment-coasters-note {
+  margin: 0;
+  max-width: 34ch;
+  opacity: 0.72;
+}
+
+/* Orbit motif counter-weights the title cluster — fills the opposite quadrant
+   so no third of the frame is an accidental void. */
+#\31 2-segment-coasters .segment-coasters-orbit {
+  position: absolute;
+  top: 50%;
+  right: clamp(-18vw, -6vw, 0px);
+  width: clamp(320px, 42vw, 640px);
+  height: clamp(320px, 42vw, 640px);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.22));
+  pointer-events: none;
+}
+#\31 2-segment-coasters .segment-coasters-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit, rgba(255,255,255,0.16));
+}
+
+#\31 2-segment-coasters .segment-coasters-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--soi-seed, var(--yellow, #FCC107));
+}

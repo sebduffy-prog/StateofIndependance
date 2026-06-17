@@ -509,59 +509,173 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 .soi-icon [data-body],   .soi-icon .icon-body   { fill: currentColor; }
 
 /* ============================================================
-   JOURNEY ENGINE — one full-viewport step at a time
-   main.js builds each chapter as <section class="chapter journey-step">
-   and toggles [hidden] on the steps that aren't current.
+   Z-AXIS DEPTH-SCROLL JOURNEY ENGINE (docs/Z-AXIS-JOURNEY.md)
+   main.js builds <div class="journey-3d"> (the perspective stage) inside #app
+   and mounts every step as <section class="journey-stage si-ground-*">. Scroll/
+   trackpad/touch/keys drive one eased journey progress; each stage is positioned
+   purely by main.js (transform/opacity/filter) per its depth from focus. The
+   document itself never scrolls — input is captured and mapped to progress.
    ============================================================ */
-.chapter, .journey-step {
-  min-height: 100vh;
-  min-height: 100svh;
-}
-.journey-step {
-  overflow-y: auto;
-  /* Reserve room so content clears the fixed bottom controls. */
-  padding-bottom: calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem));
+
+/* No document scroll: the journey IS the scroll. */
+html, body { height: 100%; overflow: hidden; }
+#app { position: relative; width: 100%; height: 100svh; height: 100vh; }
+
+/* The 3D stage — one perspective container; stages fly through its depth. */
+.journey-3d {
+  position: fixed;
+  inset: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  background: var(--cream);
 }
 
-/* A chapter holds its composition with generous, intentional margins.
-   Left-aligned by default — editorial, not a centred column. */
-.chapter {
+/* Each STAGE is FULL-BLEED — the ground fills 100vw × 100svh, edge to edge.
+   No cream page band: the stage's own si-ground-* fills the whole viewport.
+   Centred in 3D so translateZ flies it toward / away from the camera. main.js
+   owns transform / opacity / filter / visibility / z-index. */
+.journey-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  width: 100svw;
+  height: 100vh;
+  height: 100svh;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: 50% 50%;
+  overflow: hidden;                 /* one screen per stage, no internal scroll */
   display: flex;
   align-items: center;
-  padding: clamp(4rem, 7vh, 8rem) var(--margin-page)
-           calc(var(--journey-controls-h) + clamp(2rem, 5vh, 4rem)) var(--margin-page);
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
+  contain: layout paint;
 }
-.chapter--bleed { padding: 0; align-items: stretch; }
-.chapter--bleed > .chapter-inner { max-width: none; }
-.chapter--dense {
-  padding: clamp(2rem, 3vh, 3.5rem) var(--margin-page)
-           calc(var(--journey-controls-h) + clamp(1.5rem, 3vh, 2.5rem)) var(--margin-page);
+
+/* Inner content respects a max-width and the page margins — NEVER the ground.
+   The fragment root (the first flow child) is the content frame; the stage is
+   bleed. Only the flow child fills the stage; absolutely-positioned overlays
+   (the scroll cue, the you-dot anchor) keep their own size. */
+.journey-stage > :not(.journey-scroll-cue) {
+  width: 100%;
+  height: 100%;
 }
-.chapter-inner {
+.journey-stage .chapter-inner {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
+  padding: clamp(3rem, 6vh, 6rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem)) var(--margin-page);
+  max-height: 100svh;
+  overflow: hidden;
 }
 
-/* Hidden steps leave layout + the a11y tree. !important defeats any
-   chapter-scoped `#id { display: … }` rule that would otherwise leak. */
-.journey-step[hidden] { display: none !important; }
+/* Legacy chapter layout helpers still drive INNER composition, but must not
+   impose their own viewport height / bottom band on a full-bleed stage. */
+.journey-stage .chapter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: clamp(3rem, 6vh, 6rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem)) var(--margin-page);
+}
+.journey-stage .chapter--bleed { padding: 0; align-items: stretch; }
+.journey-stage .chapter--bleed > .chapter-inner { max-width: none; padding: 0; }
+/* A ground that the fragment puts on an INNER element should fill its stage. */
+.journey-stage > .si-ground-warm,
+.journey-stage > .si-ground-cream,
+.journey-stage > .si-ground-navy,
+.journey-stage > .si-ground-blue,
+.journey-stage > .si-dark {
+  width: 100%;
+  height: 100%;
+}
 
-/* Step entry — ONE arrival: fade + gentle lift, on the entrance easing. */
+/* Standalone .chapter usage outside a stage (defensive). */
+.chapter-inner { width: 100%; max-width: 1240px; margin: 0 auto; }
+
+/* The opening SCROLL CUE — replaces the old "Begin" button (Z-AXIS §2b).
+   Understated "Scroll to journey through" + a quiet descending bead. */
+.journey-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--journey-controls-h) + clamp(18px, 3vh, 36px));
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--navy);
+  pointer-events: none;
+  transition: opacity 420ms var(--ease-entrance), transform 420ms var(--ease-entrance);
+}
+.journey-scroll-cue.is-gone {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+.journey-scroll-cue__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+.journey-scroll-cue__bead {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  background: rgba(4, 22, 84, 0.22);
+}
+.journey-scroll-cue__bead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
 @media (prefers-reduced-motion: no-preference) {
-  .journey-step:not([hidden]) {
-    animation: journey-step-in var(--dur-reveal) var(--ease-entrance) both;
+  .journey-scroll-cue__bead::after {
+    animation: journey-cue-bead 1700ms var(--ease-entrance) infinite;
   }
 }
-@keyframes journey-step-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
+@keyframes journey-cue-bead {
+  0%   { transform: translateY(0); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(23px); opacity: 0; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .journey-step:not([hidden]) { animation: none; }
+/* On a navy stage the cue inverts to cream. */
+.si-ground-navy .journey-scroll-cue,
+.si-dark .journey-scroll-cue { color: var(--cream); }
+.si-ground-navy .journey-scroll-cue__bead,
+.si-dark .journey-scroll-cue__bead { background: rgba(240, 237, 231, 0.3); }
+
+/* Structure-only PLACEHOLDER stage (workflow A scaffold; B fills content). */
+.stage-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2vh, 22px);
+}
+.stage-placeholder__title { max-width: 18ch; }
+.stage-placeholder__note { opacity: 0.7; }
+.stage-placeholder__dot {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--yellow);
+  margin-top: 8px;
 }
 
-/* ── Bottom controls (Back / indicator+hint / Next / progress arc) ── */
+/* ── Minimal bottom META — position + advisory hint. No nav buttons. ── */
 .journey-controls {
   position: fixed;
   left: 0; right: 0; bottom: 0;
@@ -569,24 +683,17 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   min-height: var(--journey-controls-h);
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2vw, 28px);
+  justify-content: center;
   padding: 12px clamp(16px, 3vw, 44px);
-  background: rgba(240, 237, 231, 0.92);   /* cream, blurred */
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(4, 22, 84, 0.12);
+  pointer-events: none;            /* it informs; it does not capture scroll */
 }
 .journey-controls[hidden] { display: none; }
 
 .journey-meta {
-  flex: 1 1 auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2px;
-  text-align: center;
-  min-width: 0;
+  gap: 12px;
+  pointer-events: auto;
 }
 .journey-indicator {
   font-size: 0.74rem;
@@ -595,8 +702,8 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   text-transform: uppercase;
   color: var(--navy);
   opacity: 0.7;
+  font-variant-numeric: tabular-nums;
 }
-/* Gentle "try it" affordance — soft gating, Next is always allowed. */
 .journey-hint {
   font-size: 0.72rem;
   font-weight: 500;
@@ -606,54 +713,19 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
 }
 .journey-hint[hidden] { display: none; }
 
-/* On-brand square buttons, no underline, no parallelogram. */
-.journey-btn {
-  flex: 0 0 auto;
-  font: 600 0.95rem/1 var(--font-sans);
-  letter-spacing: 0.04em;
-  padding: 13px clamp(18px, 2.4vw, 30px);
-  border: 1px solid var(--navy);
-  border-radius: 0;
-  background: transparent;
-  color: var(--navy);
-  cursor: pointer;
-  transition: transform var(--dur-micro) var(--ease-entrance),
-              box-shadow var(--dur-micro) var(--ease-entrance),
-              background var(--dur-micro) var(--ease-entrance),
-              opacity var(--dur-micro) var(--ease-entrance);
-}
-.journey-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 0 var(--navy); }
-.journey-btn-primary { background: var(--navy); color: var(--cream); }
-.journey-btn:disabled { cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
-.journey-next:disabled {
-  background: rgba(4, 22, 84, 0.18);
-  color: rgba(4, 22, 84, 0.55);
-  border-color: transparent;
-}
-@media (prefers-reduced-motion: reduce) { .journey-btn { transition: none; } }
-
-/* ── Orbit progress MERIDIAN — thin completion arc in the controls (AD §6) ── */
+/* ── Orbit progress MERIDIAN — thin completion arc (AD §6) ── */
 .journey-meridian { flex: 0 0 auto; display: block; }
 .journey-meridian__track { stroke: rgba(4, 22, 84, 0.16); stroke-width: 2; }
 .journey-meridian__fill {
   stroke: var(--yellow);
   stroke-width: 2.4;
   stroke-linecap: round;
-  transition: stroke-dashoffset var(--dur-reveal) var(--ease-entrance);
+  transition: stroke-dashoffset 360ms var(--ease-entrance);
 }
 @media (prefers-reduced-motion: reduce) { .journey-meridian__fill { transition: none; } }
 
-/* Commit pulse when a gated step unlocks (transform/box-shadow only,
-   critically damped — no cartoon bounce). The yellow accent. */
-.journey-next.is-magnetic { will-change: transform; }
-@media (prefers-reduced-motion: no-preference) {
-  .journey-next.is-committed { animation: journey-commit 0.5s var(--ease-entrance); }
-}
-@keyframes journey-commit {
-  0%   { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.55); }
-  40%  { box-shadow: 0 0 0 8px rgba(240, 203, 8, 0.18); }
-  100% { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0); }
-}
+/* Hide the legacy cover "Begin" button — scroll is now the only instruction. */
+#\30 1-cover .cover-cue { display: none !important; }
 
 /* ============================================================
    CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor (AD §4, §6)
@@ -983,7 +1055,8 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
    RESPONSIVE — 1024 and 600 breakpoints
    ============================================================ */
 @media (max-width: 1024px) {
-  .chapter {
+  .journey-stage .chapter,
+  .journey-stage .chapter-inner {
     padding-left: clamp(20px, 5vw, 56px);
     padding-right: clamp(20px, 5vw, 56px);
   }
@@ -994,11 +1067,11 @@ canvas.dot-field, [data-dotfield], .dotfield-canvas {
   .si-split,
   .si-split--even { grid-template-columns: 1fr; }
   .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-12 { grid-column: 1 / -1; }
-  .chapter {
+  .journey-stage .chapter,
+  .journey-stage .chapter-inner {
     padding: clamp(3rem, 6vh, 5rem) 20px
              calc(var(--journey-controls-h) + 2rem) 20px;
   }
-  .journey-controls { gap: 10px; padding: 10px 14px; }
-  .journey-btn { padding: 11px 16px; }
+  .journey-controls { padding: 10px 14px; }
   .journey-indicator { font-size: 0.66rem; letter-spacing: 0.1em; }
 }

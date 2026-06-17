@@ -21,11 +21,11 @@
  *   in) and reduced-motion safe (circles start resolved). The "you" dot lands
  *   on the resolved core.
  *
- * Contract: docs/CONTRACT.md. Every CSS selector scoped #06-empowerment.
+ * Contract: docs/CONTRACT.md. Every CSS selector scoped #15-empowerment.
  * Verified Q14 values from segments.json meta.metricsTotals.brandAsks
  * (Stretch my money further 38.8 · Reduce stress 27.7 · Save me time 24).
  *
- * @param {HTMLElement} rootEl  the <section class="journey-step" id="06-empowerment">
+ * @param {HTMLElement} rootEl  the <section class="journey-step" id="15-empowerment">
  * @param {{survey:object|null, segments:object|null, tgi:object|null,
  *          journey:{gate():void, ready():void}}} data
  */

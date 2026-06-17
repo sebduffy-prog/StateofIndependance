@@ -1,0 +1,504 @@
+{
+  "source": "TGI GB 2026 April (TGB2604A), Population Weight, All Respondents. Three workbooks: Lifestyle, Media Consumption, Demographics.",
+  "indexNote": "Index vs UK adults: 100 = average. >=120 strongly over-indexes, <=80 strongly under-indexes. pct = % of that segment giving the response (%Col).",
+  "segmentMapping": {
+    "architects": "ADAPTERS (TGI)",
+    "hustlers": "STRIVERS (TGI)",
+    "coasters": "COASTERS (TGI)",
+    "retreaters": "RETREATERS (TGI)"
+  },
+  "segments": {
+    "architects": {
+      "lifestyle": [
+        {
+          "statement": "I prefer to buy products from companies who sponsor TV programmes",
+          "index": 236,
+          "pct": 35.0
+        },
+        {
+          "statement": "Eco - Influenced",
+          "index": 232,
+          "pct": 33.3
+        },
+        {
+          "statement": "I would be willing to pay for exclusive podcast content",
+          "index": 229,
+          "pct": 33.9
+        },
+        {
+          "statement": "I prefer to buy products from companies who sponsor sports events and teams",
+          "index": 227,
+          "pct": 39.2
+        },
+        {
+          "statement": "I prefer to buy products from companies who sponsor exhibitions or music events",
+          "index": 226,
+          "pct": 37.5
+        },
+        {
+          "statement": "I use my credit card mostly for business",
+          "index": 226,
+          "pct": 30.5
+        },
+        {
+          "statement": "Celebrities influence my purchase decisions",
+          "index": 224,
+          "pct": 33.8
+        },
+        {
+          "statement": "Cautious Traditionals",
+          "index": 39,
+          "pct": 5.2
+        },
+        {
+          "statement": "Neuroticism: High",
+          "index": 47,
+          "pct": 9.5
+        },
+        {
+          "statement": "Extraversion: Low",
+          "index": 49,
+          "pct": 11.3
+        }
+      ],
+      "media": [
+        {
+          "statement": "Very Important",
+          "index": 208,
+          "pct": 15.2
+        },
+        {
+          "statement": "Participating in challenges/Trends",
+          "index": 190,
+          "pct": 7.7
+        },
+        {
+          "statement": "Fashion and Beauty",
+          "index": 179,
+          "pct": 8.4
+        },
+        {
+          "statement": "Apple TV box",
+          "index": 178,
+          "pct": 8.6
+        },
+        {
+          "statement": "Business (+08/25)",
+          "index": 176,
+          "pct": 8.8
+        },
+        {
+          "statement": "Not applicable/Don't Know",
+          "index": 45,
+          "pct": 6.7
+        },
+        {
+          "statement": "Other set-Top box",
+          "index": 60,
+          "pct": 5.2
+        }
+      ],
+      "demographics": [
+        {
+          "statement": "Middle Manager/Senior Executive",
+          "index": 171,
+          "pct": 12.5
+        },
+        {
+          "statement": "30-34",
+          "index": 147,
+          "pct": 13.9
+        },
+        {
+          "statement": "Employed: Yes",
+          "index": 144,
+          "pct": 10.7
+        },
+        {
+          "statement": "25-29",
+          "index": 143,
+          "pct": 9.7
+        },
+        {
+          "statement": "65-74",
+          "index": 56,
+          "pct": 9.4
+        },
+        {
+          "statement": "60-64",
+          "index": 58,
+          "pct": 4.4
+        }
+      ]
+    },
+    "hustlers": {
+      "lifestyle": [
+        {
+          "statement": "Relationships",
+          "index": 175,
+          "pct": 9.8
+        },
+        {
+          "statement": "Social Media",
+          "index": 175,
+          "pct": 9.8
+        },
+        {
+          "statement": "Apps For Smartphones & Tablets: Yes",
+          "index": 170,
+          "pct": 7.3
+        },
+        {
+          "statement": "Console Kings",
+          "index": 168,
+          "pct": 10.1
+        },
+        {
+          "statement": "Jobs/Appointments",
+          "index": 166,
+          "pct": 8.4
+        },
+        {
+          "statement": "Personal Finance & Investments",
+          "index": 164,
+          "pct": 8.9
+        },
+        {
+          "statement": "Other Online",
+          "index": 162,
+          "pct": 8.9
+        },
+        {
+          "statement": "Product and Sustainability First",
+          "index": 58,
+          "pct": 4.1
+        },
+        {
+          "statement": "Comfort Driven",
+          "index": 58,
+          "pct": 4.2
+        },
+        {
+          "statement": "Low-Tech Puzzlers",
+          "index": 65,
+          "pct": 4.6
+        }
+      ],
+      "media": [
+        {
+          "statement": "Inside underground trains",
+          "index": 177,
+          "pct": 7.9
+        },
+        {
+          "statement": "More than 300",
+          "index": 176,
+          "pct": 8.9
+        },
+        {
+          "statement": "201-300",
+          "index": 174,
+          "pct": 7.6
+        },
+        {
+          "statement": "25-50",
+          "index": 171,
+          "pct": 7.0
+        },
+        {
+          "statement": "At leisure centres/Gyms/Health clubs/Swimming pools",
+          "index": 170,
+          "pct": 8.3
+        },
+        {
+          "statement": "Not applicable/Don't Know",
+          "index": 50,
+          "pct": 5.4
+        },
+        {
+          "statement": "Non User",
+          "index": 54,
+          "pct": 4.7
+        }
+      ],
+      "demographics": [
+        {
+          "statement": "Change job",
+          "index": 184,
+          "pct": 8.8
+        },
+        {
+          "statement": "25-29",
+          "index": 176,
+          "pct": 11.9
+        },
+        {
+          "statement": "16-24",
+          "index": 169,
+          "pct": 23.7
+        },
+        {
+          "statement": "21-24",
+          "index": 158,
+          "pct": 14.7
+        },
+        {
+          "statement": "65-74",
+          "index": 33,
+          "pct": 5.5
+        },
+        {
+          "statement": "60-64",
+          "index": 58,
+          "pct": 4.4
+        }
+      ]
+    },
+    "coasters": {
+      "lifestyle": [
+        {
+          "statement": "Product and Sustainability First",
+          "index": 192,
+          "pct": 13.7
+        },
+        {
+          "statement": "Comfort Driven",
+          "index": 182,
+          "pct": 13.3
+        },
+        {
+          "statement": "Home & Garden",
+          "index": 176,
+          "pct": 9.4
+        },
+        {
+          "statement": "Newspapers",
+          "index": 176,
+          "pct": 9.4
+        },
+        {
+          "statement": "Business",
+          "index": 169,
+          "pct": 11.0
+        },
+        {
+          "statement": "Uncertain affluent customers",
+          "index": 168,
+          "pct": 32.1
+        },
+        {
+          "statement": "Quite Unlikely",
+          "index": 167,
+          "pct": 9.1
+        },
+        {
+          "statement": "Advertising within video or computer gameplay enhances the realism of the game",
+          "index": 27,
+          "pct": 5.0
+        },
+        {
+          "statement": "I prefer to buy products from companies who sponsor TV programmes",
+          "index": 28,
+          "pct": 4.2
+        },
+        {
+          "statement": "Ads in podcasts improve my perception of the brand",
+          "index": 29,
+          "pct": 5.3
+        }
+      ],
+      "media": [
+        {
+          "statement": "The Weekend (Daily Mail)",
+          "index": 218,
+          "pct": 7.0
+        },
+        {
+          "statement": "Daily Mail (Saturday)",
+          "index": 166,
+          "pct": 7.0
+        },
+        {
+          "statement": "Non User",
+          "index": 158,
+          "pct": 13.9
+        },
+        {
+          "statement": "U (Formerly UKTV Play)",
+          "index": 154,
+          "pct": 27.6
+        },
+        {
+          "statement": "Easy Listening",
+          "index": 153,
+          "pct": 35.7
+        },
+        {
+          "statement": "Hip Hop/Rap/Drill/Trap",
+          "index": 41,
+          "pct": 5.7
+        },
+        {
+          "statement": "More than 300",
+          "index": 41,
+          "pct": 4.5
+        }
+      ],
+      "demographics": [
+        {
+          "statement": "Age Group: 75+",
+          "index": 250,
+          "pct": 16.1
+        },
+        {
+          "statement": "65-74",
+          "index": 192,
+          "pct": 32.0
+        },
+        {
+          "statement": "Separated/Divorced/Widowed",
+          "index": 151,
+          "pct": 17.2
+        },
+        {
+          "statement": "Own Outright",
+          "index": 149,
+          "pct": 61.6
+        },
+        {
+          "statement": "16-24",
+          "index": 35,
+          "pct": 4.9
+        },
+        {
+          "statement": "Rent privately",
+          "index": 48,
+          "pct": 8.0
+        }
+      ]
+    },
+    "retreaters": {
+      "lifestyle": [
+        {
+          "statement": "Cautious Traditionals",
+          "index": 165,
+          "pct": 22.3
+        },
+        {
+          "statement": "Neuroticism: High",
+          "index": 150,
+          "pct": 29.9
+        },
+        {
+          "statement": "Low-Tech Puzzlers",
+          "index": 145,
+          "pct": 10.2
+        },
+        {
+          "statement": "Extraversion: Low",
+          "index": 140,
+          "pct": 32.6
+        },
+        {
+          "statement": "Prudent Purchasers",
+          "index": 134,
+          "pct": 9.9
+        },
+        {
+          "statement": "Carefree impulsive spender",
+          "index": 133,
+          "pct": 31.3
+        },
+        {
+          "statement": "Agreeableness: Low",
+          "index": 132,
+          "pct": 7.9
+        },
+        {
+          "statement": "Ads in podcasts improve my perception of the brand",
+          "index": 27,
+          "pct": 4.9
+        },
+        {
+          "statement": "I am willing to pay to access content on magazine websites/Apps",
+          "index": 28,
+          "pct": 4.3
+        },
+        {
+          "statement": "I like to stand out in a crowd",
+          "index": 29,
+          "pct": 5.8
+        }
+      ],
+      "media": [
+        {
+          "statement": "Not applicable/Don't Know",
+          "index": 154,
+          "pct": 19.4
+        },
+        {
+          "statement": "Other set-Top box",
+          "index": 128,
+          "pct": 11.2
+        },
+        {
+          "statement": "Use: No",
+          "index": 127,
+          "pct": 24.6
+        },
+        {
+          "statement": "Non User",
+          "index": 127,
+          "pct": 11.2
+        },
+        {
+          "statement": "Less than once a WEEK",
+          "index": 127,
+          "pct": 7.7
+        },
+        {
+          "statement": "Sharing photos & videos on other social networks",
+          "index": 49,
+          "pct": 5.5
+        },
+        {
+          "statement": "Important",
+          "index": 51,
+          "pct": 6.2
+        }
+      ],
+      "demographics": [
+        {
+          "statement": "60-64",
+          "index": 137,
+          "pct": 10.4
+        },
+        {
+          "statement": "Other manual",
+          "index": 130,
+          "pct": 8.0
+        },
+        {
+          "statement": "Separated/Divorced/Widowed",
+          "index": 128,
+          "pct": 14.7
+        },
+        {
+          "statement": "65-74",
+          "index": 128,
+          "pct": 21.4
+        },
+        {
+          "statement": "Middle Manager/Senior Executive",
+          "index": 58,
+          "pct": 4.2
+        },
+        {
+          "statement": "21-24",
+          "index": 65,
+          "pct": 6.1
+        }
+      ]
+    }
+  }
+}
