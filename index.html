@@ -3,29 +3,103 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>The state of independence — VCCP Challenger Series</title>
+  <title>The State of Independence — VCCP Challenger Series</title>
   <meta name="description" content="A nationwide study of how Britain is taking back control — and what it demands of every brand that serves them. VCCP x Watermelon Research, 1,504 UK adults, May 2026."/>
+
+  <!-- Favicon: cropped brand logo. -->
   <link rel="icon" type="image/png" href="assets/brand/Logo.png"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet"/>
+
+  <!-- Poppins is self-hosted via @font-face in css/vccp.css (assets/fonts/).
+       Preload the two display weights used on the opening hero to avoid FOUT. -->
+  <link rel="preload" href="assets/fonts/poppins-900.woff2" as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin/>
+
   <link rel="stylesheet" href="css/vccp.css"/>
   <link rel="stylesheet" href="css/sections.css"/>
+
+  <!-- ── Site gate styling (soft password + email capture on first load) ── -->
+  <style>
+    body.is-gated { overflow: hidden; }
+    .site-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(24px, 6vw, 80px);
+      background: linear-gradient(135deg, #FFA764 0%, #FBC100 42%, #FFC002 70%, #FF8598 100%);
+      font-family: var(--font-sans, 'Poppins', system-ui, sans-serif);
+      color: var(--navy, #041654);
+    }
+    .site-gate__panel { width: min(440px, 100%); }
+    .site-gate__lockup { height: 34px; width: auto; margin-bottom: clamp(20px, 4vh, 36px); }
+    .site-gate__eyebrow {
+      margin: 0 0 10px; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; color: rgba(4,22,84,0.62);
+    }
+    .site-gate__title {
+      margin: 0 0 6px; font-weight: 900; line-height: 0.96; letter-spacing: -0.03em;
+      font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--ink, #0b0b0b);
+    }
+    .site-gate__sub { margin: 0 0 clamp(20px, 3.5vh, 30px); font-size: 0.95rem; font-weight: 500; line-height: 1.5; color: rgba(4,22,84,0.78); max-width: 38ch; }
+    .site-gate__field { display: block; margin-bottom: 12px; }
+    .site-gate__label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(4,22,84,0.7); margin-bottom: 6px; }
+    .site-gate__input {
+      width: 100%; box-sizing: border-box; appearance: none;
+      padding: 13px 14px; border: 1.5px solid rgba(4,22,84,0.32);
+      border-radius: 0; background: rgba(255,255,255,0.55);
+      font-family: inherit; font-size: 1rem; font-weight: 600; color: var(--navy, #041654);
+    }
+    .site-gate__input:focus { outline: none; border-color: var(--navy, #041654); background: rgba(255,255,255,0.85); }
+    .site-gate__btn {
+      margin-top: 8px; width: 100%; padding: 14px 18px; border: 0; border-radius: 0; cursor: pointer;
+      background: var(--navy, #041654); color: #fff; font-family: inherit; font-weight: 800;
+      font-size: 0.95rem; letter-spacing: 0.02em;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+    .site-gate__btn:hover { background: #0a2a8a; }
+    .site-gate__btn:active { transform: translateY(1px); }
+    .site-gate__error { min-height: 1.2em; margin: 10px 0 0; font-size: 0.82rem; font-weight: 700; color: #b00020; }
+    @media (prefers-reduced-motion: reduce) { .site-gate__btn { transition: none; } }
+  </style>
 </head>
-<body>
+<body class="is-gated">
 
-  <nav class="site-nav" aria-label="Site">
-    <a class="site-nav-brand" href="#01-cover">
-      <img src="assets/brand/Logo.png" alt="VCCP" width="36" height="36"/>
-      <span class="site-nav-title">The state of independence</span>
-    </a>
-    <div class="site-nav-pills" id="chapterNav" role="navigation" aria-label="Chapters"></div>
-  </nav>
-
-  <aside class="progress-rail" id="progressRail" aria-label="Reading progress"></aside>
+  <!-- The Z-axis depth-scroll journey. main.js builds a #journey-3d perspective
+       stage inside #app and mounts every full-bleed stage into it. Scrolling /
+       trackpad / touch / ArrowDown / Space fly forward through depth. -->
+  <!-- ── SITE GATE — soft password + email capture (first load) ── -->
+  <div class="site-gate" id="siteGate" role="dialog" aria-modal="true" aria-labelledby="siteGateTitle">
+    <div class="site-gate__panel">
+      <img class="site-gate__lockup" src="assets/brand-final/challenger-series-lockup.png" alt="VCCP Challenger Series"/>
+      <p class="site-gate__eyebrow">VCCP Challenger Series</p>
+      <h1 class="site-gate__title" id="siteGateTitle">The State of Independence</h1>
+      <p class="site-gate__sub">Enter your email and the access password to view the research.</p>
+      <form id="siteGateForm" novalidate>
+        <label class="site-gate__field">
+          <span class="site-gate__label">Email</span>
+          <input class="site-gate__input" id="siteGateEmail" type="email" name="email" autocomplete="email" placeholder="you@company.com" required/>
+        </label>
+        <label class="site-gate__field">
+          <span class="site-gate__label">Password</span>
+          <input class="site-gate__input" id="siteGatePass" type="password" name="password" autocomplete="off" placeholder="Password" required/>
+        </label>
+        <button class="site-gate__btn" type="submit">Enter</button>
+        <p class="site-gate__error" id="siteGateError" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
 
   <main id="app"></main>
 
+  <!-- Minimal bottom meta — NOT a top bar, NOT Next/Back buttons (scroll is the
+       mechanic). Just position (orbit arc + N/total) and the advisory "try it"
+       hint (SOFT GATING: scrolling always advances; the hint never traps). -->
+  <div class="journey-controls" id="journeyControls" role="status" aria-label="Journey position" hidden>
+    <div class="journey-meta">
+      <span class="journey-indicator" id="journeyIndicator" aria-live="polite"></span>
+      <span class="journey-hint" id="journeyHint" role="status" aria-live="polite" hidden>Try the interaction</span>
+    </div>
+  </div>
+
+  <script src="js/site-gate.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

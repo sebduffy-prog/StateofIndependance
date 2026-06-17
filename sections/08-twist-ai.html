@@ -1,0 +1,65 @@
+<!-- Chapter 08 — Twist three: AI ON TAP.
+     Full-bleed warm-gradient pivot. Two-column composition: left hero
+     cluster (eyebrow → scramble-reveal title → WLV standfirst → two
+     DISTINCT headline stats) counter-weighted right by the AI tasks list
+     + the high-stakes human-vs-AI tug-of-war. Every number from Q11
+     survey.json. 58% any task / 37% high-stakes — never conflated.
+     Square corners, no underline, no parallelogram, tabular nums,
+     backgroundless, AA contrast. Single root. CSS scoped #\30 8-twist-ai. -->
+<div class="chapter-inner twist-ai-root on-warm" data-twist-ai-root>
+
+  <!-- Decorative orbit ring — the connective signature, behind content. -->
+  <span class="twist-ai-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right (the book-cover position). -->
+  <img class="twist-ai-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- LEFT COLUMN — hero cluster -->
+  <header class="twist-ai-head">
+    <p class="vccp-eyebrow twist-ai-eyebrow" data-arrival>Twist three</p>
+    <h2 class="twist-ai-title si-display si-display--black">
+      <span data-arrival>AI on </span><em class="si-accent" data-arrival data-arrival-scramble data-scramble-text="tap">tap</em>
+    </h2>
+    <p class="twist-ai-standfirst" data-arrival>
+      Expertise once sat behind a desk and a fee. Now it sits in a pocket,
+      and Britain has taken the call. Nearly six in ten have asked a machine
+      to do a job they&rsquo;d once have paid a professional for.
+      A third trust it with the decisions that really matter.
+    </p>
+
+    <!-- Two headline stats. RIGOROUSLY DISTINCT: 58% = any task; 37% = high-stakes. -->
+    <dl class="twist-ai-stats" data-arrival>
+      <div class="twist-ai-stat">
+        <dd class="twist-ai-stat-num num"
+            data-arrival-count data-to="58" data-decimals="0" data-suffix="%">0%</dd>
+        <dt class="twist-ai-stat-label">used AI instead of a professional<br>for <em>any</em> task</dt>
+      </div>
+      <div class="twist-ai-stat twist-ai-stat--hi">
+        <dd class="twist-ai-stat-num num"
+            data-arrival-count data-to="37" data-decimals="0" data-suffix="%">0%</dd>
+        <dt class="twist-ai-stat-label">for the high-stakes calls:<br>finance, health, legal</dt>
+      </div>
+    </dl>
+  </header>
+
+  <!-- RIGHT COLUMN — AI tasks list + tug-of-war interaction -->
+  <section class="twist-ai-stage" aria-labelledby="twist-ai-stage-lbl">
+
+    <!-- All seven Q11 AI tasks — rendered as a ranked dot list by JS. -->
+    <div class="twist-ai-tasks" data-twist-ai-tasks aria-label="AI tasks list"></div>
+
+    <!-- High-stakes tug-of-war. Picker + strip + readout built by JS. -->
+    <div class="twist-ai-tow" aria-labelledby="twist-ai-stage-lbl">
+      <h3 class="twist-ai-tow-title" id="twist-ai-stage-lbl" data-arrival>
+        Who would you ask?
+      </h3>
+      <div class="twist-ai-picker" data-twist-ai-picker></div>
+      <div class="twist-ai-strip" data-twist-ai-strip></div>
+      <p class="twist-ai-readout" data-twist-ai-readout data-youdot-anchor aria-live="polite"></p>
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,620 @@
+/* ============================================================
+   Chapter 15 — the empowerment architecture  ·  THE TURN
+   Scope: #\31 5-empowerment  ("\31 " = escaped "1", space terminates)
+
+   AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "06"):
+   Full-bleed warm gradient world moment. An asymmetric two-pane stage
+   that FILLS 100vw x 100svh:
+     LEFT  — the argument: bold-black hero + cinematic pivot wipe
+     RIGHT — the centrepiece: the tactile three-needs venn, the verified
+             Q14 figures integrated AS each need's own label
+
+   One focal point. Backgroundless. No cream band, no white box, no pill,
+   no border, no title frame. Square corners. No underlines. No
+   parallelogram. Bold black Poppins titles. Tabular nums. AA contrast.
+   Reduced-motion safe. Keyboard operable.
+   ============================================================ */
+
+/* ── Root: FULL BLEED — the warm ground IS the screen ──────────────── */
+#\31 5-empowerment .emp-root {
+  position: relative;
+  isolation: isolate;
+  /* Override vccp.css .journey-stage .chapter-inner max-width + padding */
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--ground-warm);
+  color: var(--ink);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The orbit sits behind every child (z-index stacking). Pull it toward the
+   venn pane so the connective ring frames the centrepiece, not dead air. */
+#\31 5-empowerment .emp-orbit {
+  z-index: 0;
+  opacity: 0.5;
+  background-position: 72% 50%;
+}
+
+/* Every direct child above the orbit */
+#\31 5-empowerment .emp-root > * { position: relative; z-index: 1; }
+
+/* ── The tall agent silhouette — far right, grounded full-height ──────
+   Deliberate edge presence: anchored at the bottom, rising the full
+   height of the frame so it reads as standing at the far right, never an
+   awkward mid-air cut. Low opacity = atmosphere, not a competing mass. */
+#\31 5-empowerment .emp-figure {
+  position: absolute;
+  z-index: 0;
+  right: clamp(-2rem, -2vw, 0rem);
+  bottom: 0;
+  height: min(96vh, 880px);
+  width: auto;
+  opacity: 0.085;
+  pointer-events: none;
+  filter: none;           /* pure black silhouette per brand system */
+}
+
+/* ── The Challenger-Series stamp, top-right (book-cover position) ── */
+#\31 5-empowerment .emp-mark {
+  position: absolute;
+  z-index: 3;
+  top: clamp(0.85rem, 2.2vh, 1.6rem);
+  right: clamp(1.5rem, 3vw, 3rem);
+  height: clamp(22px, 2.2vw, 30px);
+  width: auto;
+  opacity: 0.9;
+}
+
+/* ── TWO-PANE STAGE ───────────────────────────────────────────────── */
+#\31 5-empowerment .emp-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  /* Inner padding keeps content off the true edges while the warm ground
+     bleeds full to 100vw x 100svh (never padded on the root). */
+  padding: clamp(1.75rem, 4.5vh, 3.75rem)
+           clamp(2rem, 5vw, 5.5rem)
+           clamp(1.75rem, 4.5vh, 3.25rem)
+           clamp(2.25rem, 5.5vw, 6rem);
+  box-sizing: border-box;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   LEFT PANE — the argument: eyebrow + display title + pivot wipe
+   ============================================================ */
+#\31 5-empowerment .emp-head {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertically centre within the stretched pane */
+  gap: 0;
+  padding-right: clamp(0.5rem, 1.5vw, 1.5rem);
+  min-width: 0;
+}
+
+#\31 5-empowerment .emp-eyebrow {
+  color: var(--navy);
+  margin: 0 0 clamp(0.8rem, 1.8vh, 1.2rem);
+}
+
+/* BOLD BLACK Poppins-900 hero — the book-cover title voice. One accent
+   word in italic navy (the "Series" gesture). Sized large + dramatic so
+   the left pane carries real weight against the centrepiece. */
+#\31 5-empowerment .emp-title {
+  color: var(--ink);
+  margin: 0 0 clamp(1rem, 2.4vh, 1.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+  font-weight: 900;
+  text-wrap: balance;
+  /* The title stands on its own ground: no navy frame, box, outline or
+     bracket of any kind around the headline block. */
+  border: 0;
+  outline: 0;
+}
+
+#\31 5-empowerment .emp-head,
+#\31 5-empowerment .emp-title,
+#\31 5-empowerment .emp-accent {
+  border: 0;
+}
+
+#\31 5-empowerment .emp-head::before,
+#\31 5-empowerment .emp-head::after,
+#\31 5-empowerment .emp-title::before,
+#\31 5-empowerment .emp-title::after,
+#\31 5-empowerment .emp-accent::before,
+#\31 5-empowerment .emp-accent::after {
+  content: none;
+}
+
+#\31 5-empowerment .emp-accent {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+#\31 5-empowerment .emp-standfirst {
+  color: var(--ink-soft);
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.55;
+  max-width: 40ch;
+  margin: 0 0 clamp(1.8rem, 4vh, 2.8rem);
+}
+
+/* Emphasis inside standfirst — weight + navy only; no underline. */
+#\31 5-empowerment .emp-standfirst .hl {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ── CINEMATIC PIVOT WIPE ─────────────────────────────────────────── */
+#\31 5-empowerment .emp-pivot {
+  --pv: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-width: 27rem;
+}
+
+/* One word at a time — off side clipped; never stacked. The pivot is the
+   second-loudest type on the pane, so it gets real scale. */
+#\31 5-empowerment .emp-pivot-readout {
+  position: relative;
+  display: grid;
+  min-height: 1.5em;
+}
+
+#\31 5-empowerment .emp-pivot-word {
+  grid-area: 1 / 1;
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  transition: opacity 340ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* "Active agency" = the optimistic turn — carries navy. */
+#\31 5-empowerment .emp-pivot-word--after { color: var(--navy); }
+
+#\31 5-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--after,
+#\31 5-empowerment .emp-pivot-readout[data-side="after"] .emp-pivot-word--before {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+#\31 5-empowerment .emp-pivot-readout[data-side="before"] .emp-pivot-word--before {
+  opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\31 5-empowerment .emp-pivot-word { transition: none; }
+}
+
+/* Backgroundless track: faint ink-tint rail + navy fill + square thumb. */
+#\31 5-empowerment .emp-pivot-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+#\31 5-empowerment .emp-pivot-track::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: rgba(4, 22, 84, 0.18);
+}
+
+#\31 5-empowerment .emp-pivot-fill {
+  position: absolute;
+  left: 0; top: 50%;
+  height: 3px;
+  width: 0%;
+  transform: translateY(-50%);
+  background: var(--navy);
+  pointer-events: none;
+}
+
+#\31 5-empowerment .emp-pivot-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+#\31 5-empowerment .emp-pivot-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--navy);
+  border: 0;
+  cursor: grab;
+}
+
+#\31 5-empowerment .emp-pivot-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--navy);
+  border: 0;
+  border-radius: 0;
+  cursor: grab;
+}
+
+#\31 5-empowerment .emp-pivot-slider:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 4px;
+}
+
+/* The model end-labels sit under the rail — tight furniture, low emphasis. */
+#\31 5-empowerment .emp-pivot-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.55;
+}
+
+/* ── Arrival assemble — lines lift + fade in ─────────────────────── */
+#\31 5-empowerment [data-arrival] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+#\31 5-empowerment [data-arrival].is-arrived {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--arrival-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\31 5-empowerment [data-arrival] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================================
+   RIGHT PANE — THE CENTREPIECE: the tactile three-needs venn
+   ============================================================ */
+#\31 5-empowerment .emp-venn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: clamp(0.8rem, 2vh, 1.5rem);
+  min-width: 0;
+}
+
+#\31 5-empowerment .emp-venn-instruction {
+  color: var(--navy);
+  margin: 0;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* The JS-built mount fills the pane, giving the venn maximum breathing room. */
+#\31 5-empowerment .emp-venn-mount {
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Venn stage ──────────────────────────────────────────────────── */
+#\31 5-empowerment .emp-tv-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The field: a square that grows to fill the pane. Big — this is the
+   focal mass of the whole screen. */
+#\31 5-empowerment .emp-tv-field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  /* Leave headroom for the instruction above and the stat row beneath so the
+     whole pane fits one screen (100svh) with no clipping. */
+  max-height: min(62vh, 100%);
+  max-width: min(62vh, 100%);
+  margin: 0 auto;
+}
+
+/* Luminous yellow core — blooms from the shared centre as needs converge
+   (--tvg 0->1). A genuine light source, the single accent moment. */
+#\31 5-empowerment .emp-tv-field::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 78%; height: 78%;
+  transform: translate(-50%, -50%) scale(calc(0.45 + var(--tvg, 0) * 0.75));
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(240, 203, 8, 0.55) 0%,
+    rgba(240, 203, 8, 0.22) 34%,
+    rgba(240, 203, 8, 0) 66%);
+  opacity: var(--tvg, 0);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\31 5-empowerment .emp-tv-field::before { transition: none; }
+}
+
+/* Shared overlap wash — deep navy, grows with togetherness, the gravity well. */
+#\31 5-empowerment .emp-tv-overlap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0; height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #0A2270 0%, var(--navy) 70%);
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* One-shot reward pulse on full convergence — yellow accent ring. */
+#\31 5-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap {
+  animation: emp-tv-pulse 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes emp-tv-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.5); }
+  100% { box-shadow: 0 0 0 34px rgba(240, 203, 8, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\31 5-empowerment .emp-tv-stage.is-pulse .emp-tv-overlap { animation: none; }
+}
+
+/* Centre word assembles as needs converge (driven by --tv 0->1).
+   Cream on the dark navy core — the resolved reading. */
+#\31 5-empowerment .emp-tv-centre {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  opacity: calc(0.18 + var(--tv, 0) * 0.82);
+  z-index: 4;
+}
+
+#\31 5-empowerment .emp-tv-centre-word {
+  display: block;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--cream);
+  transform: scale(calc(0.82 + var(--tv, 0) * 0.18));
+  transition: text-shadow 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Finishing flourish: soft cream glow on full resolution. */
+#\31 5-empowerment .emp-tv-centre.is-on .emp-tv-centre-word {
+  text-shadow: 0 0 30px rgba(240, 237, 231, 0.55);
+}
+
+/* Ignition — the meeting-point payoff. As the three needs lock onto the shared
+   core, "empowerment" flares yellow for a beat then settles to its cream glow,
+   so the word reveals on a spark of the brand accent exactly as they meet. */
+#\31 5-empowerment .emp-tv-stage.is-pulse .emp-tv-centre-word {
+  animation: emp-tv-ignite 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes emp-tv-ignite {
+  0%   { color: var(--cream); text-shadow: 0 0 0 rgba(240, 203, 8, 0); }
+  28%  { color: var(--yellow); text-shadow: 0 0 38px rgba(240, 203, 8, 0.85); }
+  100% { color: var(--cream); text-shadow: 0 0 30px rgba(240, 237, 231, 0.55); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\31 5-empowerment .emp-tv-centre-word { transition: none; }
+  #\31 5-empowerment .emp-tv-stage.is-pulse .emp-tv-centre-word { animation: none; }
+}
+
+/* Before the overlap is dark enough, the word is ink (contrast on warm). */
+#\31 5-empowerment .emp-tv-stage:not(.is-converging) .emp-tv-centre-word {
+  color: var(--ink);
+}
+
+/* Need circles — FLAT solid discs (client: no 3D). Multiply blend keeps the
+   overlaps deepening to navy so the venn intersection still reads. */
+#\31 5-empowerment .emp-tv-need {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mix-blend-mode: multiply;
+  z-index: 2;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+#\31 5-empowerment .emp-tv-need.is-dragging {
+  z-index: 5;
+  cursor: grabbing;
+}
+
+#\31 5-empowerment .emp-tv-need-lbl {
+  font-weight: 800;
+  font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+  letter-spacing: 0.01em;
+  color: var(--cream);
+  pointer-events: none;
+  text-transform: lowercase;
+}
+
+#\31 5-empowerment .emp-tv-need:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+}
+
+/* ── The stat row — the three verified Q14 figures read as a clean horizontal
+   row safely BENEATH the venn. Fully inside the pane: nothing can run past an
+   edge. Each tile is keyboard-focusable (the keyboard path to bring a need in)
+   and colour-keyed to its circle via a small dot. ──────────────────────────── */
+#\31 5-empowerment .emp-stat-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 2.4vw, 2.25rem);
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+#\31 5-empowerment .emp-tv-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  text-align: center;
+  cursor: pointer;
+  min-width: 0;
+  flex: 1 1 0;
+  max-width: 12rem;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#\31 5-empowerment .emp-tv-stat:hover { transform: translateY(-3px); }
+
+#\31 5-empowerment .emp-tv-stat:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 4px;
+}
+
+/* Flat navy+ need icon keys the figure to its circle (money piggy / time
+   stopwatch / stress brain). Inherits the need accent via currentColor so the
+   money navy / time blue / stress coral coding carries through. */
+#\31 5-empowerment .emp-tv-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 3.4vw, 52px);
+  height: clamp(40px, 3.4vw, 52px);
+  margin-bottom: 0.2rem;
+  color: var(--accent, var(--navy));
+}
+
+#\31 5-empowerment .emp-tv-stat-icon svg { width: 100%; height: 100%; }
+/* Real design-team need PNG (dark art reads on the warm ground). */
+#\31 5-empowerment .emp-tv-stat-icon__img {
+  width: clamp(40px, 3.4vw, 52px);
+  height: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+  display: block;
+}
+
+#\31 5-empowerment .emp-tv-stat-n {
+  font-weight: 900;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+#\31 5-empowerment .emp-tv-stat-name {
+  font-weight: 700;
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+#\31 5-empowerment .emp-tv-stat-sub {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+#\31 5-empowerment .emp-tv-empty {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* 1024px: silhouette recedes; venn keeps prominence. */
+@media (max-width: 1024px) {
+  #\31 5-empowerment .emp-figure { opacity: 0.06; }
+  #\31 5-empowerment .emp-stage {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding: clamp(1.5rem, 4vh, 3rem) clamp(1.5rem, 4vw, 3rem);
+  }
+  #\31 5-empowerment .emp-title { font-size: clamp(2.4rem, 5.6vw, 4.6rem); }
+  #\31 5-empowerment .emp-tv-stat-n { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+}
+
+/* 768px: single column, venn below the argument. */
+@media (max-width: 768px) {
+  #\31 5-empowerment .emp-figure { display: none; }
+  #\31 5-empowerment .emp-orbit { background-position: 50% 60%; }
+  #\31 5-empowerment .emp-stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    padding: clamp(1.2rem, 3vh, 2rem) clamp(1.2rem, 4vw, 2rem);
+    gap: clamp(1.2rem, 3vh, 2rem);
+    align-items: start;
+  }
+  #\31 5-empowerment .emp-head { padding-right: 0; }
+  #\31 5-empowerment .emp-title { font-size: clamp(2.2rem, 8vw, 3.6rem); }
+  #\31 5-empowerment .emp-standfirst { max-width: 100%; }
+  #\31 5-empowerment .emp-pivot { max-width: 100%; }
+  #\31 5-empowerment .emp-venn { height: auto; min-height: 0; }
+  #\31 5-empowerment .emp-tv-field {
+    max-height: 64vw;
+    max-width: 64vw;
+  }
+  #\31 5-empowerment .emp-stat-row { gap: clamp(0.5rem, 3vw, 1.25rem); }
+  #\31 5-empowerment .emp-tv-stat-n { font-size: clamp(1.3rem, 5vw, 2rem); }
+  #\31 5-empowerment .emp-tv-stat-name { font-size: clamp(0.7rem, 2.6vw, 0.9rem); }
+}

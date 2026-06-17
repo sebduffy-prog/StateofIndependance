@@ -1,0 +1,96 @@
+/**
+ * 22-outro — The cinematic close.
+ *
+ * Beat sequence on every chapter:arrive (idempotent):
+ *   0 — eyebrow / kicker settles (arrival cascade)
+ *   1 — Institutions ▸▸▸▸ Individuals assembles word by word
+ *   2 — Martin Lewis quote settles; "tools" decrypts in (scramble)
+ *   3 — hairline rule draws; "Thank you" lands
+ *   4 — copyright + lockup settle; the figure breathes, the orbit drifts
+ *   5 — you-dot disperses upward with the nation
+ *
+ * The figure (the individual the story is for) is present from the first frame,
+ * grounded on the floor with a soft shadow and a slow parallax; everything else
+ * assembles around it. The orbit gathers behind it as the connective signature.
+ *
+ * Under reduced-motion: arrival() jumps everything to its final state
+ * immediately; ambient drift is off; the you-dot fade is instant.
+ *
+ * Contract: docs/CONTRACT.md.
+ *
+ * @param {HTMLElement} rootEl - the <section id="22-outro"> element
+ * @param {{ survey, segments, tgi, journey }} data
+ */
+import { prefersReducedMotion } from '../lib/reveal.js';
+import { arrival, scrambleIn, observeParallax } from '../lib/experiential.js';
+
+/** Delay after the last arrival() cascade before the you-dot disperses. */
+const DISPERSE_DELAY_MS = 2600;
+
+/**
+ * Fade the persistent you-dot upward so the visitor's marker leaves with
+ * the nation. main.js re-anchors it on the next step that provides one.
+ */
+const disperseYouDot = () => {
+  const dot = document.querySelector('.you-dot');
+  if (!dot) return;
+  dot.style.transition = 'opacity 1.8s ease, transform 1.8s ease';
+  dot.style.opacity = '0';
+  const current = dot.style.transform || '';
+  dot.style.transform = current + ' translateY(-48px)';
+};
+
+const restoreYouDot = () => {
+  const dot = document.querySelector('.you-dot');
+  if (!dot) return;
+  dot.style.transition = '';
+  dot.style.opacity = '';
+  dot.style.transform = '';
+};
+
+export default function init(rootEl, data) {
+  observeParallax(rootEl, { maxShiftPx: 32 });
+
+  // Seed the scramble target from the literal markup BEFORE any reveal runs.
+  // scrambleIn() trusts dataset.scrambleText over the live (possibly garbled)
+  // textContent, so capturing "tools" here guarantees the quote always
+  // resolves to "...hand them the tools." and never decays to an empty glyph.
+  const scrambleEl = rootEl.querySelector('[data-arrival-scramble]');
+  if (scrambleEl && !scrambleEl.dataset.scrambleText) {
+    const literal = (scrambleEl.textContent || '').trim();
+    if (literal) scrambleEl.dataset.scrambleText = literal;
+  }
+
+  let disperseTimer = null;
+
+  const clearDisperse = () => {
+    if (disperseTimer) {
+      window.clearTimeout(disperseTimer);
+      disperseTimer = null;
+    }
+  };
+
+  const playClose = (detail = {}) => {
+    clearDisperse();
+    restoreYouDot();
+
+    if (prefersReducedMotion()) {
+      // Snap to final state — no animation, no disperse delay.
+      arrival(rootEl, { ...detail });
+      window.setTimeout(disperseYouDot, 300);
+      return;
+    }
+
+    // arrival() cascades all [data-arrival] elements in document order,
+    // then fires scrambleIn on [data-arrival-scramble]. The second line of
+    // the Martin Lewis quote carries data-arrival-scramble so it decrypts
+    // into place after the first line has settled.
+    arrival(rootEl, { ...detail });
+
+    // The you-dot disperses after the arrival cascade has played.
+    disperseTimer = window.setTimeout(disperseYouDot, DISPERSE_DELAY_MS);
+  };
+
+  // Re-play on every arrival (idempotent).
+  rootEl.addEventListener('chapter:arrive', (e) => playClose(e.detail));
+}

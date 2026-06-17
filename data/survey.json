@@ -12,12 +12,42 @@
     "questionCode": "Q2",
     "measure": "% net agree (agree + strongly agree)",
     "items": [
-      { "id": "careful", "code": "Q2r3", "label": "More careful with money than 5 yrs ago", "pct": 77.3 },
-      { "id": "anxious", "code": "Q2r2", "label": "Feel anxious about coming months", "pct": 60.2 },
-      { "id": "exhausted", "code": "Q2r5", "label": "More emotionally exhausted than pre-pandemic", "pct": 54.8 },
-      { "id": "selfReliant", "code": "Q2r6", "label": "More self-reliant than 5 yrs ago", "pct": 54.3 },
-      { "id": "enjoyNow", "code": "Q2r4", "label": "Prioritise enjoying life now", "pct": 51.2 },
-      { "id": "inControl", "code": "Q2r1", "label": "In control of my financial future", "pct": 46.7 }
+      {
+        "id": "careful",
+        "code": "Q2r3",
+        "label": "More careful with money than 5 yrs ago",
+        "pct": 77.3
+      },
+      {
+        "id": "anxious",
+        "code": "Q2r2",
+        "label": "Feel anxious about coming months",
+        "pct": 60.2
+      },
+      {
+        "id": "exhausted",
+        "code": "Q2r5",
+        "label": "More emotionally exhausted than pre-pandemic",
+        "pct": 54.8
+      },
+      {
+        "id": "selfReliant",
+        "code": "Q2r6",
+        "label": "More self-reliant than 5 yrs ago",
+        "pct": 54.3
+      },
+      {
+        "id": "enjoyNow",
+        "code": "Q2r4",
+        "label": "Prioritise enjoying life now",
+        "pct": 51.2
+      },
+      {
+        "id": "inControl",
+        "code": "Q2r1",
+        "label": "In control of my financial future",
+        "pct": 46.7
+      }
     ]
   },
   "moneySavingMoves": {
@@ -25,10 +55,30 @@
     "questionCode": "Q6A",
     "measure": "% who did this in the last 3 months",
     "items": [
-      { "id": "shoppedAround", "code": "Q6Ar4", "label": "Shopped around / researched deals", "pct": 54.5 },
-      { "id": "ownLabelSwitch", "code": "Q6Ar1", "label": "Switched to supermarket own-label", "pct": 42.6 },
-      { "id": "downgradedSubscription", "code": "Q6Ar2", "label": "Downgraded / stopped a subscription", "pct": 29.6 },
-      { "id": "protectedTreat", "code": "Q6Ar3", "label": "Protected a treat for wellbeing", "pct": 24.7 }
+      {
+        "id": "shoppedAround",
+        "code": "Q6Ar4",
+        "label": "Shopped around / researched deals",
+        "pct": 54.5
+      },
+      {
+        "id": "ownLabelSwitch",
+        "code": "Q6Ar1",
+        "label": "Switched to supermarket own-label",
+        "pct": 42.6
+      },
+      {
+        "id": "downgradedSubscription",
+        "code": "Q6Ar2",
+        "label": "Downgraded / stopped a subscription",
+        "pct": 29.6
+      },
+      {
+        "id": "protectedTreat",
+        "code": "Q6Ar3",
+        "label": "Protected a treat for wellbeing",
+        "pct": 24.7
+      }
     ]
   },
   "tradingDownByCategory": {
@@ -36,14 +86,46 @@
     "questionCode": "Q6B",
     "measure": "% who traded down in the last 12 months",
     "items": [
-      { "id": "groceries", "label": "Groceries", "pct": 53.6 },
-      { "id": "fashion", "label": "Fashion", "pct": 30.2 },
-      { "id": "entertainment", "label": "Entertainment", "pct": 29.3 },
-      { "id": "mobile", "label": "Mobile / phone", "pct": 22.3 },
-      { "id": "beauty", "label": "Beauty", "pct": 21.9 },
-      { "id": "broadband", "label": "Broadband", "pct": 19.8 },
-      { "id": "energy", "label": "Energy", "pct": 17.3 },
-      { "id": "insurance", "label": "Insurance", "pct": 16.8 }
+      {
+        "id": "groceries",
+        "label": "Groceries",
+        "pct": 53.6
+      },
+      {
+        "id": "fashion",
+        "label": "Fashion",
+        "pct": 30.2
+      },
+      {
+        "id": "entertainment",
+        "label": "Entertainment",
+        "pct": 29.3
+      },
+      {
+        "id": "mobile",
+        "label": "Mobile / phone",
+        "pct": 22.3
+      },
+      {
+        "id": "beauty",
+        "label": "Beauty",
+        "pct": 21.9
+      },
+      {
+        "id": "broadband",
+        "label": "Broadband",
+        "pct": 19.8
+      },
+      {
+        "id": "energy",
+        "label": "Energy",
+        "pct": 17.3
+      },
+      {
+        "id": "insurance",
+        "label": "Insurance",
+        "pct": 16.8
+      }
     ]
   },
   "protectedSpend": {
@@ -51,16 +133,66 @@
     "questionCode": "Q5",
     "measure": "% actively protecting this non-essential because it matters to their happiness or wellbeing",
     "items": [
-      { "id": "holidays", "code": "Q5r3", "label": "Holidays", "pct": 39.6 },
-      { "id": "familyExperiences", "code": "Q5r7", "label": "Family experiences", "pct": 39.2 },
-      { "id": "streaming", "code": "Q5r4", "label": "Streaming / entertainment", "pct": 33.0 },
-      { "id": "hobbies", "code": "Q5r6", "label": "Hobbies", "pct": 31.8 },
-      { "id": "beauty", "code": "Q5r5", "label": "Beauty / self-care", "pct": 26.7 },
-      { "id": "gym", "code": "Q5r1", "label": "Gym / fitness", "pct": 24.2 },
-      { "id": "pub", "code": "Q5r2", "label": "Pub / socialising", "pct": 21.0 },
-      { "id": "fashion", "code": "Q5r9", "label": "Fashion / clothes", "pct": 16.7 },
-      { "id": "specificBrands", "code": "Q5r8", "label": "Specific brands / products", "pct": 9.2 },
-      { "id": "noneOfThese", "code": "Q5r10", "label": "None of these", "pct": 9.0 }
+      {
+        "id": "holidays",
+        "code": "Q5r3",
+        "label": "Holidays",
+        "pct": 39.6
+      },
+      {
+        "id": "familyExperiences",
+        "code": "Q5r7",
+        "label": "Family experiences",
+        "pct": 39.2
+      },
+      {
+        "id": "streaming",
+        "code": "Q5r4",
+        "label": "Streaming / entertainment",
+        "pct": 33.0
+      },
+      {
+        "id": "hobbies",
+        "code": "Q5r6",
+        "label": "Hobbies",
+        "pct": 31.8
+      },
+      {
+        "id": "beauty",
+        "code": "Q5r5",
+        "label": "Beauty / self-care",
+        "pct": 26.7
+      },
+      {
+        "id": "gym",
+        "code": "Q5r1",
+        "label": "Gym / fitness",
+        "pct": 24.2
+      },
+      {
+        "id": "pub",
+        "code": "Q5r2",
+        "label": "Pub / socialising",
+        "pct": 21.0
+      },
+      {
+        "id": "fashion",
+        "code": "Q5r9",
+        "label": "Fashion / clothes",
+        "pct": 16.7
+      },
+      {
+        "id": "specificBrands",
+        "code": "Q5r8",
+        "label": "Specific brands / products",
+        "pct": 9.2
+      },
+      {
+        "id": "noneOfThese",
+        "code": "Q5r10",
+        "label": "None of these",
+        "pct": 9.0
+      }
     ]
   },
   "availabilityConcerns": {
@@ -68,15 +200,38 @@
     "questionCode": "Q8A",
     "measure": "% very or extremely concerned about availability (not just price) in the coming months",
     "items": [
-      { "id": "fuel", "code": "Q8Ar1", "label": "Fuel (petrol / diesel)", "pct": 44.8 },
-      { "id": "freshFood", "code": "Q8Ar2", "label": "Fresh food staples", "pct": 36.8 },
-      { "id": "medicines", "code": "Q8Ar4", "label": "Essential medicines", "pct": 33.4 },
-      { "id": "tech", "code": "Q8Ar3", "label": "Tech / electronics", "pct": 13.9 }
+      {
+        "id": "fuel",
+        "code": "Q8Ar1",
+        "label": "Fuel (petrol / diesel)",
+        "pct": 44.8
+      },
+      {
+        "id": "freshFood",
+        "code": "Q8Ar2",
+        "label": "Fresh food staples",
+        "pct": 36.8
+      },
+      {
+        "id": "medicines",
+        "code": "Q8Ar4",
+        "label": "Essential medicines",
+        "pct": 33.4
+      },
+      {
+        "id": "tech",
+        "code": "Q8Ar3",
+        "label": "Tech / electronics",
+        "pct": 13.9
+      }
     ]
   },
   "institutionTrust": {
     "source": "VCCP x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
-    "questionCodes": { "confidence": "Q7", "performanceChange": "Q8C" },
+    "questionCodes": {
+      "confidence": "Q7",
+      "performanceChange": "Q8C"
+    },
     "headline": {
       "nhsMeanScore": 6.42,
       "nhsMeanScoreNote": "NHS trust score out of 10 - the highest of any institution",
@@ -87,25 +242,109 @@
     "confidenceRanking": {
       "measure": "% confident (7-10 out of 10) the institution will reliably support them over the next 12 months",
       "items": [
-        { "id": "nhs", "code": "Q7r1", "label": "NHS", "pctConfident": 52.8, "meanScore": 6.42 },
-        { "id": "banks", "code": "Q7r6", "label": "Banks / financial", "pctConfident": 49.1, "meanScore": 6.25 },
-        { "id": "publicTransport", "code": "Q7r3", "label": "Public transport", "pctConfident": 45.9, "meanScore": 6.08 },
-        { "id": "employers", "code": "Q7r7", "label": "Employers", "pctConfident": 40.4, "meanScore": 5.73 },
-        { "id": "energyProviders", "code": "Q7r2", "label": "Energy providers", "pctConfident": 38.9, "meanScore": 5.67 },
-        { "id": "education", "code": "Q7r4", "label": "Education system", "pctConfident": 37.0, "meanScore": 5.71 },
-        { "id": "government", "code": "Q7r5", "label": "Government", "pctConfident": 23.9, "meanScore": 4.5 }
+        {
+          "id": "nhs",
+          "code": "Q7r1",
+          "label": "NHS",
+          "pctConfident": 52.8,
+          "meanScore": 6.42
+        },
+        {
+          "id": "banks",
+          "code": "Q7r6",
+          "label": "Banks / financial",
+          "pctConfident": 49.1,
+          "meanScore": 6.25
+        },
+        {
+          "id": "publicTransport",
+          "code": "Q7r3",
+          "label": "Public transport",
+          "pctConfident": 45.9,
+          "meanScore": 6.08
+        },
+        {
+          "id": "employers",
+          "code": "Q7r7",
+          "label": "Employers",
+          "pctConfident": 40.4,
+          "meanScore": 5.73
+        },
+        {
+          "id": "energyProviders",
+          "code": "Q7r2",
+          "label": "Energy providers",
+          "pctConfident": 38.9,
+          "meanScore": 5.67
+        },
+        {
+          "id": "education",
+          "code": "Q7r4",
+          "label": "Education system",
+          "pctConfident": 37.0,
+          "meanScore": 5.71
+        },
+        {
+          "id": "government",
+          "code": "Q7r5",
+          "label": "Government",
+          "pctConfident": 23.9,
+          "meanScore": 4.5
+        }
       ]
     },
     "performanceChange": {
       "measure": "% saying performance has declined (somewhat or significantly) over the past 10 years",
       "items": [
-        { "id": "government", "code": "Q8Cr3", "label": "Government", "pctDeclined": 64.0, "pctImproved": 15.5 },
-        { "id": "nhs", "code": "Q8Cr1", "label": "NHS", "pctDeclined": 52.6, "pctImproved": 23.5 },
-        { "id": "localCouncil", "code": "Q8Cr7", "label": "Local council", "pctDeclined": 51.9, "pctImproved": 17.0 },
-        { "id": "police", "code": "Q8Cr5", "label": "Police", "pctDeclined": 48.3, "pctImproved": 17.6 },
-        { "id": "schools", "code": "Q8Cr2", "label": "Schools", "pctDeclined": 37.0, "pctImproved": 21.3 },
-        { "id": "armedForces", "code": "Q8Cr6", "label": "Armed forces", "pctDeclined": 33.6, "pctImproved": 19.9 },
-        { "id": "banks", "code": "Q8Cr4", "label": "Banks", "pctDeclined": 28.7, "pctImproved": 25.7 }
+        {
+          "id": "government",
+          "code": "Q8Cr3",
+          "label": "Government",
+          "pctDeclined": 64.0,
+          "pctImproved": 15.5
+        },
+        {
+          "id": "nhs",
+          "code": "Q8Cr1",
+          "label": "NHS",
+          "pctDeclined": 52.6,
+          "pctImproved": 23.5
+        },
+        {
+          "id": "localCouncil",
+          "code": "Q8Cr7",
+          "label": "Local council",
+          "pctDeclined": 51.9,
+          "pctImproved": 17.0
+        },
+        {
+          "id": "police",
+          "code": "Q8Cr5",
+          "label": "Police",
+          "pctDeclined": 48.3,
+          "pctImproved": 17.6
+        },
+        {
+          "id": "schools",
+          "code": "Q8Cr2",
+          "label": "Schools",
+          "pctDeclined": 37.0,
+          "pctImproved": 21.3
+        },
+        {
+          "id": "armedForces",
+          "code": "Q8Cr6",
+          "label": "Armed forces",
+          "pctDeclined": 33.6,
+          "pctImproved": 19.9
+        },
+        {
+          "id": "banks",
+          "code": "Q8Cr4",
+          "label": "Banks",
+          "pctDeclined": 28.7,
+          "pctImproved": 25.7
+        }
       ]
     }
   },
@@ -119,13 +358,1767 @@
     "highStakesNote": "Used AI for at least one high-stakes task (financial advice, health information, or legal/admin)",
     "notUsedPct": 41.6,
     "items": [
-      { "id": "health", "code": "Q11r2", "label": "Health information", "pct": 24.7, "isHighStakes": true },
-      { "id": "education", "code": "Q11r5", "label": "Education / learning", "pct": 21.2, "isHighStakes": false },
-      { "id": "creative", "code": "Q11r6", "label": "Creative work", "pct": 20.8, "isHighStakes": false },
-      { "id": "financial", "code": "Q11r1", "label": "Financial advice", "pct": 19.7, "isHighStakes": true },
-      { "id": "technical", "code": "Q11r4", "label": "Technical troubleshooting", "pct": 18.8, "isHighStakes": false },
-      { "id": "career", "code": "Q11r7", "label": "Career support", "pct": 15.2, "isHighStakes": false },
-      { "id": "legal", "code": "Q11r3", "label": "Legal / admin", "pct": 9.4, "isHighStakes": true }
+      {
+        "id": "health",
+        "code": "Q11r2",
+        "label": "Health information",
+        "pct": 24.7,
+        "isHighStakes": true
+      },
+      {
+        "id": "education",
+        "code": "Q11r5",
+        "label": "Education / learning",
+        "pct": 21.2,
+        "isHighStakes": false
+      },
+      {
+        "id": "creative",
+        "code": "Q11r6",
+        "label": "Creative work",
+        "pct": 20.8,
+        "isHighStakes": false
+      },
+      {
+        "id": "financial",
+        "code": "Q11r1",
+        "label": "Financial advice",
+        "pct": 19.7,
+        "isHighStakes": true
+      },
+      {
+        "id": "technical",
+        "code": "Q11r4",
+        "label": "Technical troubleshooting",
+        "pct": 18.8,
+        "isHighStakes": false
+      },
+      {
+        "id": "career",
+        "code": "Q11r7",
+        "label": "Career support",
+        "pct": 15.2,
+        "isHighStakes": false
+      },
+      {
+        "id": "legal",
+        "code": "Q11r3",
+        "label": "Legal / admin",
+        "pct": 9.4,
+        "isHighStakes": true
+      }
+    ]
+  },
+  "surveyByAudience": {
+    "source": "VCCP Media x Watermelon Research COCL survey, 1,504 UK adults 18+, nat rep, May 2026",
+    "note": "Every survey question reformatted by audience. Adapters=Architects, Strivers=Hustlers. pct = penetration within the audience; index = audience vs sample average (100 = average). All values read directly from State_of_Independence_Survey_by_Audience.xlsx (Crosstab); nothing inferred.",
+    "audienceOrder": [
+      {
+        "id": "architects",
+        "label": "Architects",
+        "xlsxLabel": "Adapters",
+        "sharePct": 17
+      },
+      {
+        "id": "hustlers",
+        "label": "Hustlers",
+        "xlsxLabel": "Strivers",
+        "sharePct": 28
+      },
+      {
+        "id": "coasters",
+        "label": "Coasters",
+        "xlsxLabel": "Coasters",
+        "sharePct": 27
+      },
+      {
+        "id": "retreaters",
+        "label": "Retreaters",
+        "xlsxLabel": "Retreaters",
+        "sharePct": 28
+      }
+    ],
+    "sections": [
+      {
+        "id": "mindset",
+        "title": "Mindset",
+        "questionCode": "Q2",
+        "items": [
+          {
+            "id": "exhausted-stretched",
+            "label": "Exhausted / stretched",
+            "total": 54.8,
+            "byAudience": {
+              "architects": {
+                "pct": 17.1,
+                "index": 31
+              },
+              "hustlers": {
+                "pct": 58.0,
+                "index": 106
+              },
+              "coasters": {
+                "pct": 24.2,
+                "index": 44
+              },
+              "retreaters": {
+                "pct": 87.1,
+                "index": 159
+              }
+            }
+          },
+          {
+            "id": "optimistic-about-next-decade",
+            "label": "Optimistic about next decade",
+            "total": 77.3,
+            "byAudience": {
+              "architects": {
+                "pct": 100.0,
+                "index": 129
+              },
+              "hustlers": {
+                "pct": 48.7,
+                "index": 63
+              },
+              "coasters": {
+                "pct": 100.0,
+                "index": 129
+              },
+              "retreaters": {
+                "pct": 71.9,
+                "index": 93
+              }
+            }
+          },
+          {
+            "id": "anxious-about-the-future",
+            "label": "Anxious about the future",
+            "total": 60.2,
+            "byAudience": {
+              "architects": {
+                "pct": 26.3,
+                "index": 44
+              },
+              "hustlers": {
+                "pct": 61.7,
+                "index": 102
+              },
+              "coasters": {
+                "pct": 46.5,
+                "index": 77
+              },
+              "retreaters": {
+                "pct": 85.0,
+                "index": 141
+              }
+            }
+          },
+          {
+            "id": "in-control-of-my-life",
+            "label": "In control of my life",
+            "total": 46.7,
+            "byAudience": {
+              "architects": {
+                "pct": 100.0,
+                "index": 214
+              },
+              "hustlers": {
+                "pct": 100.0,
+                "index": 214
+              },
+              "coasters": {
+                "pct": 0.0,
+                "index": 0
+              },
+              "retreaters": {
+                "pct": 0.0,
+                "index": 0
+              }
+            }
+          },
+          {
+            "id": "self-reliant-look-after-myself",
+            "label": "Self-reliant, look after myself",
+            "total": 54.3,
+            "byAudience": {
+              "architects": {
+                "pct": 70.6,
+                "index": 130
+              },
+              "hustlers": {
+                "pct": 64.6,
+                "index": 119
+              },
+              "coasters": {
+                "pct": 47.9,
+                "index": 88
+              },
+              "retreaters": {
+                "pct": 40.5,
+                "index": 75
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "financial-position",
+        "title": "Financial position",
+        "questionCode": "Q1",
+        "items": [
+          {
+            "id": "cannot-afford-basics",
+            "label": "Cannot afford basics",
+            "total": 8.0,
+            "byAudience": {
+              "architects": {
+                "pct": 0.0,
+                "index": 0
+              },
+              "hustlers": {
+                "pct": 2.3,
+                "index": 29
+              },
+              "coasters": {
+                "pct": 6.0,
+                "index": 76
+              },
+              "retreaters": {
+                "pct": 16.9,
+                "index": 211
+              }
+            }
+          },
+          {
+            "id": "conscious-spending",
+            "label": "Conscious spending",
+            "total": 50.5,
+            "byAudience": {
+              "architects": {
+                "pct": 59.9,
+                "index": 119
+              },
+              "hustlers": {
+                "pct": 43.2,
+                "index": 85
+              },
+              "coasters": {
+                "pct": 59.5,
+                "index": 118
+              },
+              "retreaters": {
+                "pct": 45.8,
+                "index": 91
+              }
+            }
+          },
+          {
+            "id": "struggling-cutting-back",
+            "label": "Struggling, cutting back",
+            "total": 16.7,
+            "byAudience": {
+              "architects": {
+                "pct": 2.0,
+                "index": 12
+              },
+              "hustlers": {
+                "pct": 7.2,
+                "index": 43
+              },
+              "coasters": {
+                "pct": 25.1,
+                "index": 150
+              },
+              "retreaters": {
+                "pct": 28.1,
+                "index": 168
+              }
+            }
+          },
+          {
+            "id": "comfortable-can-afford-luxuries",
+            "label": "Comfortable, can afford luxuries",
+            "total": 23.4,
+            "byAudience": {
+              "architects": {
+                "pct": 37.3,
+                "index": 159
+              },
+              "hustlers": {
+                "pct": 45.8,
+                "index": 196
+              },
+              "coasters": {
+                "pct": 7.9,
+                "index": 34
+              },
+              "retreaters": {
+                "pct": 7.5,
+                "index": 32
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "forward-mindset",
+        "title": "Forward mindset",
+        "questionCode": "Q18",
+        "items": [
+          {
+            "id": "i-feel-overwhelmed-and-uncertain",
+            "label": "I feel overwhelmed and uncertain",
+            "total": 14.0,
+            "byAudience": {
+              "architects": {
+                "pct": 2.5,
+                "index": 18
+              },
+              "hustlers": {
+                "pct": 6.7,
+                "index": 48
+              },
+              "coasters": {
+                "pct": 10.7,
+                "index": 77
+              },
+              "retreaters": {
+                "pct": 26.4,
+                "index": 189
+              }
+            }
+          },
+          {
+            "id": "i-feel-cautious-but-adaptable",
+            "label": "I feel cautious but adaptable",
+            "total": 41.6,
+            "byAudience": {
+              "architects": {
+                "pct": 42.0,
+                "index": 101
+              },
+              "hustlers": {
+                "pct": 41.4,
+                "index": 100
+              },
+              "coasters": {
+                "pct": 54.9,
+                "index": 132
+              },
+              "retreaters": {
+                "pct": 36.6,
+                "index": 88
+              }
+            }
+          },
+          {
+            "id": "i-feel-optimistic-and-in-control",
+            "label": "I feel optimistic and in control",
+            "total": 27.9,
+            "byAudience": {
+              "architects": {
+                "pct": 50.7,
+                "index": 182
+              },
+              "hustlers": {
+                "pct": 42.0,
+                "index": 151
+              },
+              "coasters": {
+                "pct": 15.8,
+                "index": 57
+              },
+              "retreaters": {
+                "pct": 10.1,
+                "index": 36
+              }
+            }
+          },
+          {
+            "id": "i-feel-anxious-and-reactive",
+            "label": "I feel anxious and reactive",
+            "total": 16.6,
+            "byAudience": {
+              "architects": {
+                "pct": 4.8,
+                "index": 29
+              },
+              "hustlers": {
+                "pct": 9.9,
+                "index": 60
+              },
+              "coasters": {
+                "pct": 18.6,
+                "index": 112
+              },
+              "retreaters": {
+                "pct": 26.9,
+                "index": 163
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "essentials",
+        "title": "Essentials",
+        "questionCode": "Q4",
+        "items": [
+          {
+            "id": "groceries",
+            "label": "Groceries",
+            "total": 81.8,
+            "byAudience": {
+              "architects": {
+                "pct": 86.3,
+                "index": 105
+              },
+              "hustlers": {
+                "pct": 78.8,
+                "index": 96
+              },
+              "coasters": {
+                "pct": 85.6,
+                "index": 105
+              },
+              "retreaters": {
+                "pct": 79.4,
+                "index": 97
+              }
+            }
+          },
+          {
+            "id": "holidays",
+            "label": "Holidays",
+            "total": 7.9,
+            "byAudience": {
+              "architects": {
+                "pct": 12.3,
+                "index": 156
+              },
+              "hustlers": {
+                "pct": 13.3,
+                "index": 169
+              },
+              "coasters": {
+                "pct": 5.1,
+                "index": 65
+              },
+              "retreaters": {
+                "pct": 3.1,
+                "index": 39
+              }
+            }
+          },
+          {
+            "id": "eating-out",
+            "label": "Eating out",
+            "total": 12.6,
+            "byAudience": {
+              "architects": {
+                "pct": 18.5,
+                "index": 147
+              },
+              "hustlers": {
+                "pct": 22.0,
+                "index": 175
+              },
+              "coasters": {
+                "pct": 6.5,
+                "index": 52
+              },
+              "retreaters": {
+                "pct": 5.6,
+                "index": 45
+              }
+            }
+          },
+          {
+            "id": "tech",
+            "label": "Tech",
+            "total": 14.3,
+            "byAudience": {
+              "architects": {
+                "pct": 17.6,
+                "index": 123
+              },
+              "hustlers": {
+                "pct": 19.7,
+                "index": 138
+              },
+              "coasters": {
+                "pct": 12.1,
+                "index": 85
+              },
+              "retreaters": {
+                "pct": 9.9,
+                "index": 69
+              }
+            }
+          },
+          {
+            "id": "clothing",
+            "label": "Clothing",
+            "total": 14.6,
+            "byAudience": {
+              "architects": {
+                "pct": 18.5,
+                "index": 127
+              },
+              "hustlers": {
+                "pct": 17.7,
+                "index": 121
+              },
+              "coasters": {
+                "pct": 8.8,
+                "index": 61
+              },
+              "retreaters": {
+                "pct": 12.4,
+                "index": 85
+              }
+            }
+          },
+          {
+            "id": "beauty",
+            "label": "Beauty",
+            "total": 25.9,
+            "byAudience": {
+              "architects": {
+                "pct": 35.6,
+                "index": 138
+              },
+              "hustlers": {
+                "pct": 30.7,
+                "index": 119
+              },
+              "coasters": {
+                "pct": 22.8,
+                "index": 88
+              },
+              "retreaters": {
+                "pct": 18.2,
+                "index": 70
+              }
+            }
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "total": 19.1,
+            "byAudience": {
+              "architects": {
+                "pct": 22.7,
+                "index": 118
+              },
+              "hustlers": {
+                "pct": 21.7,
+                "index": 114
+              },
+              "coasters": {
+                "pct": 20.9,
+                "index": 109
+              },
+              "retreaters": {
+                "pct": 14.8,
+                "index": 77
+              }
+            }
+          },
+          {
+            "id": "subscriptions",
+            "label": "Subscriptions",
+            "total": 16.5,
+            "byAudience": {
+              "architects": {
+                "pct": 20.4,
+                "index": 124
+              },
+              "hustlers": {
+                "pct": 23.5,
+                "index": 142
+              },
+              "coasters": {
+                "pct": 12.6,
+                "index": 76
+              },
+              "retreaters": {
+                "pct": 11.4,
+                "index": 69
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "expendable",
+        "title": "Expendable",
+        "questionCode": "Q4",
+        "items": [
+          {
+            "id": "groceries",
+            "label": "Groceries",
+            "total": 1.7,
+            "byAudience": {
+              "architects": {
+                "pct": 1.1,
+                "index": 67
+              },
+              "hustlers": {
+                "pct": 2.3,
+                "index": 140
+              },
+              "coasters": {
+                "pct": 0.9,
+                "index": 56
+              },
+              "retreaters": {
+                "pct": 1.9,
+                "index": 113
+              }
+            }
+          },
+          {
+            "id": "holidays",
+            "label": "Holidays",
+            "total": 28.9,
+            "byAudience": {
+              "architects": {
+                "pct": 21.6,
+                "index": 75
+              },
+              "hustlers": {
+                "pct": 22.3,
+                "index": 77
+              },
+              "coasters": {
+                "pct": 34.4,
+                "index": 119
+              },
+              "retreaters": {
+                "pct": 35.3,
+                "index": 122
+              }
+            }
+          },
+          {
+            "id": "eating-out",
+            "label": "Eating out",
+            "total": 24.5,
+            "byAudience": {
+              "architects": {
+                "pct": 12.6,
+                "index": 51
+              },
+              "hustlers": {
+                "pct": 17.1,
+                "index": 70
+              },
+              "coasters": {
+                "pct": 26.0,
+                "index": 106
+              },
+              "retreaters": {
+                "pct": 35.6,
+                "index": 145
+              }
+            }
+          },
+          {
+            "id": "tech",
+            "label": "Tech",
+            "total": 14.2,
+            "byAudience": {
+              "architects": {
+                "pct": 8.1,
+                "index": 57
+              },
+              "hustlers": {
+                "pct": 11.0,
+                "index": 78
+              },
+              "coasters": {
+                "pct": 10.7,
+                "index": 76
+              },
+              "retreaters": {
+                "pct": 21.0,
+                "index": 148
+              }
+            }
+          },
+          {
+            "id": "clothing",
+            "label": "Clothing",
+            "total": 23.6,
+            "byAudience": {
+              "architects": {
+                "pct": 15.1,
+                "index": 64
+              },
+              "hustlers": {
+                "pct": 24.9,
+                "index": 106
+              },
+              "coasters": {
+                "pct": 31.2,
+                "index": 132
+              },
+              "retreaters": {
+                "pct": 25.2,
+                "index": 107
+              }
+            }
+          },
+          {
+            "id": "beauty",
+            "label": "Beauty",
+            "total": 20.6,
+            "byAudience": {
+              "architects": {
+                "pct": 13.2,
+                "index": 64
+              },
+              "hustlers": {
+                "pct": 15.9,
+                "index": 77
+              },
+              "coasters": {
+                "pct": 21.4,
+                "index": 104
+              },
+              "retreaters": {
+                "pct": 27.6,
+                "index": 134
+              }
+            }
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "total": 18.0,
+            "byAudience": {
+              "architects": {
+                "pct": 10.6,
+                "index": 59
+              },
+              "hustlers": {
+                "pct": 18.3,
+                "index": 101
+              },
+              "coasters": {
+                "pct": 19.1,
+                "index": 106
+              },
+              "retreaters": {
+                "pct": 22.0,
+                "index": 122
+              }
+            }
+          },
+          {
+            "id": "subscriptions",
+            "label": "Subscriptions",
+            "total": 21.3,
+            "byAudience": {
+              "architects": {
+                "pct": 11.5,
+                "index": 54
+              },
+              "hustlers": {
+                "pct": 16.5,
+                "index": 78
+              },
+              "coasters": {
+                "pct": 25.6,
+                "index": 120
+              },
+              "retreaters": {
+                "pct": 28.4,
+                "index": 134
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "traded-down-12mo",
+        "title": "Traded down 12mo",
+        "questionCode": "Q6B",
+        "items": [
+          {
+            "id": "groceries",
+            "label": "Groceries",
+            "total": 53.6,
+            "byAudience": {
+              "architects": {
+                "pct": 44.5,
+                "index": 83
+              },
+              "hustlers": {
+                "pct": 35.4,
+                "index": 66
+              },
+              "coasters": {
+                "pct": 66.5,
+                "index": 124
+              },
+              "retreaters": {
+                "pct": 65.1,
+                "index": 121
+              }
+            }
+          },
+          {
+            "id": "insurance",
+            "label": "Insurance",
+            "total": 16.8,
+            "byAudience": {
+              "architects": {
+                "pct": 19.0,
+                "index": 113
+              },
+              "hustlers": {
+                "pct": 15.1,
+                "index": 90
+              },
+              "coasters": {
+                "pct": 18.1,
+                "index": 108
+              },
+              "retreaters": {
+                "pct": 16.0,
+                "index": 95
+              }
+            }
+          },
+          {
+            "id": "mobile-phone",
+            "label": "Mobile/phone",
+            "total": 22.3,
+            "byAudience": {
+              "architects": {
+                "pct": 16.0,
+                "index": 71
+              },
+              "hustlers": {
+                "pct": 18.3,
+                "index": 82
+              },
+              "coasters": {
+                "pct": 26.5,
+                "index": 119
+              },
+              "retreaters": {
+                "pct": 27.1,
+                "index": 121
+              }
+            }
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "total": 17.3,
+            "byAudience": {
+              "architects": {
+                "pct": 16.2,
+                "index": 94
+              },
+              "hustlers": {
+                "pct": 15.1,
+                "index": 87
+              },
+              "coasters": {
+                "pct": 14.4,
+                "index": 83
+              },
+              "retreaters": {
+                "pct": 20.3,
+                "index": 117
+              }
+            }
+          },
+          {
+            "id": "fashion",
+            "label": "Fashion",
+            "total": 30.2,
+            "byAudience": {
+              "architects": {
+                "pct": 25.8,
+                "index": 85
+              },
+              "hustlers": {
+                "pct": 21.7,
+                "index": 72
+              },
+              "coasters": {
+                "pct": 33.0,
+                "index": 109
+              },
+              "retreaters": {
+                "pct": 36.8,
+                "index": 122
+              }
+            }
+          },
+          {
+            "id": "beauty",
+            "label": "Beauty",
+            "total": 21.9,
+            "byAudience": {
+              "architects": {
+                "pct": 16.2,
+                "index": 74
+              },
+              "hustlers": {
+                "pct": 18.3,
+                "index": 83
+              },
+              "coasters": {
+                "pct": 25.1,
+                "index": 114
+              },
+              "retreaters": {
+                "pct": 26.4,
+                "index": 120
+              }
+            }
+          },
+          {
+            "id": "entertainment",
+            "label": "Entertainment",
+            "total": 29.3,
+            "byAudience": {
+              "architects": {
+                "pct": 26.3,
+                "index": 90
+              },
+              "hustlers": {
+                "pct": 24.1,
+                "index": 82
+              },
+              "coasters": {
+                "pct": 29.3,
+                "index": 100
+              },
+              "retreaters": {
+                "pct": 34.2,
+                "index": 117
+              }
+            }
+          },
+          {
+            "id": "broadband",
+            "label": "Broadband",
+            "total": 19.8,
+            "byAudience": {
+              "architects": {
+                "pct": 18.8,
+                "index": 95
+              },
+              "hustlers": {
+                "pct": 15.4,
+                "index": 78
+              },
+              "coasters": {
+                "pct": 17.2,
+                "index": 87
+              },
+              "retreaters": {
+                "pct": 24.0,
+                "index": 121
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "personal-control-behaviours",
+        "title": "Personal-control behaviours",
+        "questionCode": "Q9",
+        "items": [
+          {
+            "id": "used-ai-for-advice-planning",
+            "label": "Used AI for advice/planning",
+            "total": 23.3,
+            "byAudience": {
+              "architects": {
+                "pct": 25.5,
+                "index": 110
+              },
+              "hustlers": {
+                "pct": 23.5,
+                "index": 101
+              },
+              "coasters": {
+                "pct": 19.1,
+                "index": 82
+              },
+              "retreaters": {
+                "pct": 23.3,
+                "index": 100
+              }
+            }
+          },
+          {
+            "id": "youtube-online-guides",
+            "label": "YouTube/online guides",
+            "total": 34.4,
+            "byAudience": {
+              "architects": {
+                "pct": 34.7,
+                "index": 101
+              },
+              "hustlers": {
+                "pct": 31.9,
+                "index": 93
+              },
+              "coasters": {
+                "pct": 36.7,
+                "index": 107
+              },
+              "retreaters": {
+                "pct": 34.9,
+                "index": 101
+              }
+            }
+          },
+          {
+            "id": "free-online-up-skilling",
+            "label": "Free online up-skilling",
+            "total": 16.5,
+            "byAudience": {
+              "architects": {
+                "pct": 22.7,
+                "index": 138
+              },
+              "hustlers": {
+                "pct": 18.8,
+                "index": 114
+              },
+              "coasters": {
+                "pct": 14.0,
+                "index": 85
+              },
+              "retreaters": {
+                "pct": 12.3,
+                "index": 74
+              }
+            }
+          },
+          {
+            "id": "lifestyle-changes",
+            "label": "Lifestyle changes",
+            "total": 42.9,
+            "byAudience": {
+              "architects": {
+                "pct": 48.2,
+                "index": 112
+              },
+              "hustlers": {
+                "pct": 36.5,
+                "index": 85
+              },
+              "coasters": {
+                "pct": 42.8,
+                "index": 100
+              },
+              "retreaters": {
+                "pct": 43.4,
+                "index": 101
+              }
+            }
+          },
+          {
+            "id": "managed-energy-proactively",
+            "label": "Managed energy proactively",
+            "total": 46.9,
+            "byAudience": {
+              "architects": {
+                "pct": 50.7,
+                "index": 108
+              },
+              "hustlers": {
+                "pct": 40.0,
+                "index": 85
+              },
+              "coasters": {
+                "pct": 52.6,
+                "index": 112
+              },
+              "retreaters": {
+                "pct": 46.7,
+                "index": 99
+              }
+            }
+          },
+          {
+            "id": "self-diagnosed-health",
+            "label": "Self-diagnosed health",
+            "total": 23.1,
+            "byAudience": {
+              "architects": {
+                "pct": 18.2,
+                "index": 79
+              },
+              "hustlers": {
+                "pct": 20.0,
+                "index": 86
+              },
+              "coasters": {
+                "pct": 24.7,
+                "index": 107
+              },
+              "retreaters": {
+                "pct": 27.4,
+                "index": 119
+              }
+            }
+          },
+          {
+            "id": "vitamins-preventative",
+            "label": "Vitamins/preventative",
+            "total": 43.0,
+            "byAudience": {
+              "architects": {
+                "pct": 45.9,
+                "index": 107
+              },
+              "hustlers": {
+                "pct": 40.9,
+                "index": 95
+              },
+              "coasters": {
+                "pct": 44.7,
+                "index": 104
+              },
+              "retreaters": {
+                "pct": 41.7,
+                "index": 97
+              }
+            }
+          },
+          {
+            "id": "budgeting-comparison-tools",
+            "label": "Budgeting/comparison tools",
+            "total": 34.0,
+            "byAudience": {
+              "architects": {
+                "pct": 35.0,
+                "index": 103
+              },
+              "hustlers": {
+                "pct": 28.7,
+                "index": 84
+              },
+              "coasters": {
+                "pct": 37.2,
+                "index": 110
+              },
+              "retreaters": {
+                "pct": 35.3,
+                "index": 104
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "self-management",
+        "title": "Self-management",
+        "questionCode": "Q8B",
+        "items": [
+          {
+            "id": "healthcare",
+            "label": "Healthcare",
+            "total": 38.2,
+            "byAudience": {
+              "architects": {
+                "pct": 39.5,
+                "index": 103
+              },
+              "hustlers": {
+                "pct": 40.0,
+                "index": 105
+              },
+              "coasters": {
+                "pct": 34.0,
+                "index": 89
+              },
+              "retreaters": {
+                "pct": 38.0,
+                "index": 99
+              }
+            }
+          },
+          {
+            "id": "retirement-financial",
+            "label": "Retirement/financial",
+            "total": 34.3,
+            "byAudience": {
+              "architects": {
+                "pct": 42.3,
+                "index": 123
+              },
+              "hustlers": {
+                "pct": 34.2,
+                "index": 100
+              },
+              "coasters": {
+                "pct": 32.1,
+                "index": 94
+              },
+              "retreaters": {
+                "pct": 30.3,
+                "index": 88
+              }
+            }
+          },
+          {
+            "id": "education-upskilling",
+            "label": "Education/upskilling",
+            "total": 16.8,
+            "byAudience": {
+              "architects": {
+                "pct": 18.5,
+                "index": 110
+              },
+              "hustlers": {
+                "pct": 15.4,
+                "index": 91
+              },
+              "coasters": {
+                "pct": 12.1,
+                "index": 72
+              },
+              "retreaters": {
+                "pct": 18.4,
+                "index": 109
+              }
+            }
+          },
+          {
+            "id": "energy-management",
+            "label": "Energy management",
+            "total": 30.6,
+            "byAudience": {
+              "architects": {
+                "pct": 34.7,
+                "index": 114
+              },
+              "hustlers": {
+                "pct": 28.7,
+                "index": 94
+              },
+              "coasters": {
+                "pct": 30.2,
+                "index": 99
+              },
+              "retreaters": {
+                "pct": 29.3,
+                "index": 96
+              }
+            }
+          },
+          {
+            "id": "mental-wellbeing",
+            "label": "Mental wellbeing",
+            "total": 55.7,
+            "byAudience": {
+              "architects": {
+                "pct": 51.8,
+                "index": 93
+              },
+              "hustlers": {
+                "pct": 49.6,
+                "index": 89
+              },
+              "coasters": {
+                "pct": 54.4,
+                "index": 98
+              },
+              "retreaters": {
+                "pct": 62.2,
+                "index": 112
+              }
+            }
+          },
+          {
+            "id": "career-progression",
+            "label": "Career progression",
+            "total": 23.1,
+            "byAudience": {
+              "architects": {
+                "pct": 28.6,
+                "index": 123
+              },
+              "hustlers": {
+                "pct": 21.7,
+                "index": 94
+              },
+              "coasters": {
+                "pct": 19.5,
+                "index": 84
+              },
+              "retreaters": {
+                "pct": 22.0,
+                "index": 95
+              }
+            }
+          },
+          {
+            "id": "legal-admin",
+            "label": "Legal/admin",
+            "total": 15.2,
+            "byAudience": {
+              "architects": {
+                "pct": 15.7,
+                "index": 103
+              },
+              "hustlers": {
+                "pct": 13.9,
+                "index": 91
+              },
+              "coasters": {
+                "pct": 10.7,
+                "index": 70
+              },
+              "retreaters": {
+                "pct": 17.4,
+                "index": 114
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "ai-use-by-task",
+        "title": "AI use by task",
+        "questionCode": "Q11",
+        "items": [
+          {
+            "id": "financial-advice",
+            "label": "Financial advice",
+            "total": 19.7,
+            "byAudience": {
+              "architects": {
+                "pct": 23.0,
+                "index": 116
+              },
+              "hustlers": {
+                "pct": 19.7,
+                "index": 100
+              },
+              "coasters": {
+                "pct": 16.3,
+                "index": 82
+              },
+              "retreaters": {
+                "pct": 19.1,
+                "index": 97
+              }
+            }
+          },
+          {
+            "id": "health-information",
+            "label": "Health information",
+            "total": 24.7,
+            "byAudience": {
+              "architects": {
+                "pct": 23.0,
+                "index": 93
+              },
+              "hustlers": {
+                "pct": 24.9,
+                "index": 101
+              },
+              "coasters": {
+                "pct": 22.8,
+                "index": 92
+              },
+              "retreaters": {
+                "pct": 26.4,
+                "index": 107
+              }
+            }
+          },
+          {
+            "id": "legal-admin",
+            "label": "Legal/admin",
+            "total": 9.4,
+            "byAudience": {
+              "architects": {
+                "pct": 8.7,
+                "index": 92
+              },
+              "hustlers": {
+                "pct": 10.1,
+                "index": 107
+              },
+              "coasters": {
+                "pct": 9.8,
+                "index": 103
+              },
+              "retreaters": {
+                "pct": 9.4,
+                "index": 99
+              }
+            }
+          },
+          {
+            "id": "technical-support",
+            "label": "Technical support",
+            "total": 18.8,
+            "byAudience": {
+              "architects": {
+                "pct": 23.2,
+                "index": 124
+              },
+              "hustlers": {
+                "pct": 18.3,
+                "index": 97
+              },
+              "coasters": {
+                "pct": 17.2,
+                "index": 92
+              },
+              "retreaters": {
+                "pct": 16.9,
+                "index": 90
+              }
+            }
+          },
+          {
+            "id": "education-learning",
+            "label": "Education/learning",
+            "total": 21.2,
+            "byAudience": {
+              "architects": {
+                "pct": 21.8,
+                "index": 103
+              },
+              "hustlers": {
+                "pct": 24.3,
+                "index": 115
+              },
+              "coasters": {
+                "pct": 17.7,
+                "index": 83
+              },
+              "retreaters": {
+                "pct": 20.3,
+                "index": 96
+              }
+            }
+          },
+          {
+            "id": "creative-work",
+            "label": "Creative work",
+            "total": 20.8,
+            "byAudience": {
+              "architects": {
+                "pct": 27.2,
+                "index": 131
+              },
+              "hustlers": {
+                "pct": 20.9,
+                "index": 100
+              },
+              "coasters": {
+                "pct": 15.3,
+                "index": 74
+              },
+              "retreaters": {
+                "pct": 18.9,
+                "index": 91
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "brand-asks",
+        "title": "Brand asks",
+        "questionCode": "Q14",
+        "items": [
+          {
+            "id": "give-me-more-control",
+            "label": "Give me more control",
+            "total": 17.2,
+            "byAudience": {
+              "architects": {
+                "pct": 20.2,
+                "index": 117
+              },
+              "hustlers": {
+                "pct": 16.2,
+                "index": 94
+              },
+              "coasters": {
+                "pct": 16.3,
+                "index": 95
+              },
+              "retreaters": {
+                "pct": 16.4,
+                "index": 95
+              }
+            }
+          },
+          {
+            "id": "make-smarter-decisions",
+            "label": "Make smarter decisions",
+            "total": 17.2,
+            "byAudience": {
+              "architects": {
+                "pct": 22.7,
+                "index": 132
+              },
+              "hustlers": {
+                "pct": 18.0,
+                "index": 104
+              },
+              "coasters": {
+                "pct": 12.1,
+                "index": 70
+              },
+              "retreaters": {
+                "pct": 15.3,
+                "index": 89
+              }
+            }
+          },
+          {
+            "id": "reduce-stress",
+            "label": "Reduce stress",
+            "total": 27.7,
+            "byAudience": {
+              "architects": {
+                "pct": 23.0,
+                "index": 83
+              },
+              "hustlers": {
+                "pct": 23.5,
+                "index": 85
+              },
+              "coasters": {
+                "pct": 26.0,
+                "index": 94
+              },
+              "retreaters": {
+                "pct": 33.6,
+                "index": 121
+              }
+            }
+          },
+          {
+            "id": "help-me-feel-optimistic",
+            "label": "Help me feel optimistic",
+            "total": 10.8,
+            "byAudience": {
+              "architects": {
+                "pct": 12.9,
+                "index": 119
+              },
+              "hustlers": {
+                "pct": 11.3,
+                "index": 104
+              },
+              "coasters": {
+                "pct": 9.8,
+                "index": 90
+              },
+              "retreaters": {
+                "pct": 9.7,
+                "index": 90
+              }
+            }
+          },
+          {
+            "id": "stretch-my-money-further",
+            "label": "Stretch my money further",
+            "total": 38.8,
+            "byAudience": {
+              "architects": {
+                "pct": 31.7,
+                "index": 82
+              },
+              "hustlers": {
+                "pct": 27.2,
+                "index": 70
+              },
+              "coasters": {
+                "pct": 46.5,
+                "index": 120
+              },
+              "retreaters": {
+                "pct": 47.2,
+                "index": 122
+              }
+            }
+          },
+          {
+            "id": "save-me-time",
+            "label": "Save me time",
+            "total": 24.0,
+            "byAudience": {
+              "architects": {
+                "pct": 26.6,
+                "index": 111
+              },
+              "hustlers": {
+                "pct": 26.7,
+                "index": 111
+              },
+              "coasters": {
+                "pct": 21.9,
+                "index": 91
+              },
+              "retreaters": {
+                "pct": 21.6,
+                "index": 90
+              }
+            }
+          },
+          {
+            "id": "offer-more-human-support",
+            "label": "Offer more human support",
+            "total": 16.0,
+            "byAudience": {
+              "architects": {
+                "pct": 19.3,
+                "index": 121
+              },
+              "hustlers": {
+                "pct": 13.9,
+                "index": 87
+              },
+              "coasters": {
+                "pct": 16.3,
+                "index": 102
+              },
+              "retreaters": {
+                "pct": 15.0,
+                "index": 94
+              }
+            }
+          },
+          {
+            "id": "help-me-prepare-for-uncertainty",
+            "label": "Help me prepare for uncertainty",
+            "total": 10.4,
+            "byAudience": {
+              "architects": {
+                "pct": 10.1,
+                "index": 97
+              },
+              "hustlers": {
+                "pct": 10.7,
+                "index": 103
+              },
+              "coasters": {
+                "pct": 8.8,
+                "index": 85
+              },
+              "retreaters": {
+                "pct": 10.9,
+                "index": 105
+              }
+            }
+          },
+          {
+            "id": "reward-my-loyalty",
+            "label": "Reward my loyalty",
+            "total": 28.3,
+            "byAudience": {
+              "architects": {
+                "pct": 29.1,
+                "index": 103
+              },
+              "hustlers": {
+                "pct": 26.7,
+                "index": 94
+              },
+              "coasters": {
+                "pct": 29.8,
+                "index": 105
+              },
+              "retreaters": {
+                "pct": 28.3,
+                "index": 100
+              }
+            }
+          },
+          {
+            "id": "be-transparent-and-honest",
+            "label": "Be transparent and honest",
+            "total": 26.1,
+            "byAudience": {
+              "architects": {
+                "pct": 29.4,
+                "index": 113
+              },
+              "hustlers": {
+                "pct": 25.8,
+                "index": 99
+              },
+              "coasters": {
+                "pct": 27.9,
+                "index": 107
+              },
+              "retreaters": {
+                "pct": 23.5,
+                "index": 90
+              }
+            }
+          },
+          {
+            "id": "get-more-out-of-life",
+            "label": "Get more out of life",
+            "total": 15.7,
+            "byAudience": {
+              "architects": {
+                "pct": 16.5,
+                "index": 105
+              },
+              "hustlers": {
+                "pct": 18.6,
+                "index": 118
+              },
+              "coasters": {
+                "pct": 14.9,
+                "index": 95
+              },
+              "retreaters": {
+                "pct": 13.8,
+                "index": 88
+              }
+            }
+          },
+          {
+            "id": "enjoy-life-more",
+            "label": "Enjoy life more",
+            "total": 22.8,
+            "byAudience": {
+              "architects": {
+                "pct": 24.6,
+                "index": 108
+              },
+              "hustlers": {
+                "pct": 29.0,
+                "index": 127
+              },
+              "coasters": {
+                "pct": 20.9,
+                "index": 92
+              },
+              "retreaters": {
+                "pct": 18.7,
+                "index": 82
+              }
+            }
+          }
+        ]
+      }
     ]
   }
 }

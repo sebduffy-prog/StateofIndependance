@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#041654" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Architects: idea lightbulb">
+  <!-- bulb glass -->
+  <path d="M32 8 C22 8 15 15 15 24 C15 31 19 35 23 39 C25 41 26 43 26 46 L38 46 C38 43 39 41 41 39 C45 35 49 31 49 24 C49 15 42 8 32 8 Z"/>
+  <!-- screw base -->
+  <line x1="27" y1="51" x2="37" y2="51"/>
+  <line x1="29" y1="56" x2="35" y2="56"/>
+  <!-- filament: the idea spark -->
+  <path d="M27 30 L32 24 L37 30"/>
+  <line x1="32" y1="24" x2="32" y2="46"/>
+</svg>

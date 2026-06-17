@@ -1,0 +1,126 @@
+<!-- 22-outro.html — The cinematic close.
+     BRAND-WORLD-FINAL §7 (09): warm-gradient full-bleed ground. One screen.
+
+     COMPOSITION (ART-DIRECTION §2, Z-AXIS §6b): an asymmetric two-pane stage.
+       LEFT (the narrative axis): kicker -> Institutions ▸▸▸▸ Individuals motif ->
+         Martin Lewis quote (the calm centre) -> hairline rule -> huge "Thank you"
+         sign-off, anchored to the floor; the small copyright as quiet furniture.
+       RIGHT (the protagonist): the figure stands LARGE and flush on the floor,
+         lit by the orbit rings that radiate from its feet — the connective
+         signature gathering around the single individual the story is about.
+         The Challenger-Series lockup signs off quietly above, top-right.
+
+     One focal arc: the eye lands on "Thank you" (lower-left) and is carried by
+     the orbit across to the figure (right) — institutions to individuals, made
+     spatial. No dead void: the orbit + figure own the right; the warm corner
+     glow is a soft vignette, not an empty band.
+
+     Beat sequence (js drives this on chapter:arrive):
+       0 — eyebrow / kicker arrives
+       1 — Institutions ▸▸▸▸ Individuals assembles word by word
+       2 — Martin Lewis quote settles; "tools" decrypts in (scramble)
+       3 — hairline rule draws; "Thank you" lands
+       4 — copyright + lockup + figure settle; orbit begins its slow drift
+       5 — you-dot disperses upward with the nation (js disperseYouDot)
+
+     CHARACTER->TITLE: arrival() wired to chapter:arrive in JS.
+     DATA: STORY.md §Chapter 09 — verbatim quote + motif. Verified.
+
+     Square corners, AA contrast, no underline, no parallelogram, tabular nums.
+     No em dashes in visible copy. Single root .chapter-inner. CSS scoped to #\32 2-outro. -->
+
+<div class="chapter-inner ot-root on-warm" data-ot-root>
+
+  <!-- Ambient depth: a soft warm corner glow fills the lower-right, behind all. -->
+  <span class="ot-glow" aria-hidden="true"></span>
+
+  <!-- The orbit signature — concentric rings gathered around the figure,
+       drifting slowly. The connective tissue of the whole journey, here at rest. -->
+  <span class="ot-orbit" aria-hidden="true" data-parallax="0.04">
+    <span class="ot-orbit-ring ot-orbit-ring--1"></span>
+    <span class="ot-orbit-ring ot-orbit-ring--2"></span>
+    <span class="ot-orbit-ring ot-orbit-ring--3"></span>
+    <span class="ot-orbit-seed" aria-hidden="true"></span>
+  </span>
+
+  <!-- ── Two-pane stage ──────────────────────────────────────────── -->
+  <div class="ot-grid">
+
+    <!-- LEFT — the narrative close -->
+    <div class="ot-left">
+
+      <!-- Top group: kicker + motif -->
+      <div class="ot-head">
+
+        <p class="vccp-eyebrow ot-kicker" data-arrival>The State of Independence &middot; The close</p>
+
+        <!-- Institutions to Individuals: the motif assembles word by word -->
+        <div class="ot-motif" aria-label="Institutions becoming Individuals">
+          <span class="ot-motif-word" data-arrival>Institutions</span>
+          <span class="ot-motif-arrow" aria-hidden="true" data-arrival>&#9654;&#9654;&#9654;&#9654;</span>
+          <span class="ot-motif-word ot-motif-word--accent" data-arrival>Individuals</span>
+        </div>
+
+      </div><!-- /ot-head -->
+
+      <!-- Martin Lewis quote: the calm centre of the close -->
+      <figure class="ot-quote">
+        <blockquote class="ot-quote-text">
+          <span class="ot-qt-line" data-arrival>They do not want brands to hold their hands.</span>
+          <span class="ot-qt-line ot-qt-line--accent" data-arrival>They want brands to hand them the <em class="ot-accent" data-arrival data-arrival-scramble>tools</em>.</span>
+        </blockquote>
+        <figcaption class="ot-quote-cite" data-arrival>
+          Martin Lewis &middot; BBC Sounds, February 2026
+        </figcaption>
+      </figure>
+
+      <!-- Floor group: hairline rule + "Thank you" + copyright, anchored low -->
+      <div class="ot-foot">
+
+        <span class="ot-rule" aria-hidden="true" data-arrival></span>
+
+        <p class="ot-thankyou" data-arrival>
+          Thank <em class="ot-accent">you</em>.
+        </p>
+
+        <!-- The invisible you-dot anchor: the dot rests here, then disperses -->
+        <span class="ot-youdot-anchor" data-youdot-anchor aria-hidden="true"></span>
+
+        <!-- Copyright furniture only. Credits retired per client. -->
+        <p class="ot-copyright num" data-arrival>&copy; VCCP Media 2026</p>
+
+      </div><!-- /ot-foot -->
+
+    </div><!-- /ot-left -->
+
+    <!-- RIGHT — the figure stands on the floor, the lockup signs off above -->
+    <aside class="ot-right" aria-hidden="true">
+
+      <!-- Challenger-Series lockup — the brand signature signs off, quietly -->
+      <img
+        class="ot-lockup"
+        src="assets/brand-final/challenger-series-lockup.png"
+        alt="VCCP Challenger Series"
+        width="688" height="245"
+        loading="lazy" decoding="async"
+        data-arrival
+      />
+
+      <!-- The figure — large, flush to the floor, the individual the story is for.
+           A soft floor-shadow grounds it; the orbit gathers behind it. -->
+      <span class="ot-figure-wrap" data-parallax="0.06">
+        <img
+          class="ot-figure"
+          src="assets/brand-final/bear-girl-tall.png"
+          alt=""
+          width="104" height="585"
+          loading="lazy" decoding="async"
+        />
+        <span class="ot-figure-floor" aria-hidden="true"></span>
+      </span>
+
+    </aside>
+
+  </div><!-- /ot-grid -->
+
+</div>

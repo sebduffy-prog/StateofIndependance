@@ -1,113 +1,74 @@
-<div class="chapter-inner">
-  <header class="bl-head si-stack-tight reveal">
-    <p class="bl-kicker si-display si-display--sm">The numbers you already know</p>
-    <h2 class="bl-headline">
-      Carefulness is the new <em class="hl">baseline</em>.
-    </h2>
-    <p class="bl-standfirst si-measure">
-      Yes, the country is cost-conscious. Yes, budgets are tight. But these
-      hallmarks of the squeeze are the operational floor: table stakes, not
-      the strategy.
-    </p>
-  </header>
+<div class="chapter-inner on-cream" id="bl">
 
-  <div class="bl-board si-grid" data-stagger="120">
+  <!-- Brand signature: tiny Challenger-Series lockup, top-right (book-cover stamp). -->
+  <img class="bl-mark si-lockup" src="assets/brand-final/challenger-series-lockup.png"
+       alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
 
-    <!-- Panel 1: 77% more careful (mustard, gated by the guess) -->
-    <section class="bl-panel col-6 reveal" aria-labelledby="bl-1-title">
-      <article class="si-bignum-panel si-bignum-panel--mustard bl-card">
-        <div class="bl-card-lede si-stack-tight">
-          <span class="bl-index" aria-hidden="true">01 / 04</span>
-          <p class="bl-bignum-line" id="bl-1-title">
-            <span class="si-bignum bl-num" data-bl-num1>77%</span>
-            <span class="bl-label">are more careful with money than five years ago.</span>
+  <!-- ── HERO ROW — left: headline + guess/truth; right: crowd of 100 ── -->
+  <div class="bl-hero">
+
+    <!-- LEFT RAIL: headline then guess/truth stacked in the same cell -->
+    <div class="bl-rail">
+      <header class="bl-head">
+        <p class="vccp-eyebrow" data-arrival>The numbers you already know</p>
+        <h2 class="bl-headline si-display si-display--black">
+          <span data-arrival>Carefulness is</span>
+          <span data-arrival>the new <em class="si-accent" data-arrival-scramble>baseline</em></span>
+        </h2>
+      </header>
+
+      <!-- Guess and truth share one stacking cell: guess vanishes, truth arrives. -->
+      <div class="bl-claim" data-claim>
+        <div class="bl-guess" data-guess></div>
+
+        <div class="bl-truth" data-truth hidden>
+          <p class="bl-numline">
+            <span class="bl-num num" data-careful-num aria-hidden="true">77<span class="bl-pct">%</span></span>
           </p>
+          <p class="bl-label" id="bl-claim-label">are more careful with money than five years ago.</p>
           <p class="bl-sentence">
-            Carefulness is now the default lens on every spend decision, not a
-            passing mood.
+            Not a passing mood: the lens on every spend decision now.
+            The baseline, not the strategy.
           </p>
-          <div class="bl-guess" data-guess-1></div>
-          <div class="bl-waffle" data-waffle-1 hidden>
-            <p class="bl-waffle-caption">Each square is 1 in 100 UK adults.</p>
-          </div>
         </div>
-        <div class="bl-card-chart">
-          <p class="bl-chart-sub">Mood of the nation, % who agree</p>
-          <div data-bars-mood></div>
-          <p class="vccp-source" data-source-mood></p>
-        </div>
-      </article>
-    </section>
+      </div>
 
-    <!-- Panel 2: 55% deal-hunting -->
-    <section class="bl-panel col-6 reveal" aria-labelledby="bl-2-title">
-      <article class="si-bignum-panel bl-card">
-        <div class="bl-card-lede si-stack-tight">
-          <span class="bl-index" aria-hidden="true">02 / 04</span>
-          <p class="bl-bignum-line" id="bl-2-title">
-            <span class="si-bignum bl-num num" data-count-to="55" data-count-suffix="%">55%</span>
-            <span class="bl-label">actively hunt out deals and shop around.</span>
-          </p>
-          <p class="bl-sentence">
-            Deal-seeking is a habit now, not a chore. More than half the country
-            treats it as routine.
-          </p>
+      <!-- Floor stats — quiet tabular line, lives in the left rail below the claim -->
+      <dl class="bl-floor-row" aria-label="Supporting evidence">
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="55" data-count-suffix="%">55%</span></dt>
+          <dd class="bl-floor-lbl">hunt out deals and shop around.</dd>
         </div>
-        <div class="bl-card-chart">
-          <p class="bl-chart-sub">Money-saving moves in the last 3 months, % who did this</p>
-          <div data-lollipop-money></div>
-          <p class="vccp-source" data-source-money></p>
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="60" data-count-suffix="%">60%</span></dt>
+          <dd class="bl-floor-lbl">feel anxious about the months ahead.</dd>
         </div>
-      </article>
-    </section>
+        <div class="bl-floor-fig">
+          <dt class="bl-floor-num num"><span data-count-to="54" data-count-suffix="%">54%</span></dt>
+          <dd class="bl-floor-lbl">are trading down on the weekly shop.</dd>
+        </div>
+      </dl>
+    </div><!-- /bl-rail -->
 
-    <!-- Panel 3: 60% anxious -->
-    <section class="bl-panel col-6 reveal" aria-labelledby="bl-3-title">
-      <article class="si-bignum-panel bl-card">
-        <div class="bl-card-lede si-stack-tight">
-          <span class="bl-index" aria-hidden="true">03 / 04</span>
-          <p class="bl-bignum-line" id="bl-3-title">
-            <span class="si-bignum bl-num num" data-count-to="60" data-count-suffix="%">60%</span>
-            <span class="bl-label">feel anxious about what the next few months bring.</span>
-          </p>
-          <p class="bl-sentence">
-            The mood is forward-looking and unsettled, even where finances are
-            stable.
-          </p>
-        </div>
-        <div class="bl-card-chart">
-          <p class="bl-chart-sub">% very or extremely concerned about availability</p>
-          <div data-dotplot-availability></div>
-          <p class="vccp-source" data-source-availability></p>
-        </div>
-      </article>
-    </section>
+    <!-- RIGHT: waffle crowd of 100.
+         Pre-reveal: grid fills to match the slider value (live, no void).
+         On reveal: snaps to 77 navy; the you-square pops yellow.
+         data-youdot-anchor is added by JS to the you-square ONLY after reveal. -->
+    <figure class="bl-crowd" data-crowd aria-label="Crowd of one hundred">
+      <p class="bl-crowd-label" data-crowd-label>Each square = 1 in 100 UK adults</p>
+      <div class="bl-crowd-inner">
+        <div class="bl-crowd-grid" data-crowd-grid role="img"
+             aria-label="Move the slider to guess how many in every 100 are more careful with money."></div>
+      </div>
+      <figcaption class="bl-crowd-cap" data-crowd-cap>
+        <span class="bl-cap-kicker" data-crowd-kicker>Your guess</span>
+        <span class="bl-cap-figure">
+          <span class="bl-crowd-count num" data-crowd-count aria-live="polite">50</span>
+          <span class="bl-cap-unit" data-crowd-of>in 100 &middot; drag, then lock it in</span>
+        </span>
+      </figcaption>
+    </figure>
 
-    <!-- Panel 4: 54% trading down groceries -->
-    <section class="bl-panel col-6 reveal" aria-labelledby="bl-4-title">
-      <article class="si-bignum-panel bl-card">
-        <div class="bl-card-lede si-stack-tight">
-          <span class="bl-index" aria-hidden="true">04 / 04</span>
-          <p class="bl-bignum-line" id="bl-4-title">
-            <span class="si-bignum bl-num num" data-count-to="54" data-count-suffix="%">54%</span>
-            <span class="bl-label">are trading down to cheaper grocery alternatives.</span>
-          </p>
-          <p class="bl-sentence">
-            The single clearest behavioural signal in the data. This is where
-            intent becomes action.
-          </p>
-          <div class="bl-strip">
-            <p class="bl-chart-sub">Groceries: trading down vs holding the basket</p>
-            <div data-strip-trading></div>
-          </div>
-        </div>
-        <div class="bl-card-chart">
-          <p class="bl-chart-sub">Where Britain has traded down, % in the last 12 months</p>
-          <div data-bars-trading></div>
-          <p class="vccp-source" data-source-trading></p>
-        </div>
-      </article>
-    </section>
+  </div><!-- /bl-hero -->
 
-  </div>
 </div>

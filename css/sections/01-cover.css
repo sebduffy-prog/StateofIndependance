@@ -1,224 +1,335 @@
-/* Chapter 01: cover.
-   Full-bleed mustard hero. No page-edge frame, no plate behind the logo.
-   The Girl & Bear stands flush on the bottom ground line; the wordmark
-   commands the screen in the uppercase display treatment; a calm field of
-   ink dots drifts behind the whole composition. Square corners, no gradients,
-   sentence case standfirst, one .hl word, Inter Tight.
+/* ============================================================
+   01-cover — scoped to #\30 1-cover (the journey-step section).
+   THE AUTHORITATIVE BRAND WORLD. The warm-gradient ground, the
+   Challenger-Series lockup as the brand signature, a huge BOLD BLACK
+   Poppins-900 title with ONE italic accent word ("Independence"), and
+   the State of Independence MAZE logo-moment used once, big, on vast
+   negative space. The you-dot is born here (the single thread).
 
-   NOTE ON THE PREFIX: an HTML id may start with a digit, but a CSS id selector
-   may NOT begin with one literally. The CSS-valid escape for id="01-cover" is
-   "#\30 1-cover" (\30 = codepoint for "0", trailing space ends the escape),
-   which the parser reads as exactly that id. Every selector below is scoped
-   to this chapter id. */
+   Elevated to a cinematic, full-bleed hero: an ambient warmth bloom and
+   the signature orbit rings give the field depth and fill the corners so
+   no void reads as dead space; the maze sits large and grounded in the
+   right pane; the copy hangs on a left axis, vertically centred and held
+   clear of the engine-owned bottom-centre scroll cue.
 
-/* Break the chapter padding/centring to go genuinely full-bleed (the section
-   class is fixed to .chapter by the loader, so we replicate .chapter--bleed
-   here rather than relying on a class we cannot add). */
+   The italic accent replaces the old orange highlight (BWF §2): the slant
+   of the italic IS the accent — no box, no underline, no skew. One accent
+   moment per screen: the single YELLOW you-dot at trace end.
+   Backgroundless, square corners, no underline, navy/black-on-warm, AA.
+   ============================================================ */
+
+/* The section IS the warm gradient ground, full-bleed (no top nav). */
 #\30 1-cover {
+  background: var(--ground-warm);
+  color: var(--navy);
   padding: 0;
-  align-items: stretch;
-  background: var(--mustard);
 }
+
 #\30 1-cover .chapter-inner {
   max-width: none;
-  margin: 0;
   width: 100%;
-  display: flex;
-}
-
-/* The stage fills the viewport (minus the fixed nav) and hosts every layer. */
-#\30 1-cover .cover-stage {
-  position: relative;
-  flex: 1;
-  width: 100%;
-  min-height: calc(100vh - var(--nav-height));
-  display: grid;
-  /* One column; copy pinned top-left, bear grounded bottom, dots behind all. */
-  grid-template-columns: 1fr;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 0;
   overflow: hidden;
 }
 
-/* ─── Dot field layer (behind everything) ────────────────── */
-#\30 1-cover .cover-dots {
+/* ── the hero: copy on a left axis, the maze large to the right ──────
+   Asymmetric editorial split — the copy holds a slightly larger left
+   column so the dramatic display title has breathing room; the maze
+   takes the right field at a size that reads BIG but never clips.
+   Tight within each group; the negative space IS the luxury. */
+#\30 1-cover .cover {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  /* The copy holds the left axis; the maze takes a slightly NARROWER right
+     column so it is pushed firmly to the right and cannot drift back into the
+     title. A generous, never-collapsing column gap is the guaranteed clear
+     channel between the two — they never overlap at any common width. */
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: clamp(40px, 5vw, 96px);
+  padding: clamp(2.4rem, 7vh, 6rem) clamp(28px, 6vw, 104px)
+           calc(var(--journey-controls-h, 72px) + clamp(3.4rem, 9vh, 7rem));
+  overflow: hidden;
+}
+
+/* ── ambient field — decorative depth, pointer-inert, behind all content ─
+   A soft warmth bloom anchored under the maze + the signature orbit rings
+   that slowly drift. This is the cinematic atmosphere that fills the field
+   so no corner is a dead void (AD §6: the orbit is the connective signature). */
+#\30 1-cover .cover-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The warmth bloom — a soft radial glow behind the maze, lifting the right
+   field and warming the whole ground. Pure light, no banding, no box. */
+#\30 1-cover .cover-bloom {
+  position: absolute;
+  top: 50%;
+  right: clamp(-6%, 4vw, 8%);
+  width: clamp(620px, 64vw, 1120px);
+  height: clamp(620px, 64vw, 1120px);
+  transform: translateY(-50%);
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255, 244, 214, 0.62) 0%,
+      rgba(255, 218, 150, 0.34) 30%,
+      rgba(255, 165, 100, 0.12) 56%,
+      rgba(255, 165, 100, 0) 72%);
+  animation: cover-bloom-breathe 14s ease-in-out infinite;
+}
+@keyframes cover-bloom-breathe {
+  0%, 100% { opacity: 0.85; transform: translateY(-50%) scale(1); }
+  50%      { opacity: 1;    transform: translateY(-50%) scale(1.05); }
+}
+/* The orbit rings — thin navy-tint concentric circles centred on the maze
+   field, slowly rotating. The signature geometry, ambient and meaningless,
+   the connective tissue of the whole journey (AD §6). */
+#\30 1-cover .cover-rings {
+  position: absolute;
+  top: 50%;
+  right: clamp(-22%, -10vw, -4%);
+  width: clamp(720px, 76vw, 1280px);
+  height: clamp(720px, 76vw, 1280px);
+  transform: translateY(-50%);
+  overflow: visible;
+  opacity: 0.5;
+}
+#\30 1-cover .cover-rings circle {
+  fill: none;
+  stroke: rgba(4, 22, 84, 0.14);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+#\30 1-cover .cover-rings-drift {
+  transform-origin: 500px 500px;
+  animation: cover-rings-spin 180s linear infinite;
+}
+@keyframes cover-rings-spin { to { transform: rotate(360deg); } }
+
+/* ── left column: the signature, the wordmark, hung on the left axis ──
+   Tight within the group (lockup→kicker→title), then a deliberate jump
+   to the standfirst. Dramatic type hierarchy: one huge display moment. */
+#\30 1-cover .cover-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  /* Hold the copy block to its own measure inside the left column so the huge
+     display title and the standfirst never stretch toward the maze. */
+  max-width: min(100%, 30ch);
+}
+
+/* the brand signature — the Challenger-Series lockup at hero scale, black
+   silhouette, never recoloured/skewed. Capped so it never exceeds the column
+   width; the large gap below it separates the signature group from the title. */
+#\30 1-cover .cover-lockup {
+  display: block;
+  width: 100%;
+  max-width: clamp(220px, 32vw, 400px);
+  height: auto;
+  margin: 0 0 clamp(30px, 6vh, 68px);
+}
+
+/* kicker eyebrow above the display title — orients in 2 words, sentence case,
+   navy, quiet weight. The jump of air between lockup and title is the group
+   separator; the kicker sits tight with the title below it. */
+#\30 1-cover .cover-kicker {
+  margin: 0 0 clamp(12px, 1.6vh, 18px);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.65;
+}
+
+#\30 1-cover .cover-wordmark {
+  margin: 0;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: none;
+  /* the one display moment — enormous, dramatic. Sized so the longest line
+     ("Independence", 12ch) stays WITHIN the left column at any width and never
+     reaches across the gap toward the maze. The viewport term is the governing
+     one so the title shrinks with the column on mid widths. */
+  /* Sized so "Independence" (the longest word) fits on ONE line inside the left
+     column at all widths — smaller cap than before, which was breaking the word
+     mid-way ("Indep/ende/nce") and pushing the title off the bottom. */
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  color: var(--ink);
+  max-width: 100%;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+#\30 1-cover .cover-line { display: block; }
+
+/* The wordmark is focused programmatically (main.js moves focus to the step
+   heading for SR/keyboard orientation). It must NOT paint the browser's focus
+   ring — that read as a stray outlined box over the headline. Keyboard nav
+   never lands here, so suppress the outline (both :focus and :focus-visible
+   to cover all UA stylesheets). No ::before / ::after frame is drawn here —
+   the title stands on its own with no box, border, or outline decoration. */
+#\30 1-cover .cover-wordmark:focus,
+#\30 1-cover .cover-wordmark:focus-visible { outline: none; box-shadow: none; }
+
+/* The one accent word — italic, navy (the "Series" gesture). The slant IS
+   the accent: no box, no underline, no skew, no highlight fill (BWF §2). */
+#\30 1-cover .cover-em {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* Standfirst — below the display title with a deliberate gap. Held to a
+   generous but not full-width measure so it reads as a block, not a banner.
+   Two sentences: hook then the "so what". No em dashes. */
+#\30 1-cover .cover-standfirst {
+  margin: clamp(22px, 3.6vh, 40px) 0 0;
+  max-width: 42ch;
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+  line-height: 1.55;
+  font-weight: 500;
+  color: var(--navy);
+  opacity: 0.88;
+}
+
+/* ── Begin cue — kept for non-engine contexts, but the live journey hides
+   it (vccp.css) in favour of the engine-owned scroll cue. A magnetic navy
+   button, square, no underline; a large jump of space sits above it. ──── */
+#\30 1-cover .cover-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(20px, 4.5vh, 52px);
+  padding: 0.95em 1.7em;
+  border: none;
+  border-radius: 0;
+  background: var(--navy);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 220ms var(--ease-entrance),
+              box-shadow 260ms var(--ease-entrance);
+  -webkit-tap-highlight-color: transparent;
+}
+#\30 1-cover .cover-cue:hover { background: var(--navy-bright); }
+#\30 1-cover .cover-cue:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 4px;
+}
+/* Quiet until the trace completes; then it wakes with the single yellow ring. */
+#\30 1-cover .cover-cue.is-awake {
+  box-shadow: 0 0 0 3px var(--yellow), 0 10px 26px rgba(4, 22, 84, 0.28);
+}
+#\30 1-cover .cover-cue.is-pulsing {
+  animation: cover-cue-commit 760ms var(--ease-entrance) 1;
+}
+@keyframes cover-cue-commit {
+  0%   { box-shadow: 0 0 0 0 rgba(240, 203, 8, 0.65), 0 10px 26px rgba(4, 22, 84, 0.28); }
+  60%  { box-shadow: 0 0 0 12px rgba(240, 203, 8, 0),  0 10px 26px rgba(4, 22, 84, 0.28); }
+  100% { box-shadow: 0 0 0 3px var(--yellow),          0 10px 26px rgba(4, 22, 84, 0.28); }
+}
+#\30 1-cover .cover-cue-arrow {
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 180ms var(--ease-entrance);
+}
+#\30 1-cover .cover-cue:hover .cover-cue-arrow { transform: rotate(45deg) translate(2px, -2px); }
+
+/* ── right column: the maze logo-moment, big ─────────────────────────
+   The illustration is the focal point: the amber maze, the navy bear and
+   the figure at the entrance. The stray orbit ring and the figure's map
+   have been removed from the artwork, so nothing reads as a box or a path
+   over it — and no overlay is drawn on top. */
+#\30 1-cover .cover-stage {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  /* Anchor the maze to the RIGHT edge of its column so it is pushed clear of
+     the title across the gap — it can never drift left into the headline. */
+  justify-self: end;
+  width: 100%;
+  max-width: min(42vw, 620px);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  /* a gentle ambient float — the maze sits and breathes on the field */
+  animation: cover-maze-float 12s ease-in-out infinite;
+}
+@keyframes cover-maze-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1.4%); }
+}
+#\30 1-cover .cover-maze {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-}
-#\30 1-cover .cover-dots canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
+  object-fit: contain;
+  /* a single soft contact shadow grounds the illustration on the field */
+  filter: drop-shadow(0 30px 60px rgba(4, 22, 84, 0.22));
 }
 
-/* ─── Copy block: top-left, no frame ─────────────────────── */
-#\30 1-cover .cover-copy {
-  position: relative;
-  z-index: 2;
-  align-self: start;
-  justify-self: start;
-  max-width: min(60ch, 78%);
-  padding: clamp(40px, 6vh, 88px) clamp(32px, 6vw, 96px) 0;
-  pointer-events: none; /* let dots receive the cursor; re-enable controls */
+/* NOTE: the maze trace overlay (guide/ink/goal) and the draggable "you" dot
+   handle have been removed. The interactive trace affordance read as a stray
+   box + path over the logo; the journey navigates by scroll, so the maze is now
+   a clean, inert brand moment with no overlay drawn on it. */
+
+/* ── arrival entrance: assembling lines (idempotent, restartable) ──── */
+#\30 1-cover [data-arrival] {
+  opacity: 0;
+  transform: translateY(16px);
 }
-#\30 1-cover .cover-eyebrow {
-  margin: 0;
-  color: var(--ink);
+#\30 1-cover [data-arrival].is-arrived {
+  opacity: 1;
+  transform: none;
+  transition: opacity 720ms var(--ease-entrance),
+              transform 720ms var(--ease-entrance);
+  transition-delay: var(--arrival-delay, 0ms);
 }
 
-/* ─── The wordmark: uppercase display gravitas ───────────── */
-#\30 1-cover .cover-wordmark {
-  margin: 0;
-  color: var(--ink);
-  /* Big and grounded. Bump above the shared display scale so it commands. */
-  font-size: clamp(3.4rem, 9.5vw, 9.5rem);
-  line-height: 0.9;
-  max-width: 14ch;
-}
-
-/* Keep the highlighted word in the display treatment (weight 600, upright)
-   rather than .hl's default 500 italic, so "INDEPENDENCE" matches the wordmark.
-   The parallelogram itself is untouched. */
-#\30 1-cover .cover-wordmark .hl {
-  font-style: normal;
-  font-weight: inherit;
-}
-
-/* Highlighter wipe on the uppercase word: start scaled to 0 on X (matching the
-   skew) and wipe in when .is-wiped lands. */
-#\30 1-cover .cover-wordmark .hl::before {
-  transform: skewX(-12deg) scaleX(0);
-  transform-origin: 0% 50%;
-  transition: transform 0.66s cubic-bezier(0.22, 1, 0.36, 1);
-}
-#\30 1-cover .cover-wordmark .hl.is-wiped::before {
-  transform: skewX(-12deg) scaleX(1);
-}
-
-#\30 1-cover .cover-standfirst {
-  font-size: var(--t-md);
-  line-height: 1.5;
-  margin: 0;
-  color: var(--ink);
-}
-
-/* ─── Square scroll cue ──────────────────────────────────── */
-#\30 1-cover .cover-cue {
-  pointer-events: auto;
-  align-self: start;
-  margin-top: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 0;          /* square corners, no default button chrome */
-  appearance: none;
-  cursor: pointer;
-  padding: 14px 20px;
-  font: 600 var(--t-xs)/1 var(--font-sans);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-#\30 1-cover .cover-cue:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 0 var(--ink);
-}
-#\30 1-cover .cover-cue:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
-}
-#\30 1-cover .cover-cue-arrow {
-  width: 11px;
-  height: 11px;
-  border-right: 1.5px solid var(--ink);
-  border-bottom: 1.5px solid var(--ink);
-  transform: rotate(45deg);
-  transition: transform 0.16s ease;
-}
-#\30 1-cover .cover-cue:hover .cover-cue-arrow {
-  transform: rotate(45deg) translate(2px, 2px);
-}
-
-/* ─── Quiet "you are the 1,505th respondent" marker ──────── */
-#\30 1-cover .cover-you {
-  position: absolute;
-  left: clamp(32px, 6vw, 96px);
-  bottom: clamp(24px, 4vw, 48px);
-  z-index: 2;
-  margin: 0;
-  max-width: 24ch;
-  font-size: var(--t-xs);
-  line-height: 1.4;
-  color: var(--ink-soft);
-  opacity: 0.75;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  pointer-events: none;
-}
-#\30 1-cover .cover-you-dot {
-  flex: 0 0 auto;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--mustard);
-  border: 1.2px solid var(--ink);
-  transform: translateY(1px);
-}
-
-/* ─── Girl & Bear: large, grounded, flush to the bottom edge ─
-   This is the hero illustration (the deck does exactly this), not a logo
-   lockup, so the black silhouette sits directly on the mustard ground with
-   no plate. align-self:end + margin-bottom:0 (from .si-ground) makes it
-   stand on the bottom line. */
-#\30 1-cover .cover-bear {
-  position: absolute;
-  right: clamp(16px, 5vw, 96px);
-  bottom: 0;
-  z-index: 1;
-  align-self: end;
-  width: clamp(280px, 38vw, 620px);
-  height: auto;
-  /* Render the artwork as a clean black silhouette on the mustard ground. */
-  filter: brightness(0);
-  pointer-events: none;
-}
-
-/* ─── Responsive ─────────────────────────────────────────── */
+/* ── responsive: stack on narrow / short screens ─────────────────── */
 @media (max-width: 900px) {
-  #\30 1-cover .cover-copy {
-    max-width: 100%;
+  #\30 1-cover .cover {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: clamp(24px, 5vh, 48px);
+    align-content: center;
+    padding-bottom: calc(var(--journey-controls-h, 72px) + clamp(4rem, 11vh, 7rem));
   }
-  #\30 1-cover .cover-bear {
-    width: clamp(220px, 50vw, 360px);
-    opacity: 0.92;
+  #\30 1-cover .cover-copy { max-width: none; align-items: flex-start; }
+  #\30 1-cover .cover-stage {
+    order: -1;
+    max-width: min(70vw, 440px);
+    animation: none;
   }
+  #\30 1-cover .cover-standfirst { max-width: 48ch; }
+  #\30 1-cover .cover-bloom { right: 50%; transform: translate(50%, -50%); top: 38%; }
+  #\30 1-cover .cover-rings { right: 50%; transform: translate(50%, -50%); top: 38%; }
 }
 
-@media (max-width: 600px) {
-  #\30 1-cover .cover-bear {
-    width: 200px;
-    right: 8px;
-  }
-  #\30 1-cover .cover-you {
-    position: static;
-    margin-top: 24px;
-    padding-left: clamp(32px, 6vw, 96px);
-  }
-}
-
-/* ─── Reduced motion: highlighter already wiped, no transitions ─ */
+/* ── reduced-motion: kill ambient motion, keep state legible ─────── */
 @media (prefers-reduced-motion: reduce) {
-  #\30 1-cover .cover-wordmark .hl::before {
-    transition: none;
-  }
-  #\30 1-cover .cover-cue-arrow,
-  #\30 1-cover .cover-cue {
-    transition: none;
-  }
+  #\30 1-cover .cover-cue.is-pulsing,
+  #\30 1-cover .cover-bloom,
+  #\30 1-cover .cover-rings-drift,
+  #\30 1-cover .cover-stage { animation: none; }
+  #\30 1-cover [data-arrival] { opacity: 1; transform: none; transition: none; }
 }

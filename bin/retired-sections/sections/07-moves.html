@@ -1,0 +1,132 @@
+<div class="chapter-inner mv-shell si-ground-warm">
+  <!-- 07 — MOVES (the payoff). The authoritative brand world: a warm-gradient
+       stage carrying a cinematic filmstrip of the five signature moves. ONE
+       frame is in focus at a time, composed as a book-cover editorial moment —
+       a big ALL-CAPS bold-black stage number 01-05, the bold-black title with
+       one italic accent word, the lesson, the single carried form (one stat OR
+       one quote), and the less->more shift ledger. Verified-brand moves carry a
+       photographic ad-mockup as a book-cover evidence card. The marquee
+       interaction = pick up each move's tool (tactile drag, or click/Enter):
+       that hands it over and travels the reel. All five reveals the payoff.
+       Built in js/sections/07-moves.js from the verified <template> so every
+       title / stat / quote / shift stays single-source (STORY.md ch.07). -->
+  <span class="si-seed mv-seed-a" aria-hidden="true"></span>
+
+  <header class="mv-head">
+    <p class="vccp-eyebrow" data-arrival>The playbook</p>
+    <h2 class="mv-headline si-display si-display--sm" data-arrival>Five signature <span class="si-accent si-accent--navy">moves</span></h2>
+  </header>
+
+  <!-- The reel: a horizontal track of five frames; one in focus at a time.
+       Built by the script into .mv-reel-track from the move source below. -->
+  <div class="mv-reel" aria-label="The five signature moves">
+    <div class="mv-reel-track"></div>
+  </div>
+
+  <!-- The toolbelt: five slots that fill as each move is handed over. The
+       persistent you-dot anchors here so its travel reads as "you carry the
+       playbook". -->
+  <div class="mv-belt" data-youdot-anchor>
+    <p class="mv-belt-label">
+      <span class="mv-belt-count num" data-count-to="0">0</span><span class="mv-belt-of"> / 5 picked up</span>
+    </p>
+    <ol class="mv-belt-slots" aria-hidden="true"></ol>
+    <!-- Payoff line — revealed only once all five are handed over. -->
+    <p class="mv-payoff" aria-live="polite">
+      Stop leading the consumer. <span class="hl">Hand them the tools.</span>
+    </p>
+  </div>
+
+  <!-- Verified move source (hidden). Script reads it to build the reel so every
+       title, lesson, stat, quote and shift stays single-source from STORY.md.
+       data-evidence + data-evidence-cap are visual ad-mockups (assets/deck);
+       only set where the deck names a brand example (STORY.md ch.07). -->
+  <template class="mv-source">
+    <ol>
+      <li data-move="1" data-title="Unplug them from" data-key="the grid"
+          data-lesson="Find practical, everyday ways to help your customers lower their living costs and rely less on broken systems."
+          data-stat="34" data-stat-suffix="%"
+          data-stat-line="are using tools to fix their practical home and financial problems themselves."
+          data-evidence="../assets/deck/admock-britishgas-fairness.png"
+          data-evidence-cap="British Gas — &ldquo;Fairness matters&rdquo;: lowering everyday costs.">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 31 L21 22 a11 11 0 0 1 22 0 L43 31 Z"/>
+          <line x1="27" y1="16" x2="27" y2="9"/><line x1="37" y1="16" x2="37" y2="9"/>
+          <path d="M32 31 L32 38 q0 7 7 7 q7 0 7 7 L46 55"/>
+          <path d="M18 40 L11 49 L17 49 L13 58"/>
+        </svg>
+        <ul class="mv-shift-data">
+          <li data-less="Escalating charges" data-more="Hacking the system"></li>
+          <li data-less="Prison" data-more="Hotel"></li>
+          <li data-less="Reinforcing unfair" data-more="Fighting for change"></li>
+        </ul>
+      </li>
+      <li data-move="2" data-title="Be the" data-key="trusted antidote"
+          data-lesson="Earn people's trust by being the honest, transparent alternative when they feel let down by everyone else."
+          data-quote="If I did my own investigations, I'd knock on my neighbours' doors and ask if they've got Ring footage. I'd do half their job before actually calling the police."
+          data-cite="London, 42, Retreater"
+          data-evidence="../assets/deck/evidence-nationwide.png"
+          data-evidence-cap="Nationwide, M&amp;S, Boots — the honest, transparent alternative.">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 12 L29 16"/><path d="M29 16 C24 25 24 33 28 39"/>
+          <path d="M18 46 L34 46"/><path d="M16 52 L40 52"/><path d="M24 46 L24 52"/>
+          <path d="M44 14 L44 24 L52 40 a4 4 0 0 1 -4 6 L40 46 a4 4 0 0 1 -4 -6 L42 28"/>
+          <line x1="41" y1="14" x2="47" y2="14"/><path d="M39 38 L51 38"/>
+        </svg>
+        <ul class="mv-shift-data">
+          <li data-less="Treating pain" data-more="Diagnosing the problem"></li>
+          <li data-less="Lipstick on a pig" data-more="Backing it up"></li>
+          <li data-less="Opaque" data-more="Transparent"></li>
+        </ul>
+      </li>
+      <li data-move="3" data-title="Ride the social" data-key="self-help wave"
+          data-lesson="People are teaching each other to fix, save and do it themselves. Meet them in the self-help contexts where that energy already lives."
+          data-quote="I use ChatGPT all the time and find it really quite helpful. I feel more empowered now with everything at my fingertips."
+          data-cite="Wales, 68, Architects">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 50 C16 50 18 30 30 30 C42 30 40 44 50 44 C56 44 58 38 58 34 C58 27 51 24 46 28"/>
+          <circle cx="30" cy="13" r="3"/><path d="M30 16 L28 25 L34 24"/>
+          <path d="M28 25 L24 31"/><path d="M33 24 L36 30"/>
+          <path d="M20 33 C28 36 38 36 44 31"/>
+        </svg>
+        <ul class="mv-shift-data">
+          <li data-less="Dependency" data-more="Independency"></li>
+          <li data-less="Dictation from the brand" data-more="Walk-throughs on YT &amp; TikTok"></li>
+          <li data-less="Broadcast to audiences" data-more="Self-help contexts"></li>
+        </ul>
+      </li>
+      <li data-move="4" data-title="Kill the" data-key="mental load"
+          data-lesson="The modern challenge is cognitive overload — and the sandwich generation carries the heaviest of all."
+          data-stat="87" data-stat-suffix="%"
+          data-stat-line="of the sandwich generation support children financially, while juggling partners, parents and more.">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M32 16 C26 12 18 14 18 21 C13 23 13 30 17 32 C15 37 19 43 25 41 C27 45 33 45 34 41"/>
+          <path d="M32 16 C38 12 46 14 46 21 C51 23 51 30 47 32 C49 37 45 43 39 41 C37 45 34 45 34 41 L34 16"/>
+          <path d="M8 50 L22 50 L26 42 L31 56 L36 47 L40 50 L56 50"/>
+        </svg>
+        <ul class="mv-shift-data">
+          <li data-less="Status as currency" data-more="Time as currency"></li>
+          <li data-less="Fragmentation" data-more="Ecosystems"></li>
+          <li data-less="Customer support" data-more="Life advisory"></li>
+        </ul>
+      </li>
+      <li data-move="5" data-title="Boost" data-key="good behaviours"
+          data-lesson="Encourage the habits that lead to a better state of living, through set challenges, earned rewards and positive reinforcement."
+          data-quote="I particularly like all the loyalty apps. If we want to purchase anything, it's very easy to go in and cost the price all across everywhere."
+          data-cite="Bristol, 61, Coaster"
+          data-evidence="../assets/deck/admock-vinted.jpg"
+          data-evidence-cap="Vinted — earned rewards and positive reinforcement.">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M26 38 L21 54 L27 50 L31 56"/><path d="M38 38 L43 54 L37 50 L33 56"/>
+          <circle cx="32" cy="26" r="14"/>
+          <path d="M32 18 L34.5 24 L41 24.5 L36 28.5 L37.5 35 L32 31.5 L26.5 35 L28 28.5 L23 24.5 L29.5 24 Z"/>
+        </svg>
+        <ul class="mv-shift-data">
+          <li data-less="Setting tasks" data-more="Gamifying goals"></li>
+          <li data-less="CRM modules" data-more="Habit forming"></li>
+          <li data-less="Random rewards" data-more="Meaningful rewards"></li>
+        </ul>
+      </li>
+    </ol>
+  </template>
+</div>

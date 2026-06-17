@@ -1,0 +1,608 @@
+/* ============================================================
+   05-segments.css — THE SHOWPIECE. "Britain resolves into four."
+   Scope: every selector under #\30 5-segments (escaped id; \30  = "0").
+
+   BRAND WORLD (BRAND-WORLD-FINAL §7): the CREAM editorial ground — the
+   data-reading register. ONE focal point: the cinematic resolve (the
+   dot-field compass). The headline is the BOLD-BLACK book-cover voice with
+   ONE italic accent word; the Challenger-Series lockup signs the screen.
+   Four quiet camp labels live in the corners; the chosen camp's profile is
+   a single BOOK-COVER card (cream, square, bold-black title, flat navy+yellow
+   icon, tiny lockup mark top-right). The quiz ("and you?") and the network
+   ("what links them") are quieter acts below, separated by large negative
+   space. Navy is gravity; yellow is the one accent. Backgroundless data,
+   square corners, NO underline / NO skew, tabular nums, contrast-safe.
+   ============================================================ */
+
+#\30 5-segments {
+  background: var(--cream);
+  color: var(--ink-soft);
+  --sg5-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#\30 5-segments .sg5-world {
+  position: relative;
+  isolation: isolate;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(3rem, 6vh, 5.5rem) clamp(20px, 5vw, 80px)
+           calc(var(--journey-controls-h) + clamp(2.5rem, 5vh, 4rem));
+  display: flex;
+  flex-direction: column;
+  /* Large jumps between the three acts; tight within each (§2). */
+  gap: clamp(5rem, 11vh, 9rem);
+}
+
+#\30 5-segments .sg5-world > * { position: relative; z-index: 1; }
+
+/* ============================================================
+   THE RESOLVE — the one focal point.
+   Asymmetric editorial composition: headline hangs top-left, the
+   compass stage fills the screen below it, profile resolves under that.
+   ============================================================ */
+#\30 5-segments .sg5-resolve {
+  display: grid;
+  gap: clamp(2.25rem, 5vh, 4rem);
+}
+
+/* ── The opener — the BOLD-BLACK book-cover voice, hung on the left axis ── */
+#\30 5-segments .sg5-head {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  max-width: 58ch;
+}
+#\30 5-segments .vccp-eyebrow {
+  color: var(--navy);
+  opacity: 0.72;
+}
+#\30 5-segments .sg5-headline {
+  /* The ONE display moment — huge bold BLACK, nothing in the muddy middle. */
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(3.4rem, 8.5vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin: 0;
+}
+#\30 5-segments .sg5-headline span { display: block; }
+/* The single italic accent word — the "Series" gesture (BWF §2). The slant
+   IS the accent: no box, no underline, no skew transform. Navy lifts it. */
+#\30 5-segments .sg5-em {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy);
+}
+#\30 5-segments .sg5-standfirst {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0;
+}
+#\30 5-segments .sg5-standfirst strong { font-weight: 700; color: var(--ink); }
+
+/* The Challenger-Series lockup — the brand signature, black on cream,
+   never recoloured / skewed (BWF §4). Sits low under the standfirst. */
+#\30 5-segments .sg5-lockup {
+  height: clamp(28px, 3.4vw, 40px);
+  width: auto;
+  margin-top: var(--space-2);
+  justify-self: start;
+}
+
+/* ── The compass stage — the hero. Near-full-bleed square; the dot-field
+   IS the data. Backgroundless: only the faint cross + axis words + corner
+   labels structure it. ── */
+#\30 5-segments .sg5-stage {
+  position: relative;
+  width: min(880px, 100%);
+  justify-self: center;
+  aspect-ratio: 1 / 1;
+  padding: clamp(40px, 5.5vw, 72px); /* room for edge axis words + corner labels */
+}
+
+/* Axis words — quiet editorial annotations on the four edges. */
+#\30 5-segments .sg5-axis {
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+  white-space: nowrap;
+}
+#\30 5-segments .sg5-axis--top    { top: 4px;    left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg5-axis--bottom { bottom: 4px; left: 50%; transform: translateX(-50%); }
+#\30 5-segments .sg5-axis--left   { left: 2px;  top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; }
+#\30 5-segments .sg5-axis--right  { right: 2px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; }
+
+/* The thin navy cross (the 2×2 divider). Faint — structure, not a box. */
+#\30 5-segments .sg5-cross {
+  position: absolute;
+  background: rgba(4, 22, 84, 0.16);
+  pointer-events: none;
+}
+#\30 5-segments .sg5-cross--v {
+  top: clamp(40px, 5.5vw, 72px); bottom: clamp(40px, 5.5vw, 72px);
+  left: 50%; width: 1px; transform: translateX(-50%);
+}
+#\30 5-segments .sg5-cross--h {
+  left: clamp(40px, 5.5vw, 72px); right: clamp(40px, 5.5vw, 72px);
+  top: 50%; height: 1px; transform: translateY(-50%);
+}
+
+/* The canvas field fills the inner stage — the hero surface. */
+#\30 5-segments .sg5-field {
+  position: absolute;
+  inset: clamp(40px, 5.5vw, 72px);
+  z-index: 0;
+}
+
+/* Four camp labels, one per corner of the stage — editorial, NOT chunky
+   tiles. They hang at the outer corner of each quadrant so they never sit
+   over the dots. Backgroundless at rest. */
+#\30 5-segments .sg5-camps {
+  position: absolute;
+  inset: clamp(40px, 5.5vw, 72px);
+  z-index: 1;
+  pointer-events: none; /* the labels re-enable it */
+}
+#\30 5-segments .sg5-camp {
+  position: absolute;
+  pointer-events: auto;
+  display: grid;
+  gap: 1px;
+  max-width: 42%;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity 0.18s var(--sg5-ease), transform 0.18s var(--sg5-ease);
+}
+#\30 5-segments .sg5-camp--tl { top: 0;    left: 0;  text-align: left;  justify-items: start; }
+#\30 5-segments .sg5-camp--tr { top: 0;    right: 0; text-align: right; justify-items: end; }
+#\30 5-segments .sg5-camp--bl { bottom: 0; left: 0;  text-align: left;  justify-items: start; }
+#\30 5-segments .sg5-camp--br { bottom: 0; right: 0; text-align: right; justify-items: end; }
+
+#\30 5-segments .sg5-camp:hover { transform: translateY(-2px); }
+#\30 5-segments .sg5-camp:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+/* When a camp is chosen, the rest fade back — one focal point at a time. */
+#\30 5-segments .sg5-stage.is-chosen .sg5-camp { opacity: 0.4; }
+#\30 5-segments .sg5-stage.is-chosen .sg5-camp.is-active { opacity: 1; }
+
+#\30 5-segments .sg5-camp-share {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  color: var(--sg5-accent, var(--navy));
+}
+#\30 5-segments .sg5-camp-pct { font-size: 0.46em; font-weight: 800; }
+#\30 5-segments .sg5-camp-name {
+  margin-top: 3px;
+  font-size: clamp(0.92rem, 1.3vw, 1.1rem);
+  font-weight: 800;
+  line-height: 1.04;
+  color: var(--ink);
+}
+#\30 5-segments .sg5-camp-trio {
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ink-soft);
+  opacity: 0.74;
+}
+
+/* Per-segment accent (drives the big share number). Navy + yellow are the
+   brand pair; the four camps differentiate within that family — three navy
+   tones + the yellow accent — so nothing fights the cream or the dot crowd. */
+#\30 5-segments .sg5-accent-architects { --sg5-accent: var(--navy); }
+#\30 5-segments .sg5-accent-hustlers   { --sg5-accent: var(--navy-bright); }
+#\30 5-segments .sg5-accent-coasters   { --sg5-accent: var(--navy); }
+#\30 5-segments .sg5-accent-retreaters { --sg5-accent: var(--navy-bright); }
+
+/* The soft "try it" cue, centred on the cross — the gentle gate hint. */
+#\30 5-segments .sg5-cue {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--navy);
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.6s var(--sg5-ease);
+}
+/* The cue fades in only once the dots have resolved (so it reads as a prompt,
+   not a label fighting the scatter). */
+#\30 5-segments .sg5-stage.is-resolved .sg5-cue { opacity: 0.78; }
+#\30 5-segments .sg5-stage.is-chosen   .sg5-cue { opacity: 0; }
+
+/* ============================================================
+   THE BOOK-COVER CARD — the chosen camp's profile + the quiz result.
+   `.soi-card` (vccp.css) supplies the cream ground, square corners and the
+   ONE lift device (soft self-shadow). Here we lay out its contents in the
+   book-cover idiom: lockup mark top-right, flat icon + big share number,
+   bold-black name, then the human quote and the backgroundless charts.
+   ============================================================ */
+#\30 5-segments .sg5-profile { min-height: 0; }
+#\30 5-segments .sg5-profile:empty { display: none; }
+#\30 5-segments .sg5-profile-card {
+  gap: var(--space-4);
+  padding: clamp(24px, 3vw, 48px);
+  animation: sg5-rise 0.6s var(--sg5-ease) both;
+}
+@keyframes sg5-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The tiny lockup stamp + the flat navy+yellow icon. */
+#\30 5-segments .sg5-card-mark { color: var(--ink); }
+#\30 5-segments .sg5-card-mark .sg5-mark { height: clamp(22px, 2.6vw, 30px); width: auto; display: block; }
+#\30 5-segments .sg5-icon { width: clamp(48px, 5vw, 68px); flex: none; }
+#\30 5-segments .sg5-icon svg { width: 100%; height: auto; display: block; }
+
+#\30 5-segments .sg5-profile-head {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.2vw, 26px);
+  padding-right: clamp(36px, 6vw, 90px); /* clear the top-right lockup mark */
+}
+#\30 5-segments .sg5-profile-share {
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(3rem, 6.5vw, 5.4rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.82;
+  color: var(--sg5-accent, var(--navy));
+}
+#\30 5-segments .sg5-profile-pct { font-size: 0.4em; font-weight: 800; }
+#\30 5-segments .sg5-profile-name {
+  font-size: var(--t-title);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+}
+#\30 5-segments .sg5-profile-trio {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  opacity: 0.78;
+}
+#\30 5-segments .sg5-profile-quote {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.28;
+  color: var(--ink);
+  max-width: 26ch;
+}
+#\30 5-segments .sg5-profile-quote::before { content: "\201C"; }
+#\30 5-segments .sg5-profile-quote::after  { content: "\201D"; }
+#\30 5-segments .sg5-profile-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+#\30 5-segments .sg5-profile-facts dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+  margin-bottom: 5px;
+}
+#\30 5-segments .sg5-profile-facts dd {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+#\30 5-segments .sg5-profile-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+}
+#\30 5-segments .sg5-profile-chart { gap: 10px; }
+#\30 5-segments .sg5-profile-cap {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+  margin: 0;
+}
+
+/* ============================================================
+   ACT TWO — "And you?" (the quiz). Quiet by design.
+   ============================================================ */
+#\30 5-segments .sg5-find { display: grid; gap: var(--space-2); }
+#\30 5-segments .sg5-find-copy {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0 0 var(--space-2);
+}
+#\30 5-segments .sg5-quiz-stage { display: grid; gap: clamp(1.5rem, 3vh, 2.5rem); }
+#\30 5-segments .quiz { max-width: 56ch; display: grid; gap: var(--space-3); }
+#\30 5-segments .quiz-progress {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+}
+#\30 5-segments .quiz-card { display: grid; gap: var(--space-3); min-height: 150px; }
+#\30 5-segments .quiz-statement {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--ink);
+}
+#\30 5-segments .quiz-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+#\30 5-segments .quiz-actions .vccp-btn { min-width: 150px; text-align: center; }
+
+/* The result card — a book-cover (`.soi-card`), accent-coloured dramatic name. */
+#\30 5-segments .sg5-quiz-result { max-width: 60ch; }
+#\30 5-segments .sg5-result-card {
+  gap: 8px;
+  padding: clamp(24px, 3vw, 44px);
+  animation: sg5-rise 0.6s var(--sg5-ease) both;
+}
+#\30 5-segments .sg5-result-card .sg5-icon { margin-bottom: var(--space-2); }
+#\30 5-segments .sg5-result-eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+}
+#\30 5-segments .sg5-result-name {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.6vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--sg5-accent, var(--navy));
+}
+#\30 5-segments .sg5-result-trio {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  opacity: 0.82;
+}
+#\30 5-segments .sg5-result-share {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+#\30 5-segments .sg5-result-quote {
+  margin: 8px 0 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.34;
+  color: var(--ink);
+  max-width: 38ch;
+}
+#\30 5-segments .sg5-result-quote::before { content: "\201C"; }
+#\30 5-segments .sg5-result-quote::after  { content: "\201D"; }
+#\30 5-segments .sg5-result-again { justify-self: start; margin-top: 12px; }
+
+/* ============================================================
+   EXPLORE DEEPER — "What links them" (segment-graph hooks). Supporting.
+   Backgroundless network on cream; navy hairlines + navy labels.
+   ============================================================ */
+#\30 5-segments .sg5-network { display: grid; gap: var(--space-2); }
+#\30 5-segments .sg5-network-copy {
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0 0 var(--space-3);
+}
+#\30 5-segments .sg5-graph { width: 100%; }
+#\30 5-segments .sg-wrap { display: grid; gap: var(--space-3); }
+#\30 5-segments .sg-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.9fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 48px);
+}
+@media (max-width: 880px) {
+  #\30 5-segments .sg-stage { grid-template-columns: 1fr; }
+}
+#\30 5-segments .sg-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  touch-action: none;
+}
+
+/* Edges — faint navy hairlines; brighten on focus, dim the rest. */
+#\30 5-segments .sg-edge {
+  stroke: var(--navy);
+  stroke-opacity: 0.16;
+  stroke-width: 1.25;
+  transition: stroke-opacity 0.2s var(--sg5-ease), stroke-width 0.2s var(--sg5-ease);
+}
+#\30 5-segments .sg-svg.is-focus .sg-edge.is-dim { stroke-opacity: 0.05; }
+#\30 5-segments .sg-edge.is-on { stroke-opacity: 0.82; stroke-width: 2; }
+
+#\30 5-segments .sg-hub,
+#\30 5-segments .sg-attr { cursor: pointer; }
+#\30 5-segments .sg-hub .sg-dot,
+#\30 5-segments .sg-attr .sg-dot { transition: opacity 0.2s var(--sg5-ease); }
+#\30 5-segments .sg-hub:focus-visible .sg-dot,
+#\30 5-segments .sg-attr:focus-visible .sg-dot {
+  stroke: var(--navy);
+  stroke-width: 3;
+}
+#\30 5-segments .sg-svg.is-focus .is-dim { opacity: 0.16; }
+#\30 5-segments .sg-svg.is-focus .is-on  { opacity: 1; }
+
+/* Node labels — navy, with a cream halo so text never sits low-contrast on a
+   hub or orbit line. */
+#\30 5-segments .sg-label {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--navy);
+  paint-order: stroke;
+  stroke: rgba(240, 237, 231, 0.9);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+#\30 5-segments .sg-hub .sg-label { font-weight: 800; font-size: 15px; }
+
+/* Detail panel — backgroundless; a navy edge lifts it, no box. */
+#\30 5-segments .sg-panel {
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: clamp(16px, 2vw, 24px);
+  border-left: 3px solid var(--navy);
+  color: var(--ink-soft);
+}
+#\30 5-segments .sg-panel .sg-hint {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  opacity: 0.78;
+}
+#\30 5-segments .sg-panel .sg-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.7;
+}
+#\30 5-segments .sg-panel h4 {
+  margin: 0;
+  font-size: var(--t-sub);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+#\30 5-segments .sg-panel .sg-desc {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  opacity: 0.86;
+}
+#\30 5-segments .sg-panel blockquote {
+  margin: 6px 0 0;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--ink);
+}
+#\30 5-segments .sg-panel .sg-facts {
+  display: grid;
+  gap: 8px;
+  margin: 6px 0 0;
+}
+#\30 5-segments .sg-panel .sg-facts dt {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+}
+#\30 5-segments .sg-panel .sg-facts dd { margin: 0 0 4px; font-size: 0.9rem; line-height: 1.4; color: var(--ink-soft); }
+#\30 5-segments .sg-panel .sg-shared { margin: 0; font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+#\30 5-segments .sg-panel .sg-owners { margin: 4px 0 0; padding-left: 1.1em; }
+#\30 5-segments .sg-panel .sg-owners li { font-size: 0.9rem; color: var(--ink-soft); }
+
+/* Keyboard fallback list — square chips, navy on cream. */
+#\30 5-segments .sg-fallback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#\30 5-segments .sg-fallback button {
+  font: 600 0.82rem/1 var(--font-sans);
+  letter-spacing: 0.02em;
+  padding: 9px 14px;
+  border: 1px solid rgba(4, 22, 84, 0.3);
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.16s var(--sg5-ease), border-color 0.16s var(--sg5-ease);
+}
+#\30 5-segments .sg-fallback button:hover,
+#\30 5-segments .sg-fallback button:focus-visible {
+  background: var(--cream-shade);
+  border-color: var(--navy);
+  outline: none;
+}
+
+/* ── Footnote (visible methodology note) ─────────────────────── */
+#\30 5-segments .sg5-footnote {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  opacity: 0.58;
+  max-width: 70ch;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  #\30 5-segments .sg5-stage { max-width: 100%; padding: 34px; }
+  #\30 5-segments .sg5-field,
+  #\30 5-segments .sg5-camps { inset: 34px; }
+  #\30 5-segments .sg5-cross--v { top: 34px; bottom: 34px; }
+  #\30 5-segments .sg5-cross--h { left: 34px; right: 34px; }
+  #\30 5-segments .sg5-camp { max-width: 46%; }
+  #\30 5-segments .sg5-profile-head { flex-wrap: wrap; }
+  #\30 5-segments .quiz-actions .vccp-btn { flex: 1 1 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #\30 5-segments .sg5-profile-card,
+  #\30 5-segments .sg5-result-card { animation: none; }
+  #\30 5-segments .sg5-cue { transition: none; }
+}

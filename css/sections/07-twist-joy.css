@@ -1,0 +1,496 @@
+/* 07-twist-joy.css — Twist two: PROTECTED JOY (the lipstick effect).
+   Scoped entirely to #\30 7-twist-joy.
+   Full-bleed warm-gradient stage. Two-column composition:
+     LEFT  — 40% hero stat + "protect their holiday" headline + live tally
+     RIGHT — the interaction is the hero. A big ring-fenced HOLIDAY tile and a
+             field of cuttable discretionary tiles. Tap a tile and it slams
+             down, greys, stamps CUT; the holiday locks and glows ring-fenced.
+   Brand: cream book-cover cards, navy + yellow, Poppins, square corners.
+   Square corners, no underline, no parallelogram, no skew, no em dashes.
+   AA contrast: navy on warm/cream, cream on navy. Reduced-motion safe. */
+
+/* ── Easing tokens (ART-DIRECTION §4) ─────────────────────────────────── */
+#\30 7-twist-joy .twist-joy-root {
+  --enter-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --exit-ease: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ── Root: full viewport two-column grid ──────────────────────────────── */
+#\30 7-twist-joy .twist-joy-root {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+  width: 100%;
+  height: 100%;
+  padding: clamp(48px, 6vh, 84px) clamp(28px, 5vw, 84px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Orbit ring — decorative connective tissue ────────────────────────── */
+#\30 7-twist-joy .twist-joy-orbit {
+  position: absolute;
+  top: 50%;
+  left: clamp(-30vw, -14vw, -2vw);
+  width: clamp(360px, 52vw, 720px);
+  height: clamp(360px, 52vw, 720px);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.13);
+  pointer-events: none;
+  z-index: 0;
+}
+#\30 7-twist-joy .twist-joy-orbit::after {
+  content: '';
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.08);
+}
+
+/* ── Brand stamp, top-right ───────────────────────────────────────────── */
+#\30 7-twist-joy .twist-joy-mark {
+  position: absolute;
+  top: clamp(16px, 2.4vh, 30px);
+  right: clamp(20px, 2.6vw, 40px);
+  height: clamp(24px, 2vw, 32px);
+  opacity: 0.9;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── LEFT COLUMN — hero stat ──────────────────────────────────────────── */
+#\30 7-twist-joy .twist-joy-hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vh, 14px);
+  min-width: 0;
+}
+
+/* The hero bignum — towers and commands the left half */
+#\30 7-twist-joy .twist-joy-bignum {
+  font-size: clamp(5.5rem, 13vw, 12rem);
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--navy, #041654);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bold-black title — confirms the number's meaning. Frame-kill: never a box. */
+#\30 7-twist-joy .twist-joy-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.94;
+  color: var(--ink, #000);
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+}
+#\30 7-twist-joy .twist-joy-title::before,
+#\30 7-twist-joy .twist-joy-title::after {
+  content: none;
+  display: none;
+}
+
+/* Italic accent word — "holiday" in navy italic per BRAND-WORLD-FINAL §2 */
+#\30 7-twist-joy .twist-joy-accent {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy, #041654);
+}
+
+/* Sub copy — WLV register: punchy */
+#\30 7-twist-joy .twist-joy-sub {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(0.88rem, 1.2vw, 1.05rem);
+  line-height: 1.5;
+  max-width: 36ch;
+  color: var(--navy, #041654);
+  opacity: 0.85;
+}
+
+/* ── Live tally — the running count of what has been cut ───────────────── */
+#\30 7-twist-joy .twist-joy-tally {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: clamp(12px, 1.4vw, 18px);
+  margin-top: clamp(14px, 2.4vh, 28px);
+  padding: clamp(12px, 1.6vh, 18px) clamp(16px, 1.8vw, 22px);
+  background: rgba(4, 22, 84, 0.06);
+  border-left: 3px solid var(--yellow, #f0cb08);
+  max-width: 30ch;
+}
+#\30 7-twist-joy .twist-joy-tally-num {
+  font-weight: 900;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 0.9;
+  color: var(--navy, #041654);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+#\30 7-twist-joy .twist-joy-tally-label {
+  font-weight: 600;
+  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+  line-height: 1.35;
+  color: var(--navy, #041654);
+  opacity: 0.82;
+}
+
+/* ── RIGHT COLUMN — the interaction stage ─────────────────────────────── */
+#\30 7-twist-joy .twist-joy-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vh, 20px);
+  min-width: 0;
+  height: 100%;
+  justify-content: center;
+}
+
+/* Verified data note — restrained */
+#\30 7-twist-joy .twist-joy-data-note {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--navy, #041654);
+  opacity: 0.42;
+  text-transform: uppercase;
+}
+
+/* Live readout — sits below the field; updated by JS */
+#\30 7-twist-joy .twist-joy-readout {
+  margin: 0;
+  font-size: clamp(0.88rem, 1.15vw, 1.02rem);
+  font-weight: 700;
+  color: var(--navy, #041654);
+  opacity: 0.82;
+  min-height: 1.4em;
+  transition: opacity 0.3s ease;
+}
+#\30 7-twist-joy .twist-joy-empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--navy, #041654);
+  opacity: 0.7;
+}
+
+/* ── THE HOLIDAY HERO — ring-fenced, cannot be cut ────────────────────── */
+#\30 7-twist-joy .twist-joy-protected {
+  --hold-strength: 0;
+}
+#\30 7-twist-joy .twist-joy-holiday {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(16px, 2vw, 28px);
+  width: 100%;
+  padding: clamp(20px, 2.6vh, 34px) clamp(22px, 2.4vw, 36px);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  background: var(--cream, #f0ede7);
+  border: 0;
+  /* Square. The ring-fence is the yellow inset bar + seal, brightened by JS. */
+  box-shadow:
+    0 12px 34px rgba(4, 22, 84, 0.10),
+    inset 6px 0 0 0 var(--yellow, #f0cb08);
+  transition:
+    box-shadow 0.5s var(--enter-ease),
+    transform 0.5s var(--enter-ease);
+}
+#\30 7-twist-joy .twist-joy-holiday:focus-visible {
+  outline: 3px solid var(--navy, #041654);
+  outline-offset: 3px;
+}
+
+/* The seal — navy shield + tick. Brightens to yellow as cuts mount. */
+#\30 7-twist-joy .twist-joy-holiday-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(52px, 6vw, 76px);
+  height: clamp(52px, 6vw, 76px);
+  color: var(--navy, #041654);
+  transition: color 0.5s var(--enter-ease), transform 0.5s var(--enter-ease);
+}
+#\30 7-twist-joy .twist-joy-seal { width: 100%; height: auto; }
+#\30 7-twist-joy .twist-joy-seal-tick {
+  color: var(--yellow, #f0cb08);
+  stroke: var(--yellow, #f0cb08);
+}
+
+#\30 7-twist-joy .twist-joy-holiday-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+#\30 7-twist-joy .twist-joy-holiday-tag {
+  font-weight: 700;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--navy, #041654);
+  opacity: 0.7;
+}
+#\30 7-twist-joy .twist-joy-holiday-label {
+  font-weight: 900;
+  font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+  color: var(--ink, #000);
+}
+#\30 7-twist-joy .twist-joy-holiday-pct {
+  font-weight: 900;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  color: var(--navy, #041654);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+#\30 7-twist-joy .twist-joy-holiday-hold {
+  margin-top: 6px;
+  font-weight: 700;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--navy, #041654);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* LOCKED — once any cut lands, the holiday glows ring-fenced and the seal lights. */
+#\30 7-twist-joy .twist-joy-holiday.is-locked {
+  box-shadow:
+    0 16px 44px rgba(4, 22, 84, calc(0.12 + 0.10 * var(--hold-strength))),
+    inset 8px 0 0 0 var(--yellow, #f0cb08),
+    0 0 0 calc(2px + 2px * var(--hold-strength)) var(--yellow, #f0cb08);
+}
+#\30 7-twist-joy .twist-joy-holiday.is-locked .twist-joy-holiday-seal {
+  color: var(--yellow, #f0cb08);
+  transform: scale(calc(1 + 0.08 * var(--hold-strength)));
+}
+#\30 7-twist-joy .twist-joy-holiday.is-locked .twist-joy-holiday-seal .twist-joy-seal-body {
+  color: var(--yellow, #f0cb08);
+  stroke: var(--yellow, #f0cb08);
+}
+#\30 7-twist-joy .twist-joy-holiday.is-locked .twist-joy-holiday-hold {
+  opacity: 0.78;
+}
+
+/* SOLE-TO — every flexible spend cut: the holiday stands alone, fully lit. */
+#\30 7-twist-joy .twist-joy-protected.is-soleto .twist-joy-holiday {
+  transform: scale(1.015);
+  box-shadow:
+    0 22px 56px rgba(4, 22, 84, 0.20),
+    inset 10px 0 0 0 var(--yellow, #f0cb08),
+    0 0 0 4px var(--yellow, #f0cb08);
+}
+
+/* REFUSE — the holiday is tapped: a sharp shake to say "no, not this one". */
+@keyframes twist-joy-refuse {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+#\30 7-twist-joy .twist-joy-holiday.twist-joy-refuse {
+  animation: twist-joy-refuse 0.42s var(--enter-ease);
+}
+
+/* ── THE FIELD — cuttable discretionary tiles ─────────────────────────── */
+#\30 7-twist-joy .twist-joy-field {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(9px, 1.2vh, 14px);
+}
+
+/* Each tile: a cream book-cover card, square corners. A real button. */
+#\30 7-twist-joy .twist-joy-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(8px, 1vw, 14px);
+  padding: clamp(13px, 1.7vh, 19px) clamp(15px, 1.6vw, 22px);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  background: var(--cream, #f0ede7);
+  border: 0;
+  box-shadow: 0 8px 24px rgba(4, 22, 84, 0.07);
+  transition:
+    opacity 0.42s var(--exit-ease),
+    transform 0.42s var(--exit-ease),
+    box-shadow 0.42s var(--exit-ease),
+    filter 0.42s var(--exit-ease);
+  transform-origin: center top;
+}
+#\30 7-twist-joy .twist-joy-tile:focus-visible {
+  outline: 3px solid var(--navy, #041654);
+  outline-offset: 3px;
+}
+/* Hover/active affordance — lifts and the scissors brighten: "cut me". */
+#\30 7-twist-joy .twist-joy-tile:not(.is-cut):hover,
+#\30 7-twist-joy .twist-joy-tile:not(.is-cut):focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(4, 22, 84, 0.12);
+}
+#\30 7-twist-joy .twist-joy-tile:not(.is-cut):active {
+  transform: translateY(0) scale(0.985);
+}
+
+#\30 7-twist-joy .twist-joy-tile-cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy, #041654);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+#\30 7-twist-joy .twist-joy-tile:not(.is-cut):hover .twist-joy-tile-cue,
+#\30 7-twist-joy .twist-joy-tile:not(.is-cut):focus-visible .twist-joy-tile-cue {
+  opacity: 1;
+}
+#\30 7-twist-joy .twist-joy-scissors { display: block; }
+
+#\30 7-twist-joy .twist-joy-tile-label {
+  font-weight: 700;
+  font-size: clamp(0.92rem, 1.25vw, 1.1rem);
+  color: var(--ink, #000);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#\30 7-twist-joy .twist-joy-tile-pct {
+  font-weight: 900;
+  font-size: clamp(1rem, 1.4vw, 1.24rem);
+  color: var(--navy, #041654);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* CUT stamp — sits over the tile, revealed on cut. Navy on cream, no red. */
+#\30 7-twist-joy .twist-joy-tile-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-9deg) scale(0.6);
+  font-weight: 900;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--navy, #041654);
+  border: 3px solid var(--navy, #041654);
+  padding: 2px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.42s var(--enter-ease);
+}
+
+/* ── CUT state — tile slams down, greys, strikes through, stamps CUT ───── */
+#\30 7-twist-joy .twist-joy-tile.is-cut {
+  opacity: 0.3;
+  transform: translateY(10px) scale(0.9);
+  box-shadow: 0 2px 8px rgba(4, 22, 84, 0.04);
+  filter: grayscale(1);
+  cursor: default;
+}
+#\30 7-twist-joy .twist-joy-tile.is-cut .twist-joy-tile-label {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+#\30 7-twist-joy .twist-joy-tile.is-cut .twist-joy-tile-cue {
+  opacity: 0;
+}
+#\30 7-twist-joy .twist-joy-tile.is-cut .twist-joy-tile-stamp {
+  opacity: 0.9;
+  transform: translate(-50%, -50%) rotate(-9deg) scale(1);
+}
+
+/* ── Responsive: tablet — single field column ─────────────────────────── */
+@media (max-width: 1100px) {
+  #\30 7-twist-joy .twist-joy-field {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Responsive: stack below 860px ────────────────────────────────────── */
+@media (max-width: 860px) {
+  #\30 7-twist-joy .twist-joy-root {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 3vh, 26px);
+    align-content: center;
+    padding: clamp(36px, 5vh, 60px) clamp(20px, 7vw, 40px);
+  }
+  #\30 7-twist-joy .twist-joy-bignum {
+    font-size: clamp(4.2rem, 16vw, 7rem);
+  }
+  #\30 7-twist-joy .twist-joy-hero {
+    gap: clamp(6px, 1vh, 10px);
+  }
+  #\30 7-twist-joy .twist-joy-sub {
+    max-width: 50ch;
+  }
+  #\30 7-twist-joy .twist-joy-stage {
+    height: auto;
+  }
+  #\30 7-twist-joy .twist-joy-field {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* The left tally is redundant once the field carries the count on mobile. */
+  #\30 7-twist-joy .twist-joy-tally {
+    max-width: none;
+  }
+}
+
+@media (max-width: 540px) {
+  #\30 7-twist-joy .twist-joy-field {
+    grid-template-columns: 1fr;
+  }
+  #\30 7-twist-joy .twist-joy-holiday-label {
+    font-size: clamp(1.4rem, 7vw, 2rem);
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #\30 7-twist-joy .twist-joy-tile,
+  #\30 7-twist-joy .twist-joy-tile-stamp,
+  #\30 7-twist-joy .twist-joy-holiday,
+  #\30 7-twist-joy .twist-joy-holiday-seal,
+  #\30 7-twist-joy .twist-joy-readout {
+    transition: none !important;
+    animation: none !important;
+  }
+  /* Keep the cut state legible without the slam/grey motion. */
+  #\30 7-twist-joy .twist-joy-tile.is-cut {
+    transform: none;
+    filter: none;
+    opacity: 0.4;
+  }
+  #\30 7-twist-joy .twist-joy-tile.is-cut .twist-joy-tile-stamp {
+    transform: translate(-50%, -50%) rotate(-9deg) scale(1);
+  }
+  #\30 7-twist-joy .twist-joy-orbit,
+  #\30 7-twist-joy .twist-joy-orbit::after {
+    display: none;
+  }
+}

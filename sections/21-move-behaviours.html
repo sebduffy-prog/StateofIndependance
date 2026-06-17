@@ -1,0 +1,104 @@
+<!-- 21-move-behaviours.html — Move 05: BOOST GOOD BEHAVIOURS.
+     AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7 "07 — Moves"):
+     warm gradient full-bleed ground. Black on warm.
+
+     COMPOSITION — identical skeleton to Move 01 (17-move-unplug):
+     LEFT  — designed stage marker (05 + rule + "Move five of five") + title
+             lockup + WLV lesson + Vinted brand note + cream quote card.
+     RIGHT — move-05 medal icon (the stat-hero slot for this move) + flipReveal
+             inside a navy panel with yellow kicker.
+     Columns are CENTERED (no space-between): one screen, no dead space.
+
+     DATA (STORY.md §07 Move 05 slide 73, verbatim):
+       Less → More:
+         Setting tasks    → Gamifying goals
+         CRM modules      → Habit forming
+         Random rewards   → Meaningful rewards
+     Quote (slide 70): "I particularly like all the apps, the shopping apps and
+     anything new that comes into the shops, the loyalty apps." — Bristol, 61, Coaster.
+     Brand example (slide 72): Vinted.
+
+     Square corners, AA contrast, tabular nums, NO underline, NO parallelogram.
+     Single root .chapter-inner. Every CSS scoped to #\32 1-move-behaviours. -->
+
+<div class="chapter-inner mb-root on-warm" data-mb-root>
+
+  <!-- Full-bleed orbit decoration — connective tissue, behind everything -->
+  <span class="mb-orbit" aria-hidden="true"></span>
+
+  <!-- Challenger-Series brand stamp, top-right -->
+  <img class="mb-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- Two-column grid -->
+  <div class="mb-grid">
+
+    <!-- LEFT COLUMN — move header + lesson + Vinted brand + quote -->
+    <div class="mb-left">
+      <header class="mb-head">
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="mb-stage" data-arrival>
+          <span class="mb-stage__num" aria-hidden="true">05</span>
+          <span class="mb-stage__rule" aria-hidden="true"></span>
+          <span class="mb-stage__label vccp-eyebrow">Move five of five</span>
+        </div>
+        <h2 class="mb-title" data-arrival>
+          <img class="mb-title-img" src="assets/logos/move-05.png"
+               alt="Boost good behaviours" />
+        </h2>
+        <p class="mb-lesson" data-arrival>
+          Encourage habits that lead to a better state of living: through
+          set challenges, earned rewards and positive reinforcement.
+        </p>
+      </header>
+
+      <!-- Vinted brand moment -->
+      <div class="mb-brand" data-arrival>
+        <p class="vccp-eyebrow mb-brand__kicker">Brand in action · Vinted</p>
+        <p class="mb-brand__copy">
+          The recommerce platform that turned sustainable shopping into a habit loop,
+          not by lecturing, but by making every resale feel like a win.
+        </p>
+      </div>
+
+      <!-- Quote card — soi-card (cream, square, book-cover component) -->
+      <blockquote class="soi-card mb-quote" data-arrival>
+        <img class="soi-card__mark"
+             src="assets/brand-final/challenger-series-lockup.png"
+             alt="" aria-hidden="true" />
+        <p class="mb-quote__text">
+          "I particularly like all the apps, the shopping apps and anything
+          new that comes into the shops, the loyalty apps."
+        </p>
+        <footer class="mb-quote__attr">Bristol, 61 · Coasters</footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN — icon lead + navy flip panel -->
+    <aside class="mb-right" aria-label="Boost good behaviours: less to more">
+
+      <!-- Icon cluster (this move's stat-hero slot) -->
+      <div class="mb-stat-hero" data-arrival>
+        <div class="mb-icon" data-youdot-anchor aria-hidden="true">
+          <img src="assets/icons/move-05.svg"
+               alt="Boost good behaviours icon"
+               class="mb-icon__img" />
+        </div>
+        <div class="mb-reward-badge" aria-hidden="true">
+          <span class="mb-reward-badge__star">★</span>
+          <span class="mb-reward-badge__label">Reward unlocked</span>
+        </div>
+      </div>
+
+      <!-- flipReveal interaction — the designed gamified less-to-more beat -->
+      <div class="mb-flip-panel" data-arrival>
+        <p class="mb-flip-kicker">The shift, in three moves</p>
+        <div class="mb-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift from less to more"></div>
+      </div>
+
+    </aside>
+  </div>
+
+</div>

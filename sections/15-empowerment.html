@@ -1,0 +1,92 @@
+<!-- Chapter 15 — the empowerment architecture. THE TURN.
+     AUTHORITATIVE BRAND WORLD (docs/BRAND-WORLD-FINAL.md §7 "06"):
+     Full-bleed warm gradient world moment. The whole screen is the stage.
+
+     Composition (the expensive frame): an asymmetric two-pane grid that
+     FILLS 100vw x 100svh. LEFT (the argument): eyebrow, the bold-black
+     Poppins-900 hero with one italic navy accent, a tight standfirst, and
+     the cinematic survival -> agency pivot wipe. RIGHT (the centrepiece):
+     the three needs — money / time / stress — held wide on the open ground
+     then pulled together until they converge on EMPOWERMENT in a tactile,
+     luminous shared core. The three verified Q14 figures (38.8 / 24.0 /
+     27.7) are integrated AS each need's own label — the number IS the
+     reading, never a marooned chart below. One focal point. Backgroundless.
+     No box, no border, no plate — every element lives on the warm ground. -->
+
+<div class="chapter-inner emp-root on-warm" data-emp-root>
+
+  <!-- Decorative orbit — the connective signature, behind everything. -->
+  <div class="emp-orbit si-orbit si-orbit--spin" aria-hidden="true" data-parallax="0.04"></div>
+
+  <!-- The tall agent silhouette — the small figure stepping up to fix things
+       itself. Grounded full-height at the far right as a deliberate edge
+       presence (never an awkward half-cut). Decorative brand layer only. -->
+  <img class="emp-figure si-silhouette" src="assets/brand-final/bear-girl-tall.png"
+       alt="" aria-hidden="true" data-parallax="0.05" />
+
+  <!-- The Challenger-Series brand stamp, top-right (book-cover position). -->
+  <img class="emp-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- ── TWO-PANE STAGE ──────────────────────────────────────────────── -->
+  <div class="emp-stage">
+
+    <!-- LEFT — the argument: hero title + cinematic pivot wipe ────────── -->
+    <header class="emp-head">
+
+      <p class="vccp-eyebrow emp-eyebrow" data-arrival-scramble>The turn</p>
+
+      <h2 class="si-display si-display--lg emp-title" data-arrival>
+        The empowerment <span class="si-accent emp-accent">architecture</span>
+      </h2>
+
+      <p class="emp-standfirst" data-arrival>
+        Britain doesn't want to be rescued. It wants to be equipped. One need
+        unifies all four segments: personal control. Money is the obvious ask.
+        <strong class="hl">Time</strong> and <strong class="hl">stress</strong>
+        are the premium one.
+      </p>
+
+      <!-- Cinematic pivot slider — the control for the whole turn. Dragging it
+           from the old model to the new one wipes "survival mode" to "active
+           agency" AND draws the three needs together until they meet on
+           empowerment. One word at a time; the off side is clipped, never
+           stacked. Scroll primes it part-way; the visitor finishes the turn. -->
+      <div class="emp-pivot" data-emp-pivot data-arrival>
+        <div class="emp-pivot-readout" data-side="before" aria-live="polite">
+          <span class="emp-pivot-word emp-pivot-word--before">Survival mode</span>
+          <span class="emp-pivot-word emp-pivot-word--after">Active agency</span>
+        </div>
+        <div class="emp-pivot-track" data-emp-pivot-track>
+          <div class="emp-pivot-fill" data-emp-pivot-fill aria-hidden="true"></div>
+          <input type="range" class="emp-pivot-slider" min="0" max="100" value="0"
+                 aria-label="Drag from the old model to the new model to bring money, time and stress together on empowerment" />
+        </div>
+        <div class="emp-pivot-ends" aria-hidden="true">
+          <span>The old model</span>
+          <span>The new model</span>
+        </div>
+      </div>
+
+    </header>
+
+    <!-- RIGHT — THE CENTREPIECE: tactile three-needs venn ─────────────── -->
+    <section class="emp-venn" aria-labelledby="emp-venn-lbl">
+
+      <p class="emp-venn-instruction vccp-eyebrow" id="emp-venn-lbl" data-arrival>
+        Three needs · one centre
+      </p>
+
+      <!-- JS builds the converging circle field into this mount. -->
+      <div class="emp-venn-mount" data-emp-venn></div>
+
+      <!-- The three verified Q14 figures, read as a clean horizontal row
+           safely BENEATH the venn so nothing runs off-screen. JS fills it. -->
+      <div class="emp-stat-row" data-emp-stat-row></div>
+
+    </section>
+
+  </div><!-- /.emp-stage -->
+
+</div>

@@ -1,0 +1,508 @@
+/* 21-move-behaviours.css — Move 05: Boost good behaviours.
+   Scoped entirely to #\32 1-move-behaviours.
+   IDENTICAL SKELETON to Move 01 (17-move-unplug): warm gradient full-bleed
+   ground, designed stage marker, centered two-column grid, medal-icon lead,
+   navy flip panel with yellow kicker. Vinted brand note + quote stay in the
+   left column as this move's own content.
+   Full-bleed, one-screen: 100vw × 100svh with overflow hidden.
+   Square corners, no underlines, no parallelogram, tabular nums.
+   Reduced-motion safe. */
+
+/* ── Override global chapter-inner so mb-root owns ALL layout geometry ── */
+#\32 1-move-behaviours .chapter-inner {
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Root — fills the section shell (100vw × 100svh) ────────────────── */
+#\32 1-move-behaviours .mb-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #FFA764 0%, #FBC100 40%, #FFC002 70%, #FF8598 100%);
+}
+
+/* ── Orbit decoration — connective tissue, behind all content ─────────── */
+#\32 1-move-behaviours .mb-orbit {
+  position: absolute;
+  bottom: -22vh;
+  right: -14vw;
+  width: clamp(380px, 50vw, 820px);
+  height: clamp(380px, 50vw, 820px);
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+#\32 1-move-behaviours .mb-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.08);
+}
+#\32 1-move-behaviours .mb-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  border: 1px solid rgba(4, 22, 84, 0.05);
+}
+
+/* ── Brand stamp top-right ──────────────────────────────────────────── */
+#\32 1-move-behaviours .mb-mark {
+  position: absolute;
+  top: clamp(16px, 2.4vh, 32px);
+  right: clamp(20px, 4vw, 60px);
+  height: 28px;
+  width: auto;
+  opacity: 0.55;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Two-column grid — fills the full height of the viewport ────────── */
+#\32 1-move-behaviours .mb-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: stretch;
+  gap: clamp(28px, 4.5vw, 72px);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(44px, 6vh, 72px) clamp(36px, 6.5vw, 108px) clamp(32px, 4.2vh, 56px);
+  box-sizing: border-box;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+}
+
+/* ── LEFT column — CENTERED (no space-between → no dead space) ───────── */
+#\32 1-move-behaviours .mb-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.1vh, 28px);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  justify-content: center;
+}
+
+#\32 1-move-behaviours .mb-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.6vh, 20px);
+}
+
+/* ── Move stage marker — designed gravitas device (matches Move 01) ──── */
+#\32 1-move-behaviours .mb-stage {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 18px);
+}
+
+#\32 1-move-behaviours .mb-stage__num {
+  font-weight: 900;
+  font-size: clamp(2.4rem, 3.4vw, 3.6rem);
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy, #041654);
+  line-height: 0.9;
+}
+
+#\32 1-move-behaviours .mb-stage__rule {
+  width: clamp(24px, 2.6vw, 40px);
+  height: 2px;
+  background: var(--navy, #041654);
+  opacity: 0.55;
+  flex: 0 0 auto;
+}
+
+#\32 1-move-behaviours .mb-stage__label {
+  color: rgba(4, 22, 84, 0.7);
+  margin: 0;
+}
+
+/* Display title — black on warm, book-cover voice. Stands on its own. */
+#\32 1-move-behaviours .mb-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.93;
+  color: var(--ink, #000);
+  border: 0;
+  outline: 0;
+}
+#\32 1-move-behaviours .mb-title::before,
+#\32 1-move-behaviours .mb-title::after,
+#\32 1-move-behaviours .mb-head::before,
+#\32 1-move-behaviours .mb-head::after {
+  content: none !important;
+}
+/* Design-team title lockup — large, crisp, identical sizing across all five moves */
+#\32 1-move-behaviours .mb-title-img {
+  display: block;
+  width: clamp(300px, 32vw, 500px);
+  max-width: none;
+  min-width: clamp(280px, 30vw, 470px);
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+#\32 1-move-behaviours .mb-accent[data-arrival-scramble] {
+  border: 0;
+  outline: 0;
+}
+
+/* Italic accent word — navy on warm for one focal pop */
+#\32 1-move-behaviours .mb-accent {
+  color: var(--navy, #041654);
+  font-style: italic;
+}
+
+/* WLV lesson — slide 71 lesson line */
+#\32 1-move-behaviours .mb-lesson {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+  line-height: 1.46;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 46ch;
+}
+
+/* ── Vinted brand moment ─────────────────────────────────────────────── */
+#\32 1-move-behaviours .mb-brand {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.8vh, 10px);
+  flex: 0 0 auto;
+}
+
+#\32 1-move-behaviours .mb-brand__kicker {
+  color: rgba(4, 22, 84, 0.62);
+  margin: 0;
+}
+
+#\32 1-move-behaviours .mb-brand__copy {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(0.86rem, 0.98vw, 0.98rem);
+  line-height: 1.52;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 44ch;
+}
+
+/* ── Quote card — .soi-card: cream, square corners, one lift device ──── */
+#\32 1-move-behaviours .mb-quote {
+  margin: 0;
+  padding: clamp(14px, 1.6vw, 24px);
+  background: var(--cream, #F0EDE7);
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.07);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.9vh, 12px);
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#\32 1-move-behaviours .mb-quote .soi-card__mark {
+  position: absolute;
+  top: clamp(14px, 1.8vh, 22px);
+  right: clamp(14px, 1.8vw, 22px);
+  height: 22px;
+  width: auto;
+  opacity: 0.72;
+}
+
+#\32 1-move-behaviours .mb-quote__text {
+  margin: 0;
+  font-style: italic;
+  font-size: clamp(0.86rem, 0.98vw, 0.98rem);
+  line-height: 1.56;
+  color: var(--ink-soft, #1A1A1A);
+  max-width: 48ch;
+  padding-right: clamp(36px, 4.5vw, 58px);
+}
+
+#\32 1-move-behaviours .mb-quote__attr {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(4, 22, 84, 0.54);
+}
+
+/* ── RIGHT column — CENTERED (matches Move 01) ──────────────────────── */
+#\32 1-move-behaviours .mb-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.6vh, 32px);
+  min-width: 0;
+  min-height: 0;
+  justify-content: center;
+}
+
+/* Icon cluster (this move's stat-hero slot) */
+#\32 1-move-behaviours .mb-stat-hero {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.8vw, 36px);
+}
+
+/* move-05.svg icon — navy+yellow flat icon language */
+#\32 1-move-behaviours .mb-icon {
+  flex: 0 0 auto;
+  width: clamp(56px, 7vw, 96px);
+  height: clamp(56px, 7vw, 96px);
+  color: var(--navy, #041654);
+}
+
+#\32 1-move-behaviours .mb-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Tint the stroke-only SVG to navy */
+  filter: brightness(0) saturate(100%) invert(8%) sepia(52%) saturate(3500%) hue-rotate(222deg) brightness(80%);
+}
+
+/* ── Gamified reward badge — retired per client, kept hidden for JS hook ─ */
+#\32 1-move-behaviours .mb-reward-badge {
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transform: scale(0.72);
+  pointer-events: none;
+  transition:
+    opacity 340ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#\32 1-move-behaviours .mb-reward-badge.is-unlocked {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+#\32 1-move-behaviours .mb-reward-badge__star {
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  color: var(--yellow, #F0CB08);
+  line-height: 1;
+  animation: none;
+}
+
+#\32 1-move-behaviours .mb-reward-badge.is-unlocked .mb-reward-badge__star {
+  animation: mb-pulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes mb-pulse {
+  0%   { transform: scale(0.6); }
+  60%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+#\32 1-move-behaviours .mb-reward-badge__label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy, #041654);
+  white-space: nowrap;
+}
+
+/* ── flipReveal panel — a designed navy card, not a ghost (matches M01) ─ */
+#\32 1-move-behaviours .mb-flip-panel {
+  background: var(--navy, #041654);
+  border-radius: 0;
+  padding: clamp(18px, 2.4vh, 30px) clamp(18px, 2.2vw, 30px);
+  box-shadow: 0 18px 44px rgba(4, 22, 84, 0.22);
+  width: 100%;
+}
+
+#\32 1-move-behaviours .mb-flip-kicker {
+  margin: 0 0 clamp(12px, 1.6vh, 18px);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--yellow, #F0CB08);
+}
+
+/* ── flipReveal interaction (class hooks from interactions.js) ──────── */
+#\32 1-move-behaviours .flip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.1vh, 12px);
+  width: 100%;
+}
+
+#\32 1-move-behaviours .flip-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 clamp(14px, 1.6vw, 20px) clamp(4px, 0.6vh, 8px);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+#\32 1-move-behaviours .flip-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 16px);
+  padding: clamp(11px, 1.5vh, 17px) clamp(14px, 1.6vw, 20px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background var(--dur-micro, 180ms) ease,
+    border-color var(--dur-micro, 180ms) ease;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+#\32 1-move-behaviours .flip-row:hover,
+#\32 1-move-behaviours .flip-row:focus-visible {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+#\32 1-move-behaviours .flip-row:focus-visible {
+  border-color: var(--yellow, #F0CB08);
+  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.5);
+}
+
+#\32 1-move-behaviours .flip-less {
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.0vw, 1.06rem);
+  color: rgba(255, 255, 255, 0.82);
+  transition: color var(--dur-micro, 180ms) ease,
+              opacity var(--dur-micro, 180ms) ease;
+}
+
+#\32 1-move-behaviours .flip-arrow {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  flex: 0 0 auto;
+  text-align: center;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+#\32 1-move-behaviours .flip-more {
+  font-weight: 800;
+  font-size: clamp(0.9rem, 1.0vw, 1.06rem);
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+  transition: color var(--dur-micro, 180ms) ease;
+}
+
+#\32 1-move-behaviours .flip-row.is-flipped .flip-less {
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 0.8;
+}
+#\32 1-move-behaviours .flip-row.is-flipped .flip-more {
+  color: var(--yellow, #F0CB08);
+}
+#\32 1-move-behaviours .flip-row.is-flipped .flip-arrow {
+  color: var(--yellow, #F0CB08);
+}
+#\32 1-move-behaviours .flip-row.is-flipped {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(240, 203, 8, 0.4);
+}
+
+/* ── Designed arrival: rows assemble one after another with weight ──── */
+@media (prefers-reduced-motion: no-preference) {
+  #\32 1-move-behaviours .mb-flip-panel .flip-row {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 520ms var(--ease-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)),
+                transform 520ms var(--ease-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)),
+                background var(--dur-micro, 180ms) ease,
+                border-color var(--dur-micro, 180ms) ease;
+  }
+  #\32 1-move-behaviours .mb-flip-panel.is-arrived .flip-row {
+    opacity: 1;
+    transform: none;
+  }
+  #\32 1-move-behaviours .mb-flip-panel.is-arrived .flip-row:nth-child(2) { transition-delay: 120ms; }
+  #\32 1-move-behaviours .mb-flip-panel.is-arrived .flip-row:nth-child(3) { transition-delay: 240ms; }
+  #\32 1-move-behaviours .mb-flip-panel.is-arrived .flip-row:nth-child(4) { transition-delay: 360ms; }
+}
+
+/* ── Narrow / portrait: stack columns ───────────────────────────────── */
+@media (max-width: 860px) {
+  #\32 1-move-behaviours .mb-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2.8vh, 28px);
+    align-items: start;
+    padding: clamp(56px, 8vh, 80px) clamp(22px, 5.5vw, 56px) clamp(24px, 4vh, 48px);
+    min-height: 100svh;
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+  }
+  #\32 1-move-behaviours .mb-left {
+    gap: clamp(12px, 1.8vh, 20px);
+    justify-content: flex-start;
+  }
+  #\32 1-move-behaviours .mb-right {
+    justify-content: flex-start;
+  }
+  #\32 1-move-behaviours .mb-title {
+    font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  }
+  #\32 1-move-behaviours .mb-title-img {
+    width: clamp(240px, 66vw, 400px);
+    min-width: 0;
+  }
+}
+
+/* ── Short viewports: compress vertical gaps ────────────────────────── */
+@media (max-height: 680px) {
+  #\32 1-move-behaviours .mb-grid {
+    padding-top: clamp(36px, 5vh, 52px);
+    padding-bottom: clamp(18px, 2.8vh, 32px);
+    gap: clamp(16px, 2.2vw, 36px);
+  }
+  #\32 1-move-behaviours .mb-brand,
+  #\32 1-move-behaviours .mb-quote {
+    display: none;
+  }
+}
+
+/* ── Reduced motion: kill transitions, rows fully visible at rest ───── */
+@media (prefers-reduced-motion: reduce) {
+  #\32 1-move-behaviours .flip-row,
+  #\32 1-move-behaviours .flip-less,
+  #\32 1-move-behaviours .flip-more,
+  #\32 1-move-behaviours .flip-arrow,
+  #\32 1-move-behaviours .mb-flip-panel .flip-row {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  #\32 1-move-behaviours .mb-reward-badge {
+    transition: opacity 0ms;
+  }
+  #\32 1-move-behaviours .mb-reward-badge.is-unlocked .mb-reward-badge__star {
+    animation: none;
+  }
+}

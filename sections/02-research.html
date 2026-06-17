@@ -1,53 +1,69 @@
-<div class="chapter-inner">
-  <div class="research-split si-split">
+<div class="chapter-inner research">
 
-    <!-- LEFT: the method, told tightly -->
-    <div class="research-method si-stack-tight reveal" data-stagger="90">
-      <p class="vccp-eyebrow si-display si-display--sm research-kicker reveal">The method</p>
-      <h2 class="research-headline reveal">
-        How we <em class="hl hl-teal">listened</em> to Britain.
+  <!-- The brand signature stamp — tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="research-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <div class="research-grid">
+
+    <!-- LEFT AXIS — quiet editorial rail. Eyebrow → one bold-black display
+         line with a single italic accent word. Small supporting facts.
+         Never a second focal point: the map is the hero. -->
+    <aside class="research-rail">
+      <p class="vccp-eyebrow" data-arrival>The method</p>
+
+      <h2 class="research-headline si-display si-display--sm">
+        <span data-arrival>How we</span>
+        <span class="si-accent" data-arrival data-arrival-scramble>listened</span>
+        <span data-arrival>to Britain</span>
       </h2>
 
-      <ul class="research-stats reveal">
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="1504"></span></span>
-          <span class="research-stat-label">respondents, nationally representative</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="18"></span><span class="research-stat-fix">+</span></span>
-          <span class="research-stat-label">UK adults aged 18 and over</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value">mid-May 2026</span>
-          <span class="research-stat-label">quantitative fieldwork</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="8"></span></span>
-          <span class="research-stat-label">cities for qualitative research</span>
-        </li>
-        <li class="research-stat">
-          <span class="research-stat-value num"><span data-count-to="1"></span><span class="research-stat-fix">-week</span></span>
-          <span class="research-stat-label">video diaries per home, filmed in early June</span>
-        </li>
-      </ul>
+      <p class="research-standfirst si-measure" data-arrival>
+        A nationally representative survey of
+        <span class="num" data-arrival-count data-to="1504">1,504</span>
+        UK adults, paired with week-long video diaries across eight cities.
+        Numbers for the <strong>what</strong>, real lives for the
+        <strong>why</strong>.
+      </p>
 
-      <p class="research-credit reveal">
-        Research partner <strong>VCCP&nbsp;x&nbsp;Watermelon&nbsp;Research</strong>
-      </p>
-      <p class="vccp-source reveal">
-        Source: VCCP x Watermelon Research COCL survey. 1,504 UK adults 18+,
-        nat. rep., May 2026. Qualitative: week-long video diaries, eight cities,
-        early June 2026.
-      </p>
-    </div>
+      <!-- The facts, as a single quiet caption row — supporting, not shouting.
+           Big navy tabular numerals, the book-cover icon-accent register. -->
+      <dl class="research-facts" data-arrival data-stagger>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k num">8</dt>
+          <dd class="research-fact-v">cities filmed</dd>
+        </div>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k num">1<span class="research-fact-unit">wk</span></dt>
+          <dd class="research-fact-v">diaries per home</dd>
+        </div>
+        <div class="research-fact reveal">
+          <dt class="research-fact-k research-fact-k--text">May&nbsp;&rsquo;26</dt>
+          <dd class="research-fact-v">fieldwork window</dd>
+        </div>
+      </dl>
 
-    <!-- RIGHT: GB map + 8 city markers (built in JS), rail card -->
-    <div class="research-map-wrap reveal">
-      <div class="research-map" data-research-map aria-label="Map of Great Britain showing eight qualitative research cities"></div>
-      <p class="research-map-hint" data-research-hint>
-        Select a city to read from its video diary.
+      <!-- The opened city's diary surfaces here, beneath the rail. -->
+      <div class="research-diary" data-research-diary aria-live="polite"></div>
+
+      <p class="research-credit" data-arrival>
+        VCCP&nbsp;&times;&nbsp;Watermelon&nbsp;Research
       </p>
-      <div class="research-rail" data-research-rail aria-live="polite"></div>
+    </aside>
+
+    <!-- HERO — the UK, alone and large. Eight cities light on the navy
+         silhouette; tap one to surface its diary. No ambient dot cloud —
+         the map and its 8 markers are the only elements. -->
+    <div class="research-stage" data-youdot-anchor>
+      <p class="research-status num" data-research-status aria-live="polite">Connecting&hellip;</p>
+      <div class="research-map-wrap">
+        <div class="research-map" data-research-map></div>
+      </div>
+      <p class="research-hint" data-research-hint>
+        Tap a city, or arrow-key the map, to surface its diary.
+      </p>
     </div>
 
   </div>

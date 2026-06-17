@@ -1,0 +1,109 @@
+<div class="chapter-inner seg on-cream" data-seg="coasters" data-seg-root>
+
+  <!-- Brand signature stamp - tiny Challenger-Series lockup, top-right
+       (the book-cover position). Black silhouette, never recoloured. -->
+  <img class="seg-mark si-lockup si-lockup--mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <div class="seg-grid">
+
+    <!-- LEFT - the identity rail. Eyebrow, bold-black display title with one
+         italic accent word, three-word descriptor, hero quote, who/money/
+         protects/AI facts, then the audience share as the hero number. -->
+    <aside class="seg-id">
+
+      <p class="vccp-eyebrow" data-arrival>Segment three of four</p>
+
+      <h2 class="seg-title">
+        <span data-arrival>The</span>
+        <span class="seg-accent si-accent" data-arrival data-arrival-scramble
+              data-scramble-text="Coasters">Coasters</span>
+      </h2>
+
+      <p class="seg-descriptor" data-arrival>Easygoing. Careful. Open-minded.</p>
+
+      <blockquote class="seg-quote" data-arrival>
+        <p>&ldquo;Life has improved with technology. It saves time, but it really can be overwhelming sometimes.&rdquo;</p>
+        <cite>&lsquo;Taking control&rsquo; research</cite>
+      </blockquote>
+
+      <dl class="seg-facts" data-arrival>
+        <div class="seg-fact">
+          <dt>Who</dt>
+          <dd><span class="num">50%</span> are over 55. Skews older.</dd>
+        </div>
+        <div class="seg-fact">
+          <dt>Money</dt>
+          <dd>Mid-to-low income. Careful, value-conscious spenders.</dd>
+        </div>
+        <div class="seg-fact">
+          <dt>Protects</dt>
+          <dd>Cutting clothing, subscriptions and groceries first.</dd>
+        </div>
+        <div class="seg-fact">
+          <dt>AI</dt>
+          <dd>Easy tech, yes. AI not yet. They want brands to navigate it for them.</dd>
+        </div>
+      </dl>
+
+      <!-- The audience share - hero count-up, the you-dot anchor. -->
+      <p class="seg-share" data-arrival>
+        <span class="seg-share-num"
+              data-arrival-count data-to="27" data-suffix="%">27%</span>
+        <span class="seg-share-cap">of Britain. Easygoing optimists who coast on trust and habit.</span>
+        <span class="seg-dot" data-youdot-anchor aria-hidden="true"></span>
+      </p>
+
+    </aside>
+
+    <!-- RIGHT - the data lens. One flat navy+accent icon, the explorable
+         over-index chart (text labels, NO numbers), a square pill lens
+         selector (the marquee interaction), a one-line chart caption, and a
+         rich TGI statement cloud. Same structure for all four segments. -->
+    <figure class="seg-data">
+
+      <span class="seg-icon" aria-hidden="true">
+        <img class="seg-icon__img" src="assets/logos/seg-coasters.png" alt="" />
+      </span>
+
+      <figcaption class="seg-data-head">
+        <p class="vccp-eyebrow">The signature of the segment</p>
+        <h3 class="seg-data-title">
+          Where the Coasters over-index against Britain
+        </h3>
+      </figcaption>
+
+      <!-- One-line explanation of the lens the viewer is looking at. -->
+      <p class="seg-lens-hint" data-seg-lens-hint>
+        Pick a lens to explore what makes this Britain distinct.
+      </p>
+
+      <!-- Square pill control - swaps the lens; bars morph in place. -->
+      <div class="seg-lens" data-seg-lens
+           aria-label="Choose a lens on the Coasters"></div>
+
+      <!-- The index chart is mounted here by JS; redrawn on lens change. -->
+      <div class="seg-chart" data-seg-chart aria-live="polite"></div>
+
+      <!-- Caption explaining the chart (no sizing numbers on the bars). -->
+      <p class="seg-baseline" aria-hidden="true">
+        <span class="seg-baseline-key"></span>
+        <span class="num">100</span> = the UK average. Longer bars are where
+        this Britain leans hardest.
+      </p>
+
+      <!-- TGI fingerprint cloud - distinctive over-indexing statements,
+           text labels only, NO TGI sizing numbers. Populated by JS. -->
+      <div class="seg-fingerprint" data-arrival>
+        <p class="seg-fingerprint-label">Also distinctly them</p>
+        <ul class="seg-fingerprint-cloud" data-seg-fingerprint></ul>
+      </div>
+
+    </figure>
+
+  </div>
+
+  <!-- Orbit ring - lower-right ambient geometry; decorative, pointer-events none. -->
+  <div class="seg-orbit" aria-hidden="true"></div>
+</div>

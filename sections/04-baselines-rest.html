@@ -1,0 +1,88 @@
+<div class="chapter-inner">
+
+  <!-- Tiny Challenger-Series lockup stamp — top-right, the book-cover position. -->
+  <img class="br-mark" src="assets/brand-final/challenger-series-lockup.png"
+       alt="VCCP Challenger Series" aria-hidden="true" decoding="async" />
+
+  <!-- ── LEFT COLUMN — hero title, the three stats, standfirst + pill filter ── -->
+  <aside class="br-left">
+
+    <!-- Title block — eyebrow + headline. Clean line breaks, italic accent, no box. -->
+    <div class="br-title-block">
+      <p class="vccp-eyebrow" data-arrival>The operational floor</p>
+      <h2 class="br-headline">
+        <span data-arrival>The squeeze</span>
+        <span data-arrival>is the table</span>
+        <span data-arrival>they eat <em class="br-accent" data-arrival-scramble>at</em></span>
+      </h2>
+    </div>
+
+    <!-- The three headline stats — moved up to sit directly under the title
+         as a clean stat row, freeing the rest of the screen for the charts. -->
+    <ul class="br-stats" aria-label="The three remaining baselines, at a glance">
+      <li class="br-stat" data-stat="deal">
+        <p class="br-num num" aria-hidden="true">
+          <span data-count-to="55" data-count-suffix="%">55%</span>
+        </p>
+        <p class="br-lbl">actively hunted<br>out deals last quarter</p>
+      </li>
+      <li class="br-stat" data-stat="anxiety">
+        <p class="br-num num" aria-hidden="true">
+          <span data-count-to="60" data-count-suffix="%">60%</span>
+        </p>
+        <p class="br-lbl">feel anxious about<br>the coming months</p>
+      </li>
+      <li class="br-stat" data-stat="grocery">
+        <p class="br-num num" aria-hidden="true">
+          <span data-count-to="54" data-count-suffix="%">54%</span>
+        </p>
+        <p class="br-lbl">have traded down<br>to cheaper groceries</p>
+      </li>
+    </ul>
+
+    <!-- Copy + interaction block — standfirst + pill filter anchor the bottom. -->
+    <div class="br-copy-block">
+      <p class="br-standfirst" data-arrival>
+        Deal-hunting, low-grade dread, the quiet downgrade at the till.
+        These are the operational floor of modern British commerce.
+        Not the strategy.
+      </p>
+      <!-- Marquee interaction: pill filter — focus one baseline, dim the others. -->
+      <div class="br-filter" data-filter role="group" aria-label="Focus one baseline"></div>
+    </div>
+
+  </aside>
+
+  <!-- ── RIGHT COLUMN — the three big data visualisations, the hero ─────────── -->
+  <section class="br-grid" aria-label="The three remaining baselines">
+
+    <!-- 1 · Deal-seeking — lollipop of money-saving moves -->
+    <article class="br-panel" data-panel="deal" aria-labelledby="br-deal-cap">
+      <p class="br-cap" id="br-deal-cap">Money-saving moves, last three months</p>
+      <div class="br-viz" data-viz-deal
+           role="img"
+           aria-label="Money-saving moves last three months: shopped around 55%, own-label 43%, cut a sub 30%, kept a treat 25%">
+      </div>
+    </article>
+
+    <!-- 2 · Anxiety — dot-plot of the national mood -->
+    <article class="br-panel" data-panel="anxiety" aria-labelledby="br-anx-cap">
+      <p class="br-cap" id="br-anx-cap">The national mood, top four readings</p>
+      <div class="br-viz" data-viz-anxiety
+           role="img"
+           aria-label="National mood: careful 77%, anxious 60%, exhausted 55%, self-reliant 54%">
+      </div>
+    </article>
+
+    <!-- 3 · Trading down — tug-of-war binary split -->
+    <article class="br-panel" data-panel="grocery" aria-labelledby="br-gro-cap">
+      <p class="br-cap" id="br-gro-cap">Groceries: traded down vs held the basket</p>
+      <div class="br-viz br-viz--tow" data-viz-grocery
+           role="img"
+           aria-label="Groceries traded down 54%, held the basket 46%">
+      </div>
+    </article>
+
+  </section>
+
+</div>

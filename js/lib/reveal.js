@@ -13,7 +13,10 @@
  */
 
 const DEFAULT_STAGGER_MS = 90;
-const DEFAULT_THRESHOLD = 0.2;
+const DEFAULT_THRESHOLD = 0.1;
+// Hold reveals until the element is properly up into the viewport (not as it
+// first peeks past the bottom edge) so the fade never fires too early.
+const DEFAULT_ROOT_MARGIN = '0px 0px -18% 0px';
 
 export const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -57,7 +60,7 @@ export const observeReveals = (rootEl, options = {}) => {
         observer.unobserve(entry.target);
       });
     },
-    { threshold }
+    { threshold, rootMargin: DEFAULT_ROOT_MARGIN }
   );
 
   targets.forEach((el) => observer.observe(el));

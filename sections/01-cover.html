@@ -1,37 +1,82 @@
 <div class="chapter-inner">
-  <div class="cover-stage">
-    <!-- Ambient, well-spaced ink dot field sits behind the whole composition -->
-    <div class="cover-dots" data-cover-dots aria-hidden="true"></div>
+  <!-- 01 — COVER. The authoritative brand world: the warm-gradient ground, the
+       Challenger-Series lockup as the brand signature, a huge BOLD BLACK Poppins-900
+       title with ONE italic accent word ("Independence"), and the State of
+       Independence MAZE logo-moment (assets/brand-final/maze-logo.gif) used once,
+       big, on vast negative space.
 
-    <!-- Copy sits top-left, no frame, no plate. -->
-    <div class="cover-copy si-stack-tight">
-      <p class="vccp-eyebrow cover-eyebrow reveal">The Challenger Series · VCCP</p>
-      <h1 class="cover-wordmark si-display reveal">
-        The State of <em class="hl" data-cover-hl>Independence</em>
-      </h1>
-      <p class="cover-standfirst si-measure reveal">
-        Britain has stopped waiting to be rescued. This is a nationwide study of
-        how people are taking back control, and what that demands of every brand
-        that serves them.
-      </p>
-      <button type="button" class="cover-cue reveal" data-cover-cue aria-label="Scroll to the research">
-        <span class="cover-cue-arrow" aria-hidden="true"></span>
-        <span class="cover-cue-label">Begin</span>
-      </button>
+       Elevated to a cinematic, full-bleed hero: ambient orbit geometry + a soft
+       warmth bloom fill the field (no dead void); the maze sits large, anchored to
+       the right pane with a clear channel between it and the title; the copy hangs
+       on a left axis, held clear of the engine-owned bottom-centre scroll cue. The
+       composition fills the screen without crowding — the negative space is
+       deliberate, and the maze and the title never overlap.
+
+       The maze is a clean, inert brand moment: the orbiting ring/ball (the "path"
+       over the logo) and the figure's map (the "box") are removed from the artwork
+       itself, so the maze is served as a clean still. There is no trace overlay and
+       no draggable handle. The only motion is a gentle CSS ambient float, which is
+       reduced-motion safe.
+
+       One focal point only (the maze). The lockup is the signature, the title is the
+       voice, the maze is the hero. Italic accent replaces the old orange highlight
+       (BWF §2): the slant of the italic IS the accent. No box, no underline, no skew. -->
+  <div class="cover si-ground-warm" data-cover-root data-cover-hero>
+
+    <!-- AMBIENT FIELD — decorative only, pointer-inert, behind all content. A soft
+         warmth bloom + the signature orbit rings give the hero cinematic depth and
+         fill the field so no corner reads as dead void. -->
+    <div class="cover-ambient" aria-hidden="true">
+      <span class="cover-bloom"></span>
+      <svg class="cover-rings" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g class="cover-rings-drift">
+          <circle cx="500" cy="500" r="190" />
+          <circle cx="500" cy="500" r="300" />
+          <circle cx="500" cy="500" r="420" />
+          <circle cx="500" cy="500" r="560" />
+        </g>
+      </svg>
     </div>
 
-    <!-- Subtle "you are the 1,505th respondent" line, quiet bottom-left. -->
-    <p class="cover-you" data-cover-you>
-      <span class="cover-you-dot" aria-hidden="true"></span>
-      You are the 1,505th respondent.
-    </p>
+    <!-- LEFT — the brand signature (lockup) → the display title → standfirst,
+         hung on a left axis in open space, vertically centred and clear of the
+         engine-owned scroll cue at the bottom centre. -->
+    <header class="cover-copy" data-stagger="120">
+      <img class="cover-lockup si-lockup si-lockup--hero" data-arrival
+           src="assets/brand-final/challenger-series-lockup.png"
+           alt="VCCP Challenger Series"
+           width="688" height="245" loading="eager" decoding="async" />
 
-    <!-- Girl &amp; Bear: large, grounded, standing flush on the bottom edge. -->
-    <img
-      class="cover-bear si-ground"
-      src="assets/brand/Girl_and_Bear.png"
-      alt="The VCCP girl standing up to a bear"
-      loading="eager" decoding="async"
-    />
+      <p class="cover-kicker vccp-eyebrow" data-arrival>Britain 2026</p>
+
+      <h1 class="cover-wordmark si-display si-display--black">
+        <span class="cover-line" data-arrival>The state of</span>
+        <span class="cover-line cover-em si-accent" data-arrival data-arrival-scramble>Independence</span>
+      </h1>
+
+      <p class="cover-standfirst si-measure" data-arrival>
+        Britain has stopped waiting to be rescued. A nationwide study of how people are taking back control, and what that demands of every brand that serves them.
+      </p>
+
+      <button type="button" class="cover-cue" data-arrival data-cover-cue
+              data-cursor aria-label="Begin the journey">
+        <span class="cover-cue-label">Begin</span>
+        <span class="cover-cue-arrow" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <!-- RIGHT — the maze logo-moment, large and centred in its field. The maze is
+         a clean still/animation: the amber isometric maze, the navy bear and the
+         small figure at the entrance. The stray orbit ring and the figure's map
+         (the "box") are removed from the artwork, so the maze reads clean — no
+         trace overlay, no handle, no ring drawn over it. -->
+    <figure class="cover-stage" data-cover-stage>
+      <img class="cover-maze" data-cover-maze
+           src="assets/brand-final/maze-logo-clean-static.png"
+           data-still="assets/brand-final/maze-logo-clean-static.png"
+           alt="The State of Independence maze: an amber isometric maze with a navy bear inside and a small figure standing at its entrance"
+           width="800" height="800" loading="eager" decoding="async" />
+    </figure>
+
   </div>
 </div>

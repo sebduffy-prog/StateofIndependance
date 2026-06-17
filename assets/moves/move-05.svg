@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Boost good behaviours">
+  <!-- Flat navy+yellow icon (§6): rising bars crowned by a yellow reward star. -->
+  <rect x="8"  y="40" width="10" height="16" fill="#041654"/>
+  <rect x="22" y="32" width="10" height="24" fill="#041654"/>
+  <rect x="36" y="22" width="10" height="34" fill="#041654"/>
+  <path d="M52 6 L55.6 14.2 L64 15 L57.6 21 L59.4 30 L52 25.4 L44.6 30 L46.4 21 L40 15 L48.4 14.2 Z" fill="#F0CB08"/>
+</svg>

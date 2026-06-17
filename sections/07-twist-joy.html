@@ -1,0 +1,67 @@
+<!-- Chapter 07 — Twist two: PROTECTED JOY (the lipstick effect).
+     Full-bleed warm-gradient pivot. Two-column composition.
+     LEFT: 40% hero stat + "protect their holiday" headline — the focal anchor.
+     RIGHT: the interaction is the hero of this side. A field of discretionary
+            spend tiles the visitor CUTS (tap / click / Enter). Each cut is
+            unmissable: the tile slams down, greys, gets a CUT stamp. The big
+            HOLIDAY tile is ring-fenced — it cannot be cut; it locks, glows, and
+            its yellow seal tightens. Everything else goes; the holiday holds.
+     Brand-world: BRAND-WORLD-FINAL.md §3 (book-cover card), §6 (navy+yellow).
+     Data: data/survey.json protectedSpend (Q5; holidays 39.6%).
+     Square corners. No underline. No em dashes. AA contrast.
+     Reduced-motion safe. Keyboard accessible. No console.log. -->
+<div class="chapter-inner twist-joy-root" data-twist-joy-root>
+
+  <!-- Decorative orbit — connective tissue, behind everything -->
+  <span class="twist-joy-orbit" aria-hidden="true"></span>
+
+  <!-- Brand stamp, top-right (book-cover position) -->
+  <img class="twist-joy-mark"
+       src="assets/brand-final/challenger-series-lockup.png"
+       alt="Challenger Series" />
+
+  <!-- LEFT COLUMN — hero stat cluster. The 40% IS the focal element. -->
+  <div class="twist-joy-hero">
+    <p class="vccp-eyebrow twist-joy-eyebrow" data-arrival>Twist two</p>
+    <p class="twist-joy-bignum num" aria-label="40 percent">
+      <span data-arrival-scramble>40%</span>
+    </p>
+    <h2 class="twist-joy-title" data-arrival>
+      protect their<br>
+      <em class="twist-joy-accent">holiday</em>
+    </h2>
+    <p class="twist-joy-sub" data-arrival>
+      The lipstick effect, made literal. When money gets tight, Britain trims
+      almost everything. The holiday is the one line it ring-fences.
+    </p>
+
+    <!-- Live tally + instruction. You-dot rests on the tally. -->
+    <div class="twist-joy-tally" data-arrival data-youdot-anchor>
+      <span class="twist-joy-tally-num num" data-twist-joy-count aria-hidden="true">0</span>
+      <span class="twist-joy-tally-label" data-twist-joy-tally-label>
+        Cut the spending. See what Britain refuses to give up.
+      </span>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN — the interaction stage. Built + wired by JS. -->
+  <section class="twist-joy-stage" aria-label="Cut the budget interaction">
+
+    <!-- The ring-fenced HOLIDAY hero. Cannot be cut. -->
+    <div class="twist-joy-protected" data-twist-joy-protected></div>
+
+    <!-- The field of cuttable discretionary spends. -->
+    <div class="twist-joy-field" data-twist-joy-field role="group"
+         aria-label="Discretionary spending. Activate a tile to cut it."></div>
+
+    <!-- Live readout: how much has been cut vs held. -->
+    <p class="twist-joy-readout" data-twist-joy-readout aria-live="polite">
+      Tap a tile to cut it. The holiday will not budge.
+    </p>
+
+    <p class="twist-joy-data-note" data-arrival>
+      Q5 · share of 1,504 UK adults ring-fencing each non-essential
+    </p>
+  </section>
+
+</div>

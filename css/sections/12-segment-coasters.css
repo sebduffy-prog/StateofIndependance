@@ -1,0 +1,428 @@
+/* 12-segment-coasters.css - The Coasters (27%) segment profile.
+   ONE SHARED TEMPLATE. This file is byte-identical to the other three
+   segment stylesheets except the escaped id prefix and the two accent
+   variables below - the skeleton, type scale, spacing and interactions are
+   the same so the four pages read as four cards of one system.
+   Cream editorial stage, full-bleed, fits 100svh exactly, never scrolls. */
+
+#\31 2-segment-coasters {
+  background: var(--cream, #F0EDE7);
+  /* The single per-segment accent. Everything else is navy + yellow. */
+  --seg-accent: #00BCA5;
+  --seg-accent-soft: rgba(0, 188, 165, 0.16);
+}
+
+/* Root wrapper - fills the stage, never overflows. */
+#\31 2-segment-coasters .chapter-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Two-column grid - the shared layout. */
+#\31 2-segment-coasters .seg-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.22fr);
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: clamp(32px, 5vw, 88px);
+  align-items: stretch;
+  padding: clamp(30px, 6vh, 72px) clamp(28px, 4vw, 72px)
+           calc(var(--journey-controls-h, 72px) + clamp(18px, 3vh, 36px))
+           clamp(28px, 4vw, 72px);
+}
+
+/* Brand stamp - top-right, book-cover position. */
+#\31 2-segment-coasters .seg-mark {
+  position: absolute;
+  top: clamp(18px, 3vh, 34px);
+  right: clamp(20px, 4vw, 56px);
+  height: clamp(22px, 2.4vw, 30px);
+  opacity: 0.9;
+  z-index: 3;
+}
+
+/* LEFT: identity column. */
+#\31 2-segment-coasters .seg-id {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(8px, 1.6vh, 18px);
+  min-height: 0;
+  max-width: 32ch;
+}
+
+#\31 2-segment-coasters .vccp-eyebrow { margin: 0; color: var(--navy); }
+
+#\31 2-segment-coasters .seg-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.6rem, 5.6vw, 5.4rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
+  outline: none;
+  border: 0;
+}
+#\31 2-segment-coasters .seg-title:focus,
+#\31 2-segment-coasters .seg-title:focus-visible { outline: none; border: 0; }
+/* The one italic accent word takes the segment accent colour. */
+#\31 2-segment-coasters .seg-title .seg-accent {
+  font-style: italic;
+  color: var(--seg-accent);
+}
+
+#\31 2-segment-coasters .seg-descriptor {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(1.02rem, 1.4vw, 1.28rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+#\31 2-segment-coasters .seg-quote {
+  margin: 0;
+  border-left: 3px solid var(--seg-accent);
+  padding-left: clamp(12px, 1.2vw, 18px);
+  max-width: 36ch;
+}
+#\31 2-segment-coasters .seg-quote p {
+  margin: 0;
+  font-size: clamp(0.94rem, 1.25vw, 1.16rem);
+  font-weight: 500;
+  line-height: 1.34;
+  color: var(--ink-soft);
+  font-style: normal;
+}
+#\31 2-segment-coasters .seg-quote cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.6;
+}
+
+/* Who / Money / Protects / AI facts: 2x2 grid, uppercase navy keys, no boxes. */
+#\31 2-segment-coasters .seg-facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vh, 16px) clamp(14px, 1.8vw, 24px);
+}
+#\31 2-segment-coasters .seg-fact { display: flex; flex-direction: column; gap: 2px; }
+#\31 2-segment-coasters .seg-fact dt {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.75;
+}
+#\31 2-segment-coasters .seg-fact dd {
+  margin: 0;
+  font-size: clamp(0.82rem, 0.98vw, 0.94rem);
+  font-weight: 500;
+  line-height: 1.28;
+  color: var(--ink-soft);
+}
+#\31 2-segment-coasters .seg-fact .num {
+  font-weight: 800;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero share number - the number IS the headline. */
+#\31 2-segment-coasters .seg-share {
+  margin: clamp(2px, 1vh, 10px) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(8px, 1vw, 16px);
+  position: relative;
+}
+#\31 2-segment-coasters .seg-share-num {
+  font-weight: 900;
+  font-size: clamp(3.4rem, 6.4vw, 6.4rem);
+  letter-spacing: -0.04em;
+  line-height: 0.82;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+#\31 2-segment-coasters .seg-share-cap {
+  font-size: clamp(0.84rem, 1.05vw, 0.98rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  max-width: 26ch;
+}
+#\31 2-segment-coasters .seg-dot {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 0; height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* RIGHT: data lens column - self-contained, flexes to fill the full height
+   so there is no lower dead space and the fingerprint always sits in view. */
+#\31 2-segment-coasters .seg-data {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(7px, 1.2vh, 14px);
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+  justify-content: flex-start;
+}
+
+/* Flat navy + segment-accent icon, top of the lens. */
+#\31 2-segment-coasters .seg-icon {
+  color: var(--navy);
+  width: clamp(76px, 7vw, 98px);
+  height: clamp(76px, 7vw, 98px);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--seg-accent-soft);
+  border-radius: 0;            /* square corners - house rule */
+  padding: clamp(10px, 1.1vw, 14px);
+  box-sizing: border-box;
+}
+#\31 2-segment-coasters .seg-icon svg { width: 100%; height: 100%; }
+/* Real design-team logo PNG (dark art on the soft-accent tile). */
+#\31 2-segment-coasters .seg-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+#\31 2-segment-coasters .seg-icon .ic-accent {
+  fill: var(--seg-accent);
+  color: var(--seg-accent);
+  stroke: var(--seg-accent);
+}
+#\31 2-segment-coasters .seg-icon .ic-navy { fill: var(--navy, #041654); }
+
+#\31 2-segment-coasters .seg-data-head { display: flex; flex-direction: column; gap: 4px; }
+#\31 2-segment-coasters .seg-data-head .vccp-eyebrow { margin: 0; }
+#\31 2-segment-coasters .seg-data-title {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(1.18rem, 1.7vw, 1.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+
+/* One-line lens explanation under the title. */
+#\31 2-segment-coasters .seg-lens-hint {
+  margin: 0;
+  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  opacity: 0.78;
+  max-width: 50ch;
+}
+
+/* Separate square buttons (no radius - house rule). Each chip is its own
+   distinct button with its own border + background; gaps keep them apart so
+   the control reads as individual buttons, not one joined bar. Wraps gracefully. */
+#\31 2-segment-coasters .seg-lens .pillgroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.6vw, 10px);
+  border: 0;
+}
+#\31 2-segment-coasters .seg-lens .pillgroup-chip {
+  appearance: none;
+  border: 1px solid rgba(4, 22, 84, 0.28);
+  background: rgba(4, 22, 84, 0.04);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 6px 12px;
+  color: var(--navy);
+  border-radius: 0;
+  transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms),
+              border-color var(--dur-micro, 180ms);
+}
+#\31 2-segment-coasters .seg-lens .pillgroup-chip:hover {
+  border-color: var(--navy);
+  background: rgba(4, 22, 84, 0.08);
+}
+#\31 2-segment-coasters .seg-lens .pillgroup-chip.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--cream, #F0EDE7);
+}
+#\31 2-segment-coasters .seg-lens .pillgroup-chip:focus-visible {
+  outline: 2px solid var(--seg-accent);
+  outline-offset: 2px;
+}
+
+/* Backgroundless chart host - bars float on cream; SVG scales to width.
+   Grows to absorb spare height (no dead space) and shrinks under pressure
+   (the fingerprint below it always stays in view). */
+#\31 2-segment-coasters .seg-chart {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+#\31 2-segment-coasters .seg-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+/* Baseline legend - faint, no box. */
+#\31 2-segment-coasters .seg-baseline {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#\31 2-segment-coasters .seg-baseline-key {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: rgba(4, 22, 84, 0.25);
+}
+
+/* TGI fingerprint cloud - quiet navy-on-cream tags, square corners,
+   text only (no numbers). Capped so it always fits one screen. */
+#\31 2-segment-coasters .seg-fingerprint {
+  flex: none;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.9vh, 10px);
+  border-top: 1px solid rgba(4, 22, 84, 0.1);
+  padding-top: clamp(8px, 1.2vh, 14px);
+}
+#\31 2-segment-coasters .seg-fingerprint-label {
+  margin: 0;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.62;
+}
+#\31 2-segment-coasters .seg-fingerprint-cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.7vw, 10px);
+  /* Two comfortable rows of tags - capped to six in JS so the final row is
+     always fully visible within 100svh, never running below the fold. */
+  max-height: calc(2 * 2.1em + clamp(6px, 0.7vw, 10px));
+  overflow: hidden;
+}
+#\31 2-segment-coasters .seg-fingerprint-tag {
+  display: inline-block;
+  padding: 5px 11px;
+  border: 1px solid rgba(4, 22, 84, 0.22);
+  background: rgba(4, 22, 84, 0.04);
+  border-radius: 0;
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  color: var(--navy);
+}
+/* The first tag carries a tiny accent tick so each card keeps its colour. */
+#\31 2-segment-coasters .seg-fingerprint-tag:first-child {
+  border-color: var(--seg-accent);
+  box-shadow: inset 3px 0 0 0 var(--seg-accent);
+}
+
+/* Orbit motif - an intentional concentric ring tucked into the lower-right
+   corner. Contained on-stage (no off-canvas void) with a small accent tick so
+   it frames the composition and balances the page instead of leaving dead
+   space. Behind everything; decorative; no pointer events. */
+#\31 2-segment-coasters .seg-orbit {
+  position: absolute;
+  bottom: calc(var(--journey-controls-h, 72px) + clamp(14px, 2.4vh, 28px));
+  right: clamp(20px, 4vw, 56px);
+  width: clamp(120px, 12vw, 188px);
+  height: clamp(120px, 12vw, 188px);
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.14));
+  pointer-events: none;
+  z-index: 0;
+}
+#\31 2-segment-coasters .seg-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  border: 1px solid var(--soi-orbit, rgba(4, 22, 84, 0.1));
+}
+/* A single accent dot riding the ring - keeps each card's colour signature. */
+#\31 2-segment-coasters .seg-orbit::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--seg-accent);
+}
+
+/* Narrow / short viewports - stack, keep one screen. */
+@media (max-width: 900px) {
+  #\31 2-segment-coasters .seg-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    row-gap: clamp(18px, 3vh, 28px);
+    align-content: center;
+  }
+  #\31 2-segment-coasters .seg-id { max-width: none; }
+  #\31 2-segment-coasters .seg-data { height: auto; }
+  #\31 2-segment-coasters .seg-fingerprint { display: none; }
+  #\31 2-segment-coasters .seg-orbit { display: none; }
+}
+
+@media (max-height: 640px) {
+  #\31 2-segment-coasters .seg-quote cite { display: none; }
+  #\31 2-segment-coasters .seg-fingerprint { display: none; }
+}
+@media (max-height: 560px) {
+  #\31 2-segment-coasters .seg-quote { display: none; }
+}

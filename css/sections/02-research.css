@@ -1,246 +1,459 @@
-/* Chapter 02 — research. Teal research surface (the appendix half).
-   Every selector is prefixed with #\30 2-research so styles never leak.
-   Recomposed 2026-06: dense .si-split that fills the frame. Method told
-   tightly on the left, GB map sized to fill its column on the right. */
+/* ============================================================
+   02-research — scoped to #\30 2-research (the journey-step section).
 
+   THE AUTHORITATIVE BRAND WORLD (BRAND-WORLD-FINAL §7, per-screen note for
+   02): the CREAM editorial ground — the reading / data register. Eyebrow →
+   a BOLD BLACK Poppins title with ONE italic accent word ("listened", the
+   "Series" gesture). The UK as a real place; the map is the hero, alone.
+   Big navy tabular stats. Navy+yellow icon/accent system — markers are navy
+   with the yellow accent when live. The tiny Challenger-Series lockup mark
+   stamps the screen top-right (the book-cover position).
+
+   THE ONE MEMORABLE THING: the UK silhouette, alone and large, the nation's
+   respondent dots converging onto it; cities surface as memories on tap.
+   Everything else is a quiet editorial rail hung on the left axis.
+
+   Asymmetric grid: slim left axis | dominant map field. Dramatic hierarchy —
+   one display headline, nothing in the muddy middle. One accent moment: the
+   yellow live-city marker. One hero motion: the converge + cities lighting.
+
+   Cream ground, navy gravity, black titles, yellow accent, Poppins.
+   Backgroundless, square corners, NO underline, navy-on-cream, AA.
+   ============================================================ */
+
+/* The section IS the cream editorial ground, full-bleed (the reading register). */
 #\30 2-research {
-  background: var(--teal);
-}
-
-/* ─── Split: fill the frame, both columns stretch ───────── */
-#\30 2-research .research-split {
-  width: 100%;
-  align-items: stretch;
-}
-
-/* ─── Left: the method, told tightly ────────────────────── */
-#\30 2-research .research-method {
-  align-content: center;
-}
-
-/* Kicker gets gravitas via the display treatment (uppercase). */
-#\30 2-research .research-kicker {
-  color: var(--ink);
-  margin: 0;
-}
-
-/* Narrative sub-headline stays sentence case; the highlighter lands on one word. */
-#\30 2-research .research-headline {
-  font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.06;
-  margin: 0;
-  max-width: 22ch;
-}
-
-/* ─── Method counters — dense grid, no hairline-list feel ─ */
-#\30 2-research .research-stats {
-  list-style: none;
-  margin: 6px 0 0 0;
+  background: var(--cream);
+  color: var(--ink-soft);
   padding: 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+#\30 2-research .chapter-inner {
+  position: relative;
+  max-width: none;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* ── The brand signature — tiny Challenger-Series lockup stamp, top-right.
+   Black silhouette on cream; the book-cover position. Never recoloured. ── */
+#\30 2-research .research-mark {
+  position: absolute;
+  top: clamp(20px, 3.4vh, 40px);
+  right: clamp(24px, 5vw, 96px);
+  height: clamp(22px, 2.4vw, 30px);
+  width: auto;
+  opacity: 0.9;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Asymmetric layout: slim rail | dominant map hero ─────────────── */
+#\30 2-research .research-grid {
+  position: relative;
+  z-index: 1;
+  /* Full-bleed, but never taller than the viewport: the section clips
+     overflow, so the grid box must stay within 100svh or content is cut. */
+  min-height: 100vh;
+  min-height: 100svh;
+  height: 100svh;
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 1.4vw, 20px);
+  grid-template-columns: minmax(300px, 31%) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 88px);
+  /* Tight, capped vertical padding so the full rail stack fits on short
+     (~800-900px) laptop viewports without clipping at the bottom. */
+  padding: clamp(1.6rem, 3.2vh, 3rem) clamp(24px, 5vw, 96px)
+           calc(var(--journey-controls-h, 72px) + clamp(1.2rem, 2.4vh, 2.2rem));
 }
-/* First stat (1,504) spans both columns as the anchor figure. */
-#\30 2-research .research-stat:first-child {
-  grid-column: 1 / -1;
-}
-#\30 2-research .research-stat {
+
+/* ── LEFT AXIS: the quiet editorial rail ───────────────────────────────
+   A stable, fully-on-screen composition. The rail is a flex column whose
+   height is the available grid track; it centres when there's room and
+   anchors to the top when there isn't, so nothing reflows as the title
+   assembles + the counts run, and nothing overflows the clipped section. */
+#\30 2-research .research-rail {
+  min-width: 0;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  /* Centre the stack in its track: with the diary slot now sized to hold a
+     full 3-line quote + cite, the whole rail (~520px max) sits comfortably
+     inside the track on short laptops AND tall displays, so centring stays
+     balanced with no dead space and the diary never reaches the controls. */
+  justify-content: center;
+  min-height: 0;
 }
-#\30 2-research .research-stat-value {
-  font-size: clamp(2rem, 3.6vw, 3rem);
-  font-weight: 600;
+
+#\30 2-research .research-rail .vccp-eyebrow {
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
+}
+
+/* The ONE display moment on this screen — the BOLD BLACK book-cover voice.
+   Sentence case, set tight, three lines; the accent word is italic only.
+   No outline or border: the title stands alone on the cream ground. */
+#\30 2-research .research-headline {
+  margin: 0 0 clamp(13px, 2vh, 22px);
+  font-weight: 900;
   line-height: 0.95;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.3rem, 3.4vw, 3.7rem);
+  color: var(--ink);
+  outline: none;
+  border: none;
+  background: none;
 }
-#\30 2-research .research-stat:first-child .research-stat-value {
-  font-size: clamp(3.4rem, 6vw, 5rem);
+#\30 2-research .research-headline::before,
+#\30 2-research .research-headline::after {
+  display: none;
 }
-#\30 2-research .research-stat-fix {
-  font-weight: 600;
+#\30 2-research .research-headline span { display: block; }
+/* The italic accent word — the "Series" gesture. The slant IS the accent:
+   no box, no skew, no underline, no fill. May take navy for a quiet lift. */
+#\30 2-research .research-headline .si-accent {
+  font-style: italic;
+  font-weight: 900;
+  color: var(--navy);
+  background: none;
 }
-#\30 2-research .research-stat-label {
-  font-size: var(--t-xs);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-weight: 600;
+
+#\30 2-research .research-standfirst {
+  margin: 0 0 clamp(14px, 2vh, 22px);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  font-weight: 400;
   color: var(--ink-soft);
-  line-height: 1.2;
+  max-width: 38ch;
+}
+#\30 2-research .research-standfirst strong { font-weight: 600; color: var(--ink); }
+/* The 1,504 — emphasised within the sentence (navy gravity), not a competing
+   display number. */
+#\30 2-research .research-standfirst .num {
+  font-weight: 700;
+  color: var(--navy);
+  font-feature-settings: "tnum" 1;
+}
+
+/* The facts — a single quiet supporting row, never a second hero. Big navy
+   tabular numerals (gravity); the small caption beneath in soft ink. */
+#\30 2-research .research-facts {
+  margin: 0 0 clamp(14px, 2vh, 24px);
+  display: flex;
+  flex-wrap: nowrap;   /* all three stats (8 / 1wk / May 26) on ONE row */
+  gap: clamp(12px, 1.6vw, 26px);
+}
+#\30 2-research .research-fact { margin: 0; min-width: 0; }
+#\30 2-research .research-fact-k {
+  display: block;
+  margin: 0;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+  font-size: clamp(1.55rem, 2.1vw, 2.05rem);
+  font-feature-settings: "tnum" 1;
+}
+#\30 2-research .research-fact-k--text {
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  letter-spacing: -0.02em;
+}
+#\30 2-research .research-fact-unit {
+  font-size: 0.5em;
+  font-weight: 700;
+  margin-left: 0.08em;
+}
+#\30 2-research .research-fact-v {
+  display: block;
+  margin: 5px 0 0;
+  max-width: 16ch;
+  font-size: var(--t-xs);
+  line-height: 1.35;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  opacity: 0.78;
 }
 
 #\30 2-research .research-credit {
-  margin: 8px 0 0 0;
-  font-size: var(--t-sm);
-  color: var(--ink-soft);
-}
-#\30 2-research .research-credit strong {
-  color: var(--ink);
+  margin: clamp(12px, 1.8vh, 20px) 0 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   font-weight: 600;
-}
-#\30 2-research .vccp-source {
-  margin: 0;
-  max-width: 56ch;
+  color: var(--navy);
+  opacity: 0.6;
 }
 
-/* ─── Right: GB map fills its column ────────────────────── */
-#\30 2-research .research-map-wrap {
+/* ── HERO: the UK, alone and large ─────────────────────────────────── */
+#\30 2-research .research-stage {
   position: relative;
+  min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: clamp(16px, 2.4vh, 28px);
 }
-#\30 2-research .research-map {
+
+/* Quiet kicker above the map — the connecting status, never a focal point. */
+#\30 2-research .research-status {
+  margin: 0;
+  align-self: flex-end;
+  font-size: var(--t-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--navy);
+  opacity: 0.55;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Map wrapper: the silhouette fills the large box — no field canvas. */
+#\30 2-research .research-map-wrap {
   position: relative;
   width: 100%;
-  max-width: 520px;
-  margin-inline: auto;
-  aspect-ratio: 100 / 120;
+  flex: 1 1 auto;
+  /* Let the silhouette claim the bulk of the stage height so the right
+     side reads full (no big empty bands) without crowding the rail. */
+  min-height: clamp(380px, 68vh, 760px);
 }
-#\30 2-research .research-map-svg {
+#\30 2-research .research-map {
   position: absolute;
   inset: 0;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+#\30 2-research .research-map:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 8px;
+}
+
+/* The navy silhouette: backgroundless, large, the single hero form, sitting
+   on the cream ground. One soft self-shadow lift. */
+#\30 2-research .research-map-svg {
+  width: auto;
   height: 100%;
-}
-#\30 2-research .research-map-land {
-  fill: var(--ink);
-  stroke: var(--ink);
-  stroke-width: 0.6;
-  stroke-linejoin: round;
-}
-
-/* ─── City markers (square mustard buttons) ─────────────── */
-#\30 2-research .research-marker {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  transform: translate(-50%, -50%);
-  background: var(--mustard);
-  border: 1.5px solid var(--ink);
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-#\30 2-research .research-marker:hover {
-  transform: translate(-50%, -50%) scale(1.18);
-}
-#\30 2-research .research-marker:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
+  max-width: 100%;
+  display: block;
+  fill: var(--navy);
+  opacity: 0.96;
+  filter: drop-shadow(0 24px 44px rgba(4, 22, 84, 0.18));
 }
 
-/* Marker label — hidden until hover/focus/active to avoid clutter. */
-#\30 2-research .research-marker-label {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 5px);
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  padding: 2px 5px;
+/* The silhouette fill is decorative — it must never intercept marker clicks. */
+#\30 2-research .research-map-svg > g:not(.research-markers) { pointer-events: none; }
+
+/* ── City markers — flat navy+yellow, the icon/accent system ────────
+   At rest: a small cream dot with navy stroke. Active: fill flips to
+   yellow, ring appears. The dot radius NEVER changes — adjacent cities
+   (Wigan/Bury are ~15px apart) must not blob together. ──────────────── */
+#\30 2-research .research-markers { pointer-events: auto; }
+#\30 2-research .research-marker { cursor: pointer; pointer-events: auto; }
+#\30 2-research .research-marker-ring,
+#\30 2-research .research-marker-dot { pointer-events: auto; }
+
+/* The active ring: invisible at rest, stroked yellow when live.
+   Fixed radius (DOT_R + 4) — never grows, never overlaps a neighbour. */
+#\30 2-research .research-marker-ring {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 2;
   opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#\30 2-research .research-marker.is-active .research-marker-ring { opacity: 1; }
+
+/* The dot: cream fill + navy stroke at rest; yellow fill when active.
+   No size change — r is set in JS as DOT_R=5, stays 5 always. */
+#\30 2-research .research-marker-dot {
+  fill: var(--cream);
+  stroke: var(--navy);
+  stroke-width: 2.5;
+  transition: fill 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+              stroke 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#\30 2-research .research-marker:hover .research-marker-dot {
+  fill: color-mix(in srgb, var(--yellow) 60%, var(--cream));
+}
+/* The live city — the yellow accent moment. */
+#\30 2-research .research-marker.is-active .research-marker-dot {
+  fill: var(--yellow);
+  stroke: var(--navy);
+}
+
+/* Labels: visible only on hover or active, positioned offset from the dot.
+   Cream stroke halo so text reads over the navy silhouette. */
+#\30 2-research .research-marker-label {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  fill: var(--navy);
+  paint-order: stroke;
+  stroke: var(--cream);
+  stroke-width: 5;
+  stroke-linejoin: round;
   pointer-events: none;
-  transition: opacity 0.12s ease;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 #\30 2-research .research-marker:hover .research-marker-label,
-#\30 2-research .research-marker:focus-visible .research-marker-label,
-#\30 2-research .research-marker.is-active .research-marker-label {
-  opacity: 1;
+#\30 2-research .research-marker.is-active .research-marker-label { opacity: 1; }
+
+/* Entrance: markers light in sequence as the country "connects". */
+@media (prefers-reduced-motion: no-preference) {
+  #\30 2-research .research-marker {
+    opacity: 0;
+    transform: scale(0.4);
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: research-marker-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation-delay: var(--marker-delay, 0ms);
+  }
+  @keyframes research-marker-in {
+    to { opacity: 1; transform: scale(1); }
+  }
 }
 
-/* Active marker — teal-deep pulse + outline. */
-#\30 2-research .research-marker.is-active {
-  background: var(--teal-deep);
-  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--teal-deep);
-}
-#\30 2-research .research-marker.is-active::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 1.5px solid var(--teal-deep);
-  animation: research-pulse 1.6s ease-out infinite;
-  pointer-events: none;
-}
-@keyframes research-pulse {
-  0% { transform: scale(1); opacity: 0.9; }
-  70% { transform: scale(2.1); opacity: 0; }
-  100% { transform: scale(2.1); opacity: 0; }
+/* The listening trail — faint navy thread between visited cities. */
+#\30 2-research .research-trail {
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.32;
+  stroke-dasharray: 2 18;
 }
 
-/* ─── Hint + rail card ──────────────────────────────────── */
-#\30 2-research .research-map-hint {
-  margin: 14px auto 0 auto;
-  max-width: 520px;
+/* ── The "try it" hint ─────────────────────────────────────────────── */
+#\30 2-research .research-hint {
+  margin: 0;
+  align-self: flex-end;
+  text-align: right;
+  max-width: 36ch;
   font-size: var(--t-xs);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-#\30 2-research .research-rail {
-  margin-top: 14px;
-}
-#\30 2-research .research-card {
-  border-left-color: var(--teal-deep);
-}
-#\30 2-research .research-card-head {
-  margin-bottom: 14px;
-}
-#\30 2-research .research-card-eyebrow {
-  margin-bottom: 6px;
-}
-#\30 2-research .research-card-title {
-  font-size: var(--t-lg);
   font-weight: 500;
-  line-height: 1.1;
-  margin: 0;
+  color: var(--ink-soft);
+  opacity: 0.78;
+  transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-#\30 2-research .research-card-quote {
+#\30 2-research .research-hint.is-done { opacity: 0; pointer-events: none; }
+
+/* ── The opened diary — surfaces in the rail, beneath the facts ──────
+   Editorial register: a hanging quote, the yellow accent on the quote mark,
+   navy emphasis on the attribution. Backgroundless — no card behind it. ── */
+#\30 2-research .research-diary {
+  /* Reserve a fixed slot so the rail never reflows when a diary opens. Sized to
+     hold a 3-line quote AND its attribution cite with headroom, so neither the
+     quote nor the cite is ever clipped at the bottom. Long quotes line-clamp
+     within the quote block rather than pushing the cite out of view. */
+  min-height: clamp(118px, 15vh, 148px);
+  max-height: clamp(118px, 15vh, 148px);
+  margin: 0 0 clamp(6px, 1.2vh, 12px);
+  overflow: hidden;
+}
+#\30 2-research .research-quote { margin: 0; }
+#\30 2-research .research-quote-text {
   margin: 0;
-  font-size: var(--t-md);
+  position: relative;
+  padding-left: 1em;
+  font-size: clamp(0.98rem, 1.2vw, 1.16rem);
   line-height: 1.4;
+  font-weight: 500;
+  color: var(--ink);
+  /* Clamp long verbatim lines so they never spill out of the reserved slot
+     (3 lines + cite fits inside the capped diary height). */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-#\30 2-research .research-card-cite {
-  margin: 12px 0 0 0;
+#\30 2-research .research-quote-text::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.06em;
+  top: -0.16em;
+  font-size: 2.2em;
+  line-height: 1;
+  font-weight: 900;
+  color: var(--yellow);
+}
+#\30 2-research .research-quote-cite {
+  margin: 6px 0 0;
+  padding-left: 1em;
   font-size: var(--t-xs);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--ink-soft);
+  opacity: 0.85;
 }
-#\30 2-research .research-card-note {
+#\30 2-research .research-quote-who { color: var(--navy); font-weight: 700; opacity: 1; }
+#\30 2-research .research-quote-note {
   margin: 0;
   font-size: var(--t-sm);
   line-height: 1.45;
+  font-weight: 500;
   color: var(--ink-soft);
 }
-
-/* ─── Reduced motion: kill the pulse ────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  #\30 2-research .research-marker { transition: none; }
-  #\30 2-research .research-marker.is-active::after { animation: none; }
+#\30 2-research .research-quote-city {
+  display: block;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 3px;
 }
 
-/* ─── Responsive: stack columns under the grid breakpoint ─ */
-@media (max-width: 860px) {
-  #\30 2-research .research-split {
+/* Surfacing transition — the memory rises into place. */
+#\30 2-research .research-diary .research-quote,
+#\30 2-research .research-diary .research-quote-note {
+  opacity: 0;
+  transform: translateY(14px);
+}
+#\30 2-research .research-diary.is-live .research-quote,
+#\30 2-research .research-diary.is-live .research-quote-note {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  #\30 2-research .research-diary .research-quote,
+  #\30 2-research .research-diary .research-quote-note { opacity: 1; transform: none; }
+}
+
+/* ── Responsive: stack the rail over the hero on narrow screens ────── */
+@media (max-width: 900px) {
+  #\30 2-research .research-grid {
     grid-template-columns: 1fr;
+    /* When stacked, let the content set its own height (it can exceed one
+       screen) rather than forcing it into 100svh and clipping. */
+    height: auto;
+    min-height: 100svh;
+    align-content: center;
+    gap: clamp(28px, 5vh, 48px);
+    padding: clamp(3.6rem, 6vh, 4.5rem) clamp(20px, 7vw, 40px)
+             calc(var(--journey-controls-h, 72px) + clamp(2rem, 5vh, 3.5rem));
   }
-  #\30 2-research .research-map {
-    max-width: 380px;
+  /* Stacked: the rail no longer competes with the map for vertical room. */
+  #\30 2-research .research-rail {
+    align-self: auto;
+    max-height: none;
+    overflow: visible;
   }
+  #\30 2-research .research-map-wrap { min-height: clamp(320px, 46vh, 520px); }
+  #\30 2-research .research-status,
+  #\30 2-research .research-hint { align-self: flex-start; text-align: left; }
 }
 @media (max-width: 520px) {
-  #\30 2-research .research-stats {
-    grid-template-columns: 1fr;
-  }
+  #\30 2-research .research-facts { gap: 20px 28px; }
+  #\30 2-research .research-headline { font-size: clamp(2.2rem, 9vw, 3rem); }
 }

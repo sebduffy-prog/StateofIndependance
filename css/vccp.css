@@ -1,276 +1,957 @@
 /* ============================================================
-   vccp.css — VCCP Media 2026 brand token sheet + shared components
-   The State of Independence. Shared file — section builders must
-   NOT edit this; scope chapter styles in css/sections/{id}.css.
+   vccp.css — The State of Independence — DESIGN SYSTEM
+   Shared token sheet + shared components for the guided journey.
+   Chapter builders scope their own styles in css/sections/{id}.css;
+   they REUSE the tokens + classes declared here and never edit this file.
+
+   THE AUTHORITATIVE BRAND WORLD: docs/BRAND-WORLD-FINAL.md, derived from the
+   FINAL deck components in assets/brand-final/ and held to docs/ART-DIRECTION.md.
+   Warm-amber/coral gradient + cream GROUNDS dominate (60-70%); NAVY is gravity;
+   YELLOW is the single icon/accent; BLACK carries all bold titles + silhouettes.
+   POPPINS — Black/ExtraBold dramatic display, Medium/Regular body, an italic
+   accent word in the "Series" manner. The book-cover EDITORIAL CARD is the
+   house component: cream, square corners, bold-black title low-left, a flat
+   navy+yellow icon, the tiny lockup mark top-right, one soft self-shadow.
+   Square corners. NO underlines. NO parallelogram. Backgroundless data.
+   Sources hidden. Reduced-motion safe. Tabular numbers. Contrast-safe.
    ============================================================ */
 
+/* ============================================================
+   SELF-HOSTED FONTS — Poppins (the primary face). Weights 400-900
+   normal + 400/600 italic. font-display:swap avoids FOIT.
+   ============================================================ */
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/poppins-400.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/poppins-500.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/poppins-600.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/poppins-700.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:800; font-display:swap; src:url('../assets/fonts/poppins-800.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:normal; font-weight:900; font-display:swap; src:url('../assets/fonts/poppins-900.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:italic; font-weight:400; font-display:swap; src:url('../assets/fonts/poppins-400-italic.woff2') format('woff2'); }
+@font-face { font-family:'Poppins'; font-style:italic; font-weight:600; font-display:swap; src:url('../assets/fonts/poppins-600-italic.woff2') format('woff2'); }
+
+/* ============================================================
+   TOKENS  (exact hexes — BRAND-WORLD-FINAL §1, eyedropper-sampled)
+   ============================================================ */
 :root {
-  /* MUSTARD — primary half */
-  --mustard:       #FFC931;
-  --mustard-dark:  #FF8812;   /* down-deltas, warnings — never red */
-  --mustard-light: #FFEDBB;   /* highlighter fill */
-  --mustard-pale:  #FFF9E2;   /* card surfaces, frame panels */
+  /* ── Warm gradient ground (the dominant surface, 60-70%) ─── */
+  --ground-amber:  #FBC100;   /* the core — the mustard everything sits on */
+  --ground-gold:   #FFC002;   /* lightest warm tint — top of the gradient */
+  --ground-orange: #FFA764;   /* the orange the amber warms into */
+  --ground-coral:  #FF8598;   /* hottest corner glow — the far ~12% only */
 
-  /* TEAL — appendix half (research surfaces only) */
-  --teal:          #80E8E3;
-  --teal-deep:     #00BCA5;   /* up-deltas, validated states */
-  --teal-light:    #BDF9F6;   /* teal-variant highlighter fill */
-  --teal-pale:     #DEFCFA;
+  /* ── Cream — the editorial light ground + the card fill ──── */
+  --cream:       #F0EDE7;     /* editorial ground + book-cover card fill; NEVER pure white */
+  --cream-shade: #E2E0D8;     /* card self-shadow tint / faint divider on cream */
 
-  /* NAVY — serious/dark accent (2026 redesign: the bear, dark grounds, data) */
-  --navy:          #101F5B;
-  --navy-soft:     #1E2E78;   /* hover/secondary navy */
-  --navy-pale:     #E7EAF4;   /* navy tint surface */
-  --azure:         #1E90FF;   /* deck data-series accent (use sparingly) */
+  /* ── Navy + Yellow — the icon & accent system ─────────────── */
+  --navy:        #041654;     /* icon dark, bold-stat accent, fine furniture ink */
+  --navy-bright: #0129A4;     /* brighter blue inside the flat icons (secondary tone) */
+  --yellow:      #F0CB08;     /* the one accent — icon wedge, single highlight per screen */
 
-  /* Neutrals */
-  --ink:           #000000;
-  --ink-soft:      #1A1A1A;
-  --paper:         #FFFFFF;
-  --paper-warm:    #FBF8F0;
+  /* ── Black — type & silhouettes ──────────────────────────── */
+  --ink:      #000000;        /* ALL display type + bold-black titles + silhouettes */
+  --ink-soft: #1A1A1A;        /* body copy where pure black is too hard on cream */
 
-  --font-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* ── Signature ground gradients (grounds only — never charts) ─ */
+  --ground-warm: linear-gradient(135deg,
+                   var(--ground-orange) 0%,
+                   var(--ground-amber)  40%,
+                   var(--ground-gold)   70%,
+                   var(--ground-coral)  100%);
+  /* A softer warm wash for reading-leaning warm screens. */
+  --ground-warm-soft: linear-gradient(180deg,
+                   var(--cream)        0%,
+                   #FBE3B0             62%,
+                   var(--ground-amber) 100%);
+  /* Full-bleed navy world moment (the earned punctuation pivot). */
+  --ground-navy: linear-gradient(135deg, #02103F 0%, var(--navy) 60%, #0A2270 100%);
 
-  /* Type scale */
-  --t-display: clamp(3.2rem, 7vw, 7.5rem);   /* hero + full-bleed divider titles */
-  --t-xl: clamp(2.6rem, 4.8vw, 4.6rem);
-  --t-lg: clamp(1.8rem, 2.6vw, 2.6rem);
+  /* ── Contrast-safe foregrounds per ground (the dominance rule) ─ */
+  --on-warm:  var(--ink);     /* black/navy on warm; type is never amber-on-amber */
+  --on-navy:  var(--cream);   /* cream on navy */
+  --on-cream: var(--ink-soft);/* ink on cream */
+
+  /* ── Spacing — 8px base; tight within / large between (AD §2) ─ */
+  --space-1:  8px;    /* within a group */
+  --space-2:  16px;   /* within a group */
+  --space-3:  24px;
+  --space-4:  40px;
+  --space-5:  64px;   /* between groups */
+  --space-6:  96px;   /* between groups */
+  --space-7:  128px;  /* between groups */
+  /* Editorial outer margin — nothing but the ground touches the edge. */
+  --margin-page: clamp(24px, 5vw, 96px);
+
+  /* ── Type — exact Poppins scale (ART-DIRECTION §1, BWF §2) ─── */
+  --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Display: the ONE hero line per screen. Poppins 900, book-cover voice. */
+  --t-display: clamp(3.5rem, 8vw, 8rem);
+  /* Card / section title — the book-cover title at card scale. Poppins 800. */
+  --t-title:   clamp(1.6rem, 2.6vw, 2.4rem);
+  /* Sub-head. Poppins 600. */
+  --t-sub:     clamp(1.4rem, 2.2vw, 2rem);
+  /* Hero stat — the number IS the headline. Poppins 900, navy, tabular. */
+  --t-bignum:  clamp(4.4rem, 9.6vw, 9.6rem);
+  /* Legacy aliases kept so chapter CSS that reads them still resolves. */
+  --t-xl: clamp(2.8rem, 5.2vw, 5rem);
+  --t-lg: var(--t-sub);
   --t-md: clamp(1.15rem, 1.4vw, 1.4rem);
-  --t-sm: 0.93rem;
+  --t-sm: 1rem;
   --t-xs: 0.78rem;
 
-  --nav-height: 57px;
+  /* ── Motion — ONE easing system (ART-DIRECTION §4) ─────── */
+  --ease-entrance: cubic-bezier(0.2, 0.8, 0.2, 1);  /* arrivals, reveals */
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);       /* leaves */
+  --dur-micro:     180ms;  /* hover / focus acknowledgement */
+  --dur-reveal:    720ms;  /* the 600-900ms reveal band */
+  --dur-reveal-lg: 900ms;
+
+  /* ── Journey engine ────────────────────────────────────── */
+  --journey-controls-h: 72px;
+
+  /* ── Legacy token aliases — chapter CSS + js/lib read these names.
+     Re-pointed at the authoritative palette so old references resolve to
+     the new world (no chapter edits needed). ───────────────────────── */
+  --soi-amber:      var(--ground-amber);
+  --soi-gold:       var(--ground-gold);
+  --soi-orange:     var(--ground-orange);
+  --soi-coral:      var(--ground-coral);
+  --soi-cream:      var(--cream);
+  --soi-cream-warm: #FBE3B0;            /* warmer cream for figures on warm */
+  --soi-navy:       var(--navy);
+  --soi-blue:       var(--navy-bright); /* old "bright royal" -> the icon bright blue */
+  --soi-teal:       var(--yellow);      /* the single accent is now YELLOW, not teal */
+  --soi-orbit:        rgba(4, 22, 84, 0.16);  /* orbit lines on warm/cream (navy tint) */
+  --soi-orbit-strong: rgba(4, 22, 84, 0.26);
+  --soi-seed:         var(--yellow);
+  --paper:            var(--cream);     /* never pure white on this world */
 }
 
-/* ─── Base ──────────────────────────────────────────────── */
+/* ============================================================
+   BASE
+   ============================================================ */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 html, body { margin: 0; padding: 0; }
 body {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: var(--t-sm);
-  color: var(--ink);
-  background: var(--paper);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  background: var(--cream);
   font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
-  padding-top: var(--nav-height);
+  text-rendering: optimizeLegibility;
 }
-/* Form controls do not inherit font-family by default — force the brand
-   font (Inter Tight) on every control so buttons, pills, sliders, quiz and
-   drag-rank elements never fall back to the system font. */
-button, input, select, textarea, optgroup {
-  font-family: var(--font-sans);
-}
+button, input, select, textarea, optgroup { font-family: var(--font-sans); }
 img { display: block; object-fit: contain; }
 .num, [data-count-to] { font-variant-numeric: tabular-nums; }
 
-/* ─── Top nav (57px, ink hairline bottom) ───────────────── */
-.site-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  height: var(--nav-height);
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 0 clamp(16px, 2.5vw, 40px);
-  background: var(--paper);
-  border-bottom: 1px solid var(--ink);
-}
-.site-nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
+/* Headings: card-title weight by default. The display moment is .si-display. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
   color: var(--ink);
+  margin: 0 0 0.4em;
 }
-.site-nav-title {
+
+/* HARD RULE: no underlines anywhere. */
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: none; }
+
+/* ============================================================
+   TYPE SCALE — dramatic contrast, nothing in the muddy middle (AD §1)
+   The book-cover voice: BOLD BLACK Poppins, set tight, on cream/warm.
+   ============================================================ */
+
+/* Display — the ONE hero line per screen. Poppins 900, BLACK.
+   Sentence case is the default (narrative); UPPERCASE is opt-in via
+   .si-display--upper (the move-divider + cover all-caps energy only).
+   Section CSS that sets its own text-transform always wins. */
+.si-display {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: var(--t-display);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--ink);
+  text-transform: none;
+  margin: 0;
+}
+/* The engine programmatically focuses each stage heading (h1/h2, tabindex=-1)
+   on arrival for screen-reader + keyboard orientation. The browser's default
+   focus ring on that programmatic focus is the client-reported "blue box"
+   around titles. A tabindex=-1 heading is never in the keyboard tab order, so
+   suppressing its focus ring is safe; interactive controls keep their own
+   :focus-visible rings. (Chromium matches :focus-visible on programmatic focus,
+   so we must NOT gate this on :not(:focus-visible) or the ring survives.) */
+:is(h1, h2, [role="heading"])[tabindex="-1"]:focus,
+:is(h1, h2, [role="heading"])[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+/* The persistent yellow "you-dot" is retired at the client's request — it read
+   as a stray dot floating across the stages. Hidden globally. */
+.you-dot { display: none !important; }
+
+.si-display--lg { font-size: var(--t-display); }
+.si-display--sm { font-size: var(--t-title); font-weight: 800; letter-spacing: -0.02em; line-height: 1.0; }
+.si-display--black { font-weight: 900; letter-spacing: -0.03em; }
+.si-display--upper { text-transform: uppercase; letter-spacing: -0.01em; }
+.si-display--caseless { text-transform: none; } /* legacy alias — no-op vs the default */
+
+/* The italic accent — the "Series" gesture (replaces the parallelogram).
+   One accent word per headline, set in italic ONLY; the slant IS the accent.
+   No box, no skew, no underline, no highlight fill. May take navy. */
+.si-accent { font-style: italic; font-weight: inherit; }
+.si-accent--navy { font-style: italic; color: var(--navy); }
+
+/* Hero stat — the number IS the headline. Poppins 900, navy, tabular. */
+.si-bignum {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: var(--t-bignum);
+  line-height: 0.86;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+/* Sub-head utility. Poppins 600. */
+.si-subhead {
+  font-weight: 600;
+  font-size: var(--t-sub);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* Standfirst — set above body, held to measure. Poppins 500. */
+.si-standfirst {
   font-weight: 500;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.5;
+  max-width: 58ch;
+  margin: 0;
 }
-.site-nav-pills {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
+
+/* Body measure — text never runs the full page width (52-62ch). */
+.si-measure { max-width: 60ch; }
+.si-measure--tight { max-width: 52ch; }
+
+/* ── .hl — emphasis is COLOUR + WEIGHT only. No box, no underline,
+   no parallelogram, no fill behind glyphs. Navy is the default emphasis
+   on cream/warm; it flips to the yellow accent on navy grounds. ──── */
+.hl {
+  font-weight: 800;
+  color: var(--navy);
+  background: none;
+  border: 0;
+  text-decoration: none;
 }
-/* The pill is the ONLY rounded element in the whole system. */
-.chapter-pill {
-  font-size: var(--t-xs);
+.hl-teal { color: var(--navy); font-weight: 800; background: none; } /* legacy alias */
+/* On navy grounds emphasis flips to the yellow accent. */
+.si-ground-navy .hl,
+.si-dark .hl,
+.on-navy .hl { color: var(--yellow); }
+/* Emphasis inside a Black display heading inherits its leading. */
+.si-display .hl { line-height: inherit; }
+
+/* ── Eyebrow / kicker — Poppins 600, UPPERCASE, +0.18em, 0.7 opacity ── */
+.vccp-eyebrow {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.7;
+  margin: 0 0 var(--space-2);
+}
+
+/* ── Stage-number kicker (box-less editorial kicker) ─────── */
+.vccp-stage-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.85;
+  margin-bottom: var(--space-2);
+}
+.vccp-stage-num::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+/* ── Stat label (small caps kicker above a big number) ───── */
+.vccp-stat-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  text-decoration: none;
-  color: var(--ink);
-  padding: 7px 12px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  white-space: nowrap;
+  color: var(--ink-soft);
 }
-.chapter-pill:hover { background: var(--mustard-pale); }
-.chapter-pill.is-active { background: var(--mustard); border-color: var(--ink); }
 
-/* ─── Left progress rail (01–09 stage chips) ────────────── */
-.progress-rail {
-  position: fixed;
-  left: clamp(10px, 1.2vw, 22px);
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 90;
+/* ============================================================
+   GROUNDS + CONTRAST UTILITIES (the dominance rule)
+   Each ground owns a stacking context and a guaranteed-legible
+   foreground. Decorative overlays sit behind real content.
+   ============================================================ */
+.si-ground-warm {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-warm);
+  color: var(--on-warm);
+}
+.si-ground-warm--soft { background: var(--ground-warm-soft); }
+/* Cream editorial ground — the reading / data register. */
+.si-ground-cream {
+  position: relative;
+  isolation: isolate;
+  background: var(--cream);
+  color: var(--on-cream);
+}
+/* Navy world moment — the earned punctuation pivot. */
+.si-ground-navy {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-navy);
+  color: var(--on-navy);
+}
+.si-dark {
+  position: relative;
+  isolation: isolate;
+  background: var(--navy);
+  color: var(--on-navy);
+}
+.si-dark--velvet { background: #02103F; }
+/* Legacy alias — old "blue ground" now resolves to the navy world. */
+.si-ground-blue {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground-navy);
+  color: var(--on-navy);
+}
+
+/* Real content sits above decorative overlays inside any ground. */
+.si-ground-warm > *,
+.si-ground-cream > *,
+.si-ground-navy > *,
+.si-ground-blue > *,
+.si-dark > * { position: relative; z-index: 1; }
+
+/* Explicit contrast utilities — force a deliberate foreground. */
+.on-warm  { color: var(--on-warm); }
+.on-navy  { color: var(--on-navy); }
+.on-paper { color: var(--on-cream); }   /* legacy alias -> ink on cream */
+.on-cream { color: var(--on-cream); }
+
+/* Headlines / eyebrows resolve to the ground's safe foreground.
+   On warm + cream the bold titles are BLACK (the book-cover voice);
+   bignums stay navy (gravity). On navy, everything goes cream. */
+.si-ground-warm  :is(h1,h2,h3,.si-display,.si-subhead),
+.si-ground-cream :is(h1,h2,h3,.si-display,.si-subhead),
+.on-warm :is(h1,h2,h3,.si-display,.si-subhead) { color: var(--ink); }
+.si-ground-warm  .vccp-eyebrow,
+.si-ground-cream .vccp-eyebrow,
+.on-warm .vccp-eyebrow { color: var(--navy); }
+.si-ground-navy :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.si-ground-blue :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.si-dark :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow),
+.on-navy :is(h1,h2,h3,.si-display,.si-bignum,.si-subhead,.vccp-eyebrow) { color: var(--on-navy); }
+/* The stage-num kicker follows the ground. */
+.si-ground-navy .vccp-stage-num,
+.si-ground-blue .vccp-stage-num,
+.si-dark .vccp-stage-num,
+.on-navy .vccp-stage-num { color: var(--yellow); }
+
+/* ── Orbit-motif overlay — thin concentric circles, decorative only,
+   behind content, carries no meaning, ignores the pointer (AD §6).
+   Navy-tint lines on warm/cream; the you-dot/accent carries yellow. ── */
+.si-orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 50%,
+      transparent 0,               transparent calc(14% - 1px),
+      var(--soi-orbit) 14%,        transparent calc(14% + 1px),
+      transparent calc(24% - 1px),
+      var(--soi-orbit) 24%,        transparent calc(24% + 1px),
+      transparent calc(34% - 1px),
+      var(--soi-orbit-strong) 34%, transparent calc(34% + 1px),
+      transparent calc(46% - 1px),
+      var(--soi-orbit) 46%,        transparent calc(46% + 1px),
+      transparent 100%);
+}
+.si-orbit--center { background-position: center; }
+/* On navy grounds the orbit lines invert to faint cream. */
+.si-ground-navy .si-orbit,
+.si-ground-blue .si-orbit,
+.si-dark .si-orbit {
+  --soi-orbit: rgba(240, 237, 231, 0.18);
+  --soi-orbit-strong: rgba(240, 237, 231, 0.28);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .si-orbit--spin { animation: si-orbit-spin 160s linear infinite; transform-origin: 70% 50%; }
+}
+@keyframes si-orbit-spin { to { transform: rotate(360deg); } }
+
+/* ── Seed dots on the orbit lines (sparse, decorative, the yellow accent) ─ */
+.si-seed {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(240, 237, 231, 0.5);
+}
+
+/* ── Silhouettes (bear + girl, the maze line) — read by mass ──── */
+.si-silhouette {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+  object-fit: contain;
+}
+.si-silhouette--behind { position: absolute; inset: auto 0 0 auto; z-index: 0; }
+
+/* Any decorative canvas overlay (dotField) sits behind content. */
+canvas.dot-field, [data-dotfield], .dotfield-canvas {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* ============================================================
+   THE BRAND SIGNATURE — Challenger-Series lockup placements
+   challenger-series-lockup.png is the black silhouette signature.
+   Never recolour / skew / stretch; object-fit: contain always.
+   ============================================================ */
+.si-lockup { display: block; height: auto; width: auto; object-fit: contain; }
+/* Hero scale — cover / outro sign-off (96-160px). */
+.si-lockup--hero { height: clamp(96px, 12vw, 160px); }
+/* The tiny card stamp — top-right of any editorial card (24-32px). */
+.si-lockup--mark {
+  height: 28px;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   THE EDITORIAL COMPONENT — the book-cover card (BWF §3).
+   THE HOUSE COMPONENT. Cream ground, square corners, a tiny lockup
+   mark top-right, a flat navy+yellow icon / photo in the upper field,
+   a BOLD BLACK Poppins title anchored low-left. ONE lift device only
+   (the soft self-shadow) — no border AND shadow together.
+   ============================================================ */
+.soi-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  background: var(--cream);
+  color: var(--ink-soft);
+  border-radius: 0;                 /* square, always */
+  padding: clamp(20px, 2.4vw, 36px);
+  /* ONE lift device — the soft navy self-shadow. */
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
 }
-.rail-chip {
-  display: inline-block;
-  font-weight: 500;
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-decoration: none;
+/* The icon / photo sits in the upper field with generous space. */
+.soi-card__media {
+  margin-bottom: var(--space-4);
+}
+/* The title is anchored low-left — push it to the foot of the card. */
+.soi-card__title {
+  margin-top: auto;
+  font-weight: 800;
   color: var(--ink);
-  background: var(--paper);
-  border: 1px solid rgba(0,0,0,0.25);
-  padding: 4px 7px;
-  transition: background .15s ease, border-color .15s ease;
+  font-size: var(--t-title);
+  letter-spacing: -0.02em;
+  line-height: 1.0;
 }
-.rail-chip:hover { border-color: var(--ink); }
-.rail-chip.is-active {
-  background: var(--mustard);
-  border-color: var(--ink);
+/* The tiny Challenger-Series lockup stamp, top-right (the book-cover position). */
+.soi-card__mark {
+  position: absolute;
+  top: clamp(16px, 2vw, 28px);
+  right: clamp(16px, 2vw, 28px);
+  height: 28px;
+  width: auto;
+  opacity: 0.9;
+  z-index: 2;
+}
+/* Half-bleed photographic evidence inside the card (ch07 ad-mockups). */
+.soi-card__photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0;
+  margin-bottom: var(--space-4);
+}
+/* Alternate lift: a single navy-tint hairline INSTEAD of the shadow
+   (one frame device per card — pick this OR the shadow, never both). */
+.soi-card--hairline {
+  box-shadow: none;
+  border: 1px solid rgba(4, 22, 84, 0.14);
+}
+/* A card may also sit straight on the warm ground (its value lifts it). */
+.soi-card--flat { box-shadow: none; }
+
+/* ── Flat navy+yellow icon (BWF §6) — geometric, two-tone, no gradient,
+   no outline, no shadow. Authored SVGs / data-marks slot here; this sets
+   the colour language via currentColor + the accent custom prop. ─────── */
+.soi-icon {
+  display: inline-block;
+  width: clamp(48px, 6vw, 88px);
+  height: auto;
+  color: var(--navy);                  /* the icon body */
+  --icon-accent: var(--yellow);        /* the bright wedge */
+  --icon-bright: var(--navy-bright);   /* the inner accent figure */
+}
+.soi-icon [data-accent], .soi-icon .icon-accent { fill: var(--icon-accent); }
+.soi-icon [data-bright], .soi-icon .icon-bright { fill: var(--icon-bright); }
+.soi-icon [data-body],   .soi-icon .icon-body   { fill: currentColor; }
+
+/* ============================================================
+   Z-AXIS DEPTH-SCROLL JOURNEY ENGINE (docs/Z-AXIS-JOURNEY.md)
+   main.js builds <div class="journey-3d"> (the perspective stage) inside #app
+   and mounts every step as <section class="journey-stage si-ground-*">. Scroll/
+   trackpad/touch/keys drive one eased journey progress; each stage is positioned
+   purely by main.js (transform/opacity/filter) per its depth from focus. The
+   document itself never scrolls — input is captured and mapped to progress.
+   ============================================================ */
+
+/* No document scroll: the journey IS the scroll. */
+html, body { height: 100%; overflow: hidden; }
+#app { position: relative; width: 100%; height: 100svh; height: 100vh; }
+
+/* The 3D stage — one perspective container; stages fly through its depth.
+   Perspective 1100px: close enough to make Z-travel unmistakable (stages
+   visibly zoom out of the screen toward you and emerge from deep space). */
+.journey-3d {
+  position: fixed;
+  inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  background: var(--cream);
 }
 
-/* ─── Chapter base (full-viewport scroll stages) ────────── */
-.chapter {
-  min-height: 100vh;
-  scroll-margin-top: var(--nav-height);
+/* Each STAGE is FULL-BLEED — the ground fills 100vw × 100svh, edge to edge.
+   No cream page band: the stage's own si-ground-* fills the whole viewport.
+   Centred in 3D so translateZ flies it toward / away from the camera. main.js
+   owns transform / opacity / filter / visibility / z-index. */
+.journey-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  width: 100svw;
+  height: 100vh;
+  height: 100svh;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: 50% 50%;
+  overflow: hidden;                 /* one screen per stage, no internal scroll */
   display: flex;
   align-items: center;
-  /* Density tuning (2026 redesign): tighter vertical padding, kills airy feel */
-  padding: clamp(40px, 5vh, 72px) clamp(20px, 4vw, 72px)
-           clamp(40px, 5vh, 72px) clamp(56px, 6vw, 96px);
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
+  contain: layout paint;
+  /* NO LOADING-SCREEN MESS: every stage starts hidden so the 22 full-bleed
+     stages do not stack on top of each other while they mount. main.js's first
+     render() (in start(), after all sections are mounted) sets visibility +
+     opacity per the depth field, so the focused stage paints cleanly first and
+     no bare/overlapping placeholder frame is ever shown. inline styles win. */
+  visibility: hidden;
+  opacity: 0;
 }
-/* Full-bleed sections (cover, dark moments) host edge-to-edge children */
-.chapter--bleed {
-  padding: 0;
-  align-items: stretch;
+
+/* Inner content respects a max-width and the page margins — NEVER the ground.
+   The fragment root (the first flow child) is the content frame; the stage is
+   bleed. Only the flow child fills the stage; absolutely-positioned overlays
+   (the scroll cue, the you-dot anchor) keep their own size. */
+.journey-stage > :not(.journey-scroll-cue) {
+  width: 100%;
+  height: 100%;
 }
-.chapter--bleed > .chapter-inner { max-width: none; }
-/* Even denser packing for crowded data screens */
-.chapter--dense {
-  padding: clamp(24px, 3vh, 48px) clamp(20px, 4vw, 72px)
-           clamp(24px, 3vh, 48px) clamp(56px, 6vw, 96px);
-}
-.chapter-inner {
+.journey-stage .chapter-inner {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
+  padding: clamp(3rem, 6vh, 6rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem)) var(--margin-page);
+  max-height: 100svh;
+  overflow: hidden;
 }
 
-/* ─── Highlighter parallelogram (signature motif) ───────── */
-.hl {
-  font-style: italic;
-  font-weight: 500;
-  position: relative;
-  display: inline-block;
-  line-height: 0.85;
-  padding: 0.08em 0;
-  z-index: 0;
+/* Legacy chapter layout helpers still drive INNER composition, but must not
+   impose their own viewport height / bottom band on a full-bleed stage. */
+.journey-stage .chapter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: clamp(3rem, 6vh, 6rem) var(--margin-page)
+           calc(var(--journey-controls-h) + clamp(1.5rem, 4vh, 3rem)) var(--margin-page);
 }
-.hl::before {
-  content: "";
+.journey-stage .chapter--bleed { padding: 0; align-items: stretch; }
+.journey-stage .chapter--bleed > .chapter-inner { max-width: none; padding: 0; }
+/* A ground that the fragment puts on an INNER element should fill its stage. */
+.journey-stage > .si-ground-warm,
+.journey-stage > .si-ground-cream,
+.journey-stage > .si-ground-navy,
+.journey-stage > .si-ground-blue,
+.journey-stage > .si-dark {
+  width: 100%;
+  height: 100%;
+}
+
+/* Standalone .chapter usage outside a stage (defensive). */
+.chapter-inner { width: 100%; max-width: 1240px; margin: 0 auto; }
+
+/* The opening SCROLL CUE — replaces the old "Begin" button (Z-AXIS §2b).
+   Understated "Scroll to journey through" + a quiet descending bead. */
+.journey-scroll-cue {
   position: absolute;
-  inset: 0 -0.06em;
-  background: var(--mustard-light);
-  transform: skewX(-12deg);
-  transform-origin: 50% 50%;
-  z-index: -1;
+  left: 50%;
+  bottom: calc(var(--journey-controls-h) + clamp(18px, 3vh, 36px));
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--navy);
   pointer-events: none;
+  transition: opacity 420ms var(--ease-entrance), transform 420ms var(--ease-entrance);
 }
-.hl-teal::before { background: var(--teal-light); }
-
-/* ─── Cards ─────────────────────────────────────────────── */
-.vccp-card {
-  background: var(--paper);
-  padding: 28px 28px 32px 32px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
-  transition: box-shadow .25s ease;
+.journey-scroll-cue.is-gone {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
 }
-.vccp-card:hover {
-  box-shadow: 0 2px 0 rgba(0,0,0,0.06), 0 18px 40px rgba(0,0,0,0.08);
-}
-.vccp-rail { border-left: 3px solid var(--mustard); }
-.vccp-frame {
-  border: 1.5px solid var(--ink);
-  background: var(--mustard-pale);
-  box-shadow: none;
-}
-
-.vccp-card-head { margin-bottom: 18px; }
-.vccp-card-title {
-  font-size: var(--t-lg);
-  font-weight: 500;
-  line-height: 1.1;
-  margin: 0 0 6px 0;
-}
-.vccp-card-sub {
-  font-size: var(--t-sm);
-  color: var(--ink-soft);
-  margin: 0;
-  max-width: 56ch;
-}
-
-/* ─── Stage-number chip ─────────────────────────────────── */
-.vccp-stage-num {
-  display: inline-block;
-  font-weight: 500;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  background: var(--mustard);
-  border: 1px solid var(--ink);
-  padding: 4px 8px;
-  margin-bottom: 14px;
-}
-
-/* ─── Eyebrow / source caption ──────────────────────────── */
-.vccp-eyebrow {
-  font-size: var(--t-xs);
+.journey-scroll-cue__label {
+  font-size: 0.74rem;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 16px;
+  opacity: 0.72;
 }
-.vccp-source {
-  font-size: 0.72rem;
-  color: rgba(0,0,0,0.55);
-  margin-top: 14px;
+.journey-scroll-cue__bead {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  background: rgba(4, 22, 84, 0.22);
+}
+.journey-scroll-cue__bead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .journey-scroll-cue__bead::after {
+    animation: journey-cue-bead 1700ms var(--ease-entrance) infinite;
+  }
+}
+@keyframes journey-cue-bead {
+  0%   { transform: translateY(0); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(23px); opacity: 0; }
+}
+/* On a navy stage the cue inverts to cream. */
+.si-ground-navy .journey-scroll-cue,
+.si-dark .journey-scroll-cue { color: var(--cream); }
+.si-ground-navy .journey-scroll-cue__bead,
+.si-dark .journey-scroll-cue__bead { background: rgba(240, 237, 231, 0.3); }
+
+/* Structure-only PLACEHOLDER stage (workflow A scaffold; B fills content). */
+.stage-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2vh, 22px);
+}
+.stage-placeholder__title { max-width: 18ch; }
+.stage-placeholder__note { opacity: 0.7; }
+.stage-placeholder__dot {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--yellow);
+  margin-top: 8px;
 }
 
-/* ─── Buttons (square, no radius) ───────────────────────── */
-.vccp-btn {
-  background: var(--mustard);
-  color: var(--ink);
-  border: 1px solid var(--ink);
-  padding: 12px 18px;
-  font: 500 var(--t-sm)/1 var(--font-sans);
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
+/* ── Minimal bottom META — position + advisory hint. No nav buttons. ── */
+.journey-controls {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  min-height: var(--journey-controls-h);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;       /* wheel sits in the bottom-right corner */
+  padding: 12px clamp(18px, 3vw, 44px) clamp(14px, 2.4vh, 24px);
+  pointer-events: none;            /* it informs; it does not capture scroll */
 }
-.vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--ink); }
-.vccp-btn-primary { background: var(--ink); color: var(--paper); }
+.journey-controls[hidden] { display: none; }
+
+.journey-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+/* The "N / 22" counter and the advisory hint are retired at the client's
+   request — only the progress wheel remains, in the bottom-right corner. */
+.journey-indicator { display: none !important; }
+.journey-hint { display: none !important; }
+
+/* ── Orbit progress MERIDIAN — thin completion arc (AD §6) ── */
+.journey-meridian { flex: 0 0 auto; display: block; }
+.journey-meridian__track { stroke: rgba(4, 22, 84, 0.16); stroke-width: 2; }
+.journey-meridian__fill {
+  stroke: var(--yellow);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 360ms var(--ease-entrance);
+}
+@media (prefers-reduced-motion: reduce) { .journey-meridian__fill { transition: none; } }
+
+/* Hide the legacy cover "Begin" button — scroll is now the only instruction. */
+#\30 1-cover .cover-cue { display: none !important; }
+
+/* ============================================================
+   CONNECTIVE TISSUE — arrival, "you" dot, magnetic cursor (AD §4, §6)
+   Transform/opacity only; reduced-motion settles to the composed state.
+   ============================================================ */
+
+/* Arrival: lines assemble (lift + fade) staggered on the entrance easing.
+   They begin hidden only when JS drives them, so a no-JS capture still
+   shows the copy. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-arrival] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--dur-reveal) var(--ease-entrance),
+                transform var(--dur-reveal) var(--ease-entrance);
+    transition-delay: var(--arrival-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  [data-arrival].is-arrived { opacity: 1; transform: none; }
+}
+
+/* First-step listening ritual — a calm full-bleed wash that lifts away. */
+.arrival-ritual {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ground-warm);
+  opacity: 1;
+  transition: opacity 0.5s var(--ease-exit);
+}
+.arrival-ritual.is-leaving { opacity: 0; }
+.arrival-ritual__inner { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.arrival-ritual__line {
+  font: 600 0.95rem/1.2 var(--font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.85;
+}
+.arrival-ritual__bar {
+  width: clamp(140px, 24vw, 260px);
+  height: 2px;
+  background: rgba(4, 22, 84, 0.18);
+  overflow: hidden;
+}
+.arrival-ritual__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--navy);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.4s var(--ease-entrance);
+}
+.arrival-ritual.is-live .arrival-ritual__fill { transform: scaleX(1); }
+
+/* Persistent "you" marker — small YELLOW accent dot, soft glow, never
+   catches the pointer, sits below the controls (AD §6). */
+.you-dot {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 90;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(240, 203, 8, 0.24), 0 2px 8px rgba(4, 22, 84, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-reveal) var(--ease-entrance);
+  will-change: transform;
+}
+.you-dot.is-live { opacity: 0.95; }
+/* Reduced motion: still gate visibility on .is-live so the dot is hidden on
+   steps with no [data-youdot-anchor] (never floating in empty ground). */
+@media (prefers-reduced-motion: reduce) {
+  .you-dot { transition: none; }
+  .you-dot.is-live { opacity: 0.95; }
+}
+
+/* Magnetic cursor — small dot, inverts via difference blend. */
+.magnetic-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 9999;
+  border-radius: 50%;
+  background: #FFFFFF;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ============================================================
+   DATA — backgroundless; faint ink tracks, never white boxes (AD §5)
+   ============================================================ */
+
+/* Box-less chart holder — charts NEVER sit in a white box. Layout ONLY:
+   no background, border, shadow or radius. The chart sits directly on its
+   ground; the surrounding .si-ground-* / .on-* utility carries contrast. */
+.chart-holder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  width: 100%;
+}
+.chart-holder > figure { margin: 0; }
+
+/* ── Photographic evidence card — the book-cover evidence register (ch07).
+   Cream mat, square corners, ONE lift device, caption beneath; photo never
+   bleeds onto the warm ground without the cream mat. ──────────────────── */
+.si-evidence {
+  background: var(--cream);
+  border-radius: 0;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
+}
+.si-evidence img { width: 100%; height: auto; object-fit: cover; border-radius: 0; }
+.si-evidence-cap {
+  margin: 12px 2px 2px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* ── Data card — the cream editorial frame; the data floats inside it.
+   Square corners, one lift device, bold-black title low-left. ─────── */
+.si-datacard {
+  background: var(--cream);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.06);
+  padding: clamp(18px, 2vw, 28px);
+}
+.si-datacard-title {
+  font-weight: 800;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.0;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(4, 22, 84, 0.16);
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+/* ── Hanging-quote block — the quote gets real estate (AD §2) ── */
+.si-quote { position: relative; padding-left: clamp(28px, 4vw, 64px); }
+.si-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.06em; top: -0.18em;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 1;
+  font-weight: 800;
+  color: var(--yellow);
+  pointer-events: none;
+  z-index: 0;
+}
+.si-quote-body { position: relative; z-index: 1; font-weight: 400; line-height: 1.4; color: var(--ink); }
+.si-quote-cite {
+  margin-top: var(--space-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.si-ground-warm .si-quote::before,
+.on-warm .si-quote::before { color: rgba(4, 22, 84, 0.2); }
+.si-ground-navy .si-quote-body,
+.si-ground-blue .si-quote-body,
+.si-dark .si-quote-body,
+.on-navy .si-quote-body { color: var(--cream); }
+.si-ground-navy .si-quote-cite,
+.si-ground-blue .si-quote-cite,
+.si-dark .si-quote-cite,
+.on-navy .si-quote-cite { color: rgba(240, 237, 231, 0.72); }
+
+/* ── Buttons (square, no radius, no underline) — yellow accent or navy ── */
+.vccp-btn {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: 0;
+  padding: 12px 18px;
+  font: 600 0.95rem/1 var(--font-sans);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-entrance),
+              box-shadow var(--dur-micro) var(--ease-entrance);
+}
+.vccp-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--navy); }
+.vccp-btn-primary { background: var(--navy); color: var(--cream); }
 .vccp-btn-quiet {
   background: transparent;
-  border-color: rgba(0,0,0,0.2);
-  color: rgba(0,0,0,0.6);
+  border-color: rgba(4, 22, 84, 0.22);
+  color: rgba(4, 22, 84, 0.62);
 }
+@media (prefers-reduced-motion: reduce) { .vccp-btn { transition: none; } }
 
-/* ─── Table ─────────────────────────────────────────────── */
+/* ── Table — square, hairline rows, tabular figures, no underline ── */
 .vccp-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
 .vccp-table th, .vccp-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-  font-size: var(--t-sm);
+  border-bottom: 1px solid rgba(4, 22, 84, 0.1);
+  font-size: 0.95rem;
 }
 .vccp-table th {
   text-align: left;
@@ -278,77 +959,100 @@ img { display: block; object-fit: contain; }
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--ink);
+  color: var(--navy);
+  border-bottom: 1px solid var(--navy);
 }
-.vccp-table td.num, .vccp-table th.num {
-  text-align: right;
-  font-feature-settings: 'tnum';
-}
-.vccp-table tbody tr:hover { background: var(--mustard-pale); }
-.vccp-delta-up   { color: var(--teal-deep); font-weight: 500; }
-.vccp-delta-down { color: var(--mustard-dark); font-weight: 500; }
+.vccp-table td.num, .vccp-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.vccp-table tbody tr:hover { background: rgba(240, 203, 8, 0.12); }
+/* Deltas use navy weight + the yellow accent — never red/green. */
+.vccp-delta-up   { color: var(--navy); font-weight: 700; }
+.vccp-delta-down { color: var(--ink-soft); font-weight: 700; }
 
-/* ─── Stat callouts ─────────────────────────────────────── */
-.vccp-stat {
-  border: 1px solid var(--ink);
-  padding: 14px 16px 18px 16px;
-  background: var(--paper);
-}
-.vccp-stat-label {
-  display: block;
-  font-size: var(--t-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-.vccp-stat-value {
-  display: block;
-  margin-top: 6px;
-  font-size: 2.2rem;
-  font-weight: 500;
-  line-height: 1;
-  font-feature-settings: 'tnum';
-}
-.vccp-stat-sub {
-  display: block;
-  margin-top: 4px;
-  font-size: var(--t-xs);
-  color: var(--ink-soft);
-}
-
-/* ─── Reveal-on-scroll utilities (js/lib/reveal.js) ─────── */
+/* ── Reveal-on-scroll (js/lib/reveal.js) — entrance easing, reveal band ── */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity .6s ease, transform .6s ease;
+  transition: opacity var(--dur-reveal) var(--ease-entrance),
+              transform var(--dur-reveal) var(--ease-entrance);
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ─── Section error card (main.js fallback) ─────────────── */
+/* ── Section error / awaiting-data fallbacks (main.js) ───── */
 .section-error-card {
   max-width: 720px;
   margin: 0 auto;
-  border: 1.5px solid var(--ink);
-  border-left: 3px solid var(--mustard-dark);
-  background: var(--paper);
+  border: 1px solid var(--navy);
+  border-left: 3px solid var(--yellow);
+  background: var(--cream);
   padding: 28px 32px;
 }
-.section-error-card h2 {
-  font-size: var(--t-md);
-  font-weight: 500;
-  margin: 0 0 8px 0;
-}
-.section-error-card p {
-  margin: 0;
-  font-size: var(--t-xs);
-  color: var(--ink-soft);
-}
-
-/* ─── Placeholder "awaiting build" card ─────────────────── */
+.section-error-card h2 { font-size: var(--t-md); font-weight: 800; color: var(--ink); margin: 0 0 8px; }
+.section-error-card p { margin: 0; font-size: 0.78rem; color: var(--ink-soft); }
 .awaiting-card { max-width: 640px; margin: 0 auto; }
 
-/* ─── Accessibility / motion guards ─────────────────────── */
+/* ============================================================
+   SOURCE CAPTIONS — HIDDEN site-wide (sources cut for now, remembered).
+   Strings stay in markup + STORY.md. Deleting this one block restores
+   every caption. Does NOT touch chart DATA hooks (data-source-money/-mood
+   etc. carry no bare [data-source]).
+   ============================================================ */
+.vccp-source,
+.chart-holder-cap,
+.research-credit,
+.seg-source,
+.emp-source,
+[data-source] {
+  display: none !important;
+}
+
+/* ============================================================
+   LAYOUT UTILITIES — asymmetric editorial grid, one focal point,
+   fill the screen, kill dead space, breathe (AD §2)
+   ============================================================ */
+
+/* 12-col grid + spans. */
+.si-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(16px, 2vw, 32px); }
+.col-3  { grid-column: span 3; }
+.col-4  { grid-column: span 4; }
+.col-5  { grid-column: span 5; }
+.col-6  { grid-column: span 6; }
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+/* Asymmetric two-pane split — content hangs on a clear axis, never a
+   centred stack. */
+.si-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+}
+.si-split--even { grid-template-columns: 1fr 1fr; }
+
+/* Tight cluster stack (within-group rhythm). */
+.si-stack-tight { display: grid; gap: clamp(10px, 1.2vw, 16px); }
+
+/* Fill the viewport — centre a lone composition, no dead band below. */
+.chapter--fill > .chapter-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 2 * clamp(4rem, 7vh, 8rem));
+}
+/* Spread top-and-tail content across the height instead of clustering. */
+.chapter-inner--distribute {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 2 * clamp(4rem, 7vh, 8rem));
+}
+/* A child claims remaining column height (e.g. a chart that should grow). */
+.si-fill-h { flex: 1 1 auto; min-height: 0; }
+/* Equal-height grid rows so a chart pane leaves no tall empty band. */
+.si-stretch-grid { align-items: stretch; }
+
+/* ── Accessibility ───────────────────────────────────────── */
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -361,129 +1065,30 @@ img { display: block; object-fit: contain; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .vccp-card, .vccp-btn, .rail-chip { transition: none; }
+  .si-orbit--spin { animation: none; }
 }
 
 /* ============================================================
-   ===== Layout system (2026 redesign) =====
-   Gravitas type + composed editorial grids. Square corners only,
-   no gradients, no red/green. Additive — extends, never replaces.
+   RESPONSIVE — 1024 and 600 breakpoints
    ============================================================ */
-
-/* ─── Gravitas type (§2) ────────────────────────────────── */
-.si-display {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 0.92;
-  font-size: var(--t-display);
+@media (max-width: 1024px) {
+  .journey-stage .chapter,
+  .journey-stage .chapter-inner {
+    padding-left: clamp(20px, 5vw, 56px);
+    padding-right: clamp(20px, 5vw, 56px);
+  }
+  .si-split { gap: clamp(20px, 3vw, 40px); }
 }
-.si-display--lg { font-size: var(--t-display); }
-.si-display--sm { font-size: var(--t-xl); }       /* section / divider titles */
-
-.si-bignum {
-  font-weight: 600;
-  font-size: clamp(4rem, 9vw, 9rem);
-  line-height: 0.9;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Highlighter coexists with uppercase display: keep italic from .hl but
-   neutralise its tight line-height so it doesn't collapse inside a display
-   headline; the parallelogram still renders behind the word. */
-.si-display .hl { line-height: inherit; }
-
-/* ─── 12-col grid + spans (§3) ──────────────────────────── */
-.si-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(16px, 2vw, 32px);
-}
-.col-3  { grid-column: span 3; }
-.col-4  { grid-column: span 4; }
-.col-5  { grid-column: span 5; }
-.col-6  { grid-column: span 6; }
-.col-7  { grid-column: span 7; }
-.col-8  { grid-column: span 8; }
-.col-12 { grid-column: span 12; }
-
-/* ─── Asymmetric two-pane split (§3) ────────────────────── */
-.si-split {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 64px);
-}
-.si-split--even { grid-template-columns: 1fr 1fr; }
-
-/* ─── Tight cluster stack (§3) ──────────────────────────── */
-.si-stack-tight {
-  display: grid;
-  gap: clamp(10px, 1.2vw, 16px);
-}
-
-/* ─── Big-number panel (§3) ─────────────────────────────── */
-.si-bignum-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: center;
-  gap: clamp(20px, 3vw, 44px);
-  border: 1.5px solid var(--ink);
-  background: var(--paper-warm);
-  padding: clamp(20px, 2.6vw, 36px);
-}
-.si-bignum-panel--mustard { background: var(--mustard); }
-.si-bignum-panel .si-bignum { margin: 0; }
-.si-bignum-panel .vccp-source { margin-top: auto; }
-
-/* ─── Data card (§3) — the deck "AI & BRAND" card ───────── */
-.si-datacard {
-  background: var(--paper-warm);
-  border: 1.5px solid var(--ink);
-  padding: clamp(18px, 2vw, 28px);
-}
-.si-datacard-title {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1.05;
-  margin: 0 0 14px 0;
-  padding-bottom: 12px;
-  border-bottom: 1.5px solid var(--ink);
-}
-
-/* ─── Dark sections (§3) — earned navy/ink moments ──────── */
-.si-dark {
-  background: var(--navy);
-  color: var(--paper);
-}
-.si-dark--ink { background: var(--ink); }
-.si-dark .vccp-eyebrow { color: var(--paper); }
-.si-dark .vccp-source { color: rgba(255, 255, 255, 0.6); }
-.si-dark h1, .si-dark h2, .si-dark h3,
-.si-dark .vccp-card-title { color: inherit; }
-.si-dark .si-display { color: inherit; }
-
-/* ─── Prose measure (§3) — never full page width ────────── */
-.si-measure { max-width: 62ch; }
-
-/* ─── Grounded imagery (§3) — silhouette stands on edge ─── */
-.si-ground {
-  align-self: end;
-  margin-bottom: 0;
-  display: block;
-}
-
-/* ─── Responsive ────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .progress-rail { display: none; }
-  .site-nav-title { display: none; }
-  .chapter { padding-left: clamp(20px, 4vw, 72px); }
-}
-@media (max-width: 760px) {
+@media (max-width: 600px) {
   .si-grid,
   .si-split,
-  .si-split--even,
-  .si-bignum-panel { grid-template-columns: 1fr; }
+  .si-split--even { grid-template-columns: 1fr; }
   .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-12 { grid-column: 1 / -1; }
+  .journey-stage .chapter,
+  .journey-stage .chapter-inner {
+    padding: clamp(3rem, 6vh, 5rem) 20px
+             calc(var(--journey-controls-h) + 2rem) 20px;
+  }
+  .journey-controls { padding: 10px 14px; }
+  .journey-indicator { font-size: 0.66rem; letter-spacing: 0.1em; }
 }

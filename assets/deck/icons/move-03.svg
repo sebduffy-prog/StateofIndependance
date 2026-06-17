@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Help people help themselves">
+  <!-- open hand offering / supporting -->
+  <path d="M10 52 L10 40 a3 3 0 0 1 6 0 L16 34 a3 3 0 0 1 6 0 L22 33 a3 3 0 0 1 6 0 L28 35 a3 3 0 0 1 6 0 L34 40 q4 0 5 4 L41 52"/>
+  <!-- a tool placed in the hand = the means to help themselves -->
+  <path d="M44 12 a6 6 0 0 0 -8 8 L26 30 L31 35 L41 25 a6 6 0 0 0 8 -8 L44 22 L40 18 Z"/>
+</svg>

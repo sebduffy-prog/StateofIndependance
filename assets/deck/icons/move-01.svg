@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Unplug them from the grid">
+  <!-- wall socket (the grid) on the left -->
+  <rect x="6" y="22" width="16" height="20"/>
+  <line x1="13" y1="29" x2="13" y2="33"/>
+  <line x1="16" y1="29" x2="16" y2="33"/>
+  <!-- plug pulled away to the right, prongs exposed -->
+  <line x1="44" y1="28" x2="36" y2="28"/>
+  <line x1="44" y1="36" x2="36" y2="36"/>
+  <path d="M44 24 h6 a4 4 0 0 1 4 4 v8 a4 4 0 0 1 -4 4 h-6 Z"/>
+  <!-- cable trailing free -->
+  <path d="M54 32 q6 0 6 6"/>
+  <!-- gap spark between socket and plug — it is unplugged -->
+  <line x1="27" y1="32" x2="31" y2="32"/>
+</svg>

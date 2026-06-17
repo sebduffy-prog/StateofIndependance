@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Unplug them from the grid">
+  <!-- Flat navy+yellow icon (BRAND-WORLD-FINAL §6): navy body + one yellow wedge.
+       Concept: a plug pulled free of the socket — unplugging from the grid.
+       Authored in the deck icon language; the exact deck glyph is a baked
+       Google-Slides vector and is not extractable as an asset (see report). -->
+  <rect x="6" y="20" width="18" height="24" fill="#041654"/>
+  <rect x="11" y="26" width="3" height="6" fill="#FBC100"/>
+  <rect x="16" y="26" width="3" height="6" fill="#FBC100"/>
+  <rect x="40" y="22" width="18" height="20" rx="3" fill="#041654"/>
+  <rect x="33" y="26" width="9" height="3" fill="#041654"/>
+  <rect x="33" y="35" width="9" height="3" fill="#041654"/>
+  <path d="M30 18 L24 33 L29 33 L25 46 L36 28 L31 28 Z" fill="#F0CB08"/>
+</svg>

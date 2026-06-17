@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#041654" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Be the trusted antidote: handshake">
+  <!-- left forearm + hand reaching in -->
+  <path d="M6 26 L18 26 L30 33"/>
+  <path d="M18 26 L26 38"/>
+  <!-- right forearm + hand reaching in -->
+  <path d="M58 40 L46 40 L34 33"/>
+  <path d="M46 40 L38 28"/>
+  <!-- the clasp: interlocked fingers in the centre -->
+  <path d="M28 32 L36 36 M30 28 L38 32 M26 36 L33 40"/>
+</svg>

@@ -1,123 +1,63 @@
 /**
- * Chapter 01: cover.
+ * 01-cover — the hero. The signature maze illustration (the amber isometric
+ * maze, the navy bear, the figure at the entrance) is the focal point, used
+ * once, big, on a vast warm field. The maze artwork is clean: the stray orbit
+ * ring and the figure's map ("box") are removed, and there is no trace/handle
+ * overlay — the maze simply reads as the brand moment.
  *
- * Full-bleed mustard hero. No page frame, no plate: the Girl & Bear stands
- * flush on the bottom ground line as a large physical figure, the wordmark
- * commands the screen in the uppercase display treatment, and a calm,
- * well-spaced field of ink dots drifts behind the whole composition.
+ * Composes existing primitives only (does not reinvent them):
+ *   - arrival         (experiential.js)  assembling entrance + scramble (ritual 1st)
+ *   - magneticButton  (experiential.js)  the Begin cue leans to the cursor
  *
- * The dotField lib now carries its own physics (mutual repulsion so dots
- * never crowd, momentum, cursor force). We keep the count modest, drift
- * gentle, and wire setPointer from the whole stage so the cursor subtly
- * pushes nearby dots. One dot is the highlighted "you" (the 1,505th
- * respondent), parked quietly near its caption.
- *
- * Reduced motion: the highlighter lands instantly, the field jump-cuts to
- * its layout, and no pointer force / drift runs (the lib enforces this too).
- *
- * Contract: docs/CONTRACT.md.
- *
- * @param {HTMLElement} rootEl - the <section class="chapter" id="01-cover"> element
- * @param {{survey: object, segments: object, tgi: object}} data - shared datasets
+ * Navigation is engine-owned (scroll + the global Next): the cover never gates
+ * the journey.
  */
-import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
-import { dotField } from '../lib/charts.js';
 
-const DOT_COUNT = 220; // calm and well-spaced, not crowding
-const YOU_INDEX = 0; // the highlighted "you" dot
-const DRIFT_AMP = 0.5; // gentle ambient brownian motion
-
-const mustard = () =>
-  getComputedStyle(document.documentElement)
-    .getPropertyValue('--mustard')
-    .trim() || '#FFC931';
+import { arrival, magneticButton, prefersReducedMotion } from '../lib/experiential.js';
 
 /**
- * Build the ambient layout: a calm scatter biased toward the edges so the
- * top-left copy and the grounded bear both stay clear. Returns normalised
- * {x,y} targets in 0..1 space.
+ * @param {HTMLElement} rootEl  the <section class="journey-step" id="01-cover">
  */
-const buildTargets = (count) =>
-  Array.from({ length: count }, (_, i) => {
-    if (i === YOU_INDEX) {
-      // Park "you" in the lower-left clearing near its caption.
-      return { x: 0.1, y: 0.82 };
-    }
-    return { x: Math.random(), y: Math.random() };
-  });
-
 export default function init(rootEl) {
-  observeReveals(rootEl);
-
-  const stage = rootEl.querySelector('.cover-stage');
-  const dotsHost = rootEl.querySelector('[data-cover-dots]');
-  const hl = rootEl.querySelector('[data-cover-hl]');
   const reduced = prefersReducedMotion();
+  const cleanups = [];
 
-  // Scroll cue: a real <button> (keyboard-activatable via Enter/Space) that
-  // smooth-scrolls to the research chapter, honouring reduced motion.
+  /* ── maze poster ─────────────────────────────────────────────────
+     The maze is served as a clean still image (its only original motion was
+     the orbiting ring/ball, removed at the client's request; the gentle
+     ambient float is CSS-owned and reduced-motion safe). The poster swap is
+     kept defensively so an animated source would still fall back to its still
+     under reduced motion. */
+  const maze = rootEl.querySelector('[data-cover-maze]');
+  if (maze && reduced) {
+    const still = maze.getAttribute('data-still');
+    if (still) maze.setAttribute('src', still);
+  }
+
+  /* ── the Begin cue: magnetic, and it advances the journey ────────── */
   const cue = rootEl.querySelector('[data-cover-cue]');
   if (cue) {
-    cue.addEventListener('click', () => {
-      const research = document.getElementById('02-research');
-      if (research) {
-        research.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-      }
-    });
+    cleanups.push(magneticButton(cue, { strength: 0.3, radius: 120 }));
+    cue.addEventListener('click', advanceJourney);
   }
 
-  // Trigger the highlighter wipe once the layout has painted.
-  if (hl) {
-    if (reduced) {
-      hl.classList.add('is-wiped');
-    } else {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => hl.classList.add('is-wiped'));
-      });
-    }
-  }
-
-  if (!dotsHost) return;
-
-  const field = dotField(dotsHost, {
-    count: DOT_COUNT,
-    dotRadius: 2.2,
-    ariaLabel:
-      'A calm field of ink dots, one per survey respondent, drifting behind the cover.',
+  /* ── the assembling entrance (idempotent per arrival) ────────────── */
+  rootEl.addEventListener('chapter:arrive', (e) => {
+    arrival(rootEl, e && e.detail ? e.detail : {});
   });
 
-  field.formation(buildTargets(DOT_COUNT));
-  field.highlight(YOU_INDEX, mustard());
-  field.drift(DRIFT_AMP);
+  /* ── tidy if the step is ever fully torn down ────────────────────── */
+  rootEl.addEventListener(
+    'chapter:destroy',
+    () => cleanups.forEach((fn) => typeof fn === 'function' && fn()),
+    { once: true },
+  );
+}
 
-  if (reduced) return; // no pointer force under reduced motion
+/* ─────────────────────────────── helpers ───────────────────────────── */
 
-  // Wire subtle cursor repulsion across the WHOLE hero, not just the canvas
-  // box: track the pointer on the stage and feed normalised coords to the
-  // field's built-in repulsion via setPointer.
-  if (!stage) return;
-
-  let pending = false;
-  let lastX = 0;
-  let lastY = 0;
-
-  const flush = () => {
-    pending = false;
-    field.setPointer(lastX, lastY);
-  };
-
-  const onPointerMove = (event) => {
-    const rect = stage.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
-    lastX = (event.clientX - rect.left) / rect.width;
-    lastY = (event.clientY - rect.top) / rect.height;
-    if (pending) return;
-    pending = true;
-    requestAnimationFrame(flush);
-  };
-
-  const onPointerLeave = () => field.setPointer(null, null);
-
-  stage.addEventListener('pointermove', onPointerMove);
-  stage.addEventListener('pointerleave', onPointerLeave);
+/** Click the journey's global Next, advancing past the cover. */
+function advanceJourney() {
+  const next = document.getElementById('journeyNext');
+  if (next && !next.disabled) next.click();
 }
