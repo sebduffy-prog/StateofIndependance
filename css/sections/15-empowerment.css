@@ -43,12 +43,13 @@
 #\31 5-empowerment .emp-figure {
   position: absolute;
   z-index: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: clamp(300px, 78vh, 700px);
+  right: clamp(-1rem, -1vw, 0rem);
+  /* Grounded at the bottom edge so the figure reads as standing at the
+     far right, rising into frame on purpose, never clipped top AND bottom. */
+  bottom: 0;
+  height: clamp(280px, 70vh, 620px);
   width: auto;
-  opacity: 0.13;
+  opacity: 0.12;
   pointer-events: none;
   filter: none;           /* pure black silhouette per brand system */
 }
@@ -118,6 +119,26 @@
   font-weight: 900;
   word-break: break-word;
   overflow-wrap: break-word;
+  /* The title stands on its own ground: no navy frame, box, outline or
+     bracket of any kind around the headline block (client: "these blue
+     boxes have to go"). Guard the head + title against any drawn frame. */
+  border: 0;
+  outline: 0;
+}
+
+#\31 5-empowerment .emp-head,
+#\31 5-empowerment .emp-title,
+#\31 5-empowerment .emp-accent {
+  border: 0;
+}
+
+#\31 5-empowerment .emp-head::before,
+#\31 5-empowerment .emp-head::after,
+#\31 5-empowerment .emp-title::before,
+#\31 5-empowerment .emp-title::after,
+#\31 5-empowerment .emp-accent::before,
+#\31 5-empowerment .emp-accent::after {
+  content: none;
 }
 
 #\31 5-empowerment .emp-accent {

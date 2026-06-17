@@ -59,19 +59,39 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(140px, 22vw, 280px);
   gap: clamp(32px, 5vw, 80px);
-  align-items: end;
+  align-items: stretch;
   width: 100%;
   flex: 1;
-  padding: clamp(48px, 7vh, 100px) clamp(28px, 6vw, 100px) 0;
+  min-height: 0;
+  padding: clamp(40px, 6vh, 88px) clamp(28px, 6vw, 100px) clamp(40px, 6vh, 88px);
 }
 
 /* ── LEFT COLUMN ────────────────────────────────────────────────── */
+/* The narrative distributes top-to-bottom to fill the column height:
+   kicker + motif group at the top, quote in the centre, Thank you + credits
+   anchored to the floor — no dead space, one balanced focal composition. */
 #\32 2-outro .ot-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 3vh, 40px);
-  padding-bottom: clamp(44px, 7vh, 88px);
+  justify-content: space-between;
+  gap: clamp(16px, 2.4vh, 32px);
   max-width: 58ch;
+  min-height: 0;
+}
+
+/* Top group: kicker → motif */
+#\32 2-outro .ot-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 24px);
+}
+
+/* Floor group: Thank you → credits, anchored to the bottom */
+#\32 2-outro .ot-foot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vh, 32px);
 }
 
 /* Kicker — eyebrow voice, navy on warm, generous letter-spacing */
@@ -168,9 +188,13 @@
   text-transform: none;
 }
 
-/* The you-dot anchor — invisible; sits near Thank you */
+/* The you-dot anchor — invisible; rests just after the "Thank you" descender,
+   a deliberate calm spot in the lower-left clear of all type and data marks.
+   The persistent marker settles here, then disperses upward with the nation. */
 #\32 2-outro .ot-youdot-anchor {
   position: absolute;
+  left: clamp(8px, 1vw, 18px);
+  bottom: clamp(8px, 1vh, 16px);
   width: 1px;
   height: 1px;
   pointer-events: none;
@@ -235,7 +259,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: clamp(24px, 4vh, 48px);
   padding-bottom: 0;
 }
@@ -251,13 +275,16 @@
 }
 
 /* The tall bear+girl silhouette — flush to the floor, full height of column.
-   Aspect ratio: 104 × 585. Black on warm. Never clipped. */
+   Aspect ratio: 104 × 585. Black on warm. Never clipped. The negative bottom
+   margin pulls it past the grid's bottom padding so it stands on the floor. */
 #\32 2-outro .ot-bear {
   display: block;
   width: auto;
-  height: clamp(320px, 55vh, 640px);
+  height: clamp(300px, 52vh, 600px);
+  max-height: 100%;
   flex-shrink: 0;
   align-self: flex-end;
+  margin-bottom: clamp(-88px, -6vh, -40px);
   pointer-events: none;
 }
 

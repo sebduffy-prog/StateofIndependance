@@ -182,6 +182,18 @@ a:hover { text-decoration: none; }
   text-transform: none;
   margin: 0;
 }
+/* The engine programmatically focuses each stage heading (h1/h2, tabindex=-1)
+   on arrival for screen-reader + keyboard orientation. The browser's default
+   focus ring on that programmatic focus is the client-reported "blue box"
+   around titles. A tabindex=-1 heading is never in the keyboard tab order, so
+   suppressing its focus ring is safe; interactive controls keep their own
+   :focus-visible rings. (Chromium matches :focus-visible on programmatic focus,
+   so we must NOT gate this on :not(:focus-visible) or the ring survives.) */
+:is(h1, h2, [role="heading"])[tabindex="-1"]:focus,
+:is(h1, h2, [role="heading"])[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
 .si-display--lg { font-size: var(--t-display); }
 .si-display--sm { font-size: var(--t-title); font-weight: 800; letter-spacing: -0.02em; line-height: 1.0; }
 .si-display--black { font-weight: 900; letter-spacing: -0.03em; }

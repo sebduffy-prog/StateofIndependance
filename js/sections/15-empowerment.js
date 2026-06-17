@@ -45,6 +45,11 @@ import {
 const PIVOT_START = 14;   // strip starts mostly on "survival"
 const PIVOT_SNAP = 50;    // crossover point for which word shows
 
+// The held beat (ms) on the wide spread before the needs auto-sweep into the
+// shared core. Long enough to read three separate needs, short enough to feel
+// like one continuous cinematic move on arrival.
+const AUTO_CONVERGE_HOLD_MS = 620;
+
 /**
  * Wire the thin pivot strip. Returns { slider, apply } so scrollScene can prime
  * it. Drives a single CSS var --pv 0..1 (fill width + which word is clipped).
@@ -117,7 +122,7 @@ const dirXY = (ang) => ({
 const buildVenn = (mount, brandAsks, onConverged) => {
   if (!brandAsks) {
     mount.innerHTML = '<p class="emp-tv-empty">Brand-ask data is not available.</p>';
-    return { destroy() {} };
+    return { autoConverge() {}, destroy() {} };
   }
 
   const reduced = prefersReducedMotion();
@@ -126,7 +131,7 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   mount.innerHTML = `
     <div class="emp-tv-stage" role="group"
          aria-label="Drag save me money, save me time and save me stress together until they meet on empowerment">
-      <div class="emp-tv-field" data-emp-tv-field data-youdot-anchor>
+      <div class="emp-tv-field" data-emp-tv-field>
         <div class="emp-tv-overlap" aria-hidden="true"></div>
         <div class="emp-tv-centre" aria-hidden="true">
           <span class="emp-tv-centre-word">empowerment</span>
@@ -259,6 +264,29 @@ const buildVenn = (mount, brandAsks, onConverged) => {
     });
   };
 
+  // Reset every need back to its WIDE home (offset 0,0) so the convergence can
+  // replay from spread on a fresh arrival. No-op under reduced motion.
+  const spreadOut = () => {
+    if (reduced) return;
+    converged = false;
+    needs.forEach((n) => {
+      const ctrl = drags.get(n.id);
+      if (ctrl) ctrl.setPosition(0, 0, { animate: false });
+    });
+    render();
+  };
+
+  // AUTO-CONVERGE — the cinematic default. After a short held beat on the wide
+  // spread, the three needs sweep into the shared core on their own. Drag stays
+  // available as an optional nudge; reduced motion is already resolved at rest.
+  let autoTimer = 0;
+  const autoConverge = () => {
+    if (reduced) return;          // resolved at rest under reduced motion
+    window.clearTimeout(autoTimer);
+    spreadOut();                  // back to wide spread (resets converged)
+    autoTimer = window.setTimeout(lockToCentre, AUTO_CONVERGE_HOLD_MS);
+  };
+
   // Snap a single need into the resolved triangle (keyboard path).
   const bringIn = (id) => {
     const g = geom();
@@ -341,7 +369,9 @@ const buildVenn = (mount, brandAsks, onConverged) => {
   window.addEventListener('resize', onLayout, { passive: true });
 
   return {
+    autoConverge,
     destroy() {
+      window.clearTimeout(autoTimer);
       ro.disconnect();
       window.removeEventListener('resize', onLayout);
       drags.forEach((d) => d.destroy());
@@ -379,8 +409,13 @@ export default function init(rootEl, data) {
   observeReveals(rootEl);
   observeCounters(rootEl);
 
-  // Re-assemble headlines on every arrival (idempotent).
-  rootEl.addEventListener('chapter:arrive', (e) => arrival(rootEl, e.detail));
+  // Re-assemble headlines AND auto-converge the venn on every arrival. The
+  // circles start wide then sweep into the shared core on their own — no drag
+  // required (drag stays as an optional nudge).
+  rootEl.addEventListener('chapter:arrive', (e) => {
+    arrival(rootEl, e.detail);
+    venn?.autoConverge?.();
+  });
 
   // Experiential motion — everything but the marquee stays quiet.
   const cleanups = [];

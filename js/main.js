@@ -341,6 +341,40 @@ const TRANSITIONS = {
 
 const DEFAULT_TRANSITION = 'flythrough';
 
+/**
+ * GROUND CROSSFADE — the continuous backdrop wash behind the depth stage.
+ *
+ * Each stage carries its own si-ground-* background, so between two steps the
+ * only thing visible "through" the fading stages is the .journey-3d backdrop.
+ * If that backdrop is a fixed colour (it was cream) a navy→warm hand-off reads
+ * as a hard PowerPoint cut and a pale flash. Instead the engine paints the
+ * backdrop with a colour LERPED between the leaving step's ground and the
+ * arriving step's ground, weighted by the fractional part of `progress`. The
+ * world colour glides continuously in both directions — no cut, no flash.
+ *
+ * Each entry is the DOMINANT solid tone of that ground (not the gradient) so
+ * the wash unmistakably reads as that world while the stages cross-dissolve.
+ */
+const GROUND_COLORS = {
+  warm: [251, 193, 0],    // --ground-amber #FBC100
+  cream: [240, 237, 231], // --cream #F0EDE7
+  navy: [4, 22, 84],      // --navy #041654
+  blue: [4, 22, 84],      // legacy alias → navy world
+};
+const DEFAULT_GROUND_COLOR = GROUND_COLORS.warm;
+
+/** Resolve a manifest ground name to its representative backdrop colour. */
+const groundColorFor = (name) => GROUND_COLORS[name] || DEFAULT_GROUND_COLOR;
+
+/** Linear interpolate two [r,g,b] triples → a CSS rgb() string. t∈0..1. */
+const lerpColor = (a, b, t) => {
+  const k = clamp(t, 0, 1);
+  const r = Math.round(a[0] + (b[0] - a[0]) * k);
+  const g = Math.round(a[1] + (b[1] - a[1]) * k);
+  const bl = Math.round(a[2] + (b[2] - a[2]) * k);
+  return `rgb(${r}, ${g}, ${bl})`;
+};
+
 /** Resolve a manifest transition name to a profile, falling back to default. */
 const profileFor = (name) => TRANSITIONS[name] || TRANSITIONS[DEFAULT_TRANSITION];
 
@@ -496,6 +530,19 @@ const createJourney = (manifest) => {
   // we use the duration of the profile that owns the MOVE (the higher-index of
   // the two stages, i.e. the one being revealed / the direction we travel into).
   const durations = profiles.map((p) => p.durationMs || TRANSITION_DURATION_DEFAULT_MS);
+  // Each step's representative backdrop colour for the continuous ground wash.
+  const groundColors = manifest.map((entry) => groundColorFor(entry.ground));
+
+  // The depth-stage backdrop. Painting THIS each frame (lerped between the two
+  // bracketing steps' grounds) gives one smooth colour glide behind the stages,
+  // so there is never a flash of the static container colour at a hand-off.
+  const backdrop = document.querySelector('.journey-3d');
+  // Paint the cover's ground immediately, before sections mount, so the screen
+  // opens ON the cover world — never a flash of the static container fill while
+  // the (initially hidden) stages are still fetching.
+  if (backdrop && groundColors.length) {
+    backdrop.style.backgroundColor = lerpColor(groundColors[0], groundColors[0], 0);
+  }
 
   const indicator = document.getElementById('journeyIndicator');
   const hint = document.getElementById('journeyHint');
@@ -584,8 +631,20 @@ const createJourney = (manifest) => {
     scheduleHint();
   };
 
+  // Paint the backdrop with the world colour LERPED between the two steps that
+  // bracket `progress`. The wash glides continuously and reversibly, so a step
+  // hand-off (worst case navy→warm) cross-dissolves through one smooth colour
+  // instead of cutting through the static container fill.
+  const paintBackdrop = () => {
+    if (!backdrop) return;
+    const lo = clamp(Math.floor(progress), 0, stepCount - 1);
+    const hi = clamp(Math.ceil(progress), 0, stepCount - 1);
+    backdrop.style.backgroundColor = lerpColor(groundColors[lo], groundColors[hi], progress - lo);
+  };
+
   // ── Render the depth field for the current `progress` ──────────────────────
   const render = () => {
+    paintBackdrop();
     for (let i = 0; i < stepCount; i += 1) {
       const section = sections[i];
       if (!section) continue;
@@ -788,15 +847,25 @@ const createJourney = (manifest) => {
       }
     });
 
-    window.addEventListener('resize', () => marker.anchorTo(sections[focused] || sections[0]), {
-      passive: true,
-    });
+    // Re-anchor on resize ONLY for a focused step that actually declares an
+    // anchor — never reposition the hidden dot onto a stray spot on a step that
+    // has none (it must stay hidden, not lurk somewhere ready to flash).
+    window.addEventListener(
+      'resize',
+      () => {
+        const section = sections[focused] || sections[0];
+        if (section && section.querySelector('[data-youdot-anchor]')) {
+          marker.anchorTo(section);
+        }
+      },
+      { passive: true },
+    );
   };
 
   /**
    * The opening scroll cue — replaces the old "Begin" button. An understated
-   * "Scroll to journey through" line + a quiet descending indicator. Mounted on
-   * the cover stage; fades out the moment the journey advances past the cover.
+   * "Scroll to navigate the site" line + a quiet descending indicator. Mounted
+   * on the cover stage; fades out the moment the journey advances past the cover.
    */
   const mountScrollCue = () => {
     const cover = sections[0];
@@ -805,7 +874,7 @@ const createJourney = (manifest) => {
     cue.className = 'journey-scroll-cue';
     cue.setAttribute('aria-hidden', 'true');
     cue.innerHTML =
-      '<span class="journey-scroll-cue__label">Scroll to journey through</span>' +
+      '<span class="journey-scroll-cue__label">Scroll to navigate the site</span>' +
       '<span class="journey-scroll-cue__bead" aria-hidden="true"></span>';
     cover.appendChild(cue);
     const update = () => {

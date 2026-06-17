@@ -388,14 +388,20 @@
   z-index: 50;
 }
 
-/* ── you-dot anchor — sits on the title accent ──────────────────────────── */
-#\31 4-graphrag .graphrag-youdot {
-  position: absolute;
-  left: clamp(28px, 5vw, 88px);
-  top: 50%;
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
+/* ── Title stands on its own — no frame box, ever (client: "blue boxes gone")
+   Defensive: kill any outline/border/::before/::after rectangle that another
+   layer might try to draw around the headline block. The title is type only. */
+#\31 4-graphrag .graphrag-head,
+#\31 4-graphrag .graphrag-title,
+#\31 4-graphrag .graphrag-accent {
+  outline: none !important;
+  border: 0 !important;
+}
+#\31 4-graphrag .graphrag-head::before,
+#\31 4-graphrag .graphrag-head::after,
+#\31 4-graphrag .graphrag-title::before,
+#\31 4-graphrag .graphrag-title::after {
+  content: none !important;
 }
 
 /* ── Responsive: stack on narrow / short viewports ──────────────────────── */

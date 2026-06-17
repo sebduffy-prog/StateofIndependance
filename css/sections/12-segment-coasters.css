@@ -48,6 +48,13 @@
   letter-spacing: -0.03em;
   line-height: 0.9;
   color: var(--ink);
+  /* No outline box, no border — title stands alone (client fix). */
+  outline: none;
+  border: none;
+}
+#\31 2-segment-coasters .segment-coasters-title::before,
+#\31 2-segment-coasters .segment-coasters-title::after {
+  content: none;
 }
 
 #\31 2-segment-coasters .segment-coasters-accent {
@@ -223,11 +230,20 @@
   outline-offset: -2px;
 }
 
-/* The chart region — backgroundless bars on the cream card. */
+/* The chart region — backgroundless bars on the cream card.
+   overflow: hidden prevents the SVG from spilling outside the card on
+   narrow viewports; the SVG already has width:100% + preserveAspectRatio
+   so it scales inward, never outward. */
 #\31 2-segment-coasters .segment-coasters-chart {
   width: 100%;
   flex: 1 1 auto;
   min-height: 0;
+  overflow: hidden;
+}
+#\31 2-segment-coasters .segment-coasters-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* Footnote — faint, baseline note. */

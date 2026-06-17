@@ -22,6 +22,11 @@ const TGI_PER_FACET = 2;
 const TGI_OVERINDEX_MIN = 150;
 const TGI_FACETS = ['lifestyle', 'media'];
 
+// Auto-reveal: dwell on each segment long enough to read its signals, then move
+// on, so every question-answer surfaces without a tap. A manual tap pauses it.
+const AUTOCYCLE_DWELL_MS = 3400;
+const AUTOCYCLE_START_MS = 900;
+
 // Statement labels that are codes / housekeeping rather than real human signals
 // — skipped so every satellite reads as a meaningful audience cut.
 const TGI_LABEL_SKIP = /^(not applicable|don't know|don.t know|use:|non user|other set|more than|less than|\d|n\/?a)/i;
@@ -83,6 +88,47 @@ export default function init(rootEl, data) {
   let graph = null;
   let built = false;
 
+  // ── Auto-reveal controller ──────────────────────────────────────────────
+  // On arrival the graph automatically cycles through every segment so all the
+  // question-answers surface on their own. The moment the user taps a node we
+  // hand control over and stop cycling (tap/hover stays fully manual).
+  const segIds = segList.map((s) => s.id);
+  let cycleIdx = 0;
+  let cycleTimer = null;
+  let startTimer = null;
+  let userTookOver = false;
+  let isProgrammatic = false;     // true while WE drive a selection
+
+  const stopCycle = () => {
+    if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+    if (startTimer) { clearTimeout(startTimer); startTimer = null; }
+  };
+
+  const showNext = () => {
+    if (!graph || userTookOver) return;
+    const id = segIds[cycleIdx % segIds.length];
+    cycleIdx += 1;
+    isProgrammatic = true;
+    graph.selectSegment(id);
+    isProgrammatic = false;
+  };
+
+  const startCycle = () => {
+    if (userTookOver || cycleTimer || startTimer) return;
+    startTimer = setTimeout(() => {
+      startTimer = null;
+      showNext();
+      cycleTimer = setInterval(showNext, AUTOCYCLE_DWELL_MS);
+    }, AUTOCYCLE_START_MS);
+  };
+
+  const onManualSelect = () => {
+    journey && journey.ready && journey.ready();
+    if (isProgrammatic) return;   // our own auto-cycle selection, ignore
+    userTookOver = true;          // a real tap: hand over, stop cycling
+    stopCycle();
+  };
+
   const build = (tgiStatements) => {
     if (built) return;
     built = true;
@@ -97,16 +143,37 @@ export default function init(rootEl, data) {
       height: 660,
       onNavy: true,
       ariaLabel: 'Explore the four segments and the signals they over-index on',
-      onSelectSegment: () => journey && journey.ready && journey.ready(),
-      onSelectAttribute: () => journey && journey.ready && journey.ready(),
+      onSelectSegment: onManualSelect,
+      onSelectAttribute: onManualSelect,
     });
 
     // Advisory hint on the marquee interaction (never blocks Next).
     journey && journey.gate && journey.gate();
 
-    // No chapter:leave hook exists; the sim auto-idles when settled. Clean up
-    // hard on page unload so we never leak a rAF/listener.
-    window.addEventListener('pagehide', () => graph && graph.destroy && graph.destroy(), { once: true });
+    startCycle();
+
+    // Re-arm the auto-reveal whenever the step regains focus (the shell only
+    // fires chapter:arrive, never a leave event), unless the user has taken over.
+    rootEl.addEventListener('chapter:arrive', () => {
+      graph && graph.setActive && graph.setActive(true);
+      if (!userTookOver) { cycleIdx = 0; startCycle(); }
+    });
+
+    // A backgrounded tab should not keep the gentle drift running.
+    const onVisibility = () => {
+      const hidden = document.visibilityState === 'hidden';
+      graph && graph.setActive && graph.setActive(!hidden);
+      if (hidden) stopCycle();
+      else if (!userTookOver) startCycle();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    // Clean up hard on page unload so we never leak a rAF/listener/timer.
+    window.addEventListener('pagehide', () => {
+      stopCycle();
+      document.removeEventListener('visibilitychange', onVisibility);
+      graph && graph.destroy && graph.destroy();
+    }, { once: true });
   };
 
   // Weave in the distinctive TGI statements (data/tgi-statements.json is not in

@@ -34,6 +34,9 @@
   gap: clamp(28px, 5vw, 88px);
   align-items: center;
   align-self: center;
+  /* Prevent the grid from overflowing the padded chapter-inner. */
+  max-height: 100%;
+  min-height: 0;
 }
 
 /* ── LEFT: identity column ───────────────────────────────────────── */
@@ -41,6 +44,9 @@
   display: flex;
   flex-direction: column;
   gap: clamp(10px, 2vh, 22px);
+  /* Allow column to compress gracefully on short viewports. */
+  min-height: 0;
+  overflow: visible;
 }
 
 #\31 0-segment-architects .segment-architects-title {
@@ -50,7 +56,15 @@
   letter-spacing: -0.03em;
   line-height: 0.92;
   color: var(--ink);
+  /* Remove browser focus ring — main.js focuses this heading for a11y;
+     the blue rectangular outline IS the client-reported "blue box". Kill it. */
   outline: none;
+  border: 0;
+}
+#\31 0-segment-architects .segment-architects-title:focus,
+#\31 0-segment-architects .segment-architects-title:focus-visible {
+  outline: none;
+  border: 0;
 }
 
 #\31 0-segment-architects .segment-architects-title .si-accent {

@@ -47,17 +47,20 @@ const APPROX_CHAR_W = 7.4;   // px per char at hub label size (fallback measure)
 const HUB_LABEL_FS = 15;     // hub label font-size (px)
 const MAX_LABEL_CHARS = 24;  // truncation guard
 
-// Force constants — gentle, damped.
-const CHARGE = 2400;         // inverse-square repulsion strength
-const SPRING = 0.02;         // link spring stiffness
+// Force constants — gentle, heavily damped, no jitter.
+const CHARGE = 2200;         // inverse-square repulsion strength
+const CHARGE_MIN_D = 36;     // distance floor so close pairs can't blow up
+const CHARGE_MAX_F = 1.4;    // hard cap on per-pair repulsion (calms close ticks)
+const SPRING = 0.018;        // link spring stiffness (soft)
 const REST_HUB = 132;        // rest length, hub → its attributes
 const CENTER = 0.0018;       // light pull toward canvas centre (satellites)
 const HUB_CENTER = 0.0045;   // hubs are pulled toward their ring anchor
-const DAMPING = 0.85;        // velocity damping per tick
-const MAX_V = 14;            // velocity clamp for stability
+const DAMPING = 0.80;        // velocity damping per tick (calm settle)
+const MAX_V = 7;             // velocity clamp — low so motion reads as drift
+const COLLIDE_SOFT = 0.18;   // positional separation share per tick (no spring)
+const BREATH_AMP = 0.012;    // amplitude of the continuous gentle drift
+const BREATH_HZ = 0.05;      // breathing frequency (slow)
 const REDUCED_TICKS = 360;   // up-front ticks when motion is reduced
-const SETTLE_FRAMES = 480;   // min frames before allowing idle-out
-const SETTLE_ENERGY = 1.6;   // total kinetic energy below which we idle out
 
 const cssVar = (n, f) =>
   getComputedStyle(document.documentElement).getPropertyValue(n).trim() || f;
@@ -227,25 +230,31 @@ export function segmentGraph(container, opts = {}) {
   // while hidden satellites pack tight.
   const effCollide = (n) => (n.labelShown ? n.labelCollide : n.collide);
 
+  let breathPhase = 0;
+
   const tick = () => {
-    // charge repulsion + collision (all pairs)
+    breathPhase += BREATH_HZ * 0.1;
+    // charge repulsion (clamped) + collision (positional, no oscillation)
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const p = nodes[i], q = nodes[j];
         let dx = p.x - q.x, dy = p.y - q.y;
-        const d2 = dx * dx + dy * dy || 0.01;
-        const d = Math.sqrt(d2);
+        let d = Math.sqrt(dx * dx + dy * dy) || 0.01;
         const ux = dx / d, uy = dy / d;
-        const f = CHARGE / d2;
+        // Repulsion with a distance floor and a hard cap — close pairs no longer
+        // spike, which is what produced the jumpy ticks.
+        const de = Math.max(d, CHARGE_MIN_D);
+        const f = Math.min(CHARGE / (de * de), CHARGE_MAX_F);
         p.vx += ux * f; p.vy += uy * f;
         q.vx -= ux * f; q.vy -= uy * f;
 
-        // collision: never let two circles' keep-out radii overlap
+        // collision: resolve as a gentle POSITION separation (split the overlap)
+        // rather than a velocity impulse — eliminates the spring-back jitter.
         const minD = effCollide(p) + effCollide(q);
         if (d < minD) {
-          const push = (minD - d) * 0.5;
-          p.vx += ux * push; p.vy += uy * push;
-          q.vx -= ux * push; q.vy -= uy * push;
+          const sep = (minD - d) * COLLIDE_SOFT;
+          if (p !== dragNode) { p.x += ux * sep; p.y += uy * sep; }
+          if (q !== dragNode) { q.x -= ux * sep; q.y -= uy * sep; }
         }
       }
     }
@@ -262,7 +271,9 @@ export function segmentGraph(container, opts = {}) {
     });
 
     // centering + hub anchor (hubs hold the ring; attrs drift to centre softly)
-    nodes.forEach((n) => {
+    // plus a slow per-node breath so the network is always gently alive — a calm
+    // continuous drift, never a jitter (each node breathes on its own phase).
+    nodes.forEach((n, idx) => {
       if (n.kind === 'seg') {
         n.vx += (n.anchorX - n.x) * HUB_CENTER;
         n.vy += (n.anchorY - n.y) * HUB_CENTER;
@@ -270,6 +281,9 @@ export function segmentGraph(container, opts = {}) {
         n.vx += (cx - n.x) * CENTER;
         n.vy += (cy - n.y) * CENTER;
       }
+      const ph = breathPhase + idx * 0.7;
+      n.vx += Math.cos(ph) * BREATH_AMP;
+      n.vy += Math.sin(ph * 1.3) * BREATH_AMP;
     });
 
     // integrate with damping + velocity clamp; skip the actively dragged node
@@ -521,19 +535,26 @@ export function segmentGraph(container, opts = {}) {
   window.addEventListener('pointerup', onPointerUp);
 
   // ── Run the simulation ──────────────────────────────────────────────────────
+  // The gentle breath keeps the network softly alive, so the loop runs while the
+  // graph is active rather than freezing. setActive(false) pauses it cleanly when
+  // the step is off-screen so we never burn rAF in the background.
   let rafId = null;
+  let active = true;
   const loop = () => {
     tick();
     paint();
-    frames++;
-    const energy = nodes.reduce((s, n) => s + Math.hypot(n.vx, n.vy), 0);
-    if (frames > SETTLE_FRAMES && energy < SETTLE_ENERGY && !dragNode) { rafId = null; return; }
-    rafId = requestAnimationFrame(loop);
+    rafId = active ? requestAnimationFrame(loop) : null;
   };
-  let frames = 0;
 
   // Measure real label widths once the nodes are in the DOM, then start.
   remeasureLabels();
+
+  const setActive = (on) => {
+    if (reduced) return;            // reduced motion never runs the rAF loop
+    active = !!on;
+    if (active && rafId == null) { rafId = requestAnimationFrame(loop); }
+    if (!active && rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+  };
 
   if (reduced) {
     for (let i = 0; i < REDUCED_TICKS; i++) tick();
@@ -543,8 +564,7 @@ export function segmentGraph(container, opts = {}) {
     wake = () => { for (let i = 0; i < 90; i++) tick(); paint(); };
   } else {
     rafId = requestAnimationFrame(loop);
-    // wake the sim back up on interaction / label changes so it re-settles.
-    wake = () => { if (rafId == null) { frames = 0; rafId = requestAnimationFrame(loop); } };
+    wake = () => setActive(true);   // any interaction re-energises the loop
     svg.addEventListener('pointerdown', wake);
   }
 
@@ -553,7 +573,9 @@ export function segmentGraph(container, opts = {}) {
     selectSegment,
     selectAttribute,
     clear,
+    setActive,
     destroy() {
+      active = false;
       if (rafId != null) cancelAnimationFrame(rafId);
       window.removeEventListener('pointerup', onPointerUp);
       wrap.remove();

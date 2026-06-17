@@ -93,12 +93,20 @@
   gap: clamp(16px, 2.2vh, 28px);
   min-width: 0;
   justify-content: space-between;
+  overflow: hidden;   /* prevent quote card bleeding past the column edge */
+  min-height: 0;      /* allow flex shrink within the grid row */
 }
 
+/* No outline, no border, no pseudo-element box — title block stands on its own. */
 #\31 9-move-selfhelp .msh-head {
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 1.2vh, 14px);
+  outline: none;
+}
+#\31 9-move-selfhelp .msh-head::before,
+#\31 9-move-selfhelp .msh-head::after {
+  display: none !important;
 }
 
 /* Eyebrow — navy, reduced opacity for hierarchy on warm */
@@ -120,20 +128,27 @@
   line-height: 1;
 }
 
-/* Display title — black on warm, book-cover voice */
+/* Display title — black on warm, book-cover voice.
+   No outline or border — the title stands on its own (client: blue boxes gone). */
 #\31 9-move-selfhelp .msh-title {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(2.8rem, 4.8vw, 5rem);
+  font-size: clamp(3.2rem, 5.4vw, 5.8rem);
   letter-spacing: -0.03em;
-  line-height: 0.93;
+  line-height: 0.92;
   color: var(--ink, #000);
+  outline: none;
 }
 
 /* Italic accent word — navy on warm for one focal pop */
 #\31 9-move-selfhelp .msh-accent {
   color: var(--navy, #041654);
   font-style: italic;
+  outline: none;
+}
+#\31 9-move-selfhelp .msh-title::before,
+#\31 9-move-selfhelp .msh-title::after {
+  display: none !important;
 }
 
 /* WLV lesson — the slide 53 lesson line */
@@ -152,12 +167,15 @@
   padding: clamp(18px, 2.4vw, 32px);
   background: var(--cream, #F0EDE7);
   border-radius: 0;
-  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.07);
+  box-shadow: 0 10px 30px rgba(4, 22, 84, 0.10),
+              0 2px 6px rgba(4, 22, 84, 0.06);  /* deeper lift for gravitas */
   position: relative;
   display: flex;
   flex-direction: column;
   gap: clamp(10px, 1.4vh, 16px);
-  flex: 0 0 auto;
+  flex: 0 1 auto;  /* allow shrink so card stays inside the column */
+  min-height: 0;
+  overflow: hidden;
 }
 
 #\31 9-move-selfhelp .msh-quote .soi-card__mark {
@@ -386,6 +404,7 @@
   #\31 9-move-selfhelp .msh-left {
     gap: clamp(12px, 1.8vh, 20px);
     justify-content: flex-start;
+    overflow: visible;
   }
   #\31 9-move-selfhelp .msh-right {
     justify-content: flex-start;

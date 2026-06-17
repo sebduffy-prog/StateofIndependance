@@ -60,7 +60,7 @@ const buildBudget = (mount, spendItems, hintEl, onActivity) => {
       const item = byId[id];
       const isProtected = !!PROTECTED[id];
       const btnLabel = isProtected
-        ? `Try to cut ${item.label} — it won't stay cut`
+        ? `Try to cut ${item.label}: it won't stay cut`
         : `Cut ${item.label}`;
       return `
       <li class="twist-joy-row${isProtected ? ' is-protected' : ''}"
@@ -87,15 +87,15 @@ const buildBudget = (mount, spendItems, hintEl, onActivity) => {
     const btn = row.querySelector('.twist-joy-cut-btn');
     const isProtected = !!PROTECTED[id];
 
-    // Mark the holiday row as the you-dot anchor
-    if (id === 'holidays') row.setAttribute('data-youdot-anchor', '');
+    // You-dot: not anchored to any row on this step; the interactive
+    // stage is too busy. The dot hides when no anchor is present.
 
     btn.addEventListener('click', () => {
       if (isProtected) {
         // Refuse: spring-back animation
         if (row.classList.contains('is-refusing')) return; // debounce
         row.classList.add('is-refusing');
-        if (hintEl) hintEl.textContent = "The holiday won't budge — 2 in 5 defend it.";
+        if (hintEl) hintEl.textContent = "The holiday won't budge. 2 in 5 defend it.";
         fireActivity();
         if (!reduced) {
           setTimeout(() => row.classList.remove('is-refusing'), RESIST_DURATION_MS);

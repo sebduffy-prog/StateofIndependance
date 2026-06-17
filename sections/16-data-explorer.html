@@ -38,7 +38,7 @@
            is the headline; it counts in on arrival and morphs on each change. -->
       <div class="pg-readout" data-pg-readout>
         <p class="pg-readout-num" data-arrival>
-          <span data-pg-readout-num>—</span><span class="pg-readout-unit" data-pg-readout-unit></span>
+          <span data-pg-readout-num>00.0</span><span class="pg-readout-unit" data-pg-readout-unit></span>
         </p>
         <p class="pg-readout-line" data-arrival><span data-pg-readout-line>Pick a question, a Britain, and a view.</span></p>
       </div>
@@ -61,8 +61,11 @@
       <p class="pg-note" data-pg-note role="status" aria-live="polite"></p>
     </div>
 
-    <!-- ── RIGHT: the single hero — the chart, box-less, on the open ground ── -->
-    <div class="pg-instrument" data-youdot-anchor>
+    <!-- ── RIGHT: the single hero — the chart, box-less, on the open ground.
+         No [data-youdot-anchor]: the persistent yellow you-dot would land on the
+         chart marks (a stray dot). The orbit's own yellow seed is the single
+         deliberate accent on this step, so the persistent dot stays hidden. ── -->
+    <div class="pg-instrument">
       <div class="chart-holder pg-chart-holder">
         <div class="pg-chart" data-pg-metric-chart></div>
       </div>

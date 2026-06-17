@@ -47,7 +47,15 @@ const restoreYouDot = () => {
 export default function init(rootEl, data) {
   observeParallax(rootEl, { maxShiftPx: 32 });
 
+  // Seed the scramble target from the literal markup BEFORE any reveal runs.
+  // scrambleIn() trusts dataset.scrambleText over the live (possibly garbled)
+  // textContent, so capturing "tools" here guarantees the quote always
+  // resolves to "...hand them the tools." and never decays to an empty glyph.
   const scrambleEl = rootEl.querySelector('[data-arrival-scramble]');
+  if (scrambleEl && !scrambleEl.dataset.scrambleText) {
+    const literal = (scrambleEl.textContent || '').trim();
+    if (literal) scrambleEl.dataset.scrambleText = literal;
+  }
 
   let disperseTimer = null;
 

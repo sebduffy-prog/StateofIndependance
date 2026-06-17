@@ -114,7 +114,7 @@ export default function init(rootEl, data) {
     items,
     trueOrder,
     instructions:
-      'Drag to reorder — or use ↑ ↓ arrow keys. Most trusted at the top.',
+      'Drag to reorder, or use ↑ ↓ arrow keys. Most trusted at the top.',
     onReveal: showReveal,
   });
 

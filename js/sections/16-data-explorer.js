@@ -203,7 +203,7 @@ const drawView = (host, viewId, metric, items) => {
     grid.setValue(lead.value);
     const cap = document.createElement('p');
     cap.className = 'pg-waffle-cap';
-    cap.textContent = lead.label ? `${lead.label} — ${Math.round(lead.value)} in 100` : '';
+    cap.textContent = lead.label ? `${lead.label}: ${Math.round(lead.value)} in 100` : '';
     host.append(cap);
     return;
   }

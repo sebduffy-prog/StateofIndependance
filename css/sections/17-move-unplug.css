@@ -90,37 +90,51 @@
 #\31 7-move-unplug .mu-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.2vh, 28px);
+  gap: clamp(16px, 2.4vh, 32px);
   min-width: 0;
-  justify-content: space-between;
+  justify-content: center;
+  min-height: 0;
 }
 
 #\31 7-move-unplug .mu-head {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vh, 14px);
+  gap: clamp(10px, 1.6vh, 20px);
 }
 
-/* Eyebrow — navy, reduced opacity for hierarchy on warm */
-#\31 7-move-unplug .mu-eyebrow {
-  color: rgba(4, 22, 84, 0.62);
-  margin-bottom: 0;
+/* ── Move stage marker — designed gravitas device ───────────────────── */
+#\31 7-move-unplug .mu-stage {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(12px, 1.2vw, 18px);
 }
 
-/* Move stage number — large tabular navy numerals (book-cover energy) */
-#\31 7-move-unplug .mu-movenum {
+/* Large stage numeral — the weighty "01" */
+#\31 7-move-unplug .mu-stage__num {
   font-weight: 900;
-  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 3.4vw, 3.6rem);
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--navy, #041654);
-  line-height: 1;
+  line-height: 0.9;
 }
 
-/* Display title — black on warm, book-cover voice */
+/* Hairline rule between the numeral and the label */
+#\31 7-move-unplug .mu-stage__rule {
+  width: clamp(24px, 2.6vw, 40px);
+  height: 2px;
+  background: var(--navy, #041654);
+  opacity: 0.55;
+  flex: 0 0 auto;
+}
+
+#\31 7-move-unplug .mu-stage__label {
+  color: rgba(4, 22, 84, 0.7);
+  margin: 0;
+}
+
+/* Display title — black on warm, book-cover voice. Stands on its own:
+   no frame, no outline, no box (client: "these blue boxes have to go"). */
 #\31 7-move-unplug .mu-title {
   margin: 0;
   font-weight: 900;
@@ -128,6 +142,18 @@
   letter-spacing: -0.03em;
   line-height: 0.93;
   color: var(--ink, #000);
+  border: 0;
+  outline: 0;
+}
+#\31 7-move-unplug .mu-title::before,
+#\31 7-move-unplug .mu-title::after,
+#\31 7-move-unplug .mu-head::before,
+#\31 7-move-unplug .mu-head::after {
+  content: none !important;
+}
+#\31 7-move-unplug .mu-accent[data-arrival-scramble] {
+  border: 0;
+  outline: 0;
 }
 
 /* Italic accent word — navy on warm for one focal pop */
@@ -192,8 +218,9 @@
 #\31 7-move-unplug .mu-right {
   display: flex;
   flex-direction: column;
-  gap: clamp(18px, 2.8vh, 36px);
+  gap: clamp(20px, 3.2vh, 40px);
   min-width: 0;
+  min-height: 0;
   justify-content: center;
 }
 
@@ -231,7 +258,7 @@
 #\31 7-move-unplug .mu-stat__num {
   display: block;
   font-weight: 900;
-  font-size: clamp(5rem, 10vw, 9.6rem);
+  font-size: clamp(4.6rem, 8.4vw, 8rem);
   letter-spacing: -0.04em;
   line-height: 0.88;
   font-variant-numeric: tabular-nums;
@@ -247,23 +274,42 @@
   max-width: 28ch;
 }
 
+/* ── flipReveal panel — a designed navy card, not a ghost ──────────── */
+#\31 7-move-unplug .mu-flip-panel {
+  background: var(--navy, #041654);
+  border-radius: 0;
+  padding: clamp(18px, 2.4vh, 30px) clamp(18px, 2.2vw, 30px);
+  box-shadow: 0 18px 44px rgba(4, 22, 84, 0.22);
+  width: 100%;
+}
+
+/* Panel kicker — sets the interaction up with intent */
+#\31 7-move-unplug .mu-flip-kicker {
+  margin: 0 0 clamp(12px, 1.6vh, 18px);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--yellow, #F0CB08);
+}
+
 /* ── flipReveal interaction (class hooks from interactions.js) ─────── */
 #\31 7-move-unplug .flip-rows {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: clamp(8px, 1.1vh, 12px);
   width: 100%;
 }
 
 #\31 7-move-unplug .flip-head {
   display: flex;
   justify-content: space-between;
-  padding: 0 clamp(12px, 1.6vw, 20px) clamp(5px, 0.8vh, 9px);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  padding: 0 clamp(14px, 1.6vw, 20px) clamp(4px, 0.6vh, 8px);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(4, 22, 84, 0.48);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 #\31 7-move-unplug .flip-row {
@@ -271,9 +317,9 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: clamp(8px, 1.2vw, 16px);
-  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.6vw, 20px);
-  background: rgba(4, 22, 84, 0.06);
-  border: 1px solid rgba(4, 22, 84, 0.10);
+  padding: clamp(11px, 1.5vh, 17px) clamp(14px, 1.6vw, 20px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 0;
   cursor: pointer;
   transition:
@@ -281,62 +327,79 @@
     border-color var(--dur-micro, 180ms) ease;
   text-align: left;
   width: 100%;
-  margin-bottom: 2px;
   font-family: var(--font-sans);
 }
 #\31 7-move-unplug .flip-row:hover,
 #\31 7-move-unplug .flip-row:focus-visible {
-  background: rgba(4, 22, 84, 0.10);
-  border-color: rgba(4, 22, 84, 0.22);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.3);
   outline: none;
 }
 #\31 7-move-unplug .flip-row:focus-visible {
-  border-color: var(--navy, #041654);
-  box-shadow: 0 0 0 2px rgba(4, 22, 84, 0.24);
+  border-color: var(--yellow, #F0CB08);
+  box-shadow: 0 0 0 2px rgba(240, 203, 8, 0.5);
 }
 
-/* Less side — shown before flip */
+/* Less side — legible cream, the starting state */
 #\31 7-move-unplug .flip-less {
   font-weight: 700;
-  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
-  color: rgba(4, 22, 84, 0.54);
+  font-size: clamp(0.9rem, 1.0vw, 1.06rem);
+  color: rgba(255, 255, 255, 0.82);
   transition: color var(--dur-micro, 180ms) ease,
               opacity var(--dur-micro, 180ms) ease;
 }
 
 #\31 7-move-unplug .flip-arrow {
-  font-size: 0.78rem;
-  color: rgba(4, 22, 84, 0.28);
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.4);
   font-style: italic;
   flex: 0 0 auto;
   text-align: center;
   transition: color var(--dur-micro, 180ms) ease;
 }
 
-/* More side — dimmed before flip, vivid after */
+/* More side — waiting in reserve, vivid yellow once flipped */
 #\31 7-move-unplug .flip-more {
   font-weight: 800;
-  font-size: clamp(0.86rem, 0.98vw, 1.02rem);
-  color: rgba(4, 22, 84, 0.30);
+  font-size: clamp(0.9rem, 1.0vw, 1.06rem);
+  color: rgba(255, 255, 255, 0.4);
   text-align: right;
-  transition: color var(--dur-micro, 180ms) ease,
-              font-size var(--dur-micro, 180ms) ease;
+  transition: color var(--dur-micro, 180ms) ease;
 }
 
-/* Flipped state — less dims, more pops to navy */
+/* Flipped state — less recedes, more pops to brand yellow */
 #\31 7-move-unplug .flip-row.is-flipped .flip-less {
-  color: rgba(4, 22, 84, 0.28);
-  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 0.8;
 }
 #\31 7-move-unplug .flip-row.is-flipped .flip-more {
-  color: var(--navy, #041654);
+  color: var(--yellow, #F0CB08);
 }
 #\31 7-move-unplug .flip-row.is-flipped .flip-arrow {
-  color: var(--navy, #041654);
+  color: var(--yellow, #F0CB08);
 }
 #\31 7-move-unplug .flip-row.is-flipped {
-  background: rgba(4, 22, 84, 0.10);
-  border-color: rgba(4, 22, 84, 0.20);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(240, 203, 8, 0.4);
+}
+
+/* ── Designed arrival: rows assemble one after another with weight ──── */
+@media (prefers-reduced-motion: no-preference) {
+  #\31 7-move-unplug .mu-flip-panel .flip-row {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 520ms var(--ease-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)),
+                transform 520ms var(--ease-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)),
+                background var(--dur-micro, 180ms) ease,
+                border-color var(--dur-micro, 180ms) ease;
+  }
+  #\31 7-move-unplug .mu-flip-panel.is-arrived .flip-row {
+    opacity: 1;
+    transform: none;
+  }
+  #\31 7-move-unplug .mu-flip-panel.is-arrived .flip-row:nth-child(2) { transition-delay: 120ms; }
+  #\31 7-move-unplug .mu-flip-panel.is-arrived .flip-row:nth-child(3) { transition-delay: 240ms; }
+  #\31 7-move-unplug .mu-flip-panel.is-arrived .flip-row:nth-child(4) { transition-delay: 360ms; }
 }
 
 /* ── Narrow / portrait: stack columns ──────────────────────────────── */
@@ -381,12 +444,15 @@
   }
 }
 
-/* ── Reduced motion: kill transitions ──────────────────────────────── */
+/* ── Reduced motion: kill transitions, rows fully visible at rest ───── */
 @media (prefers-reduced-motion: reduce) {
   #\31 7-move-unplug .flip-row,
   #\31 7-move-unplug .flip-less,
   #\31 7-move-unplug .flip-more,
-  #\31 7-move-unplug .flip-arrow {
+  #\31 7-move-unplug .flip-arrow,
+  #\31 7-move-unplug .mu-flip-panel .flip-row {
     transition: none;
+    opacity: 1;
+    transform: none;
   }
 }

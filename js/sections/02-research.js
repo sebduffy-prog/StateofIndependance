@@ -23,7 +23,7 @@
  */
 import { observeReveals, prefersReducedMotion } from '../lib/reveal.js';
 import { observeCounters } from '../lib/counter.js';
-import { arrival, scrambleIn } from '../lib/experiential.js';
+import { arrival } from '../lib/experiential.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const MAP_SRC = 'assets/deck/uk-map.svg';
@@ -229,8 +229,6 @@ const renderDiary = (diaryEl, city) => {
   diaryEl.classList.remove('is-live');
   void diaryEl.offsetWidth;
   diaryEl.classList.add('is-live');
-  const decrypt = diaryEl.querySelector('.research-quote-who, .research-quote-city');
-  if (decrypt) scrambleIn(decrypt);
 };
 
 export default function init(rootEl, data) {

@@ -41,7 +41,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;              /* clip the ambient orbit ring to the ground */
-  min-height: 100%;
+  min-height: 100svh;            /* one screen, no internal scroll */
   display: flex;
   flex-direction: column;
   justify-content: center;       /* the one instrument sits in the centre band */
@@ -54,14 +54,19 @@
 #\31 6-data-explorer .pg-orbit {
   position: absolute;
   z-index: 0;
-  top: clamp(-160px, -8vw, -60px);
-  right: clamp(-200px, -6vw, -80px);
-  width: clamp(420px, 48vw, 820px);
-  height: clamp(420px, 48vw, 820px);
+  /* A large ring anchored off the bottom-right corner: its visible upper-left
+     arc sweeps through the lower-right ground so nothing reads as empty space,
+     while its CENTRE sits off-canvas so the seed-dot rides the rim well clear
+     of the chart marks (never a stray dot over the data). */
+  --pg-orbit-r: clamp(340px, 38vw, 640px);
+  bottom: clamp(-360px, -22vw, -200px);
+  right: clamp(-360px, -22vw, -200px);
+  width: calc(var(--pg-orbit-r) * 2);
+  height: calc(var(--pg-orbit-r) * 2);
+  transform-origin: center;
   border-radius: 50%;
   border: 1.5px solid var(--pg-rule);
   pointer-events: none;
-  animation: pg-orbit-spin 80s linear infinite;
 }
 #\31 6-data-explorer .pg-orbit::after {
   content: "";
@@ -70,19 +75,31 @@
   border-radius: 50%;
   border: 1px solid rgba(4, 22, 84, 0.08);
 }
-/* the single yellow seed-dot riding the orbit ring — the one accent moment */
+/* the single yellow seed-dot riding the orbit ring — the one accent moment.
+   The dot itself orbits (rotating about the ring centre) so the parent can stay
+   translated for vertical centring without the spin clobbering its transform. */
 #\31 6-data-explorer .pg-orbit::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: -5px;
+  left: 50%;
   width: 10px;
   height: 10px;
+  margin: -5px 0 0 -5px;
   border-radius: 50%;
   background: var(--yellow);
   box-shadow: 0 0 0 3px rgba(240, 237, 231, 0.6);
+  /* ride the rim: radius matches half the ring width (see --pg-orbit-r).
+     Resting transform places it on the left rim so a no-animation state
+     (reduced motion) never leaves the seed stranded at the ring centre. */
+  transform-origin: 5px 5px;
+  transform: translateX(calc(var(--pg-orbit-r) * -1));
+  animation: pg-orbit-seed 80s linear infinite;
 }
-@keyframes pg-orbit-spin { to { transform: rotate(360deg); } }
+@keyframes pg-orbit-seed {
+  from { transform: rotate(0deg) translateX(calc(var(--pg-orbit-r) * -1)) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(calc(var(--pg-orbit-r) * -1)) rotate(-360deg); }
+}
 
 /* ─── The asymmetric split: instrument rail | chart hero ─────────────── */
 #\31 6-data-explorer .pg-stage {
@@ -134,9 +151,9 @@
   margin: 0;
   color: var(--navy);
   font-weight: 900;
-  font-size: clamp(3.4rem, 7.6vw, 6.8rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.86;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
 }
 /* The unit is the ONE yellow accent on the figure. */
@@ -199,6 +216,10 @@
   border-color: var(--navy);
   background: rgba(4, 22, 84, 0.05);
 }
+/* Tactile press — the control compresses under the finger before it commits. */
+#\31 6-data-explorer .pillgroup-chip:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
 /* Active: solid navy, cream text — deliberate contrast, the data-serious chip. */
 #\31 6-data-explorer .pillgroup-chip.is-active {
   background: var(--navy);
@@ -230,10 +251,16 @@
 #\31 6-data-explorer .pg-instrument {
   min-width: 0;
 }
-#\31 6-data-explorer .pg-chart-holder { width: 100%; }
+#\31 6-data-explorer .pg-chart-holder {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 #\31 6-data-explorer .pg-chart {
   width: 100%;
-  min-height: 340px;             /* reserve space so the panel never jumps */
+  /* The chart is the hero: reserve a commanding band so it fills the right
+     two-thirds and the lower ground is never empty. */
+  min-height: clamp(360px, 46vh, 560px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -246,9 +273,14 @@
 }
 #\31 6-data-explorer .pg-chart.is-fading {
   opacity: 0;
-  transform: translate3d(0, 10px, 0);
+  transform: translate3d(0, 14px, 0) scale(0.985);
 }
-#\31 6-data-explorer .pg-chart > svg { max-width: 100%; height: auto; }
+#\31 6-data-explorer .pg-chart > svg {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
 
 /* ─── Waffle view — the lead figure as N-in-100, with an honest caption ─ */
 #\31 6-data-explorer .pg-chart .pg-waffle-cap {
@@ -363,7 +395,8 @@
   #\31 6-data-explorer .pg-chart {
     transition: none;
   }
-  #\31 6-data-explorer .pg-orbit { animation: none; }
+  #\31 6-data-explorer .pg-orbit,
+  #\31 6-data-explorer .pg-orbit::before { animation: none; }
 }
 
 /* ─── Responsive: stack the rail above the chart ─────────────────────── */

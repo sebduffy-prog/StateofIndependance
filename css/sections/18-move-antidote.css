@@ -79,7 +79,7 @@
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding: clamp(44px, 6vh, 72px) clamp(36px, 6.5vw, 108px) clamp(32px, 4.2vh, 56px);
+  padding: clamp(36px, 4.5vh, 56px) clamp(36px, 6.5vw, 108px) clamp(28px, 3.5vh, 44px);
   box-sizing: border-box;
   height: 100svh;
   max-height: 100svh;
@@ -90,7 +90,7 @@
 #\31 8-move-antidote .ma-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.2vh, 28px);
+  gap: clamp(12px, 1.6vh, 20px);
   min-width: 0;
   justify-content: space-between;
 }
@@ -120,7 +120,8 @@
   line-height: 1;
 }
 
-/* Display title — black on warm, book-cover voice */
+/* Display title — black on warm, book-cover voice.
+   No frame, no outline, no box (client: "these blue boxes have to go"). */
 #\31 8-move-antidote .ma-title {
   margin: 0;
   font-weight: 900;
@@ -128,6 +129,18 @@
   letter-spacing: -0.03em;
   line-height: 0.93;
   color: var(--ink, #000);
+  border: 0;
+  outline: 0;
+}
+#\31 8-move-antidote .ma-title::before,
+#\31 8-move-antidote .ma-title::after,
+#\31 8-move-antidote .ma-head::before,
+#\31 8-move-antidote .ma-head::after {
+  content: none !important;
+}
+#\31 8-move-antidote .ma-accent[data-arrival-scramble] {
+  border: 0;
+  outline: 0;
 }
 
 /* Italic accent word — navy on warm for one focal pop */
@@ -149,15 +162,17 @@
 /* ── Quote card — .soi-card: cream, square corners, one lift device ─── */
 #\31 8-move-antidote .ma-quote {
   margin: 0;
-  padding: clamp(18px, 2.4vw, 32px);
+  padding: clamp(14px, 1.8vw, 24px);
   background: var(--cream, #F0EDE7);
   border-radius: 0;
   box-shadow: 0 10px 30px rgba(4, 22, 84, 0.07);
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.4vh, 16px);
-  flex: 0 0 auto;
+  gap: clamp(8px, 1vh, 12px);
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 #\31 8-move-antidote .ma-quote .soi-card__mark {
@@ -172,12 +187,13 @@
 #\31 8-move-antidote .ma-quote__text {
   margin: 0;
   font-style: italic;
-  font-size: clamp(0.82rem, 0.95vw, 0.96rem);
-  line-height: 1.58;
+  font-size: clamp(0.78rem, 0.9vw, 0.92rem);
+  line-height: 1.52;
   color: var(--ink-soft, #1A1A1A);
   max-width: 48ch;
   /* pad right so text never overlaps the lockup mark */
   padding-right: clamp(40px, 5vw, 64px);
+  overflow: hidden;
 }
 
 #\31 8-move-antidote .ma-quote__attr {
@@ -192,9 +208,10 @@
 #\31 8-move-antidote .ma-right {
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2.2vh, 28px);
+  gap: clamp(10px, 1.8vh, 22px);
   min-width: 0;
-  justify-content: center;
+  justify-content: space-between;
+  padding-block: clamp(4px, 1vh, 12px);
 }
 
 /* Stat hero — icon + big number + label */
@@ -230,7 +247,7 @@
 #\31 8-move-antidote .ma-stat__num {
   display: block;
   font-weight: 900;
-  font-size: clamp(5rem, 10vw, 9.6rem);
+  font-size: clamp(4.4rem, 8.5vw, 8rem);
   letter-spacing: -0.04em;
   line-height: 0.88;
   font-variant-numeric: tabular-nums;
@@ -401,18 +418,21 @@
 /* ── Short viewports: compress vertical gaps ────────────────────────── */
 @media (max-height: 680px) {
   #\31 8-move-antidote .ma-grid {
-    padding-top: clamp(36px, 5vh, 52px);
-    padding-bottom: clamp(18px, 2.8vh, 32px);
-    gap: clamp(16px, 2.2vw, 36px);
+    padding-top: clamp(28px, 4vh, 40px);
+    padding-bottom: clamp(14px, 2.2vh, 24px);
+    gap: clamp(12px, 1.8vw, 28px);
   }
   #\31 8-move-antidote .ma-stat__num {
-    font-size: clamp(3.8rem, 7.5vw, 5.6rem);
+    font-size: clamp(3.4rem, 6.5vw, 5rem);
   }
   #\31 8-move-antidote .flip-row {
-    padding: 8px clamp(10px, 1.2vw, 16px);
+    padding: 7px clamp(10px, 1.2vw, 16px);
   }
   #\31 8-move-antidote .ma-brands {
-    gap: 6px;
+    gap: 5px;
+  }
+  #\31 8-move-antidote .ma-right {
+    gap: clamp(8px, 1.2vh, 16px);
   }
 }
 

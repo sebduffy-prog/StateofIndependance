@@ -29,10 +29,12 @@
     <!-- LEFT COLUMN — move header + lesson + quote -->
     <div class="mu-left">
       <header class="mu-head">
-        <p class="vccp-eyebrow mu-eyebrow" data-arrival>
-          <span class="mu-movenum" aria-hidden="true">01</span>
-          Move one of five
-        </p>
+        <!-- Move number — designed stage marker for gravitas -->
+        <div class="mu-stage" data-arrival>
+          <span class="mu-stage__num" aria-hidden="true">01</span>
+          <span class="mu-stage__rule" aria-hidden="true"></span>
+          <span class="mu-stage__label vccp-eyebrow">Move one of five</span>
+        </div>
         <h2 class="mu-title" data-arrival>
           Unplug them<br>from the <em class="mu-accent" data-arrival-scramble>grid</em>
         </h2>
@@ -49,7 +51,7 @@
              alt="" aria-hidden="true" />
         <p class="mu-quote__text">
           "I now have a lot less trust in institutions such as the government
-          and politicians, local councils… Big brands are the same — I don't
+          and politicians, local councils. Big brands are the same. I don't
           want to give too much money to one brand."
         </p>
         <footer class="mu-quote__attr">Southampton, 63 · Architects</footer>
@@ -68,16 +70,19 @@
                class="mu-icon__img" />
         </div>
         <div class="mu-stat">
-          <span class="mu-stat__num num" data-youdot-anchor
+          <span class="mu-stat__num num"
                 data-count-to="34" data-count-suffix="%">34%</span>
           <span class="mu-stat__label">are already using tools to fix their own
             practical home and financial problems</span>
         </div>
       </div>
 
-      <!-- flipReveal interaction — the marquee beat -->
-      <div class="mu-flip" data-flip
-           aria-label="Flip each row to reveal the brand shift"></div>
+      <!-- flipReveal interaction — the designed less-to-more beat -->
+      <div class="mu-flip-panel" data-arrival>
+        <p class="mu-flip-kicker">The shift, in three moves</p>
+        <div class="mu-flip" data-flip
+             aria-label="Flip each row to reveal the brand shift"></div>
+      </div>
 
     </aside>
   </div>

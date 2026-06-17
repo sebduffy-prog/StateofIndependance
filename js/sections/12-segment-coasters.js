@@ -20,7 +20,7 @@ import { pillGroup } from '../lib/interactions.js';
 
 const SEGMENT_ID = 'coasters';
 const TOP_N = 5; // bars per lens — fills the column without crowding
-const INDEX_MAX = 250; // chart scale: coasters top out around 192 (aged 75+)
+const INDEX_MAX = 200; // chart scale: coasters top out ~192; 200 fills the track
 
 /** Tidy a long TGI statement into a short, legible bar label. */
 const tidyLabel = (statement) =>
@@ -119,9 +119,9 @@ export default function init(rootEl, data) {
         max: INDEX_MAX,
         accent: 'navy',
         decimals: 0,
-        barHeight: 26,
-        gap: 14,
-        labelWidth: 210,
+        barHeight: 28,
+        gap: 16,
+        labelWidth: 160,
         ariaLabel: 'Coasters index against the UK average',
       });
     } else {

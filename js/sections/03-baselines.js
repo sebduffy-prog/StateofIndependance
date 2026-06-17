@@ -197,7 +197,7 @@ export default function init(rootEl, data) {
     max: 100,
     unit: '%',
     label: 'How many in every 100 are more careful with money than five years ago?',
-    prompt: 'Before the truth — take a guess',
+    prompt: 'Before the truth: take a guess',
 
     // Live: slider → waffle fills to match the current guess.
     onInput: (guessValue) => {
@@ -215,7 +215,7 @@ export default function init(rootEl, data) {
 
       // Update crowd label now the crowd has meaning.
       if (crowdLabel) crowdLabel.textContent = '77 in 100 are more careful. One square is you.';
-      if (crowdOf)    crowdOf.textContent    = 'of every 100 people you pass today — one of them is you.';
+      if (crowdOf)    crowdOf.textContent    = 'of every 100 people you pass today. One of them is you.';
 
       if (crowdCount) {
         countUp(crowdCount, { from, to: CAREFUL_FILL, durationMs: COUNT_MS });

@@ -78,7 +78,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Bold-black title — confirms the number's meaning */
+/* Bold-black title — confirms the number's meaning.
+   Explicit frame-kill: no outline, border, or pseudo-element box ever. */
 #\30 7-twist-joy .twist-joy-title {
   margin: 0;
   font-size: clamp(1.9rem, 3.5vw, 3.2rem);
@@ -86,6 +87,14 @@
   letter-spacing: -0.03em;
   line-height: 0.94;
   color: var(--ink, #000);
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+}
+#\30 7-twist-joy .twist-joy-title::before,
+#\30 7-twist-joy .twist-joy-title::after {
+  content: none;
+  display: none;
 }
 
 /* Italic accent word — "holiday" in navy italic per BRAND-WORLD-FINAL §2 */
@@ -345,6 +354,44 @@
   background: var(--yellow, #f0cb08);
   pointer-events: none;
   opacity: 0.9;
+}
+
+/* ── Lower-left anchor block — fills dead space, ring-fence motif ──────── */
+#\30 7-twist-joy .twist-joy-anchor-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: clamp(12px, 2vh, 24px);
+  padding: clamp(14px, 1.8vh, 20px) clamp(16px, 2vw, 22px);
+  background: rgba(4, 22, 84, 0.06);
+  border-left: 3px solid var(--yellow, #f0cb08);
+  max-width: 22ch;
+}
+
+#\30 7-twist-joy .twist-joy-anchor-label {
+  font-weight: 700;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy, #041654);
+  opacity: 0.55;
+}
+
+#\30 7-twist-joy .twist-joy-anchor-bar {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--yellow, #f0cb08);
+  opacity: 0.7;
+}
+
+#\30 7-twist-joy .twist-joy-anchor-pct {
+  font-weight: 900;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  color: var(--navy, #041654);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Responsive: stack below 820px ───────────────────────────────────── */

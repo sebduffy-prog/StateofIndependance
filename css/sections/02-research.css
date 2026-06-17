@@ -76,7 +76,8 @@
 }
 
 /* The ONE display moment on this screen — the BOLD BLACK book-cover voice.
-   Sentence case, set tight, three lines; the accent word is italic only. */
+   Sentence case, set tight, three lines; the accent word is italic only.
+   No outline or border: the title stands alone on the cream ground. */
 #\30 2-research .research-headline {
   margin: 0 0 clamp(22px, 3.2vh, 34px);
   font-weight: 900;
@@ -84,6 +85,13 @@
   letter-spacing: -0.03em;
   font-size: clamp(2.5rem, 3.8vw, 4.2rem);
   color: var(--ink);
+  outline: none;
+  border: none;
+  background: none;
+}
+#\30 2-research .research-headline::before,
+#\30 2-research .research-headline::after {
+  display: none;
 }
 #\30 2-research .research-headline span { display: block; }
 /* The italic accent word — the "Series" gesture. The slant IS the accent:

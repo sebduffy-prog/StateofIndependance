@@ -93,12 +93,21 @@
   gap: clamp(12px, 1.8vh, 22px);
   min-width: 0;
   justify-content: space-between;
+  /* Prevent children from overflowing the column — quote stays inside grid. */
+  min-height: 0;
+  overflow: hidden;
 }
 
 #\32 0-move-mentalload .mml-head {
   display: flex;
   flex-direction: column;
   gap: clamp(6px, 1vh, 12px);
+  /* No outline, no border, no pseudo-element box — head stands on its own. */
+  outline: none;
+}
+#\32 0-move-mentalload .mml-head::before,
+#\32 0-move-mentalload .mml-head::after {
+  content: none;
 }
 
 /* Eyebrow */
@@ -120,7 +129,8 @@
   line-height: 1;
 }
 
-/* Display title — black on warm, book-cover voice */
+/* Display title — black on warm, book-cover voice.
+   No outline, no border, no pseudo-element box (client: blue boxes gone). */
 #\32 0-move-mentalload .mml-title {
   margin: 0;
   font-weight: 900;
@@ -128,6 +138,11 @@
   letter-spacing: -0.03em;
   line-height: 0.93;
   color: var(--ink, #000);
+  outline: none;
+}
+#\32 0-move-mentalload .mml-title::before,
+#\32 0-move-mentalload .mml-title::after {
+  content: none;
 }
 
 /* Italic accent word */
@@ -231,7 +246,10 @@
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 1.2vh, 14px);
-  flex: 0 0 auto;
+  /* Shrink before overflowing; never bleed past the grid row. */
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 #\32 0-move-mentalload .mml-quote .soi-card__mark {

@@ -290,8 +290,18 @@ export const scrollScene = (rootEl, steps = [], opts = {}) => {
 // Arrival timing — one slow embodied beat, not a flash.
 const ARRIVAL_RITUAL_MS = 1500; // first-step "connecting" ritual length
 const ARRIVAL_ASSEMBLE_STAGGER_MS = 90; // per-line cascade
-const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#________';
+// Narrow, even-width glyph set: no wide/zero-width chars that could force a
+// re-wrap on big Poppins display headings. (No em dash, no braces.)
+const SCRAMBLE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%';
+// Not-yet-started positions emit one scramble glyph each (see run loop), so the
+// string is CONSTANT-LENGTH every frame (zero reflow) and reads as encrypting
+// noise rather than a blank gap; spaces in the target stay spaces.
 const SCRAMBLE_FRAME_MS = 28;
+// Hard cap so an interrupted/looping reveal can never run forever.
+const SCRAMBLE_MAX_MS = 2200;
+// Tracks active runs per element so re-invocation is idempotent (cancels the
+// prior run and forces the true target before starting fresh).
+const scrambleRuns = new WeakMap();
 
 /**
  * Step ARRIVAL — the premium "this chapter is arriving" beat.
@@ -433,11 +443,22 @@ const countUpArrival = (el, reduced) => {
  * @returns {() => void} cleanup
  */
 export const scrambleIn = (el, opts = {}) => {
+  if (!el) return () => {};
   const { speedMs = SCRAMBLE_FRAME_MS, chars = SCRAMBLE_CHARS } = opts;
-  const text = el.dataset.scrambleText || el.textContent || '';
+
+  // Cancel any in-flight run on this element FIRST, and restore the true
+  // target, so we never capture an already-scrambled value as the target and
+  // re-invocation is fully idempotent.
+  const prior = scrambleRuns.get(el);
+  if (prior) prior.cancel();
+
+  // The resolved target is captured once (first ever call) into the dataset.
+  // After that we always trust the dataset, never the live (possibly garbled)
+  // textContent — this is what kept titles stuck as glyphs forever.
+  const text = el.dataset.scrambleText ?? el.textContent ?? '';
   el.dataset.scrambleText = text;
 
-  if (prefersReducedMotion()) {
+  if (prefersReducedMotion() || text.length === 0) {
     el.textContent = text;
     return () => {};
   }
@@ -449,8 +470,40 @@ export const scrambleIn = (el, opts = {}) => {
 
   let frame = 0;
   let timer = 0;
+  let cancelled = false;
+  const startedAt = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+
+  // Force the element to its literal final words and clear all run state.
+  const settle = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = 0;
+    }
+    el.textContent = el.dataset.scrambleText ?? text;
+    if (scrambleRuns.get(el) === handle) scrambleRuns.delete(el);
+  };
+
+  const cancel = () => {
+    if (cancelled) return;
+    cancelled = true;
+    settle();
+  };
+
+  const handle = { cancel };
+  scrambleRuns.set(el, handle);
+
   const run = () => {
+    if (cancelled) return;
+    // Hard max-duration cap: never leave the element mid-scramble.
+    const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+    if (now - startedAt >= SCRAMBLE_MAX_MS) {
+      cancel();
+      return;
+    }
     let complete = 0;
+    // CONSTANT-LENGTH output: every position emits exactly one character every
+    // frame (filler before it starts), so the element footprint never changes
+    // and big display headings cannot re-wrap mid-reveal.
     const out = queue.map((q) => {
       if (frame >= q.end) {
         complete += 1;
@@ -462,15 +515,21 @@ export const scrambleIn = (el, opts = {}) => {
         }
         return q.char;
       }
-      return '';
+      // Not started yet: keep real spaces as spaces; everything else shows
+      // scrambling noise (never blank) so the line reads as "encrypting", not
+      // as a missing word. Same char count = constant footprint, no reflow.
+      return q.to === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)];
     });
     el.textContent = out.join('');
-    if (complete === queue.length) return;
+    if (complete === queue.length) {
+      cancel();
+      return;
+    }
     frame += 1;
     timer = window.setTimeout(run, speedMs);
   };
   run();
-  return () => clearTimeout(timer);
+  return cancel;
 };
 
 /**
@@ -500,28 +559,59 @@ export const youDot = (opts = {}) => {
   const cur = { x: target.x, y: target.y, vx: 0, vy: 0 };
   let raf = 0;
   let scope = null;
+  let hasAnchor = false; // true only when a real, non-zero-size anchor exists
 
+  // Show only when there's a real anchor — never a stray dot in empty ground.
+  const setVisible = (visible) => {
+    el.classList.toggle('is-live', visible);
+  };
+
+  // Returns true if the current scope has a real, measurable anchor; updates
+  // the target to its centre and toggles visibility accordingly.
   const measure = () => {
-    if (!scope) return;
-    const a = scope.querySelector('[data-youdot-anchor]');
-    if (!a) return;
-    const r = a.getBoundingClientRect();
-    if (r.width === 0 && r.height === 0) return;
+    const a = scope ? scope.querySelector('[data-youdot-anchor]') : null;
+    const r = a ? a.getBoundingClientRect() : null;
+    const valid = !!r && (r.width > 0 || r.height > 0);
+    hasAnchor = valid;
+    setVisible(valid);
+    if (!valid) return false;
     target.x = r.left + r.width / 2;
     target.y = r.top + r.height / 2;
     if (reduced) {
       cur.x = target.x;
       cur.y = target.y;
+      cur.vx = 0;
+      cur.vy = 0;
       el.style.transform = `translate3d(${cur.x - size / 2}px, ${cur.y - size / 2}px, 0)`;
     }
+    return true;
   };
 
+  const SETTLE_PX = 0.15; // below this distance + velocity we snap (no jitter)
+
   const tick = () => {
-    cur.vx = (cur.vx + (target.x - cur.x) * stiffness) * damping;
-    cur.vy = (cur.vy + (target.y - cur.y) * stiffness) * damping;
-    cur.x += cur.vx;
-    cur.y += cur.vy;
-    el.style.transform = `translate3d(${(cur.x - size / 2).toFixed(2)}px, ${(cur.y - size / 2).toFixed(2)}px, 0)`;
+    if (hasAnchor) {
+      const dx = target.x - cur.x;
+      const dy = target.y - cur.y;
+      const speed = Math.hypot(cur.vx, cur.vy);
+      // Snap to rest once close + slow so the dot never micro-jitters at anchor.
+      if (Math.hypot(dx, dy) < SETTLE_PX && speed < SETTLE_PX) {
+        cur.x = target.x;
+        cur.y = target.y;
+        cur.vx = 0;
+        cur.vy = 0;
+      } else {
+        cur.vx = (cur.vx + dx * stiffness) * damping;
+        cur.vy = (cur.vy + dy * stiffness) * damping;
+        cur.x += cur.vx;
+        cur.y += cur.vy;
+      }
+      el.style.transform = `translate3d(${(cur.x - size / 2).toFixed(2)}px, ${(cur.y - size / 2).toFixed(2)}px, 0)`;
+    } else {
+      // No anchor: freeze in place (hidden via opacity) so it can't drift.
+      cur.vx = 0;
+      cur.vy = 0;
+    }
     raf = requestAnimationFrame(tick);
   };
 
@@ -530,7 +620,6 @@ export const youDot = (opts = {}) => {
   window.addEventListener('scroll', onResize, { passive: true });
 
   if (!reduced) {
-    el.classList.add('is-live');
     raf = requestAnimationFrame(tick);
   }
 
@@ -539,6 +628,7 @@ export const youDot = (opts = {}) => {
     anchorTo(nextScope) {
       scope = nextScope;
       // Re-measure across a few frames; the step may still be settling in.
+      // measure() owns visibility, so a scope with no/zero-size anchor hides it.
       measure();
       requestAnimationFrame(measure);
       window.setTimeout(measure, 120);

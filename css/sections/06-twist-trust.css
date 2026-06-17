@@ -101,6 +101,10 @@
   display: flex;
   flex-direction: column;
   gap: clamp(6px, 1vh, 12px);
+  /* No outline, no border — the title stands on its own (client note). */
+  outline: 0;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Eyebrow — cream, reduced opacity for hierarchy */
@@ -109,7 +113,7 @@
   margin-bottom: 0;
 }
 
-/* Display title — cream on navy */
+/* Display title — cream on navy. No outline, no border: title stands alone. */
 #\30 6-twist-trust .tt-title {
   margin: 0;
   font-weight: 900;
@@ -117,6 +121,9 @@
   letter-spacing: -0.03em;
   line-height: 0.93;
   color: var(--cream, #F0EDE7);
+  outline: 0;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Italic accent word — yellow on navy for one focal pop */
@@ -319,7 +326,9 @@
   justify-content: center;
 }
 
-/* The main blurred number pair */
+/* The main blurred number pair — deliberate pre-reveal tease, not broken.
+   Higher opacity + moderate blur: the form of a number is legible, the
+   value is withheld. This reads as "data under glass", not glitch. */
 #\30 6-twist-trust .tt-pre__hint {
   display: flex;
   align-items: baseline;
@@ -331,25 +340,26 @@
   letter-spacing: -0.04em;
   line-height: 0.88;
   font-variant-numeric: tabular-nums;
-  color: rgba(240, 237, 231, 0.50);
-  filter: blur(6px);
+  color: rgba(240, 237, 231, 0.68);
+  filter: blur(5px);
   user-select: none;
 }
 #\30 6-twist-trust .tt-pre__arrow {
   font-weight: 600;
   font-size: clamp(1.2rem, 1.8vw, 1.8rem);
-  color: rgba(240, 237, 231, 0.28);
+  color: rgba(240, 237, 231, 0.44);
   font-style: italic;
 }
 
-/* Decorative spread label under the blurred numbers */
+/* Spread label — slightly more visible so "NHS · · · Government" reads
+   as deliberate context for the withheld numbers. */
 #\30 6-twist-trust .tt-pre__spread-label {
   margin: 0;
   font-weight: 800;
   font-size: clamp(0.7rem, 0.82vw, 0.85rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(240, 237, 231, 0.28);
+  color: rgba(240, 237, 231, 0.44);
 }
 
 /* Bottom hint line */
@@ -561,6 +571,6 @@
     transition: opacity 140ms ease;
   }
   #\30 6-twist-trust .tt-pre__num {
-    filter: blur(6px);
+    filter: blur(5px);
   }
 }

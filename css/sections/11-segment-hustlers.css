@@ -45,7 +45,7 @@
 #\31 1-segment-hustlers .segment-hustlers-id {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.6vh, 20px);
+  gap: clamp(8px, 1.2vh, 16px);
   max-width: 32ch;
 }
 
@@ -63,6 +63,9 @@
   letter-spacing: -0.03em;
   line-height: 0.92;
   color: var(--ink, #000);
+  /* Remove browser focus ring — main.js focuses the heading for a11y/keyboard,
+     the blue outline is the client-reported "blue box". Kill it cleanly. */
+  outline: none;
 }
 #\31 1-segment-hustlers .segment-hustlers-title .si-accent {
   font-style: italic;
@@ -149,7 +152,7 @@
 #\31 1-segment-hustlers .segment-hustlers-data {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.8vh, 20px);
+  gap: clamp(8px, 1.2vh, 14px);
   justify-content: center;
   /* No background — data floats on cream per BWF §3 */
 }
@@ -182,7 +185,7 @@
 /* The chart host — explicit height so bars size correctly. */
 #\31 1-segment-hustlers .segment-hustlers-chart {
   width: 100%;
-  min-height: clamp(180px, 26vh, 260px);
+  min-height: clamp(140px, 20vh, 220px);
 }
 
 /* Baseline legend — faint, never on an orbit line. */
@@ -210,7 +213,7 @@
   align-items: baseline;
   gap: clamp(10px, 1.2vw, 16px);
   border-top: 1px solid rgba(4, 22, 84, 0.1);
-  padding-top: clamp(12px, 1.6vh, 18px);
+  padding-top: clamp(8px, 1.0vh, 12px);
   margin-top: auto;
 }
 #\31 1-segment-hustlers .segment-hustlers-sig-index {

@@ -88,13 +88,15 @@
 }
 
 /* Display headline — Poppins 900, tight, bold black, three lines.
-   Sized to fill the left column width at 3 lines exactly.
-   At 1440px: 4.8vw ≈ 69px. Left col is ~487px.
-   "is the table" at ~55% char width ≈ 455px — safe within 487px.    */
+   Sized so each span lands on ONE visual line at typical viewports.
+   At 1440px: 3.8vw ≈ 55px. Left col is ~487px effective.
+   "The squeeze" at 11 chars ≈ 340px — comfortably one line.
+   "is the table" at 12 chars ≈ 370px — one line.
+   "they eat at" at 11 chars ≈ 340px — one line, italic accent reads. */
 #\30 4-baselines-rest .br-headline {
   font-family: var(--font-sans);
   font-weight: 900;
-  font-size: clamp(2.8rem, 4.5vw, 5.8rem);
+  font-size: clamp(2.6rem, 3.8vw, 4.8rem);
   line-height: 0.94;
   letter-spacing: -0.03em;
   margin: 0;

@@ -57,7 +57,14 @@
   gap: clamp(1rem, 2vh, 1.5rem);
 }
 
-#\30 3-baselines .bl-head { position: relative; }
+/* The headline block stands alone — no box, no frame, no pseudo-element rectangle. */
+#\30 3-baselines .bl-head {
+  position: relative;
+  outline: none;
+  border: none;
+}
+#\30 3-baselines .bl-head::before,
+#\30 3-baselines .bl-head::after { display: none; }
 
 /* The one bold-black Poppins display title (book-cover voice) */
 #\30 3-baselines .bl-headline {

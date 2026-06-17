@@ -58,14 +58,22 @@
   display: flex;
   flex-direction: column;
   gap: clamp(10px, 1.6vh, 18px);
+  /* No outline or border — title stands on its own (client: blue boxes gone). */
+  outline: 0;
+  border: 0;
 }
 #\30 8-twist-ai .twist-ai-eyebrow {
   margin: 0;
 }
 #\30 8-twist-ai .twist-ai-title {
-  margin: 0;
+  /* Extra clearance below the display title so the standfirst sits cleanly
+     beneath it — sized relative to the title's own mass, not a fixed gap. */
+  margin: 0 0 clamp(14px, 2.4vh, 28px);
   line-height: 0.92;
   color: var(--ink);
+  /* No outline, no border: the title stands alone. */
+  outline: 0;
+  border: 0;
 }
 #\30 8-twist-ai .twist-ai-standfirst {
   margin: 0;
