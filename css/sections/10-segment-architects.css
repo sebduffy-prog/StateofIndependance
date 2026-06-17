@@ -197,8 +197,8 @@
 /* Flat navy + segment-accent icon, top of the lens. */
 #\31 0-segment-architects .seg-icon {
   color: var(--navy);
-  width: clamp(76px, 7vw, 98px);
-  height: clamp(76px, 7vw, 98px);
+  width: clamp(112px, 9.5vw, 144px);
+  height: clamp(112px, 9.5vw, 144px);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -249,9 +249,13 @@
    distinct button with its own border + background; gaps keep them apart so
    the control reads as individual buttons, not one joined bar. Wraps gracefully. */
 #\31 0-segment-architects .seg-lens .pillgroup {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: clamp(6px, 0.6vw, 10px);
+  display: flex;
+  flex-direction: column;     /* 5 separate buttons, each on its own line */
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: clamp(7px, 0.9vh, 11px);
+  width: 100%;
+  max-width: 360px;
   border: 0;
 }
 #\31 0-segment-architects .seg-lens .pillgroup-chip {
@@ -260,10 +264,12 @@
   background: rgba(4, 22, 84, 0.04);
   cursor: pointer;
   font: inherit;
-  font-size: 0.68rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  padding: 6px 12px;
+  letter-spacing: 0.02em;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: left;
   color: var(--navy);
   border-radius: 0;
   transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms),
