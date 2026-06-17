@@ -407,6 +407,9 @@ export const horizontalBars = (container, opts) => {
     for (const [key, row] of rowFor) {
       if (!liveKeys.has(key)) { row.g.remove(); rowFor.delete(key); }
     }
+    // Fit all end-anchored labels (shrink, then wrap) so long categories
+    // such as "separated/divorced/widowed" never crop on the left.
+    fitLabelsWhenReady(svg, labelMeta);
   };
 
   container.append(svg);
