@@ -245,8 +245,11 @@ function buildLenses(seg, tgiSeg) {
   // trading-down segment over-indexes on none, fall back to its hardest
   // leanings so the lens still fills.
   if (seg?.metrics?.essentials) {
-    const over = topMetricLow(seg.metrics.essentials, 105);
-    const items = over.length ? over : topMetricAny(seg.metrics.essentials);
+    // Show the full top-by-index essentials set (not only the >=105 over-indexes)
+    // so the chart is always a rich, ranked read. Segments that over-index on only
+    // one or two essentials (e.g. the Coasters: Groceries, Energy) still get a
+    // complete chart instead of two lonely pucks.
+    const items = topMetricAny(seg.metrics.essentials);
     if (items.length) lenses.push({ value: 'value', label: 'What they value', items });
   }
 

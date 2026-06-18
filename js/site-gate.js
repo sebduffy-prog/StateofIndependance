@@ -1,19 +1,21 @@
 /**
  * site-gate.js — soft access gate for The State of Independence.
  *
- * First-load overlay: requires an email + the shared password (Challenger26).
+ * First-load overlay: requires an email + a shared password. TWO passwords are
+ * accepted, both equally valid: Challenger26 and ChallengerVCCP.
  * On success it (1) records the email to the lead endpoint so it can be checked
  * centrally, (2) keeps a localStorage backup, (3) remembers the unlock on this
  * device, and (4) reveals the journey.
  *
- * Bypass for sharing: append ?pass=Challenger26 to the URL (matches the VCCP
- * site-gate convention). A prior unlock on this device also skips the gate.
+ * Bypass for sharing: append ?pass=Challenger26 (or ?pass=ChallengerVCCP) to the
+ * URL (matches the VCCP site-gate convention). A prior unlock on this device
+ * also skips the gate.
  *
  * Soft gate only: client-side, not real security — it keeps the work behind a
  * shared password and captures who is viewing.
  */
 (function () {
-  var PASS = 'Challenger26';
+  var PASSES = ['Challenger26', 'ChallengerVCCP'];
   var KEY_UNLOCKED = 'soi_gate_unlocked_v1';
   var KEY_EMAILS = 'soi_gate_emails_v1';
   // FormSubmit delivers each submission straight to this inbox (no backend, no
@@ -28,7 +30,7 @@
   }
 
   var params = new URLSearchParams(window.location.search);
-  var bypass = params.get('pass') === PASS;
+  var bypass = PASSES.indexOf(params.get('pass')) !== -1;
   var already = false;
   try { already = localStorage.getItem(KEY_UNLOCKED) === '1'; } catch (e) {}
 
@@ -76,7 +78,7 @@
         emailEl.focus();
         return;
       }
-      if (pass !== PASS) {
+      if (PASSES.indexOf(pass) === -1) {
         if (errEl) errEl.textContent = 'Incorrect password.';
         passEl.focus();
         passEl.select();
