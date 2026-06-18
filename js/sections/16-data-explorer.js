@@ -37,8 +37,18 @@ const SEGMENT_ORDER = [
 const SEGMENT_BY_ID = Object.fromEntries(SEGMENT_ORDER.map((s) => [s.id, s]));
 
 const ALL_SEGMENTS = 'all';
+const COMPARE = 'compare'; // "All four" — the 4 segments plotted together
 const NATIONAL_NOTE = 'National figure · all 1,504 respondents.';
+const COMPARE_NOTE = 'All four segments compared · % giving each answer.';
 const MAX_ITEMS = 8; // keep every label legible — never overcrowd the cream
+
+/* Distinct marker colour per segment for the "All four" comparison plot. */
+const SEG_COLORS = {
+  architects: '#041654', // navy
+  hustlers: '#FF8598',   // coral
+  coasters: '#FFA764',   // orange
+  retreaters: '#F0CB08', // yellow
+};
 
 /* Metric registry — the FULL survey, exposed. No numbers live here, only the
  * path into verified data:
@@ -111,6 +121,28 @@ const oneSegmentItems = (segments, metric, segmentId) => {
   );
 };
 
+/* "All four" — align every segment's value to a shared, nationally-ordered set
+ * of answer rows so the four markers sit on one comparable track per answer. */
+const compareGroups = (segments, metric) => {
+  const order = sortItems(nationalSegmentItems(segments, metric), metric);
+  const perSeg = Object.fromEntries(
+    SEGMENT_ORDER.map((s) => [
+      s.id,
+      Object.fromEntries(oneSegmentItems(segments, metric, s.id).map((it) => [it.label, it.pct])),
+    ]),
+  );
+  return order.map((row, i) => ({
+    id: `c${i}`,
+    label: row.label,
+    values: SEGMENT_ORDER.map((s) => ({
+      seg: s.id,
+      segLabel: s.label,
+      pct: perSeg[s.id]?.[row.label] ?? 0,
+      color: SEG_COLORS[s.id],
+    })),
+  }));
+};
+
 /* Survey-only blocks. Most are { items:[{id,label,pct}] }; a few carry a
  * different value key (confidence ranking, performance decline), normalised
  * here so the chart always reads `pct`. */
@@ -163,6 +195,13 @@ const resolveItems = (state, { survey, segments, tgi }) => {
       note: `${s.label} · TGI ${metric.tgiCut} · % of segment, index vs UK average.`,
     };
   }
+  if (segment === COMPARE) {
+    return {
+      groups: compareGroups(segments, metric),
+      items: sortItems(nationalSegmentItems(segments, metric), metric), // drives the masthead readout
+      note: COMPARE_NOTE,
+    };
+  }
   if (segment === ALL_SEGMENTS) {
     return { items: sortItems(nationalSegmentItems(segments, metric), metric), note: NATIONAL_NOTE };
   }
@@ -202,6 +241,70 @@ const drawView = (host, metric, items) => {
     decimals: metric.decimals,
     ariaLabel: metric.label,
   });
+};
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/* "All four" — a connected dot plot: one row per answer, the four segments as
+ * colour-coded markers on a shared track with a thin line linking lowest to
+ * highest, so the eye reads both each segment's level AND the spread between
+ * them. A legend maps colour to segment. All lollipop heads, no bars/venn. */
+const drawCompareView = (host, metric, groups) => {
+  const rows = (groups.length ? groups : []).slice(0, MAX_ITEMS);
+  const max = axisMaxFor(rows.flatMap((r) => r.values));
+
+  // Legend — colour key for the four segments.
+  const legend = document.createElement('div');
+  legend.className = 'pg-compare-legend';
+  SEGMENT_ORDER.forEach((s) => {
+    const item = document.createElement('span');
+    item.className = 'pg-compare-legend__item';
+    item.innerHTML =
+      `<span class="pg-compare-legend__dot" style="background:${SEG_COLORS[s.id]}"></span>` +
+      `${s.label}`;
+    legend.appendChild(item);
+  });
+  host.appendChild(legend);
+
+  const rowH = 46;
+  const padL = 250;
+  const padR = 56;
+  const padT = 6;
+  const w = 960;
+  const h = Math.max(1, rows.length) * rowH + padT;
+  const xMax = w - padR;
+  const x = (p) => padL + (xMax - padL) * (Math.max(0, Math.min(p, max)) / max);
+
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.setAttribute('class', 'pg-compare');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.setAttribute('aria-label', `${metric.label} compared across the four segments`);
+
+  const mk = (tag, attrs) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)));
+    return el;
+  };
+
+  rows.forEach((row, i) => {
+    const cy = padT + i * rowH + rowH / 2;
+    const lab = mk('text', { x: padL - 16, y: cy, class: 'pg-compare__label', 'text-anchor': 'end', 'dominant-baseline': 'middle' });
+    lab.textContent = tidyLabel(row.label);
+    svg.appendChild(lab);
+    svg.appendChild(mk('line', { x1: padL, x2: xMax, y1: cy, y2: cy, class: 'pg-compare__track' }));
+    const xs = row.values.map((v) => x(v.pct));
+    svg.appendChild(mk('line', { x1: Math.min(...xs), x2: Math.max(...xs), y1: cy, y2: cy, class: 'pg-compare__conn' }));
+    row.values.forEach((v) => {
+      const dot = mk('circle', { cx: x(v.pct), cy, r: 7.5, fill: v.color, class: 'pg-compare__dot' });
+      const t = document.createElementNS(SVG_NS, 'title');
+      t.textContent = `${v.segLabel}: ${v.pct}%`;
+      dot.appendChild(t);
+      svg.appendChild(dot);
+    });
+  });
+  host.appendChild(svg);
 };
 
 /* ── The explorer (the whole step) ───────────────────────────────────────── */
@@ -247,10 +350,11 @@ const initExplorer = (rootEl, dataSets, onChange) => {
   };
 
   const paint = ({ crossfade = false } = {}) => {
-    const { items, note } = resolveItems(state, dataSets);
+    const { items, note, groups } = resolveItems(state, dataSets);
     const build = () => {
       chartHost.replaceChildren();
-      drawView(chartHost, state.metric, items);
+      if (groups) drawCompareView(chartHost, state.metric, groups);
+      else drawView(chartHost, state.metric, items);
     };
     if (crossfade && !reduced) {
       chartHost.classList.add('is-fading');
@@ -277,7 +381,11 @@ const initExplorer = (rootEl, dataSets, onChange) => {
     // Enable/disable FIRST — a disabled chip's click() is a no-op.
     group.el.querySelectorAll('.pillgroup-chip').forEach((chip) => {
       const isAll = chip.dataset.value === ALL_SEGMENTS;
-      const disabled = (isSurvey && !isAll) || (isTgi && isAll);
+      const isCompare = chip.dataset.value === COMPARE;
+      // Compare + per-segment cuts need a segment split: invalid for national-only
+      // survey blocks and for TGI (its statements differ per segment, so they do
+      // not align into one comparison).
+      const disabled = (isSurvey && !isAll) || (isTgi && (isAll || isCompare));
       chip.disabled = disabled;
       chip.setAttribute('aria-disabled', String(disabled));
     });
@@ -287,7 +395,7 @@ const initExplorer = (rootEl, dataSets, onChange) => {
       state.segment = ALL_SEGMENTS;
       group.setValue(ALL_SEGMENTS);
     }
-    if (isTgi && state.segment === ALL_SEGMENTS) {
+    if (isTgi && (state.segment === ALL_SEGMENTS || state.segment === COMPARE)) {
       state.segment = 'architects';
       group.setValue('architects');
     }
@@ -297,6 +405,7 @@ const initExplorer = (rootEl, dataSets, onChange) => {
     options: [
       { value: ALL_SEGMENTS, label: 'All' },
       ...SEGMENT_ORDER.map((s) => ({ value: s.id, label: `${s.label} ${s.sharePct}%` })),
+      { value: COMPARE, label: 'All four' },
     ],
     value: ALL_SEGMENTS,
     ariaLabel: 'Filter by which Britain',
