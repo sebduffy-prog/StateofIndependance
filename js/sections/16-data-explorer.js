@@ -266,11 +266,12 @@ const drawCompareView = (host, metric, groups) => {
   });
   host.appendChild(legend);
 
-  const rowH = 46;
+  const rowH = 54;
   const padL = 250;
-  const padR = 56;
-  const padT = 6;
-  const w = 960;
+  const padR = 64;
+  const padT = 10;
+  const w = 980;
+  const fmtVal = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
   const h = Math.max(1, rows.length) * rowH + padT;
   const xMax = w - padR;
   const x = (p) => padL + (xMax - padL) * (Math.max(0, Math.min(p, max)) / max);
@@ -296,12 +297,29 @@ const drawCompareView = (host, metric, groups) => {
     svg.appendChild(mk('line', { x1: padL, x2: xMax, y1: cy, y2: cy, class: 'pg-compare__track' }));
     const xs = row.values.map((v) => x(v.pct));
     svg.appendChild(mk('line', { x1: Math.min(...xs), x2: Math.max(...xs), y1: cy, y2: cy, class: 'pg-compare__conn' }));
-    row.values.forEach((v) => {
-      const dot = mk('circle', { cx: x(v.pct), cy, r: 7.5, fill: v.color, class: 'pg-compare__dot' });
+    // Decide each value label's side by its LEFT-TO-RIGHT rank, so the closest
+    // pair always splits above/below — two near-identical values never overlap.
+    const sideAbove = {};
+    row.values
+      .map((v, k) => ({ k, dx: x(v.pct) }))
+      .sort((a, b) => a.dx - b.dx)
+      .forEach((o, rank) => { sideAbove[o.k] = rank % 2 === 0; });
+    row.values.forEach((v, k) => {
+      const dx = x(v.pct);
+      const dot = mk('circle', { cx: dx, cy, r: 7, fill: v.color, class: 'pg-compare__dot' });
       const t = document.createElementNS(SVG_NS, 'title');
       t.textContent = `${v.segLabel}: ${v.pct}%`;
       dot.appendChild(t);
       svg.appendChild(dot);
+      const val = mk('text', {
+        x: dx,
+        y: sideAbove[k] ? cy - 13 : cy + 18,
+        class: 'pg-compare__val',
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+      });
+      val.textContent = `${fmtVal(v.pct)}%`;
+      svg.appendChild(val);
     });
   });
   host.appendChild(svg);

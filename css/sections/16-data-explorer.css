@@ -385,6 +385,13 @@
   stroke: var(--cream, #F0EDE7);
   stroke-width: 1.5;
 }
+#\31 6-data-explorer .pg-compare__val {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  fill: var(--navy, #041654);
+}
 
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
