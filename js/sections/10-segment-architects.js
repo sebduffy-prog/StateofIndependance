@@ -40,7 +40,7 @@ const fmtIndex = (v) => `i${Math.round(v)}`;
 
 /** A short one-line explanation shown for the active lens. */
 const LENS_HINTS = {
-  value: 'What this segment treats as essential, indexed against the nation.',
+  value: 'What this segment treats as essential, ranked by share.',
   mindset: 'How they describe their own outlook and finances, versus average.',
   control: 'The active steps they take to stay in control of their lives.',
   brand: 'What they most want brands to do for them.',
@@ -245,12 +245,17 @@ function buildLenses(seg, tgiSeg) {
   // trading-down segment over-indexes on none, fall back to its hardest
   // leanings so the lens still fills.
   if (seg?.metrics?.essentials) {
-    // Show the full top-by-index essentials set (not only the >=105 over-indexes)
-    // so the chart is always a rich, ranked read. Segments that over-index on only
-    // one or two essentials (e.g. the Coasters: Groceries, Energy) still get a
-    // complete chart instead of two lonely pucks.
-    const items = topMetricAny(seg.metrics.essentials);
-    if (items.length) lenses.push({ value: 'value', label: 'What they value', items });
+    // What they value: ranked by PENETRATION (the % who treat each as essential),
+    // NOT index. Honest and rich for every segment — it never dresses an
+    // under-index item up as a "value", and segments that value mainstream
+    // essentials (e.g. the Coasters: groceries, energy) still get a full ranked
+    // chart. Marked unit:'pct' so the chart + caption read as a percentage.
+    const items = Object.entries(seg.metrics.essentials)
+      .map(([label, v]) => ({ label, pct: (v && typeof v === 'object') ? v.pct : v }))
+      .filter((r) => typeof r.pct === 'number')
+      .sort((a, b) => b.pct - a.pct)
+      .slice(0, TOP_N);
+    if (items.length) lenses.push({ value: 'value', label: 'What they value', items, unit: 'pct' });
   }
 
   // Lens 2 - How they see themselves: outlook + finances over-index.
@@ -302,6 +307,15 @@ export default function init(rootEl, data) {
   const lensHost = rootEl.querySelector('[data-seg-lens]');
   const hintEl = rootEl.querySelector('[data-seg-lens-hint]');
   if (!chartHost || !lensHost) return; // fail soft - markup not found
+
+  const titleEl = rootEl.querySelector('.seg-data-title');
+  const capEl = rootEl.querySelector('.seg-baseline');
+  const SEG_NAME = SEGMENT_ID.charAt(0).toUpperCase() + SEGMENT_ID.slice(1);
+  const fmtPctVal = (v) => `${Math.round(v)}%`;
+  const maxForPct = (items) => {
+    const top = items.reduce((m, it) => Math.max(m, it.pct || 0), 0);
+    return Math.min(100, Math.max(20, Math.ceil((top + 4) / 10) * 10));
+  };
 
   const seg = data?.segments?.segments?.find((s) => s.id === SEGMENT_ID) || null;
   const tgiSeg = data?.tgi?.segments?.[SEGMENT_ID] || null;
@@ -355,7 +369,7 @@ export default function init(rootEl, data) {
     const wrap = document.createElement('div');
     wrap.className = 'seg-pucks';
     wrap.setAttribute('role', 'img');
-    wrap.setAttribute('aria-label', `Architects: ${lens.label}`);
+    wrap.setAttribute('aria-label', `${SEG_NAME}: ${lens.label}`);
     lens.items.forEach((item) => {
       const share = Math.max(0, Math.min(1, (item.pct || 0) / max));
       const puck = document.createElement('figure');
@@ -380,6 +394,17 @@ export default function init(rootEl, data) {
   const drawLens = (value) => {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (hintEl) hintEl.textContent = LENS_HINTS[lens.value] || hintEl.textContent;
+    const isPct = lens.unit === 'pct';
+    if (titleEl) {
+      titleEl.textContent = isPct
+        ? `What the ${SEG_NAME} treat as essential`
+        : `Where the ${SEG_NAME} over-index against Britain`;
+    }
+    if (capEl) {
+      capEl.innerHTML = isPct
+        ? 'The share of this Britain who rate each as essential.'
+        : '<span class="seg-baseline-key"></span><span class="num">100</span> = the UK average. Longer bars are where this Britain leans hardest.';
+    }
     const style = LENS_CHART[lens.value] || LENS_CHART.value;
     chartHost.replaceChildren();
     // Too few items for an honest chart: show designed index pucks instead so
@@ -391,9 +416,10 @@ export default function init(rootEl, data) {
     style.chart(chartHost, {
       ...CHART_BASE,
       items: lens.items,
-      max: lensMax(lens.items),
+      max: isPct ? maxForPct(lens.items) : lensMax(lens.items),
+      valueFormat: isPct ? fmtPctVal : fmtIndex,
       accent: style.accent,
-      ariaLabel: `Architects: ${lens.label}`,
+      ariaLabel: `${SEG_NAME}: ${lens.label}`,
     });
   };
 
