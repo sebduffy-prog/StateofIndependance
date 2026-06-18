@@ -5,7 +5,7 @@
  *
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + quote card
- *   RIGHT — 29-pt trust spread stat + move-02.svg + flipReveal less→more
+ *   RIGHT — 29-pt trust spread stat + flipReveal less→more
  *           + M&S / Boots brand evidence cards
  *
  * Stat (STORY.md §07 Move 02 / survey.json institutionTrust.headline):

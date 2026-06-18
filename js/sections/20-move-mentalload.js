@@ -6,7 +6,7 @@
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + sandwich-generation stat strip
  *           (87/58/31/12 from Killik & Co 2025) + new-premium quote card
- *   RIGHT — move-04.svg icon + death-to beats + flipReveal less→more
+ *   RIGHT — death-to beats + flipReveal less→more
  *
  * Sandwich data (STORY.md §07 Move 04, slide 62 / Killik & Co 2025):
  *   87% have children they support financially

@@ -5,7 +5,7 @@
  *
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + quote card
- *   RIGHT — move-03.svg icon + flipReveal less→more + media shift table
+ *   RIGHT — lead label + flipReveal less→more + media shift table
  *
  * Less→More rows (STORY.md §07 Move 03 slide 59, verbatim):
  *   Dependency         → Independency
