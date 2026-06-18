@@ -255,28 +255,25 @@ const makeProfile = (cfg) => {
   const fn = (d) => {
     const ad = clamp(Math.abs(d), 0, 1);
     const t = clamp(ease(ad), 0, 1.25); // outBack may exceed 1 briefly (overshoot)
-    let z;
     let scale;
     let opacity;
 
     if (d <= 0) {
-      // LEAVING: RECEDES back into depth (−Z) and shrinks slightly while it
-      // fades. It never comes toward the camera and never grows past the frame —
-      // the stage drops back along the direction of travel and dissolves.
-      z = -cfg.zLeave * t;
-      scale = 1 - (1 - cfg.scaleLeave) * t;
+      // LEAVING: stays on the SAME PLANE (no Z) — it dissolves where it sits,
+      // with at most a whisper of scale. Never flies, never slides.
+      scale = 1 + (cfg.scaleLeave - 1) * t;
       opacity = clamp(1 - Math.abs(d) * cfg.fadeLeave, 0, 1);
     } else {
-      // ARRIVING: emerges from deep −Z, grows small→full, sharpens + fades in.
-      z = -cfg.zDeep * t;
+      // ARRIVING: resolves on the same plane — eases from a small scale to full
+      // while it fades in. No depth, no slide.
       scale = cfg.scaleFar + (1 - cfg.scaleFar) * (1 - t);
       opacity = clamp(1 - d * cfg.fadeArrive, 0, 1);
     }
 
     let rotate = '';
     if (cfg.rotZ || cfg.rotX) {
-      // Swirl is strongest at depth, eases to flat (0) at focus. Leaving stage
-      // swirls one way, arriving the other, for a gentle orbital hand-off.
+      // A whisper of rotate that eases to flat (0) at focus — a designed accent,
+      // not a flight. Leaving turns one way, arriving the other.
       const dir = d <= 0 ? 1 : -1;
       const rz = (cfg.rotZ || 0) * t * dir;
       const rx = (cfg.rotX || 0) * t * dir;
@@ -284,10 +281,10 @@ const makeProfile = (cfg) => {
     }
 
     return {
-      // Transform is applied to the INNER content layer (the ground stays on the
-      // static section), so NO -50%/-50% centring here — the inner fills the
-      // section already. Only Z + scale (+ optional rotate) move the components.
-      transform: `translateZ(${z.toFixed(1)}px) scale(${Math.max(scale, 0.01).toFixed(4)})${rotate}`,
+      // ON-PLANE: scale + opacity (+ optional rotate accent). No translateZ — all
+      // content lives on ONE z-plane; the transition is a component fade with a
+      // subtle, per-step 2D accent so consecutive steps feel different.
+      transform: `scale(${Math.max(scale, 0.01).toFixed(4)})${rotate}`,
       opacity,
       blur: cfg.blur * Math.min(t, 1),
     };
@@ -314,51 +311,43 @@ const makeProfile = (cfg) => {
  */
 const TRANSITIONS = {
   flythrough: makeProfile({
-    // The default depth hand-off: the leaving stage drops gently back into depth
-    // and dissolves while the next rises from a touch of depth and resolves. The
-    // motion is mostly a component fade with a small, calm push back on Z — never
-    // a box rushing the viewer, never a slide.
-    zLeave: STAGE_Z_LEAVE, zDeep: STAGE_Z_DEEP,
-    scaleLeave: STAGE_SCALE_LEAVE, scaleFar: STAGE_SCALE_FAR,
-    blur: STAGE_BLUR_MAX, fadeLeave: 1.4, fadeArrive: 1.4,
+    // Brisk + clean: a quick cross-fade with a whisper of scale-in. The default.
+    scaleLeave: 1.0, scaleFar: 0.965,
+    blur: 0, fadeLeave: 1.5, fadeArrive: 1.45,
     ease: spatialEases.outQuad, rotZ: 0, rotX: 0,
-    durationMs: 1100,
+    durationMs: 1000,
   }),
   'dissolve-through': makeProfile({
-    // Softest of all: barely any depth, a long cross-dissolve — a near-pure fade.
-    zLeave: 220, zDeep: 300,
-    scaleLeave: 0.93, scaleFar: 0.96,
-    blur: 2, fadeLeave: 1.5, fadeArrive: 1.45,
+    // The slow, pure dissolve — no scale at all, just a long luxurious cross-fade.
+    scaleLeave: 1.0, scaleFar: 1.0,
+    blur: 0, fadeLeave: 1.55, fadeArrive: 1.5,
     ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
-    durationMs: 1300,
+    durationMs: 1350,
   }),
   'zoom-resolve': makeProfile({
-    // A deeper, more deliberate recede for the segments compass: the leaving stage
-    // drops further back and the next resolves from a little more depth. Still no
-    // forward motion — just a longer, weightier fall into depth.
-    zLeave: 460, zDeep: 600,
-    scaleLeave: 0.80, scaleFar: 0.88,
-    blur: 3, fadeLeave: 1.3, fadeArrive: 1.4,
+    // A soft on-plane zoom (scale only, no depth): the arriving content resolves
+    // up from 0.90 while the leaving content eases up to 1.05 — a designed "punch
+    // through" feel for the segments compass, but flat, never a fly-through.
+    scaleLeave: 1.05, scaleFar: 0.90,
+    blur: 1, fadeLeave: 1.35, fadeArrive: 1.3,
     ease: spatialEases.inOutCubic, rotZ: 0, rotX: 0,
-    durationMs: 1400,
-  }),
-  'orbit-tilt': makeProfile({
-    // The recede hand-off plus a whisper of rotateZ/rotX that eases back to flat —
-    // a gentle orbital settle as the stage falls back.
-    zLeave: 340, zDeep: 460,
-    scaleLeave: 0.86, scaleFar: 0.92,
-    blur: 2, fadeLeave: 1.4, fadeArrive: 1.4,
-    ease: spatialEases.outBack, rotZ: 4, rotX: 2,
     durationMs: 1300,
   }),
+  'orbit-tilt': makeProfile({
+    // A gentle rotate settle — the content turns a few degrees and eases to flat,
+    // an orbital wink with an outBack overshoot. Distinct from the plain fades.
+    scaleLeave: 1.0, scaleFar: 0.97,
+    blur: 0, fadeLeave: 1.4, fadeArrive: 1.4,
+    ease: spatialEases.outBack, rotZ: 3, rotX: 0,
+    durationMs: 1250,
+  }),
   disperse: makeProfile({
-    // The outro: the stage falls back furthest and scatter-fades — the nation
-    // recedes into depth rather than rushing the viewer.
-    zLeave: 520, zDeep: 620,
-    scaleLeave: 0.72, scaleFar: 0.90,
-    blur: 4, fadeLeave: 1.7, fadeArrive: 1.3,
+    // The outro: content scatters slightly (scales up to 1.07) and blur-fades —
+    // the nation lets go. Flat, on-plane, no flight.
+    scaleLeave: 1.07, scaleFar: 0.94,
+    blur: 2, fadeLeave: 1.7, fadeArrive: 1.3,
     ease: spatialEases.inExpo, rotZ: 0, rotX: 0,
-    durationMs: 1400,
+    durationMs: 1300,
   }),
 };
 
@@ -736,10 +725,11 @@ const createJourney = (manifest) => {
       raf = 0;
       return;
     }
-    // Fire arrival only once the stage has essentially STOPPED (last ~3%), so
-    // the title scramble + count-up never animate while the stage is still
-    // flying through depth (that overlap read as a glitchy transition).
-    if (p > 0.97) dispatchArrival(target);
+    // Fire arrival at the MIDPOINT so the incoming components (title scramble,
+    // count-ups, staggered reveals) assemble DURING the cross-fade — the
+    // transition is component-led, not a blank fade then a separate build. Safe
+    // now that content stays on one plane (no depth flight to fight with).
+    if (p > 0.5) dispatchArrival(target);
     raf = requestAnimationFrame(loop);
   };
 
