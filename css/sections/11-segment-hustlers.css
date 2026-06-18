@@ -30,7 +30,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 1320px;
+  max-width: 1460px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.22fr);
@@ -61,7 +61,7 @@
   justify-content: center;
   gap: clamp(8px, 1.6vh, 18px);
   min-height: 0;
-  max-width: 32ch;
+  max-width: 36ch;
 }
 
 #\31 1-segment-hustlers .vccp-eyebrow { margin: 0; color: var(--navy); }
@@ -69,7 +69,7 @@
 #\31 1-segment-hustlers .seg-title {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(2.6rem, 5.6vw, 5.4rem);
+  font-size: clamp(2.25rem, 4.8vw, 4.6rem);
   letter-spacing: -0.03em;
   line-height: 0.9;
   color: var(--ink);
@@ -158,7 +158,7 @@
 }
 #\31 1-segment-hustlers .seg-share-num {
   font-weight: 900;
-  font-size: clamp(3.4rem, 6.4vw, 6.4rem);
+  font-size: clamp(2.9rem, 5.4vw, 5.4rem);
   letter-spacing: -0.04em;
   line-height: 0.82;
   color: var(--navy);
@@ -245,29 +245,34 @@
   max-width: 50ch;
 }
 
-/* Separate square buttons (no radius - house rule). Each chip is its own
-   distinct button with its own border + background; gaps keep them apart so
-   the control reads as individual buttons, not one joined bar. Wraps gracefully. */
+/* Compact secondary control rail (no radius - house rule). The buttons are
+   deliberately small so the CHART is the hero; each chip is its own distinct
+   button carrying a coloured left keyline that gives it a unique identity
+   (set per-button via :nth-child below). Five members of one family. */
 #\31 1-segment-hustlers .seg-lens .pillgroup {
   display: flex;
   flex-direction: column;     /* 5 separate buttons, each on its own line */
   flex-wrap: nowrap;
   align-items: stretch;
-  gap: clamp(7px, 0.9vh, 11px);
+  gap: clamp(5px, 0.7vh, 8px);
   width: 100%;
-  max-width: 360px;
+  max-width: 284px;
   border: 0;
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip {
   appearance: none;
-  border: 1px solid rgba(4, 22, 84, 0.28);
-  background: rgba(4, 22, 84, 0.04);
+  /* The coloured left keyline is the per-button identity marker; it is set
+     to the button's own accent in the :nth-child rules below. */
+  --lens-accent: var(--navy);
+  border: 1px solid rgba(4, 22, 84, 0.22);
+  border-left: 4px solid var(--lens-accent);
+  background: rgba(4, 22, 84, 0.035);
   cursor: pointer;
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 10px 15px;
+  letter-spacing: 0.015em;
+  padding: 6px 11px;
   width: 100%;
   text-align: left;
   color: var(--navy);
@@ -276,12 +281,17 @@
               border-color var(--dur-micro, 180ms);
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip:hover {
-  border-color: var(--navy);
+  border-color: rgba(4, 22, 84, 0.5);
+  border-left-color: var(--lens-accent);
   background: rgba(4, 22, 84, 0.08);
 }
+/* Active: fill in the button's OWN accent so the selection reads at a glance
+   and stays tied to that lens's colour. Cream text on the dark accents
+   (navy/teal/coral); navy text on the light accents (amber/orange) for AA. */
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip.is-active {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--lens-accent);
+  border-color: var(--lens-accent);
+  border-left-color: var(--lens-accent);
   color: var(--cream, #F0EDE7);
 }
 #\31 1-segment-hustlers .seg-lens .pillgroup-chip:focus-visible {
@@ -289,22 +299,45 @@
   outline-offset: 2px;
 }
 
-/* Backgroundless chart host - bars float on cream; SVG scales to width.
-   Grows to absorb spare height (no dead space) and shrinks under pressure
-   (the fingerprint below it always stays in view). */
+/* Per-button accent: five members of one on-brand family. The keyline gives
+   each lens its own identity; the active fill carries it through. */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(1) { --lens-accent: #041654; } /* navy  */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(2) { --lens-accent: #2C7DA0; } /* teal  */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(3) { --lens-accent: #FBC100; } /* amber */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(4) { --lens-accent: #FF8598; } /* coral */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(5) { --lens-accent: #FFA764; } /* orange*/
+/* Light accents (amber/orange) need navy text for AA contrast when active. */
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(3).is-active,
+#\31 1-segment-hustlers .seg-lens .pillgroup-chip:nth-child(5).is-active {
+  color: var(--navy);
+}
+
+/* Spotlight chart host - now the controls are a compact rail, the chart is
+   the clear focal point. A quiet framed "spotlight" (faint cream wash + soft
+   elevation, square corners) lifts it off the ground and centres the marks so
+   the eye lands here. Grows to absorb spare height (no dead space) and shrinks
+   under pressure (the fingerprint below always stays in view). */
 #\31 1-segment-hustlers .seg-chart {
   width: 100%;
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
+  padding: clamp(10px, 1.8vh, 22px) clamp(14px, 1.8vw, 26px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
+  border: 1px solid rgba(4, 22, 84, 0.08);
+  box-shadow: 0 10px 28px -18px rgba(4, 22, 84, 0.32);
+  border-radius: 0;            /* square corners - house rule */
 }
 #\31 1-segment-hustlers .seg-chart svg {
   display: block;
   width: 100%;
   height: auto;
   max-height: 100%;
+  margin: 0 auto;
 }
 
 /* Baseline legend - faint, no box. */

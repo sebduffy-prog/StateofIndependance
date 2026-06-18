@@ -22,7 +22,7 @@
  *           journey:{ gate():void, ready():void } }} data
  */
 import { arrival } from '../lib/experiential.js';
-import { horizontalBars } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, dotPlot } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 // THE ONLY PER-SEGMENT LINE. Everything below is shared, identical logic.
@@ -303,27 +303,46 @@ export default function init(rootEl, data) {
   const lenses = buildLenses(seg, tgiSeg);
   if (!lenses.length) return; // no verified data - leave the identity card visible
 
-  // One reusable chart; lens changes morph bars in place.
-  let bars = null;
+  // Each lens renders a DIFFERENT chart style so the five views read
+  // distinctly. The chart is rebuilt on every lens change (these factories
+  // return { el } without an update()), so the host is cleared first. Chart
+  // accents are restricted to navy + teal, the only tokens dark enough to
+  // hold AA contrast on the cream ground; the per-lens BUTTON colours (which
+  // span the wider amber/coral/orange family) live in CSS. Mapped by the
+  // stable lens `value` keys so the system is identical across all four
+  // segments. The 'ai' fallback (sole lens when nothing else populates)
+  // reuses the lens-1 bars/navy style.
+  const LENS_CHART = {
+    value: { chart: horizontalBars, accent: 'navy' },
+    mindset: { chart: lollipopChart, accent: 'teal' },
+    control: { chart: dotPlot, accent: 'navy' },
+    brand: { chart: horizontalBars, accent: 'teal' },
+    tgi: { chart: lollipopChart, accent: 'navy' },
+    ai: { chart: horizontalBars, accent: 'navy' },
+  };
+
+  // Bigger marks now the controls are a compact secondary rail and the chart
+  // is the spotlight. Bars/lollipops/dots share one generous row rhythm.
+  const CHART_BASE = {
+    showValues: false,   // index sizing numbers are never displayed
+    decimals: 0,
+    barHeight: 40,
+    gap: 20,
+    labelWidth: 220,
+  };
 
   const drawLens = (value) => {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (hintEl) hintEl.textContent = LENS_HINTS[lens.value] || hintEl.textContent;
-    if (!bars) {
-      bars = horizontalBars(chartHost, {
-        showValues: false,  // index sizing numbers are never displayed
-        items: lens.items,
-        max: lensMax(lens.items),
-        accent: 'navy',
-        decimals: 0,
-        barHeight: 34,
-        gap: 16,
-        labelWidth: 220,
-        ariaLabel: `Hustlers: ${lens.label}`,
-      });
-    } else {
-      bars.update(lens.items, { resort: true, max: lensMax(lens.items) });
-    }
+    const style = LENS_CHART[lens.value] || LENS_CHART.value;
+    chartHost.replaceChildren();
+    style.chart(chartHost, {
+      ...CHART_BASE,
+      items: lens.items,
+      max: lensMax(lens.items),
+      accent: style.accent,
+      ariaLabel: `Hustlers: ${lens.label}`,
+    });
   };
 
   // Wire the marquee interaction - gate() advises the hint; first switch
