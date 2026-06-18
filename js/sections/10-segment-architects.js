@@ -31,6 +31,12 @@ const SEGMENT_ID = 'architects';
 const TOP_N = 5;
 const INDEX_BASELINE = 100; // 100 = the UK average, the scale's anchor.
 const SCALE_HEADROOM = 1.08; // a touch of air past the longest bar.
+// At or below this item count a lonely bar/dot reads as broken, so the lens
+// renders large centred "index pucks" (iXXX + label) instead of a sparse chart.
+const FEW_ITEMS = 2;
+
+/** Format a TGI over-index as an index token: 236 -> "i236". Never a percent. */
+const fmtIndex = (v) => `i${Math.round(v)}`;
 
 /** A short one-line explanation shown for the active lens. */
 const LENS_HINTS = {
@@ -322,13 +328,50 @@ export default function init(rootEl, data) {
   };
 
   // Bigger marks now the controls are a compact secondary rail and the chart
-  // is the spotlight. Bars/lollipops/dots share one generous row rhythm.
+  // is the spotlight. Bars/lollipops/dots share one generous row rhythm. Every
+  // lens shows its INDEX value label (i236, i229 ...), formatted via
+  // valueFormat so the marks read as index tokens, never percentages.
   const CHART_BASE = {
-    showValues: false,   // index sizing numbers are never displayed
+    showValues: true,            // every lens shows its index value label
     decimals: 0,
     barHeight: 40,
     gap: 20,
     labelWidth: 220,
+    valueFormat: fmtIndex,       // 236 -> "i236" (index, never a percent)
+  };
+
+  /**
+   * Render a small set of lens items (<= FEW_ITEMS) as large centred index
+   * pucks instead of a sparse bar/dot. Each puck is the big "iXXX" number with
+   * a short label beneath, the fill scaled to the item's share of the lens max
+   * so the strongest lean reads first. On-brand: navy/teal marks on cream,
+   * square corners. Pure CSS via the section stylesheet (.seg-pucks).
+   */
+  const drawPucks = (lens, accent) => {
+    const max = lensMax(lens.items);
+    const wrap = document.createElement('div');
+    wrap.className = 'seg-pucks';
+    wrap.setAttribute('role', 'img');
+    wrap.setAttribute('aria-label', `Architects: ${lens.label}`);
+    lens.items.forEach((item) => {
+      const share = Math.max(0, Math.min(1, (item.pct || 0) / max));
+      const puck = document.createElement('figure');
+      puck.className = 'seg-puck';
+      puck.dataset.accent = accent; // navy | teal: drives the fill in CSS
+      puck.style.setProperty('--puck-fill', `${Math.round(share * 100)}%`);
+
+      const num = document.createElement('span');
+      num.className = 'seg-puck-num';
+      num.textContent = fmtIndex(item.pct || 0);
+
+      const cap = document.createElement('figcaption');
+      cap.className = 'seg-puck-label';
+      cap.textContent = item.label;
+
+      puck.append(num, cap);
+      wrap.append(puck);
+    });
+    chartHost.append(wrap);
   };
 
   const drawLens = (value) => {
@@ -336,6 +379,12 @@ export default function init(rootEl, data) {
     if (hintEl) hintEl.textContent = LENS_HINTS[lens.value] || hintEl.textContent;
     const style = LENS_CHART[lens.value] || LENS_CHART.value;
     chartHost.replaceChildren();
+    // Too few items for an honest chart: show designed index pucks instead so
+    // a lonely bar/dot never reads as a broken sparse chart.
+    if (lens.items.length <= FEW_ITEMS) {
+      drawPucks(lens, style.accent);
+      return;
+    }
     style.chart(chartHost, {
       ...CHART_BASE,
       items: lens.items,

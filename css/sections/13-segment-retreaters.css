@@ -197,8 +197,8 @@
 /* Flat navy + segment-accent icon, top of the lens. */
 #\31 3-segment-retreaters .seg-icon {
   color: var(--navy);
-  width: clamp(112px, 9.5vw, 144px);
-  height: clamp(112px, 9.5vw, 144px);
+  width: clamp(70px, 6vw, 90px);
+  height: clamp(70px, 6vw, 90px);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -251,12 +251,11 @@
    (set per-button via :nth-child below). Five members of one family. */
 #\31 3-segment-retreaters .seg-lens .pillgroup {
   display: flex;
-  flex-direction: column;     /* 5 separate buttons, each on its own line */
-  flex-wrap: nowrap;
+  flex-direction: row;        /* flow horizontally, wrapping to ~2 tidy rows */
+  flex-wrap: wrap;
   align-items: stretch;
   gap: clamp(5px, 0.7vh, 8px);
   width: 100%;
-  max-width: 284px;
   border: 0;
 }
 #\31 3-segment-retreaters .seg-lens .pillgroup-chip {
@@ -273,7 +272,8 @@
   font-weight: 700;
   letter-spacing: 0.015em;
   padding: 6px 11px;
-  width: 100%;
+  /* Compact chips that flow horizontally and wrap; no longer full-width. */
+  flex: 0 1 auto;
   text-align: left;
   color: var(--navy);
   border-radius: 0;
@@ -312,11 +312,10 @@
   color: var(--navy);
 }
 
-/* Spotlight chart host - now the controls are a compact rail, the chart is
-   the clear focal point. A quiet framed "spotlight" (faint cream wash + soft
-   elevation, square corners) lifts it off the ground and centres the marks so
-   the eye lands here. Grows to absorb spare height (no dead space) and shrinks
-   under pressure (the fingerprint below always stays in view). */
+/* Chart host - the clear focal point. The chart sits DIRECTLY on the cream
+   page ground: fully transparent, no card, no wash, no border, no shadow.
+   Grows to absorb spare height (no dead space) and shrinks under pressure (the
+   fingerprint below always stays in view). */
 #\31 3-segment-retreaters .seg-chart {
   width: 100%;
   flex: 1 1 auto;
@@ -325,11 +324,10 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: clamp(10px, 1.8vh, 22px) clamp(14px, 1.8vw, 26px);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
-  border: 1px solid rgba(4, 22, 84, 0.08);
-  box-shadow: 0 10px 28px -18px rgba(4, 22, 84, 0.32);
+  padding: clamp(10px, 1.8vh, 22px) 0;
+  background: transparent;     /* charts sit on the cream ground - no card */
+  border: 0;
+  box-shadow: none;
   border-radius: 0;            /* square corners - house rule */
 }
 #\31 3-segment-retreaters .seg-chart svg {
@@ -338,6 +336,60 @@
   height: auto;
   max-height: 100%;
   margin: 0 auto;
+}
+
+/* Few-item lens (<= 2 items): large centred index pucks instead of a sparse
+   chart. Navy/teal marks on cream, square corners, the fill scaled to each
+   item's share of the lens max so the strongest lean reads first. */
+#\31 3-segment-retreaters .seg-pucks {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+#\31 3-segment-retreaters .seg-puck {
+  margin: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(6px, 1vh, 12px);
+  padding: clamp(14px, 2vh, 26px) clamp(16px, 1.6vw, 24px);
+  /* The puck sits on the cream ground with a faint base tint that fills from
+     the bottom to the item's share of the lens max (square corners). */
+  background:
+    linear-gradient(0deg,
+      var(--puck-tint, rgba(4, 22, 84, 0.10)) 0%,
+      var(--puck-tint, rgba(4, 22, 84, 0.10)) var(--puck-fill, 0%),
+      rgba(4, 22, 84, 0.05) var(--puck-fill, 0%),
+      rgba(4, 22, 84, 0.05) 100%);
+  border: 1px solid rgba(4, 22, 84, 0.14);
+  border-bottom: 4px solid var(--puck-mark, var(--navy));
+  border-radius: 0;
+}
+#\31 3-segment-retreaters .seg-puck[data-accent="teal"] {
+  --puck-mark: #2C7DA0;
+  --puck-tint: rgba(44, 125, 160, 0.14);
+}
+#\31 3-segment-retreaters .seg-puck-num {
+  font-weight: 900;
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  color: var(--puck-mark, var(--navy));
+  font-variant-numeric: tabular-nums;
+}
+#\31 3-segment-retreaters .seg-puck-label {
+  font-weight: 700;
+  font-size: clamp(0.86rem, 1.1vw, 1.04rem);
+  line-height: 1.22;
+  color: var(--ink);
 }
 
 /* Baseline legend - faint, no box. */
