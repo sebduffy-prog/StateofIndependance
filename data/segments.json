@@ -16,7 +16,7 @@
     "metricsTotals": {
       "mindsetNetAgree": {
         "Exhausted / stretched": 54.8,
-        "Optimistic about next decade": 77.3,
+        "More careful with money than 5 yrs ago": 77.3,
         "Anxious about the future": 60.2,
         "In control of my life": 46.7,
         "Self-reliant, look after myself": 54.3
@@ -144,7 +144,7 @@
             "pct": 17.1,
             "index": 31
           },
-          "Optimistic about next decade": {
+          "More careful with money than 5 yrs ago": {
             "pct": 100,
             "index": 129
           },
@@ -476,7 +476,7 @@
             "pct": 58,
             "index": 106
           },
-          "Optimistic about next decade": {
+          "More careful with money than 5 yrs ago": {
             "pct": 48.7,
             "index": 63
           },
@@ -805,7 +805,7 @@
             "pct": 24.2,
             "index": 44
           },
-          "Optimistic about next decade": {
+          "More careful with money than 5 yrs ago": {
             "pct": 100,
             "index": 129
           },
@@ -1136,7 +1136,7 @@
             "pct": 87.1,
             "index": 159
           },
-          "Optimistic about next decade": {
+          "More careful with money than 5 yrs ago": {
             "pct": 71.9,
             "index": 93
           },
