@@ -177,6 +177,17 @@
   max-width: 46ch;
 }
 
+/* Strategic context — the deck's insight behind the move */
+#\32 0-move-mentalload .mml-context {
+  margin: 0;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.82rem, 0.98vw, 0.96rem);
+  line-height: 1.38;
+  color: var(--navy, #041654);
+  max-width: 46ch;
+}
+
 /* ── Sandwich generation stat strip — this move's own data ────────────── */
 #\32 0-move-mentalload .mml-sandwich {
   display: flex;
@@ -498,6 +509,9 @@
     padding: 8px clamp(10px, 1.2vw, 16px);
   }
   #\32 0-move-mentalload .mml-quote {
+    display: none;
+  }
+  #\32 0-move-mentalload .mml-context {
     display: none;
   }
 }

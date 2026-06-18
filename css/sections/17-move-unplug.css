@@ -181,6 +181,17 @@
   max-width: 46ch;
 }
 
+/* Strategic context — the deck's insight behind the move */
+#\31 7-move-unplug .mu-context {
+  margin: 0;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.84rem, 1.0vw, 0.98rem);
+  line-height: 1.4;
+  color: var(--navy, #041654);
+  max-width: 44ch;
+}
+
 /* ── Quote card — .soi-card: cream, square corners, one lift device ─── */
 #\31 7-move-unplug .mu-quote {
   margin: 0;

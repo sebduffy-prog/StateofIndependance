@@ -518,6 +518,18 @@
   max-width: 40ch;
 }
 
+/* Strategic "so what" — the ad-strategy implication, set apart as a quieter
+   block beneath the headline caption. Yellow left-rule marks it as the take. */
+#\30 6-twist-trust .tt-spread-cap__so {
+  display: block;
+  margin-top: clamp(7px, 1vh, 11px);
+  padding-left: clamp(10px, 0.8vw, 13px);
+  border-left: 2px solid var(--yellow, #F0CB08);
+  color: rgba(240, 237, 231, 0.62);
+  font-size: clamp(0.78rem, 0.86vw, 0.9rem);
+  line-height: 1.46;
+}
+
 /* NHS paradox block: gauge + copy side by side on a faint cream-tint divider */
 #\30 6-twist-trust .tt-paradox {
   display: grid;
