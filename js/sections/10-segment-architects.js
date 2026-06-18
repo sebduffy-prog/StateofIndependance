@@ -44,7 +44,7 @@ const LENS_HINTS = {
   mindset: 'How they describe their own outlook and finances, versus average.',
   control: 'The active steps they take to stay in control of their lives.',
   brand: 'What they most want brands to do for them.',
-  tgi: 'The lifestyle attitudes they over-index on in the TGI survey.',
+  tgi: 'The lifestyle attitudes they over-index on.',
   ai: 'The tasks they hand to AI instead of a human professional.',
 };
 

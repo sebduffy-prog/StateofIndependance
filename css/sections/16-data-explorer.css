@@ -414,6 +414,26 @@
   margin: 0 auto;
 }
 
+/* ── Wow-factor lollipop — bigger, glowing markers, thicker stems, bolder
+   values so the data POPS. CSS geometry/presentation properties override the
+   lib's inline SVG attributes, so the shared chart lib is untouched and the
+   chart's LAYOUT BOX is unchanged — only the marks within grow. Scoped to the
+   single-series lollipop; the "All four" plot keeps its own .pg-compare style. */
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) circle {
+  r: 10;
+  stroke: var(--yellow, #F0CB08);
+  stroke-width: 2.5;
+  paint-order: stroke;                 /* clean outer halo ring around the navy dot */
+  filter: drop-shadow(0 3px 9px rgba(4, 22, 84, 0.34));
+}
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) line:not([opacity]) {
+  stroke-width: 4;                     /* thicken the value stems; faint baseline left as-is */
+}
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) text:not([text-anchor]) {
+  font-size: 18px;                     /* bolder, bigger value readouts */
+  font-weight: 800;
+}
+
 /* ── "All four" comparison plot — legend + connected dot plot ──────────── */
 #\31 6-data-explorer .pg-compare-legend {
   display: flex;

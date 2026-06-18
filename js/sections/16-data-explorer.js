@@ -78,9 +78,9 @@ const buildSurveyMetrics = (survey) => {
 };
 
 const TGI_GROUP_LABELS = {
-  demographics: 'TGI · Demographics',
-  lifestyle: 'TGI · Lifestyle',
-  media: 'TGI · Media',
+  demographics: 'Demographics',
+  lifestyle: 'Lifestyle',
+  media: 'Media',
 };
 
 const buildTgiMetrics = (tgi) => {
@@ -167,7 +167,7 @@ const resolveView = (state) => {
     return {
       items: tgiItems(metric, seg),
       isIndex: true,
-      note: `${s.label} · TGI ${metric.dim} · index vs GB average (100 = average).`,
+      note: `${s.label} · ${metric.dim.charAt(0).toUpperCase() + metric.dim.slice(1)} · index vs UK average (100 = average).`,
     };
   }
   // survey
@@ -316,7 +316,7 @@ const buildMetricBank = (host, groups, currentId, onSelect) => {
   const bank = document.createElement('div');
   bank.className = 'pg-qbank';
   bank.setAttribute('role', 'radiogroup');
-  bank.setAttribute('aria-label', 'Choose a question or TGI cut');
+  bank.setAttribute('aria-label', 'Choose a question or cut');
 
   /** @type {HTMLButtonElement[]} */
   const allChips = [];
