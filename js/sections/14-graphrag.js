@@ -92,14 +92,53 @@ function distinctiveTgiSignals(segRows) {
 }
 
 /**
+ * Pull MORE distinctive statements from the full TGI bank (data/tgi.json `full`,
+ * the behavioural lifestyle + media cuts — not raw demographic bands) for one
+ * segment, so the graph can carry roughly double the satellite nodes. Returned
+ * highest-index first; the caller dedupes against the core signals.
+ * @param {object} full  tgi.full ({ demographics, lifestyle, media })
+ * @param {string} segId
+ * @returns {string[]}
+ */
+function fullTgiSignals(full, segId) {
+  const out = [];
+  const seen = new Set();
+  ['lifestyle', 'media'].forEach((dim) => {
+    (full[dim] || []).forEach((block) => {
+      (block.rows?.[segId] || [])
+        .filter((r) => r && typeof r.index === 'number' && r.index >= TGI_OVERINDEX_MIN)
+        .filter((r) => !TGI_LABEL_SKIP.test(cleanStatement(r.label)))
+        .forEach((r) => {
+          const label = cleanStatement(r.label);
+          const key = label.toLowerCase();
+          if (label && !seen.has(key)) { seen.add(key); out.push({ label, index: r.index }); }
+        });
+    });
+  });
+  return out.sort((a, b) => b.index - a.index).map((r) => r.label);
+}
+
+/**
  * Deep-clone the segments and weave each one's distinctive TGI statements into
- * its `interests` list so the shared graph renders them as satellites.
+ * its `interests` list so the shared graph renders them as satellites. The core
+ * signals (from tgi.segments) are augmented with more from the full TGI bank so
+ * the node count is roughly DOUBLED, deduped, capped to a sane ceiling.
  */
 function weaveSegments(segments, tgi) {
   const byId = (tgi && tgi.segments) || {};
+  const full = (tgi && tgi.full) || {};
   return segments.map((s) => {
-    const signals = distinctiveTgiSignals(byId[s.id]);
-    const interests = [...(s.interests || []), ...signals];
+    const core = distinctiveTgiSignals(byId[s.id]);
+    const extra = fullTgiSignals(full, s.id);
+    const seen = new Set(core.map((l) => l.toLowerCase()));
+    const merged = [...core];
+    const target = Math.min(Math.max(core.length * 2, 24), 46); // double, with a ceiling
+    for (const label of extra) {
+      if (merged.length >= target) break;
+      const key = label.toLowerCase();
+      if (!seen.has(key)) { seen.add(key); merged.push(label); }
+    }
+    const interests = [...(s.interests || []), ...merged];
     return { ...s, interests };
   });
 }

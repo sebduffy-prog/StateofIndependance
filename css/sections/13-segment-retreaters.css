@@ -30,7 +30,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 1320px;
+  max-width: 1460px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.22fr);
@@ -61,7 +61,7 @@
   justify-content: center;
   gap: clamp(8px, 1.6vh, 18px);
   min-height: 0;
-  max-width: 32ch;
+  max-width: 36ch;
 }
 
 #\31 3-segment-retreaters .vccp-eyebrow { margin: 0; color: var(--navy); }
@@ -69,7 +69,7 @@
 #\31 3-segment-retreaters .seg-title {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(2.6rem, 5.6vw, 5.4rem);
+  font-size: clamp(2.25rem, 4.8vw, 4.6rem);
   letter-spacing: -0.03em;
   line-height: 0.9;
   color: var(--ink);
@@ -158,7 +158,7 @@
 }
 #\31 3-segment-retreaters .seg-share-num {
   font-weight: 900;
-  font-size: clamp(3.4rem, 6.4vw, 6.4rem);
+  font-size: clamp(2.9rem, 5.4vw, 5.4rem);
   letter-spacing: -0.04em;
   line-height: 0.82;
   color: var(--navy);
@@ -197,8 +197,8 @@
 /* Flat navy + segment-accent icon, top of the lens. */
 #\31 3-segment-retreaters .seg-icon {
   color: var(--navy);
-  width: clamp(76px, 7vw, 98px);
-  height: clamp(76px, 7vw, 98px);
+  width: clamp(70px, 6vw, 90px);
+  height: clamp(70px, 6vw, 90px);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -245,37 +245,53 @@
   max-width: 50ch;
 }
 
-/* Separate square buttons (no radius - house rule). Each chip is its own
-   distinct button with its own border + background; gaps keep them apart so
-   the control reads as individual buttons, not one joined bar. Wraps gracefully. */
+/* Compact secondary control rail (no radius - house rule). The buttons are
+   deliberately small so the CHART is the hero; each chip is its own distinct
+   button carrying a coloured left keyline that gives it a unique identity
+   (set per-button via :nth-child below). Five members of one family. */
 #\31 3-segment-retreaters .seg-lens .pillgroup {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;        /* flow horizontally, wrapping to ~2 tidy rows */
   flex-wrap: wrap;
-  gap: clamp(6px, 0.6vw, 10px);
+  align-items: stretch;
+  gap: clamp(5px, 0.7vh, 8px);
+  width: 100%;
   border: 0;
 }
 #\31 3-segment-retreaters .seg-lens .pillgroup-chip {
   appearance: none;
-  border: 1px solid rgba(4, 22, 84, 0.28);
-  background: rgba(4, 22, 84, 0.04);
+  /* The coloured left keyline is the per-button identity marker; it is set
+     to the button's own accent in the :nth-child rules below. */
+  --lens-accent: var(--navy);
+  border: 1px solid rgba(4, 22, 84, 0.22);
+  border-left: 4px solid var(--lens-accent);
+  background: rgba(4, 22, 84, 0.035);
   cursor: pointer;
   font: inherit;
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  padding: 6px 12px;
+  letter-spacing: 0.015em;
+  padding: 6px 11px;
+  /* Compact chips that flow horizontally and wrap; no longer full-width. */
+  flex: 0 1 auto;
+  text-align: left;
   color: var(--navy);
   border-radius: 0;
   transition: background var(--dur-micro, 180ms), color var(--dur-micro, 180ms),
               border-color var(--dur-micro, 180ms);
 }
 #\31 3-segment-retreaters .seg-lens .pillgroup-chip:hover {
-  border-color: var(--navy);
+  border-color: rgba(4, 22, 84, 0.5);
+  border-left-color: var(--lens-accent);
   background: rgba(4, 22, 84, 0.08);
 }
+/* Active: fill in the button's OWN accent so the selection reads at a glance
+   and stays tied to that lens's colour. Cream text on the dark accents
+   (navy/teal/coral); navy text on the light accents (amber/orange) for AA. */
 #\31 3-segment-retreaters .seg-lens .pillgroup-chip.is-active {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--lens-accent);
+  border-color: var(--lens-accent);
+  border-left-color: var(--lens-accent);
   color: var(--cream, #F0EDE7);
 }
 #\31 3-segment-retreaters .seg-lens .pillgroup-chip:focus-visible {
@@ -283,22 +299,97 @@
   outline-offset: 2px;
 }
 
-/* Backgroundless chart host - bars float on cream; SVG scales to width.
-   Grows to absorb spare height (no dead space) and shrinks under pressure
-   (the fingerprint below it always stays in view). */
+/* Per-button accent: five members of one on-brand family. The keyline gives
+   each lens its own identity; the active fill carries it through. */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(1) { --lens-accent: #041654; } /* navy  */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(2) { --lens-accent: #2C7DA0; } /* teal  */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(3) { --lens-accent: #FBC100; } /* amber */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(4) { --lens-accent: #FF8598; } /* coral */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(5) { --lens-accent: #FFA764; } /* orange*/
+/* Light accents (amber/orange) need navy text for AA contrast when active. */
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(3).is-active,
+#\31 3-segment-retreaters .seg-lens .pillgroup-chip:nth-child(5).is-active {
+  color: var(--navy);
+}
+
+/* Chart host - the clear focal point. The chart sits DIRECTLY on the cream
+   page ground: fully transparent, no card, no wash, no border, no shadow.
+   Grows to absorb spare height (no dead space) and shrinks under pressure (the
+   fingerprint below always stays in view). */
 #\31 3-segment-retreaters .seg-chart {
   width: 100%;
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
+  padding: clamp(10px, 1.8vh, 22px) 0;
+  background: transparent;     /* charts sit on the cream ground - no card */
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;            /* square corners - house rule */
 }
 #\31 3-segment-retreaters .seg-chart svg {
   display: block;
   width: 100%;
   height: auto;
   max-height: 100%;
+  margin: 0 auto;
+}
+
+/* Few-item lens (<= 2 items): large centred index pucks instead of a sparse
+   chart. Navy/teal marks on cream, square corners, the fill scaled to each
+   item's share of the lens max so the strongest lean reads first. */
+#\31 3-segment-retreaters .seg-pucks {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+#\31 3-segment-retreaters .seg-puck {
+  margin: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(6px, 1vh, 12px);
+  padding: clamp(14px, 2vh, 26px) clamp(16px, 1.6vw, 24px);
+  /* The puck sits on the cream ground with a faint base tint that fills from
+     the bottom to the item's share of the lens max (square corners). */
+  background:
+    linear-gradient(0deg,
+      var(--puck-tint, rgba(4, 22, 84, 0.10)) 0%,
+      var(--puck-tint, rgba(4, 22, 84, 0.10)) var(--puck-fill, 0%),
+      rgba(4, 22, 84, 0.05) var(--puck-fill, 0%),
+      rgba(4, 22, 84, 0.05) 100%);
+  border: 1px solid rgba(4, 22, 84, 0.14);
+  border-bottom: 4px solid var(--puck-mark, var(--navy));
+  border-radius: 0;
+}
+#\31 3-segment-retreaters .seg-puck[data-accent="teal"] {
+  --puck-mark: #2C7DA0;
+  --puck-tint: rgba(44, 125, 160, 0.14);
+}
+#\31 3-segment-retreaters .seg-puck-num {
+  font-weight: 900;
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  color: var(--puck-mark, var(--navy));
+  font-variant-numeric: tabular-nums;
+}
+#\31 3-segment-retreaters .seg-puck-label {
+  font-weight: 700;
+  font-size: clamp(0.86rem, 1.1vw, 1.04rem);
+  line-height: 1.22;
+  color: var(--ink);
 }
 
 /* Baseline legend - faint, no box. */

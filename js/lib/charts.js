@@ -297,7 +297,11 @@ export const horizontalBars = (container, opts) => {
     gap = 12,
     labelWidth = 200,
     showValues = true,   // when false, the numeric value label is omitted
+    // Optional value formatter `(value) => string`. When absent, behaviour is
+    // identical to before (fmtPct), so existing callers are unaffected.
+    valueFormat = null,
   } = opts;
+  const formatValue = (v) => (valueFormat ? valueFormat(v) : fmtPct(v, decimals));
 
   // Chart max can be updated per-redraw (tightens to the data so bars fill
   // the track instead of stranding right-side dead space). Defaults to 100.
@@ -372,7 +376,7 @@ export const horizontalBars = (container, opts) => {
       'font-family': cssVar('--font-sans', 'Inter Tight, sans-serif'),
       style: 'font-variant-numeric: tabular-nums;',
     }) : null;
-    if (value) value.textContent = fmtPct(0, decimals);
+    if (value) value.textContent = formatValue(0);
 
     g.append(label, track, bar);
     if (value) g.append(value);
@@ -383,7 +387,7 @@ export const horizontalBars = (container, opts) => {
       bar.setAttribute('width', w);
       if (value) {
         value.setAttribute('x', valueX + w + 8);
-        value.textContent = fmtPct(pct, decimals);
+        value.textContent = formatValue(pct);
       }
     };
     return { g, render, current: 0, y };
@@ -725,7 +729,8 @@ export const slopeChart = (container, opts) => {
  */
 export const lollipopChart = (container, opts) => {
   const c = palette();
-  const { items, max = 100, accent = 'navy', onNavy = false, highlightId = null } = opts;
+  const { items, max = 100, accent = 'navy', onNavy = false, highlightId = null, valueFormat = null } = opts;
+  const formatValue = (v) => (valueFormat ? valueFormat(v) : fmtPct(v, 0));
   const scheme = groundScheme(c, { accent, onNavy });
   const dotColour = scheme.component;
   const textColour = scheme.text;
@@ -768,7 +773,7 @@ export const lollipopChart = (container, opts) => {
     const value = textNode({
       x: valueX, y: cy, 'dominant-baseline': 'central', fill: textColour,
       'font-size': 16, 'font-weight': 700, style: TAB_NUMS,
-    }, fmtPct(0, 0));
+    }, formatValue(0));
     svg.append(label, baseline, stem, dot, value);
     rows.push({ stem, dot, value, cy, target: item.pct });
   });
@@ -780,7 +785,7 @@ export const lollipopChart = (container, opts) => {
     row.stem.setAttribute('x2', x);
     row.dot.setAttribute('cx', x);
     row.value.setAttribute('x', x + 12);
-    row.value.textContent = fmtPct(pct, 0);
+    row.value.textContent = formatValue(pct);
   };
   const drawStatic = () => rows.forEach((r) => render(r, r.target));
   const drawAnimated = () => rows.forEach((r) => tween(0, r.target, 900, (v) => render(r, v)));
@@ -797,7 +802,8 @@ export const lollipopChart = (container, opts) => {
  */
 export const dotPlot = (container, opts) => {
   const c = palette();
-  const { items, max = 100, accent = 'navy', onNavy = false } = opts;
+  const { items, max = 100, accent = 'navy', onNavy = false, valueFormat = null } = opts;
+  const formatValue = (v) => (valueFormat ? valueFormat(v) : fmtPct(v, 0));
   const scheme = groundScheme(c, { accent, onNavy });
   const dotColour = scheme.component;
   const textColour = scheme.text;
@@ -830,7 +836,7 @@ export const dotPlot = (container, opts) => {
     svg.append(textNode({
       x, y: axisY + 16, 'text-anchor': 'middle', fill: textColour, 'font-size': 13,
       'font-weight': 600, opacity: 0.7, style: TAB_NUMS,
-    }, fmtPct(t, 0)));
+    }, formatValue(t)));
   }
 
   const rows = [];
@@ -847,7 +853,7 @@ export const dotPlot = (container, opts) => {
     const value = textNode({
       x: axisX, y: cy, 'dominant-baseline': 'central', fill: textColour,
       'font-size': 15, 'font-weight': 700, style: TAB_NUMS,
-    }, fmtPct(0, 0));
+    }, formatValue(0));
     svg.append(label, dot, value);
     rows.push({ dot, value, cy, target: item.pct });
   });
@@ -858,7 +864,7 @@ export const dotPlot = (container, opts) => {
     const x = xFor(pct);
     row.dot.setAttribute('cx', x);
     row.value.setAttribute('x', x + 12);
-    row.value.textContent = fmtPct(pct, 0);
+    row.value.textContent = formatValue(pct);
   };
   const drawStatic = () => rows.forEach((r) => render(r, r.target));
   const drawAnimated = () => rows.forEach((r) => tween(0, r.target, 900, (v) => render(r, v)));

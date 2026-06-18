@@ -22,7 +22,7 @@
  *           journey:{ gate():void, ready():void } }} data
  */
 import { arrival } from '../lib/experiential.js';
-import { horizontalBars } from '../lib/charts.js';
+import { horizontalBars, lollipopChart, dotPlot } from '../lib/charts.js';
 import { pillGroup } from '../lib/interactions.js';
 
 // THE ONLY PER-SEGMENT LINE. Everything below is shared, identical logic.
@@ -31,6 +31,12 @@ const SEGMENT_ID = 'coasters';
 const TOP_N = 5;
 const INDEX_BASELINE = 100; // 100 = the UK average, the scale's anchor.
 const SCALE_HEADROOM = 1.08; // a touch of air past the longest bar.
+// At or below this item count a lonely bar/dot reads as broken, so the lens
+// renders large centred "index pucks" (iXXX + label) instead of a sparse chart.
+const FEW_ITEMS = 2;
+
+/** Format a TGI over-index as an index token: 236 -> "i236". Never a percent. */
+const fmtIndex = (v) => `i${Math.round(v)}`;
 
 /** A short one-line explanation shown for the active lens. */
 const LENS_HINTS = {
@@ -38,7 +44,7 @@ const LENS_HINTS = {
   mindset: 'How they describe their own outlook and finances, versus average.',
   control: 'The active steps they take to stay in control of their lives.',
   brand: 'What they most want brands to do for them.',
-  tgi: 'The lifestyle attitudes they over-index on in the TGI survey.',
+  tgi: 'The lifestyle attitudes they over-index on.',
   ai: 'The tasks they hand to AI instead of a human professional.',
 };
 
@@ -303,27 +309,89 @@ export default function init(rootEl, data) {
   const lenses = buildLenses(seg, tgiSeg);
   if (!lenses.length) return; // no verified data - leave the identity card visible
 
-  // One reusable chart; lens changes morph bars in place.
-  let bars = null;
+  // Each lens renders a DIFFERENT chart style so the five views read
+  // distinctly. The chart is rebuilt on every lens change (these factories
+  // return { el } without an update()), so the host is cleared first. Chart
+  // accents are restricted to navy + teal, the only tokens dark enough to
+  // hold AA contrast on the cream ground; the per-lens BUTTON colours (which
+  // span the wider amber/coral/orange family) live in CSS. Mapped by the
+  // stable lens `value` keys so the system is identical across all four
+  // segments. The 'ai' fallback (sole lens when nothing else populates)
+  // reuses the lens-1 bars/navy style.
+  const LENS_CHART = {
+    value: { chart: horizontalBars, accent: 'navy' },
+    mindset: { chart: lollipopChart, accent: 'teal' },
+    control: { chart: dotPlot, accent: 'navy' },
+    brand: { chart: horizontalBars, accent: 'teal' },
+    tgi: { chart: lollipopChart, accent: 'navy' },
+    ai: { chart: horizontalBars, accent: 'navy' },
+  };
+
+  // Bigger marks now the controls are a compact secondary rail and the chart
+  // is the spotlight. Bars/lollipops/dots share one generous row rhythm. Every
+  // lens shows its INDEX value label (i236, i229 ...), formatted via
+  // valueFormat so the marks read as index tokens, never percentages.
+  const CHART_BASE = {
+    showValues: true,            // every lens shows its index value label
+    decimals: 0,
+    barHeight: 40,
+    gap: 20,
+    labelWidth: 220,
+    valueFormat: fmtIndex,       // 236 -> "i236" (index, never a percent)
+  };
+
+  /**
+   * Render a small set of lens items (<= FEW_ITEMS) as large centred index
+   * pucks instead of a sparse bar/dot. Each puck is the big "iXXX" number with
+   * a short label beneath, the fill scaled to the item's share of the lens max
+   * so the strongest lean reads first. On-brand: navy/teal marks on cream,
+   * square corners. Pure CSS via the section stylesheet (.seg-pucks).
+   */
+  const drawPucks = (lens, accent) => {
+    const max = lensMax(lens.items);
+    const wrap = document.createElement('div');
+    wrap.className = 'seg-pucks';
+    wrap.setAttribute('role', 'img');
+    wrap.setAttribute('aria-label', `Coasters: ${lens.label}`);
+    lens.items.forEach((item) => {
+      const share = Math.max(0, Math.min(1, (item.pct || 0) / max));
+      const puck = document.createElement('figure');
+      puck.className = 'seg-puck';
+      puck.dataset.accent = accent; // navy | teal: drives the fill in CSS
+      puck.style.setProperty('--puck-fill', `${Math.round(share * 100)}%`);
+
+      const num = document.createElement('span');
+      num.className = 'seg-puck-num';
+      num.textContent = fmtIndex(item.pct || 0);
+
+      const cap = document.createElement('figcaption');
+      cap.className = 'seg-puck-label';
+      cap.textContent = item.label;
+
+      puck.append(num, cap);
+      wrap.append(puck);
+    });
+    chartHost.append(wrap);
+  };
 
   const drawLens = (value) => {
     const lens = lenses.find((l) => l.value === value) || lenses[0];
     if (hintEl) hintEl.textContent = LENS_HINTS[lens.value] || hintEl.textContent;
-    if (!bars) {
-      bars = horizontalBars(chartHost, {
-        showValues: false,  // index sizing numbers are never displayed
-        items: lens.items,
-        max: lensMax(lens.items),
-        accent: 'navy',
-        decimals: 0,
-        barHeight: 34,
-        gap: 16,
-        labelWidth: 220,
-        ariaLabel: `Coasters: ${lens.label}`,
-      });
-    } else {
-      bars.update(lens.items, { resort: true, max: lensMax(lens.items) });
+    const style = LENS_CHART[lens.value] || LENS_CHART.value;
+    chartHost.replaceChildren();
+    // Too few items for an honest chart: show designed index pucks instead so
+    // a lonely bar/dot never reads as a broken sparse chart.
+    if (lens.items.length <= FEW_ITEMS) {
+      drawPucks(lens, style.accent);
+      return;
     }
+    style.chart(chartHost, {
+      ...CHART_BASE,
+      items: lens.items,
+      max: lensMax(lens.items),
+      accent: style.accent,
+      ariaLabel: `Coasters: ${lens.label}`,
+    });
   };
 
   // Wire the marquee interaction - gate() advises the hint; first switch

@@ -5,12 +5,12 @@
  *
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + quote card
- *   RIGHT — move-03.svg icon + flipReveal less→more + media shift table
+ *   RIGHT — lead label + flipReveal less→more + media shift table
  *
  * Less→More rows (STORY.md §07 Move 03 slide 59, verbatim):
- *   Dependency         → Independency
- *   Dictation from the brand → Walk throughs on YT & TikTok
- *   Broadcast to audiences   → Self-help contexts
+ *   Demographics & locations  → Context long-lists
+ *   Look-a-likes              → Creative as targeting
+ *   Off-the-shelf audiences   → Mimicking content behaviours
  *
  * Contract: docs/CONTRACT.md. CSS scoped to #\31 9-move-selfhelp.
  *
@@ -22,9 +22,9 @@ import { flipReveal } from '../lib/interactions.js';
 
 // Less→More pairs verbatim from STORY.md §07 Move 03 slide 59
 const FLIP_ROWS = [
-  { less: 'Dependency',            more: 'Independency' },
-  { less: 'Dictation from the brand', more: 'Walk throughs on YT & TikTok' },
-  { less: 'Broadcast to audiences', more: 'Self-help contexts' },
+  { less: 'Demographics & locations', more: 'Context long-lists' },
+  { less: 'Look-a-likes',             more: 'Creative as targeting' },
+  { less: 'Off-the-shelf audiences',  more: 'Mimicking content behaviours' },
 ];
 
 export default function init(rootEl, data) {

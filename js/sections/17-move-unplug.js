@@ -5,7 +5,7 @@
  *
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + quote card
- *   RIGHT — 34% hero stat + move-01.svg + flipReveal less→more interaction
+ *   RIGHT — 34% hero stat + flipReveal less→more interaction
  *
  * Stat (STORY.md §07 Move 01): 34% using tools to fix practical home/financial
  * problems themselves. Data anchor: Q9 "Budgeting/comparison tools" 34.0%.

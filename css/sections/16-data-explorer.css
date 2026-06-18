@@ -28,6 +28,10 @@
     var(--cream);
   color: var(--navy);
   --pg-rule: rgba(4, 22, 84, 0.12);
+  /* Leading-answer accents — both AA on cream for large bold text. The survey
+     read leads in deep coral; the TGI (index) read leads in deep teal. */
+  --pg-accent-survey: #B0234A;
+  --pg-accent-index: #0A6363;
 }
 
 /* Full-viewport immersive stage; top-aligned so the ground fills the screen. */
@@ -194,8 +198,18 @@
   font-weight: 700;
   line-height: 1.16;
   letter-spacing: -0.01em;
-  max-width: 40ch;
+  max-width: 46ch;
   font-variant-numeric: tabular-nums;
+}
+/* THE HIGHLIGHT: the leading-answer text reads in the brand accent so the
+   expanded point is unmistakably the highlighted one. Coral for survey reads,
+   teal for the TGI (index) reads — both AA on cream at this large, bold size. */
+#\31 6-data-explorer [data-pg-readout-line] {
+  color: var(--pg-accent-survey);
+  transition: color 0.22s var(--ease-entrance);
+}
+#\31 6-data-explorer [data-pg-readout-line].is-index {
+  color: var(--pg-accent-index);
 }
 #\31 6-data-explorer .pg-note {
   margin: var(--space-1) 0 0 0;
@@ -236,24 +250,81 @@
   opacity: 0.55;
   margin-bottom: 5px;
 }
-/* The 21 question chips pack into tidy wrapping rows so the deck stays short. */
+/* The segment chips pack into tidy wrapping rows. */
 #\31 6-data-explorer .pg-pills .pillgroup {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
+
+/* ─── THE QUESTION BANK: the full survey + every TGI cut, organised into
+   labelled GROUPS that fan across the FULL screen width. Each group is a
+   column header + a wrapping bank of square chips. The bank scrolls inside
+   its own region if the bank is taller than its budget — the STAGE never
+   overflows and nothing is clipped. ─── */
+#\31 6-data-explorer .pg-qbank {
+  display: grid;
+  /* One column per group (Survey · Demographics · Lifestyle · Media) so all four
+     sit side by side across the full width — every option visible, no scroll. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 22px) clamp(12px, 1.6vw, 26px);
+  align-items: start;
+  width: 100%;
+  /* Generous budget so all four groups show without an inner scroll; the auto
+     stays only as a safety valve on very short viewports. */
+  max-height: clamp(220px, 40vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 6px 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(4, 22, 84, 0.32) transparent;
+}
+#\31 6-data-explorer .pg-qbank::-webkit-scrollbar { width: 8px; }
+#\31 6-data-explorer .pg-qbank::-webkit-scrollbar-thumb {
+  background: rgba(4, 22, 84, 0.28);
+  border-radius: 0;
+}
+#\31 6-data-explorer .pg-qgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+#\31 6-data-explorer .pg-qgroup__head {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--navy);
+  opacity: 0.78;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid var(--pg-rule);
+}
+#\31 6-data-explorer .pg-qgroup__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-content: flex-start;
+}
+/* The Britain chips are short, fixed labels — keep them on one line each. */
+#\31 6-data-explorer .pg-pills .pillgroup-chip { white-space: nowrap; }
 /* Rest: navy outline, no fill box — the quiet square control. Tight padding
-   keeps all 21 question chips compact so the chart band stays large. */
+   keeps the dozens of question chips compact so the chart band stays large.
+   Long labels (full survey + TGI statements) wrap inside the chip rather than
+   crop, so nothing is ever cut off. */
 #\31 6-data-explorer .pillgroup-chip {
   background: transparent;
   color: var(--navy);
   border: 1.5px solid rgba(4, 22, 84, 0.32);
   border-radius: 0;
   padding: 5px 10px;
-  font: 600 var(--t-xs) / 1.05 var(--font-sans);
+  font: 600 var(--t-xs) / 1.12 var(--font-sans);
   letter-spacing: 0.01em;
   cursor: pointer;
-  white-space: nowrap;
+  text-align: left;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font-variant-numeric: tabular-nums;
   transition: transform 0.18s var(--ease-entrance),
     border-color 0.18s var(--ease-entrance),
@@ -343,14 +414,87 @@
   margin: 0 auto;
 }
 
+/* ── Wow-factor lollipop — bigger, glowing markers, thicker stems, bolder
+   values so the data POPS. CSS geometry/presentation properties override the
+   lib's inline SVG attributes, so the shared chart lib is untouched and the
+   chart's LAYOUT BOX is unchanged — only the marks within grow. Scoped to the
+   single-series lollipop; the "All four" plot keeps its own .pg-compare style. */
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) circle {
+  r: 10;
+  stroke: var(--yellow, #F0CB08);
+  stroke-width: 2.5;
+  paint-order: stroke;                 /* clean outer halo ring around the navy dot */
+  filter: drop-shadow(0 3px 9px rgba(4, 22, 84, 0.34));
+}
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) line:not([opacity]) {
+  stroke-width: 4;                     /* thicken the value stems; faint baseline left as-is */
+}
+#\31 6-data-explorer .pg-chart > svg:not(.pg-compare) text:not([text-anchor]) {
+  font-size: 18px;                     /* bolder, bigger value readouts */
+  font-weight: 800;
+}
+
+/* ── "All four" comparison plot — legend + connected dot plot ──────────── */
+#\31 6-data-explorer .pg-compare-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.4vw, 20px);
+  margin: 0 0 clamp(8px, 1.4vh, 16px) 4px;
+}
+#\31 6-data-explorer .pg-compare-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--navy, #041654);
+}
+#\31 6-data-explorer .pg-compare-legend__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+#\31 6-data-explorer .pg-compare { width: 100%; height: auto; }
+#\31 6-data-explorer .pg-compare__label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--navy, #041654);
+}
+#\31 6-data-explorer .pg-compare__track {
+  stroke: rgba(4, 22, 84, 0.14);
+  stroke-width: 1;
+}
+#\31 6-data-explorer .pg-compare__conn {
+  stroke: rgba(4, 22, 84, 0.30);
+  stroke-width: 2;
+}
+#\31 6-data-explorer .pg-compare__dot {
+  stroke: var(--cream, #F0EDE7);
+  stroke-width: 1.5;
+}
+#\31 6-data-explorer .pg-compare__val {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  fill: var(--navy, #041654);
+}
+
 /* ─── Reduced motion ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   #\31 6-data-explorer .pillgroup-chip,
-  #\31 6-data-explorer .pg-chart {
+  #\31 6-data-explorer .pg-chart,
+  #\31 6-data-explorer [data-pg-readout-line] {
     transition: none;
   }
   #\31 6-data-explorer .pg-orbit,
   #\31 6-data-explorer .pg-orbit::before { animation: none; }
+  /* The bank still scrolls under reduced motion — keep the snap instant. */
+  #\31 6-data-explorer .pg-qbank { scroll-behavior: auto; }
 }
 
 /* ─── Responsive ────────────────────────────────────────────────────── */
@@ -374,4 +518,9 @@
     min-height: clamp(360px, 56vh, 520px);
   }
   #\31 6-data-explorer .pg-chart > svg { max-height: none; }
+  /* One column for the bank on narrow screens; a little more scroll room. */
+  #\31 6-data-explorer .pg-qbank {
+    grid-template-columns: 1fr;
+    max-height: clamp(180px, 34vh, 320px);
+  }
 }

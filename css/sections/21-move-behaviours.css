@@ -79,7 +79,7 @@
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding: clamp(44px, 6vh, 72px) clamp(36px, 6.5vw, 108px) clamp(32px, 4.2vh, 56px);
+  padding: clamp(32px, 4.4vh, 56px) clamp(36px, 6.5vw, 108px) clamp(26px, 3.4vh, 44px);
   box-sizing: border-box;
   height: 100svh;
   max-height: 100svh;
@@ -90,7 +90,7 @@
 #\32 1-move-behaviours .mb-left {
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2.1vh, 28px);
+  gap: clamp(10px, 1.6vh, 20px);
   min-width: 0;
   min-height: 0;
   overflow: hidden;
@@ -179,6 +179,17 @@
   max-width: 46ch;
 }
 
+/* Strategic context — the deck's insight behind the move */
+#\32 1-move-behaviours .mb-context {
+  margin: 0;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.84rem, 1.0vw, 0.98rem);
+  line-height: 1.4;
+  color: var(--navy, #041654);
+  max-width: 46ch;
+}
+
 /* ── Vinted brand moment ─────────────────────────────────────────────── */
 #\32 1-move-behaviours .mb-brand {
   display: flex;
@@ -254,27 +265,10 @@
   justify-content: center;
 }
 
-/* Icon cluster (this move's stat-hero slot) */
+/* Stat-hero slot (no icon; holds the hidden reward badge + youdot anchor) */
 #\32 1-move-behaviours .mb-stat-hero {
   display: flex;
   align-items: center;
-  gap: clamp(18px, 2.8vw, 36px);
-}
-
-/* move-05.svg icon — navy+yellow flat icon language */
-#\32 1-move-behaviours .mb-icon {
-  flex: 0 0 auto;
-  width: clamp(56px, 7vw, 96px);
-  height: clamp(56px, 7vw, 96px);
-  color: var(--navy, #041654);
-}
-
-#\32 1-move-behaviours .mb-icon__img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* Tint the stroke-only SVG to navy */
-  filter: brightness(0) saturate(100%) invert(8%) sepia(52%) saturate(3500%) hue-rotate(222deg) brightness(80%);
 }
 
 /* ── Gamified reward badge — retired per client, kept hidden for JS hook ─ */
@@ -483,7 +477,8 @@
     gap: clamp(16px, 2.2vw, 36px);
   }
   #\32 1-move-behaviours .mb-brand,
-  #\32 1-move-behaviours .mb-quote {
+  #\32 1-move-behaviours .mb-quote,
+  #\32 1-move-behaviours .mb-context {
     display: none;
   }
 }

@@ -5,7 +5,7 @@
  *
  * THE STAGE:
  *   LEFT  — move header + WLV lesson + quote card
- *   RIGHT — 29-pt trust spread stat + move-02.svg + flipReveal less→more
+ *   RIGHT — 29-pt trust spread stat + flipReveal less→more
  *           + M&S / Boots brand evidence cards
  *
  * Stat (STORY.md §07 Move 02 / survey.json institutionTrust.headline):
@@ -15,7 +15,7 @@
  * Less→More rows (STORY.md §07 Move 02 slide 49, verbatim):
  *   Treating pain         → Diagnosing the problem
  *   Lipstick on a pig     → Backing it up
- *   Opaque                → Transparent
+ *   Short-term hit        → Long-term trust
  *
  * Lesson (STORY.md §07 Move 02 slide 44, verbatim):
  *   Earn people's trust by being the honest, transparent alternative
@@ -40,7 +40,7 @@ const STAT_VALUE = 29;
 const FLIP_ROWS = [
   { less: 'Treating pain',      more: 'Diagnosing the problem' },
   { less: 'Lipstick on a pig',  more: 'Backing it up' },
-  { less: 'Opaque',             more: 'Transparent' },
+  { less: 'Short-term hit',     more: 'Long-term trust' },
 ];
 
 export default function init(rootEl, data) {

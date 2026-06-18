@@ -1,594 +1,6727 @@
 {
-  "source": "TGI / Compass",
-  "sourceDetail": "TGB2604A TGI GB 2026 April (March 2025 - February 2026), population weight. Compass segments recreated in TGI as Boolean attitude audiences (see data-src/Compass_Audience_Settings.md); TGI names Adapters/Strivers map to the published Architects/Hustlers.",
-  "indexNote": "Index = segment % divided by all-GB-adults %, x100. 100 = average; >120 or <80 is strongly differentiating. pct = % of segment. TGI audience shares differ from the survey segmentation sizes (deckSharePct); the deck is canonical on sizing.",
-  "segments": {
-    "architects": {
-      "media": [
-        {
-          "label": "Business podcasts",
-          "index": 176,
-          "pct": 8.8
-        },
-        {
-          "label": "Britbox in household",
-          "index": 173,
-          "pct": 7.8
-        },
-        {
-          "label": "Always watches video podcasts",
-          "index": 171,
-          "pct": 12.7
-        },
-        {
-          "label": "Dazn in household",
-          "index": 165,
-          "pct": 9.0
-        },
-        {
-          "label": "Educational podcasts",
-          "index": 152,
-          "pct": 10.5
-        },
-        {
-          "label": "Hayu in household",
-          "index": 148,
-          "pct": 6.1
-        },
-        {
-          "label": "Uses Snapchat",
-          "index": 146,
-          "pct": 28.9
-        },
-        {
-          "label": "Reads a regional daily paper",
-          "index": 145,
-          "pct": 18.2
-        },
-        {
-          "label": "Has 5 (My5)",
-          "index": 78,
-          "pct": 29.8
-        },
-        {
-          "label": "Watches live TV every day",
-          "index": 81,
-          "pct": 28.0
-        },
-        {
-          "label": "Mail Online online",
-          "index": 85,
-          "pct": 11.8
-        },
-        {
-          "label": "Has BBC iPlayer",
-          "index": 88,
-          "pct": 57.8
-        }
-      ],
-      "lifestyle": [
-        {
-          "label": "“I prefer to buy products from companies who sponsor TV programmes”",
-          "index": 236,
-          "pct": 35.0
-        },
-        {
-          "label": "“I would be willing to pay for exclusive podcast content”",
-          "index": 229,
-          "pct": 33.9
-        },
-        {
-          "label": "“I use my credit card mostly for business”",
-          "index": 226,
-          "pct": 30.5
-        },
-        {
-          "label": "“Celebrities influence my purchase decisions”",
-          "index": 224,
-          "pct": 33.8
-        },
-        {
-          "label": "“Ads in podcasts improve my perception of the brand”",
-          "index": 223,
-          "pct": 40.6
-        },
-        {
-          "label": "“I am willing to pay to access content on magazine websites/Apps”",
-          "index": 217,
-          "pct": 33.6
-        },
-        {
-          "label": "“I cannot resist buying magazines”",
-          "index": 215,
-          "pct": 21.7
-        },
-        {
-          "label": "“I never click on online ads”",
-          "index": 94,
-          "pct": 52.4
-        }
-      ],
-      "demographics": {
-        "tgiAudienceThousands": 15350,
-        "tgiShareOfAdultsPct": 28.1,
-        "deckSharePct": 17,
-        "skews": [
-          {
-            "label": "aged 30-34",
-            "index": 147,
-            "pct": 13.9
-          },
-          {
-            "label": "aged 25-29",
-            "index": 143,
-            "pct": 9.7
-          },
-          {
-            "label": "aged 35-39",
-            "index": 141,
-            "pct": 11.9
-          },
-          {
-            "label": "postgraduate degree",
-            "index": 141,
-            "pct": 14.4
-          },
-          {
-            "label": "aged 75+",
-            "index": 43,
-            "pct": 2.7
-          },
-          {
-            "label": "aged 65-74",
-            "index": 56,
-            "pct": 9.4
-          }
-        ]
-      }
+ "source": "TGI / Compass",
+ "sourceDetail": "TGB2604A TGI GB 2026 April (March 2025 - February 2026), population weight. Compass segments recreated in TGI as Boolean attitude audiences (see data-src/Compass_Audience_Settings.md); TGI names Adapters/Strivers map to the published Architects/Hustlers.",
+ "indexNote": "Index = segment % divided by all-GB-adults %, x100. 100 = average; >120 or <80 is strongly differentiating. pct = % of segment. TGI audience shares differ from the survey segmentation sizes (deckSharePct); the deck is canonical on sizing.",
+ "segments": {
+  "architects": {
+   "media": [
+    {
+     "label": "Business podcasts",
+     "index": 176,
+     "pct": 8.8
     },
-    "hustlers": {
-      "media": [
-        {
-          "label": "Uses Snapchat",
-          "index": 153,
-          "pct": 30.5
-        },
-        {
-          "label": "Society & Culture podcasts",
-          "index": 146,
-          "pct": 7.2
-        },
-        {
-          "label": "Uses TikTok",
-          "index": 143,
-          "pct": 43.3
-        },
-        {
-          "label": "Educational podcasts",
-          "index": 140,
-          "pct": 9.7
-        },
-        {
-          "label": "Metro online",
-          "index": 139,
-          "pct": 10.2
-        },
-        {
-          "label": "Music podcasts",
-          "index": 139,
-          "pct": 7.6
-        },
-        {
-          "label": "Dazn in household",
-          "index": 136,
-          "pct": 7.4
-        },
-        {
-          "label": "Britbox in household",
-          "index": 133,
-          "pct": 6.0
-        },
-        {
-          "label": "Watches live TV every day",
-          "index": 63,
-          "pct": 21.8
-        },
-        {
-          "label": "Has 5 (My5)",
-          "index": 80,
-          "pct": 30.7
-        },
-        {
-          "label": "News/Current Affairs radio shows",
-          "index": 84,
-          "pct": 15.7
-        },
-        {
-          "label": "Has BBC iPlayer",
-          "index": 89,
-          "pct": 58.6
-        }
-      ],
-      "lifestyle": [
-        {
-          "label": "“I worry about work during my leisure time”",
-          "index": 139,
-          "pct": 38.4
-        },
-        {
-          "label": "“I am no good at saving money”",
-          "index": 136,
-          "pct": 35.6
-        },
-        {
-          "label": "“I find it difficult to find new podcasts (I don't know where to look)”",
-          "index": 135,
-          "pct": 26.2
-        },
-        {
-          "label": "“The point of drinking is to get drunk”",
-          "index": 133,
-          "pct": 24.4
-        },
-        {
-          "label": "“New content and updates keep me playing the same video games”",
-          "index": 131,
-          "pct": 33.7
-        },
-        {
-          "label": "“My favourite pastime is playing video games”",
-          "index": 130,
-          "pct": 28.7
-        },
-        {
-          "label": "“I am often tempted to buy products/Brands advertised by influencers/Content creators”",
-          "index": 130,
-          "pct": 31.1
-        },
-        {
-          "label": "“I am very good at managing money”",
-          "index": 80,
-          "pct": 47.5
-        },
-        {
-          "label": "“I enjoy reading newspapers most days”",
-          "index": 83,
-          "pct": 21.3
-        },
-        {
-          "label": "“I find traditional news media is accurate”",
-          "index": 83,
-          "pct": 30.6
-        }
-      ],
-      "demographics": {
-        "tgiAudienceThousands": 10864,
-        "tgiShareOfAdultsPct": 19.9,
-        "deckSharePct": 28,
-        "skews": [
-          {
-            "label": "aged 25-29",
-            "index": 176,
-            "pct": 11.9
-          },
-          {
-            "label": "aged 16-24",
-            "index": 169,
-            "pct": 23.7
-          },
-          {
-            "label": "rents privately",
-            "index": 143,
-            "pct": 24.0
-          },
-          {
-            "label": "aged 30-34",
-            "index": 140,
-            "pct": 13.2
-          },
-          {
-            "label": "aged 75+",
-            "index": 24,
-            "pct": 1.5
-          },
-          {
-            "label": "aged 65-74",
-            "index": 33,
-            "pct": 5.5
-          }
-        ]
-      }
+    {
+     "label": "Britbox in household",
+     "index": 173,
+     "pct": 7.8
     },
-    "coasters": {
-      "media": [
-        {
-          "label": "Reads Daily Mail (print)",
-          "index": 184,
-          "pct": 5.1
-        },
-        {
-          "label": "Watches live TV every day",
-          "index": 145,
-          "pct": 50.2
-        },
-        {
-          "label": "Mail Online online",
-          "index": 136,
-          "pct": 18.9
-        },
-        {
-          "label": "Has 5 (My5)",
-          "index": 133,
-          "pct": 50.9
-        },
-        {
-          "label": "News/Current Affairs radio shows",
-          "index": 127,
-          "pct": 23.6
-        },
-        {
-          "label": "Has Channel 4",
-          "index": 119,
-          "pct": 63.9
-        },
-        {
-          "label": "Has BBC iPlayer",
-          "index": 118,
-          "pct": 77.6
-        },
-        {
-          "label": "Has ITVX",
-          "index": 115,
-          "pct": 63.2
-        },
-        {
-          "label": "Uses Snapchat",
-          "index": 43,
-          "pct": 8.5
-        },
-        {
-          "label": "Uses TikTok",
-          "index": 48,
-          "pct": 14.4
-        },
-        {
-          "label": "Checks social media 10+ times a day",
-          "index": 51,
-          "pct": 9.9
-        },
-        {
-          "label": "Uses LinkedIn",
-          "index": 61,
-          "pct": 11.4
-        }
-      ],
-      "lifestyle": [
-        {
-          "label": "“I don't normally eat between meals”",
-          "index": 122,
-          "pct": 37.4
-        },
-        {
-          "label": "“I am very good at managing money”",
-          "index": 122,
-          "pct": 72.7
-        },
-        {
-          "label": "“I would never pay to access content online”",
-          "index": 119,
-          "pct": 64.7
-        },
-        {
-          "label": "“I get a good deal of pleasure from my garden”",
-          "index": 118,
-          "pct": 61.1
-        },
-        {
-          "label": "“I never click on online ads”",
-          "index": 117,
-          "pct": 65.7
-        },
-        {
-          "label": "“Financial security after retirement is your own responsibility”",
-          "index": 117,
-          "pct": 73.8
-        },
-        {
-          "label": "“I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday”",
-          "index": 116,
-          "pct": 51.7
-        },
-        {
-          "label": "“I prefer to buy products from companies who sponsor sports events and teams”",
-          "index": 21,
-          "pct": 3.6
-        },
-        {
-          "label": "“I would be willing to pay for exclusive podcast content”",
-          "index": 26,
-          "pct": 3.8
-        },
-        {
-          "label": "“Advertising within video or computer gameplay enhances the realism of the game”",
-          "index": 27,
-          "pct": 5.0
-        }
-      ],
-      "demographics": {
-        "tgiAudienceThousands": 9237,
-        "tgiShareOfAdultsPct": 16.9,
-        "deckSharePct": 27,
-        "skews": [
-          {
-            "label": "aged 75+",
-            "index": 250,
-            "pct": 16.1
-          },
-          {
-            "label": "aged 65-74",
-            "index": 192,
-            "pct": 32.0
-          },
-          {
-            "label": "separated/divorced/widowed",
-            "index": 151,
-            "pct": 17.2
-          },
-          {
-            "label": "owns home outright",
-            "index": 149,
-            "pct": 61.6
-          },
-          {
-            "label": "aged 16-24",
-            "index": 35,
-            "pct": 4.9
-          },
-          {
-            "label": "aged 25-29",
-            "index": 37,
-            "pct": 2.5
-          }
-        ]
-      }
+    {
+     "label": "Always watches video podcasts",
+     "index": 171,
+     "pct": 12.7
     },
-    "retreaters": {
-      "media": [
-        {
-          "label": "Watches live TV every day",
-          "index": 115,
-          "pct": 39.8
-        },
-        {
-          "label": "Has 5 (My5)",
-          "index": 113,
-          "pct": 43.2
-        },
-        {
-          "label": "Has BBC iPlayer",
-          "index": 107,
-          "pct": 70.2
-        },
-        {
-          "label": "Has ITVX",
-          "index": 106,
-          "pct": 57.9
-        },
-        {
-          "label": "News/Current Affairs radio shows",
-          "index": 104,
-          "pct": 19.3
-        },
-        {
-          "label": "Has Channel 4",
-          "index": 104,
-          "pct": 55.6
-        },
-        {
-          "label": "Uses Facebook",
-          "index": 102,
-          "pct": 63.6
-        },
-        {
-          "label": "Uses Snapchat",
-          "index": 61,
-          "pct": 12.0
-        },
-        {
-          "label": "Reads a regional daily paper",
-          "index": 64,
-          "pct": 8.0
-        },
-        {
-          "label": "Uses LinkedIn",
-          "index": 64,
-          "pct": 12.0
-        },
-        {
-          "label": "Comedy podcasts",
-          "index": 68,
-          "pct": 8.3
-        }
-      ],
-      "lifestyle": [
-        {
-          "label": "“Owning stocks and shares is too risky an investment for me”",
-          "index": 105,
-          "pct": 49.1
-        },
-        {
-          "label": "“I would never pay to access content online”",
-          "index": 102,
-          "pct": 55.4
-        },
-        {
-          "label": "“I never click on online ads”",
-          "index": 102,
-          "pct": 57.1
-        },
-        {
-          "label": "“I buy clothes for comfort, not for style”",
-          "index": 102,
-          "pct": 63.3
-        },
-        {
-          "label": "“I prefer to spend a quiet evening at home than go out”",
-          "index": 101,
-          "pct": 72.8
-        },
-        {
-          "label": "“I prefer to buy products from companies who sponsor TV programmes”",
-          "index": 22,
-          "pct": 3.2
-        },
-        {
-          "label": "“I would be willing to pay for exclusive podcast content”",
-          "index": 23,
-          "pct": 3.5
-        },
-        {
-          "label": "“I prefer to buy products from companies who sponsor sports events and teams”",
-          "index": 23,
-          "pct": 3.9
-        }
-      ],
-      "demographics": {
-        "tgiAudienceThousands": 19087,
-        "tgiShareOfAdultsPct": 35.0,
-        "deckSharePct": 28,
-        "skews": [
-          {
-            "label": "aged 60-64",
-            "index": 137,
-            "pct": 10.4
-          },
-          {
-            "label": "separated/divorced/widowed",
-            "index": 128,
-            "pct": 14.7
-          },
-          {
-            "label": "aged 65-74",
-            "index": 128,
-            "pct": 21.4
-          },
-          {
-            "label": "aged 55-59",
-            "index": 126,
-            "pct": 10.0
-          },
-          {
-            "label": "aged 25-29",
-            "index": 53,
-            "pct": 3.6
-          },
-          {
-            "label": "aged 16-24",
-            "index": 66,
-            "pct": 9.2
-          }
-        ]
-      }
+    {
+     "label": "Dazn in household",
+     "index": 165,
+     "pct": 9.0
+    },
+    {
+     "label": "Educational podcasts",
+     "index": 152,
+     "pct": 10.5
+    },
+    {
+     "label": "Hayu in household",
+     "index": 148,
+     "pct": 6.1
+    },
+    {
+     "label": "Uses Snapchat",
+     "index": 146,
+     "pct": 28.9
+    },
+    {
+     "label": "Reads a regional daily paper",
+     "index": 145,
+     "pct": 18.2
+    },
+    {
+     "label": "Has 5 (My5)",
+     "index": 78,
+     "pct": 29.8
+    },
+    {
+     "label": "Watches live TV every day",
+     "index": 81,
+     "pct": 28.0
+    },
+    {
+     "label": "Mail Online online",
+     "index": 85,
+     "pct": 11.8
+    },
+    {
+     "label": "Has BBC iPlayer",
+     "index": 88,
+     "pct": 57.8
     }
+   ],
+   "lifestyle": [
+    {
+     "label": "“I prefer to buy products from companies who sponsor TV programmes”",
+     "index": 236,
+     "pct": 35.0
+    },
+    {
+     "label": "“I would be willing to pay for exclusive podcast content”",
+     "index": 229,
+     "pct": 33.9
+    },
+    {
+     "label": "“I use my credit card mostly for business”",
+     "index": 226,
+     "pct": 30.5
+    },
+    {
+     "label": "“Celebrities influence my purchase decisions”",
+     "index": 224,
+     "pct": 33.8
+    },
+    {
+     "label": "“Ads in podcasts improve my perception of the brand”",
+     "index": 223,
+     "pct": 40.6
+    },
+    {
+     "label": "“I am willing to pay to access content on magazine websites/Apps”",
+     "index": 217,
+     "pct": 33.6
+    },
+    {
+     "label": "“I cannot resist buying magazines”",
+     "index": 215,
+     "pct": 21.7
+    },
+    {
+     "label": "“I never click on online ads”",
+     "index": 94,
+     "pct": 52.4
+    }
+   ],
+   "demographics": {
+    "tgiAudienceThousands": 15350,
+    "tgiShareOfAdultsPct": 28.1,
+    "deckSharePct": 17,
+    "skews": [
+     {
+      "label": "aged 30-34",
+      "index": 147,
+      "pct": 13.9
+     },
+     {
+      "label": "aged 25-29",
+      "index": 143,
+      "pct": 9.7
+     },
+     {
+      "label": "aged 35-39",
+      "index": 141,
+      "pct": 11.9
+     },
+     {
+      "label": "postgraduate degree",
+      "index": 141,
+      "pct": 14.4
+     },
+     {
+      "label": "aged 75+",
+      "index": 43,
+      "pct": 2.7
+     },
+     {
+      "label": "aged 65-74",
+      "index": 56,
+      "pct": 9.4
+     }
+    ]
+   }
+  },
+  "hustlers": {
+   "media": [
+    {
+     "label": "Uses Snapchat",
+     "index": 153,
+     "pct": 30.5
+    },
+    {
+     "label": "Society & Culture podcasts",
+     "index": 146,
+     "pct": 7.2
+    },
+    {
+     "label": "Uses TikTok",
+     "index": 143,
+     "pct": 43.3
+    },
+    {
+     "label": "Educational podcasts",
+     "index": 140,
+     "pct": 9.7
+    },
+    {
+     "label": "Metro online",
+     "index": 139,
+     "pct": 10.2
+    },
+    {
+     "label": "Music podcasts",
+     "index": 139,
+     "pct": 7.6
+    },
+    {
+     "label": "Dazn in household",
+     "index": 136,
+     "pct": 7.4
+    },
+    {
+     "label": "Britbox in household",
+     "index": 133,
+     "pct": 6.0
+    },
+    {
+     "label": "Watches live TV every day",
+     "index": 63,
+     "pct": 21.8
+    },
+    {
+     "label": "Has 5 (My5)",
+     "index": 80,
+     "pct": 30.7
+    },
+    {
+     "label": "News/Current Affairs radio shows",
+     "index": 84,
+     "pct": 15.7
+    },
+    {
+     "label": "Has BBC iPlayer",
+     "index": 89,
+     "pct": 58.6
+    }
+   ],
+   "lifestyle": [
+    {
+     "label": "“I worry about work during my leisure time”",
+     "index": 139,
+     "pct": 38.4
+    },
+    {
+     "label": "“I am no good at saving money”",
+     "index": 136,
+     "pct": 35.6
+    },
+    {
+     "label": "“I find it difficult to find new podcasts (I don't know where to look)”",
+     "index": 135,
+     "pct": 26.2
+    },
+    {
+     "label": "“The point of drinking is to get drunk”",
+     "index": 133,
+     "pct": 24.4
+    },
+    {
+     "label": "“New content and updates keep me playing the same video games”",
+     "index": 131,
+     "pct": 33.7
+    },
+    {
+     "label": "“My favourite pastime is playing video games”",
+     "index": 130,
+     "pct": 28.7
+    },
+    {
+     "label": "“I am often tempted to buy products/Brands advertised by influencers/Content creators”",
+     "index": 130,
+     "pct": 31.1
+    },
+    {
+     "label": "“I am very good at managing money”",
+     "index": 80,
+     "pct": 47.5
+    },
+    {
+     "label": "“I enjoy reading newspapers most days”",
+     "index": 83,
+     "pct": 21.3
+    },
+    {
+     "label": "“I find traditional news media is accurate”",
+     "index": 83,
+     "pct": 30.6
+    }
+   ],
+   "demographics": {
+    "tgiAudienceThousands": 10864,
+    "tgiShareOfAdultsPct": 19.9,
+    "deckSharePct": 28,
+    "skews": [
+     {
+      "label": "aged 25-29",
+      "index": 176,
+      "pct": 11.9
+     },
+     {
+      "label": "aged 16-24",
+      "index": 169,
+      "pct": 23.7
+     },
+     {
+      "label": "rents privately",
+      "index": 143,
+      "pct": 24.0
+     },
+     {
+      "label": "aged 30-34",
+      "index": 140,
+      "pct": 13.2
+     },
+     {
+      "label": "aged 75+",
+      "index": 24,
+      "pct": 1.5
+     },
+     {
+      "label": "aged 65-74",
+      "index": 33,
+      "pct": 5.5
+     }
+    ]
+   }
+  },
+  "coasters": {
+   "media": [
+    {
+     "label": "Reads Daily Mail (print)",
+     "index": 184,
+     "pct": 5.1
+    },
+    {
+     "label": "Watches live TV every day",
+     "index": 145,
+     "pct": 50.2
+    },
+    {
+     "label": "Mail Online online",
+     "index": 136,
+     "pct": 18.9
+    },
+    {
+     "label": "Has 5 (My5)",
+     "index": 133,
+     "pct": 50.9
+    },
+    {
+     "label": "News/Current Affairs radio shows",
+     "index": 127,
+     "pct": 23.6
+    },
+    {
+     "label": "Has Channel 4",
+     "index": 119,
+     "pct": 63.9
+    },
+    {
+     "label": "Has BBC iPlayer",
+     "index": 118,
+     "pct": 77.6
+    },
+    {
+     "label": "Has ITVX",
+     "index": 115,
+     "pct": 63.2
+    },
+    {
+     "label": "Uses Snapchat",
+     "index": 43,
+     "pct": 8.5
+    },
+    {
+     "label": "Uses TikTok",
+     "index": 48,
+     "pct": 14.4
+    },
+    {
+     "label": "Checks social media 10+ times a day",
+     "index": 51,
+     "pct": 9.9
+    },
+    {
+     "label": "Uses LinkedIn",
+     "index": 61,
+     "pct": 11.4
+    }
+   ],
+   "lifestyle": [
+    {
+     "label": "“I don't normally eat between meals”",
+     "index": 122,
+     "pct": 37.4
+    },
+    {
+     "label": "“I am very good at managing money”",
+     "index": 122,
+     "pct": 72.7
+    },
+    {
+     "label": "“I would never pay to access content online”",
+     "index": 119,
+     "pct": 64.7
+    },
+    {
+     "label": "“I get a good deal of pleasure from my garden”",
+     "index": 118,
+     "pct": 61.1
+    },
+    {
+     "label": "“I never click on online ads”",
+     "index": 117,
+     "pct": 65.7
+    },
+    {
+     "label": "“Financial security after retirement is your own responsibility”",
+     "index": 117,
+     "pct": 73.8
+    },
+    {
+     "label": "“I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday”",
+     "index": 116,
+     "pct": 51.7
+    },
+    {
+     "label": "“I prefer to buy products from companies who sponsor sports events and teams”",
+     "index": 21,
+     "pct": 3.6
+    },
+    {
+     "label": "“I would be willing to pay for exclusive podcast content”",
+     "index": 26,
+     "pct": 3.8
+    },
+    {
+     "label": "“Advertising within video or computer gameplay enhances the realism of the game”",
+     "index": 27,
+     "pct": 5.0
+    }
+   ],
+   "demographics": {
+    "tgiAudienceThousands": 9237,
+    "tgiShareOfAdultsPct": 16.9,
+    "deckSharePct": 27,
+    "skews": [
+     {
+      "label": "aged 75+",
+      "index": 250,
+      "pct": 16.1
+     },
+     {
+      "label": "aged 65-74",
+      "index": 192,
+      "pct": 32.0
+     },
+     {
+      "label": "separated/divorced/widowed",
+      "index": 151,
+      "pct": 17.2
+     },
+     {
+      "label": "owns home outright",
+      "index": 149,
+      "pct": 61.6
+     },
+     {
+      "label": "aged 16-24",
+      "index": 35,
+      "pct": 4.9
+     },
+     {
+      "label": "aged 25-29",
+      "index": 37,
+      "pct": 2.5
+     }
+    ]
+   }
+  },
+  "retreaters": {
+   "media": [
+    {
+     "label": "Watches live TV every day",
+     "index": 115,
+     "pct": 39.8
+    },
+    {
+     "label": "Has 5 (My5)",
+     "index": 113,
+     "pct": 43.2
+    },
+    {
+     "label": "Has BBC iPlayer",
+     "index": 107,
+     "pct": 70.2
+    },
+    {
+     "label": "Has ITVX",
+     "index": 106,
+     "pct": 57.9
+    },
+    {
+     "label": "News/Current Affairs radio shows",
+     "index": 104,
+     "pct": 19.3
+    },
+    {
+     "label": "Has Channel 4",
+     "index": 104,
+     "pct": 55.6
+    },
+    {
+     "label": "Uses Facebook",
+     "index": 102,
+     "pct": 63.6
+    },
+    {
+     "label": "Uses Snapchat",
+     "index": 61,
+     "pct": 12.0
+    },
+    {
+     "label": "Reads a regional daily paper",
+     "index": 64,
+     "pct": 8.0
+    },
+    {
+     "label": "Uses LinkedIn",
+     "index": 64,
+     "pct": 12.0
+    },
+    {
+     "label": "Comedy podcasts",
+     "index": 68,
+     "pct": 8.3
+    }
+   ],
+   "lifestyle": [
+    {
+     "label": "“Owning stocks and shares is too risky an investment for me”",
+     "index": 105,
+     "pct": 49.1
+    },
+    {
+     "label": "“I would never pay to access content online”",
+     "index": 102,
+     "pct": 55.4
+    },
+    {
+     "label": "“I never click on online ads”",
+     "index": 102,
+     "pct": 57.1
+    },
+    {
+     "label": "“I buy clothes for comfort, not for style”",
+     "index": 102,
+     "pct": 63.3
+    },
+    {
+     "label": "“I prefer to spend a quiet evening at home than go out”",
+     "index": 101,
+     "pct": 72.8
+    },
+    {
+     "label": "“I prefer to buy products from companies who sponsor TV programmes”",
+     "index": 22,
+     "pct": 3.2
+    },
+    {
+     "label": "“I would be willing to pay for exclusive podcast content”",
+     "index": 23,
+     "pct": 3.5
+    },
+    {
+     "label": "“I prefer to buy products from companies who sponsor sports events and teams”",
+     "index": 23,
+     "pct": 3.9
+    }
+   ],
+   "demographics": {
+    "tgiAudienceThousands": 19087,
+    "tgiShareOfAdultsPct": 35.0,
+    "deckSharePct": 28,
+    "skews": [
+     {
+      "label": "aged 60-64",
+      "index": 137,
+      "pct": 10.4
+     },
+     {
+      "label": "separated/divorced/widowed",
+      "index": 128,
+      "pct": 14.7
+     },
+     {
+      "label": "aged 65-74",
+      "index": 128,
+      "pct": 21.4
+     },
+     {
+      "label": "aged 55-59",
+      "index": 126,
+      "pct": 10.0
+     },
+     {
+      "label": "aged 25-29",
+      "index": 53,
+      "pct": 3.6
+     },
+     {
+      "label": "aged 16-24",
+      "index": 66,
+      "pct": 9.2
+     }
+    ]
+   }
   }
+ },
+ "full": {
+  "note": "Curated TGI cuts grouped for the explorer. Each block holds the strongest-differentiating attributes for that theme (by max |index-100| across the four segments), or the natural answer order for ordered demographics. pct = %Col (penetration within the audience). index = TGI index vs GB adults (100 = average). Parsed from State_of_Independance_TGI_Demographics/Lifestyle/Media_Consumption.xlsx, sheet \"All Respondents\"; segment columns ADAPTERS=architects, STRIVERS=hustlers, COASTERS=coasters, RETREATERS=retreaters. Nothing inferred.",
+  "demographics": [
+   {
+    "id": "demo-age",
+    "label": "Age",
+    "rows": {
+     "architects": [
+      {
+       "label": "16-24",
+       "pct": 18.7,
+       "index": 133
+      },
+      {
+       "label": "21-24",
+       "pct": 13.1,
+       "index": 140
+      },
+      {
+       "label": "25-29",
+       "pct": 9.7,
+       "index": 143
+      },
+      {
+       "label": "30-34",
+       "pct": 13.9,
+       "index": 147
+      },
+      {
+       "label": "35-39",
+       "pct": 11.9,
+       "index": 141
+      },
+      {
+       "label": "40-44",
+       "pct": 9.1,
+       "index": 118
+      },
+      {
+       "label": "45-49",
+       "pct": 6.9,
+       "index": 94
+      },
+      {
+       "label": "50-54",
+       "pct": 6.6,
+       "index": 86
+      },
+      {
+       "label": "55-59",
+       "pct": 6.6,
+       "index": 83
+      },
+      {
+       "label": "60-64",
+       "pct": 4.4,
+       "index": 58
+      },
+      {
+       "label": "65-74",
+       "pct": 9.4,
+       "index": 56
+      },
+      {
+       "label": "75+",
+       "pct": 2.7,
+       "index": 43
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "16-24",
+       "pct": 23.7,
+       "index": 169
+      },
+      {
+       "label": "21-24",
+       "pct": 14.7,
+       "index": 158
+      },
+      {
+       "label": "25-29",
+       "pct": 11.9,
+       "index": 176
+      },
+      {
+       "label": "30-34",
+       "pct": 13.2,
+       "index": 140
+      },
+      {
+       "label": "35-39",
+       "pct": 11.0,
+       "index": 130
+      },
+      {
+       "label": "40-44",
+       "pct": 9.0,
+       "index": 116
+      },
+      {
+       "label": "45-49",
+       "pct": 8.0,
+       "index": 109
+      },
+      {
+       "label": "50-54",
+       "pct": 6.3,
+       "index": 83
+      },
+      {
+       "label": "55-59",
+       "pct": 5.5,
+       "index": 69
+      },
+      {
+       "label": "60-64",
+       "pct": 4.4,
+       "index": 58
+      },
+      {
+       "label": "65-74",
+       "pct": 5.5,
+       "index": 33
+      },
+      {
+       "label": "75+",
+       "pct": 1.5,
+       "index": 24
+      }
+     ],
+     "coasters": [
+      {
+       "label": "16-24",
+       "pct": 4.9,
+       "index": 35
+      },
+      {
+       "label": "21-24",
+       "pct": 3.5,
+       "index": 37
+      },
+      {
+       "label": "25-29",
+       "pct": 2.5,
+       "index": 37
+      },
+      {
+       "label": "30-34",
+       "pct": 3.5,
+       "index": 37
+      },
+      {
+       "label": "35-39",
+       "pct": 3.5,
+       "index": 41
+      },
+      {
+       "label": "40-44",
+       "pct": 4.4,
+       "index": 57
+      },
+      {
+       "label": "45-49",
+       "pct": 5.8,
+       "index": 79
+      },
+      {
+       "label": "50-54",
+       "pct": 7.5,
+       "index": 99
+      },
+      {
+       "label": "55-59",
+       "pct": 9.0,
+       "index": 112
+      },
+      {
+       "label": "60-64",
+       "pct": 10.8,
+       "index": 142
+      },
+      {
+       "label": "65-74",
+       "pct": 32.0,
+       "index": 192
+      },
+      {
+       "label": "75+",
+       "pct": 16.1,
+       "index": 250
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "16-24",
+       "pct": 9.2,
+       "index": 66
+      },
+      {
+       "label": "21-24",
+       "pct": 6.1,
+       "index": 65
+      },
+      {
+       "label": "25-29",
+       "pct": 3.6,
+       "index": 53
+      },
+      {
+       "label": "30-34",
+       "pct": 6.6,
+       "index": 70
+      },
+      {
+       "label": "35-39",
+       "pct": 6.6,
+       "index": 78
+      },
+      {
+       "label": "40-44",
+       "pct": 7.5,
+       "index": 97
+      },
+      {
+       "label": "45-49",
+       "pct": 8.0,
+       "index": 109
+      },
+      {
+       "label": "50-54",
+       "pct": 9.2,
+       "index": 121
+      },
+      {
+       "label": "55-59",
+       "pct": 10.0,
+       "index": 126
+      },
+      {
+       "label": "60-64",
+       "pct": 10.4,
+       "index": 137
+      },
+      {
+       "label": "65-74",
+       "pct": 21.4,
+       "index": 128
+      },
+      {
+       "label": "75+",
+       "pct": 7.5,
+       "index": 117
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-income",
+    "label": "Household income",
+    "rows": {
+     "architects": [
+      {
+       "label": "Up to £2,999",
+       "pct": 1.2,
+       "index": 77
+      },
+      {
+       "label": "£3000-£6,999",
+       "pct": 0.9,
+       "index": 69
+      },
+      {
+       "label": "£7,000-£9,999",
+       "pct": 1.5,
+       "index": 85
+      },
+      {
+       "label": "£10,000-£12,999",
+       "pct": 2.8,
+       "index": 70
+      },
+      {
+       "label": "£13,000-£16,999",
+       "pct": 2.5,
+       "index": 58
+      },
+      {
+       "label": "£17,000-£19,999",
+       "pct": 3.5,
+       "index": 83
+      },
+      {
+       "label": "£20,000-£22,999",
+       "pct": 4.6,
+       "index": 84
+      },
+      {
+       "label": "£23,000-£26,999",
+       "pct": 5.4,
+       "index": 80
+      },
+      {
+       "label": "£27,000-£29,999",
+       "pct": 5.5,
+       "index": 82
+      },
+      {
+       "label": "£30,000-£33,999",
+       "pct": 6.1,
+       "index": 82
+      },
+      {
+       "label": "£34,000-£36,999",
+       "pct": 4.3,
+       "index": 92
+      },
+      {
+       "label": "£37,000-£39,999",
+       "pct": 4.2,
+       "index": 102
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Up to £2,999",
+       "pct": 2.6,
+       "index": 166
+      },
+      {
+       "label": "£3000-£6,999",
+       "pct": 1.6,
+       "index": 129
+      },
+      {
+       "label": "£7,000-£9,999",
+       "pct": 2.0,
+       "index": 112
+      },
+      {
+       "label": "£10,000-£12,999",
+       "pct": 3.4,
+       "index": 84
+      },
+      {
+       "label": "£13,000-£16,999",
+       "pct": 4.0,
+       "index": 93
+      },
+      {
+       "label": "£17,000-£19,999",
+       "pct": 4.4,
+       "index": 102
+      },
+      {
+       "label": "£20,000-£22,999",
+       "pct": 5.7,
+       "index": 104
+      },
+      {
+       "label": "£23,000-£26,999",
+       "pct": 6.1,
+       "index": 90
+      },
+      {
+       "label": "£27,000-£29,999",
+       "pct": 7.3,
+       "index": 108
+      },
+      {
+       "label": "£30,000-£33,999",
+       "pct": 7.7,
+       "index": 103
+      },
+      {
+       "label": "£34,000-£36,999",
+       "pct": 4.5,
+       "index": 98
+      },
+      {
+       "label": "£37,000-£39,999",
+       "pct": 3.3,
+       "index": 81
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Up to £2,999",
+       "pct": 0.5,
+       "index": 34
+      },
+      {
+       "label": "£3000-£6,999",
+       "pct": 1.1,
+       "index": 91
+      },
+      {
+       "label": "£7,000-£9,999",
+       "pct": 1.2,
+       "index": 70
+      },
+      {
+       "label": "£10,000-£12,999",
+       "pct": 3.8,
+       "index": 94
+      },
+      {
+       "label": "£13,000-£16,999",
+       "pct": 4.0,
+       "index": 93
+      },
+      {
+       "label": "£17,000-£19,999",
+       "pct": 3.8,
+       "index": 88
+      },
+      {
+       "label": "£20,000-£22,999",
+       "pct": 5.5,
+       "index": 101
+      },
+      {
+       "label": "£23,000-£26,999",
+       "pct": 8.1,
+       "index": 119
+      },
+      {
+       "label": "£27,000-£29,999",
+       "pct": 5.5,
+       "index": 82
+      },
+      {
+       "label": "£30,000-£33,999",
+       "pct": 8.3,
+       "index": 111
+      },
+      {
+       "label": "£34,000-£36,999",
+       "pct": 4.4,
+       "index": 96
+      },
+      {
+       "label": "£37,000-£39,999",
+       "pct": 5.2,
+       "index": 125
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Up to £2,999",
+       "pct": 1.7,
+       "index": 113
+      },
+      {
+       "label": "£3000-£6,999",
+       "pct": 1.4,
+       "index": 113
+      },
+      {
+       "label": "£7,000-£9,999",
+       "pct": 2.1,
+       "index": 120
+      },
+      {
+       "label": "£10,000-£12,999",
+       "pct": 5.5,
+       "index": 137
+      },
+      {
+       "label": "£13,000-£16,999",
+       "pct": 6.1,
+       "index": 141
+      },
+      {
+       "label": "£17,000-£19,999",
+       "pct": 5.1,
+       "index": 119
+      },
+      {
+       "label": "£20,000-£22,999",
+       "pct": 6.1,
+       "index": 111
+      },
+      {
+       "label": "£23,000-£26,999",
+       "pct": 7.7,
+       "index": 113
+      },
+      {
+       "label": "£27,000-£29,999",
+       "pct": 8.0,
+       "index": 119
+      },
+      {
+       "label": "£30,000-£33,999",
+       "pct": 8.0,
+       "index": 108
+      },
+      {
+       "label": "£34,000-£36,999",
+       "pct": 5.1,
+       "index": 109
+      },
+      {
+       "label": "£37,000-£39,999",
+       "pct": 4.0,
+       "index": 98
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-region",
+    "label": "Region",
+    "rows": {
+     "architects": [
+      {
+       "label": "North East",
+       "pct": 4.0,
+       "index": 98
+      },
+      {
+       "label": "North West",
+       "pct": 12.2,
+       "index": 106
+      },
+      {
+       "label": "Yorkshire and The Humber",
+       "pct": 8.0,
+       "index": 95
+      },
+      {
+       "label": "East Midlands",
+       "pct": 8.1,
+       "index": 106
+      },
+      {
+       "label": "West Midlands",
+       "pct": 7.9,
+       "index": 88
+      },
+      {
+       "label": "East of England",
+       "pct": 8.9,
+       "index": 91
+      },
+      {
+       "label": "London",
+       "pct": 17.6,
+       "index": 133
+      },
+      {
+       "label": "South East",
+       "pct": 12.8,
+       "index": 91
+      },
+      {
+       "label": "South West",
+       "pct": 8.0,
+       "index": 89
+      },
+      {
+       "label": "Wales",
+       "pct": 3.8,
+       "index": 80
+      },
+      {
+       "label": "Scotland",
+       "pct": 8.6,
+       "index": 102
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "North East",
+       "pct": 4.4,
+       "index": 109
+      },
+      {
+       "label": "North West",
+       "pct": 10.3,
+       "index": 90
+      },
+      {
+       "label": "Yorkshire and The Humber",
+       "pct": 8.5,
+       "index": 101
+      },
+      {
+       "label": "East Midlands",
+       "pct": 6.8,
+       "index": 89
+      },
+      {
+       "label": "West Midlands",
+       "pct": 9.5,
+       "index": 105
+      },
+      {
+       "label": "East of England",
+       "pct": 9.2,
+       "index": 94
+      },
+      {
+       "label": "London",
+       "pct": 15.5,
+       "index": 116
+      },
+      {
+       "label": "South East",
+       "pct": 13.1,
+       "index": 93
+      },
+      {
+       "label": "South West",
+       "pct": 9.0,
+       "index": 100
+      },
+      {
+       "label": "Wales",
+       "pct": 6.2,
+       "index": 130
+      },
+      {
+       "label": "Scotland",
+       "pct": 7.5,
+       "index": 88
+      }
+     ],
+     "coasters": [
+      {
+       "label": "North East",
+       "pct": 4.0,
+       "index": 98
+      },
+      {
+       "label": "North West",
+       "pct": 11.8,
+       "index": 103
+      },
+      {
+       "label": "Yorkshire and The Humber",
+       "pct": 9.0,
+       "index": 107
+      },
+      {
+       "label": "East Midlands",
+       "pct": 7.3,
+       "index": 96
+      },
+      {
+       "label": "West Midlands",
+       "pct": 9.5,
+       "index": 106
+      },
+      {
+       "label": "East of England",
+       "pct": 9.4,
+       "index": 96
+      },
+      {
+       "label": "London",
+       "pct": 9.5,
+       "index": 71
+      },
+      {
+       "label": "South East",
+       "pct": 14.9,
+       "index": 105
+      },
+      {
+       "label": "South West",
+       "pct": 10.6,
+       "index": 117
+      },
+      {
+       "label": "Wales",
+       "pct": 5.6,
+       "index": 118
+      },
+      {
+       "label": "Scotland",
+       "pct": 8.5,
+       "index": 100
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "North East",
+       "pct": 4.0,
+       "index": 98
+      },
+      {
+       "label": "North West",
+       "pct": 11.3,
+       "index": 99
+      },
+      {
+       "label": "Yorkshire and The Humber",
+       "pct": 8.4,
+       "index": 100
+      },
+      {
+       "label": "East Midlands",
+       "pct": 7.8,
+       "index": 103
+      },
+      {
+       "label": "West Midlands",
+       "pct": 9.4,
+       "index": 104
+      },
+      {
+       "label": "East of England",
+       "pct": 11.0,
+       "index": 112
+      },
+      {
+       "label": "London",
+       "pct": 10.4,
+       "index": 78
+      },
+      {
+       "label": "South East",
+       "pct": 15.4,
+       "index": 109
+      },
+      {
+       "label": "South West",
+       "pct": 9.1,
+       "index": 101
+      },
+      {
+       "label": "Wales",
+       "pct": 4.3,
+       "index": 90
+      },
+      {
+       "label": "Scotland",
+       "pct": 8.9,
+       "index": 105
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-work",
+    "label": "Working status",
+    "rows": {
+     "architects": [
+      {
+       "label": "All working",
+       "pct": 73.1,
+       "index": 122
+      },
+      {
+       "label": "All Part-Time",
+       "pct": 19.4,
+       "index": 108
+      },
+      {
+       "label": "All Not working",
+       "pct": 26.9,
+       "index": 67
+      },
+      {
+       "label": "All Unemployed",
+       "pct": 2.7,
+       "index": 69
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "All working",
+       "pct": 68.0,
+       "index": 114
+      },
+      {
+       "label": "All Part-Time",
+       "pct": 19.4,
+       "index": 108
+      },
+      {
+       "label": "All Not working",
+       "pct": 32.0,
+       "index": 79
+      },
+      {
+       "label": "All Unemployed",
+       "pct": 5.6,
+       "index": 141
+      }
+     ],
+     "coasters": [
+      {
+       "label": "All working",
+       "pct": 44.0,
+       "index": 74
+      },
+      {
+       "label": "All Part-Time",
+       "pct": 16.9,
+       "index": 94
+      },
+      {
+       "label": "All Not working",
+       "pct": 56.0,
+       "index": 139
+      },
+      {
+       "label": "All Unemployed",
+       "pct": 2.0,
+       "index": 50
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "All working",
+       "pct": 51.8,
+       "index": 87
+      },
+      {
+       "label": "All Part-Time",
+       "pct": 16.5,
+       "index": 92
+      },
+      {
+       "label": "All Not working",
+       "pct": 48.2,
+       "index": 120
+      },
+      {
+       "label": "All Unemployed",
+       "pct": 5.0,
+       "index": 126
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-role",
+    "label": "Job role",
+    "rows": {
+     "architects": [
+      {
+       "label": "Director/Senior Official/Senior Manager",
+       "pct": 4.9,
+       "index": 199
+      },
+      {
+       "label": "Apprentice",
+       "pct": 0.7,
+       "index": 120
+      },
+      {
+       "label": "Middle Manager/Senior Executive",
+       "pct": 12.5,
+       "index": 171
+      },
+      {
+       "label": "Chairperson/CEO/COO/CFO",
+       "pct": 2.7,
+       "index": 157
+      },
+      {
+       "label": "Technical",
+       "pct": 3.7,
+       "index": 136
+      },
+      {
+       "label": "Skilled Trade",
+       "pct": 7.4,
+       "index": 128
+      },
+      {
+       "label": "Plant, machine, vehicle operative",
+       "pct": 1.8,
+       "index": 129
+      },
+      {
+       "label": "Other Manager/Other Executive",
+       "pct": 5.2,
+       "index": 134
+      },
+      {
+       "label": "Other",
+       "pct": 6.5,
+       "index": 95
+      },
+      {
+       "label": "Other manual",
+       "pct": 4.9,
+       "index": 79
+      },
+      {
+       "label": "Independent Consultant",
+       "pct": 1.0,
+       "index": 108
+      },
+      {
+       "label": "Professional",
+       "pct": 10.8,
+       "index": 120
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Director/Senior Official/Senior Manager",
+       "pct": 2.8,
+       "index": 115
+      },
+      {
+       "label": "Apprentice",
+       "pct": 1.0,
+       "index": 186
+      },
+      {
+       "label": "Middle Manager/Senior Executive",
+       "pct": 8.9,
+       "index": 122
+      },
+      {
+       "label": "Chairperson/CEO/COO/CFO",
+       "pct": 1.9,
+       "index": 112
+      },
+      {
+       "label": "Technical",
+       "pct": 3.6,
+       "index": 134
+      },
+      {
+       "label": "Skilled Trade",
+       "pct": 6.9,
+       "index": 119
+      },
+      {
+       "label": "Plant, machine, vehicle operative",
+       "pct": 1.4,
+       "index": 103
+      },
+      {
+       "label": "Other Manager/Other Executive",
+       "pct": 4.5,
+       "index": 116
+      },
+      {
+       "label": "Other",
+       "pct": 8.8,
+       "index": 129
+      },
+      {
+       "label": "Other manual",
+       "pct": 5.2,
+       "index": 84
+      },
+      {
+       "label": "Independent Consultant",
+       "pct": 1.2,
+       "index": 129
+      },
+      {
+       "label": "Professional",
+       "pct": 10.2,
+       "index": 113
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Director/Senior Official/Senior Manager",
+       "pct": 1.0,
+       "index": 42
+      },
+      {
+       "label": "Apprentice",
+       "pct": 0.2,
+       "index": 33
+      },
+      {
+       "label": "Middle Manager/Senior Executive",
+       "pct": 3.2,
+       "index": 44
+      },
+      {
+       "label": "Chairperson/CEO/COO/CFO",
+       "pct": 1.0,
+       "index": 62
+      },
+      {
+       "label": "Technical",
+       "pct": 1.5,
+       "index": 55
+      },
+      {
+       "label": "Skilled Trade",
+       "pct": 3.2,
+       "index": 56
+      },
+      {
+       "label": "Plant, machine, vehicle operative",
+       "pct": 0.8,
+       "index": 61
+      },
+      {
+       "label": "Other Manager/Other Executive",
+       "pct": 2.9,
+       "index": 75
+      },
+      {
+       "label": "Other",
+       "pct": 4.5,
+       "index": 67
+      },
+      {
+       "label": "Other manual",
+       "pct": 5.6,
+       "index": 91
+      },
+      {
+       "label": "Independent Consultant",
+       "pct": 0.7,
+       "index": 75
+      },
+      {
+       "label": "Professional",
+       "pct": 8.6,
+       "index": 96
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Director/Senior Official/Senior Manager",
+       "pct": 1.0,
+       "index": 40
+      },
+      {
+       "label": "Apprentice",
+       "pct": 0.4,
+       "index": 67
+      },
+      {
+       "label": "Middle Manager/Senior Executive",
+       "pct": 4.2,
+       "index": 58
+      },
+      {
+       "label": "Chairperson/CEO/COO/CFO",
+       "pct": 1.1,
+       "index": 65
+      },
+      {
+       "label": "Technical",
+       "pct": 2.0,
+       "index": 73
+      },
+      {
+       "label": "Skilled Trade",
+       "pct": 5.1,
+       "index": 89
+      },
+      {
+       "label": "Plant, machine, vehicle operative",
+       "pct": 1.3,
+       "index": 94
+      },
+      {
+       "label": "Other Manager/Other Executive",
+       "pct": 2.9,
+       "index": 75
+      },
+      {
+       "label": "Other",
+       "pct": 7.1,
+       "index": 104
+      },
+      {
+       "label": "Other manual",
+       "pct": 8.0,
+       "index": 130
+      },
+      {
+       "label": "Independent Consultant",
+       "pct": 0.8,
+       "index": 89
+      },
+      {
+       "label": "Professional",
+       "pct": 7.0,
+       "index": 78
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-edu",
+    "label": "Education",
+    "rows": {
+     "architects": [
+      {
+       "label": "No formal schooling/Incomplete primary education",
+       "pct": 1.6,
+       "index": 104
+      },
+      {
+       "label": "Primary education completed",
+       "pct": 0.8,
+       "index": 100
+      },
+      {
+       "label": "A few years of secondary education",
+       "pct": 1.4,
+       "index": 58
+      },
+      {
+       "label": "Completed secondary education (GCSE/O-Level/CSE or equivalent)",
+       "pct": 18.0,
+       "index": 76
+      },
+      {
+       "label": "Completed High school education (A-Level/Highers or equivalent)",
+       "pct": 15.7,
+       "index": 94
+      },
+      {
+       "label": "Further qualification (Between high school & university)",
+       "pct": 12.4,
+       "index": 84
+      },
+      {
+       "label": "University degree e.g. Bachelor's/Master's",
+       "pct": 47.7,
+       "index": 125
+      },
+      {
+       "label": "University undergraduate degree e.g. Bachelor's",
+       "pct": 33.3,
+       "index": 120
+      },
+      {
+       "label": "University postgraduate degree e.g. Master's",
+       "pct": 14.4,
+       "index": 141
+      },
+      {
+       "label": "Doctorate level or professional equivalent",
+       "pct": 2.4,
+       "index": 116
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "No formal schooling/Incomplete primary education",
+       "pct": 0.9,
+       "index": 60
+      },
+      {
+       "label": "Primary education completed",
+       "pct": 0.9,
+       "index": 111
+      },
+      {
+       "label": "A few years of secondary education",
+       "pct": 1.7,
+       "index": 69
+      },
+      {
+       "label": "Completed secondary education (GCSE/O-Level/CSE or equivalent)",
+       "pct": 18.6,
+       "index": 79
+      },
+      {
+       "label": "Completed High school education (A-Level/Highers or equivalent)",
+       "pct": 16.9,
+       "index": 101
+      },
+      {
+       "label": "Further qualification (Between high school & university)",
+       "pct": 15.4,
+       "index": 104
+      },
+      {
+       "label": "University degree e.g. Bachelor's/Master's",
+       "pct": 43.0,
+       "index": 113
+      },
+      {
+       "label": "University undergraduate degree e.g. Bachelor's",
+       "pct": 31.0,
+       "index": 112
+      },
+      {
+       "label": "University postgraduate degree e.g. Master's",
+       "pct": 12.0,
+       "index": 118
+      },
+      {
+       "label": "Doctorate level or professional equivalent",
+       "pct": 2.6,
+       "index": 125
+      }
+     ],
+     "coasters": [
+      {
+       "label": "No formal schooling/Incomplete primary education",
+       "pct": 0.9,
+       "index": 58
+      },
+      {
+       "label": "Primary education completed",
+       "pct": 0.5,
+       "index": 58
+      },
+      {
+       "label": "A few years of secondary education",
+       "pct": 2.2,
+       "index": 92
+      },
+      {
+       "label": "Completed secondary education (GCSE/O-Level/CSE or equivalent)",
+       "pct": 27.4,
+       "index": 116
+      },
+      {
+       "label": "Completed High school education (A-Level/Highers or equivalent)",
+       "pct": 17.1,
+       "index": 102
+      },
+      {
+       "label": "Further qualification (Between high school & university)",
+       "pct": 16.1,
+       "index": 109
+      },
+      {
+       "label": "University degree e.g. Bachelor's/Master's",
+       "pct": 34.4,
+       "index": 91
+      },
+      {
+       "label": "University undergraduate degree e.g. Bachelor's",
+       "pct": 27.1,
+       "index": 98
+      },
+      {
+       "label": "University postgraduate degree e.g. Master's",
+       "pct": 7.3,
+       "index": 71
+      },
+      {
+       "label": "Doctorate level or professional equivalent",
+       "pct": 1.5,
+       "index": 72
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "No formal schooling/Incomplete primary education",
+       "pct": 2.2,
+       "index": 140
+      },
+      {
+       "label": "Primary education completed",
+       "pct": 0.9,
+       "index": 114
+      },
+      {
+       "label": "A few years of secondary education",
+       "pct": 3.8,
+       "index": 155
+      },
+      {
+       "label": "Completed secondary education (GCSE/O-Level/CSE or equivalent)",
+       "pct": 29.2,
+       "index": 124
+      },
+      {
+       "label": "Completed High school education (A-Level/Highers or equivalent)",
+       "pct": 17.4,
+       "index": 104
+      },
+      {
+       "label": "Further qualification (Between high school & university)",
+       "pct": 15.6,
+       "index": 106
+      },
+      {
+       "label": "University degree e.g. Bachelor's/Master's",
+       "pct": 29.1,
+       "index": 77
+      },
+      {
+       "label": "University undergraduate degree e.g. Bachelor's",
+       "pct": 21.8,
+       "index": 79
+      },
+      {
+       "label": "University postgraduate degree e.g. Master's",
+       "pct": 7.3,
+       "index": 71
+      },
+      {
+       "label": "Doctorate level or professional equivalent",
+       "pct": 1.8,
+       "index": 86
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-home",
+    "label": "Home ownership",
+    "rows": {
+     "architects": [
+      {
+       "label": "Own Outright",
+       "pct": 40.4,
+       "index": 97
+      },
+      {
+       "label": "Own - buying with a mortgage",
+       "pct": 23.5,
+       "index": 106
+      },
+      {
+       "label": "Part own and part rent (Shared ownership)",
+       "pct": 3.6,
+       "index": 149
+      },
+      {
+       "label": "Rent from Local Authority/Housing Association",
+       "pct": 11.8,
+       "index": 82
+      },
+      {
+       "label": "Rent privately",
+       "pct": 18.9,
+       "index": 113
+      },
+      {
+       "label": "Other (e.g. rent free)",
+       "pct": 1.7,
+       "index": 65
+      },
+      {
+       "label": "Own/Buying Home",
+       "pct": 63.8,
+       "index": 100
+      },
+      {
+       "label": "Rent Home",
+       "pct": 30.8,
+       "index": 99
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Own Outright",
+       "pct": 24.7,
+       "index": 60
+      },
+      {
+       "label": "Own - buying with a mortgage",
+       "pct": 26.6,
+       "index": 120
+      },
+      {
+       "label": "Part own and part rent (Shared ownership)",
+       "pct": 3.2,
+       "index": 130
+      },
+      {
+       "label": "Rent from Local Authority/Housing Association",
+       "pct": 16.7,
+       "index": 116
+      },
+      {
+       "label": "Rent privately",
+       "pct": 24.0,
+       "index": 143
+      },
+      {
+       "label": "Other (e.g. rent free)",
+       "pct": 4.8,
+       "index": 181
+      },
+      {
+       "label": "Own/Buying Home",
+       "pct": 51.3,
+       "index": 81
+      },
+      {
+       "label": "Rent Home",
+       "pct": 40.7,
+       "index": 130
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Own Outright",
+       "pct": 61.6,
+       "index": 149
+      },
+      {
+       "label": "Own - buying with a mortgage",
+       "pct": 17.5,
+       "index": 79
+      },
+      {
+       "label": "Part own and part rent (Shared ownership)",
+       "pct": 1.0,
+       "index": 41
+      },
+      {
+       "label": "Rent from Local Authority/Housing Association",
+       "pct": 10.5,
+       "index": 73
+      },
+      {
+       "label": "Rent privately",
+       "pct": 8.0,
+       "index": 48
+      },
+      {
+       "label": "Other (e.g. rent free)",
+       "pct": 1.4,
+       "index": 52
+      },
+      {
+       "label": "Own/Buying Home",
+       "pct": 79.1,
+       "index": 124
+      },
+      {
+       "label": "Rent Home",
+       "pct": 18.5,
+       "index": 59
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Own Outright",
+       "pct": 42.2,
+       "index": 102
+      },
+      {
+       "label": "Own - buying with a mortgage",
+       "pct": 20.9,
+       "index": 94
+      },
+      {
+       "label": "Part own and part rent (Shared ownership)",
+       "pct": 1.8,
+       "index": 72
+      },
+      {
+       "label": "Rent from Local Authority/Housing Association",
+       "pct": 17.1,
+       "index": 119
+      },
+      {
+       "label": "Rent privately",
+       "pct": 15.2,
+       "index": 91
+      },
+      {
+       "label": "Other (e.g. rent free)",
+       "pct": 2.8,
+       "index": 105
+      },
+      {
+       "label": "Own/Buying Home",
+       "pct": 63.1,
+       "index": 99
+      },
+      {
+       "label": "Rent Home",
+       "pct": 32.3,
+       "index": 104
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-relationship",
+    "label": "Relationship",
+    "rows": {
+     "architects": [
+      {
+       "label": "Single",
+       "pct": 30.1,
+       "index": 100
+      },
+      {
+       "label": "Married/Living as a couple",
+       "pct": 62.9,
+       "index": 108
+      },
+      {
+       "label": "Separated/Divorced/Widowed",
+       "pct": 7.0,
+       "index": 61
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Single",
+       "pct": 39.5,
+       "index": 131
+      },
+      {
+       "label": "Married/Living as a couple",
+       "pct": 53.3,
+       "index": 91
+      },
+      {
+       "label": "Separated/Divorced/Widowed",
+       "pct": 7.2,
+       "index": 63
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Single",
+       "pct": 17.9,
+       "index": 59
+      },
+      {
+       "label": "Married/Living as a couple",
+       "pct": 64.9,
+       "index": 111
+      },
+      {
+       "label": "Separated/Divorced/Widowed",
+       "pct": 17.2,
+       "index": 151
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Single",
+       "pct": 30.7,
+       "index": 102
+      },
+      {
+       "label": "Married/Living as a couple",
+       "pct": 54.6,
+       "index": 93
+      },
+      {
+       "label": "Separated/Divorced/Widowed",
+       "pct": 14.7,
+       "index": 128
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-lifeevents",
+    "label": "Life events (last 12m)",
+    "rows": {
+     "architects": [
+      {
+       "label": "Move back into parental home",
+       "pct": 0.7,
+       "index": 95
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 1.0,
+       "index": 106
+      },
+      {
+       "label": "Start University",
+       "pct": 1.7,
+       "index": 114
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 1.0,
+       "index": 117
+      },
+      {
+       "label": "Get engaged",
+       "pct": 0.7,
+       "index": 78
+      },
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 1.7,
+       "index": 142
+      },
+      {
+       "label": "Start own business",
+       "pct": 1.3,
+       "index": 123
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 0.6,
+       "index": 87
+      },
+      {
+       "label": "Graduate from University",
+       "pct": 3.1,
+       "index": 150
+      },
+      {
+       "label": "Start first job",
+       "pct": 1.8,
+       "index": 163
+      },
+      {
+       "label": "Become a parent of first child",
+       "pct": 1.0,
+       "index": 131
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 1.0,
+       "index": 111
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Move back into parental home",
+       "pct": 1.8,
+       "index": 253
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 2.3,
+       "index": 250
+      },
+      {
+       "label": "Start University",
+       "pct": 3.2,
+       "index": 217
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 1.8,
+       "index": 212
+      },
+      {
+       "label": "Get engaged",
+       "pct": 1.8,
+       "index": 205
+      },
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 2.4,
+       "index": 197
+      },
+      {
+       "label": "Start own business",
+       "pct": 2.0,
+       "index": 193
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 1.4,
+       "index": 190
+      },
+      {
+       "label": "Graduate from University",
+       "pct": 3.5,
+       "index": 174
+      },
+      {
+       "label": "Start first job",
+       "pct": 1.7,
+       "index": 149
+      },
+      {
+       "label": "Become a parent of first child",
+       "pct": 1.3,
+       "index": 175
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 1.4,
+       "index": 152
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Move back into parental home",
+       "pct": 0.2,
+       "index": 30
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 0.1,
+       "index": 15
+      },
+      {
+       "label": "Start University",
+       "pct": 0.2,
+       "index": 17
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 0.2,
+       "index": 29
+      },
+      {
+       "label": "Get engaged",
+       "pct": 0.7,
+       "index": 79
+      },
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 0.4,
+       "index": 29
+      },
+      {
+       "label": "Start own business",
+       "pct": 0.2,
+       "index": 24
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 0.5,
+       "index": 66
+      },
+      {
+       "label": "Graduate from University",
+       "pct": 0.4,
+       "index": 21
+      },
+      {
+       "label": "Start first job",
+       "pct": 0.3,
+       "index": 23
+      },
+      {
+       "label": "Become a parent of first child",
+       "pct": 0.4,
+       "index": 54
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 0.3,
+       "index": 29
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Move back into parental home",
+       "pct": 0.3,
+       "index": 50
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 0.5,
+       "index": 51
+      },
+      {
+       "label": "Start University",
+       "pct": 0.9,
+       "index": 62
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 0.5,
+       "index": 57
+      },
+      {
+       "label": "Get engaged",
+       "pct": 0.6,
+       "index": 68
+      },
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 0.6,
+       "index": 46
+      },
+      {
+       "label": "Start own business",
+       "pct": 0.7,
+       "index": 65
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 0.5,
+       "index": 76
+      },
+      {
+       "label": "Graduate from University",
+       "pct": 1.1,
+       "index": 56
+      },
+      {
+       "label": "Start first job",
+       "pct": 0.7,
+       "index": 59
+      },
+      {
+       "label": "Become a parent of first child",
+       "pct": 0.4,
+       "index": 55
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 0.9,
+       "index": 96
+      }
+     ]
+    }
+   },
+   {
+    "id": "demo-lifeplans",
+    "label": "Life plans (next 12m)",
+    "rows": {
+     "architects": [
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 1.4,
+       "index": 127
+      },
+      {
+       "label": "Pass Full Driving Licence",
+       "pct": 2.5,
+       "index": 111
+      },
+      {
+       "label": "Finish School/College",
+       "pct": 0.7,
+       "index": 97
+      },
+      {
+       "label": "Start University",
+       "pct": 1.5,
+       "index": 129
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 1.0,
+       "index": 92
+      },
+      {
+       "label": "Start own business",
+       "pct": 2.0,
+       "index": 151
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 1.3,
+       "index": 121
+      },
+      {
+       "label": "Move abroad to work",
+       "pct": 1.1,
+       "index": 122
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 1.6,
+       "index": 105
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 1.5,
+       "index": 114
+      },
+      {
+       "label": "Move back into parental home",
+       "pct": 0.4,
+       "index": 63
+      },
+      {
+       "label": "Get engaged",
+       "pct": 1.5,
+       "index": 125
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 2.4,
+       "index": 217
+      },
+      {
+       "label": "Pass Full Driving Licence",
+       "pct": 4.9,
+       "index": 217
+      },
+      {
+       "label": "Finish School/College",
+       "pct": 1.6,
+       "index": 216
+      },
+      {
+       "label": "Start University",
+       "pct": 2.4,
+       "index": 209
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 2.1,
+       "index": 206
+      },
+      {
+       "label": "Start own business",
+       "pct": 2.7,
+       "index": 205
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 2.2,
+       "index": 205
+      },
+      {
+       "label": "Move abroad to work",
+       "pct": 1.9,
+       "index": 203
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 3.0,
+       "index": 202
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 2.6,
+       "index": 198
+      },
+      {
+       "label": "Move back into parental home",
+       "pct": 1.3,
+       "index": 197
+      },
+      {
+       "label": "Get engaged",
+       "pct": 2.3,
+       "index": 194
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 0.4,
+       "index": 32
+      },
+      {
+       "label": "Pass Full Driving Licence",
+       "pct": 0.7,
+       "index": 31
+      },
+      {
+       "label": "Finish School/College",
+       "pct": 0.4,
+       "index": 60
+      },
+      {
+       "label": "Start University",
+       "pct": 0.3,
+       "index": 29
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 0.2,
+       "index": 22
+      },
+      {
+       "label": "Start own business",
+       "pct": 0.4,
+       "index": 27
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 0.5,
+       "index": 43
+      },
+      {
+       "label": "Move abroad to work",
+       "pct": 0.2,
+       "index": 24
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 0.5,
+       "index": 32
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 0.4,
+       "index": 27
+      },
+      {
+       "label": "Move back into parental home",
+       "pct": 0.1,
+       "index": 12
+      },
+      {
+       "label": "Get engaged",
+       "pct": 0.5,
+       "index": 39
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Gap Year/Career Break to Travel",
+       "pct": 0.5,
+       "index": 45
+      },
+      {
+       "label": "Pass Full Driving Licence",
+       "pct": 1.3,
+       "index": 59
+      },
+      {
+       "label": "Finish School/College",
+       "pct": 0.4,
+       "index": 56
+      },
+      {
+       "label": "Start University",
+       "pct": 0.6,
+       "index": 49
+      },
+      {
+       "label": "Divorce/Separate from long-Term partner",
+       "pct": 0.9,
+       "index": 84
+      },
+      {
+       "label": "Start own business",
+       "pct": 0.4,
+       "index": 34
+      },
+      {
+       "label": "Move in with partner",
+       "pct": 0.5,
+       "index": 51
+      },
+      {
+       "label": "Move abroad to work",
+       "pct": 0.6,
+       "index": 61
+      },
+      {
+       "label": "Purchase first house/Flat",
+       "pct": 1.1,
+       "index": 71
+      },
+      {
+       "label": "Move out of parental home",
+       "pct": 0.9,
+       "index": 68
+      },
+      {
+       "label": "Move back into parental home",
+       "pct": 0.7,
+       "index": 117
+      },
+      {
+       "label": "Get engaged",
+       "pct": 0.7,
+       "index": 55
+      }
+     ]
+    }
+   }
+  ],
+  "lifestyle": [
+   {
+    "id": "life-shopping",
+    "label": "Shopping & retail",
+    "rows": {
+     "architects": [
+      {
+       "label": "Celebrities influence my purchase decisions",
+       "pct": 33.8,
+       "index": 224
+      },
+      {
+       "label": "I buy new products before most of my friends",
+       "pct": 45.4,
+       "index": 199
+      },
+      {
+       "label": "I pay extra to personalise products to suit my taste and style",
+       "pct": 50.2,
+       "index": 191
+      },
+      {
+       "label": "People come to me for advice before buying new things",
+       "pct": 51.1,
+       "index": 186
+      },
+      {
+       "label": "If I trust a brand, I buy it without looking at the price",
+       "pct": 46.1,
+       "index": 178
+      },
+      {
+       "label": "I only buy products from a company with whose ethics I agree",
+       "pct": 51.4,
+       "index": 172
+      },
+      {
+       "label": "I'm tempted to buy products I've seen advertised",
+       "pct": 55.1,
+       "index": 171
+      },
+      {
+       "label": "I am often tempted to buy products/Brands advertised by influencers/Content creators",
+       "pct": 40.9,
+       "index": 171
+      },
+      {
+       "label": "I tend to buy refurbished rather than new electronic items (e.g. mobile phones, TVs, laptops)",
+       "pct": 40.5,
+       "index": 170
+      },
+      {
+       "label": "When I see a new brand I often buy it to see what it's like",
+       "pct": 51.5,
+       "index": 169
+      },
+      {
+       "label": "I tend to go for premium rather than standard goods/Services",
+       "pct": 53.5,
+       "index": 169
+      },
+      {
+       "label": "It's worth paying more for organic food",
+       "pct": 52.2,
+       "index": 168
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Celebrities influence my purchase decisions",
+       "pct": 17.9,
+       "index": 119
+      },
+      {
+       "label": "I buy new products before most of my friends",
+       "pct": 27.2,
+       "index": 119
+      },
+      {
+       "label": "I pay extra to personalise products to suit my taste and style",
+       "pct": 32.0,
+       "index": 121
+      },
+      {
+       "label": "People come to me for advice before buying new things",
+       "pct": 32.1,
+       "index": 117
+      },
+      {
+       "label": "If I trust a brand, I buy it without looking at the price",
+       "pct": 26.7,
+       "index": 103
+      },
+      {
+       "label": "I only buy products from a company with whose ethics I agree",
+       "pct": 32.3,
+       "index": 108
+      },
+      {
+       "label": "I'm tempted to buy products I've seen advertised",
+       "pct": 38.2,
+       "index": 118
+      },
+      {
+       "label": "I am often tempted to buy products/Brands advertised by influencers/Content creators",
+       "pct": 31.1,
+       "index": 130
+      },
+      {
+       "label": "I tend to buy refurbished rather than new electronic items (e.g. mobile phones, TVs, laptops)",
+       "pct": 29.1,
+       "index": 123
+      },
+      {
+       "label": "When I see a new brand I often buy it to see what it's like",
+       "pct": 35.5,
+       "index": 116
+      },
+      {
+       "label": "I tend to go for premium rather than standard goods/Services",
+       "pct": 30.9,
+       "index": 98
+      },
+      {
+       "label": "It's worth paying more for organic food",
+       "pct": 35.5,
+       "index": 114
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Celebrities influence my purchase decisions",
+       "pct": 4.8,
+       "index": 31
+      },
+      {
+       "label": "I buy new products before most of my friends",
+       "pct": 8.9,
+       "index": 39
+      },
+      {
+       "label": "I pay extra to personalise products to suit my taste and style",
+       "pct": 12.5,
+       "index": 48
+      },
+      {
+       "label": "People come to me for advice before buying new things",
+       "pct": 15.2,
+       "index": 55
+      },
+      {
+       "label": "If I trust a brand, I buy it without looking at the price",
+       "pct": 18.8,
+       "index": 72
+      },
+      {
+       "label": "I only buy products from a company with whose ethics I agree",
+       "pct": 21.6,
+       "index": 72
+      },
+      {
+       "label": "I'm tempted to buy products I've seen advertised",
+       "pct": 19.0,
+       "index": 59
+      },
+      {
+       "label": "I am often tempted to buy products/Brands advertised by influencers/Content creators",
+       "pct": 11.7,
+       "index": 49
+      },
+      {
+       "label": "I tend to buy refurbished rather than new electronic items (e.g. mobile phones, TVs, laptops)",
+       "pct": 12.7,
+       "index": 53
+      },
+      {
+       "label": "When I see a new brand I often buy it to see what it's like",
+       "pct": 20.0,
+       "index": 65
+      },
+      {
+       "label": "I tend to go for premium rather than standard goods/Services",
+       "pct": 27.7,
+       "index": 87
+      },
+      {
+       "label": "It's worth paying more for organic food",
+       "pct": 23.7,
+       "index": 76
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Celebrities influence my purchase decisions",
+       "pct": 3.5,
+       "index": 23
+      },
+      {
+       "label": "I buy new products before most of my friends",
+       "pct": 9.1,
+       "index": 40
+      },
+      {
+       "label": "I pay extra to personalise products to suit my taste and style",
+       "pct": 10.6,
+       "index": 40
+      },
+      {
+       "label": "People come to me for advice before buying new things",
+       "pct": 11.9,
+       "index": 43
+      },
+      {
+       "label": "If I trust a brand, I buy it without looking at the price",
+       "pct": 12.9,
+       "index": 50
+      },
+      {
+       "label": "I only buy products from a company with whose ethics I agree",
+       "pct": 15.1,
+       "index": 51
+      },
+      {
+       "label": "I'm tempted to buy products I've seen advertised",
+       "pct": 17.1,
+       "index": 53
+      },
+      {
+       "label": "I am often tempted to buy products/Brands advertised by influencers/Content creators",
+       "pct": 12.2,
+       "index": 51
+      },
+      {
+       "label": "I tend to buy refurbished rather than new electronic items (e.g. mobile phones, TVs, laptops)",
+       "pct": 12.6,
+       "index": 53
+      },
+      {
+       "label": "When I see a new brand I often buy it to see what it's like",
+       "pct": 15.9,
+       "index": 52
+      },
+      {
+       "label": "I tend to go for premium rather than standard goods/Services",
+       "pct": 16.4,
+       "index": 52
+      },
+      {
+       "label": "It's worth paying more for organic food",
+       "pct": 15.3,
+       "index": 49
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-money",
+    "label": "Money & finance",
+    "rows": {
+     "architects": [
+      {
+       "label": "I use my credit card mostly for business",
+       "pct": 30.5,
+       "index": 226
+      },
+      {
+       "label": "A woman's place is in the home",
+       "pct": 24.0,
+       "index": 193
+      },
+      {
+       "label": "I usually consult a professional financial adviser before deciding on financial matters",
+       "pct": 40.7,
+       "index": 184
+      },
+      {
+       "label": "I prefer to buy brands which emphasise inclusion and diversity in their adverts",
+       "pct": 53.2,
+       "index": 179
+      },
+      {
+       "label": "The government is doing enough to tackle climate change",
+       "pct": 40.6,
+       "index": 176
+      },
+      {
+       "label": "I trust my government to be prepared for future global challenges",
+       "pct": 47.8,
+       "index": 171
+      },
+      {
+       "label": "I would use apps to monitor how my children spend their money",
+       "pct": 46.8,
+       "index": 170
+      },
+      {
+       "label": "I actively seek out companies and brands that offer ways to offset their impact on the environment (e.g. planting trees)",
+       "pct": 55.9,
+       "index": 166
+      },
+      {
+       "label": "Rules are made to be broken",
+       "pct": 38.7,
+       "index": 165
+      },
+      {
+       "label": "I trust the government to protect my privacy",
+       "pct": 44.0,
+       "index": 165
+      },
+      {
+       "label": "I am prepared to invest my time and money to support companies that try to do good",
+       "pct": 60.5,
+       "index": 162
+      },
+      {
+       "label": "With a credit card I can buy the sort of things I can't normally afford",
+       "pct": 45.8,
+       "index": 158
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "I use my credit card mostly for business",
+       "pct": 14.6,
+       "index": 108
+      },
+      {
+       "label": "A woman's place is in the home",
+       "pct": 14.3,
+       "index": 114
+      },
+      {
+       "label": "I usually consult a professional financial adviser before deciding on financial matters",
+       "pct": 21.0,
+       "index": 95
+      },
+      {
+       "label": "I prefer to buy brands which emphasise inclusion and diversity in their adverts",
+       "pct": 35.7,
+       "index": 120
+      },
+      {
+       "label": "The government is doing enough to tackle climate change",
+       "pct": 21.9,
+       "index": 95
+      },
+      {
+       "label": "I trust my government to be prepared for future global challenges",
+       "pct": 26.9,
+       "index": 96
+      },
+      {
+       "label": "I would use apps to monitor how my children spend their money",
+       "pct": 33.5,
+       "index": 122
+      },
+      {
+       "label": "I actively seek out companies and brands that offer ways to offset their impact on the environment (e.g. planting trees)",
+       "pct": 40.5,
+       "index": 120
+      },
+      {
+       "label": "Rules are made to be broken",
+       "pct": 29.6,
+       "index": 126
+      },
+      {
+       "label": "I trust the government to protect my privacy",
+       "pct": 24.3,
+       "index": 91
+      },
+      {
+       "label": "I am prepared to invest my time and money to support companies that try to do good",
+       "pct": 46.2,
+       "index": 124
+      },
+      {
+       "label": "With a credit card I can buy the sort of things I can't normally afford",
+       "pct": 35.2,
+       "index": 121
+      }
+     ],
+     "coasters": [
+      {
+       "label": "I use my credit card mostly for business",
+       "pct": 4.8,
+       "index": 35
+      },
+      {
+       "label": "A woman's place is in the home",
+       "pct": 5.3,
+       "index": 42
+      },
+      {
+       "label": "I usually consult a professional financial adviser before deciding on financial matters",
+       "pct": 17.8,
+       "index": 81
+      },
+      {
+       "label": "I prefer to buy brands which emphasise inclusion and diversity in their adverts",
+       "pct": 17.1,
+       "index": 58
+      },
+      {
+       "label": "The government is doing enough to tackle climate change",
+       "pct": 17.7,
+       "index": 77
+      },
+      {
+       "label": "I trust my government to be prepared for future global challenges",
+       "pct": 23.7,
+       "index": 85
+      },
+      {
+       "label": "I would use apps to monitor how my children spend their money",
+       "pct": 14.2,
+       "index": 52
+      },
+      {
+       "label": "I actively seek out companies and brands that offer ways to offset their impact on the environment (e.g. planting trees)",
+       "pct": 23.3,
+       "index": 69
+      },
+      {
+       "label": "Rules are made to be broken",
+       "pct": 14.0,
+       "index": 60
+      },
+      {
+       "label": "I trust the government to protect my privacy",
+       "pct": 24.4,
+       "index": 91
+      },
+      {
+       "label": "I am prepared to invest my time and money to support companies that try to do good",
+       "pct": 26.7,
+       "index": 72
+      },
+      {
+       "label": "With a credit card I can buy the sort of things I can't normally afford",
+       "pct": 16.6,
+       "index": 57
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "I use my credit card mostly for business",
+       "pct": 3.5,
+       "index": 26
+      },
+      {
+       "label": "A woman's place is in the home",
+       "pct": 5.6,
+       "index": 45
+      },
+      {
+       "label": "I usually consult a professional financial adviser before deciding on financial matters",
+       "pct": 9.9,
+       "index": 45
+      },
+      {
+       "label": "I prefer to buy brands which emphasise inclusion and diversity in their adverts",
+       "pct": 13.7,
+       "index": 46
+      },
+      {
+       "label": "The government is doing enough to tackle climate change",
+       "pct": 12.4,
+       "index": 54
+      },
+      {
+       "label": "I trust my government to be prepared for future global challenges",
+       "pct": 14.6,
+       "index": 52
+      },
+      {
+       "label": "I would use apps to monitor how my children spend their money",
+       "pct": 14.9,
+       "index": 54
+      },
+      {
+       "label": "I actively seek out companies and brands that offer ways to offset their impact on the environment (e.g. planting trees)",
+       "pct": 17.1,
+       "index": 51
+      },
+      {
+       "label": "Rules are made to be broken",
+       "pct": 12.4,
+       "index": 53
+      },
+      {
+       "label": "I trust the government to protect my privacy",
+       "pct": 15.2,
+       "index": 57
+      },
+      {
+       "label": "I am prepared to invest my time and money to support companies that try to do good",
+       "pct": 18.6,
+       "index": 50
+      },
+      {
+       "label": "With a credit card I can buy the sort of things I can't normally afford",
+       "pct": 18.0,
+       "index": 62
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-tech",
+    "label": "Technology",
+    "rows": {
+     "architects": [
+      {
+       "label": "I am willing to pay to access content on magazine websites/Apps",
+       "pct": 33.6,
+       "index": 217
+      },
+      {
+       "label": "I love to share my daily life on social media",
+       "pct": 35.7,
+       "index": 215
+      },
+      {
+       "label": "Advertising within video or computer gameplay enhances the realism of the game",
+       "pct": 39.5,
+       "index": 208
+      },
+      {
+       "label": "I am willing to pay to access content on newspaper websites/Apps",
+       "pct": 38.8,
+       "index": 207
+      },
+      {
+       "label": "I prefer to use social media rather than search engines to look things up",
+       "pct": 40.0,
+       "index": 206
+      },
+      {
+       "label": "I find online advertising entertaining",
+       "pct": 42.5,
+       "index": 203
+      },
+      {
+       "label": "Social media posts influence my political views",
+       "pct": 39.8,
+       "index": 196
+      },
+      {
+       "label": "I pay more attention to online video ads than to other forms of online ads",
+       "pct": 43.7,
+       "index": 193
+      },
+      {
+       "label": "Online advertising is more relevant to me than other advertising",
+       "pct": 44.2,
+       "index": 191
+      },
+      {
+       "label": "I am willing to pay a premium subscription on some websites/Apps to stop having ads",
+       "pct": 45.3,
+       "index": 190
+      },
+      {
+       "label": "I like to follow the magazines/Newspapers that I read on social media",
+       "pct": 44.0,
+       "index": 187
+      },
+      {
+       "label": "Online adverts play a part in influencing the brands I buy",
+       "pct": 49.4,
+       "index": 186
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "I am willing to pay to access content on magazine websites/Apps",
+       "pct": 18.0,
+       "index": 116
+      },
+      {
+       "label": "I love to share my daily life on social media",
+       "pct": 19.0,
+       "index": 115
+      },
+      {
+       "label": "Advertising within video or computer gameplay enhances the realism of the game",
+       "pct": 24.2,
+       "index": 128
+      },
+      {
+       "label": "I am willing to pay to access content on newspaper websites/Apps",
+       "pct": 20.4,
+       "index": 109
+      },
+      {
+       "label": "I prefer to use social media rather than search engines to look things up",
+       "pct": 24.1,
+       "index": 124
+      },
+      {
+       "label": "I find online advertising entertaining",
+       "pct": 23.9,
+       "index": 114
+      },
+      {
+       "label": "Social media posts influence my political views",
+       "pct": 25.6,
+       "index": 126
+      },
+      {
+       "label": "I pay more attention to online video ads than to other forms of online ads",
+       "pct": 27.9,
+       "index": 124
+      },
+      {
+       "label": "Online advertising is more relevant to me than other advertising",
+       "pct": 28.8,
+       "index": 125
+      },
+      {
+       "label": "I am willing to pay a premium subscription on some websites/Apps to stop having ads",
+       "pct": 28.1,
+       "index": 118
+      },
+      {
+       "label": "I like to follow the magazines/Newspapers that I read on social media",
+       "pct": 29.2,
+       "index": 124
+      },
+      {
+       "label": "Online adverts play a part in influencing the brands I buy",
+       "pct": 32.1,
+       "index": 121
+      }
+     ],
+     "coasters": [
+      {
+       "label": "I am willing to pay to access content on magazine websites/Apps",
+       "pct": 5.3,
+       "index": 34
+      },
+      {
+       "label": "I love to share my daily life on social media",
+       "pct": 5.3,
+       "index": 32
+      },
+      {
+       "label": "Advertising within video or computer gameplay enhances the realism of the game",
+       "pct": 5.0,
+       "index": 27
+      },
+      {
+       "label": "I am willing to pay to access content on newspaper websites/Apps",
+       "pct": 8.1,
+       "index": 43
+      },
+      {
+       "label": "I prefer to use social media rather than search engines to look things up",
+       "pct": 6.6,
+       "index": 34
+      },
+      {
+       "label": "I find online advertising entertaining",
+       "pct": 9.9,
+       "index": 47
+      },
+      {
+       "label": "Social media posts influence my political views",
+       "pct": 6.5,
+       "index": 32
+      },
+      {
+       "label": "I pay more attention to online video ads than to other forms of online ads",
+       "pct": 10.8,
+       "index": 48
+      },
+      {
+       "label": "Online advertising is more relevant to me than other advertising",
+       "pct": 10.0,
+       "index": 43
+      },
+      {
+       "label": "I am willing to pay a premium subscription on some websites/Apps to stop having ads",
+       "pct": 12.4,
+       "index": 52
+      },
+      {
+       "label": "I like to follow the magazines/Newspapers that I read on social media",
+       "pct": 12.1,
+       "index": 52
+      },
+      {
+       "label": "Online adverts play a part in influencing the brands I buy",
+       "pct": 14.3,
+       "index": 54
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "I am willing to pay to access content on magazine websites/Apps",
+       "pct": 4.3,
+       "index": 28
+      },
+      {
+       "label": "I love to share my daily life on social media",
+       "pct": 5.3,
+       "index": 32
+      },
+      {
+       "label": "Advertising within video or computer gameplay enhances the realism of the game",
+       "pct": 6.2,
+       "index": 33
+      },
+      {
+       "label": "I am willing to pay to access content on newspaper websites/Apps",
+       "pct": 7.0,
+       "index": 37
+      },
+      {
+       "label": "I prefer to use social media rather than search engines to look things up",
+       "pct": 6.4,
+       "index": 33
+      },
+      {
+       "label": "I find online advertising entertaining",
+       "pct": 7.1,
+       "index": 34
+      },
+      {
+       "label": "Social media posts influence my political views",
+       "pct": 8.2,
+       "index": 40
+      },
+      {
+       "label": "I pay more attention to online video ads than to other forms of online ads",
+       "pct": 8.3,
+       "index": 37
+      },
+      {
+       "label": "Online advertising is more relevant to me than other advertising",
+       "pct": 9.2,
+       "index": 40
+      },
+      {
+       "label": "I am willing to pay a premium subscription on some websites/Apps to stop having ads",
+       "pct": 9.6,
+       "index": 40
+      },
+      {
+       "label": "I like to follow the magazines/Newspapers that I read on social media",
+       "pct": 9.2,
+       "index": 39
+      },
+      {
+       "label": "Online adverts play a part in influencing the brands I buy",
+       "pct": 11.0,
+       "index": 41
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-food",
+    "label": "Food & diet",
+    "rows": {
+     "architects": [
+      {
+       "label": "I prefer vegan food and drink",
+       "pct": 27.7,
+       "index": 195
+      },
+      {
+       "label": "I like to have barbecues as often as possible",
+       "pct": 49.9,
+       "index": 184
+      },
+      {
+       "label": "I wouldn't let my children eat junk food",
+       "pct": 30.5,
+       "index": 181
+      },
+      {
+       "label": "I prefer vegetarian food and drink",
+       "pct": 30.7,
+       "index": 166
+      },
+      {
+       "label": "I often eat snacks while on the move rather than eating a proper meal",
+       "pct": 53.8,
+       "index": 158
+      },
+      {
+       "label": "I don't have time to spend preparing and cooking food",
+       "pct": 30.4,
+       "index": 144
+      },
+      {
+       "label": "I don't really care what ingredients are in a ready-Meal, as long as it is cheap and tastes good",
+       "pct": 35.2,
+       "index": 141
+      },
+      {
+       "label": "I always think of the calories in what I eat",
+       "pct": 54.8,
+       "index": 143
+      },
+      {
+       "label": "I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday",
+       "pct": 61.2,
+       "index": 138
+      },
+      {
+       "label": "I am always searching for and experimenting with new recipes",
+       "pct": 58.9,
+       "index": 138
+      },
+      {
+       "label": "We usually have family meals at the weekend",
+       "pct": 69.4,
+       "index": 137
+      },
+      {
+       "label": "I buy free range products whenever I can",
+       "pct": 61.5,
+       "index": 135
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "I prefer vegan food and drink",
+       "pct": 15.4,
+       "index": 109
+      },
+      {
+       "label": "I like to have barbecues as often as possible",
+       "pct": 31.8,
+       "index": 117
+      },
+      {
+       "label": "I wouldn't let my children eat junk food",
+       "pct": 17.2,
+       "index": 102
+      },
+      {
+       "label": "I prefer vegetarian food and drink",
+       "pct": 19.6,
+       "index": 106
+      },
+      {
+       "label": "I often eat snacks while on the move rather than eating a proper meal",
+       "pct": 41.3,
+       "index": 121
+      },
+      {
+       "label": "I don't have time to spend preparing and cooking food",
+       "pct": 26.6,
+       "index": 126
+      },
+      {
+       "label": "I don't really care what ingredients are in a ready-Meal, as long as it is cheap and tastes good",
+       "pct": 29.6,
+       "index": 119
+      },
+      {
+       "label": "I always think of the calories in what I eat",
+       "pct": 40.8,
+       "index": 107
+      },
+      {
+       "label": "I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday",
+       "pct": 39.3,
+       "index": 88
+      },
+      {
+       "label": "I am always searching for and experimenting with new recipes",
+       "pct": 47.2,
+       "index": 111
+      },
+      {
+       "label": "We usually have family meals at the weekend",
+       "pct": 48.2,
+       "index": 96
+      },
+      {
+       "label": "I buy free range products whenever I can",
+       "pct": 45.7,
+       "index": 100
+      }
+     ],
+     "coasters": [
+      {
+       "label": "I prefer vegan food and drink",
+       "pct": 7.8,
+       "index": 55
+      },
+      {
+       "label": "I like to have barbecues as often as possible",
+       "pct": 14.5,
+       "index": 53
+      },
+      {
+       "label": "I wouldn't let my children eat junk food",
+       "pct": 12.8,
+       "index": 76
+      },
+      {
+       "label": "I prefer vegetarian food and drink",
+       "pct": 13.1,
+       "index": 71
+      },
+      {
+       "label": "I often eat snacks while on the move rather than eating a proper meal",
+       "pct": 18.2,
+       "index": 54
+      },
+      {
+       "label": "I don't have time to spend preparing and cooking food",
+       "pct": 10.7,
+       "index": 51
+      },
+      {
+       "label": "I don't really care what ingredients are in a ready-Meal, as long as it is cheap and tastes good",
+       "pct": 14.3,
+       "index": 57
+      },
+      {
+       "label": "I always think of the calories in what I eat",
+       "pct": 32.8,
+       "index": 86
+      },
+      {
+       "label": "I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday",
+       "pct": 51.7,
+       "index": 116
+      },
+      {
+       "label": "I am always searching for and experimenting with new recipes",
+       "pct": 33.8,
+       "index": 79
+      },
+      {
+       "label": "We usually have family meals at the weekend",
+       "pct": 53.4,
+       "index": 106
+      },
+      {
+       "label": "I buy free range products whenever I can",
+       "pct": 45.4,
+       "index": 100
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "I prefer vegan food and drink",
+       "pct": 5.7,
+       "index": 40
+      },
+      {
+       "label": "I like to have barbecues as often as possible",
+       "pct": 12.4,
+       "index": 46
+      },
+      {
+       "label": "I wouldn't let my children eat junk food",
+       "pct": 7.6,
+       "index": 45
+      },
+      {
+       "label": "I prefer vegetarian food and drink",
+       "pct": 10.5,
+       "index": 57
+      },
+      {
+       "label": "I often eat snacks while on the move rather than eating a proper meal",
+       "pct": 21.7,
+       "index": 64
+      },
+      {
+       "label": "I don't have time to spend preparing and cooking food",
+       "pct": 15.7,
+       "index": 74
+      },
+      {
+       "label": "I don't really care what ingredients are in a ready-Meal, as long as it is cheap and tastes good",
+       "pct": 19.3,
+       "index": 77
+      },
+      {
+       "label": "I always think of the calories in what I eat",
+       "pct": 26.2,
+       "index": 68
+      },
+      {
+       "label": "I always make sure I eat the recommended (5 a day) portions of fruit and vegetables everyday",
+       "pct": 30.4,
+       "index": 68
+      },
+      {
+       "label": "I am always searching for and experimenting with new recipes",
+       "pct": 31.2,
+       "index": 73
+      },
+      {
+       "label": "We usually have family meals at the weekend",
+       "pct": 35.2,
+       "index": 70
+      },
+      {
+       "label": "I buy free range products whenever I can",
+       "pct": 32.5,
+       "index": 71
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-leisure",
+    "label": "Leisure & lifestyle",
+    "rows": {
+     "architects": [
+      {
+       "label": "My video game characters/Avatars are important to me",
+       "pct": 36.9,
+       "index": 200
+      },
+      {
+       "label": "I like to keep up with the latest news and developments in the video games Industry/Community",
+       "pct": 45.1,
+       "index": 192
+      },
+      {
+       "label": "I like to go to trendy places to eat and drink",
+       "pct": 57.2,
+       "index": 185
+      },
+      {
+       "label": "My favourite pastime is playing video games",
+       "pct": 39.0,
+       "index": 177
+      },
+      {
+       "label": "New content and updates keep me playing the same video games",
+       "pct": 45.1,
+       "index": 176
+      },
+      {
+       "label": "I like to listen to new bands",
+       "pct": 59.2,
+       "index": 172
+      },
+      {
+       "label": "I encourage my children to play sports",
+       "pct": 53.9,
+       "index": 160
+      },
+      {
+       "label": "I enjoy entertaining people at home",
+       "pct": 67.8,
+       "index": 160
+      },
+      {
+       "label": "I really enjoy a night out at the pub",
+       "pct": 55.1,
+       "index": 156
+      },
+      {
+       "label": "I am always looking for inspiration on where to go for holidays or short breaks",
+       "pct": 73.1,
+       "index": 152
+      },
+      {
+       "label": "I worry about work during my leisure time",
+       "pct": 40.3,
+       "index": 146
+      },
+      {
+       "label": "I would like to see more brands supporting women's cricket",
+       "pct": 39.3,
+       "index": 149
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "My video game characters/Avatars are important to me",
+       "pct": 23.7,
+       "index": 128
+      },
+      {
+       "label": "I like to keep up with the latest news and developments in the video games Industry/Community",
+       "pct": 29.2,
+       "index": 125
+      },
+      {
+       "label": "I like to go to trendy places to eat and drink",
+       "pct": 39.8,
+       "index": 129
+      },
+      {
+       "label": "My favourite pastime is playing video games",
+       "pct": 28.7,
+       "index": 130
+      },
+      {
+       "label": "New content and updates keep me playing the same video games",
+       "pct": 33.7,
+       "index": 131
+      },
+      {
+       "label": "I like to listen to new bands",
+       "pct": 40.9,
+       "index": 119
+      },
+      {
+       "label": "I encourage my children to play sports",
+       "pct": 36.2,
+       "index": 107
+      },
+      {
+       "label": "I enjoy entertaining people at home",
+       "pct": 43.7,
+       "index": 103
+      },
+      {
+       "label": "I really enjoy a night out at the pub",
+       "pct": 40.2,
+       "index": 114
+      },
+      {
+       "label": "I am always looking for inspiration on where to go for holidays or short breaks",
+       "pct": 53.9,
+       "index": 112
+      },
+      {
+       "label": "I worry about work during my leisure time",
+       "pct": 38.4,
+       "index": 139
+      },
+      {
+       "label": "I would like to see more brands supporting women's cricket",
+       "pct": 32.3,
+       "index": 122
+      }
+     ],
+     "coasters": [
+      {
+       "label": "My video game characters/Avatars are important to me",
+       "pct": 5.3,
+       "index": 29
+      },
+      {
+       "label": "I like to keep up with the latest news and developments in the video games Industry/Community",
+       "pct": 8.7,
+       "index": 37
+      },
+      {
+       "label": "I like to go to trendy places to eat and drink",
+       "pct": 15.4,
+       "index": 50
+      },
+      {
+       "label": "My favourite pastime is playing video games",
+       "pct": 7.0,
+       "index": 32
+      },
+      {
+       "label": "New content and updates keep me playing the same video games",
+       "pct": 10.3,
+       "index": 40
+      },
+      {
+       "label": "I like to listen to new bands",
+       "pct": 21.4,
+       "index": 62
+      },
+      {
+       "label": "I encourage my children to play sports",
+       "pct": 25.2,
+       "index": 75
+      },
+      {
+       "label": "I enjoy entertaining people at home",
+       "pct": 39.4,
+       "index": 93
+      },
+      {
+       "label": "I really enjoy a night out at the pub",
+       "pct": 26.2,
+       "index": 75
+      },
+      {
+       "label": "I am always looking for inspiration on where to go for holidays or short breaks",
+       "pct": 41.3,
+       "index": 86
+      },
+      {
+       "label": "I worry about work during my leisure time",
+       "pct": 13.7,
+       "index": 50
+      },
+      {
+       "label": "I would like to see more brands supporting women's cricket",
+       "pct": 15.7,
+       "index": 59
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "My video game characters/Avatars are important to me",
+       "pct": 7.0,
+       "index": 38
+      },
+      {
+       "label": "I like to keep up with the latest news and developments in the video games Industry/Community",
+       "pct": 10.0,
+       "index": 42
+      },
+      {
+       "label": "I like to go to trendy places to eat and drink",
+       "pct": 12.0,
+       "index": 39
+      },
+      {
+       "label": "My favourite pastime is playing video games",
+       "pct": 11.9,
+       "index": 54
+      },
+      {
+       "label": "New content and updates keep me playing the same video games",
+       "pct": 12.8,
+       "index": 50
+      },
+      {
+       "label": "I like to listen to new bands",
+       "pct": 17.1,
+       "index": 50
+      },
+      {
+       "label": "I encourage my children to play sports",
+       "pct": 20.1,
+       "index": 60
+      },
+      {
+       "label": "I enjoy entertaining people at home",
+       "pct": 22.7,
+       "index": 53
+      },
+      {
+       "label": "I really enjoy a night out at the pub",
+       "pct": 20.7,
+       "index": 59
+      },
+      {
+       "label": "I am always looking for inspiration on where to go for holidays or short breaks",
+       "pct": 28.1,
+       "index": 58
+      },
+      {
+       "label": "I worry about work during my leisure time",
+       "pct": 17.9,
+       "index": 65
+      },
+      {
+       "label": "I would like to see more brands supporting women's cricket",
+       "pct": 17.9,
+       "index": 68
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-media",
+    "label": "Media attitudes",
+    "rows": {
+     "architects": [
+      {
+       "label": "I prefer to buy products from companies who sponsor TV programmes",
+       "pct": 35.0,
+       "index": 236
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor sports events and teams",
+       "pct": 39.2,
+       "index": 227
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor exhibitions or music events",
+       "pct": 37.5,
+       "index": 226
+      },
+      {
+       "label": "I tend to pay more attention to mail if it's about something advertised on TV",
+       "pct": 40.6,
+       "index": 205
+      },
+      {
+       "label": "I feel valued by companies who send me mail",
+       "pct": 44.2,
+       "index": 204
+      },
+      {
+       "label": "On television I enjoy the adverts as much as the programmes",
+       "pct": 41.2,
+       "index": 198
+      },
+      {
+       "label": "I enjoy watching ads featuring my favourite celebrities",
+       "pct": 44.4,
+       "index": 194
+      },
+      {
+       "label": "TV tends to influence my opinions",
+       "pct": 43.6,
+       "index": 193
+      },
+      {
+       "label": "Relevant direct mail can change my opinion of a company or brand",
+       "pct": 46.1,
+       "index": 192
+      },
+      {
+       "label": "TV often inspires me to take up new interests",
+       "pct": 53.1,
+       "index": 188
+      },
+      {
+       "label": "I sometimes respond to Direct Mail",
+       "pct": 41.6,
+       "index": 184
+      },
+      {
+       "label": "I prefer to watch TV on a laptop, tablet or mobile",
+       "pct": 41.6,
+       "index": 178
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "I prefer to buy products from companies who sponsor TV programmes",
+       "pct": 15.9,
+       "index": 107
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor sports events and teams",
+       "pct": 21.2,
+       "index": 123
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor exhibitions or music events",
+       "pct": 19.1,
+       "index": 115
+      },
+      {
+       "label": "I tend to pay more attention to mail if it's about something advertised on TV",
+       "pct": 23.7,
+       "index": 119
+      },
+      {
+       "label": "I feel valued by companies who send me mail",
+       "pct": 24.3,
+       "index": 112
+      },
+      {
+       "label": "On television I enjoy the adverts as much as the programmes",
+       "pct": 23.4,
+       "index": 113
+      },
+      {
+       "label": "I enjoy watching ads featuring my favourite celebrities",
+       "pct": 27.1,
+       "index": 118
+      },
+      {
+       "label": "TV tends to influence my opinions",
+       "pct": 27.4,
+       "index": 122
+      },
+      {
+       "label": "Relevant direct mail can change my opinion of a company or brand",
+       "pct": 27.6,
+       "index": 115
+      },
+      {
+       "label": "TV often inspires me to take up new interests",
+       "pct": 36.2,
+       "index": 128
+      },
+      {
+       "label": "I sometimes respond to Direct Mail",
+       "pct": 25.0,
+       "index": 111
+      },
+      {
+       "label": "I prefer to watch TV on a laptop, tablet or mobile",
+       "pct": 30.1,
+       "index": 129
+      }
+     ],
+     "coasters": [
+      {
+       "label": "I prefer to buy products from companies who sponsor TV programmes",
+       "pct": 4.2,
+       "index": 28
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor sports events and teams",
+       "pct": 3.6,
+       "index": 21
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor exhibitions or music events",
+       "pct": 5.1,
+       "index": 31
+      },
+      {
+       "label": "I tend to pay more attention to mail if it's about something advertised on TV",
+       "pct": 7.7,
+       "index": 39
+      },
+      {
+       "label": "I feel valued by companies who send me mail",
+       "pct": 9.7,
+       "index": 45
+      },
+      {
+       "label": "On television I enjoy the adverts as much as the programmes",
+       "pct": 10.0,
+       "index": 48
+      },
+      {
+       "label": "I enjoy watching ads featuring my favourite celebrities",
+       "pct": 10.0,
+       "index": 44
+      },
+      {
+       "label": "TV tends to influence my opinions",
+       "pct": 9.7,
+       "index": 43
+      },
+      {
+       "label": "Relevant direct mail can change my opinion of a company or brand",
+       "pct": 12.1,
+       "index": 50
+      },
+      {
+       "label": "TV often inspires me to take up new interests",
+       "pct": 14.3,
+       "index": 51
+      },
+      {
+       "label": "I sometimes respond to Direct Mail",
+       "pct": 12.7,
+       "index": 56
+      },
+      {
+       "label": "I prefer to watch TV on a laptop, tablet or mobile",
+       "pct": 9.4,
+       "index": 40
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "I prefer to buy products from companies who sponsor TV programmes",
+       "pct": 3.2,
+       "index": 22
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor sports events and teams",
+       "pct": 3.9,
+       "index": 23
+      },
+      {
+       "label": "I prefer to buy products from companies who sponsor exhibitions or music events",
+       "pct": 3.8,
+       "index": 23
+      },
+      {
+       "label": "I tend to pay more attention to mail if it's about something advertised on TV",
+       "pct": 6.8,
+       "index": 34
+      },
+      {
+       "label": "I feel valued by companies who send me mail",
+       "pct": 7.7,
+       "index": 36
+      },
+      {
+       "label": "On television I enjoy the adverts as much as the programmes",
+       "pct": 8.0,
+       "index": 38
+      },
+      {
+       "label": "I enjoy watching ads featuring my favourite celebrities",
+       "pct": 9.4,
+       "index": 41
+      },
+      {
+       "label": "TV tends to influence my opinions",
+       "pct": 9.1,
+       "index": 40
+      },
+      {
+       "label": "Relevant direct mail can change my opinion of a company or brand",
+       "pct": 10.1,
+       "index": 42
+      },
+      {
+       "label": "TV often inspires me to take up new interests",
+       "pct": 10.6,
+       "index": 37
+      },
+      {
+       "label": "I sometimes respond to Direct Mail",
+       "pct": 10.7,
+       "index": 47
+      },
+      {
+       "label": "I prefer to watch TV on a laptop, tablet or mobile",
+       "pct": 11.7,
+       "index": 50
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-motoring",
+    "label": "Motoring",
+    "rows": {
+     "architects": [
+      {
+       "label": "My car should catch people's attention",
+       "pct": 35.4,
+       "index": 211
+      },
+      {
+       "label": "My car should express my personality",
+       "pct": 47.4,
+       "index": 186
+      },
+      {
+       "label": "I like innovative cars",
+       "pct": 53.6,
+       "index": 185
+      },
+      {
+       "label": "I use a car to do my job",
+       "pct": 37.9,
+       "index": 179
+      },
+      {
+       "label": "I like to drive fast",
+       "pct": 38.2,
+       "index": 174
+      },
+      {
+       "label": "All new cars should be electric",
+       "pct": 41.3,
+       "index": 167
+      },
+      {
+       "label": "You can judge a person by the car they drive",
+       "pct": 34.2,
+       "index": 166
+      },
+      {
+       "label": "I value car manufacturers who are socially and environmentally committed",
+       "pct": 56.1,
+       "index": 161
+      },
+      {
+       "label": "I would mainly choose a car based on how it looks",
+       "pct": 46.4,
+       "index": 157
+      },
+      {
+       "label": "I would choose a British car to support the national economy",
+       "pct": 43.9,
+       "index": 154
+      },
+      {
+       "label": "I like driving",
+       "pct": 67.8,
+       "index": 135
+      },
+      {
+       "label": "My car should be equipped with all possible safety features",
+       "pct": 70.5,
+       "index": 125
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "My car should catch people's attention",
+       "pct": 20.1,
+       "index": 119
+      },
+      {
+       "label": "My car should express my personality",
+       "pct": 30.7,
+       "index": 121
+      },
+      {
+       "label": "I like innovative cars",
+       "pct": 36.5,
+       "index": 126
+      },
+      {
+       "label": "I use a car to do my job",
+       "pct": 25.2,
+       "index": 119
+      },
+      {
+       "label": "I like to drive fast",
+       "pct": 26.5,
+       "index": 121
+      },
+      {
+       "label": "All new cars should be electric",
+       "pct": 27.9,
+       "index": 113
+      },
+      {
+       "label": "You can judge a person by the car they drive",
+       "pct": 23.9,
+       "index": 116
+      },
+      {
+       "label": "I value car manufacturers who are socially and environmentally committed",
+       "pct": 38.3,
+       "index": 110
+      },
+      {
+       "label": "I would mainly choose a car based on how it looks",
+       "pct": 34.2,
+       "index": 116
+      },
+      {
+       "label": "I would choose a British car to support the national economy",
+       "pct": 28.1,
+       "index": 99
+      },
+      {
+       "label": "I like driving",
+       "pct": 49.9,
+       "index": 99
+      },
+      {
+       "label": "My car should be equipped with all possible safety features",
+       "pct": 54.7,
+       "index": 97
+      }
+     ],
+     "coasters": [
+      {
+       "label": "My car should catch people's attention",
+       "pct": 6.2,
+       "index": 37
+      },
+      {
+       "label": "My car should express my personality",
+       "pct": 13.9,
+       "index": 55
+      },
+      {
+       "label": "I like innovative cars",
+       "pct": 15.9,
+       "index": 55
+      },
+      {
+       "label": "I use a car to do my job",
+       "pct": 12.4,
+       "index": 58
+      },
+      {
+       "label": "I like to drive fast",
+       "pct": 13.4,
+       "index": 61
+      },
+      {
+       "label": "All new cars should be electric",
+       "pct": 15.3,
+       "index": 62
+      },
+      {
+       "label": "You can judge a person by the car they drive",
+       "pct": 12.0,
+       "index": 58
+      },
+      {
+       "label": "I value car manufacturers who are socially and environmentally committed",
+       "pct": 29.5,
+       "index": 85
+      },
+      {
+       "label": "I would mainly choose a car based on how it looks",
+       "pct": 20.1,
+       "index": 68
+      },
+      {
+       "label": "I would choose a British car to support the national economy",
+       "pct": 27.1,
+       "index": 95
+      },
+      {
+       "label": "I like driving",
+       "pct": 51.2,
+       "index": 102
+      },
+      {
+       "label": "My car should be equipped with all possible safety features",
+       "pct": 60.2,
+       "index": 107
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "My car should catch people's attention",
+       "pct": 5.1,
+       "index": 31
+      },
+      {
+       "label": "My car should express my personality",
+       "pct": 10.4,
+       "index": 41
+      },
+      {
+       "label": "I like innovative cars",
+       "pct": 11.4,
+       "index": 39
+      },
+      {
+       "label": "I use a car to do my job",
+       "pct": 9.9,
+       "index": 46
+      },
+      {
+       "label": "I like to drive fast",
+       "pct": 10.5,
+       "index": 48
+      },
+      {
+       "label": "All new cars should be electric",
+       "pct": 14.3,
+       "index": 58
+      },
+      {
+       "label": "You can judge a person by the car they drive",
+       "pct": 12.1,
+       "index": 58
+      },
+      {
+       "label": "I value car manufacturers who are socially and environmentally committed",
+       "pct": 18.5,
+       "index": 53
+      },
+      {
+       "label": "I would mainly choose a car based on how it looks",
+       "pct": 17.8,
+       "index": 60
+      },
+      {
+       "label": "I would choose a British car to support the national economy",
+       "pct": 17.0,
+       "index": 60
+      },
+      {
+       "label": "I like driving",
+       "pct": 35.7,
+       "index": 71
+      },
+      {
+       "label": "My car should be equipped with all possible safety features",
+       "pct": 44.1,
+       "index": 78
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-appearance",
+    "label": "Appearance & style",
+    "rows": {
+     "architects": [
+      {
+       "label": "I like to stand out in a crowd",
+       "pct": 41.7,
+       "index": 210
+      },
+      {
+       "label": "A 'designer' label improves a person's image",
+       "pct": 42.0,
+       "index": 199
+      },
+      {
+       "label": "I spend a lot on clothes",
+       "pct": 40.5,
+       "index": 194
+      },
+      {
+       "label": "I like to keep up with the latest fashion trends",
+       "pct": 52.6,
+       "index": 192
+      },
+      {
+       "label": "I enjoy experimenting with make-Up to change my appearance",
+       "pct": 41.4,
+       "index": 184
+      },
+      {
+       "label": "It is important to me to always look perfect",
+       "pct": 49.0,
+       "index": 180
+      },
+      {
+       "label": "I use social media for fashion inspiration (e.g. Instagram, TikTok, etc.)",
+       "pct": 54.4,
+       "index": 176
+      },
+      {
+       "label": "I like it when my nails attract attention",
+       "pct": 38.3,
+       "index": 174
+      },
+      {
+       "label": "I am willing to pay more for sustainable clothing",
+       "pct": 54.3,
+       "index": 172
+      },
+      {
+       "label": "To me, being beautiful means asserting my personality, my difference",
+       "pct": 58.6,
+       "index": 169
+      },
+      {
+       "label": "I have a very good sense of style",
+       "pct": 64.1,
+       "index": 169
+      },
+      {
+       "label": "I often order a few items online just to try them on, but then return most of them",
+       "pct": 34.6,
+       "index": 168
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "I like to stand out in a crowd",
+       "pct": 25.0,
+       "index": 126
+      },
+      {
+       "label": "A 'designer' label improves a person's image",
+       "pct": 25.5,
+       "index": 121
+      },
+      {
+       "label": "I spend a lot on clothes",
+       "pct": 25.7,
+       "index": 123
+      },
+      {
+       "label": "I like to keep up with the latest fashion trends",
+       "pct": 31.7,
+       "index": 116
+      },
+      {
+       "label": "I enjoy experimenting with make-Up to change my appearance",
+       "pct": 28.4,
+       "index": 126
+      },
+      {
+       "label": "It is important to me to always look perfect",
+       "pct": 33.3,
+       "index": 122
+      },
+      {
+       "label": "I use social media for fashion inspiration (e.g. Instagram, TikTok, etc.)",
+       "pct": 40.3,
+       "index": 130
+      },
+      {
+       "label": "I like it when my nails attract attention",
+       "pct": 26.7,
+       "index": 121
+      },
+      {
+       "label": "I am willing to pay more for sustainable clothing",
+       "pct": 37.1,
+       "index": 118
+      },
+      {
+       "label": "To me, being beautiful means asserting my personality, my difference",
+       "pct": 44.0,
+       "index": 127
+      },
+      {
+       "label": "I have a very good sense of style",
+       "pct": 45.0,
+       "index": 119
+      },
+      {
+       "label": "I often order a few items online just to try them on, but then return most of them",
+       "pct": 25.4,
+       "index": 123
+      }
+     ],
+     "coasters": [
+      {
+       "label": "I like to stand out in a crowd",
+       "pct": 6.5,
+       "index": 33
+      },
+      {
+       "label": "A 'designer' label improves a person's image",
+       "pct": 9.1,
+       "index": 43
+      },
+      {
+       "label": "I spend a lot on clothes",
+       "pct": 9.7,
+       "index": 46
+      },
+      {
+       "label": "I like to keep up with the latest fashion trends",
+       "pct": 16.4,
+       "index": 60
+      },
+      {
+       "label": "I enjoy experimenting with make-Up to change my appearance",
+       "pct": 10.9,
+       "index": 49
+      },
+      {
+       "label": "It is important to me to always look perfect",
+       "pct": 16.2,
+       "index": 59
+      },
+      {
+       "label": "I use social media for fashion inspiration (e.g. Instagram, TikTok, etc.)",
+       "pct": 14.8,
+       "index": 48
+      },
+      {
+       "label": "I like it when my nails attract attention",
+       "pct": 12.5,
+       "index": 57
+      },
+      {
+       "label": "I am willing to pay more for sustainable clothing",
+       "pct": 21.9,
+       "index": 69
+      },
+      {
+       "label": "To me, being beautiful means asserting my personality, my difference",
+       "pct": 22.5,
+       "index": 65
+      },
+      {
+       "label": "I have a very good sense of style",
+       "pct": 29.0,
+       "index": 77
+      },
+      {
+       "label": "I often order a few items online just to try them on, but then return most of them",
+       "pct": 11.4,
+       "index": 55
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "I like to stand out in a crowd",
+       "pct": 5.8,
+       "index": 29
+      },
+      {
+       "label": "A 'designer' label improves a person's image",
+       "pct": 7.6,
+       "index": 36
+      },
+      {
+       "label": "I spend a lot on clothes",
+       "pct": 7.8,
+       "index": 37
+      },
+      {
+       "label": "I like to keep up with the latest fashion trends",
+       "pct": 10.0,
+       "index": 36
+      },
+      {
+       "label": "I enjoy experimenting with make-Up to change my appearance",
+       "pct": 9.4,
+       "index": 42
+      },
+      {
+       "label": "It is important to me to always look perfect",
+       "pct": 11.7,
+       "index": 43
+      },
+      {
+       "label": "I use social media for fashion inspiration (e.g. Instagram, TikTok, etc.)",
+       "pct": 14.3,
+       "index": 46
+      },
+      {
+       "label": "I like it when my nails attract attention",
+       "pct": 10.8,
+       "index": 49
+      },
+      {
+       "label": "I am willing to pay more for sustainable clothing",
+       "pct": 14.7,
+       "index": 47
+      },
+      {
+       "label": "To me, being beautiful means asserting my personality, my difference",
+       "pct": 16.1,
+       "index": 46
+      },
+      {
+       "label": "I have a very good sense of style",
+       "pct": 17.1,
+       "index": 45
+      },
+      {
+       "label": "I often order a few items online just to try them on, but then return most of them",
+       "pct": 11.0,
+       "index": 53
+      }
+     ]
+    }
+   },
+   {
+    "id": "life-interests",
+    "label": "Topics of interest",
+    "rows": {
+     "architects": [
+      {
+       "label": "Horoscopes/Astrology",
+       "pct": 1.2,
+       "index": 162
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.2,
+       "index": 162
+      },
+      {
+       "label": "Clothes & Fashion",
+       "pct": 2.0,
+       "index": 184
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 2.0,
+       "index": 184
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 3.0,
+       "index": 161
+      },
+      {
+       "label": "Relationships",
+       "pct": 2.7,
+       "index": 126
+      },
+      {
+       "label": "Magazines",
+       "pct": 3.0,
+       "index": 161
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 2.7,
+       "index": 126
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 1.5,
+       "index": 180
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.5,
+       "index": 180
+      },
+      {
+       "label": "Home & Garden",
+       "pct": 5.2,
+       "index": 97
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 2.4,
+       "index": 176
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Horoscopes/Astrology",
+       "pct": 1.0,
+       "index": 134
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.0,
+       "index": 134
+      },
+      {
+       "label": "Clothes & Fashion",
+       "pct": 1.1,
+       "index": 106
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.1,
+       "index": 106
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 3.4,
+       "index": 181
+      },
+      {
+       "label": "Relationships",
+       "pct": 3.8,
+       "index": 181
+      },
+      {
+       "label": "Magazines",
+       "pct": 3.4,
+       "index": 181
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 3.8,
+       "index": 181
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 1.2,
+       "index": 148
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.2,
+       "index": 148
+      },
+      {
+       "label": "Home & Garden",
+       "pct": 4.1,
+       "index": 76
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 1.9,
+       "index": 142
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Horoscopes/Astrology",
+       "pct": 0.1,
+       "index": 12
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.1,
+       "index": 12
+      },
+      {
+       "label": "Clothes & Fashion",
+       "pct": 0.6,
+       "index": 58
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.6,
+       "index": 58
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.7,
+       "index": 37
+      },
+      {
+       "label": "Relationships",
+       "pct": 1.1,
+       "index": 52
+      },
+      {
+       "label": "Magazines",
+       "pct": 0.7,
+       "index": 37
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.1,
+       "index": 52
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.4,
+       "index": 48
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.4,
+       "index": 48
+      },
+      {
+       "label": "Home & Garden",
+       "pct": 9.4,
+       "index": 176
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.5,
+       "index": 40
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Horoscopes/Astrology",
+       "pct": 0.5,
+       "index": 73
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.5,
+       "index": 73
+      },
+      {
+       "label": "Clothes & Fashion",
+       "pct": 0.5,
+       "index": 49
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.5,
+       "index": 49
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.7,
+       "index": 35
+      },
+      {
+       "label": "Relationships",
+       "pct": 1.2,
+       "index": 56
+      },
+      {
+       "label": "Magazines",
+       "pct": 0.7,
+       "index": 35
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 1.2,
+       "index": 56
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.3,
+       "index": 34
+      },
+      {
+       "label": "Radio/Podcasts",
+       "pct": 0.3,
+       "index": 34
+      },
+      {
+       "label": "Home & Garden",
+       "pct": 4.2,
+       "index": 79
+      },
+      {
+       "label": "Jobs/Appointments",
+       "pct": 0.6,
+       "index": 45
+      }
+     ]
+    }
+   }
+  ],
+  "media": [
+   {
+    "id": "media-social",
+    "label": "Social platforms",
+    "rows": {
+     "architects": [
+      {
+       "label": "BeReal",
+       "pct": 2.4,
+       "index": 194
+      },
+      {
+       "label": "BeReal",
+       "pct": 2.4,
+       "index": 194
+      },
+      {
+       "label": "Mastodon",
+       "pct": 2.2,
+       "index": 190
+      },
+      {
+       "label": "Mastodon",
+       "pct": 2.2,
+       "index": 190
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 8.0,
+       "index": 141
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 8.0,
+       "index": 141
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 10.2,
+       "index": 135
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 10.2,
+       "index": 135
+      },
+      {
+       "label": "Snapchat",
+       "pct": 28.9,
+       "index": 146
+      },
+      {
+       "label": "Snapchat",
+       "pct": 28.9,
+       "index": 146
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 7.7,
+       "index": 125
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 11.7,
+       "index": 138
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "BeReal",
+       "pct": 1.6,
+       "index": 130
+      },
+      {
+       "label": "BeReal",
+       "pct": 1.6,
+       "index": 130
+      },
+      {
+       "label": "Mastodon",
+       "pct": 1.8,
+       "index": 161
+      },
+      {
+       "label": "Mastodon",
+       "pct": 1.8,
+       "index": 161
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 8.2,
+       "index": 145
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 8.2,
+       "index": 145
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 11.3,
+       "index": 150
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 11.3,
+       "index": 150
+      },
+      {
+       "label": "Snapchat",
+       "pct": 30.5,
+       "index": 153
+      },
+      {
+       "label": "Snapchat",
+       "pct": 30.5,
+       "index": 153
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 8.6,
+       "index": 140
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 11.6,
+       "index": 137
+      }
+     ],
+     "coasters": [
+      {
+       "label": "BeReal",
+       "pct": 0.6,
+       "index": 52
+      },
+      {
+       "label": "BeReal",
+       "pct": 0.6,
+       "index": 52
+      },
+      {
+       "label": "Mastodon",
+       "pct": 0.4,
+       "index": 31
+      },
+      {
+       "label": "Mastodon",
+       "pct": 0.4,
+       "index": 31
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 1.9,
+       "index": 34
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 1.9,
+       "index": 34
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 2.6,
+       "index": 35
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 2.6,
+       "index": 35
+      },
+      {
+       "label": "Snapchat",
+       "pct": 8.5,
+       "index": 43
+      },
+      {
+       "label": "Snapchat",
+       "pct": 8.5,
+       "index": 43
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 2.9,
+       "index": 47
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 4.0,
+       "index": 47
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "BeReal",
+       "pct": 0.4,
+       "index": 30
+      },
+      {
+       "label": "BeReal",
+       "pct": 0.4,
+       "index": 30
+      },
+      {
+       "label": "Mastodon",
+       "pct": 0.3,
+       "index": 26
+      },
+      {
+       "label": "Mastodon",
+       "pct": 0.3,
+       "index": 26
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 4.1,
+       "index": 73
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 4.1,
+       "index": 73
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 5.6,
+       "index": 75
+      },
+      {
+       "label": "5 hours or more",
+       "pct": 5.6,
+       "index": 75
+      },
+      {
+       "label": "Snapchat",
+       "pct": 12.0,
+       "index": 61
+      },
+      {
+       "label": "Snapchat",
+       "pct": 12.0,
+       "index": 61
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 5.1,
+       "index": 83
+      },
+      {
+       "label": "3-5 hours",
+       "pct": 6.3,
+       "index": 74
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-socialact",
+    "label": "Social activities",
+    "rows": {
+     "architects": [
+      {
+       "label": "Watching feature adverts",
+       "pct": 5.0,
+       "index": 193
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 5.0,
+       "index": 193
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 7.7,
+       "index": 190
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 7.7,
+       "index": 190
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 4.8,
+       "index": 186
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 4.8,
+       "index": 186
+      },
+      {
+       "label": "Video calling",
+       "pct": 4.4,
+       "index": 185
+      },
+      {
+       "label": "Video calling",
+       "pct": 4.4,
+       "index": 185
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 4.3,
+       "index": 168
+      },
+      {
+       "label": "Tweeting about your own life",
+       "pct": 7.7,
+       "index": 175
+      },
+      {
+       "label": "Sharing support/Fundraising for causes or organisations",
+       "pct": 2.5,
+       "index": 137
+      },
+      {
+       "label": "Making new friends",
+       "pct": 9.0,
+       "index": 175
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Watching feature adverts",
+       "pct": 3.3,
+       "index": 129
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 3.3,
+       "index": 129
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 6.4,
+       "index": 160
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 6.4,
+       "index": 160
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 3.6,
+       "index": 140
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 3.6,
+       "index": 140
+      },
+      {
+       "label": "Video calling",
+       "pct": 3.3,
+       "index": 138
+      },
+      {
+       "label": "Video calling",
+       "pct": 3.3,
+       "index": 138
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 4.4,
+       "index": 175
+      },
+      {
+       "label": "Tweeting about your own life",
+       "pct": 6.3,
+       "index": 144
+      },
+      {
+       "label": "Sharing support/Fundraising for causes or organisations",
+       "pct": 3.1,
+       "index": 175
+      },
+      {
+       "label": "Making new friends",
+       "pct": 7.4,
+       "index": 145
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Watching feature adverts",
+       "pct": 0.7,
+       "index": 27
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 0.7,
+       "index": 27
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 0.9,
+       "index": 21
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 0.9,
+       "index": 21
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 0.6,
+       "index": 23
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 0.6,
+       "index": 23
+      },
+      {
+       "label": "Video calling",
+       "pct": 1.2,
+       "index": 48
+      },
+      {
+       "label": "Video calling",
+       "pct": 1.2,
+       "index": 48
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 0.9,
+       "index": 38
+      },
+      {
+       "label": "Tweeting about your own life",
+       "pct": 1.4,
+       "index": 31
+      },
+      {
+       "label": "Sharing support/Fundraising for causes or organisations",
+       "pct": 1.1,
+       "index": 62
+      },
+      {
+       "label": "Making new friends",
+       "pct": 1.4,
+       "index": 28
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Watching feature adverts",
+       "pct": 1.1,
+       "index": 44
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 1.1,
+       "index": 44
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 1.3,
+       "index": 31
+      },
+      {
+       "label": "Participating in challenges/Trends",
+       "pct": 1.3,
+       "index": 31
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 1.2,
+       "index": 45
+      },
+      {
+       "label": "Sharing links to other websites",
+       "pct": 1.2,
+       "index": 45
+      },
+      {
+       "label": "Video calling",
+       "pct": 0.8,
+       "index": 35
+      },
+      {
+       "label": "Video calling",
+       "pct": 0.8,
+       "index": 35
+      },
+      {
+       "label": "Watching feature adverts",
+       "pct": 0.8,
+       "index": 32
+      },
+      {
+       "label": "Tweeting about your own life",
+       "pct": 2.1,
+       "index": 48
+      },
+      {
+       "label": "Sharing support/Fundraising for causes or organisations",
+       "pct": 0.8,
+       "index": 45
+      },
+      {
+       "label": "Making new friends",
+       "pct": 2.5,
+       "index": 49
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-news",
+    "label": "News & newspapers",
+    "rows": {
+     "architects": [
+      {
+       "label": "The Field",
+       "pct": 0.2,
+       "index": 112
+      },
+      {
+       "label": "Liverpool Echo",
+       "pct": 0.1,
+       "index": 47
+      },
+      {
+       "label": "Healthy For Men (Holland & Barratt Magazine)",
+       "pct": 0.6,
+       "index": 261
+      },
+      {
+       "label": "Motor Cycle News",
+       "pct": 0.9,
+       "index": 254
+      },
+      {
+       "label": "Esquire",
+       "pct": 0.8,
+       "index": 248
+      },
+      {
+       "label": "Country Life",
+       "pct": 0.5,
+       "index": 243
+      },
+      {
+       "label": "What Hi-Fi?",
+       "pct": 0.3,
+       "index": 120
+      },
+      {
+       "label": "Heat",
+       "pct": 1.1,
+       "index": 239
+      },
+      {
+       "label": "Living etc",
+       "pct": 0.4,
+       "index": 239
+      },
+      {
+       "label": "Homes & Antiques",
+       "pct": 0.7,
+       "index": 127
+      },
+      {
+       "label": "Express & Star (West Midlands) and Shropshire Star",
+       "pct": 0.1,
+       "index": 86
+      },
+      {
+       "label": "Cyclist",
+       "pct": 1.1,
+       "index": 162
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "The Field",
+       "pct": 0.6,
+       "index": 300
+      },
+      {
+       "label": "Liverpool Echo",
+       "pct": 0.1,
+       "index": 130
+      },
+      {
+       "label": "Healthy For Men (Holland & Barratt Magazine)",
+       "pct": 0.3,
+       "index": 110
+      },
+      {
+       "label": "Motor Cycle News",
+       "pct": 0.2,
+       "index": 42
+      },
+      {
+       "label": "Esquire",
+       "pct": 0.4,
+       "index": 130
+      },
+      {
+       "label": "Country Life",
+       "pct": 0.3,
+       "index": 114
+      },
+      {
+       "label": "What Hi-Fi?",
+       "pct": 0.5,
+       "index": 240
+      },
+      {
+       "label": "Heat",
+       "pct": 0.2,
+       "index": 55
+      },
+      {
+       "label": "Living etc",
+       "pct": 0.2,
+       "index": 125
+      },
+      {
+       "label": "Homes & Antiques",
+       "pct": 1.3,
+       "index": 238
+      },
+      {
+       "label": "Express & Star (West Midlands) and Shropshire Star",
+       "pct": 0.1,
+       "index": 56
+      },
+      {
+       "label": "Cyclist",
+       "pct": 1.7,
+       "index": 236
+      }
+     ],
+     "coasters": [
+      {
+       "label": "The Field",
+       "pct": 0.0,
+       "index": 14
+      },
+      {
+       "label": "Liverpool Echo",
+       "pct": 0.3,
+       "index": 262
+      },
+      {
+       "label": "Healthy For Men (Holland & Barratt Magazine)",
+       "pct": 0.0,
+       "index": 6
+      },
+      {
+       "label": "Motor Cycle News",
+       "pct": 0.1,
+       "index": 38
+      },
+      {
+       "label": "Esquire",
+       "pct": 0.1,
+       "index": 19
+      },
+      {
+       "label": "Country Life",
+       "pct": 0.1,
+       "index": 28
+      },
+      {
+       "label": "What Hi-Fi?",
+       "pct": 0.1,
+       "index": 30
+      },
+      {
+       "label": "Heat",
+       "pct": 0.2,
+       "index": 34
+      },
+      {
+       "label": "Living etc",
+       "pct": 0.0,
+       "index": 5
+      },
+      {
+       "label": "Homes & Antiques",
+       "pct": 0.0,
+       "index": 6
+      },
+      {
+       "label": "Express & Star (West Midlands) and Shropshire Star",
+       "pct": 0.2,
+       "index": 236
+      },
+      {
+       "label": "Cyclist",
+       "pct": 0.1,
+       "index": 12
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "The Field",
+       "pct": 0.0,
+       "index": 18
+      },
+      {
+       "label": "Liverpool Echo",
+       "pct": 0.1,
+       "index": 47
+      },
+      {
+       "label": "Healthy For Men (Holland & Barratt Magazine)",
+       "pct": 0.0,
+       "index": 10
+      },
+      {
+       "label": "Motor Cycle News",
+       "pct": 0.1,
+       "index": 39
+      },
+      {
+       "label": "Esquire",
+       "pct": 0.0,
+       "index": 3
+      },
+      {
+       "label": "Country Life",
+       "pct": 0.0,
+       "index": 12
+      },
+      {
+       "label": "What Hi-Fi?",
+       "pct": 0.1,
+       "index": 38
+      },
+      {
+       "label": "Heat",
+       "pct": 0.2,
+       "index": 46
+      },
+      {
+       "label": "Living etc",
+       "pct": 0.0,
+       "index": 20
+      },
+      {
+       "label": "Homes & Antiques",
+       "pct": 0.2,
+       "index": 45
+      },
+      {
+       "label": "Express & Star (West Midlands) and Shropshire Star",
+       "pct": 0.1,
+       "index": 70
+      },
+      {
+       "label": "Cyclist",
+       "pct": 0.1,
+       "index": 15
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-podcasts",
+    "label": "Podcasts",
+    "rows": {
+     "architects": [
+      {
+       "label": "Business",
+       "pct": 8.8,
+       "index": 176
+      },
+      {
+       "label": "Always",
+       "pct": 12.7,
+       "index": 171
+      },
+      {
+       "label": "Gaming",
+       "pct": 5.6,
+       "index": 165
+      },
+      {
+       "label": "Kids & Family",
+       "pct": 4.0,
+       "index": 164
+      },
+      {
+       "label": "4-5",
+       "pct": 10.3,
+       "index": 162
+      },
+      {
+       "label": "TV Programmes/Series",
+       "pct": 7.9,
+       "index": 161
+      },
+      {
+       "label": "15-30 minutes",
+       "pct": 13.5,
+       "index": 153
+      },
+      {
+       "label": "Educational",
+       "pct": 10.5,
+       "index": 152
+      },
+      {
+       "label": "Arts & Entertainment",
+       "pct": 8.7,
+       "index": 151
+      },
+      {
+       "label": "Technology",
+       "pct": 6.0,
+       "index": 150
+      },
+      {
+       "label": "Food & Drink",
+       "pct": 7.4,
+       "index": 146
+      },
+      {
+       "label": "Society & Culture",
+       "pct": 5.4,
+       "index": 109
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Business",
+       "pct": 6.5,
+       "index": 130
+      },
+      {
+       "label": "Always",
+       "pct": 8.5,
+       "index": 115
+      },
+      {
+       "label": "Gaming",
+       "pct": 4.4,
+       "index": 130
+      },
+      {
+       "label": "Kids & Family",
+       "pct": 3.0,
+       "index": 122
+      },
+      {
+       "label": "4-5",
+       "pct": 7.9,
+       "index": 123
+      },
+      {
+       "label": "TV Programmes/Series",
+       "pct": 5.2,
+       "index": 106
+      },
+      {
+       "label": "15-30 minutes",
+       "pct": 10.1,
+       "index": 115
+      },
+      {
+       "label": "Educational",
+       "pct": 9.7,
+       "index": 140
+      },
+      {
+       "label": "Arts & Entertainment",
+       "pct": 7.2,
+       "index": 125
+      },
+      {
+       "label": "Technology",
+       "pct": 5.2,
+       "index": 129
+      },
+      {
+       "label": "Food & Drink",
+       "pct": 6.6,
+       "index": 130
+      },
+      {
+       "label": "Society & Culture",
+       "pct": 7.2,
+       "index": 146
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Business",
+       "pct": 2.6,
+       "index": 51
+      },
+      {
+       "label": "Always",
+       "pct": 4.4,
+       "index": 60
+      },
+      {
+       "label": "Gaming",
+       "pct": 1.5,
+       "index": 43
+      },
+      {
+       "label": "Kids & Family",
+       "pct": 1.5,
+       "index": 60
+      },
+      {
+       "label": "4-5",
+       "pct": 3.7,
+       "index": 57
+      },
+      {
+       "label": "TV Programmes/Series",
+       "pct": 3.0,
+       "index": 60
+      },
+      {
+       "label": "15-30 minutes",
+       "pct": 6.1,
+       "index": 69
+      },
+      {
+       "label": "Educational",
+       "pct": 4.2,
+       "index": 61
+      },
+      {
+       "label": "Arts & Entertainment",
+       "pct": 3.8,
+       "index": 66
+      },
+      {
+       "label": "Technology",
+       "pct": 2.4,
+       "index": 60
+      },
+      {
+       "label": "Food & Drink",
+       "pct": 3.4,
+       "index": 66
+      },
+      {
+       "label": "Society & Culture",
+       "pct": 3.4,
+       "index": 70
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Business",
+       "pct": 2.3,
+       "index": 46
+      },
+      {
+       "label": "Always",
+       "pct": 4.0,
+       "index": 54
+      },
+      {
+       "label": "Gaming",
+       "pct": 2.0,
+       "index": 58
+      },
+      {
+       "label": "Kids & Family",
+       "pct": 1.4,
+       "index": 56
+      },
+      {
+       "label": "4-5",
+       "pct": 3.7,
+       "index": 58
+      },
+      {
+       "label": "TV Programmes/Series",
+       "pct": 3.3,
+       "index": 67
+      },
+      {
+       "label": "15-30 minutes",
+       "pct": 5.6,
+       "index": 64
+      },
+      {
+       "label": "Educational",
+       "pct": 3.7,
+       "index": 54
+      },
+      {
+       "label": "Arts & Entertainment",
+       "pct": 3.5,
+       "index": 61
+      },
+      {
+       "label": "Technology",
+       "pct": 2.5,
+       "index": 63
+      },
+      {
+       "label": "Food & Drink",
+       "pct": 3.2,
+       "index": 63
+      },
+      {
+       "label": "Society & Culture",
+       "pct": 4.0,
+       "index": 82
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-radio",
+    "label": "Radio & music",
+    "rows": {
+     "architects": [
+      {
+       "label": "Jobs and Careers",
+       "pct": 6.2,
+       "index": 180
+      },
+      {
+       "label": "Fashion and Beauty",
+       "pct": 8.4,
+       "index": 179
+      },
+      {
+       "label": "Education",
+       "pct": 8.8,
+       "index": 164
+      },
+      {
+       "label": "Hip Hop/Rap/Drill/Trap",
+       "pct": 17.6,
+       "index": 127
+      },
+      {
+       "label": "Other world music (e.g. Asian, Arabic, African)",
+       "pct": 7.9,
+       "index": 115
+      },
+      {
+       "label": "Easy Listening",
+       "pct": 16.9,
+       "index": 73
+      },
+      {
+       "label": "Classical",
+       "pct": 13.3,
+       "index": 79
+      },
+      {
+       "label": "Celebrity Interviews",
+       "pct": 6.5,
+       "index": 127
+      },
+      {
+       "label": "D.I.Y/Homes",
+       "pct": 5.4,
+       "index": 136
+      },
+      {
+       "label": "Health and Wellbeing",
+       "pct": 10.6,
+       "index": 141
+      },
+      {
+       "label": "Other Music Programmes",
+       "pct": 16.8,
+       "index": 78
+      },
+      {
+       "label": "K-Pop",
+       "pct": 5.6,
+       "index": 115
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Jobs and Careers",
+       "pct": 5.8,
+       "index": 167
+      },
+      {
+       "label": "Fashion and Beauty",
+       "pct": 6.3,
+       "index": 134
+      },
+      {
+       "label": "Education",
+       "pct": 7.4,
+       "index": 138
+      },
+      {
+       "label": "Hip Hop/Rap/Drill/Trap",
+       "pct": 21.7,
+       "index": 157
+      },
+      {
+       "label": "Other world music (e.g. Asian, Arabic, African)",
+       "pct": 10.6,
+       "index": 155
+      },
+      {
+       "label": "Easy Listening",
+       "pct": 15.5,
+       "index": 66
+      },
+      {
+       "label": "Classical",
+       "pct": 14.1,
+       "index": 84
+      },
+      {
+       "label": "Celebrity Interviews",
+       "pct": 7.5,
+       "index": 146
+      },
+      {
+       "label": "D.I.Y/Homes",
+       "pct": 5.4,
+       "index": 137
+      },
+      {
+       "label": "Health and Wellbeing",
+       "pct": 10.8,
+       "index": 144
+      },
+      {
+       "label": "Other Music Programmes",
+       "pct": 19.1,
+       "index": 88
+      },
+      {
+       "label": "K-Pop",
+       "pct": 6.6,
+       "index": 136
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Jobs and Careers",
+       "pct": 0.8,
+       "index": 22
+      },
+      {
+       "label": "Fashion and Beauty",
+       "pct": 2.1,
+       "index": 45
+      },
+      {
+       "label": "Education",
+       "pct": 2.7,
+       "index": 51
+      },
+      {
+       "label": "Hip Hop/Rap/Drill/Trap",
+       "pct": 5.7,
+       "index": 41
+      },
+      {
+       "label": "Other world music (e.g. Asian, Arabic, African)",
+       "pct": 4.3,
+       "index": 63
+      },
+      {
+       "label": "Easy Listening",
+       "pct": 35.7,
+       "index": 153
+      },
+      {
+       "label": "Classical",
+       "pct": 25.4,
+       "index": 151
+      },
+      {
+       "label": "Celebrity Interviews",
+       "pct": 3.3,
+       "index": 64
+      },
+      {
+       "label": "D.I.Y/Homes",
+       "pct": 3.5,
+       "index": 89
+      },
+      {
+       "label": "Health and Wellbeing",
+       "pct": 5.2,
+       "index": 70
+      },
+      {
+       "label": "Other Music Programmes",
+       "pct": 30.1,
+       "index": 138
+      },
+      {
+       "label": "K-Pop",
+       "pct": 3.5,
+       "index": 71
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Jobs and Careers",
+       "pct": 1.2,
+       "index": 35
+      },
+      {
+       "label": "Fashion and Beauty",
+       "pct": 2.1,
+       "index": 44
+      },
+      {
+       "label": "Education",
+       "pct": 2.7,
+       "index": 50
+      },
+      {
+       "label": "Hip Hop/Rap/Drill/Trap",
+       "pct": 10.2,
+       "index": 74
+      },
+      {
+       "label": "Other world music (e.g. Asian, Arabic, African)",
+       "pct": 5.1,
+       "index": 74
+      },
+      {
+       "label": "Easy Listening",
+       "pct": 27.0,
+       "index": 116
+      },
+      {
+       "label": "Classical",
+       "pct": 17.0,
+       "index": 101
+      },
+      {
+       "label": "Celebrity Interviews",
+       "pct": 3.6,
+       "index": 69
+      },
+      {
+       "label": "D.I.Y/Homes",
+       "pct": 2.2,
+       "index": 56
+      },
+      {
+       "label": "Health and Wellbeing",
+       "pct": 4.3,
+       "index": 57
+      },
+      {
+       "label": "Other Music Programmes",
+       "pct": 23.1,
+       "index": 106
+      },
+      {
+       "label": "K-Pop",
+       "pct": 3.9,
+       "index": 81
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-ooh",
+    "label": "Out-of-home ads",
+    "rows": {
+     "architects": [
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 4.9,
+       "index": 154
+      },
+      {
+       "label": "Inside underground trains",
+       "pct": 6.1,
+       "index": 136
+      },
+      {
+       "label": "Inside a tram",
+       "pct": 4.3,
+       "index": 175
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 6.9,
+       "index": 141
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 4.5,
+       "index": 132
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 12.8,
+       "index": 131
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 7.6,
+       "index": 124
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 8.7,
+       "index": 137
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 4.8,
+       "index": 126
+      },
+      {
+       "label": "At underground stations/Platform or inside underground trains",
+       "pct": 12.0,
+       "index": 133
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 9.1,
+       "index": 136
+      },
+      {
+       "label": "On the outside of call boxes/Pay phones/Digital kiosks",
+       "pct": 8.4,
+       "index": 112
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 5.4,
+       "index": 172
+      },
+      {
+       "label": "Inside underground trains",
+       "pct": 7.9,
+       "index": 177
+      },
+      {
+       "label": "Inside a tram",
+       "pct": 3.6,
+       "index": 147
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 8.3,
+       "index": 170
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 5.7,
+       "index": 166
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 16.2,
+       "index": 166
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 10.1,
+       "index": 165
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 10.4,
+       "index": 163
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 6.2,
+       "index": 164
+      },
+      {
+       "label": "At underground stations/Platform or inside underground trains",
+       "pct": 14.7,
+       "index": 163
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 10.1,
+       "index": 151
+      },
+      {
+       "label": "On the outside of call boxes/Pay phones/Digital kiosks",
+       "pct": 12.2,
+       "index": 162
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 0.4,
+       "index": 13
+      },
+      {
+       "label": "Inside underground trains",
+       "pct": 2.6,
+       "index": 58
+      },
+      {
+       "label": "Inside a tram",
+       "pct": 0.7,
+       "index": 30
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 2.3,
+       "index": 47
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 1.1,
+       "index": 33
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 5.4,
+       "index": 56
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 4.0,
+       "index": 65
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 2.2,
+       "index": 35
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 1.8,
+       "index": 49
+      },
+      {
+       "label": "At underground stations/Platform or inside underground trains",
+       "pct": 5.6,
+       "index": 62
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 2.5,
+       "index": 37
+      },
+      {
+       "label": "On the outside of call boxes/Pay phones/Digital kiosks",
+       "pct": 4.2,
+       "index": 56
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 1.8,
+       "index": 58
+      },
+      {
+       "label": "Inside underground trains",
+       "pct": 2.1,
+       "index": 48
+      },
+      {
+       "label": "Inside a tram",
+       "pct": 1.2,
+       "index": 47
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 2.6,
+       "index": 53
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 2.3,
+       "index": 69
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 5.8,
+       "index": 59
+      },
+      {
+       "label": "At leisure centres/Gyms/Health clubs/Swimming pools",
+       "pct": 3.7,
+       "index": 60
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 4.2,
+       "index": 66
+      },
+      {
+       "label": "Posted/Shared content about a product/Service/Brand on social media sites",
+       "pct": 2.5,
+       "index": 67
+      },
+      {
+       "label": "At underground stations/Platform or inside underground trains",
+       "pct": 5.1,
+       "index": 56
+      },
+      {
+       "label": "Interacted directly with a brand page on social media sites (e.g. liked on Facebook/Followed on X/Twitter)",
+       "pct": 4.9,
+       "index": 73
+      },
+      {
+       "label": "On the outside of call boxes/Pay phones/Digital kiosks",
+       "pct": 5.8,
+       "index": 77
+      }
+     ]
+    }
+   },
+   {
+    "id": "media-tv",
+    "label": "TV & streaming",
+    "rows": {
+     "architects": [
+      {
+       "label": "Apple TV box",
+       "pct": 8.6,
+       "index": 178
+      },
+      {
+       "label": "Other",
+       "pct": 0.9,
+       "index": 85
+      },
+      {
+       "label": "Any games console (e.g. Playstation, Xbox)",
+       "pct": 17.2,
+       "index": 134
+      },
+      {
+       "label": "Sky on Demand",
+       "pct": 3.3,
+       "index": 142
+      },
+      {
+       "label": "Talk Talk (TV)",
+       "pct": 6.4,
+       "index": 153
+      },
+      {
+       "label": "Adult Channels",
+       "pct": 4.4,
+       "index": 153
+      },
+      {
+       "label": "Google Chromecast",
+       "pct": 8.5,
+       "index": 150
+      },
+      {
+       "label": "Sky Glass",
+       "pct": 5.4,
+       "index": 131
+      },
+      {
+       "label": "Foreign Language/Ethnic Channels",
+       "pct": 4.8,
+       "index": 140
+      },
+      {
+       "label": "Now TV box/Stick",
+       "pct": 4.8,
+       "index": 140
+      },
+      {
+       "label": "Other set-Top box",
+       "pct": 5.2,
+       "index": 60
+      },
+      {
+       "label": "Sky Stream",
+       "pct": 5.1,
+       "index": 140
+      }
+     ],
+     "hustlers": [
+      {
+       "label": "Apple TV box",
+       "pct": 5.8,
+       "index": 119
+      },
+      {
+       "label": "Other",
+       "pct": 2.0,
+       "index": 177
+      },
+      {
+       "label": "Any games console (e.g. Playstation, Xbox)",
+       "pct": 20.1,
+       "index": 157
+      },
+      {
+       "label": "Sky on Demand",
+       "pct": 3.7,
+       "index": 156
+      },
+      {
+       "label": "Talk Talk (TV)",
+       "pct": 5.2,
+       "index": 124
+      },
+      {
+       "label": "Adult Channels",
+       "pct": 3.9,
+       "index": 136
+      },
+      {
+       "label": "Google Chromecast",
+       "pct": 6.7,
+       "index": 120
+      },
+      {
+       "label": "Sky Glass",
+       "pct": 5.7,
+       "index": 139
+      },
+      {
+       "label": "Foreign Language/Ethnic Channels",
+       "pct": 4.1,
+       "index": 119
+      },
+      {
+       "label": "Now TV box/Stick",
+       "pct": 4.4,
+       "index": 129
+      },
+      {
+       "label": "Other set-Top box",
+       "pct": 6.5,
+       "index": 75
+      },
+      {
+       "label": "Sky Stream",
+       "pct": 4.4,
+       "index": 121
+      }
+     ],
+     "coasters": [
+      {
+       "label": "Apple TV box",
+       "pct": 2.5,
+       "index": 51
+      },
+      {
+       "label": "Other",
+       "pct": 0.6,
+       "index": 51
+      },
+      {
+       "label": "Any games console (e.g. Playstation, Xbox)",
+       "pct": 5.5,
+       "index": 43
+      },
+      {
+       "label": "Sky on Demand",
+       "pct": 1.2,
+       "index": 50
+      },
+      {
+       "label": "Talk Talk (TV)",
+       "pct": 2.2,
+       "index": 53
+      },
+      {
+       "label": "Adult Channels",
+       "pct": 1.4,
+       "index": 48
+      },
+      {
+       "label": "Google Chromecast",
+       "pct": 3.2,
+       "index": 58
+      },
+      {
+       "label": "Sky Glass",
+       "pct": 2.1,
+       "index": 52
+      },
+      {
+       "label": "Foreign Language/Ethnic Channels",
+       "pct": 2.0,
+       "index": 59
+      },
+      {
+       "label": "Now TV box/Stick",
+       "pct": 2.1,
+       "index": 60
+      },
+      {
+       "label": "Other set-Top box",
+       "pct": 12.0,
+       "index": 138
+      },
+      {
+       "label": "Sky Stream",
+       "pct": 2.3,
+       "index": 62
+      }
+     ],
+     "retreaters": [
+      {
+       "label": "Apple TV box",
+       "pct": 2.4,
+       "index": 50
+      },
+      {
+       "label": "Other",
+       "pct": 1.0,
+       "index": 92
+      },
+      {
+       "label": "Any games console (e.g. Playstation, Xbox)",
+       "pct": 8.7,
+       "index": 68
+      },
+      {
+       "label": "Sky on Demand",
+       "pct": 1.4,
+       "index": 58
+      },
+      {
+       "label": "Talk Talk (TV)",
+       "pct": 2.8,
+       "index": 67
+      },
+      {
+       "label": "Adult Channels",
+       "pct": 1.8,
+       "index": 62
+      },
+      {
+       "label": "Google Chromecast",
+       "pct": 3.9,
+       "index": 69
+      },
+      {
+       "label": "Sky Glass",
+       "pct": 3.1,
+       "index": 76
+      },
+      {
+       "label": "Foreign Language/Ethnic Channels",
+       "pct": 2.7,
+       "index": 77
+      },
+      {
+       "label": "Now TV box/Stick",
+       "pct": 2.4,
+       "index": 71
+      },
+      {
+       "label": "Other set-Top box",
+       "pct": 11.2,
+       "index": 128
+      },
+      {
+       "label": "Sky Stream",
+       "pct": 2.7,
+       "index": 74
+      }
+     ]
+    }
+   }
+  ]
+ }
 }

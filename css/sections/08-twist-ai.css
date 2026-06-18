@@ -285,6 +285,21 @@
   min-height: 3.2em;
 }
 
+/* Strategic "so what" — the ad-strategy implication, set apart beneath the
+   tug-of-war. Yellow left-rule marks it as the take. Quiet so it never
+   competes with the readout above it. */
+#\30 8-twist-ai .twist-ai-so {
+  margin: 0;
+  padding-left: clamp(10px, 0.8vw, 13px);
+  border-left: 2px solid var(--yellow, #f0cb08);
+  font-size: clamp(0.78rem, 0.92vw, 0.9rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--navy);
+  opacity: 0.66;
+  max-width: 46ch;
+}
+
 /* ── Responsive: single column on narrow viewports ──────────────────────── */
 @media (max-width: 900px) {
   #\30 8-twist-ai .twist-ai-root {
