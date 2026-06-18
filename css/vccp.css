@@ -570,6 +570,12 @@ html, body { height: 100%; overflow: hidden; }
   backface-visibility: hidden;
   will-change: transform, opacity, filter;
   contain: layout paint;
+  /* Perspective lives on the stage so the INNER content layer (the transparent
+     .chapter-inner) flies through depth while this stage — which carries the
+     full-bleed ground — stays put and only fades. That is what stops the
+     "slideshow" feel: the coloured page never moves, so its corners never show. */
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
   /* NO LOADING-SCREEN MESS: every stage starts hidden so the 22 full-bleed
      stages do not stack on top of each other while they mount. main.js's first
      render() (in start(), after all sections are mounted) sets visibility +
@@ -586,6 +592,14 @@ html, body { height: 100%; overflow: hidden; }
 .journey-stage > :not(.journey-scroll-cue) {
   width: 100%;
   height: 100%;
+}
+/* The inner content layer is TRANSPARENT — the ground belongs to the stage
+   (si-ground-*), not to this layer. main.js flies this layer through Z while the
+   stage stays put, so what moves in depth is the COMPONENTS, never a coloured
+   rectangle. As it scales it simply reveals the same static ground behind it. */
+.journey-stage > .chapter-inner {
+  background: transparent !important;
+  transform-origin: 50% 50%;
 }
 .journey-stage .chapter-inner {
   width: 100%;

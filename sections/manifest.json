@@ -20,5 +20,5 @@
   { "id": "19-move-selfhelp",      "title": "Move 03 — Ride the self-help wave",  "ground": "warm",  "transition": "flythrough" },
   { "id": "20-move-mentalload",    "title": "Move 04 — Kill the mental load",     "ground": "warm",  "transition": "dissolve-through" },
   { "id": "21-move-behaviours",    "title": "Move 05 — Boost good behaviours",    "ground": "warm",  "transition": "flythrough" },
-  { "id": "22-outro",              "title": "Thank you",                          "ground": "cream", "transition": "disperse" }
+  { "id": "22-outro",              "title": "Thank you",                          "ground": "warm",  "transition": "disperse" }
 ]

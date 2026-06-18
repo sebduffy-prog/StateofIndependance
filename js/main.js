@@ -284,7 +284,10 @@ const makeProfile = (cfg) => {
     }
 
     return {
-      transform: `translate3d(-50%, -50%, ${z.toFixed(1)}px) scale(${Math.max(scale, 0.01).toFixed(4)})${rotate}`,
+      // Transform is applied to the INNER content layer (the ground stays on the
+      // static section), so NO -50%/-50% centring here — the inner fills the
+      // section already. Only Z + scale (+ optional rotate) move the components.
+      transform: `translateZ(${z.toFixed(1)}px) scale(${Math.max(scale, 0.01).toFixed(4)})${rotate}`,
       opacity,
       blur: cfg.blur * Math.min(t, 1),
     };
@@ -424,7 +427,7 @@ const stageStyleFor = (d, profile, reduced) => {
 
   if (reduced) {
     const opacity = ad >= 1 ? 0 : 1 - ad;
-    return { transform: 'translate3d(-50%, -50%, 0)', opacity, blur: 0, visible };
+    return { transform: 'none', opacity, blur: 0, visible };
   }
 
   const s = profile(d);
@@ -685,17 +688,28 @@ const createJourney = (manifest) => {
         continue;
       }
       section.style.visibility = 'visible';
+      // The SECTION carries the full-bleed ground and only ever FADES (opacity) —
+      // it never translates or scales, so the coloured page never flies as a
+      // rectangle and you never see its corners. Adjacent same-colour stages
+      // cross-fade between identical grounds = seamless (one continuous world);
+      // a colour change cross-fades the two grounds.
       section.style.opacity = style.opacity.toFixed(3);
-      section.style.transform = style.transform;
-      // Quantise blur to whole pixels: filter:blur() re-rasterises the whole
-      // (complex) stage every time its value changes, so a continuously-varying
-      // blur stutters at 60fps. Snapping to ~2px steps cuts that to a handful of
-      // rasterisations across the whole transition — the depth stays smooth.
-      const bpx = Math.round(style.blur / 2) * 2;
-      const nextFilter = bpx > 0 ? `blur(${bpx}px)` : 'none';
-      if (section.style.filter !== nextFilter) section.style.filter = nextFilter;
       section.style.zIndex = String(1000 - Math.round(Math.abs(i - progress) * 10));
-      section.style.willChange = Math.abs(i - progress) < 1.2 ? 'transform, opacity, filter' : 'auto';
+      section.style.willChange = Math.abs(i - progress) < 1.2 ? 'opacity' : 'auto';
+
+      // The INNER (transparent) content layer is what moves through depth — the
+      // components fly in Z + blur while the ground stays put behind them.
+      const inner = section.querySelector(':scope > .chapter-inner') || section.firstElementChild;
+      if (inner) {
+        inner.style.transform = style.transform;
+        // Quantise blur to whole pixels: filter:blur() re-rasterises the whole
+        // (complex) layer on every value change, so a continuously-varying blur
+        // stutters at 60fps. Snapping to ~2px steps keeps the depth smooth.
+        const bpx = Math.round(style.blur / 2) * 2;
+        const nextFilter = bpx > 0 ? `blur(${bpx}px)` : 'none';
+        if (inner.style.filter !== nextFilter) inner.style.filter = nextFilter;
+        inner.style.willChange = Math.abs(i - progress) < 1.2 ? 'transform, filter' : 'auto';
+      }
     }
     setArc(stepCount > 1 ? progress / (stepCount - 1) : 1);
     if (cueUpdate) cueUpdate();
