@@ -303,6 +303,13 @@ const SCRAMBLE_MAX_MS = 2200;
 // prior run and forces the true target before starting fresh).
 const scrambleRuns = new WeakMap();
 
+// Sections that have already played their full arrival once. A re-visit (e.g.
+// scrolling BACK to a section) then settles in calmly and instantly — no
+// re-cascade, no re-scramble, no re-count — so backward scrolling reads as
+// smooth, not as a rebuild. The full character-by-character reveal still plays
+// the FIRST time each section is reached, whichever direction that is.
+const arrivedOnce = new WeakSet();
+
 /**
  * Step ARRIVAL — the premium "this chapter is arriving" beat.
  *
@@ -331,11 +338,15 @@ export const arrival = (rootEl, opts = {}) => {
   const counters = Array.from(rootEl.querySelectorAll('[data-arrival-count]'));
 
   // Run the assemble: cascade lines in, scramble the flagged line, count up.
+  // A calm RE-VISIT (already arrived once, or reduced motion) just settles every
+  // element into place instantly — no cascade, no re-scramble, no re-count.
   const assemble = () => {
+    const replay = arrivedOnce.has(rootEl);
+    arrivedOnce.add(rootEl);
     lines.forEach((el, i) => {
       el.classList.remove('is-arrived');
-      if (reduced) {
-        el.classList.add('is-arrived');
+      if (replay || reduced) {
+        el.classList.add('is-arrived'); // instant settle, no entrance animation
         return;
       }
       el.style.setProperty('--arrival-delay', `${i * ARRIVAL_ASSEMBLE_STAGGER_MS}ms`);
@@ -343,11 +354,14 @@ export const arrival = (rootEl, opts = {}) => {
       requestAnimationFrame(() => el.classList.add('is-arrived'));
     });
 
-    rootEl.querySelectorAll('[data-arrival-scramble]').forEach((el) => {
-      scrambleIn(el);
-    });
-
-    counters.forEach((el) => countUpArrival(el, reduced));
+    // On a re-visit the scrambled line + counters already hold their final
+    // text/value, so leave them be; only run them on the first arrival.
+    if (!replay) {
+      rootEl.querySelectorAll('[data-arrival-scramble]').forEach((el) => {
+        scrambleIn(el);
+      });
+      counters.forEach((el) => countUpArrival(el, reduced));
+    }
   };
 
   // First-step listening ritual: a brief staged "connecting" overlay.

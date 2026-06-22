@@ -52,21 +52,24 @@ const DOT_R = 5;
  *
  * `side` controls label anchor (left = label to the west, right = to the east).
  *
- * `quote` is a VERBATIM week-long video-diary line from STORY.md. Glasgow and
- * Wigan have no attributed verbatim line, so they carry the factual method note.
+ * `quote` is a VERBATIM week-long video-diary line from STORY.md (em dashes
+ * normalised to commas per house style). All eight cities carry a diary line;
+ * a `note` fallback remains for any city left without one.
  */
 const CITIES = [
   {
     id: 'glasgow', name: 'Glasgow',
     // Scotland's central belt, on the west of the mainland body by the Clyde.
     fx: 0.4300, fy: 0.3600, side: 'right',
-    note: "A week-long video diary with a local household, filmed in early June.",
+    quote: "My trust has worsened over time, but with AI I feel empowered to take control and help myself.",
+    who: 'Glasgow, Hustler',
   },
   {
     id: 'wigan', name: 'Wigan',
     // NW England, west of Manchester; just west of Bury.
     fx: 0.5250, fy: 0.6220, side: 'left',
-    note: "A week-long video diary with a local household, filmed in early June.",
+    quote: "Life has improved with technology. It saves time, but it really can be overwhelming sometimes.",
+    who: 'Wigan, Coaster',
   },
   {
     id: 'bury', name: 'Bury',
