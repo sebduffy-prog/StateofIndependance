@@ -243,22 +243,6 @@
 }
 
 /* ============================================================
-   COVER (01) — the hero needs bespoke phone staging: stack the title above a
-   contained maze, kill the desktop right-pane absolute positioning.
-   ============================================================ */
-.m-scene#01-cover { padding-top: calc(var(--m-topbar-h) + var(--m-safe-top) + 8px); }
-.m-scene#01-cover .cover {
-  position: relative !important;
-  inset: auto !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: clamp(20px, 6vw, 34px);
-}
-
-/* ============================================================
    Error card — keep legible on the phone.
    ============================================================ */
 .m-scene .section-error-card {
@@ -274,3 +258,1731 @@
    keyed by scene id (e.g. `.m-scene#14-graphrag { … }`) so blocks never collide.
    ============================================================ */
 /* >>> per-section overrides start <<< */
+
+/* ===== 01-cover ===== */
+.m-scene[id="01-cover"] .chapter-inner { min-height: 100svh; }
+
+.m-scene[id="01-cover"] .cover {
+  min-height: 100svh;
+  gap: clamp(14px, 2.2vh, 22px);
+  padding-top: clamp(0.8rem, 2vh, 1.6rem);
+  padding-bottom: clamp(1.8rem, 5vh, 3rem);
+  padding-left: var(--margin-page, 22px);
+  padding-right: var(--margin-page, 22px);
+  text-align: center;
+  align-content: center;
+}
+
+.m-scene[id="01-cover"] .cover-copy {
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.m-scene[id="01-cover"] .cover-lockup {
+  max-width: 192px;
+  margin: 0 auto clamp(12px, 2vh, 18px);
+}
+
+.m-scene[id="01-cover"] .cover-kicker {
+  margin-bottom: clamp(7px, 1.2vh, 12px);
+}
+
+.m-scene[id="01-cover"] .cover-wordmark {
+  font-size: clamp(2.7rem, 12vw, 3.4rem);
+  line-height: 0.92;
+}
+
+.m-scene[id="01-cover"] .cover-standfirst {
+  margin-top: clamp(12px, 2vh, 18px);
+  max-width: 33ch;
+  font-size: 1rem;
+  line-height: 1.48;
+  opacity: 0.9;
+}
+
+.m-scene[id="01-cover"] .cover-stage {
+  order: -1;
+  justify-self: center;
+  align-self: center;
+  max-width: min(58vw, 236px);
+  margin: 0 auto;
+}
+
+/* Safety net: ensure the hero copy is never left invisible if the
+   arrival/scramble reveal does not fire in the mobile shell. */
+.m-scene[id="01-cover"] [data-arrival] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== 02-research ===== */
+/* ── 02-research · mobile reflow ─────────────────────────────────────────
+   NOTE: the id starts with a digit, so it MUST be CSS-escaped as [id="02-research"]
+   (a literal "[id="02-research"]" is an invalid selector and is silently dropped).
+   Every rule below is scoped to .m-scene[id="02-research"]. */
+
+/* Let the scene grow past one screen so the tall UK map gets real height and
+   the diary/hint are reachable below it (desktop pins the grid to 100svh). */
+.m-scene[id="02-research"] { overflow-y: visible; }
+.m-scene[id="02-research"] .chapter-inner { min-height: 0; }
+
+.m-scene[id="02-research"] .research-grid {
+  height: auto !important;
+  min-height: 0 !important;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: clamp(20px, 4vh, 30px);
+  padding: 78px 22px 44px;
+}
+
+/* Rail: top-anchored, full width — headline + facts read first. */
+.m-scene[id="02-research"] .research-rail {
+  align-self: auto;
+  justify-content: flex-start;
+  min-height: 0;
+}
+.m-scene[id="02-research"] .research-headline {
+  font-size: clamp(2.3rem, 11vw, 3.1rem);
+  margin-bottom: 16px;
+}
+.m-scene[id="02-research"] .research-standfirst {
+  max-width: none;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+.m-scene[id="02-research"] .research-facts { gap: 16px 24px; margin-bottom: 22px; }
+.m-scene[id="02-research"] .research-fact-k { font-size: 1.9rem; }
+
+/* Diary slot: comfortable, never clips the quote + cite. */
+.m-scene[id="02-research"] .research-diary {
+  min-height: clamp(120px, 18vh, 150px);
+  max-height: none;
+  margin-top: 6px;
+}
+
+/* HERO map: a real, sensible mobile size. The silhouette is 823x1280 (very
+   tall), so the box is fixed-height and the SVG is sized by height. The mobile
+   collapse-net forces -wrap to height:auto, so these need !important. */
+.m-scene[id="02-research"] .research-stage {
+  height: auto;
+  gap: 8px;
+  margin-top: 2px;
+}
+.m-scene[id="02-research"] .research-status {
+  align-self: flex-start; text-align: left; margin-bottom: 0;
+}
+.m-scene[id="02-research"] .research-hint {
+  align-self: flex-start; text-align: left; max-width: none; font-size: 0.82rem;
+}
+.m-scene[id="02-research"] .research-map-wrap {
+  min-height: 380px !important;
+  height: 380px !important;
+  align-items: center;
+}
+.m-scene[id="02-research"] .research-map {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+.m-scene[id="02-research"] .research-map-svg {
+  height: 380px !important;
+  width: auto !important;
+  max-width: 100%;
+}
+
+/* Legible city labels over the navy silhouette on a small screen. */
+.m-scene[id="02-research"] .research-marker-label { font-size: 30px; }
+
+/* ===== 03-baselines ===== */
+/* ── 03-baselines · mobile refinements (390px) ───────────────── */
+
+/* Top-align content under the top bar; remove the centred dead band */
+.m-scene[id="03-baselines"] .chapter-inner {
+  padding-block: 1.5rem 2.5rem;
+  justify-content: flex-start;
+}
+
+/* Tighten the stack so headline → interaction → floor → waffle flow */
+.m-scene[id="03-baselines"] .bl-hero { gap: 1.25rem; }
+.m-scene[id="03-baselines"] .bl-rail {
+  justify-content: flex-start;
+  gap: 1.25rem;
+}
+
+/* Display headline: phone-scaled, never overflows the rail */
+.m-scene[id="03-baselines"] .bl-headline {
+  font-size: clamp(2.7rem, 13vw, 3.4rem);
+  line-height: 0.96;
+}
+
+/* Claim cell no longer reserves desktop height on a phone */
+.m-scene[id="03-baselines"] .bl-claim { min-height: 0; }
+
+/* Slider + button: thumb-friendly */
+.m-scene[id="03-baselines"] .guess-control {
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.m-scene[id="03-baselines"] .guess-range { height: 6px; }
+.m-scene[id="03-baselines"] .guess-submit {
+  min-height: 52px;
+  width: 100%;
+}
+
+/* Crowd: top-align so the waffle sits right under the floor stats,
+   no stranded centring gap */
+.m-scene[id="03-baselines"] .bl-crowd {
+  height: auto;
+  min-height: 0;
+  justify-content: flex-start;
+  gap: 0.85rem;
+}
+.m-scene[id="03-baselines"] .bl-crowd-inner {
+  flex: none;
+  min-height: 0;
+}
+
+/* Comfortable, centred waffle */
+.m-scene[id="03-baselines"] [data-crowd-grid] svg {
+  max-width: 340px !important;
+  margin-inline: auto;
+}
+
+/* ===== 04-baselines-rest ===== */
+/* NOTE: ID starts with a digit, so the selector must escape it as [id="04-"]...
+   (identical to how css/sections/04-baselines-rest.css scopes itself).
+   An unescaped ".m-scene[id="04-baselines-rest"]" is invalid CSS and is dropped. */
+
+.m-scene[id="04-baselines-rest"] .chapter-inner {
+  padding: clamp(1.4rem, 4vh, 2.6rem) var(--margin-page, 20px) clamp(2.2rem, 6vh, 3.2rem);
+  gap: clamp(1.6rem, 4vh, 2.4rem);
+}
+
+/* Comfortable mobile type scale */
+.m-scene[id="04-baselines-rest"] .br-headline {
+  font-size: clamp(2.5rem, 11vw, 3.3rem);
+}
+.m-scene[id="04-baselines-rest"] .br-stats {
+  gap: clamp(1rem, 3.6vw, 1.7rem) clamp(1.2rem, 5vw, 2rem);
+}
+.m-scene[id="04-baselines-rest"] .br-num {
+  font-size: clamp(2.9rem, 13vw, 3.6rem);
+}
+.m-scene[id="04-baselines-rest"] .br-lbl {
+  font-size: clamp(0.82rem, 3.4vw, 0.95rem);
+}
+.m-scene[id="04-baselines-rest"] .br-standfirst {
+  font-size: clamp(0.95rem, 4vw, 1.05rem);
+  line-height: 1.55;
+  max-width: none;
+}
+
+/* Pill filter — tidy wrapping row, >=44px thumb targets */
+.m-scene[id="04-baselines-rest"] .br-filter { margin-top: clamp(8px, 1.6vh, 14px); }
+.m-scene[id="04-baselines-rest"] .pillgroup { gap: 10px; }
+.m-scene[id="04-baselines-rest"] .pillgroup-chip {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.05em;
+  font-size: 0.92rem;
+}
+
+/* Charts — full width, generous vertical rhythm, legible captions */
+.m-scene[id="04-baselines-rest"] .br-grid {
+  height: auto;
+  gap: clamp(1.4rem, 5vh, 2.4rem);
+}
+.m-scene[id="04-baselines-rest"] .br-panel {
+  padding-block: clamp(1rem, 3vh, 1.6rem);
+  row-gap: clamp(0.6rem, 1.6vh, 1rem);
+}
+.m-scene[id="04-baselines-rest"] .br-cap {
+  font-size: clamp(0.86rem, 3.6vw, 1rem);
+  opacity: 0.9;
+}
+.m-scene[id="04-baselines-rest"] .br-viz {
+  min-height: clamp(120px, 30vw, 180px);
+}
+
+/* ===== 05-twists-intro ===== */
+.m-scene[id="05-twists-intro"] .twists-intro-root{
+  padding-left: var(--margin-page, 22px);
+  padding-right: var(--margin-page, 22px);
+  padding-top: clamp(20px, 4vh, 40px);
+  row-gap: clamp(30px, 5vh, 44px);
+}
+/* Headline: comfortable mobile scale, italic accent keeps its own line */
+.m-scene[id="05-twists-intro"] .twists-intro-title{
+  font-size: clamp(3rem, 13.5vw, 4.4rem);
+  line-height: 0.92;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-stand{
+  font-size: 1.02rem;
+  line-height: 1.58;
+  opacity: 0.86;
+  max-width: 38ch;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-rule{
+  margin-top: clamp(18px, 3vh, 28px);
+}
+/* Quieten the ambient orbit field so it doesn't fight the index on a small screen */
+.m-scene[id="05-twists-intro"] .twists-intro-ambient{ opacity: 0.32; }
+/* The three-twist index: generous stacking, room for the meridian on the left */
+.m-scene[id="05-twists-intro"] .twists-intro-index-list{
+  padding-left: 42px;
+  gap: clamp(26px, 5vh, 40px);
+}
+/* Meridian threads the three rows tightly; hide the travelling marker on touch
+   (all reframes are already open, so the marker has nothing to point at) */
+.m-scene[id="05-twists-intro"] .twists-intro-meridian{
+  top: 14px;
+  bottom: 14px;
+  left: 6px;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-meridian-marker{ display: none; }
+/* Rows: comfortable tap target + mobile-sized ghost number */
+.m-scene[id="05-twists-intro"] .twists-intro-row{
+  gap: 16px;
+  padding: 8px 0;
+  align-items: start;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-num{
+  font-size: 2.6rem;
+  line-height: 0.9;
+  color: rgba(240, 237, 231, 0.30);
+}
+/* Land each node exactly on the meridian thread, in the yellow accent */
+.m-scene[id="05-twists-intro"] .twists-intro-node{
+  left: -36px;
+  top: 16px;
+  width: 8px;
+  height: 8px;
+  background: var(--yellow, #F0CB08);
+  opacity: 0.55;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-line{
+  font-size: 1.42rem;
+  line-height: 1.12;
+}
+.m-scene[id="05-twists-intro"] .twists-intro-reframe{
+  font-size: 0.98rem;
+  line-height: 1.55;
+  opacity: 0.82;
+  max-width: 40ch;
+  margin-top: 8px;
+}
+
+/* ===== 06-twist-trust ===== */
+/* ===== 06-twist-trust — mobile overrides ===== */
+
+/* Release the one-screen clip: let the scene grow to fit pre/post content. */
+.m-scene[id="06-twist-trust"] .chapter-inner {
+  max-height: none !important;
+  overflow: visible !important;
+  display: block;
+}
+.m-scene[id="06-twist-trust"] .tt-root {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+}
+.m-scene[id="06-twist-trust"] .tt-grid {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  gap: 26px;
+  padding: calc(var(--m-topbar-h) + var(--m-safe-top) + 20px) var(--margin-page) 36px;
+}
+
+/* Keep the brand stamp clear of the fixed top bar. */
+.m-scene[id="06-twist-trust"] .tt-mark {
+  top: calc(var(--m-safe-top) + 8px);
+  height: 22px;
+}
+
+/* Orbit decoration kept subtle and contained. */
+.m-scene[id="06-twist-trust"] .tt-orbit {
+  bottom: -10vh;
+  right: -30vw;
+  width: clamp(360px, 90vw, 520px);
+  height: clamp(360px, 90vw, 520px);
+}
+
+/* Stop the desktop height-fill: left/rank pack naturally, no dead gap. */
+.m-scene[id="06-twist-trust"] .tt-left {
+  justify-content: flex-start;
+  gap: 16px;
+}
+.m-scene[id="06-twist-trust"] .tt-rank-block {
+  flex: none;
+  min-height: 0;
+}
+.m-scene[id="06-twist-trust"] .tt-rank {
+  flex: none;
+}
+
+/* Title cluster a touch tighter, comfortable. */
+.m-scene[id="06-twist-trust"] .tt-title {
+  font-size: clamp(2.6rem, 12vw, 3.4rem);
+  line-height: 0.95;
+}
+.m-scene[id="06-twist-trust"] .tt-stand {
+  font-size: 0.96rem;
+  line-height: 1.5;
+  max-width: 40ch;
+}
+
+/* ── Rank rows: comfortably tall, thumb-friendly (>=48px) ───────────── */
+.m-scene[id="06-twist-trust"] .rank-help {
+  font-size: 0.82rem;
+}
+.m-scene[id="06-twist-trust"] .rank-list {
+  gap: 8px !important;
+  flex: none;
+}
+.m-scene[id="06-twist-trust"] .rank-item {
+  grid-template-columns: 2.2ch 1fr auto;
+  gap: 12px;
+  min-height: 52px !important;
+  padding: 12px 14px !important;
+  background: rgba(240, 237, 231, 0.08);
+  border-color: rgba(240, 237, 231, 0.16);
+}
+.m-scene[id="06-twist-trust"] .rank-pos {
+  font-size: 0.95rem;
+}
+.m-scene[id="06-twist-trust"] .rank-label {
+  font-size: 0.98rem;
+  white-space: normal;
+}
+.m-scene[id="06-twist-trust"] .rank-grip {
+  font-size: 1.25rem;
+  color: rgba(240, 237, 231, 0.45);
+}
+.m-scene[id="06-twist-trust"] .rank-submit {
+  margin-top: 18px;
+  width: 100%;
+  text-align: center;
+  align-self: stretch;
+  padding: 15px 24px;
+  font-size: 0.86rem;
+}
+
+/* ── Right column flows naturally below — no stretch, no dead gap ────── */
+.m-scene[id="06-twist-trust"] .tt-right {
+  display: block;
+  min-height: 0;
+}
+.m-scene[id="06-twist-trust"] .tt-pre,
+.m-scene[id="06-twist-trust"] .tt-truth {
+  flex: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 4px 0 0;
+}
+/* Respect the hidden attribute so a stale panel never holds dead space. */
+.m-scene[id="06-twist-trust"] .tt-pre[hidden],
+.m-scene[id="06-twist-trust"] .tt-truth[hidden] { display: none; }
+
+/* Pre-reveal: legible blurred hero, comfortable spacing. */
+.m-scene[id="06-twist-trust"] .tt-pre__headline {
+  font-size: 1.18rem;
+  line-height: 1.3;
+  max-width: 30ch;
+}
+.m-scene[id="06-twist-trust"] .tt-pre__hero {
+  flex: none;
+  margin: 10px 0;
+  gap: 14px;
+}
+.m-scene[id="06-twist-trust"] .tt-pre__num {
+  font-size: clamp(3.6rem, 22vw, 5.4rem);
+}
+.m-scene[id="06-twist-trust"] .tt-pre__sub {
+  font-size: 0.92rem;
+}
+
+/* ── Post-reveal truth: full legibility ─────────────────────────────── */
+.m-scene[id="06-twist-trust"] .tt-order__name { font-size: 0.95rem; }
+.m-scene[id="06-twist-trust"] .tt-order__score { font-size: 1rem; }
+.m-scene[id="06-twist-trust"] .tt-order__pos { font-size: 0.85rem; }
+
+.m-scene[id="06-twist-trust"] .tt-spread {
+  gap: 18px;
+  align-items: flex-end;
+  margin-top: 4px;
+}
+.m-scene[id="06-twist-trust"] .tt-spread__num {
+  font-size: clamp(3.6rem, 18vw, 4.6rem);
+}
+.m-scene[id="06-twist-trust"] .tt-spread__arrow {
+  font-size: 1.4rem;
+  padding-bottom: 1rem;
+}
+.m-scene[id="06-twist-trust"] .tt-spread-cap {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: none;
+}
+.m-scene[id="06-twist-trust"] .tt-spread-cap__so {
+  font-size: 0.88rem;
+  line-height: 1.46;
+}
+
+/* Paradox: stack gauge over copy for full width legibility. */
+.m-scene[id="06-twist-trust"] .tt-paradox {
+  grid-template-columns: 1fr;
+  justify-items: start;
+  gap: 14px;
+  padding-top: 18px;
+}
+.m-scene[id="06-twist-trust"] .tt-paradox__gauge {
+  width: clamp(160px, 52vw, 210px);
+}
+.m-scene[id="06-twist-trust"] .tt-paradox__score {
+  font-size: 2.4rem;
+}
+.m-scene[id="06-twist-trust"] .tt-paradox__line {
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+/* ===== 07-twist-joy ===== */
+/* NOTE: the scene id begins with a digit, so the bare selector
+   ".m-scene[id="07-twist-joy"]" is INVALID CSS and silently drops the whole rule.
+   The id must be CSS-escaped as [id="07-twist-joy"] (a leading-zero digit escape,
+   the same form the section's own stylesheet uses). This IS the scoped
+   ".m-scene[id="07-twist-joy"] " selector, just written in valid CSS. */
+
+.m-scene[id="07-twist-joy"] .twist-joy-root{
+  padding-left: var(--margin-page, 20px);
+  padding-right: var(--margin-page, 20px);
+  padding-top: clamp(20px, 4vh, 32px);
+  padding-bottom: clamp(28px, 5vh, 40px);
+  gap: clamp(20px, 4vh, 30px);
+  row-gap: clamp(20px, 4vh, 30px);
+}
+.m-scene[id="07-twist-joy"] .twist-joy-bignum{
+  font-size: clamp(5rem, 30vw, 7.5rem);
+}
+.m-scene[id="07-twist-joy"] .twist-joy-title{
+  font-size: clamp(2rem, 9vw, 2.8rem);
+}
+.m-scene[id="07-twist-joy"] .twist-joy-sub{
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 40ch;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-tally{
+  margin-top: clamp(10px, 2vh, 16px);
+  max-width: none;
+  padding: 14px 16px;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-tally-num{
+  font-size: 2.4rem;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-tally-label{
+  font-size: 0.84rem;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-stage{
+  gap: clamp(12px, 2.4vh, 18px);
+}
+.m-scene[id="07-twist-joy"] .twist-joy-holiday{
+  padding: 18px 18px;
+  gap: 16px;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-holiday-seal{
+  width: 56px;
+  height: 56px;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-holiday-label{
+  font-size: clamp(1.7rem, 8vw, 2.2rem);
+}
+.m-scene[id="07-twist-joy"] .twist-joy-holiday-pct{
+  font-size: 1.5rem;
+}
+/* HARD REQ: keep a 2-column field on the narrow phone (the section's own
+   <=540px rule collapses it to one column, so we override it). */
+.m-scene[id="07-twist-joy"] .twist-joy-field{
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px;
+}
+/* Each tile: >=44px tap target (renders ~90px), cue + pct on the top row and
+   the label wrapped beneath so nothing truncates in the tighter 2-col cell. */
+.m-scene[id="07-twist-joy"] .twist-joy-tile{
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "cue pct" "label label";
+  align-items: center;
+  row-gap: 4px;
+  column-gap: 8px;
+  min-height: 64px;
+  padding: 12px 13px;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-tile-cue{ grid-area: cue; }
+.m-scene[id="07-twist-joy"] .twist-joy-tile-pct{ grid-area: pct; justify-self: end; font-size: 1.15rem; }
+.m-scene[id="07-twist-joy"] .twist-joy-tile-label{
+  grid-area: label;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-tile-stamp{
+  font-size: 1.25rem;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-readout{
+  font-size: 0.95rem;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-data-note{
+  font-size: 0.62rem;
+}
+.m-scene[id="07-twist-joy"] .twist-joy-mark{
+  top: 8px;
+  right: 14px;
+  height: 22px;
+}
+
+/* ===== 08-twist-ai ===== */
+/* Scene 08 — Twist three: AI on tap. Mobile (390px) refinements.
+   NOTE: the leading digit in the id MUST be CSS-escaped ([id="08-twist-ai"]);
+   an unescaped [id="08-twist-ai"] is an invalid selector and is dropped by the
+   browser (verified), so every rule below uses the escaped form. */
+
+.m-scene[id="08-twist-ai"] .twist-ai-root {
+  padding: clamp(20px, 5vw, 32px) 20px clamp(40px, 8vw, 56px);
+  gap: 28px;
+  align-content: start;
+}
+
+/* Standfirst: comfortable mobile reading size */
+.m-scene[id="08-twist-ai"] .twist-ai-standfirst {
+  font-size: 1.02rem;
+  line-height: 1.5;
+  max-width: 38ch;
+}
+
+/* ── Two headline stats — keep DISTINCT, give the big numbers presence ── */
+.m-scene[id="08-twist-ai"] .twist-ai-stats {
+  gap: 16px;
+  margin-top: 4px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-stat {
+  column-gap: 14px;
+  padding-left: 14px;
+  border-left-width: 4px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-stat-num {
+  font-size: 3rem;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-stat-label {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  opacity: 0.86;
+  max-width: none;
+}
+
+/* ── Task list — give labels full room (no truncation), bars on own row ── */
+.m-scene[id="08-twist-ai"] .twist-ai-stage {
+  gap: 26px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-task-list {
+  gap: 12px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-task-item {
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label val"
+    "track track";
+  column-gap: 12px;
+  row-gap: 6px;
+  align-items: baseline;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-task-label {
+  grid-area: label;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  opacity: 0.95;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-task-val {
+  grid-area: val;
+  font-size: 1.05rem;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-task-track {
+  grid-area: track;
+  height: 12px;
+}
+
+/* ── Tug-of-war: title, full-width tappable picker, legible readout ── */
+.m-scene[id="08-twist-ai"] .twist-ai-tow {
+  gap: 16px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-tow-title {
+  font-size: 1.5rem;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-picker .pillgroup {
+  gap: 10px;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-picker .pillgroup-chip {
+  flex: 1 1 auto;
+  min-height: 46px;
+  font-size: 1rem;
+  padding: 12px 16px;
+  text-align: center;
+  justify-content: center;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-strip {
+  margin: 2px 0;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-readout {
+  font-size: 1.02rem;
+  line-height: 1.4;
+  opacity: 0.92;
+  min-height: 2.8em;
+}
+.m-scene[id="08-twist-ai"] .twist-ai-so {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  opacity: 0.7;
+  max-width: none;
+}
+
+/* ===== 09-segments-intro ===== */
+.m-scene[id="09-segments-intro"] .segments-intro { padding-inline: 16px; padding-block: 6px 10px; }
+.m-scene[id="09-segments-intro"] .segments-intro-mark { display: none; }
+
+.m-scene[id="09-segments-intro"] .segments-intro-grid { width: 100%; gap: 16px; }
+.m-scene[id="09-segments-intro"] .segments-intro-rail { gap: 11px; width: 100%; }
+.m-scene[id="09-segments-intro"] .segments-intro-standfirst { font-size: 0.9rem; line-height: 1.45; }
+
+.m-scene[id="09-segments-intro"] .segments-intro-legend { gap: 9px; margin-top: 4px; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg { padding: 8px; gap: 9px; min-height: 44px; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg-name { font-size: 0.92rem; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg-desc { font-size: 0.72rem; }
+
+.m-scene[id="09-segments-intro"] .segments-intro-stage { width: 100%; gap: 10px; }
+.m-scene[id="09-segments-intro"] .segments-intro-compass { width: min(100%, 80vh); }
+
+.m-scene[id="09-segments-intro"] .segments-intro-axis-cap { font-size: 0.62rem; letter-spacing: 0.1em; opacity: 0.85; }
+.m-scene[id="09-segments-intro"] .segments-intro-axis-cap--top { transform: translateX(8px) translateY(-1px); }
+.m-scene[id="09-segments-intro"] .segments-intro-axis-cap--bottom { transform: translateX(8px) translateY(1px); }
+
+.m-scene[id="09-segments-intro"] .segments-intro-quad-share { font-size: 1.7rem; }
+.m-scene[id="09-segments-intro"] .segments-intro-quad-name { font-size: 0.78rem; }
+
+.m-scene[id="09-segments-intro"] .segments-intro-cap { font-size: 0.74rem; }
+
+/* ===== 10-segment-architects ===== */
+/* Scene 10 — The Architects (segment profile, shared template for 10–13).
+   NOTE: id begins with a digit, so it MUST be CSS-escaped as [id="10-"]... ;
+   a literal "[id="10-segment-architects"]" selector is invalid CSS and is dropped. */
+
+/* Comfortable column rhythm; clear the fixed top bar. */
+.m-scene[id="10-segment-architects"] .seg-grid {
+  padding: calc(var(--m-topbar-h, 52px) + 18px) 20px 40px;
+  row-gap: 26px;
+}
+.m-scene[id="10-segment-architects"] .seg-data {
+  gap: 14px;
+}
+
+/* Lens pills: thumb-friendly wrapping row (2-up where they fit), 44px targets. */
+.m-scene[id="10-segment-architects"] .seg-lens .pillgroup {
+  gap: 8px;
+}
+.m-scene[id="10-segment-architects"] .seg-lens .pillgroup-chip {
+  flex: 1 1 44%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 8px 12px;
+}
+
+/* Restore the fingerprint cloud the section hides below 900px; reflow, don't drop. */
+.m-scene[id="10-segment-architects"] .seg-fingerprint {
+  display: flex !important;
+  margin-top: 22px;
+}
+.m-scene[id="10-segment-architects"] .seg-fingerprint-cloud {
+  max-height: none;
+  overflow: visible;
+  gap: 8px;
+}
+.m-scene[id="10-segment-architects"] .seg-fingerprint-tag {
+  font-size: 0.82rem;
+  padding: 7px 12px;
+}
+
+/* ===== 11-segment-hustlers ===== */
+/* ===== 11-segment-hustlers — mobile refinement (390px) =====
+   ID begins with a digit, so it MUST be escaped ([id="11-"]…) to be a valid
+   CSS selector — semantically this is .m-scene[id="11-segment-hustlers"]. */
+
+/* Let the scene size to its content; comfortable rhythm. */
+.m-scene[id="11-segment-hustlers"] .chapter-inner {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  align-items: stretch;
+}
+.m-scene[id="11-segment-hustlers"] .seg-grid {
+  height: auto;
+  row-gap: clamp(24px, 4.5vh, 34px);
+  padding: clamp(20px, 4vh, 36px) var(--margin-page, 20px)
+           clamp(28px, 6vh, 48px) var(--margin-page, 20px);
+}
+
+/* Identity rail — legible, roomy. */
+.m-scene[id="11-segment-hustlers"] .seg-id { gap: clamp(13px, 2.2vh, 19px); }
+.m-scene[id="11-segment-hustlers"] .seg-title {
+  font-size: clamp(2.7rem, 14vw, 3.5rem);
+  line-height: 0.92;
+}
+.m-scene[id="11-segment-hustlers"] .seg-descriptor { font-size: 1.14rem; }
+.m-scene[id="11-segment-hustlers"] .seg-quote p { font-size: 1.03rem; line-height: 1.36; }
+.m-scene[id="11-segment-hustlers"] .seg-facts {
+  gap: clamp(13px, 2.2vh, 18px) clamp(16px, 4vw, 24px);
+}
+.m-scene[id="11-segment-hustlers"] .seg-fact dt { font-size: 0.64rem; }
+.m-scene[id="11-segment-hustlers"] .seg-fact dd { font-size: 0.92rem; line-height: 1.3; }
+.m-scene[id="11-segment-hustlers"] .seg-share { gap: 6px 14px; }
+.m-scene[id="11-segment-hustlers"] .seg-share-num {
+  font-size: clamp(3.3rem, 17vw, 4.4rem);
+}
+.m-scene[id="11-segment-hustlers"] .seg-share-cap {
+  font-size: 0.96rem;
+  max-width: none;
+}
+
+/* Data column flows naturally. */
+.m-scene[id="11-segment-hustlers"] .seg-data {
+  height: auto;
+  gap: clamp(13px, 2.2vh, 18px);
+}
+.m-scene[id="11-segment-hustlers"] .seg-data-title {
+  font-size: clamp(1.45rem, 6.4vw, 1.72rem);
+  line-height: 1.05;
+}
+.m-scene[id="11-segment-hustlers"] .seg-lens-hint { font-size: 0.93rem; opacity: 0.82; }
+
+/* Lens pills — thumb-friendly two-up grid, big tap targets. */
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup { gap: 10px; }
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup-chip {
+  flex: 1 1 calc(50% - 5px);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 0.88rem;
+  padding: 10px 14px;
+  border-left-width: 5px;
+}
+
+/* Chart — full-width, snug (no floating dead band) and legible. */
+.m-scene[id="11-segment-hustlers"] .seg-chart {
+  padding: clamp(6px, 1.5vh, 12px) 0;
+  min-height: 0;
+  align-items: stretch;
+}
+.m-scene[id="11-segment-hustlers"] .seg-chart svg {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+
+.m-scene[id="11-segment-hustlers"] .seg-baseline { font-size: 0.8rem; opacity: 0.7; }
+
+/* Fingerprint cloud — restore it (hidden by the section's <=900px rule) and
+   reflow it full-width with thumb-comfortable tags. */
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint {
+  display: flex !important;
+  margin-top: clamp(10px, 2vh, 16px);
+  gap: 11px;
+}
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint-cloud {
+  max-height: none;
+  overflow: visible;
+  gap: 9px;
+}
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint-label { font-size: 0.66rem; }
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint-tag {
+  font-size: 0.84rem;
+  padding: 9px 14px;
+}
+
+/* Decorative orbit not needed in the stacked mobile flow. */
+.m-scene[id="11-segment-hustlers"] .seg-orbit { display: none; }
+
+/* ===== 12-segment-coasters ===== */
+.m-scene[id="12-segment-coasters"] .chapter-inner {
+  display: block;
+  height: auto;
+  overflow: visible;
+  padding: 0;
+}
+.m-scene[id="12-segment-coasters"] .seg-grid {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  row-gap: clamp(20px, 4vh, 30px);
+  padding: clamp(20px, 5vh, 36px) var(--margin-page, 22px)
+           calc(var(--journey-controls-h, 64px) + 28px);
+}
+.m-scene[id="12-segment-coasters"] .seg-id {
+  justify-content: flex-start;
+  gap: clamp(12px, 2.2vh, 18px);
+  max-width: none;
+}
+.m-scene[id="12-segment-coasters"] .seg-mark { display: none; }
+
+.m-scene[id="12-segment-coasters"] .seg-title {
+  font-size: clamp(2.6rem, 13vw, 3.4rem);
+  line-height: 0.92;
+}
+.m-scene[id="12-segment-coasters"] .seg-descriptor {
+  font-size: 1.18rem;
+}
+.m-scene[id="12-segment-coasters"] .seg-quote {
+  max-width: none;
+}
+.m-scene[id="12-segment-coasters"] .seg-quote p {
+  font-size: 1.06rem;
+  line-height: 1.4;
+}
+.m-scene[id="12-segment-coasters"] .seg-quote cite {
+  display: block;
+  font-size: 0.64rem;
+}
+
+.m-scene[id="12-segment-coasters"] .seg-facts {
+  gap: clamp(12px, 2vh, 18px) clamp(16px, 4vw, 24px);
+}
+.m-scene[id="12-segment-coasters"] .seg-fact dt { font-size: 0.66rem; }
+.m-scene[id="12-segment-coasters"] .seg-fact dd { font-size: 0.92rem; line-height: 1.32; }
+
+.m-scene[id="12-segment-coasters"] .seg-share {
+  margin-top: clamp(6px, 1.4vh, 12px);
+  gap: 6px 14px;
+}
+.m-scene[id="12-segment-coasters"] .seg-share-num {
+  font-size: clamp(3.4rem, 18vw, 4.4rem);
+  line-height: 0.84;
+}
+.m-scene[id="12-segment-coasters"] .seg-share-cap {
+  font-size: 0.96rem;
+  max-width: none;
+}
+
+/* Data column - flows naturally, no forced height. */
+.m-scene[id="12-segment-coasters"] .seg-data {
+  height: auto;
+  gap: clamp(12px, 2.2vh, 18px);
+}
+.m-scene[id="12-segment-coasters"] .seg-icon {
+  width: 64px;
+  height: 64px;
+  padding: 12px;
+}
+.m-scene[id="12-segment-coasters"] .seg-data-title {
+  font-size: clamp(1.4rem, 6vw, 1.7rem);
+  line-height: 1.06;
+}
+.m-scene[id="12-segment-coasters"] .seg-lens-hint {
+  font-size: 0.92rem;
+  opacity: 0.85;
+  max-width: none;
+}
+
+/* Lens pills - thumb-friendly targets. */
+.m-scene[id="12-segment-coasters"] .seg-lens .pillgroup { gap: 8px; }
+.m-scene[id="12-segment-coasters"] .seg-lens .pillgroup-chip {
+  font-size: 0.82rem;
+  padding: 11px 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Chart - full width, give it real height on mobile. */
+.m-scene[id="12-segment-coasters"] .seg-chart {
+  flex: none;
+  min-height: 300px;
+  padding: clamp(8px, 2vh, 16px) 0;
+}
+.m-scene[id="12-segment-coasters"] .seg-chart svg {
+  max-height: none;
+}
+
+/* Pucks fallback for sparse lenses - readable on mobile. */
+.m-scene[id="12-segment-coasters"] .seg-pucks {
+  height: auto;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.m-scene[id="12-segment-coasters"] .seg-puck {
+  flex: 1 1 140px;
+  max-width: none;
+  padding: 18px 16px;
+}
+
+.m-scene[id="12-segment-coasters"] .seg-baseline {
+  font-size: 0.74rem;
+  opacity: 0.7;
+}
+
+/* Fingerprint cloud - when populated by JS it stays a full, readable stack;
+   left untouched (kept hidden) when the segment has no statements so an empty
+   header never shows. */
+.m-scene[id="12-segment-coasters"] .seg-fingerprint {
+  margin-top: clamp(8px, 2vh, 16px);
+  gap: 10px;
+  padding-top: clamp(12px, 2vh, 16px);
+}
+.m-scene[id="12-segment-coasters"] .seg-fingerprint-label { font-size: 0.62rem; }
+.m-scene[id="12-segment-coasters"] .seg-fingerprint-cloud {
+  max-height: none;
+  overflow: visible;
+  gap: 8px;
+}
+.m-scene[id="12-segment-coasters"] .seg-fingerprint-tag {
+  font-size: 0.82rem;
+  padding: 8px 12px;
+}
+
+.m-scene[id="12-segment-coasters"] .seg-orbit { display: none; }
+
+/* ===== 13-segment-retreaters ===== */
+/* Scene 13 — The Retreaters. Scoped to the (digit-escaped) scene id.
+   Mobile refinements only; same content/story, reflowed for 390px. */
+.m-scene[id="13-segment-retreaters"] .seg-grid {
+  padding-top: clamp(12px, 2.4vh, 24px);
+  padding-bottom: clamp(20px, 4vh, 36px);
+  row-gap: clamp(22px, 4vh, 34px);
+}
+
+/* Bigger, more present headline on the phone */
+.m-scene[id="13-segment-retreaters"] .seg-title {
+  font-size: clamp(2.9rem, 13vw, 3.6rem);
+}
+.m-scene[id="13-segment-retreaters"] .seg-descriptor {
+  font-size: 1.12rem;
+}
+
+/* Hero share number reads as the headline stat */
+.m-scene[id="13-segment-retreaters"] .seg-share-num {
+  font-size: clamp(3.4rem, 16vw, 4.2rem);
+}
+.m-scene[id="13-segment-retreaters"] .seg-share-cap {
+  font-size: 0.96rem;
+  max-width: none;
+}
+
+/* Lens pills: thumb-friendly tap targets */
+.m-scene[id="13-segment-retreaters"] .seg-lens .pillgroup-chip {
+  font-size: 0.82rem;
+  padding: 12px 14px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* Let the chart take its natural height, top-aligned directly under the
+   lens pills so there is no dead gap. */
+.m-scene[id="13-segment-retreaters"] .seg-chart {
+  flex: 0 0 auto;
+  min-height: 0;
+  align-items: flex-start;
+  padding: clamp(10px, 2vh, 16px) 0 clamp(6px, 1.4vh, 12px);
+}
+.m-scene[id="13-segment-retreaters"] .seg-chart svg {
+  max-height: none;
+}
+
+/* Restore the fingerprint cloud the desktop <=900px breakpoint hides */
+.m-scene[id="13-segment-retreaters"] .seg-fingerprint {
+  display: flex !important;
+  margin-top: clamp(18px, 3vh, 28px);
+}
+.m-scene[id="13-segment-retreaters"] .seg-fingerprint-cloud {
+  max-height: none;
+}
+.m-scene[id="13-segment-retreaters"] .seg-fingerprint-tag {
+  font-size: 0.8rem;
+  padding: 7px 12px;
+}
+
+.m-scene[id="13-segment-retreaters"] .seg-data-title {
+  font-size: clamp(1.5rem, 6vw, 1.9rem);
+}
+.m-scene[id="13-segment-retreaters"] .seg-lens-hint,
+.m-scene[id="13-segment-retreaters"] .seg-baseline {
+  font-size: 0.82rem;
+}
+
+/* ===== 14-graphrag ===== */
+/* ── Release the one-screen cage so the scene flows tall on mobile ──────── */
+.m-scene[id="14-graphrag"] .chapter-inner {
+  max-height: none !important;
+  overflow: visible !important;
+}
+.m-scene[id="14-graphrag"] .graphrag-root {
+  height: auto !important;
+  overflow: visible !important;
+}
+.m-scene[id="14-graphrag"] .graphrag-layout {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 12px 18px 30px !important;
+}
+.m-scene[id="14-graphrag"] .graphrag-top { display: block !important; }
+
+/* ── Title + legend ─────────────────────────────────────────────────────── */
+.m-scene[id="14-graphrag"] .graphrag-head { margin-bottom: 18px; }
+.m-scene[id="14-graphrag"] .graphrag-title {
+  font-size: 2.5rem !important;
+  line-height: 0.95 !important;
+}
+.m-scene[id="14-graphrag"] .graphrag-keys { gap: 8px 16px; }
+.m-scene[id="14-graphrag"] .graphrag-keys li { font-size: 0.84rem; }
+.m-scene[id="14-graphrag"] .gk-swatch { width: 14px; height: 14px; }
+
+/* ── Survey explorer ────────────────────────────────────────────────────── */
+.m-scene[id="14-graphrag"] .graphrag-survey {
+  margin-bottom: 22px;
+  padding: 15px 14px !important;
+}
+.m-scene[id="14-graphrag"] .gs-control {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 9px;
+}
+.m-scene[id="14-graphrag"] .gs-label { font-size: 0.72rem; }
+.m-scene[id="14-graphrag"] .gs-select {
+  font-size: 1rem !important;
+  min-height: 48px;
+  padding: 11px 14px !important;
+}
+.m-scene[id="14-graphrag"] .gs-measure { font-size: 0.78rem; }
+.m-scene[id="14-graphrag"] .gs-table { max-height: 250px !important; }
+.m-scene[id="14-graphrag"] .gs-row {
+  grid-template-columns: minmax(0, 1.3fr) repeat(4, minmax(0, 0.66fr)) !important;
+  gap: 3px 4px !important;
+  padding: 6px 2px !important;
+}
+.m-scene[id="14-graphrag"] .gs-cell { font-size: 0.78rem; }
+.m-scene[id="14-graphrag"] .gs-row--head .gs-cell--label,
+.m-scene[id="14-graphrag"] .gs-row--head .gs-cell--val {
+  font-size: 0.55rem !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Stack the % over its index so narrow columns never overlap; both stay visible */
+.m-scene[id="14-graphrag"] .gs-cell--val {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+.m-scene[id="14-graphrag"] .gs-pct { font-size: 0.78rem; line-height: 1.1; }
+.m-scene[id="14-graphrag"] .gs-idx { font-size: 0.56rem; line-height: 1; }
+
+/* ── Graph stage — full-bleed, tall showpiece ───────────────────────────── */
+.m-scene[id="14-graphrag"] .graphrag-stage {
+  height: 420px !important;
+  min-height: 420px !important;
+  width: calc(100% + 36px) !important;
+  max-width: calc(100% + 36px) !important;
+  margin: 0 -18px 26px !important;
+  overflow: hidden !important;
+}
+.m-scene[id="14-graphrag"] .sg-wrap,
+.m-scene[id="14-graphrag"] .sg-stage,
+.m-scene[id="14-graphrag"] .sg-svg { height: 100% !important; width: 100% !important; }
+/* Zoom the landscape viewBox so nodes/labels read on a portrait phone. */
+.m-scene[id="14-graphrag"] .sg-svg {
+  transform: scale(1.22);
+  transform-origin: center center;
+}
+.m-scene[id="14-graphrag"] .sg-hub .sg-label { font-size: 17px; }
+.m-scene[id="14-graphrag"] .sg-attr .sg-label { font-size: 12.5px; }
+
+/* ── Profile cards — tidy 2x2 ───────────────────────────────────────────── */
+.m-scene[id="14-graphrag"] .graphrag-profiles {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+.m-scene[id="14-graphrag"] .gp-card { padding: 13px !important; gap: 6px !important; }
+.m-scene[id="14-graphrag"] .gp-head { flex-wrap: wrap; align-items: baseline; }
+.m-scene[id="14-graphrag"] .gp-name {
+  font-size: 1.02rem !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+.m-scene[id="14-graphrag"] .gp-share { font-size: 0.86rem !important; }
+.m-scene[id="14-graphrag"] .gp-desc { font-size: 0.82rem !important; }
+.m-scene[id="14-graphrag"] .gp-facts dt { font-size: 0.62rem !important; }
+.m-scene[id="14-graphrag"] .gp-facts dd { font-size: 0.78rem !important; }
+.m-scene[id="14-graphrag"] .graphrag-profiles-hint {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+/* ===== 15-empowerment ===== */
+/* ===== Scene 15 — the empowerment architecture · mobile (390px) overrides =====
+   NOTE: the scene id starts with a digit, so a raw "[id="15-empowerment"]" selector is
+   INVALID CSS and silently dropped. Must use the escaped form "[id="15-empowerment"]"
+   (matches the section's own stylesheet). */
+
+.m-scene[id="15-empowerment"] .emp-stage{
+  display:flex;
+  flex-direction:column;
+  gap:0.7rem;
+  padding:0.3rem clamp(1.05rem,4.5vw,1.4rem) 0.8rem;
+  align-items:stretch;
+  justify-content:flex-start;
+}
+
+.m-scene[id="15-empowerment"] .emp-head{
+  justify-content:flex-start;
+  padding-right:0;
+}
+.m-scene[id="15-empowerment"] .emp-eyebrow{ margin:0 0 0.4rem; }
+.m-scene[id="15-empowerment"] .emp-title{
+  font-size:clamp(2.1rem,9.5vw,2.7rem);
+  line-height:0.92;
+  margin:0 0 0.5rem;
+}
+.m-scene[id="15-empowerment"] .emp-standfirst{
+  font-size:0.88rem;
+  line-height:1.45;
+  max-width:100%;
+  margin:0 0 0.8rem;
+}
+
+/* Pivot — full width, thumb-friendly target. */
+.m-scene[id="15-empowerment"] .emp-pivot{ max-width:100%; gap:0.35rem; }
+.m-scene[id="15-empowerment"] .emp-pivot-word{ font-size:1.3rem; }
+.m-scene[id="15-empowerment"] .emp-pivot-track{ height:44px; }
+.m-scene[id="15-empowerment"] .emp-pivot-slider{ height:44px; }
+.m-scene[id="15-empowerment"] .emp-pivot-slider::-webkit-slider-thumb{ width:30px; height:30px; }
+.m-scene[id="15-empowerment"] .emp-pivot-slider::-moz-range-thumb{ width:30px; height:30px; }
+
+/* Venn — give the mount + field a real square box. The desktop flex-stretch
+   sizing collapses to 0 height in the mobile single-column stack, which hid the
+   whole centrepiece; an explicit square restores it sized to fit 390px. */
+.m-scene[id="15-empowerment"] .emp-venn{
+  height:auto;
+  min-height:0;
+  gap:0.5rem;
+  margin-top:0;
+}
+.m-scene[id="15-empowerment"] .emp-venn-instruction{ margin:0; }
+.m-scene[id="15-empowerment"] .emp-venn-mount{
+  flex:0 0 auto;
+  width:min(66vw,252px);
+  height:min(66vw,252px);
+  min-height:0;
+  margin:0 auto;
+}
+.m-scene[id="15-empowerment"] .emp-tv-field{
+  max-height:100%;
+  max-width:100%;
+}
+
+/* Stat row — three verified figures abreast, fit inside 390 with no clipping. */
+.m-scene[id="15-empowerment"] .emp-stat-row{
+  gap:0.55rem;
+  padding:0;
+}
+.m-scene[id="15-empowerment"] .emp-tv-stat{ max-width:none; gap:0.05rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-icon{ margin-bottom:0.1rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-icon,
+.m-scene[id="15-empowerment"] .emp-tv-stat-icon__img{ width:30px; height:30px; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-n{ font-size:1.4rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-name{
+  font-size:0.68rem;
+  line-height:1.12;
+  white-space:normal;
+}
+.m-scene[id="15-empowerment"] .emp-tv-stat-sub{
+  font-size:0.54rem;
+  white-space:normal;
+}
+
+/* ===== 16-data-explorer ===== */
+.m-scene[id="16-data-explorer"] .pg-world{ padding-block: clamp(var(--space-3), 4vh, var(--space-5)); }
+
+/* Masthead: keep the figure + unit on one confident line, comfortable rhythm */
+.m-scene[id="16-data-explorer"] .pg-readout-num{ font-size: clamp(3.4rem, 21vw, 5.4rem); }
+.m-scene[id="16-data-explorer"] .pg-masthead{ row-gap: var(--space-2); padding-bottom: var(--space-2); }
+.m-scene[id="16-data-explorer"] .pg-readout-line{ font-size: clamp(1.15rem, 4.6vw, 1.4rem); }
+
+/* THE QUESTION bank: drop the nested inner-scroll on phones — let every group
+   show in tidy labelled wrapping rows and let the PAGE scroll instead. No
+   clipped half-rows, no scroll-trap. */
+.m-scene[id="16-data-explorer"] .pg-qbank{
+  max-height: none !important;
+  overflow: visible !important;
+  grid-template-columns: 1fr !important;
+  gap: var(--space-3) !important;
+  padding: 0 !important;
+}
+.m-scene[id="16-data-explorer"] .pg-qgroup{ gap: 8px; }
+.m-scene[id="16-data-explorer"] .pg-qgroup__head{ font-size: 0.72rem; opacity: 0.9; padding-bottom: 5px; }
+.m-scene[id="16-data-explorer"] .pg-qgroup__chips{ gap: 8px; }
+
+/* Comfortable thumb-sized chips (>=44px tall) across both control groups */
+.m-scene[id="16-data-explorer"] .pillgroup-chip{
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  font-size: 0.86rem;
+  line-height: 1.15;
+}
+.m-scene[id="16-data-explorer"] .pillgroup-chip.is-active{ box-shadow: inset 0 -4px 0 0 var(--yellow); }
+
+/* WHICH BRITAIN: clear gap above so it reads as its own control */
+.m-scene[id="16-data-explorer"] .pg-deck{ gap: var(--space-3); }
+.m-scene[id="16-data-explorer"] .pg-deck-row{ gap: var(--space-2); }
+.m-scene[id="16-data-explorer"] .pg-control-label{ font-size: 0.72rem; opacity: 0.65; margin-bottom: 8px; }
+
+/* HERO STAGE: give the lollipop a generous, dependable height, centred in its
+   band rather than floating in dead cream. */
+.m-scene[id="16-data-explorer"] .pg-instrument{ min-height: clamp(320px, 44vh, 420px); margin-top: var(--space-3); }
+.m-scene[id="16-data-explorer"] .pg-chart{ min-height: clamp(320px, 44vh, 420px); justify-content: center; }
+.m-scene[id="16-data-explorer"] .pg-chart > svg{ max-height: clamp(320px, 44vh, 420px); }
+
+/* Bigger lollipop labels/values so the data reads on a phone */
+.m-scene[id="16-data-explorer"] .pg-chart > svg:not(.pg-compare) text:not([text-anchor]){ font-size: 22px; }
+
+/* ===== 17-move-unplug ===== */
+/* 17-move-unplug — mobile overrides (selectors escaped because the id starts with a digit). */
+
+/* Desktop locks chapter-inner/mu-root/mu-grid to 100svh + overflow:hidden, which clips
+   all content below the title on a phone. Release them so the scene flows as one column. */
+.m-scene[id="17-move-unplug"] .chapter-inner{
+  max-height:none !important; height:auto !important;
+  overflow:visible !important; display:block !important;
+}
+.m-scene[id="17-move-unplug"] .mu-root{
+  max-height:none !important; height:auto !important; min-height:100svh;
+  overflow:visible !important; display:block !important;
+}
+.m-scene[id="17-move-unplug"] .mu-grid{
+  height:auto !important; max-height:none !important; overflow:visible !important;
+  grid-template-columns:1fr !important;
+  gap:clamp(22px,4vh,32px);
+  padding:clamp(66px,9vh,86px) 20px clamp(40px,6vh,56px);
+  align-items:start;
+}
+
+/* Tame the orbit so it reads as a faint backdrop, not the hero. */
+.m-scene[id="17-move-unplug"] .mu-orbit{
+  width:min(120vw,540px); height:min(120vw,540px);
+  bottom:auto; top:30vh; right:-32vw;
+}
+
+/* Title lockup: comfortable width, drop the desktop min-width that forced overflow. */
+.m-scene[id="17-move-unplug"] .mu-title-img{
+  width:min(82vw,360px) !important; min-width:0 !important;
+}
+
+/* Type scale tuned for a 390px phone; drop ch caps so lines use full width. */
+.m-scene[id="17-move-unplug"] .mu-stage__num{ font-size:2.6rem; }
+.m-scene[id="17-move-unplug"] .mu-lesson{ font-size:1.02rem; max-width:none; }
+.m-scene[id="17-move-unplug"] .mu-context{ font-size:0.94rem; max-width:none; }
+.m-scene[id="17-move-unplug"] .mu-quote__text{ font-size:0.98rem; max-width:none; }
+
+/* Stat hero. */
+.m-scene[id="17-move-unplug"] .mu-right{ gap:clamp(20px,3vh,28px); }
+.m-scene[id="17-move-unplug"] .mu-stat__num{ font-size:clamp(5rem,22vw,7rem) !important; }
+.m-scene[id="17-move-unplug"] .mu-stat__label{ font-size:1rem; max-width:none; }
+
+/* Flip panel: >=44px tap rows, readable less/more pair kept side-by-side. */
+.m-scene[id="17-move-unplug"] .mu-flip-panel{ padding:22px 18px; }
+.m-scene[id="17-move-unplug"] .flip-row{ min-height:56px; padding:14px 16px; gap:12px; }
+.m-scene[id="17-move-unplug"] .flip-less,
+.m-scene[id="17-move-unplug"] .flip-more{ font-size:0.98rem; }
+.m-scene[id="17-move-unplug"] .flip-head{ font-size:0.66rem; padding-bottom:8px; }
+
+/* Neutralise hover-only styling on touch; tap toggles .is-flipped (works via click). */
+@media (hover:none){
+  .m-scene[id="17-move-unplug"] .flip-row:hover{
+    background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14);
+  }
+  .m-scene[id="17-move-unplug"] .flip-row.is-flipped:hover{
+    background:rgba(255,255,255,0.1); border-color:rgba(240,203,8,0.4);
+  }
+}
+
+/* ===== 18-move-antidote ===== */
+/* ---- Scene 18 (Move 02 — antidote) mobile refinements ---- */
+/* Release the desktop full-bleed clip: section sets chapter-inner + ma-root to
+   100svh / overflow:hidden, which crops everything below the "02" marker. */
+.m-scene[id="18-move-antidote"] .chapter-inner {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  display: block !important;
+}
+.m-scene[id="18-move-antidote"] .ma-root {
+  height: auto;
+  min-height: 100svh;
+  overflow: visible;
+  display: block;
+  padding-top: calc(var(--m-topbar-h, 52px) + var(--m-safe-top, 0px));
+}
+.m-scene[id="18-move-antidote"] .ma-orbit { display: none; }
+
+/* Single-column flow with comfortable rhythm */
+.m-scene[id="18-move-antidote"] .ma-grid {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  gap: clamp(20px, 4vh, 30px);
+  padding: clamp(14px, 3vh, 22px) var(--margin-page, 20px) clamp(36px, 6vh, 52px);
+}
+.m-scene[id="18-move-antidote"] .ma-left,
+.m-scene[id="18-move-antidote"] .ma-right {
+  justify-content: flex-start;
+  gap: clamp(16px, 3vh, 24px);
+}
+
+/* Title image — comfortable, never overflow */
+.m-scene[id="18-move-antidote"] .ma-title-img {
+  width: min(80vw, 360px);
+  min-width: 0;
+}
+
+/* Lesson + context: bump legibility */
+.m-scene[id="18-move-antidote"] .ma-lesson {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  max-width: none;
+}
+.m-scene[id="18-move-antidote"] .ma-context {
+  font-size: 0.95rem;
+  max-width: none;
+}
+
+/* Quote card */
+.m-scene[id="18-move-antidote"] .ma-quote {
+  padding: clamp(20px, 5vw, 26px);
+}
+.m-scene[id="18-move-antidote"] .ma-quote__text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: none;
+  padding-right: 40px;
+}
+
+/* Stat hero — keep huge but fit 390px, allow wrap on label */
+.m-scene[id="18-move-antidote"] .ma-stat__num {
+  font-size: clamp(4.6rem, 22vw, 6.4rem);
+}
+.m-scene[id="18-move-antidote"] .ma-stat__label {
+  white-space: normal;
+  font-size: 1.02rem;
+  line-height: 1.32;
+}
+
+/* Flip panel rows — thumb-friendly targets, readable on phone */
+.m-scene[id="18-move-antidote"] .ma-flip-panel {
+  padding: clamp(18px, 5vw, 24px);
+}
+.m-scene[id="18-move-antidote"] .flip-row {
+  padding: 14px clamp(14px, 4vw, 18px);
+  min-height: 52px;
+  gap: 10px;
+}
+.m-scene[id="18-move-antidote"] .flip-less,
+.m-scene[id="18-move-antidote"] .flip-more {
+  font-size: 0.95rem;
+}
+.m-scene[id="18-move-antidote"] .flip-head {
+  font-size: 0.66rem;
+}
+
+/* Brand cards — stack to full width for legibility on a narrow phone */
+.m-scene[id="18-move-antidote"] .ma-brands {
+  grid-template-columns: 1fr;
+  gap: clamp(12px, 3vw, 16px);
+}
+.m-scene[id="18-move-antidote"] .ma-brand-card {
+  padding: clamp(16px, 4.5vw, 20px);
+}
+.m-scene[id="18-move-antidote"] .ma-brand-label {
+  font-size: 1.2rem;
+}
+.m-scene[id="18-move-antidote"] .ma-brand-desc {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+/* Redundant Challenger stamp overlaps the stage label; the top bar already
+   carries the brand mark, so retire it on mobile. */
+.m-scene[id="18-move-antidote"] .ma-mark { display: none; }
+
+/* ===== 20-move-mentalload ===== */
+/* ===== 20-move-mentalload — mobile (390px) overrides =====
+   NOTE: ID starts with a digit, so it MUST be escaped ([id="20-"]...) to be
+   valid CSS — the unescaped form is silently dropped by the parser. */
+
+/* Let the scene breathe: kill the 100svh clamp that overlaps the columns */
+.m-scene[id="20-move-mentalload"] .chapter-inner{
+  max-height:none !important;
+  overflow:visible !important;
+  display:block !important;
+}
+.m-scene[id="20-move-mentalload"] .mml-root{
+  height:auto !important;
+  min-height:100svh;
+  overflow:visible !important;
+  display:block !important;
+}
+.m-scene[id="20-move-mentalload"] .mml-grid{
+  display:flex !important;
+  flex-direction:column;
+  height:auto !important;
+  max-height:none !important;
+  overflow:visible !important;
+  gap:clamp(20px,4vh,30px);
+  padding:clamp(64px,9vh,88px) 20px clamp(36px,5vh,48px);
+  align-items:stretch;
+}
+.m-scene[id="20-move-mentalload"] .mml-left,
+.m-scene[id="20-move-mentalload"] .mml-right{
+  height:auto;
+  min-height:0;
+  overflow:visible;
+  justify-content:flex-start;
+  gap:clamp(16px,2.6vh,22px);
+}
+
+/* Brand stamp: smaller, out of the way */
+.m-scene[id="20-move-mentalload"] .mml-mark{ height:22px; top:10px; right:16px; }
+
+/* Stage marker + title scale */
+.m-scene[id="20-move-mentalload"] .mml-stage__num{ font-size:2.6rem; }
+.m-scene[id="20-move-mentalload"] .mml-title-img{
+  width:min(78vw,330px); min-width:0; max-width:100%;
+}
+.m-scene[id="20-move-mentalload"] .mml-lesson{
+  font-size:1rem; line-height:1.5; max-width:none;
+}
+.m-scene[id="20-move-mentalload"] .mml-context{
+  display:block; font-size:0.92rem; line-height:1.42; max-width:none;
+}
+
+/* ── Sandwich stat strip → 2x2 grid of stat tiles, descriptions kept ── */
+.m-scene[id="20-move-mentalload"] .mml-sandwich{ gap:12px; }
+.m-scene[id="20-move-mentalload"] .mml-sandwich__label{ font-size:0.72rem; }
+.m-scene[id="20-move-mentalload"] .mml-sandwich__bars{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.m-scene[id="20-move-mentalload"] .mml-sbar{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:7px;
+  grid-template-columns:none;
+  background:rgba(4,22,84,0.05);
+  padding:13px 14px;
+}
+.m-scene[id="20-move-mentalload"] .mml-sbar__num{
+  font-size:2rem; text-align:left; line-height:0.95;
+}
+.m-scene[id="20-move-mentalload"] .mml-sbar__track{
+  width:100%; height:6px; order:2;
+}
+.m-scene[id="20-move-mentalload"] .mml-sbar__desc{
+  display:block !important;
+  white-space:normal; overflow:visible; text-overflow:clip;
+  font-size:0.82rem; line-height:1.3; order:3;
+  color:rgba(4,22,84,0.72);
+}
+.m-scene[id="20-move-mentalload"] .mml-sandwich__source{ font-size:0.66rem; }
+
+/* Premium quote card */
+.m-scene[id="20-move-mentalload"] .mml-quote{
+  padding:20px; flex:0 0 auto; overflow:visible;
+}
+.m-scene[id="20-move-mentalload"] .mml-quote__text{
+  font-size:1rem; line-height:1.55; max-width:none;
+  padding-right:34px;
+}
+.m-scene[id="20-move-mentalload"] .mml-quote .soi-card__mark{ height:20px; }
+
+/* Death-to beats — give room, larger */
+.m-scene[id="20-move-mentalload"] .mml-stat-hero{ align-items:stretch; }
+.m-scene[id="20-move-mentalload"] .mml-deaths{ gap:8px; padding-top:0; }
+.m-scene[id="20-move-mentalload"] .mml-death{ font-size:1.06rem; line-height:1.35; }
+
+/* Flip panel — comfortable, thumb-friendly rows */
+.m-scene[id="20-move-mentalload"] .mml-flip-panel{
+  padding:20px 18px; box-shadow:0 14px 34px rgba(4,22,84,0.22);
+}
+.m-scene[id="20-move-mentalload"] .mml-flip-kicker{ margin-bottom:14px; }
+.m-scene[id="20-move-mentalload"] .flip-rows{ gap:10px; }
+.m-scene[id="20-move-mentalload"] .flip-row{
+  padding:15px 16px; min-height:56px;
+}
+.m-scene[id="20-move-mentalload"] .flip-less,
+.m-scene[id="20-move-mentalload"] .flip-more{ font-size:1rem; }
+.m-scene[id="20-move-mentalload"] .flip-head{ font-size:0.66rem; padding:0 16px 6px; }
+
+/* ===== 22-outro ===== */
+/* ── 22-outro — mobile sign-off (selectors escaped: [id="22-outro"]) ── */
+.m-scene[id="22-outro"] .ot-grid {
+  padding: clamp(20px, 5vh, 40px) var(--margin-page) 0;
+  gap: 0;
+}
+.m-scene[id="22-outro"] .ot-left {
+  padding-bottom: 0;
+  gap: clamp(22px, 4vh, 40px);
+}
+.m-scene[id="22-outro"] .ot-head { gap: clamp(14px, 2.4vh, 22px); }
+
+/* type scaled for the phone */
+.m-scene[id="22-outro"] .ot-motif-word { font-size: clamp(2.4rem, 13vw, 3.4rem); }
+.m-scene[id="22-outro"] .ot-motif-arrow { font-size: clamp(1.1rem, 5vw, 1.5rem); }
+.m-scene[id="22-outro"] .ot-qt-line { font-size: clamp(1.15rem, 4.6vw, 1.4rem); }
+.m-scene[id="22-outro"] .ot-qt-line--accent { font-size: clamp(1.4rem, 5.6vw, 1.75rem); }
+.m-scene[id="22-outro"] .ot-thankyou { font-size: clamp(3.6rem, 18vw, 5.2rem); }
+
+/* Bring the protagonist back to FRAME the close (desktop <=720px hides it).
+   A calm full-width floor band beneath the narrative: lockup signs off, the
+   figure stands flush on the floor, orbit gathered behind. */
+.m-scene[id="22-outro"] .ot-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  width: 100%;
+  margin-top: clamp(16px, 3vh, 28px);
+  padding-top: 0;
+}
+.m-scene[id="22-outro"] .ot-lockup {
+  position: static;
+  width: clamp(150px, 42vw, 190px);
+  max-width: none;
+  margin: 0 auto clamp(12px, 2.6vh, 20px);
+  align-self: center;
+}
+.m-scene[id="22-outro"] .ot-figure-wrap {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  margin: 0 auto;
+  z-index: 2;
+}
+.m-scene[id="22-outro"] .ot-figure { height: clamp(220px, 34vh, 300px); }
+
+/* orbit re-centred behind the figure — frames the lower close, never busy */
+.m-scene[id="22-outro"] .ot-orbit {
+  right: 50%;
+  left: auto;
+  transform: translateX(50%);
+  bottom: -2vh;
+  width: clamp(300px, 88vw, 360px);
+  height: clamp(300px, 88vw, 360px);
+  opacity: 0.7;
+}
+
+/* glow pools under the figure rather than as an empty corner band */
+.m-scene[id="22-outro"] .ot-glow {
+  right: 50%;
+  bottom: -8vh;
+  transform: translateX(50%);
+  width: clamp(360px, 100vw, 460px);
+  height: clamp(360px, 100vw, 460px);
+}
+/* ===== 19-move-selfhelp ===== */
+/* Authored from the move-template (siblings 17/18) — agent failed on a transient
+   API error. Section scopes chapter-inner + msh-root + msh-grid to 100svh/
+   overflow:hidden, which clips on a phone; release them to a single column. */
+.m-scene[id="19-move-selfhelp"] .chapter-inner {
+  max-height: none !important; height: auto !important;
+  overflow: visible !important; display: block !important;
+}
+.m-scene[id="19-move-selfhelp"] .msh-root {
+  height: auto !important; min-height: 100svh; max-height: none !important;
+  overflow: visible !important; display: block !important;
+}
+.m-scene[id="19-move-selfhelp"] .msh-grid {
+  display: flex !important; flex-direction: column !important;
+  height: auto !important; max-height: none !important; overflow: visible !important;
+  gap: clamp(20px, 4vh, 30px);
+  padding: clamp(66px, 9vh, 86px) var(--margin-page, 20px) clamp(40px, 6vh, 56px);
+}
+.m-scene[id="19-move-selfhelp"] .msh-left,
+.m-scene[id="19-move-selfhelp"] .msh-right { justify-content: flex-start; gap: clamp(16px, 3vh, 24px); }
+.m-scene[id="19-move-selfhelp"] .msh-orbit { display: none; }
+.m-scene[id="19-move-selfhelp"] .msh-mark { display: none; }
+.m-scene[id="19-move-selfhelp"] .msh-title-img { width: min(80vw, 360px) !important; min-width: 0 !important; }
+.m-scene[id="19-move-selfhelp"] .msh-lesson { font-size: 1.05rem; line-height: 1.5; max-width: none; }
+.m-scene[id="19-move-selfhelp"] .msh-context { font-size: 0.95rem; max-width: none; }
+.m-scene[id="19-move-selfhelp"] .msh-quote__text { font-size: 0.98rem; line-height: 1.55; max-width: none; }
+.m-scene[id="19-move-selfhelp"] .msh-flip-panel { padding: clamp(18px, 5vw, 24px); }
+.m-scene[id="19-move-selfhelp"] .flip-row { min-height: 52px; padding: 14px clamp(14px, 4vw, 18px); gap: 10px; }
+.m-scene[id="19-move-selfhelp"] .flip-less,
+.m-scene[id="19-move-selfhelp"] .flip-more { font-size: 0.95rem; }
+.m-scene[id="19-move-selfhelp"] .flip-head { font-size: 0.66rem; }
+/* Media-shift table: full width, comfortable rows (from -> to). */
+.m-scene[id="19-move-selfhelp"] .msh-shift { width: 100%; }
+.m-scene[id="19-move-selfhelp"] .msh-shift__row { gap: 10px; padding: 12px 0; }
+.m-scene[id="19-move-selfhelp"] .msh-shift__from,
+.m-scene[id="19-move-selfhelp"] .msh-shift__to { font-size: 0.92rem; }
+
+/* ===== 21-move-behaviours ===== */
+/* Authored from the move-template (siblings 17/18) — agent failed on a transient
+   API error. Same full-bleed-clip release; Vinted brand note + reward badge kept. */
+.m-scene[id="21-move-behaviours"] .chapter-inner {
+  max-height: none !important; height: auto !important;
+  overflow: visible !important; display: block !important;
+}
+.m-scene[id="21-move-behaviours"] .mb-root {
+  height: auto !important; min-height: 100svh; max-height: none !important;
+  overflow: visible !important; display: block !important;
+}
+.m-scene[id="21-move-behaviours"] .mb-grid {
+  display: flex !important; flex-direction: column !important;
+  height: auto !important; max-height: none !important; overflow: visible !important;
+  gap: clamp(20px, 4vh, 30px);
+  padding: clamp(66px, 9vh, 86px) var(--margin-page, 20px) clamp(40px, 6vh, 56px);
+}
+.m-scene[id="21-move-behaviours"] .mb-left,
+.m-scene[id="21-move-behaviours"] .mb-right { justify-content: flex-start; gap: clamp(16px, 3vh, 24px); }
+.m-scene[id="21-move-behaviours"] .mb-orbit { display: none; }
+.m-scene[id="21-move-behaviours"] .mb-mark { display: none; }
+.m-scene[id="21-move-behaviours"] .mb-title-img { width: min(80vw, 360px) !important; min-width: 0 !important; }
+.m-scene[id="21-move-behaviours"] .mb-lesson { font-size: 1.05rem; line-height: 1.5; max-width: none; }
+.m-scene[id="21-move-behaviours"] .mb-context { font-size: 0.95rem; max-width: none; }
+.m-scene[id="21-move-behaviours"] .mb-quote__text { font-size: 0.98rem; line-height: 1.55; max-width: none; }
+.m-scene[id="21-move-behaviours"] .mb-brand { width: 100%; max-width: none; font-size: 0.95rem; line-height: 1.45; }
+.m-scene[id="21-move-behaviours"] .mb-reward-badge { margin: 0 auto; }
+.m-scene[id="21-move-behaviours"] .mb-flip-panel { padding: clamp(18px, 5vw, 24px); }
+.m-scene[id="21-move-behaviours"] .flip-row { min-height: 52px; padding: 14px clamp(14px, 4vw, 18px); gap: 10px; }
+.m-scene[id="21-move-behaviours"] .flip-less,
+.m-scene[id="21-move-behaviours"] .flip-more { font-size: 0.95rem; }
+.m-scene[id="21-move-behaviours"] .flip-head { font-size: 0.66rem; }

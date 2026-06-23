@@ -37,6 +37,7 @@ const DATA_FILES = {
 const VIEW_KEY = 'soi_view_pref_v1';     // 'desktop' | 'mobile' escape preference
 const HINT_DWELL_MS = 1400;              // dwell before an advisory hint may show
 const INIT_MARGIN = '300px 0px 300px 0px'; // init a section ~one screen early
+const REVEAL_FALLBACK_MS = 1600;         // force-reveal still-hidden content after focus
 const THEME_COLORS = { warm: '#FBC100', cream: '#F0EDE7', navy: '#041654' };
 
 // ── Routing / escape hatch ───────────────────────────────────────────────────
@@ -237,6 +238,20 @@ const run = async () => {
     if (themeMeta) themeMeta.setAttribute('content', THEME_COLORS[scene.dataset.ground] || THEME_COLORS.warm);
 
     scheduleHint();
+
+    // Belt-and-braces: a section's entrance reveal (arrival() on [data-arrival],
+    // observeReveals() on .reveal) normally fires on chapter:arrive. If a module
+    // doesn't wire it, content could sit at opacity:0 forever. After a short
+    // dwell, force-reveal anything in THIS scene still hidden — preserving the
+    // animation when it does fire, guaranteeing nothing renders blank when it
+    // doesn't.
+    window.setTimeout(() => {
+      if (focused !== index) return;
+      scene.querySelectorAll('[data-arrival]:not(.is-arrived)')
+        .forEach((el) => el.classList.add('is-arrived'));
+      scene.querySelectorAll('.reveal:not(.is-visible)')
+        .forEach((el) => el.classList.add('is-visible'));
+    }, REVEAL_FALLBACK_MS);
   };
 
   // ── Observers ──────────────────────────────────────────────────────────────
