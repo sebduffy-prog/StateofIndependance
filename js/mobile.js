@@ -234,8 +234,10 @@ const run = async () => {
     if (progressFill) progressFill.style.transform = `scaleX(${(pct / 100).toFixed(4)})`;
     if (progressBar) progressBar.setAttribute('aria-valuenow', String(Math.round(pct)));
     if (ticker) ticker.textContent = pad2(index + 1);
+    const ground = scene.dataset.ground || 'warm';
+    document.body.dataset.ground = ground;       // drives ground-aware chrome in css
     const themeMeta = document.querySelector('meta[name="theme-color"]');
-    if (themeMeta) themeMeta.setAttribute('content', THEME_COLORS[scene.dataset.ground] || THEME_COLORS.warm);
+    if (themeMeta) themeMeta.setAttribute('content', THEME_COLORS[ground] || THEME_COLORS.warm);
 
     scheduleHint();
 

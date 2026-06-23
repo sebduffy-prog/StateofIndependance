@@ -65,7 +65,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Top-align content under the bar. Centring inside an over-tall scene floated
+     content in the middle and left big empty voids top + bottom (worst on navy
+     grounds). Flowing from the top kills that. Hero scenes (cover/outro)
+     re-centre within their own block. */
+  justify-content: flex-start;
   scroll-snap-align: start;
   scroll-snap-stop: normal;
   padding:
@@ -138,9 +142,37 @@
 .m-scene .si-measure,
 .m-scene p { max-width: 62ch; }
 
+/* OVERLAP GUARDS ───────────────────────────────────────────────────────────
+   1. The in-scene "Challenger Series" corner stamps (bl-mark, ma-mark, msh-mark,
+      mb-mark, research-status mark, …) are absolutely positioned for the desktop
+      stage and collide with the headline on a phone. The fixed top bar already
+      carries the brand mark, so retire every in-scene stamp on mobile. */
+.m-scene [class$="-mark"],
+.m-scene .si-lockup--mark { display: none !important; }
+
+/* 2. Decorative absolute layers (orbit rings, warmth blooms, ambient fields)
+      must sit BEHIND content and never intercept taps, so they can't overlap or
+      block the story. */
+.m-scene [class*="orbit"],
+.m-scene [class*="bloom"],
+.m-scene [class*="ambient"],
+.m-scene [class*="-rings"],
+.m-scene [class*="-glow"] {
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ============================================================
    FIXED CHROME — top bar (brand mark · progress meridian · ticker)
    ============================================================ */
+/* Ground-aware chrome palette. JS sets body[data-ground] per focused scene so
+   the bar, ink and meridian recolour to stay legible AND opaque over any ground
+   (a translucent fade let content bleed through and read as overlap). */
+.m-body { --m-chrome-bg: rgba(240,237,231,0.94); --m-chrome-ink: var(--navy); --m-chrome-track: rgba(4,22,84,0.16); --m-chrome-fill: var(--navy); --m-mark-filter: none; }
+.m-body[data-ground="cream"] { --m-chrome-bg: rgba(240,237,231,0.94); --m-chrome-ink: var(--navy); --m-chrome-track: rgba(4,22,84,0.16); --m-chrome-fill: var(--navy); --m-mark-filter: none; }
+.m-body[data-ground="warm"]  { --m-chrome-bg: rgba(255,196,2,0.92);  --m-chrome-ink: var(--navy); --m-chrome-track: rgba(4,22,84,0.22); --m-chrome-fill: var(--navy); --m-mark-filter: none; }
+.m-body[data-ground="navy"]  { --m-chrome-bg: rgba(4,17,55,0.94);    --m-chrome-ink: var(--cream); --m-chrome-track: rgba(240,237,231,0.22); --m-chrome-fill: var(--cream); --m-mark-filter: brightness(0) invert(1); }
+
 .m-topbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -150,18 +182,21 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  background: linear-gradient(180deg, rgba(240,237,231,0.82) 0%, rgba(240,237,231,0.0) 100%);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  /* Opaque, ground-aware scrim + blur: content scrolls cleanly UNDER it. */
+  background: var(--m-chrome-bg);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
   pointer-events: none;          /* chrome is non-interactive furniture */
+  transition: background 320ms ease;
 }
-.m-topbar__mark { height: 22px; width: auto; opacity: 0.92; }
+.m-topbar__mark { height: 20px; width: auto; opacity: 0.92; filter: var(--m-mark-filter); }
 
 .m-progress {
   position: relative;
   flex: 1;
   height: 2px;
-  background: rgba(4, 22, 84, 0.18);
+  background: var(--m-chrome-track);
   overflow: hidden;
 }
 .m-progress__fill {
@@ -169,7 +204,7 @@
   inset: 0;
   transform-origin: left center;
   transform: scaleX(0);
-  background: var(--navy);
+  background: var(--m-chrome-fill);
   transition: transform 520ms var(--ease-entrance, cubic-bezier(0.2,0.8,0.2,1));
 }
 .m-progress__fill::after {            /* a yellow leading spark on the meridian */
@@ -187,13 +222,10 @@
   font-size: 0.82rem;
   letter-spacing: 0.12em;
   font-variant-numeric: tabular-nums;
-  color: var(--navy);
+  color: var(--m-chrome-ink);
   min-width: 2.2em;
   text-align: right;
 }
-
-/* On navy scenes the bar fades darker furniture in for contrast. */
-.m-scene.si-ground-navy { /* scene-level; theme-color handled in JS */ }
 
 /* ============================================================
    SCROLL CUE + advisory "try it" hint (soft gate — never traps)
