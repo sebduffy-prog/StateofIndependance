@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#FBC100"/>
+  <title>The State of Independence — VCCP Challenger Series</title>
+  <meta name="description" content="A nationwide study of how Britain is taking back control — and what it demands of every brand that serves them. VCCP x Watermelon Research, 1,504 UK adults, May 2026."/>
+
+  <link rel="icon" type="image/png" href="assets/brand/Logo.png"/>
+
+  <!-- Same self-hosted Poppins display weights as desktop (preload to avoid FOUT). -->
+  <link rel="preload" href="assets/fonts/poppins-900.woff2" as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin/>
+
+  <!-- REUSED, READ-ONLY: the desktop design tokens + every section's own styling.
+       css/mobile.css is loaded LAST so the mobile layer overrides layout only. -->
+  <link rel="stylesheet" href="css/vccp.css"/>
+  <link rel="stylesheet" href="css/sections.css"/>
+  <link rel="stylesheet" href="css/mobile.css"/>
+
+  <!-- ── Site gate styling — IDENTICAL to index.html (shared soft gate) ── -->
+  <style>
+    body.is-gated { overflow: hidden; }
+    .site-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(24px, 6vw, 80px);
+      background: linear-gradient(135deg, #FFA764 0%, #FBC100 42%, #FFC002 70%, #FF8598 100%);
+      font-family: var(--font-sans, 'Poppins', system-ui, sans-serif);
+      color: var(--navy, #041654);
+    }
+    .site-gate__panel { width: min(440px, 100%); }
+    .site-gate__lockup { height: 34px; width: auto; margin-bottom: clamp(20px, 4vh, 36px); }
+    .site-gate__eyebrow {
+      margin: 0 0 10px; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; color: rgba(4,22,84,0.62);
+    }
+    .site-gate__title {
+      margin: 0 0 6px; font-weight: 900; line-height: 0.96; letter-spacing: -0.03em;
+      font-size: clamp(2.2rem, 9vw, 3.2rem); color: var(--ink, #0b0b0b);
+    }
+    .site-gate__sub { margin: 0 0 clamp(20px, 3.5vh, 30px); font-size: 0.95rem; font-weight: 500; line-height: 1.5; color: rgba(4,22,84,0.78); max-width: 38ch; }
+    .site-gate__field { display: block; margin-bottom: 12px; }
+    .site-gate__label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(4,22,84,0.7); margin-bottom: 6px; }
+    .site-gate__input {
+      width: 100%; box-sizing: border-box; appearance: none;
+      padding: 14px 14px; border: 1.5px solid rgba(4,22,84,0.32);
+      border-radius: 0; background: rgba(255,255,255,0.55);
+      font-family: inherit; font-size: 1rem; font-weight: 600; color: var(--navy, #041654);
+    }
+    .site-gate__input:focus { outline: none; border-color: var(--navy, #041654); background: rgba(255,255,255,0.85); }
+    .site-gate__btn {
+      margin-top: 8px; width: 100%; padding: 15px 18px; border: 0; border-radius: 0; cursor: pointer;
+      background: var(--navy, #041654); color: #fff; font-family: inherit; font-weight: 800;
+      font-size: 0.95rem; letter-spacing: 0.02em;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+    .site-gate__btn:active { transform: translateY(1px); }
+    .site-gate__error { min-height: 1.2em; margin: 10px 0 0; font-size: 0.82rem; font-weight: 700; color: #b00020; }
+    @media (prefers-reduced-motion: reduce) { .site-gate__btn { transition: none; } }
+  </style>
+</head>
+<body class="is-gated m-body">
+
+  <!-- ── SITE GATE — soft password + email capture (identical to desktop) ── -->
+  <div class="site-gate" id="siteGate" role="dialog" aria-modal="true" aria-labelledby="siteGateTitle">
+    <div class="site-gate__panel">
+      <img class="site-gate__lockup" src="assets/brand-final/challenger-series-lockup.png" alt="VCCP Challenger Series"/>
+      <p class="site-gate__eyebrow">VCCP Challenger Series</p>
+      <h1 class="site-gate__title" id="siteGateTitle">The State of Independence</h1>
+      <p class="site-gate__sub">Enter your email and the access password to view the research.</p>
+      <form id="siteGateForm" novalidate>
+        <label class="site-gate__field">
+          <span class="site-gate__label">Email</span>
+          <input class="site-gate__input" id="siteGateEmail" type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@company.com" required/>
+        </label>
+        <label class="site-gate__field">
+          <span class="site-gate__label">Password</span>
+          <input class="site-gate__input" id="siteGatePass" type="password" name="password" autocomplete="off" placeholder="Password" required/>
+        </label>
+        <button class="site-gate__btn" type="submit">Enter</button>
+        <p class="site-gate__error" id="siteGateError" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MOBILE JOURNEY — a vertical scroll-snap scene deck ──
+       js/mobile.js mounts every manifest section (the SAME fragment + module +
+       data the desktop engine uses) into #m-deck as a full-height scene. -->
+  <main id="m-deck" class="m-deck" aria-label="The State of Independence"></main>
+
+  <!-- Fixed chrome: brand mark, progress meridian, chapter ticker, and the
+       advisory "try it" hint. Built/populated by js/mobile.js. -->
+  <header class="m-topbar" id="mTopbar" hidden>
+    <img class="m-topbar__mark" src="assets/brand/Logo.png" alt=""/>
+    <div class="m-progress" id="mProgress" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <span class="m-progress__fill" id="mProgressFill"></span>
+    </div>
+    <span class="m-topbar__count" id="mTicker" aria-live="polite">01</span>
+  </header>
+
+  <!-- Scroll cue + advisory interaction hint (soft; never traps). -->
+  <div class="m-cue" id="mCue" hidden>
+    <span class="m-cue__hint" id="mHint" role="status" aria-live="polite" hidden>Try the interaction</span>
+    <span class="m-cue__chevron" aria-hidden="true"></span>
+  </div>
+
+  <!-- REUSED, READ-ONLY: identical access gate behaviour as desktop. -->
+  <script src="js/site-gate.js"></script>
+  <script type="module" src="js/mobile.js"></script>
+</body>
+</html>

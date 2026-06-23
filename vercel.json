@@ -1,5 +1,25 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(Android|iPhone|iPod|Mobile|BlackBerry|IEMobile|Opera Mini|webOS).*"
+        }
+      ],
+      "missing": [
+        {
+          "type": "query",
+          "key": "view",
+          "value": "desktop"
+        }
+      ],
+      "destination": "/mobile.html"
+    }
+  ]
 }

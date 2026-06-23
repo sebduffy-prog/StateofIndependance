@@ -1,0 +1,276 @@
+/* ============================================================
+   mobile.css — THE BESPOKE MOBILE LAYER for The State of Independence.
+
+   Loaded ONLY by mobile.html, ALWAYS LAST (after vccp.css + sections.css).
+   It can therefore override freely and CANNOT affect the desktop site — no
+   desktop file loads this sheet. Everything is scoped under .m-body / .m-deck /
+   .m-scene so intent is explicit.
+
+   It reuses the desktop DESIGN TOKENS + per-section styling verbatim (same brand
+   world, same charts, same numbers) and only re-stages the LAYOUT for a phone:
+   a vertical full-height scroll-snap scene deck with mobile-native chrome.
+   ============================================================ */
+
+/* ── Mobile type scale — tighten the desktop display clamps so the big
+   Poppins-900 titles never overflow a 360–430px screen. Tokens only; the
+   section CSS reads these names and reflows automatically. ── */
+.m-body {
+  --t-display: clamp(2.4rem, 11vw, 3.6rem);
+  --t-bignum:  clamp(3.2rem, 18vw, 5.4rem);
+  --t-title:   clamp(1.5rem, 6.5vw, 2.1rem);
+  --t-sub:     clamp(1.2rem, 5vw, 1.6rem);
+  --t-xl:      clamp(2rem, 9vw, 3rem);
+  --margin-page: clamp(18px, 6vw, 32px);
+
+  --m-topbar-h: 52px;
+  --m-safe-top: env(safe-area-inset-top, 0px);
+  --m-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  margin: 0;
+  background: var(--navy);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+/* ============================================================
+   THE DECK — the scroll-snap journey container
+   ============================================================ */
+.m-deck {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y proximity;   /* proximity, not mandatory — tall scenes scroll freely */
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  .m-deck { scroll-behavior: auto; }
+}
+
+/* While gated, freeze the deck behind the overlay. */
+.m-body.is-gated .m-deck { overflow: hidden; }
+
+/* ============================================================
+   THE SCENE — one full-height stage per narrative beat
+   ============================================================ */
+.m-scene {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100svh;            /* fill the screen … */
+  height: auto;                  /* … but grow for tall interactive content */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  padding:
+    calc(var(--m-topbar-h) + var(--m-safe-top) + 18px)
+    var(--margin-page)
+    calc(72px + var(--m-safe-bottom))
+    var(--margin-page);
+  isolation: isolate;
+  /* Clip horizontal bleed (decorative rings etc.) but NEVER vertical — tall
+     interactive content must grow the scene, not be clipped. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* Full-bleed grounds (reused token gradients). The scene paints edge to edge. */
+.m-scene.si-ground-warm  { background: var(--ground-warm);  color: var(--on-warm); }
+.m-scene.si-ground-cream { background: var(--cream);          color: var(--on-cream); }
+.m-scene.si-ground-navy  { background: var(--ground-navy);  color: var(--on-navy); }
+
+/* Re-create the desktop inner content box MINUS the depth-engine artefacts.
+   The desktop base (`.journey-stage .chapter-inner`) adds `max-height:100svh;
+   overflow:hidden` and a depth transform — both scoped to `.journey-stage`,
+   which we DON'T use, so we never inherit the clip. We keep `.chapter-inner` a
+   plain BLOCK: forcing it to flex makes section grids' `height:100%` resolve to
+   zero and collapse. Section styling is id-scoped (`#03-baselines .bl-hero`), so
+   each section's OWN mobile breakpoints apply here unchanged — we must not fight
+   them with blanket height/grid resets (that clobbered intentional sizes). */
+.m-scene .chapter-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  transform: none;   /* guard against any stray depth transform/blur */
+  filter: none;
+}
+
+/* COLLAPSE NET — desktop "fill-the-stage" wrappers use CSS grid + height:100% +
+   flex-grow to distribute within the fixed-height stage. On an auto-height phone
+   scene that chain collapses (grid rows / flex items resolve to 0) and drops
+   content out of view. Convert the common layout-wrapper names to a plain
+   single-column flex stack that sizes to content. Scoped to structural wrapper
+   suffixes only — charts (svg/canvas) and sized furniture (marks/bars/icons)
+   use other names and are untouched. Per-section blocks below refine the rest. */
+.m-scene [class$="-hero"],
+.m-scene [class$="-stage"],
+.m-scene [class$="-rail"],
+.m-scene [class$="-pane"],
+.m-scene [class$="-deck"],
+.m-scene [class$="-wrap"],
+.m-scene [class$="-cluster"],
+.m-scene [class$="-col"],
+.m-scene [class$="-body"] {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Media never exceeds the column (charts already use width:100% + viewBox). */
+.m-scene img,
+.m-scene svg,
+.m-scene canvas { max-width: 100%; }
+
+/* Comfortable reading measure on a phone. */
+.m-scene .si-measure,
+.m-scene p { max-width: 62ch; }
+
+/* ============================================================
+   FIXED CHROME — top bar (brand mark · progress meridian · ticker)
+   ============================================================ */
+.m-topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  height: calc(var(--m-topbar-h) + var(--m-safe-top));
+  padding: var(--m-safe-top) var(--margin-page) 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(180deg, rgba(240,237,231,0.82) 0%, rgba(240,237,231,0.0) 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  pointer-events: none;          /* chrome is non-interactive furniture */
+}
+.m-topbar__mark { height: 22px; width: auto; opacity: 0.92; }
+
+.m-progress {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(4, 22, 84, 0.18);
+  overflow: hidden;
+}
+.m-progress__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: var(--navy);
+  transition: transform 520ms var(--ease-entrance, cubic-bezier(0.2,0.8,0.2,1));
+}
+.m-progress__fill::after {            /* a yellow leading spark on the meridian */
+  content: "";
+  position: absolute;
+  right: 0; top: 50%;
+  width: 7px; height: 7px;
+  transform: translate(50%, -50%);
+  background: var(--yellow);
+  border-radius: 50%;
+}
+.m-topbar__count {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--navy);
+  min-width: 2.2em;
+  text-align: right;
+}
+
+/* On navy scenes the bar fades darker furniture in for contrast. */
+.m-scene.si-ground-navy { /* scene-level; theme-color handled in JS */ }
+
+/* ============================================================
+   SCROLL CUE + advisory "try it" hint (soft gate — never traps)
+   ============================================================ */
+.m-cue {
+  position: fixed;
+  left: 50%;
+  bottom: calc(14px + var(--m-safe-bottom));
+  transform: translateX(-50%);
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+.m-cue.is-gone { opacity: 0; transform: translate(-50%, 12px); }
+
+.m-cue__hint {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  background: rgba(240, 237, 231, 0.9);
+  border: 1px solid rgba(4, 22, 84, 0.16);
+  padding: 7px 13px;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.m-cue__chevron {
+  width: 18px; height: 18px;
+  border-right: 2.5px solid var(--navy);
+  border-bottom: 2.5px solid var(--navy);
+  transform: rotate(45deg);
+  opacity: 0.75;
+  animation: m-bob 1.8s var(--ease-entrance, ease-in-out) infinite;
+}
+@keyframes m-bob {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.5; }
+  50%      { transform: rotate(45deg) translate(3px, 3px); opacity: 0.95; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .m-cue__chevron { animation: none; }
+  .m-progress__fill { transition: none; }
+}
+
+/* ============================================================
+   COVER (01) — the hero needs bespoke phone staging: stack the title above a
+   contained maze, kill the desktop right-pane absolute positioning.
+   ============================================================ */
+.m-scene#01-cover { padding-top: calc(var(--m-topbar-h) + var(--m-safe-top) + 8px); }
+.m-scene#01-cover .cover {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(20px, 6vw, 34px);
+}
+
+/* ============================================================
+   Error card — keep legible on the phone.
+   ============================================================ */
+.m-scene .section-error-card {
+  background: rgba(255,255,255,0.6);
+  padding: 20px;
+  max-width: 100%;
+}
+.m-error { align-items: flex-start; }
+
+/* ============================================================
+   PER-SECTION MOBILE OVERRIDES
+   The workflow appends one scoped block per scene below this line. Each block is
+   keyed by scene id (e.g. `.m-scene#14-graphrag { … }`) so blocks never collide.
+   ============================================================ */
+/* >>> per-section overrides start <<< */
