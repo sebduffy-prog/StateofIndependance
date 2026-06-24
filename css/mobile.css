@@ -336,7 +336,9 @@
   flex-direction: column;
   align-items: center;
   gap: clamp(14px, 2.4vh, 22px);
-  padding-top: clamp(1.4rem, 4vh, 2.4rem);
+  /* Clear the fixed ~52px top bar AND add breathing room so the maze hero is
+     not crammed against the very top of the article. */
+  padding-top: clamp(3.4rem, 8vh, 5rem);
   padding-bottom: clamp(2rem, 6vh, 3.2rem);
   padding-left: var(--margin-page, 22px);
   padding-right: var(--margin-page, 22px);
@@ -378,14 +380,17 @@
 }
 
 /* Maze: inline hero, full column width but capped so it sits naturally, first
-   in the flow. No floating reservation; centred. */
+   in the flow. No floating reservation; centred. Pushed down via .cover
+   padding-top, with a clear gap below it to the lockup. */
 .m-scene[id="01-cover"] .cover-stage {
   order: -1;
   justify-self: center;
   align-self: center;
   width: 100%;
   max-width: min(62vw, 248px);
-  margin: 0 auto;
+  /* A clear separation gap below the maze so it never crowds or overlaps the
+     Challenger Series lockup that follows it in the centred stack. */
+  margin: 0 auto clamp(18px, 3.4vh, 30px);
 }
 
 /* Hide the standalone Begin cue on mobile — the article scrolls naturally. */
@@ -397,6 +402,7 @@
   opacity: 1;
   transform: none;
 }
+
 /* ===== 02-research ===== */
 /* ===== 02-research ===== */
 /* ── 02-research · mobile reflow ─────────────────────────────────────────
@@ -482,7 +488,6 @@
 .m-scene[id="02-research"] .research-marker-dot { stroke-width: 3; }
 .m-scene[id="02-research"] .research-marker-label { font-size: 26px; }
 /* ===== 03-baselines ===== */
-/* ===== 03-baselines ===== */
 /* ── 03-baselines · mobile article reformat (375px) ───────────────── */
 
 /* Top-align content under the top bar; remove the centred dead band */
@@ -492,7 +497,7 @@
   height: auto;
 }
 
-/* Single flowing column: headline → interaction → floor → waffle → caption */
+/* Single flowing column: headline → floor stats → guess slider+button → waffle */
 .m-scene[id="03-baselines"] .bl-hero {
   display: flex;
   flex-direction: column;
@@ -501,10 +506,16 @@
   min-height: 0;
   overflow: visible;
 }
+/* Rail is a flex column; reorder its children so the three floor stats sit
+   ABOVE the guess slider + "Lock in my guess" button (HTML order is
+   head → claim → floor; CSS `order` reflows to head → floor → claim). */
 .m-scene[id="03-baselines"] .bl-rail {
   justify-content: flex-start;
   gap: 1.25rem;
 }
+.m-scene[id="03-baselines"] .bl-head { order: 0; }
+.m-scene[id="03-baselines"] .bl-floor-row { order: 1; }
+.m-scene[id="03-baselines"] .bl-claim { order: 2; }
 
 /* Display headline: phone-scaled, never overflows the rail */
 .m-scene[id="03-baselines"] .bl-headline {
@@ -518,7 +529,8 @@
 /* Display number trimmed so it sits inline, not hero-scale */
 .m-scene[id="03-baselines"] .bl-num { font-size: clamp(4rem, 22vw, 5.5rem); }
 
-/* Slider + button: thumb-friendly */
+/* Slider + button: thumb-friendly. No tail margin — it sits directly above
+   the waffle, so the .bl-hero gap controls the rhythm to the grid. */
 .m-scene[id="03-baselines"] .guess-control {
   gap: 1rem;
   margin-bottom: 1.25rem;
@@ -527,16 +539,19 @@
 .m-scene[id="03-baselines"] .guess-submit {
   min-height: 52px;
   width: 100%;
+  margin-bottom: 0;
 }
 
-/* Floor stats: keep the 3-up tabular row tight */
+/* Floor stats: keep the 3-up tabular row tight. Now the first block under the
+   headline, so drop the desktop hairline/top-pad that read as a divider. */
 .m-scene[id="03-baselines"] .bl-floor-row {
   gap: 0.85rem;
-  padding-top: 1rem;
+  border-top: none;
+  padding-top: 0;
 }
 
 /* Crowd: size to content; top-align so the waffle sits right under the
-   floor stats with no stranded centring gap. Override the section's
+   slider+button with no stranded centring gap. Override the section's
    @media(max-width:860px) min-height:50vw which reserved a dead band. */
 .m-scene[id="03-baselines"] .bl-crowd {
   height: auto;
@@ -562,6 +577,7 @@
 
 /* Caption flows directly under the grid — no reserved tail space */
 .m-scene[id="03-baselines"] .bl-crowd-cap { margin-top: 1rem; }
+
 /* ===== 04-baselines-rest ===== */
 /* ===== 04-baselines-rest ===== */
 /* NOTE: ID starts with a digit; the scoped selector uses the attribute form
@@ -1010,17 +1026,6 @@
   height: 22px;
 }
 /* ===== 08-twist-ai ===== */
-/* ===== 08-twist-ai ===== */
-/* Scene 08 — Twist three: AI on tap. Mobile (375px) — ONE CONTINUOUS ARTICLE.
-   NOTE: the leading digit in the id MUST be CSS-escaped only in selector-list
-   form; here we use the attribute form [id="08-twist-ai"], which is valid and
-   needs no escaping. */
-
-/* Kill the full-screen reservation: the desktop root is width:100vw +
-   min-height:100svh + height:100% with a centred grid — on a phone that left a
-   big dead band of warm ground below the content. Size to content, single
-   column, article flow. Background stays transparent (the fixed #m-backdrop
-   cross-fades behind it); we do NOT repaint a solid gradient here. */
 .m-scene[id="08-twist-ai"] .twist-ai-root {
   display: block;
   width: 100%;
@@ -1089,23 +1094,30 @@
 
 /* ── Task list — labels get full room (no truncation), bars on own row ── */
 .m-scene[id="08-twist-ai"] .twist-ai-task-list {
-  gap: 11px;
+  gap: 13px;
 }
 .m-scene[id="08-twist-ai"] .twist-ai-task-item {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     "label val"
     "track track";
   column-gap: 12px;
-  row-gap: 5px;
+  row-gap: 6px;
   align-items: baseline;
 }
+/* Kill the desktop truncation. The desktop rule is an ID selector
+   ([id="08-twist-ai"] .twist-ai-task-label) which out-specifies this attribute-
+   form block, so its white-space:nowrap / overflow:hidden / text-overflow:
+   ellipsis would otherwise win and clip labels to "Health in…". Force the
+   labels to wrap and take their full width with !important — the bars sit on
+   their own row so there is room. */
 .m-scene[id="08-twist-ai"] .twist-ai-task-label {
   grid-area: label;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
+  min-width: 0;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
   font-size: 0.96rem;
   line-height: 1.25;
   opacity: 0.95;
@@ -1164,6 +1176,7 @@
   opacity: 0.7;
   max-width: none;
 }
+
 /* ===== 09-segments-intro ===== */
 /* ===== 09-segments-intro ===== */
 .m-scene[id="09-segments-intro"] .segments-intro {
@@ -1216,12 +1229,8 @@
 
 .m-scene[id="09-segments-intro"] .segments-intro-cap { font-size: 0.74rem; }
 /* ===== 10-segment-architects ===== */
-/* ===== 10-segment-architects ===== */
-/* Scene 10 — The Architects (segment profile, shared template for 10–13).
-   NOTE: id begins with a digit, so it MUST be CSS-escaped as [id="10-"]... ;
-   a literal "[id="10-segment-architects"]" selector is invalid CSS and is dropped. */
-
-/* Release desktop full-height; let the scene pack to content (the section's
+/* CANONICAL segment layout — scenes 10–13 all copy this block.
+   Release desktop full-height; let the scene pack to content (the section's
    #-prefixed rules win on specificity, so layout props need !important). */
 .m-scene[id="10-segment-architects"] .chapter-inner {
   height: auto !important;
@@ -1231,6 +1240,7 @@
 }
 .m-scene[id="10-segment-architects"] .seg-grid {
   height: auto !important;
+  grid-template-columns: 1fr !important;
   grid-template-rows: auto !important;
   align-content: start !important;
   padding: calc(var(--m-topbar-h, 52px) + 16px) 20px 40px !important;
@@ -1284,21 +1294,30 @@
 }
 .m-scene[id="10-segment-architects"] .seg-lens-hint { font-size: 0.92rem; opacity: 0.82; }
 
-/* Lens pills — compact two-up grid, tidy rows, 44px tap targets. */
-.m-scene[id="10-segment-architects"] .seg-lens .pillgroup { gap: 8px; }
+/* CANONICAL lens picker — a full-width WRAPPING ROW of pills. Each chip sizes
+   to its own label and wraps to the next row; all chips share one consistent
+   height (>=44px tap target), comfortable gaps, and the brand left keyline. */
+.m-scene[id="10-segment-architects"] .seg-lens .pillgroup {
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+}
 .m-scene[id="10-segment-architects"] .seg-lens .pillgroup-chip {
-  flex: 1 1 calc(50% - 4px) !important;
+  flex: 0 1 auto !important;
   min-height: 44px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  font-size: 0.8rem;
-  line-height: 1.1;
-  padding: 8px 12px;
+  font-size: 0.84rem;
+  line-height: 1.15;
+  padding: 10px 14px;
   border-left-width: 4px;
 }
 
-/* Chart — full-width, snug (no floating dead band) and legible. */
+/* CANONICAL over-index chart — full column width, snug (no floating dead
+   band), labels left at legible size. */
 .m-scene[id="10-segment-architects"] .seg-chart {
+  width: 100%;
   flex: 0 0 auto !important;
   padding: clamp(6px, 1.5vh, 12px) 0 !important;
   min-height: 0 !important;
@@ -1326,8 +1345,123 @@
   font-size: 0.82rem;
   padding: 8px 12px;
 }
+
 /* ===== 11-segment-hustlers ===== */
 /* ===== 11-segment-hustlers ===== */
+/* Scene 11 — The Hustlers (segment profile). Structurally identical to the
+   canonical Architects (10) block so 10/11/12/13 read as one system.
+   NOTE: id begins with a digit, so the attribute form .m-scene[id="11-..."]
+   is the valid selector ('#11-...' would be invalid CSS and dropped). */
+
+/* Release desktop full-height; let the scene pack to content (the section's
+   #-prefixed rules win on specificity, so layout props need !important). */
+.m-scene[id="11-segment-hustlers"] .chapter-inner {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+.m-scene[id="11-segment-hustlers"] .seg-grid {
+  height: auto !important;
+  grid-template-rows: auto !important;
+  align-content: start !important;
+  padding: calc(var(--m-topbar-h, 52px) + 16px) 20px 40px !important;
+  row-gap: 28px;
+}
+
+/* Identity rail — top-aligned natural flow, no vertical-centering void. */
+.m-scene[id="11-segment-hustlers"] .seg-id {
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start !important;
+  max-width: none;
+  gap: clamp(12px, 2vh, 18px);
+}
+.m-scene[id="11-segment-hustlers"] .seg-title {
+  font-size: clamp(2.6rem, 13vw, 3.4rem);
+  line-height: 0.92;
+}
+.m-scene[id="11-segment-hustlers"] .seg-descriptor { font-size: 1.12rem; }
+.m-scene[id="11-segment-hustlers"] .seg-quote { max-width: none; }
+.m-scene[id="11-segment-hustlers"] .seg-quote p { font-size: 1.02rem; line-height: 1.36; }
+.m-scene[id="11-segment-hustlers"] .seg-facts {
+  gap: clamp(12px, 2vh, 18px) clamp(16px, 4vw, 24px);
+}
+.m-scene[id="11-segment-hustlers"] .seg-fact dt { font-size: 0.64rem; }
+.m-scene[id="11-segment-hustlers"] .seg-fact dd { font-size: 0.92rem; line-height: 1.3; }
+.m-scene[id="11-segment-hustlers"] .seg-share { gap: 6px 14px; margin-top: 4px; }
+.m-scene[id="11-segment-hustlers"] .seg-share-num {
+  font-size: clamp(3.1rem, 16vw, 4.2rem);
+}
+.m-scene[id="11-segment-hustlers"] .seg-share-cap {
+  font-size: 0.95rem;
+  max-width: none;
+}
+
+/* Data column flows naturally — no reserved desktop height. */
+.m-scene[id="11-segment-hustlers"] .seg-data {
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start;
+  gap: clamp(12px, 2vh, 16px);
+}
+.m-scene[id="11-segment-hustlers"] .seg-icon {
+  width: 64px !important;
+  height: 64px !important;
+  padding: 12px;
+}
+.m-scene[id="11-segment-hustlers"] .seg-data-title {
+  font-size: clamp(1.4rem, 6.2vw, 1.7rem);
+  line-height: 1.06;
+}
+.m-scene[id="11-segment-hustlers"] .seg-lens-hint { font-size: 0.92rem; opacity: 0.82; }
+
+/* Lens pills — compact two-up grid, tidy rows, 44px tap targets. */
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup { gap: 8px; }
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup-chip {
+  flex: 1 1 calc(50% - 4px) !important;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  line-height: 1.1;
+  padding: 8px 12px;
+  border-left-width: 4px;
+}
+
+/* Chart — full-width, snug (no floating dead band) and legible. */
+.m-scene[id="11-segment-hustlers"] .seg-chart {
+  flex: 0 0 auto !important;
+  padding: clamp(6px, 1.5vh, 12px) 0 !important;
+  min-height: 0 !important;
+  align-items: stretch;
+}
+.m-scene[id="11-segment-hustlers"] .seg-chart svg {
+  width: 100%;
+  height: auto;
+  max-height: none !important;
+}
+.m-scene[id="11-segment-hustlers"] .seg-baseline { font-size: 0.8rem; opacity: 0.7; }
+
+/* Restore the fingerprint cloud the section hides below 900px; reflow, don't drop. */
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint {
+  display: flex !important;
+  margin-top: clamp(10px, 2vh, 16px);
+  gap: 11px;
+}
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint-cloud {
+  max-height: none !important;
+  overflow: visible !important;
+  gap: 8px;
+}
+.m-scene[id="11-segment-hustlers"] .seg-fingerprint-tag {
+  font-size: 0.82rem;
+  padding: 8px 12px;
+}
+
+/* Decorative orbit not needed in the stacked mobile flow. */
+.m-scene[id="11-segment-hustlers"] .seg-orbit { display: none !important; }
+
 /* ===== 11-segment-hustlers — mobile refinement (390px) =====
    ID begins with a digit, so it MUST be escaped ([id="11-"]…) to be a valid
    CSS selector — semantically this is .m-scene[id="11-segment-hustlers"]. */
@@ -1426,24 +1560,39 @@
 /* Decorative orbit not needed in the stacked mobile flow. */
 .m-scene[id="11-segment-hustlers"] .seg-orbit { display: none; }
 /* ===== 12-segment-coasters ===== */
+/* ===== 12-segment-coasters ===== */
+/* Scene 12 — The Coasters (segment profile, shared template for 10–13).
+   Structure mirrors the canonical Architects (10) layout EXACTLY: lens picker
+   (.seg-lens / .pillgroup-chip) as a full-width WRAPPING two-up row of >=44px
+   pills, with the over-index bar chart full width directly below. The id begins
+   with a digit, so it is targeted via the attribute form (a literal #12-… is
+   invalid CSS). Coasters' fingerprint cloud is removed wholesale by the scene JS
+   when a segment has no statements — margin/padding live on .seg-fingerprint
+   itself, so its removal leaves no dangling heading and no gap. */
+
+/* Release desktop full-height; let the scene pack to content (the section's
+   #-prefixed rules win on specificity, so layout props need !important). */
 .m-scene[id="12-segment-coasters"] .chapter-inner {
-  display: block;
-  height: auto;
-  overflow: visible;
-  padding: 0;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 .m-scene[id="12-segment-coasters"] .seg-grid {
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-content: stretch;
-  row-gap: clamp(20px, 4vh, 30px);
-  padding: clamp(18px, 4vh, 30px) var(--margin-page, 22px) clamp(24px, 5vh, 40px);
+  height: auto !important;
+  grid-template-rows: auto !important;
+  align-content: start !important;
+  padding: calc(var(--m-topbar-h, 52px) + 16px) 20px 40px !important;
+  row-gap: 28px;
 }
+
+/* Identity rail — top-aligned natural flow, no vertical-centering void. */
 .m-scene[id="12-segment-coasters"] .seg-id {
-  justify-content: flex-start;
-  gap: clamp(12px, 2.2vh, 18px);
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start !important;
   max-width: none;
+  gap: clamp(12px, 2vh, 18px);
 }
 .m-scene[id="12-segment-coasters"] .seg-mark { display: none; }
 
@@ -1451,81 +1600,69 @@
   font-size: clamp(2.6rem, 13vw, 3.4rem);
   line-height: 0.92;
 }
-.m-scene[id="12-segment-coasters"] .seg-descriptor {
-  font-size: 1.18rem;
-}
-.m-scene[id="12-segment-coasters"] .seg-quote {
-  max-width: none;
-}
-.m-scene[id="12-segment-coasters"] .seg-quote p {
-  font-size: 1.06rem;
-  line-height: 1.4;
-}
-.m-scene[id="12-segment-coasters"] .seg-quote cite {
-  display: block;
-  font-size: 0.64rem;
-}
-
+.m-scene[id="12-segment-coasters"] .seg-descriptor { font-size: 1.12rem; }
+.m-scene[id="12-segment-coasters"] .seg-quote { max-width: none; }
+.m-scene[id="12-segment-coasters"] .seg-quote p { font-size: 1.02rem; line-height: 1.36; }
+.m-scene[id="12-segment-coasters"] .seg-quote cite { display: block; font-size: 0.64rem; }
 .m-scene[id="12-segment-coasters"] .seg-facts {
   gap: clamp(12px, 2vh, 18px) clamp(16px, 4vw, 24px);
 }
-.m-scene[id="12-segment-coasters"] .seg-fact dt { font-size: 0.66rem; }
-.m-scene[id="12-segment-coasters"] .seg-fact dd { font-size: 0.92rem; line-height: 1.32; }
-
-.m-scene[id="12-segment-coasters"] .seg-share {
-  margin-top: clamp(6px, 1.4vh, 12px);
-  gap: 6px 14px;
-}
+.m-scene[id="12-segment-coasters"] .seg-fact dt { font-size: 0.64rem; }
+.m-scene[id="12-segment-coasters"] .seg-fact dd { font-size: 0.92rem; line-height: 1.3; }
+.m-scene[id="12-segment-coasters"] .seg-share { gap: 6px 14px; margin-top: 4px; }
 .m-scene[id="12-segment-coasters"] .seg-share-num {
-  font-size: clamp(3.4rem, 18vw, 4.4rem);
-  line-height: 0.84;
+  font-size: clamp(3.1rem, 16vw, 4.2rem);
 }
 .m-scene[id="12-segment-coasters"] .seg-share-cap {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   max-width: none;
 }
 
-/* Data column - flows naturally, no forced height. */
+/* Data column flows naturally — no reserved desktop height. */
 .m-scene[id="12-segment-coasters"] .seg-data {
-  height: auto;
-  gap: clamp(12px, 2.2vh, 18px);
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start;
+  gap: clamp(12px, 2vh, 16px);
 }
 .m-scene[id="12-segment-coasters"] .seg-icon {
-  width: 60px;
-  height: 60px;
-  padding: 11px;
+  width: 64px !important;
+  height: 64px !important;
+  padding: 12px;
 }
 .m-scene[id="12-segment-coasters"] .seg-data-title {
-  font-size: clamp(1.4rem, 6vw, 1.7rem);
+  font-size: clamp(1.4rem, 6.2vw, 1.7rem);
   line-height: 1.06;
 }
-.m-scene[id="12-segment-coasters"] .seg-lens-hint {
-  font-size: 0.92rem;
-  opacity: 0.85;
-  max-width: none;
-}
+.m-scene[id="12-segment-coasters"] .seg-lens-hint { font-size: 0.92rem; opacity: 0.82; }
 
-/* Lens pills - thumb-friendly targets. */
+/* Lens pills — compact two-up grid, tidy rows, 44px tap targets. */
 .m-scene[id="12-segment-coasters"] .seg-lens .pillgroup { gap: 8px; }
 .m-scene[id="12-segment-coasters"] .seg-lens .pillgroup-chip {
-  font-size: 0.82rem;
-  padding: 11px 14px;
+  flex: 1 1 calc(50% - 4px) !important;
   min-height: 44px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  font-size: 0.8rem;
+  line-height: 1.1;
+  padding: 8px 12px;
+  border-left-width: 4px;
 }
 
-/* Chart - full width, give it real height on mobile. */
+/* Chart — full-width, snug (no floating dead band) and legible. */
 .m-scene[id="12-segment-coasters"] .seg-chart {
-  flex: none;
-  min-height: 300px;
-  padding: clamp(8px, 2vh, 16px) 0;
+  flex: 0 0 auto !important;
+  padding: clamp(6px, 1.5vh, 12px) 0 !important;
+  min-height: 0 !important;
+  align-items: stretch;
 }
 .m-scene[id="12-segment-coasters"] .seg-chart svg {
-  max-height: none;
+  width: 100%;
+  height: auto;
+  max-height: none !important;
 }
 
-/* Pucks fallback for sparse lenses - readable on mobile. */
+/* Pucks fallback for sparse lenses — readable on mobile. */
 .m-scene[id="12-segment-coasters"] .seg-pucks {
   height: auto;
   flex-wrap: wrap;
@@ -1537,25 +1674,20 @@
   padding: 18px 16px;
 }
 
-.m-scene[id="12-segment-coasters"] .seg-baseline {
-  font-size: 0.74rem;
-  opacity: 0.7;
-}
+.m-scene[id="12-segment-coasters"] .seg-baseline { font-size: 0.8rem; opacity: 0.7; }
 
-/* Fingerprint cloud - the Coasters DO carry statements, but the desktop sheet's
-   ID-specificity "@media (max-width:900px){display:none}" outranks this attribute
-   block, so restore it with !important; it becomes a full, readable stack. JS
-   removes the whole element if a segment has none, so no empty header can show. */
+/* Fingerprint cloud — restore the cloud the desktop sheet hides below 900px so it
+   reflows instead of being dropped. The scene JS removes the whole .seg-fingerprint
+   element when a segment has no statements, so margin/padding sit on the element
+   itself — its removal leaves no orphan heading and no dangling gap. */
 .m-scene[id="12-segment-coasters"] .seg-fingerprint {
   display: flex !important;
   margin-top: clamp(10px, 2vh, 16px);
-  gap: 10px;
-  padding-top: clamp(12px, 2vh, 16px);
+  gap: 11px;
 }
-.m-scene[id="12-segment-coasters"] .seg-fingerprint-label { font-size: 0.62rem; }
 .m-scene[id="12-segment-coasters"] .seg-fingerprint-cloud {
-  max-height: none;
-  overflow: visible;
+  max-height: none !important;
+  overflow: visible !important;
   gap: 8px;
 }
 .m-scene[id="12-segment-coasters"] .seg-fingerprint-tag {
@@ -1564,115 +1696,122 @@
 }
 
 .m-scene[id="12-segment-coasters"] .seg-orbit { display: none; }
-/* ===== 13-segment-retreaters ===== */
-/* ===== 13-segment-retreaters ===== */
-/* Scene 13 — The Retreaters (shared segment template, same as 10–12).
-   Mobile refinements only; same content/story, reflowed for 375px. The id
-   begins with a digit, so it is targeted via the attribute form
-   .m-scene[id="13-segment-retreaters"] (a literal #13-… selector is invalid). */
 
-/* Release the desktop one-screen cage so the scene flows to its content
-   (kills the lower dead space the fixed-height wrapper used to reserve). */
+/* ===== 13-segment-retreaters ===== */
+/* ===== 13-segment-retreaters ===== */
+/* Scene 13 — The Retreaters (segment profile, shared template for 10–13).
+   Structurally identical to Architects (10): lens picker is a full-width
+   wrapping row of >=44px two-up pills, with the over-index bar chart full
+   width directly below. The id begins with a digit, so it MUST be targeted
+   via the attribute form .m-scene[id="13-segment-retreaters"] (a literal
+   #13-… selector is invalid CSS and is dropped). */
+
+/* Release desktop full-height; let the scene pack to content (the section's
+   #-prefixed rules win on specificity, so layout props need !important). */
 .m-scene[id="13-segment-retreaters"] .chapter-inner {
-  height: auto;
-  min-height: 0;
-  max-height: none;
-  overflow: visible;
-  align-items: stretch;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 .m-scene[id="13-segment-retreaters"] .seg-grid {
-  height: auto;
-  align-content: start;
-  padding: calc(var(--m-topbar-h, 52px) + 16px) var(--margin-page, 20px) 30px;
-  row-gap: clamp(20px, 3.4vh, 28px);
+  height: auto !important;
+  grid-template-rows: auto !important;
+  align-content: start !important;
+  padding: calc(var(--m-topbar-h, 52px) + 16px) 20px 40px !important;
+  row-gap: 28px;
 }
+
+/* Identity rail — top-aligned natural flow, no vertical-centering void. */
 .m-scene[id="13-segment-retreaters"] .seg-id {
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start !important;
   max-width: none;
-  gap: clamp(11px, 2vh, 17px);
+  gap: clamp(12px, 2vh, 18px);
 }
-
-/* Identity rail — present but phone-comfortable. Tighter line-height so the
-   big display headline never crowds the eyebrow above it. */
 .m-scene[id="13-segment-retreaters"] .seg-title {
-  font-size: clamp(2.8rem, 12.5vw, 3.5rem);
-  line-height: 0.94;
-}
-.m-scene[id="13-segment-retreaters"] .seg-descriptor { font-size: 1.12rem; }
-.m-scene[id="13-segment-retreaters"] .seg-quote p { font-size: 1.02rem; line-height: 1.36; }
-.m-scene[id="13-segment-retreaters"] .seg-fact dd { font-size: 0.92rem; line-height: 1.3; }
-
-/* Hero share number reads as the headline stat (extra line-height so the
-   large glyphs don't clip their descenders/baseline). */
-.m-scene[id="13-segment-retreaters"] .seg-share-num {
-  font-size: clamp(3.3rem, 15vw, 4.1rem);
+  font-size: clamp(2.6rem, 13vw, 3.4rem);
   line-height: 0.92;
 }
+.m-scene[id="13-segment-retreaters"] .seg-descriptor { font-size: 1.12rem; }
+.m-scene[id="13-segment-retreaters"] .seg-quote { max-width: none; }
+.m-scene[id="13-segment-retreaters"] .seg-quote p { font-size: 1.02rem; line-height: 1.36; }
+.m-scene[id="13-segment-retreaters"] .seg-facts {
+  gap: clamp(12px, 2vh, 18px) clamp(16px, 4vw, 24px);
+}
+.m-scene[id="13-segment-retreaters"] .seg-fact dt { font-size: 0.64rem; }
+.m-scene[id="13-segment-retreaters"] .seg-fact dd { font-size: 0.92rem; line-height: 1.3; }
+.m-scene[id="13-segment-retreaters"] .seg-share { gap: 6px 14px; margin-top: 4px; }
+.m-scene[id="13-segment-retreaters"] .seg-share-num {
+  font-size: clamp(3.1rem, 16vw, 4.2rem);
+}
 .m-scene[id="13-segment-retreaters"] .seg-share-cap {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   max-width: none;
 }
 
-/* Data column — flow to content, no reserved height. */
+/* Data column flows naturally — no reserved desktop height. */
 .m-scene[id="13-segment-retreaters"] .seg-data {
-  height: auto;
-  gap: clamp(10px, 1.8vh, 15px);
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: flex-start;
+  gap: clamp(12px, 2vh, 16px);
 }
-
-/* Trim the silhouette tile so it doesn't dominate the data column. */
 .m-scene[id="13-segment-retreaters"] .seg-icon {
-  width: 92px;
-  height: 92px;
+  width: 64px !important;
+  height: 64px !important;
   padding: 12px;
 }
-
 .m-scene[id="13-segment-retreaters"] .seg-data-title {
-  font-size: clamp(1.5rem, 6vw, 1.9rem);
+  font-size: clamp(1.4rem, 6.2vw, 1.7rem);
   line-height: 1.06;
 }
-.m-scene[id="13-segment-retreaters"] .seg-lens-hint,
-.m-scene[id="13-segment-retreaters"] .seg-baseline {
-  font-size: 0.82rem;
-}
+.m-scene[id="13-segment-retreaters"] .seg-lens-hint { font-size: 0.92rem; opacity: 0.82; }
 
-/* Lens pills: thumb-friendly, wrap 2-up where they fit; 44px targets. */
+/* Lens pills — compact two-up grid, tidy rows, 44px tap targets. */
 .m-scene[id="13-segment-retreaters"] .seg-lens .pillgroup { gap: 8px; }
 .m-scene[id="13-segment-retreaters"] .seg-lens .pillgroup-chip {
-  flex: 1 1 44%;
+  flex: 1 1 calc(50% - 4px) !important;
   min-height: 44px;
   display: flex;
   align-items: center;
   font-size: 0.8rem;
+  line-height: 1.1;
   padding: 8px 12px;
+  border-left-width: 4px;
 }
 
-/* Chart: natural height directly under the pills (no dead gap), labels
-   legible, capped so a heavy lens never blows past a phone screen. */
+/* Chart — full-width, snug (no floating dead band) and legible. */
 .m-scene[id="13-segment-retreaters"] .seg-chart {
-  flex: 0 0 auto;
-  min-height: 0;
-  align-items: flex-start;
-  padding: clamp(8px, 1.6vh, 14px) 0 clamp(4px, 1vh, 10px);
+  flex: 0 0 auto !important;
+  padding: clamp(6px, 1.5vh, 12px) 0 !important;
+  min-height: 0 !important;
+  align-items: stretch;
 }
 .m-scene[id="13-segment-retreaters"] .seg-chart svg {
   width: 100%;
-  max-height: 320px;
+  height: auto;
+  max-height: none !important;
 }
+.m-scene[id="13-segment-retreaters"] .seg-baseline { font-size: 0.8rem; opacity: 0.7; }
 
-/* Restore the fingerprint cloud the desktop <=900px breakpoint hides;
-   reflow it in full rather than dropping content. */
+/* Restore the fingerprint cloud the section hides below 900px; reflow, don't drop. */
 .m-scene[id="13-segment-retreaters"] .seg-fingerprint {
   display: flex !important;
-  margin-top: clamp(14px, 2.4vh, 22px);
+  margin-top: clamp(10px, 2vh, 16px);
+  gap: 11px;
 }
 .m-scene[id="13-segment-retreaters"] .seg-fingerprint-cloud {
-  max-height: none;
-  overflow: visible;
+  max-height: none !important;
+  overflow: visible !important;
   gap: 8px;
 }
 .m-scene[id="13-segment-retreaters"] .seg-fingerprint-tag {
-  font-size: 0.8rem;
-  padding: 7px 12px;
+  font-size: 0.82rem;
+  padding: 8px 12px;
 }
+
 /* ===== 14-graphrag ===== */
 /* ===== 14-graphrag ===== */
 /* ── Release the one-screen cage so the scene flows tall on mobile ──────── */
@@ -1719,21 +1858,40 @@
   min-height: 48px;
   padding: 11px 14px !important;
 }
-.m-scene[id="14-graphrag"] .gs-measure { font-size: 0.78rem; }
+/* Measure line: allow full text to wrap, never clip. */
+.m-scene[id="14-graphrag"] .gs-measure {
+  font-size: 0.78rem;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
 .m-scene[id="14-graphrag"] .gs-table { max-height: 250px !important; }
 .m-scene[id="14-graphrag"] .gs-row {
-  grid-template-columns: minmax(0, 1.3fr) repeat(4, minmax(0, 0.66fr)) !important;
+  grid-template-columns: minmax(0, 1.15fr) repeat(4, minmax(0, 0.72fr)) !important;
   gap: 3px 4px !important;
   padding: 6px 2px !important;
 }
-.m-scene[id="14-graphrag"] .gs-cell { font-size: 0.78rem; }
+.m-scene[id="14-graphrag"] .gs-cell {
+  font-size: 0.78rem;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+/* Header audience labels: full words, wrap to two lines instead of "…" clip. */
 .m-scene[id="14-graphrag"] .gs-row--head .gs-cell--label,
 .m-scene[id="14-graphrag"] .gs-row--head .gs-cell--val {
   font-size: 0.55rem !important;
   letter-spacing: 0 !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.05 !important;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: none;
+}
+.m-scene[id="14-graphrag"] .gs-row--head {
+  align-items: end !important;
 }
 /* Stack the % over its index so narrow columns never overlap; both stay visible */
 .m-scene[id="14-graphrag"] .gs-cell--val {
@@ -1741,10 +1899,15 @@
   align-items: flex-end;
   gap: 0;
 }
+.m-scene[id="14-graphrag"] .gs-cell--label {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
 .m-scene[id="14-graphrag"] .gs-pct { font-size: 0.78rem; line-height: 1.1; }
 .m-scene[id="14-graphrag"] .gs-idx { font-size: 0.56rem; line-height: 1; }
 
-/* ── Graph stage — full-bleed, tall showpiece ───────────────────────────── */
+/* ── Graph stage — full-bleed, tall showpiece, contained to its column ───── */
 .m-scene[id="14-graphrag"] .graphrag-stage {
   height: 420px !important;
   min-height: 420px !important;
@@ -1764,7 +1927,7 @@
 .m-scene[id="14-graphrag"] .sg-hub .sg-label { font-size: 17px; }
 .m-scene[id="14-graphrag"] .sg-attr .sg-label { font-size: 12.5px; }
 
-/* ── Profile cards — tidy 2x2 ───────────────────────────────────────────── */
+/* ── Profile cards — tidy 2x2, full labels (no clip) ─────────────────────── */
 .m-scene[id="14-graphrag"] .graphrag-profiles {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 12px !important;
@@ -1786,12 +1949,20 @@
   margin-bottom: 12px;
   line-height: 1.4;
 }
+
 /* ===== 15-empowerment ===== */
+/* ===== 15-empowerment =====
+   Article flow: the two desktop panes stack as one continuous column and the
+   whole turn is given room to breathe down the scroll. The argument (title,
+   standfirst, pivot) reads first; then a generous gap drops to the venn block
+   (instruction -> converging circles -> stat row), each separated by real
+   vertical air so nothing overlaps. Circles still converge at the centre by
+   design; the SECTION around them is no longer cramped. */
 .m-scene[id="15-empowerment"] .emp-stage{
   display:flex;
   flex-direction:column;
-  gap:0.7rem;
-  padding:0.3rem clamp(1.05rem,4.5vw,1.4rem) 0.8rem;
+  gap:2rem;
+  padding:0.6rem clamp(1.05rem,4.5vw,1.4rem) 2rem;
   align-items:stretch;
   justify-content:flex-start;
 }
@@ -1800,41 +1971,46 @@
   justify-content:flex-start;
   padding-right:0;
 }
-.m-scene[id="15-empowerment"] .emp-eyebrow{ margin:0 0 0.4rem; }
+.m-scene[id="15-empowerment"] .emp-eyebrow{ margin:0 0 0.5rem; }
 .m-scene[id="15-empowerment"] .emp-title{
   font-size:clamp(2.1rem,9.5vw,2.7rem);
   line-height:0.92;
-  margin:0 0 0.5rem;
+  margin:0 0 0.7rem;
 }
 .m-scene[id="15-empowerment"] .emp-standfirst{
   font-size:0.88rem;
   line-height:1.45;
   max-width:100%;
-  margin:0 0 0.8rem;
+  margin:0 0 1.6rem;
 }
 
-/* Pivot — full width, thumb-friendly target. */
-.m-scene[id="15-empowerment"] .emp-pivot{ max-width:100%; gap:0.35rem; }
+/* Pivot — full width, thumb-friendly target, with room above the venn below. */
+.m-scene[id="15-empowerment"] .emp-pivot{
+  max-width:100%;
+  gap:0.55rem;
+  margin-bottom:0.5rem;
+}
 .m-scene[id="15-empowerment"] .emp-pivot-word{ font-size:1.3rem; }
 .m-scene[id="15-empowerment"] .emp-pivot-track{ height:44px; }
 .m-scene[id="15-empowerment"] .emp-pivot-slider{ height:44px; }
 .m-scene[id="15-empowerment"] .emp-pivot-slider::-webkit-slider-thumb{ width:30px; height:30px; }
 .m-scene[id="15-empowerment"] .emp-pivot-slider::-moz-range-thumb{ width:30px; height:30px; }
 
-/* Venn — give the mount + field a real square box. The desktop flex-stretch
-   sizing collapses to 0 height in the mobile single-column stack, which hid the
-   whole centrepiece; an explicit square restores it sized to fit 390px. */
+/* Venn block — instruction, converging circles and stat row spread out down
+   the column with generous separation. The desktop flex-stretch sizing
+   collapses to 0 height in the mobile single-column stack, so the mount gets
+   an explicit square sized to fit 375px. */
 .m-scene[id="15-empowerment"] .emp-venn{
   height:auto;
   min-height:0;
-  gap:0.5rem;
+  gap:1.5rem;
   margin-top:0;
 }
-.m-scene[id="15-empowerment"] .emp-venn-instruction{ margin:0; }
+.m-scene[id="15-empowerment"] .emp-venn-instruction{ margin:0 0 0.25rem; }
 .m-scene[id="15-empowerment"] .emp-venn-mount{
   flex:0 0 auto;
-  width:min(66vw,252px);
-  height:min(66vw,252px);
+  width:min(72vw,260px);
+  height:min(72vw,260px);
   min-height:0;
   margin:0 auto;
 }
@@ -1843,25 +2019,29 @@
   max-width:100%;
 }
 
-/* Stat row — three verified figures abreast, fit inside 390 with no clipping. */
+/* Stat row — the three verified figures abreast, dropped clear beneath the
+   venn with its own breathing space; labels wrap rather than truncate. */
 .m-scene[id="15-empowerment"] .emp-stat-row{
-  gap:0.55rem;
+  gap:0.6rem;
   padding:0;
+  margin-top:0.5rem;
 }
-.m-scene[id="15-empowerment"] .emp-tv-stat{ max-width:none; gap:0.05rem; }
-.m-scene[id="15-empowerment"] .emp-tv-stat-icon{ margin-bottom:0.1rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat{ max-width:none; gap:0.2rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-icon{ margin-bottom:0.25rem; }
 .m-scene[id="15-empowerment"] .emp-tv-stat-icon,
-.m-scene[id="15-empowerment"] .emp-tv-stat-icon__img{ width:30px; height:30px; }
-.m-scene[id="15-empowerment"] .emp-tv-stat-n{ font-size:1.4rem; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-icon__img{ width:34px; height:34px; }
+.m-scene[id="15-empowerment"] .emp-tv-stat-n{ font-size:1.5rem; }
 .m-scene[id="15-empowerment"] .emp-tv-stat-name{
-  font-size:0.68rem;
-  line-height:1.12;
+  font-size:0.7rem;
+  line-height:1.15;
   white-space:normal;
 }
 .m-scene[id="15-empowerment"] .emp-tv-stat-sub{
-  font-size:0.54rem;
+  font-size:0.55rem;
+  line-height:1.1;
   white-space:normal;
 }
+
 /* ===== 16-data-explorer ===== */
 /* ===== 16-data-explorer ===== */
 /* Article flow: the console reflows as one natural column — masthead, controls,
@@ -2174,6 +2354,7 @@
 .m-scene[id="19-move-selfhelp"] .flip-more { font-size: 0.95rem; }
 .m-scene[id="19-move-selfhelp"] .flip-head { font-size: 0.66rem; }
 /* ===== 20-move-mentalload ===== */
+/* ===== 20-move-mentalload ===== */
 /* Let the scene breathe: kill the 100svh clamp that overlaps the columns */
 .m-scene[id="20-move-mentalload"] .chapter-inner{
   max-height:none !important;
@@ -2220,33 +2401,45 @@
   display:block; font-size:0.92rem; line-height:1.42; max-width:none;
 }
 
-/* ── Sandwich stat strip → 2x2 grid of stat tiles, descriptions kept ── */
+/* ── Sandwich stat strip → stacked full-width tiles, FULL labels (no ellipsis) ── */
 .m-scene[id="20-move-mentalload"] .mml-sandwich{ gap:12px; }
 .m-scene[id="20-move-mentalload"] .mml-sandwich__label{ font-size:0.72rem; }
 .m-scene[id="20-move-mentalload"] .mml-sandwich__bars{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.m-scene[id="20-move-mentalload"] .mml-sbar{
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
-  gap:7px;
-  grid-template-columns:none;
+  gap:10px;
+}
+/* Each stat = a tidy stacked card: number + bar on the top row, full label below */
+.m-scene[id="20-move-mentalload"] .mml-sbar{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:
+    "num bar"
+    "desc desc";
+  align-items:center;
+  column-gap:12px;
+  row-gap:7px;
   background:rgba(4,22,84,0.05);
   padding:13px 14px;
 }
 .m-scene[id="20-move-mentalload"] .mml-sbar__num{
-  font-size:2rem; text-align:left; line-height:0.95;
+  grid-area:num;
+  font-size:1.7rem; text-align:left; line-height:0.95;
 }
 .m-scene[id="20-move-mentalload"] .mml-sbar__track{
-  width:100%; height:6px; order:2;
+  grid-area:bar;
+  width:100%; height:6px;
 }
+/* THE FIX: undo nowrap/ellipsis from the base section CSS so labels show in full */
 .m-scene[id="20-move-mentalload"] .mml-sbar__desc{
+  grid-area:desc;
   display:block !important;
-  white-space:normal; overflow:visible; text-overflow:clip;
-  font-size:0.82rem; line-height:1.3; order:3;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  word-break:normal;
+  overflow-wrap:break-word;
+  font-size:0.82rem; line-height:1.32;
   color:rgba(4,22,84,0.72);
 }
 .m-scene[id="20-move-mentalload"] .mml-sandwich__source{ font-size:0.66rem; }
@@ -2278,6 +2471,7 @@
 .m-scene[id="20-move-mentalload"] .flip-less,
 .m-scene[id="20-move-mentalload"] .flip-more{ font-size:1rem; }
 .m-scene[id="20-move-mentalload"] .flip-head{ font-size:0.66rem; padding:0 16px 6px; }
+
 /* ===== 21-move-behaviours ===== */
 /* ===== 21-move-behaviours ===== */
 /* One continuous article: size to content, no full-screen reservation, no dead gap. */
@@ -2482,4 +2676,32 @@
 .m-body .m-deck .m-scene .cover,
 .m-body .m-deck .m-scene .ot-root {
   background: transparent !important;
+}
+
+/* ============================================================
+   SEGMENT LENS — identical across all four (match Architects). The four segment
+   scenes share .seg-lens > .pillgroup > .pillgroup-chip; the audit agents diverged
+   (Architects stacked full-width, the others 2-col). Force ONE canonical layout:
+   a single full-width column of >=52px lens buttons, so 10/11/12/13 are identical.
+   ============================================================ */
+.m-scene[id="10-segment-architects"] .seg-lens .pillgroup,
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup,
+.m-scene[id="12-segment-coasters"] .seg-lens .pillgroup,
+.m-scene[id="13-segment-retreaters"] .seg-lens .pillgroup {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: none !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+.m-scene[id="10-segment-architects"] .seg-lens .pillgroup-chip,
+.m-scene[id="11-segment-hustlers"] .seg-lens .pillgroup-chip,
+.m-scene[id="12-segment-coasters"] .seg-lens .pillgroup-chip,
+.m-scene[id="13-segment-retreaters"] .seg-lens .pillgroup-chip {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-height: 52px !important;
+  box-sizing: border-box !important;
 }
