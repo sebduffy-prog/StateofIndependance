@@ -39,7 +39,14 @@ const HINT_DWELL_MS = 1400;              // dwell before an advisory hint may sh
 const INIT_MARGIN = '300px 0px 300px 0px'; // init a section ~one screen early
 const REVEAL_FALLBACK_MS = 1600;         // force-reveal still-hidden content after focus
 const THEME_COLORS = { warm: '#FBC100', cream: '#F0EDE7', navy: '#041654' };
-const FADE_PX = 280;   // distance over which one ground colour cross-fades to the next
+/* The full brand grounds, as the backdrop gradients (≈vertical for a tall phone).
+   Warm = orange→amber→gold→coral; cream solid; navy = deep→navy→royal. */
+const GROUND_BG = {
+  warm: 'linear-gradient(168deg, #FFA764 0%, #FBC100 44%, #FFC002 72%, #FF8598 116%)',
+  cream: '#F0EDE7',
+  navy: 'linear-gradient(168deg, #02103F 0%, #041654 58%, #0A2270 104%)',
+};
+const FADE_PX = 320;   // distance over which one ground cross-fades to the next
 
 const clampN = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const hexToRgb = (h) => {
@@ -134,6 +141,44 @@ const errorCard = (id, message) => {
   return div;
 };
 
+/**
+ * Mobile-only enhancement for scene 16 (data explorer). The desktop builds a wide
+ * "question bank" (.pg-qbank) of grouped metric chips (Survey · Demographics ·
+ * Lifestyle · Media) that wraps into a huge tower on a phone. We DON'T touch the
+ * shared section JS — instead we read the rendered group columns and drive them
+ * with a single <select>, showing only the chosen group's chips so the chart and
+ * its buttons sit on one screen.
+ */
+const enhanceDataExplorer = (scene) => {
+  const bank = scene.querySelector('.pg-qbank');
+  if (!bank || bank.dataset.mEnhanced) return;
+  const groups = Array.from(bank.querySelectorAll('.pg-qgroup'));
+  if (groups.length < 2) return;
+  bank.dataset.mEnhanced = '1';
+
+  const select = document.createElement('select');
+  select.className = 'm-qselect';
+  select.setAttribute('aria-label', 'Choose a question group');
+  groups.forEach((g, i) => {
+    const head = g.querySelector('.pg-qgroup__head');
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = head ? head.textContent.trim() : `Group ${i + 1}`;
+    select.appendChild(opt);
+  });
+
+  const show = (idx) => {
+    groups.forEach((g, i) => g.classList.toggle('m-qgroup-hidden', i !== idx));
+    select.value = String(idx);
+  };
+  select.addEventListener('change', () => show(Number(select.value)));
+
+  let activeIdx = groups.findIndex((g) => g.querySelector('.pillgroup-chip.is-active'));
+  if (activeIdx < 0) activeIdx = 0;
+  bank.parentNode.insertBefore(select, bank);
+  show(activeIdx);
+};
+
 // ── The mobile journey engine ────────────────────────────────────────────────
 
 const run = async () => {
@@ -226,6 +271,11 @@ const run = async () => {
       if (typeof module.default === 'function') {
         module.default(scenes[index], { ...data, journey: makeJourneyApi(index) });
       }
+      // Mobile-only: collapse the data-explorer's huge metric bank into a single
+      // group dropdown so the chart + its buttons fit one screen (no shared-JS edit).
+      if (entry.id === '16-data-explorer') {
+        requestAnimationFrame(() => enhanceDataExplorer(scenes[index]));
+      }
     } catch (err) {
       scenes[index].append(errorCard(entry.id, `module ${err.message}`));
     }
@@ -295,16 +345,22 @@ const run = async () => {
 
   scenes.forEach((scene) => { initObserver.observe(scene); focusObserver.observe(scene); });
 
-  // ── Cross-fading colour backdrop ────────────────────────────────────────────
-  // One fixed layer behind the (transparent) scenes. As the deck scrolls, its
-  // colour HOLDS on each scene's ground, then cross-fades to the next over the
-  // last FADE_PX before the boundary — the "fade between colours" on one natural
-  // vertical scroll, with NO z-axis and no snap.
+  // ── Cross-fading colour backdrop (two layers, full brand gradients) ─────────
+  // A fixed field behind the (transparent) scenes. The BASE layer shows the
+  // current section's ground (the rich orange→amber→gold gradient on warm, cream,
+  // or the navy gradient); the OVER layer fades the NEXT ground in over the last
+  // FADE_PX before each boundary. The gradient always fills the screen and the
+  // colours cross-fade smoothly — no hard cuts. One natural scroll, no z-axis.
   const backdrop = document.createElement('div');
   backdrop.className = 'm-backdrop';
   backdrop.setAttribute('aria-hidden', 'true');
+  const bgBase = document.createElement('div');
+  bgBase.className = 'm-backdrop__layer m-backdrop__base';
+  const bgOver = document.createElement('div');
+  bgOver.className = 'm-backdrop__layer m-backdrop__over';
+  backdrop.append(bgBase, bgOver);
   document.body.insertBefore(backdrop, deck);
-  const groundColors = scenes.map((s) => THEME_COLORS[s.dataset.ground] || THEME_COLORS.warm);
+  const grounds = scenes.map((s) => s.dataset.ground || 'warm');
 
   const paintBackdrop = () => {
     const center = deck.scrollTop + deck.clientHeight * 0.5;
@@ -312,17 +368,19 @@ const run = async () => {
     for (let k = 0; k < total; k += 1) {
       if (scenes[k].offsetTop <= center) i = k; else break;
     }
-    let color = groundColors[i];
+    bgBase.style.background = GROUND_BG[grounds[i]] || GROUND_BG.warm;
     const next = scenes[i + 1];
-    if (next) {
+    let t = 0;
+    if (next && grounds[i + 1] !== grounds[i]) {
       const span = next.offsetTop - scenes[i].offsetTop;
-      const fade = Math.min(FADE_PX, span * 0.5);
+      const fade = Math.min(FADE_PX, span * 0.6);
       const distToNext = next.offsetTop - center;       // px until the next scene's top
       if (distToNext < fade) {
-        color = lerpHex(groundColors[i], groundColors[i + 1], 1 - distToNext / fade);
+        t = clampN(1 - distToNext / fade, 0, 1);
+        bgOver.style.background = GROUND_BG[grounds[i + 1]] || GROUND_BG.warm;
       }
     }
-    backdrop.style.backgroundColor = color;
+    bgOver.style.opacity = t.toFixed(3);
   };
 
   // Reveal the fixed chrome and kick off the first scene.

@@ -89,16 +89,25 @@
 .m-scene.si-ground-cream { background: transparent; color: var(--on-cream); }
 .m-scene.si-ground-navy  { background: transparent; color: var(--on-navy); }
 
-/* The fading colour field — one fixed layer behind everything; its background
-   colour is set on scroll by the shell (lerp between adjacent scene grounds). */
-.m-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: var(--ground-amber);
-  transition: background-color 120ms linear;  /* smooths the rAF colour steps */
-  pointer-events: none;
-}
+/* INNER ground elements (e.g. the cover's .cover.si-ground-warm, the outro
+   panel) must ALSO be transparent — otherwise they paint the gradient as a
+   bounded RECTANGLE over the full-screen backdrop, reading as a harsh colour
+   cut. Let the one fading backdrop own the colour everywhere. */
+.m-scene .si-ground-warm,
+.m-scene .si-ground-cream,
+.m-scene .si-ground-navy,
+.m-scene .si-ground-blue,
+.m-scene .on-warm.si-ground-warm { background: transparent !important; }
+
+/* The fading colour field — a fixed full-screen layer behind everything. It uses
+   TWO stacked layers so the rich brand GRADIENTS cross-fade smoothly between
+   sections (warm orange→amber→gold gradient, cream, navy gradient): the base
+   shows the current section's ground; the over-layer fades the next one in over
+   the last stretch before each boundary. No hard colour cuts; the gradient always
+   fills the screen. (js/mobile.js drives the backgrounds + over-opacity on scroll.) */
+.m-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.m-backdrop__layer { position: absolute; inset: 0; }
+.m-backdrop__over { opacity: 0; will-change: opacity; }
 .m-deck { background: transparent; }
 .m-deck > .m-scene { z-index: 1; }   /* content sits above the colour field */
 
@@ -245,16 +254,8 @@
   background: var(--yellow);
   border-radius: 50%;
 }
-.m-topbar__count {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  font-variant-numeric: tabular-nums;
-  color: var(--m-chrome-ink);
-  min-width: 2.2em;
-  text-align: right;
-}
+/* Counter removed per request — the slim progress meridian alone marks position. */
+.m-topbar__count { display: none; }
 
 /* ============================================================
    SCROLL CUE + advisory "try it" hint (soft gate — never traps)
@@ -2433,3 +2434,52 @@
 .m-body .m-deck .m-scene [class*="-rail"],
 .m-body .m-deck .m-scene [class*="-left"],
 .m-body .m-deck .m-scene [class*="-right"] { justify-content: flex-start !important; }
+
+/* ============================================================
+   SCENE 16 — mobile group DROPDOWN (built by js/mobile.js enhanceDataExplorer)
+   One <select> chooses the question group; only that group's chips show, so the
+   chart + buttons fit one screen instead of a tall wrapping bank.
+   ============================================================ */
+.m-qgroup-hidden { display: none !important; }
+.m-qselect {
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  color: var(--navy);
+  background-color: rgba(255, 255, 255, 0.72);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23041654' stroke-width='2'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  border: 1.5px solid rgba(4, 22, 84, 0.34);
+  border-radius: 0;
+  padding: 13px 40px 13px 14px;
+  margin: 4px 0 16px;
+}
+.m-qselect:focus { outline: none; border-color: var(--navy); background-color: #fff; }
+/* The dropdown names the group, so the in-column header is redundant on mobile. */
+.m-scene[id="16-data-explorer"] .pg-qgroup__head { display: none; }
+.m-scene[id="16-data-explorer"] .pg-qgroup__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.m-scene[id="16-data-explorer"] .pg-qbank { display: block; }
+
+/* ============================================================
+   ONE BACKDROP OWNS ALL COLOUR (must stay last)
+   Section CSS paints `background: var(--ground-warm/…)` on the scene, its
+   .chapter-inner and its -root wrapper (id-scoped, so it out-specifies our
+   class rules). On a content-height article scene that paints the gradient as a
+   bounded RECTANGLE over the full-screen fading backdrop = a harsh colour cut.
+   Force those full-bleed wrappers transparent so only #m-backdrop shows colour.
+   (Inner CARDS — navy flip panels, quote cards — use other classes, untouched.)
+   ============================================================ */
+.m-body .m-deck .m-scene,
+.m-body .m-deck .m-scene .chapter-inner,
+.m-body .m-deck .m-scene [class*="-root"],
+.m-body .m-deck .m-scene .pg-world,
+.m-body .m-deck .m-scene .cover,
+.m-body .m-deck .m-scene .ot-root {
+  background: transparent !important;
+}
