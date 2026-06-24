@@ -39,6 +39,20 @@ const HINT_DWELL_MS = 1400;              // dwell before an advisory hint may sh
 const INIT_MARGIN = '300px 0px 300px 0px'; // init a section ~one screen early
 const REVEAL_FALLBACK_MS = 1600;         // force-reveal still-hidden content after focus
 const THEME_COLORS = { warm: '#FBC100', cream: '#F0EDE7', navy: '#041654' };
+const FADE_PX = 280;   // distance over which one ground colour cross-fades to the next
+
+const clampN = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const hexToRgb = (h) => {
+  const n = parseInt(h.replace('#', ''), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+/** Linear blend between two hex colours → "rgb(...)". t in 0..1. */
+const lerpHex = (a, b, t) => {
+  const ca = hexToRgb(a);
+  const cb = hexToRgb(b);
+  const m = (i) => Math.round(ca[i] + (cb[i] - ca[i]) * clampN(t, 0, 1));
+  return `rgb(${m(0)}, ${m(1)}, ${m(2)})`;
+};
 
 // ── Routing / escape hatch ───────────────────────────────────────────────────
 // Vercel serves this file at "/" for mobile user-agents (see vercel.json). We
@@ -281,22 +295,58 @@ const run = async () => {
 
   scenes.forEach((scene) => { initObserver.observe(scene); focusObserver.observe(scene); });
 
+  // ── Cross-fading colour backdrop ────────────────────────────────────────────
+  // One fixed layer behind the (transparent) scenes. As the deck scrolls, its
+  // colour HOLDS on each scene's ground, then cross-fades to the next over the
+  // last FADE_PX before the boundary — the "fade between colours" on one natural
+  // vertical scroll, with NO z-axis and no snap.
+  const backdrop = document.createElement('div');
+  backdrop.className = 'm-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.insertBefore(backdrop, deck);
+  const groundColors = scenes.map((s) => THEME_COLORS[s.dataset.ground] || THEME_COLORS.warm);
+
+  const paintBackdrop = () => {
+    const center = deck.scrollTop + deck.clientHeight * 0.5;
+    let i = 0;
+    for (let k = 0; k < total; k += 1) {
+      if (scenes[k].offsetTop <= center) i = k; else break;
+    }
+    let color = groundColors[i];
+    const next = scenes[i + 1];
+    if (next) {
+      const span = next.offsetTop - scenes[i].offsetTop;
+      const fade = Math.min(FADE_PX, span * 0.5);
+      const distToNext = next.offsetTop - center;       // px until the next scene's top
+      if (distToNext < fade) {
+        color = lerpHex(groundColors[i], groundColors[i + 1], 1 - distToNext / fade);
+      }
+    }
+    backdrop.style.backgroundColor = color;
+  };
+
   // Reveal the fixed chrome and kick off the first scene.
   if (topbar) topbar.hidden = false;
   if (cue) cue.hidden = false;
   await ensureInit(0);
   if (total > 1) ensureInit(1);
   focusScene(0);
+  paintBackdrop();
 
-  // Hide the scroll cue once the visitor has actually started moving.
+  // rAF-throttled scroll handler: repaint the colour field + dismiss the cue.
+  let ticking = false;
   let cueDismissed = false;
   deck.addEventListener('scroll', () => {
-    if (cueDismissed) return;
-    if (deck.scrollTop > window.innerHeight * 0.35) {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => { paintBackdrop(); ticking = false; });
+    }
+    if (!cueDismissed && deck.scrollTop > window.innerHeight * 0.35) {
       cueDismissed = true;
       if (cue) cue.classList.add('is-gone');
     }
   }, { passive: true });
+  window.addEventListener('resize', paintBackdrop, { passive: true });
 };
 
 run();
