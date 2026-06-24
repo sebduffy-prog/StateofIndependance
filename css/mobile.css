@@ -78,10 +78,14 @@
     calc(72px + var(--m-safe-bottom))
     var(--margin-page);
   isolation: isolate;
-  /* Clip horizontal bleed (decorative rings etc.) but NEVER vertical — tall
-     interactive content must grow the scene, not be clipped. */
-  overflow-x: clip;
-  overflow-y: visible;
+  /* PURE VERTICAL: clip ALL horizontal bleed so the phone only ever scrolls down
+     the y-axis. `clip` doesn't constrain the box's own height (it grows with
+     content), it only clips descendants that spill past the padding box — i.e.
+     decorative orbits/rings and any too-wide visual. No x-scroll, ever. */
+  overflow: clip;   /* both axes: contains all bleed; the box still grows
+                       vertically with in-flow content (clip only trims what
+                       spills past the box, i.e. decoration / too-wide visuals) */
+  max-width: 100vw;
 }
 
 /* Full-bleed grounds (reused token gradients). The scene paints edge to edge. */
@@ -136,7 +140,22 @@
 /* Media never exceeds the column (charts already use width:100% + viewBox). */
 .m-scene img,
 .m-scene svg,
-.m-scene canvas { max-width: 100%; }
+.m-scene canvas { max-width: 100% !important; }
+
+/* NO X-AXIS — belt-and-braces. No element inside a scene may become a horizontal
+   scroller, and content wrappers are capped to the column. Decorative bleed is
+   handled by the scene's overflow:clip; this stops genuine sideways SCROLLING of
+   content (e.g. a too-wide root or chart row) so the phone only travels down. */
+.m-deck { overflow-x: hidden !important; }
+.m-scene .chapter-inner,
+.m-scene .chapter-inner > * { max-width: 100%; overflow-x: clip; }
+/* Catch multi-class layout wrappers (e.g. "chapter-inner twist-ai-root on-warm")
+   with a CONTAINS match so a too-wide root can't become a sideways scroller. */
+.m-scene [class*="-root"],
+.m-scene [class*="-grid"],
+.m-scene [class*="-stage"],
+.m-scene [class*="-cloud"],
+.m-scene [class*="-controls"] { overflow-x: clip; max-width: 100%; }
 
 /* Comfortable reading measure on a phone. */
 .m-scene .si-measure,
@@ -2158,3 +2177,21 @@
 .m-scene[id="21-move-behaviours"] .flip-less,
 .m-scene[id="21-move-behaviours"] .flip-more { font-size: 0.95rem; }
 .m-scene[id="21-move-behaviours"] .flip-head { font-size: 0.66rem; }
+
+/* ============================================================
+   FINAL X-AXIS LOCK (must stay last)
+   Some per-section blocks set `overflow:visible !important` on root/grid wrappers
+   to escape the desktop vertical clip — that also re-opens HORIZONTAL bleed
+   (decorative orbits, too-wide visuals). This wins on specificity + order and
+   clips ONLY the x-axis, so vertical content still grows but the phone can never
+   travel sideways. Pure y-axis scroll, everywhere.
+   ============================================================ */
+.m-body .m-deck .m-scene,
+.m-body .m-deck .m-scene .chapter-inner,
+.m-body .m-deck .m-scene [class*="-root"],
+.m-body .m-deck .m-scene [class*="-grid"],
+.m-body .m-deck .m-scene [class*="-stage"],
+.m-body .m-deck .m-scene [class*="-mount"] {
+  overflow-x: clip !important;
+  max-width: 100% !important;
+}
