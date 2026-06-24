@@ -1206,8 +1206,12 @@
 .m-scene[id="09-segments-intro"] .segments-intro-standfirst { font-size: 0.9rem; line-height: 1.45; }
 
 .m-scene[id="09-segments-intro"] .segments-intro-legend { gap: 9px; margin-top: 4px; }
-.m-scene[id="09-segments-intro"] .segments-intro-leg { padding: 8px; gap: 9px; min-height: 44px; }
-.m-scene[id="09-segments-intro"] .segments-intro-leg-name { font-size: 0.92rem; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg { padding: 8px; gap: 8px; min-height: 44px; min-width: 0; }
+/* Right-column cards (Architects / Coasters) were clipping the name+share at the
+   edge — let the body shrink + the name wrap so the share never spills off. */
+.m-scene[id="09-segments-intro"] .segments-intro-leg-body { min-width: 0; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg-name { font-size: 0.9rem; white-space: normal; overflow-wrap: anywhere; }
+.m-scene[id="09-segments-intro"] .segments-intro-leg-share { margin-left: 4px; white-space: nowrap; }
 .m-scene[id="09-segments-intro"] .segments-intro-leg-desc { font-size: 0.72rem; }
 
 /* Stage: content-sized, no full-height centering. */
@@ -1217,8 +1221,10 @@
   justify-content: flex-start;
   gap: 10px;
 }
-/* Compass capped to a sensible inline square so it never reserves the viewport. */
-.m-scene[id="09-segments-intro"] .segments-intro-compass { width: min(100%, 360px); margin-inline: auto; }
+/* Compass capped to a sensible inline square + a little side inset so the right
+   quadrant labels (Architects / Coasters) never kiss the clipped scene edge. */
+.m-scene[id="09-segments-intro"] .segments-intro-compass { width: min(100%, 332px); margin-inline: auto; }
+.m-scene[id="09-segments-intro"] .segments-intro-quads { padding-inline: 2px; }
 
 .m-scene[id="09-segments-intro"] .segments-intro-axis-cap { font-size: 0.62rem; letter-spacing: 0.1em; opacity: 0.85; }
 .m-scene[id="09-segments-intro"] .segments-intro-axis-cap--top { transform: translateX(8px) translateY(-1px); }
@@ -2000,33 +2006,50 @@
    the column with generous separation. The desktop flex-stretch sizing
    collapses to 0 height in the mobile single-column stack, so the mount gets
    an explicit square sized to fit 375px. */
+/* Venn map: dropped DOWN clear of the pivot above, its converging-circles stage
+   contained (overflow:hidden) so it can never bleed onto the stats below. */
 .m-scene[id="15-empowerment"] .emp-venn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   height:auto;
   min-height:0;
-  gap:1.5rem;
-  margin-top:0;
+  gap:clamp(0.75rem, 2.5vh, 1.25rem);
+  margin-top:clamp(1.4rem, 5vh, 2.4rem);
 }
-.m-scene[id="15-empowerment"] .emp-venn-instruction{ margin:0 0 0.25rem; }
+.m-scene[id="15-empowerment"] .emp-venn-instruction{ margin:0 0 0.25rem; text-align:center; }
 .m-scene[id="15-empowerment"] .emp-venn-mount{
   flex:0 0 auto;
-  width:min(72vw,260px);
-  height:min(72vw,260px);
+  width:min(74vw,272px);
+  height:min(74vw,272px);
   min-height:0;
   margin:0 auto;
+  overflow:hidden;            /* circles + centre word stay inside the map */
 }
+.m-scene[id="15-empowerment"] .emp-tv-stage{ width:100%; height:100%; }
 .m-scene[id="15-empowerment"] .emp-tv-field{
   max-height:100%;
   max-width:100%;
 }
 
-/* Stat row — the three verified figures abreast, dropped clear beneath the
-   venn with its own breathing space; labels wrap rather than truncate. */
+/* Stat row — the three verified figures abreast, dropped CLEAR beneath the venn
+   with a real gap so nothing overlaps; labels wrap rather than truncate. */
 .m-scene[id="15-empowerment"] .emp-stat-row{
-  gap:0.6rem;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:0.5rem;
   padding:0;
-  margin-top:0.5rem;
+  width:100%;
+  margin-top:clamp(1.6rem, 5vh, 2.6rem);
 }
-.m-scene[id="15-empowerment"] .emp-tv-stat{ max-width:none; gap:0.2rem; }
+/* min-width:0 + wrapping labels so the 3rd column ("Save me stress" / "THE
+   PREMIUM ASK") never spills past the right edge and gets clipped. */
+.m-scene[id="15-empowerment"] .emp-tv-stat{ max-width:none; min-width:0; gap:0.2rem; text-align:center; }
+/* Section CSS sets white-space:nowrap via an ID selector (out-specifies us), so
+   the 3rd label ("Save me stress" / "THE PREMIUM ASK") clipped at the edge —
+   force wrapping so every label shows in full. */
+.m-scene[id="15-empowerment"] .emp-tv-stat-name,
+.m-scene[id="15-empowerment"] .emp-tv-stat-sub{ white-space:normal !important; overflow-wrap:anywhere; }
 .m-scene[id="15-empowerment"] .emp-tv-stat-icon{ margin-bottom:0.25rem; }
 .m-scene[id="15-empowerment"] .emp-tv-stat-icon,
 .m-scene[id="15-empowerment"] .emp-tv-stat-icon__img{ width:34px; height:34px; }
